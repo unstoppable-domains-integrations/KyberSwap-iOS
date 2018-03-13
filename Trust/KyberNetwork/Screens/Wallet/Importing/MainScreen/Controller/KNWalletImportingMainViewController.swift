@@ -35,13 +35,13 @@ class KNWalletImportingMainViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    NSLog("Did open: \(KNWalletImportingMainViewController.className)")
+    NSLog("Did open: \(self.className)")
   }
 
   fileprivate func setupUI() {
     self.applyBaseGradientBackground()
     self.navigationController?.isNavigationBarHidden = true
-    self.importWalletLabel.text = "Import Wallet".toBeLocalised()
+    self.importWalletLabel.text = "Import Address".toBeLocalised()
 
     self.keystoreButton.rounded(color: .clear, width: 0, radius: 10.0)
     self.keystoreLabel.text = "JSON\nKeystore".toBeLocalised()

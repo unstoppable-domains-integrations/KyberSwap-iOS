@@ -33,6 +33,10 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    // temp remove all added wallets
+    for wallet in self.keystore.wallets {
+      _ = self.keystore.delete(wallet: wallet)
+    }
     self.addCoordinator(self.splashScreenCoordinator)
     self.splashScreenCoordinator.start()
     self.addCoordinator(self.walletImportingMainCoordinator)
