@@ -77,3 +77,11 @@ extension String {
         return String(self[startIndex..<endIndex])
     }
 }
+
+extension String {
+
+  func toBeLocalised() -> String {
+    // TODO: For easier changing localised string later
+    return self
+  }
+}

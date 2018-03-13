@@ -13,6 +13,13 @@ class KNAppCoordinator: NSObject, Coordinator {
     return KNSplashScreenCoordinator()
   }()
 
+  lazy var walletImportingMainCoordinator: KNWalletImportingMainCoordinator = {
+    return KNWalletImportingMainCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+  }()
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,
@@ -28,6 +35,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   func start() {
     self.addCoordinator(self.splashScreenCoordinator)
     self.splashScreenCoordinator.start()
+    self.addCoordinator(self.walletImportingMainCoordinator)
+    self.walletImportingMainCoordinator.start()
   }
 
 }

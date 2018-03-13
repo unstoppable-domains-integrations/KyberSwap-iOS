@@ -24,8 +24,7 @@ class KNSplashScreenViewController: UIViewController {
 
     UIView.animate(withDuration: 0.5, animations: {
       imageView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
-      imageView.center = CGPoint(x: 25, y: 85) }
-    ) { _ in
+      imageView.center = CGPoint(x: 25, y: 85) }){ _ in
       imageView.removeFromSuperview()
       completion()
     }
