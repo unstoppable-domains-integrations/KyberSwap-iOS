@@ -36,9 +36,7 @@ class KNWalletImportingKeystoreViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    //TODO (Mike): Only keep one instance for this view controller
-    // Should clear data every time it is opened
-//    self.keystoreJSONTextView.text = ""
+    self.keystoreJSONTextView.text = ""
     self.passwordTextField.text = ""
   }
 
@@ -53,8 +51,7 @@ class KNWalletImportingKeystoreViewController: UIViewController {
     self.keystoreLabel.text = "Keystore".toBeLocalised()
 
     self.keystoreJSONTextView.rounded(color: .clear, width: 0, radius: 5.0)
-    //TODO (Mike): Clear keystore text
-//    self.keystoreJSONTextView.text = ""
+    self.keystoreJSONTextView.text = ""
 
     self.passwordLabel.text = "Password".toBeLocalised()
 

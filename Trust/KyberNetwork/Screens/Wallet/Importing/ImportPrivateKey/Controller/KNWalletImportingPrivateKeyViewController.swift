@@ -32,8 +32,7 @@ class KNWalletImportingPrivateKeyViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    //TODO (Mike): Uncomment this line. This view is kept so should clear data every it is opened
-//    self.privateKeyTextField.text = ""
+    self.privateKeyTextField.text = ""
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -45,7 +44,7 @@ class KNWalletImportingPrivateKeyViewController: UIViewController {
     self.backButton.setTitle("Back".toBeLocalised(), for: .normal)
 
     self.privateKeyLabel.text = "Private Key".toBeLocalised()
-//    self.privateKeyTextField.text = ""
+    self.privateKeyTextField.text = ""
 
     self.importButton.setTitle("Import".uppercased().toBeLocalised(), for: .normal)
     self.importButton.rounded(color: .clear, width: 0, radius: 10.0)

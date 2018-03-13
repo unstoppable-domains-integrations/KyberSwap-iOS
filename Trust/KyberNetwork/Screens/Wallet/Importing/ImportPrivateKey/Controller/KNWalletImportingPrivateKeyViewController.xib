@@ -38,7 +38,7 @@
                     <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="f4e72838eb3b07d2508289042e49c7996d06c3c4907922485fd6565646bc3f1e" borderStyle="roundedRect" placeholder="Private Key" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z9S-R2-gJL">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Private Key" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z9S-R2-gJL">
                     <rect key="frame" x="20" y="194" width="335" height="60"/>
                     <color key="backgroundColor" red="0.72517786179999999" green="0.73250289069999996" blue="0.73250289069999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
