@@ -63,6 +63,23 @@ class KNWalletImportingKeystoreViewController: UIViewController {
     self.importButton.backgroundColor = UIColor.Kyber.blue
   }
 
+  fileprivate func showDocumentPickerForImportingKeystore() {
+    let types = ["public.text", "public.content", "public.item", "public.data"]
+    let controller = TrustDocumentPickerViewController(documentTypes: types, in: .import)
+    controller.delegate = self
+    controller.modalPresentationStyle = .formSheet
+    present(controller, animated: true, completion: nil)
+  }
+
+  @IBAction func importKeystoreFileButtonPressed(_ sender: Any) {
+    let alertController = UIAlertController(title: "Import Address", message: nil, preferredStyle: .actionSheet)
+    alertController.addAction(UIAlertAction(title: "iCloud/Dropbox/Google Drive", style: .default, handler: { _ in
+      self.showDocumentPickerForImportingKeystore()
+    }))
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    self.present(alertController, animated: true, completion: nil)
+  }
+
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
     let qrcodeVC = QRCodeReaderViewController()
     qrcodeVC.delegate = self
@@ -88,6 +105,16 @@ extension KNWalletImportingKeystoreViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.keystoreJSONTextView.text = result
+    }
+  }
+}
+
+extension KNWalletImportingKeystoreViewController: UIDocumentPickerDelegate {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    if controller.documentPickerMode == UIDocumentPickerMode.import {
+      if let text = try? String(contentsOfFile: url.path) {
+        self.keystoreJSONTextView.text = text
+      }
     }
   }
 }
