@@ -2,7 +2,13 @@
 
 import UIKit
 
+protocol KNWalletImportingMainCoordinatorDelegate: class {
+  func walletImportingMainDidImport(wallet: Wallet)
+}
+
 class KNWalletImportingMainCoordinator: Coordinator {
+
+  weak var delegate: KNWalletImportingMainCoordinatorDelegate?
 
   let navigationController: UINavigationController
   let keystore: Keystore
@@ -14,6 +20,15 @@ class KNWalletImportingMainCoordinator: Coordinator {
 
   lazy var importingKeystoreCoordinator: KNWalletImportingKeystoreCoordinator = {
     let coordinator = KNWalletImportingKeystoreCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+
+  lazy var importingPrivateKeyCoordinator: KNWalletImportingPrivateKeyCoordinator = {
+    let coordinator = KNWalletImportingPrivateKeyCoordinator(
       navigationController: self.navigationController,
       keystore: self.keystore
     )
@@ -41,11 +56,21 @@ extension KNWalletImportingMainCoordinator: KNWalletImportingMainViewControllerD
   }
 
   func walletImportingMainScreenUserDidClickImportAddressByPrivateKey() {
+    self.addCoordinator(self.importingPrivateKeyCoordinator)
+    self.importingPrivateKeyCoordinator.start()
   }
 }
 
 extension KNWalletImportingMainCoordinator: KNWalletImportingKeystoreCoordinatorDelegate {
   func walletImportKeystoreCoordinatorUserDidImport(wallet: Wallet) {
-    NSLog("User did import wallet")
+    self.removeCoordinator(self.importingKeystoreCoordinator)
+    self.delegate?.walletImportingMainDidImport(wallet: wallet)
+  }
+}
+
+extension KNWalletImportingMainCoordinator: KNWalletImportingPrivateKeyCoordinatorDelegate {
+  func walletImportingPrivateKeyDidImport(wallet: Wallet) {
+    self.removeCoordinator(self.importingPrivateKeyCoordinator)
+    self.delegate?.walletImportingMainDidImport(wallet: wallet)
   }
 }

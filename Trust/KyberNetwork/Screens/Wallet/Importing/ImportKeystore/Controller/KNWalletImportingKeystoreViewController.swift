@@ -60,6 +60,7 @@ class KNWalletImportingKeystoreViewController: UIViewController {
 
     self.importButton.rounded(color: .clear, width: 0, radius: 10.0)
     self.importButton.setTitle("Import".uppercased().toBeLocalised(), for: .normal)
+    self.importButton.backgroundColor = UIColor.Kyber.blue
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
