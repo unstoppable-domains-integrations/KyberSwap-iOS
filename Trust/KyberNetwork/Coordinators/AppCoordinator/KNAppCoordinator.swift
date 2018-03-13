@@ -50,6 +50,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
+    let balanceCoordinator = KNBalanceCoordinator(session: self.session)
+    balanceCoordinator.resume()
   }
 
   func stopLastSession() {

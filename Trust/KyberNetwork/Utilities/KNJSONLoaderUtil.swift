@@ -5,6 +5,20 @@ import Foundation
 typealias JSONDictionary = [String: Any]
 
 class KNJSONLoaderUtil {
+
+  static func loadListSupportedTokensFromJSONFile() -> [KNToken] {
+    let configFileName = KNEnvironment.default.configFileName
+    guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: configFileName) else { return [] }
+    guard let tokensJSON = json["tokens"] as? JSONDictionary else { return [] }
+    do {
+      return try tokensJSON.values.map({ return try KNToken(dictionary: try kn_cast($0)) })
+    } catch let error {
+      print("---> Error: Cast json to KNToken failed with error: \(error.localizedDescription)")
+      print("---> JSON Array: \(tokensJSON)")
+      return []
+    }
+  }
+
   static func jsonDataFromFile(with name: String) -> JSONDictionary? {
     guard let path = Bundle.main.path(forResource: name, ofType: "json") else {
       print("---> Error: File not found with name \(name)")

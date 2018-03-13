@@ -10,6 +10,7 @@ class KNSession {
   let keystore: Keystore
   let wallet: Wallet
   let web3Swift: Web3Swift
+  let externalProvider: KNExternalProvider
 
   init(keystore: Keystore,
        wallet: Wallet) {
@@ -20,6 +21,7 @@ class KNSession {
     } else {
       self.web3Swift = Web3Swift()
     }
+    self.externalProvider = KNExternalProvider(web3: self.web3Swift)
   }
 
   func startSession() {
