@@ -36,6 +36,7 @@
 		25CC0A882057C6280009D0D5 /* KNWalletImportingPrivateKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A872057C6280009D0D5 /* KNWalletImportingPrivateKeyCoordinator.swift */; };
 		25CC0A8B2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A892057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.swift */; };
 		25CC0A8C2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0A8A2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.xib */; };
+		25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A8D2057D0410009D0D5 /* KNSession.swift */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
 		290B2B5F1F9177860053C83E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5E1F9177860053C83E /* UIImage.swift */; };
@@ -451,6 +452,7 @@
 		25CC0A872057C6280009D0D5 /* KNWalletImportingPrivateKeyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingPrivateKeyCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A892057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingPrivateKeyViewController.swift; sourceTree = "<group>"; };
 		25CC0A8A2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingPrivateKeyViewController.xib; sourceTree = "<group>"; };
+		25CC0A8D2057D0410009D0D5 /* KNSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSession.swift; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
 		290B2B5E1F9177860053C83E /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -902,6 +904,7 @@
 			isa = PBXGroup;
 			children = (
 				251ABCA820578E7B0069687F /* KNToken.swift */,
+				25CC0A8D2057D0410009D0D5 /* KNSession.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3094,6 +3097,7 @@
 				299B5E451FD22FB40051361C /* ConfigureTransactionViewModel.swift in Sources */,
 				29F114EE1FA65DEF00114A29 /* ImportType.swift in Sources */,
 				29BDF1981FEE4DB00023A45F /* GasPriceConfiguration.swift in Sources */,
+				25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */,
 				25CC0A832057BD590009D0D5 /* KNWalletImportingKeystoreCoordinator.swift in Sources */,
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,

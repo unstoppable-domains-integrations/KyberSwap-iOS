@@ -8,16 +8,20 @@ class KNAppCoordinator: NSObject, Coordinator {
   let window: UIWindow
   let keystore: Keystore
   var coordinators: [Coordinator] = []
+  fileprivate var session: KNSession!
+  fileprivate var currentWallet: Wallet!
 
   lazy var splashScreenCoordinator: KNSplashScreenCoordinator = {
     return KNSplashScreenCoordinator()
   }()
 
   lazy var walletImportingMainCoordinator: KNWalletImportingMainCoordinator = {
-    return KNWalletImportingMainCoordinator(
+    let coordinator = KNWalletImportingMainCoordinator(
       navigationController: self.navigationController,
       keystore: self.keystore
     )
+    coordinator.delegate = self
+    return coordinator
   }()
 
   init(
@@ -33,14 +37,37 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    // temp remove all added wallets
-    for wallet in self.keystore.wallets {
-      _ = self.keystore.delete(wallet: wallet)
-    }
     self.addCoordinator(self.splashScreenCoordinator)
     self.splashScreenCoordinator.start()
     self.addCoordinator(self.walletImportingMainCoordinator)
     self.walletImportingMainCoordinator.start()
+    if let wallet = self.keystore.wallets.first {
+      self.startNewSession(with: wallet)
+    }
   }
 
+  func startNewSession(with wallet: Wallet) {
+    self.currentWallet = wallet
+    self.session = KNSession(keystore: self.keystore, wallet: wallet)
+    self.session.startSession()
+  }
+
+  func stopLastSession() {
+    self.session.stopSession()
+    self.navigationController.dismiss(animated: true) {
+      self.currentWallet = nil
+      self.session = nil
+    }
+  }
+}
+
+extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
+  func walletImportingMainDidImport(wallet: Wallet) {
+    self.navigationController.topViewController?.displayLoading(text: "", animated: true)
+    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+      guard let `self` = self else { return }
+      self.navigationController.topViewController?.hideLoading()
+      self.startNewSession(with: wallet)
+    }
+  }
 }
