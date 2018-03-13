@@ -12,6 +12,7 @@ PODS:
   - CryptoSwift (0.8.0)
   - Eureka (4.0.1)
   - Fabric (1.7.2)
+  - IQKeyboardManager (5.0.7)
   - JavaScriptKit (1.0.0):
     - Result (~> 3.1)
   - JSONRPCKit (2.0.0):
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - CryptoSwift (from `https://github.com/krzyzanowskim/CryptoSwift`, branch `master`)
   - Eureka (~> 4.0.1)
   - Fabric
+  - IQKeyboardManager
   - JavaScriptKit
   - JSONRPCKit (from `https://github.com/bricklife/JSONRPCKit.git`)
   - KeychainSwift
@@ -110,6 +112,7 @@ SPEC CHECKSUMS:
   CryptoSwift: 475ae2a25439f52412686d68b854c0ca724c8dfd
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
   JavaScriptKit: 9ff565209e6efe21bcb9c6d6ca3e863a67a8ecf7
   JSONRPCKit: 22132c575ba2dc6f2f4ae72fda4943a63efca686
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
@@ -133,6 +136,6 @@ SPEC CHECKSUMS:
   TrustKeystore: b9fc8e0d72de3e8f9c97f46802172d6f14a004aa
   TrustWeb3Provider: ac0bdf19b4c6c4d6ec0f03ddb85b83e32bda3a9a
 
-PODFILE CHECKSUM: f6ba1746f62eeaaabee0dc8db12e09eb1e17a0e8
+PODFILE CHECKSUM: db648df84dbc7d6740c8047fc5f85de3e3ca9505
 
 COCOAPODS: 1.4.0
