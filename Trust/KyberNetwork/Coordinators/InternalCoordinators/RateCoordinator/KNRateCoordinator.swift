@@ -24,11 +24,11 @@ class KNRateCoordinator {
 
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
-  fileprivate var tokenRates: [KNRate] = []
+  fileprivate(set) var tokenRates: [KNRate] = []
 
   fileprivate var exchangeUSDRatesTimer: Timer?
   fileprivate var isLoadingExchangeUSDRates: Bool = false
-  fileprivate var usdRates: [KNRate] = []
+  fileprivate(set) var usdRates: [KNRate] = []
 
   func getRate(from: KNToken, to: KNToken) -> KNRate? {
     return self.tokenRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol })

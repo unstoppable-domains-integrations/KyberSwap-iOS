@@ -5,6 +5,10 @@ import JSONRPCKit
 import BigInt
 import TrustKeystore
 
+protocol KNSessionDelegate: class {
+  func userDidClickExitSession()
+}
+
 class KNSession {
 
   let keystore: Keystore

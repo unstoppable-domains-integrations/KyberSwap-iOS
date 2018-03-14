@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import IQKeyboardManager
 
 class KNAppCoordinator: NSObject, Coordinator {
 
@@ -10,6 +11,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   fileprivate var session: KNSession!
   fileprivate var currentWallet: Wallet!
+  fileprivate var balanceCoordinator: KNBalanceCoordinator?
 
   lazy var splashScreenCoordinator: KNSplashScreenCoordinator = {
     return KNSplashScreenCoordinator()
@@ -50,8 +52,39 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
-    let balanceCoordinator = KNBalanceCoordinator(session: self.session)
-    balanceCoordinator.resume()
+    self.balanceCoordinator = KNBalanceCoordinator(session: self.session)
+    self.balanceCoordinator?.resume()
+
+    let tabbarController = UITabBarController()
+    let exchangeCoordinator: KNExchangeTokenCoordinator = {
+      let coordinator = KNExchangeTokenCoordinator(
+      session: self.session,
+      balanceCoordinator: self.balanceCoordinator!
+      )
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.addCoordinator(exchangeCoordinator)
+    exchangeCoordinator.start()
+
+    let transferVC = UIViewController()
+    transferVC.applyBaseGradientBackground()
+    let transferNav = UINavigationController(rootViewController: transferVC)
+
+    let walletVC = UIViewController()
+    walletVC.applyBaseGradientBackground()
+    let walletNav = UINavigationController(rootViewController: walletVC)
+
+    tabbarController.viewControllers = [
+      exchangeCoordinator.navigationController,
+      transferNav,
+      walletNav,
+    ]
+    exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange", image: nil, tag: 0)
+    transferNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
+    walletNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 2)
+
+    self.navigationController.present(tabbarController, animated: true, completion: nil)
   }
 
   func stopLastSession() {
@@ -59,20 +92,29 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.navigationController.dismiss(animated: true) {
       self.currentWallet = nil
       self.session = nil
+      self.balanceCoordinator?.pause()
+      self.balanceCoordinator = nil
     }
   }
+}
 
+// Application state
+extension KNAppCoordinator {
   func appDidFinishLaunch() {
+    IQKeyboardManager.shared().isEnabled = true
+    IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
   }
 
   func appDidBecomeActive() {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
+    self.balanceCoordinator?.resume()
   }
 
   func appWillEnterBackground() {
     KNSession.pauseInternalSession()
+    self.balanceCoordinator?.pause()
   }
 }
 
@@ -84,5 +126,11 @@ extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
       self.navigationController.topViewController?.hideLoading()
       self.startNewSession(with: wallet)
     }
+  }
+}
+
+extension KNAppCoordinator: KNSessionDelegate {
+  func userDidClickExitSession() {
+    self.stopLastSession()
   }
 }
