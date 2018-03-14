@@ -61,6 +61,19 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.session = nil
     }
   }
+
+  func appDidFinishLaunch() {
+    KNSession.resumeInternalSession()
+  }
+
+  func appDidBecomeActive() {
+    KNSession.pauseInternalSession()
+    KNSession.resumeInternalSession()
+  }
+
+  func appWillEnterBackground() {
+    KNSession.pauseInternalSession()
+  }
 }
 
 extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {

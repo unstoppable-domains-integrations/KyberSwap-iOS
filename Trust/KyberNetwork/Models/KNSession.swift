@@ -36,4 +36,16 @@ class KNSession {
   func stopSession() {
     _ = self.keystore.delete(wallet: self.wallet)
   }
+
+  static func resumeInternalSession() {
+    KNRateCoordinator.shared.resume()
+    KNGasCoordinator.shared.resume()
+    KNRecentTradeCoordinator.shared.resume()
+  }
+
+  static func pauseInternalSession() {
+    KNRateCoordinator.shared.pause()
+    KNGasCoordinator.shared.pause()
+    KNRecentTradeCoordinator.shared.pause()
+  }
 }

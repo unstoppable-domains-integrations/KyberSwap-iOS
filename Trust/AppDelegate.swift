@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             let keystore = try EtherKeystore()
             coordinator = KNAppCoordinator(window: window!, keystore: keystore)
             coordinator.start()
+            coordinator.appDidFinishLaunch()
         } catch {
             print("EtherKeystore init issue.")
         }
@@ -32,9 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         Lokalise.shared.checkForUpdates { _, _ in }
+        coordinator.appDidBecomeActive()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        coordinator.appWillEnterBackground()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

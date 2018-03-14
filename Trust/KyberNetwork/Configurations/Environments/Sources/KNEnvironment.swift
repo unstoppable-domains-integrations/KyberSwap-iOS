@@ -10,6 +10,10 @@ enum KNEnvironment {
   case ropsten
   case kovan
 
+  static let internalBaseEndpoint: String = {
+    isDebug ? "https://staging-cache.kyber.network" : "https://production-cache.kyber.network"
+  }()
+
   static var `default`: KNEnvironment {
     return KNEnvironment.kovan
   }

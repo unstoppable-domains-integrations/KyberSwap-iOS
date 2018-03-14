@@ -45,6 +45,14 @@
 		25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA52058F1A00009D0D5 /* KNGetExpectedRate.swift */; };
 		25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA62058F1A00009D0D5 /* KNGetUserCapInWei.swift */; };
 		25CC0AAB2058F1A00009D0D5 /* KNGetTokenAllowance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA72058F1A00009D0D5 /* KNGetTokenAllowance.swift */; };
+		25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AAD205918900009D0D5 /* KyberNetworkService.swift */; };
+		25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AAF2059191C0009D0D5 /* KNInternalProvider.swift */; };
+		25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AB120591A3D0009D0D5 /* KNRate.swift */; };
+		25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AB320591AFA0009D0D5 /* KNTransaction.swift */; };
+		25CC0AB820591D720009D0D5 /* KNRecentTradeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AB720591D720009D0D5 /* KNRecentTradeCoordinator.swift */; };
+		25CC0ABC20591DFB0009D0D5 /* KNGasCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0ABA20591DFB0009D0D5 /* KNGasCoordinator.swift */; };
+		25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0ABB20591DFB0009D0D5 /* KNGasConfiguration.swift */; };
+		25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AC220591F8A0009D0D5 /* KNRateCoordinator.swift */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
 		290B2B5F1F9177860053C83E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5E1F9177860053C83E /* UIImage.swift */; };
@@ -469,6 +477,14 @@
 		25CC0AA52058F1A00009D0D5 /* KNGetExpectedRate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetExpectedRate.swift; sourceTree = "<group>"; };
 		25CC0AA62058F1A00009D0D5 /* KNGetUserCapInWei.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetUserCapInWei.swift; sourceTree = "<group>"; };
 		25CC0AA72058F1A00009D0D5 /* KNGetTokenAllowance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetTokenAllowance.swift; sourceTree = "<group>"; };
+		25CC0AAD205918900009D0D5 /* KyberNetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KyberNetworkService.swift; sourceTree = "<group>"; };
+		25CC0AAF2059191C0009D0D5 /* KNInternalProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNInternalProvider.swift; sourceTree = "<group>"; };
+		25CC0AB120591A3D0009D0D5 /* KNRate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNRate.swift; sourceTree = "<group>"; };
+		25CC0AB320591AFA0009D0D5 /* KNTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNTransaction.swift; sourceTree = "<group>"; };
+		25CC0AB720591D720009D0D5 /* KNRecentTradeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNRecentTradeCoordinator.swift; sourceTree = "<group>"; };
+		25CC0ABA20591DFB0009D0D5 /* KNGasCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGasCoordinator.swift; sourceTree = "<group>"; };
+		25CC0ABB20591DFB0009D0D5 /* KNGasConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGasConfiguration.swift; sourceTree = "<group>"; };
+		25CC0AC220591F8A0009D0D5 /* KNRateCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNRateCoordinator.swift; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
 		290B2B5E1F9177860053C83E /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -921,6 +937,8 @@
 		251ABCA220578E1F0069687F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				25CC0AB320591AFA0009D0D5 /* KNTransaction.swift */,
+				25CC0AB120591A3D0009D0D5 /* KNRate.swift */,
 				251ABCA820578E7B0069687F /* KNToken.swift */,
 				25CC0A8D2057D0410009D0D5 /* KNSession.swift */,
 			);
@@ -991,6 +1009,7 @@
 		257740C82057948F003323EB /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				25CC0AB520591D520009D0D5 /* InternalCoordinators */,
 				25CC0A8F2057D7140009D0D5 /* BalanceCoordinator */,
 				257740C9205794B3003323EB /* AppCoordinator */,
 			);
@@ -1129,6 +1148,7 @@
 		25CC0A922057DD2A0009D0D5 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				25CC0AAC2059186E0009D0D5 /* Internal */,
 				25CC0A942057DD3D0009D0D5 /* External */,
 			);
 			path = Networking;
@@ -1176,6 +1196,50 @@
 				25CC0AA62058F1A00009D0D5 /* KNGetUserCapInWei.swift */,
 			);
 			path = Web3Swift;
+			sourceTree = "<group>";
+		};
+		25CC0AAC2059186E0009D0D5 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0AAD205918900009D0D5 /* KyberNetworkService.swift */,
+				25CC0AAF2059191C0009D0D5 /* KNInternalProvider.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		25CC0AB520591D520009D0D5 /* InternalCoordinators */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0ABE20591F2F0009D0D5 /* RateCoordinator */,
+				25CC0AB920591DD50009D0D5 /* GasCoordinator */,
+				25CC0AB620591D5C0009D0D5 /* RecentTradeCoordinator */,
+			);
+			path = InternalCoordinators;
+			sourceTree = "<group>";
+		};
+		25CC0AB620591D5C0009D0D5 /* RecentTradeCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0AB720591D720009D0D5 /* KNRecentTradeCoordinator.swift */,
+			);
+			path = RecentTradeCoordinator;
+			sourceTree = "<group>";
+		};
+		25CC0AB920591DD50009D0D5 /* GasCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0ABB20591DFB0009D0D5 /* KNGasConfiguration.swift */,
+				25CC0ABA20591DFB0009D0D5 /* KNGasCoordinator.swift */,
+			);
+			path = GasCoordinator;
+			sourceTree = "<group>";
+		};
+		25CC0ABE20591F2F0009D0D5 /* RateCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0AC220591F8A0009D0D5 /* KNRateCoordinator.swift */,
+			);
+			path = RateCoordinator;
 			sourceTree = "<group>";
 		};
 		290B2B511F8F4F840053C83E /* Localization */ = {
@@ -3074,6 +3138,7 @@
 				615F10561FCBEF2E008A45AF /* OnboardingPageViewModel.swift in Sources */,
 				29E2E3411F7B1585000CF94A /* ActionButtonRow.swift in Sources */,
 				29FC0CB61F8298820036089F /* TransactionCoordinator.swift in Sources */,
+				25CC0AB820591D720009D0D5 /* KNRecentTradeCoordinator.swift in Sources */,
 				73200B6A2045B8AC00118A82 /* TokensNetwork.swift in Sources */,
 				77872D27202505C00032D687 /* EnterPasswordViewModel.swift in Sources */,
 				29F1C85F200369BA003780D8 /* HelpUsViewModel.swift in Sources */,
@@ -3134,6 +3199,7 @@
 				73ACEEFF20163E08003DD71D /* PasscodeCharacterView.swift in Sources */,
 				775DF43B203E0018009CD082 /* OpenseaArrayResponse.swift in Sources */,
 				295B61D41FE7D5B500642E60 /* CurrencyFormatter.swift in Sources */,
+				25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */,
 				775DF42B203693CD009CD082 /* Preferences.swift in Sources */,
 				296421991F70C1F900EB363B /* EmptyView.swift in Sources */,
 				298542E51FBA9B0700CB5081 /* ShapeShift.swift in Sources */,
@@ -3250,7 +3316,9 @@
 				77E0E773201FAD06009B4B31 /* BrowserURLParser.swift in Sources */,
 				73ACEF0520163F46003DD71D /* LockEnterPasscodeCoordinator.swift in Sources */,
 				29F1C863200375D2003780D8 /* Wallet.swift in Sources */,
+				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
 				A2B7ECAA2038122200828E7D /* ExportPrivateKeyCoordinator.swift in Sources */,
+				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
 				29E6E06E1FE897EE0079265A /* BrowserViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */,
@@ -3267,6 +3335,7 @@
 				7721A6D0202EFD07004DB16C /* AddCustomNetworkCoordinator.swift in Sources */,
 				2996F1461F6C98B3005C33AE /* SettingsViewController.swift in Sources */,
 				2963B6AD1F981A96003063C1 /* TransactionAppearance.swift in Sources */,
+				25CC0ABC20591DFB0009D0D5 /* KNGasCoordinator.swift in Sources */,
 				29850D2B1F6B30FF00791A49 /* TransactionViewController.swift in Sources */,
 				296AF9AB1F7380920058AF78 /* GetTransactionCountRequest.swift in Sources */,
 				294DFB9E1FE0CA59004CEB56 /* TransactionsViewModel.swift in Sources */,
@@ -3276,6 +3345,7 @@
 				29A13E2C1F6A955700E432A2 /* CreateWalletViewModel.swift in Sources */,
 				29F1C84A1FEB6D6B003780D8 /* EditTokenViewModel.swift in Sources */,
 				29DF400A1FD3E80A000077CA /* TabBarController.swift in Sources */,
+				25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */,
 				29C80D4F1FB520AF0037B1E0 /* BalanceTokenViewModel.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,
 				29CA4B771F6FBBFB0032313D /* RequestViewModel.swift in Sources */,
@@ -3294,6 +3364,7 @@
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
+				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				2959961C1FAE3EDF00DB66A8 /* TrustClient.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				295247DF1F8326EF007FDC31 /* AccountViewCell.swift in Sources */,
@@ -3302,6 +3373,7 @@
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,
 				293248841F88CCD2008A9818 /* SplashState.swift in Sources */,
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
+				25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */,
 				771A847320322F2500528D28 /* PreferencesViewController.swift in Sources */,
 				291794FB1F95DC2200539A30 /* Web3Swift.swift in Sources */,
 				29DBF2A31F9DBFF400327C60 /* BackupCoordinator.swift in Sources */,
