@@ -50,7 +50,7 @@ class KNWalletImportingKeystoreViewController: UIViewController {
 
     self.keystoreLabel.text = "Keystore".toBeLocalised()
 
-    self.keystoreJSONTextView.rounded(color: .clear, width: 0, radius: 5.0)
+    self.keystoreJSONTextView.rounded(color: .clear, width: 0, radius: 10.0)
     self.keystoreJSONTextView.text = ""
 
     self.passwordLabel.text = "Password".toBeLocalised()

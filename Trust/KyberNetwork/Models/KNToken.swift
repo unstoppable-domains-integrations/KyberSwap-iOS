@@ -33,7 +33,7 @@ struct KNToken {
     return "\(symbol) - \(name)"
   }
 
-  static public func ==(lhs: KNToken, rhs: KNToken) -> Bool {
+  static public func==(lhs: KNToken, rhs: KNToken) -> Bool {
     return rhs.symbol == lhs.symbol && rhs.address == lhs.address
   }
 }

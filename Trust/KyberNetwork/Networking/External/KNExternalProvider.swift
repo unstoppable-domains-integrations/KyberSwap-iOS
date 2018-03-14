@@ -21,6 +21,7 @@ class KNExternalProvider {
     self.reserveAddress = Address(string: customRPC.reserveAddress)
   }
 
+  // MARK: Balance
   public func getETHBalance(address: Address, completion: @escaping (Result<Balance, AnyError>) -> Void) {
     let request = EtherServiceRequest(batch: BatchFactory().create(BalanceRequest(address: address.description)))
     Session.send(request) { result in
@@ -58,6 +59,35 @@ class KNExternalProvider {
             completion(.failure(AnyError(error)))
           }
         }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  // MARK: Transaction
+  func getTransactionCount(address: Address, completion: @escaping (Result<Int, AnyError>) -> Void) {
+    let request = EtherServiceRequest(batch: BatchFactory().create(GetTransactionCountRequest(
+      address: address.description,
+      state: "latest"
+    )))
+    Session.send(request) { result in
+      switch result {
+      case .success(let count):
+        completion(.success(count))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func sendSignedTransactionData(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
+    let request = EtherServiceRequest(batch: batch)
+    Session.send(request) { result in
+      switch result {
+      case .success(let transactionID):
+        completion(.success(transactionID))
       case .failure(let error):
         completion(.failure(AnyError(error)))
       }

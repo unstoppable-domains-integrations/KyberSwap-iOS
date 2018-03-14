@@ -18,18 +18,15 @@ class KNTransactionCoordinator {
   }
 
   func getTransactionCount(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    let request = EtherServiceRequest(batch: BatchFactory().create(GetTransactionCountRequest(
-      address: self.session.wallet.address.description,
-      state: "latest"
-    )))
-    Session.send(request) { [weak self] result in
+    self.session.externalProvider.getTransactionCount(
+    address: self.session.wallet.address) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let count):
         self.minTxCount = max(self.minTxCount + 1, count)
         completion(.success(self.minTxCount))
       case .failure(let error):
-        completion(.failure(AnyError(error)))
+        completion(.failure(error))
       }
     }
   }
@@ -75,16 +72,7 @@ class KNTransactionCoordinator {
     let keystoreSignTransaction = self.session.keystore.signTransaction(transaction)
     switch keystoreSignTransaction {
     case .success(let data):
-      let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
-      let request = EtherServiceRequest(batch: batch)
-      Session.send(request) { result in
-        switch result {
-        case .success(let transactionID):
-          completion(.success(transactionID))
-        case .failure(let error):
-          completion(.failure(AnyError(error)))
-        }
-      }
+      self.session.externalProvider.sendSignedTransactionData(data, completion: completion)
     case .failure(let error):
       completion(.failure(AnyError(error)))
     }
