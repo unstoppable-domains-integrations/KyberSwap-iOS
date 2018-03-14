@@ -70,7 +70,7 @@ class KNBalanceCoordinator {
   @objc func fetchETHBalance(_ sender: Timer?) {
     if isFetchingETHBalance { return }
     isFetchingETHBalance = true
-    self.session.externalProvider.getETHBalance(address: self.session.wallet.address) { [weak self] result in
+    self.session.externalProvider.getETHBalance { [weak self] result in
       guard let `self` = self else { return }
       self.isFetchingETHBalance = false
       switch result {
@@ -91,20 +91,17 @@ class KNBalanceCoordinator {
     for token in tokens {
       if let contractAddress = Address(string: token.address), token.symbol != "ETH" {
         group.enter()
-        self.session.externalProvider.getTokenBalance(
-          for: self.session.wallet.address,
-          contract: contractAddress,
-          completion: { [weak self] result in
-            guard let `self` = self else { return }
-            switch result {
-            case .success(let bigInt):
-              let balance = Balance(value: bigInt)
-              self.otherTokensBalance[token.address] = balance
-              NSLog("Done loading \(token.symbol) balance: \(balance.amountFull)")
-            case .failure(let error):
-              NSLog("Load \(token.symbol) balance failed with error: \(error.description)")
-            }
-            group.leave()
+        self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
+          guard let `self` = self else { return }
+          switch result {
+          case .success(let bigInt):
+            let balance = Balance(value: bigInt)
+            self.otherTokensBalance[token.address] = balance
+            NSLog("Done loading \(token.symbol) balance: \(balance.amountFull)")
+          case .failure(let error):
+            NSLog("Load \(token.symbol) balance failed with error: \(error.description)")
+          }
+          group.leave()
         })
       }
     }

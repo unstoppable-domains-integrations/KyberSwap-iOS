@@ -41,7 +41,6 @@
 		25CC0A962057DD4E0009D0D5 /* KNExternalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A952057DD4E0009D0D5 /* KNExternalProvider.swift */; };
 		25CC0A992057E1DB0009D0D5 /* KNLoadingInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A982057E1DB0009D0D5 /* KNLoadingInterval.swift */; };
 		25CC0A9D2057E2A90009D0D5 /* KNDraftExchangeTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A9C2057E2A90009D0D5 /* KNDraftExchangeTransaction.swift */; };
-		25CC0AA22057E3400009D0D5 /* KNTransactionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA12057E3400009D0D5 /* KNTransactionCoordinator.swift */; };
 		25CC0AA82058F1A00009D0D5 /* KNExchangeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA42058F1A00009D0D5 /* KNExchangeRequest.swift */; };
 		25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA52058F1A00009D0D5 /* KNGetExpectedRate.swift */; };
 		25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AA62058F1A00009D0D5 /* KNGetUserCapInWei.swift */; };
@@ -466,7 +465,6 @@
 		25CC0A952057DD4E0009D0D5 /* KNExternalProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNExternalProvider.swift; sourceTree = "<group>"; };
 		25CC0A982057E1DB0009D0D5 /* KNLoadingInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLoadingInterval.swift; sourceTree = "<group>"; };
 		25CC0A9C2057E2A90009D0D5 /* KNDraftExchangeTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNDraftExchangeTransaction.swift; sourceTree = "<group>"; };
-		25CC0AA12057E3400009D0D5 /* KNTransactionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNTransactionCoordinator.swift; sourceTree = "<group>"; };
 		25CC0AA42058F1A00009D0D5 /* KNExchangeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNExchangeRequest.swift; sourceTree = "<group>"; };
 		25CC0AA52058F1A00009D0D5 /* KNGetExpectedRate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetExpectedRate.swift; sourceTree = "<group>"; };
 		25CC0AA62058F1A00009D0D5 /* KNGetUserCapInWei.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetUserCapInWei.swift; sourceTree = "<group>"; };
@@ -993,7 +991,6 @@
 		257740C82057948F003323EB /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				25CC0A9E2057E31D0009D0D5 /* TransactionCoordinator */,
 				25CC0A8F2057D7140009D0D5 /* BalanceCoordinator */,
 				257740C9205794B3003323EB /* AppCoordinator */,
 			);
@@ -1168,14 +1165,6 @@
 				25CC0A9C2057E2A90009D0D5 /* KNDraftExchangeTransaction.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		25CC0A9E2057E31D0009D0D5 /* TransactionCoordinator */ = {
-			isa = PBXGroup;
-			children = (
-				25CC0AA12057E3400009D0D5 /* KNTransactionCoordinator.swift */,
-			);
-			path = TransactionCoordinator;
 			sourceTree = "<group>";
 		};
 		25CC0AA32058F18A0009D0D5 /* Web3Swift */ = {
@@ -3325,7 +3314,6 @@
 				29525B9E203C34CF00900DE9 /* SupportViewModel.swift in Sources */,
 				73ED85A520349BE400593BF3 /* StringFormatter.swift in Sources */,
 				293112101FC4ADCB00966EEA /* InCoordinatorViewModel.swift in Sources */,
-				25CC0AA22057E3400009D0D5 /* KNTransactionCoordinator.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
 				290B2B701F930AB90053C83E /* PushNotificationsRegistrar.swift in Sources */,

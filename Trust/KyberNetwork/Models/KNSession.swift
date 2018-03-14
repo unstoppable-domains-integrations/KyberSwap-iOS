@@ -21,7 +21,12 @@ class KNSession {
     } else {
       self.web3Swift = Web3Swift()
     }
-    self.externalProvider = KNExternalProvider(web3: self.web3Swift)
+    // Wallet type should always be real(account)
+    var account: Account!
+    if case .real(let acc) = self.wallet.type {
+      account = acc
+    }
+    self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
   }
 
   func startSession() {
