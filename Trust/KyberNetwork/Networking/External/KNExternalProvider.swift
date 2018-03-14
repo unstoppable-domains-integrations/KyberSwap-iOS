@@ -93,4 +93,46 @@ class KNExternalProvider {
       }
     }
   }
+
+  func getExpectedRate(from: KNToken, to: KNToken, amount: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    var source: Address!
+    var dest: Address!
+    do {
+      source = try kn_cast(Address(string: from.address))
+      dest = try kn_cast(Address(string: to.address))
+    } catch let error {
+      completion(.failure(AnyError(error)))
+      return
+    }
+    let encodeRequest = KNGetExpectedRateEncode(source: source, dest: dest, amount: amount)
+    self.web3Swift.request(request: encodeRequest) { [weak self] (encodeResult) in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let callRequest = CallRequest(to: self.networkAddress.description, data: data)
+        let getRateRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        Session.send(getRateRequest) { [weak self] getRateResult in
+          guard let `self` = self else { return }
+          switch getRateResult {
+          case .success(let rateData):
+            //TODO (Mike): Currently can not parse to expectedRate and slippageRate
+            // The data returned here is expectedRate, temporary set slippageRate = expectedRate * 80%
+            let decodeRequest = KNGetExpectedRateDecode(data: rateData)
+            self.web3Swift.request(request: decodeRequest, completion: { (result) in
+              switch result {
+              case .success(let decodeData):
+                completion(.success(BigInt(decodeData) ?? BigInt(0)))
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            })
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }
