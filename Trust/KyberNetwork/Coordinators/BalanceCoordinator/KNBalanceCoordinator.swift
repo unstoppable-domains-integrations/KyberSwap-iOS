@@ -44,7 +44,7 @@ class KNBalanceCoordinator {
     let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
     for token in supportedTokens {
       if let rate = rates.first(where: { $0.source == token.symbol && $0.dest == "ETH" }), let balance = otherTokensBalance[token.address] {
-        value += rate.rate * balance.value
+        value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
       }
     }
     return value
