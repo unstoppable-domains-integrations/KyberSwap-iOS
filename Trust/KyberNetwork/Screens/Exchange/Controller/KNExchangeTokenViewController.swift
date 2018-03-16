@@ -103,6 +103,7 @@ class KNExchangeTokenViewController: UIViewController {
   // MARK: Setup view
   fileprivate func setupUI() {
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
+    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
     self.setupInitialData()
     self.setupFromToken()
     self.setupToToken()
