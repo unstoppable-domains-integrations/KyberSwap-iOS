@@ -1,6 +1,8 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
+import TrustKeystore
 
 class KNExchangeTokenCoordinator: Coordinator {
 
@@ -26,6 +28,7 @@ class KNExchangeTokenCoordinator: Coordinator {
     self.navigationController = navigationController
     self.session = session
     self.balanceCoordinator = balanceCoordinator
+    self.navigationController.applyStyle()
   }
 
   func start() {
@@ -69,10 +72,12 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any) {
     self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+    self.rootViewController.otherTokenBalanceDidUpdate(balances: self.balanceCoordinator.otherTokensBalance)
   }
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Any) {
     self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+    self.rootViewController.ethBalanceDidUpdate(balance: self.balanceCoordinator.ethBalance)
   }
 
   @objc func usdRateDidUpdateNotification(_ sender: Any) {
@@ -81,4 +86,49 @@ class KNExchangeTokenCoordinator: Coordinator {
 }
 
 extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
+  func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt) {
+    self.session.externalProvider.getExpectedRate(
+      from: source,
+      to: dest,
+      amount: amount) { [weak self] (result) in
+        if case .success(let data) = result {
+          self?.rootViewController.updateEstimateRateDidChange(
+            source: source,
+            dest: dest,
+            amount: amount,
+            expectedRate: data.0,
+            slippageRate: data.1
+          )
+        }
+    }
+  }
+
+  func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction) {
+    self.session.externalProvider.getEstimateGasLimit(for: exchangeTransaction) { [weak self] result in
+      if case .success(let estimate) = result {
+        self?.rootViewController.updateEstimateGasUsed(
+          source: exchangeTransaction.from,
+          dest: exchangeTransaction.to,
+          amount: exchangeTransaction.amount,
+          estimate: estimate
+        )
+      }
+    }
+  }
+
+  func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction, expectedRate: BigInt) {
+    // TODO (Mike): Show confirm view
+    self.navigationController.topViewController?.displayLoading()
+    self.session.externalProvider.exchange(exchange: exchangeTransaction) { [weak self] result in
+      self?.navigationController.topViewController?.hideLoading()
+      self?.rootViewController.exchangeTokenDidReturn(result: result)
+    }
+  }
+
+  func exchangeTokenUserDidClickSelectTokenButton(_ token: KNToken, isSource: Bool) {
+  }
+
+  func exchangeTokenUserDidClickExit() {
+    self.delegate?.userDidClickExitSession()
+  }
 }
