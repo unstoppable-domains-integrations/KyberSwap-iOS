@@ -5,6 +5,7 @@ import JSONRPCKit
 import APIKit
 import Result
 import TrustKeystore
+import JavaScriptKit
 
 class KNExternalProvider {
 
@@ -452,16 +453,24 @@ class KNExternalProvider {
   }
 
   func getExpectedRateDecodeData(rateData: String, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
-    //TODO (Mike): Currently can not parse to expectedRate and slippageRate
-    // The data returned here is expectedRate, temporary set slippageRate = expectedRate * 80%
+    //TODO (Mike): Currently decoding is always return invalid return type even though the response type is correct
     let decodeRequest = KNGetExpectedRateDecode(data: rateData)
     self.web3Swift.request(request: decodeRequest, completion: { (result) in
       switch result {
       case .success(let decodeData):
-        let expectedRate = BigInt(decodeData) ?? BigInt(0)
-        let slippageRate = expectedRate * 80 / 100
-        completion(.success((expectedRate, slippageRate)))
+        let expectedRate = decodeData["expectedRate"] ?? ""
+        let slippageRate = decodeData["slippageRate"] ?? ""
+        completion(.success((BigInt(expectedRate) ?? BigInt(0), BigInt(slippageRate) ?? BigInt(0))))
       case .failure(let error):
+        if let err = error.error as? JSErrorDomain {
+          // Temporary fix for expected rate request
+          if case .invalidReturnType(let object) = err, let json = object as? JSONDictionary {
+            if let expectedRate = json["expectedRate"] as? String, let slippageRate = json["slippageRate"] as? String {
+              completion(.success((BigInt(expectedRate) ?? BigInt(0), BigInt(slippageRate) ?? BigInt(0))))
+              return
+            }
+          }
+        }
         completion(.failure(AnyError(error)))
       }
     })

@@ -20,12 +20,12 @@ struct KNGetExpectedRateEncode: Web3Request {
 }
 
 struct KNGetExpectedRateDecode: Web3Request {
-  typealias Response = String
+  typealias Response = [String: String]
 
   let data: String
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.decodeParameter(\"uint\", '\(data)')"
+    let run = "web3.eth.abi.decodeParameters([{\"name\":\"expectedRate\",\"type\":\"uint256\"}, {\"name\":\"slippageRate\",\"type\":\"uint256\"}], '\(data)')"
     return .script(command: run)
   }
 }
