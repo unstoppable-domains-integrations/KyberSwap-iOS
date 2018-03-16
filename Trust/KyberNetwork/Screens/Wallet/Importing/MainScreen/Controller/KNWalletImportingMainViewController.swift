@@ -7,7 +7,7 @@ protocol KNWalletImportingMainViewControllerDelegate: class {
   func walletImportingMainScreenUserDidClickImportAddressByPrivateKey()
 }
 
-class KNWalletImportingMainViewController: UIViewController {
+class KNWalletImportingMainViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletImportingMainViewControllerDelegate?
 
@@ -33,13 +33,7 @@ class KNWalletImportingMainViewController: UIViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    NSLog("Did open: \(self.className)")
-  }
-
   fileprivate func setupUI() {
-    self.applyBaseGradientBackground()
     self.navigationController?.isNavigationBarHidden = true
     self.importWalletLabel.text = "Import Address".toBeLocalised()
 

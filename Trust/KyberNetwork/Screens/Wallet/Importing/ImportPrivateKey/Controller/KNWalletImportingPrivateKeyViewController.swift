@@ -28,11 +28,7 @@ class KNWalletImportingPrivateKeyViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.privateKeyTextField.text = ""
+    self.setupUI()
   }
 
   override func viewDidAppear(_ animated: Bool) {

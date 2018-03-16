@@ -8,7 +8,7 @@ protocol KNWalletImportingKeystoreViewControllerDelegate: class {
   func walletImportingKeystoreDidCancel()
 }
 
-class KNWalletImportingKeystoreViewController: UIViewController {
+class KNWalletImportingKeystoreViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletImportingKeystoreViewControllerDelegate?
 
@@ -38,11 +38,6 @@ class KNWalletImportingKeystoreViewController: UIViewController {
     super.viewWillAppear(animated)
     self.keystoreJSONTextView.text = ""
     self.passwordTextField.text = ""
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    NSLog("Did open: \(self.className)")
   }
 
   fileprivate func setupUI() {

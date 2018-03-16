@@ -14,7 +14,7 @@ protocol KNExchangeTokenViewControllerDelegate: class {
   func exchangeTokenUserDidClickExit()
 }
 
-class KNExchangeTokenViewController: UIViewController {
+class KNExchangeTokenViewController: KNBaseViewController {
 
   fileprivate let advancedSettingsHeight: CGFloat = 150
   fileprivate let exchangeButtonTopPaddingiPhone5: CGFloat = 40
@@ -89,7 +89,6 @@ class KNExchangeTokenViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    NSLog("Did open: \(self.className)")
     self.expectedRateTimer?.invalidate()
     self.expectedRateTimer = nil
     self.expectedRateTimerShouldRepeat(nil)

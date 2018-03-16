@@ -93,6 +93,25 @@ class KNExchangeTokenCoordinator: Coordinator {
     self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
   }
 
+  fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
+    self.navigationController.topViewController?.displayLoading()
+    self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
+      guard let `self` = self else { return }
+      switch getAllowanceResult {
+      case .success(let res):
+        if res {
+          self.sendExchangeTransaction(exchangeTransaction)
+        } else {
+          self.navigationController.topViewController?.hideLoading()
+          self.showAlertRequestApprovalForExchange(exchangeTransaction)
+        }
+      case .failure(let error):
+        self.navigationController.topViewController?.hideLoading()
+        self.rootViewController.displayError(error: error)
+      }
+    }
+  }
+
   fileprivate func sendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
     self.session.externalProvider.exchange(exchange: exchangeTransaction) { [weak self] result in
       self?.navigationController.topViewController?.hideLoading()
@@ -155,23 +174,13 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
   }
 
   func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction, expectedRate: BigInt) {
-    // TODO (Mike): Show confirm view
-    self.navigationController.topViewController?.displayLoading()
-    self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
-      guard let `self` = self else { return }
-      switch getAllowanceResult {
-      case .success(let res):
-        if res {
-          self.sendExchangeTransaction(exchangeTransaction)
-        } else {
-          self.navigationController.topViewController?.hideLoading()
-          self.showAlertRequestApprovalForExchange(exchangeTransaction)
-        }
-      case .failure(let error):
-        self.navigationController.topViewController?.hideLoading()
-        self.rootViewController.displayError(error: error)
-      }
-    }
+    let transactionType = KNTransactionType.exchange(exchangeTransaction)
+    let confirmVC = KNConfirmTransactionViewController(
+      delegate: self,
+      type: transactionType,
+      expectedRate: expectedRate
+    )
+    self.navigationController.pushViewController(confirmVC, animated: true)
   }
 
   func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool) {
@@ -188,6 +197,20 @@ extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
   func selectTokenViewUserDidSelect(_ token: KNToken) {
     self.navigationController.popViewController(animated: true) {
       self.rootViewController.updateSelectedToken(token, isSource: self.isSelectingSourceToken)
+    }
+  }
+}
+
+extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
+  func confirmTransactionDidBack() {
+    self.navigationController.popViewController(animated: true)
+  }
+
+  func confirmTransactionDidConfirm(type: KNTransactionType) {
+    self.navigationController.popViewController(animated: true) {
+      if case .exchange(let exchangeTransaction) = type {
+        self.didConfirmSendExchangeTransaction(exchangeTransaction)
+      }
     }
   }
 }

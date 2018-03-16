@@ -193,8 +193,8 @@
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZS-Uh-W6n">
-                                    <rect key="frame" x="157" y="94" width="60" height="20"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZS-Uh-W6n">
+                                    <rect key="frame" x="178.5" y="94" width="64" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3B5-HY-tbm"/>
@@ -209,9 +209,10 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4b-eW-OoY">
-                                    <rect key="frame" x="132.5" y="94" width="14.5" height="20"/>
+                                    <rect key="frame" x="132.5" y="94" width="36" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="36" id="YaD-QB-qLd"/>
                                         <constraint firstAttribute="height" constant="20" id="sma-ex-0Cg"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
@@ -224,9 +225,10 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qJ-pc-wgw">
-                                    <rect key="frame" x="227" y="94" width="65.5" height="20"/>
+                                    <rect key="frame" x="252.5" y="94" width="40" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="iYD-9g-RcR"/>
                                         <constraint firstAttribute="height" constant="20" id="u7i-gY-Q1D"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
@@ -271,7 +273,6 @@
                             <constraints>
                                 <constraint firstItem="a8z-a7-rTn" firstAttribute="trailing" secondItem="4qJ-pc-wgw" secondAttribute="trailing" id="0HA-zc-XVj"/>
                                 <constraint firstItem="iJ0-s8-HQu" firstAttribute="trailing" secondItem="a8z-a7-rTn" secondAttribute="trailing" id="1j0-Sr-FfH"/>
-                                <constraint firstItem="1ZS-Uh-W6n" firstAttribute="centerX" secondItem="qk1-lk-YxP" secondAttribute="centerX" id="1np-nw-LqS"/>
                                 <constraint firstItem="iJ0-s8-HQu" firstAttribute="leading" secondItem="a8z-a7-rTn" secondAttribute="leading" id="20r-Jb-F8L"/>
                                 <constraint firstItem="iJ0-s8-HQu" firstAttribute="leading" secondItem="qEd-RB-Ry7" secondAttribute="trailing" constant="10" id="5iY-ll-qMl"/>
                                 <constraint firstItem="a8z-a7-rTn" firstAttribute="leading" secondItem="Z4b-eW-OoY" secondAttribute="leading" id="8mD-61-wNZ"/>
@@ -379,7 +380,6 @@
                         <constraint firstItem="Znl-O9-fFn" firstAttribute="top" secondItem="Yry-e0-hbp" secondAttribute="top" constant="15" id="hem-7P-bMo"/>
                         <constraint firstItem="Znl-O9-fFn" firstAttribute="leading" secondItem="Yry-e0-hbp" secondAttribute="leading" constant="20" id="l0a-pV-akq"/>
                         <constraint firstItem="n82-CO-Nvz" firstAttribute="centerX" secondItem="Yry-e0-hbp" secondAttribute="centerX" id="l90-az-bl7"/>
-                        <constraint firstAttribute="trailing" secondItem="ORH-uo-aJY" secondAttribute="trailing" constant="20" id="mAQ-XH-rA2"/>
                         <constraint firstItem="Pc2-Sk-SyP" firstAttribute="top" secondItem="H9z-2G-bdu" secondAttribute="top" id="oUd-4q-2Xo"/>
                         <constraint firstItem="H9z-2G-bdu" firstAttribute="leading" secondItem="ugs-yU-xVY" secondAttribute="leading" id="q5V-hg-IQC"/>
                         <constraint firstItem="ugs-yU-xVY" firstAttribute="centerY" secondItem="EH0-1j-ihN" secondAttribute="centerY" id="rZt-sf-Chy"/>

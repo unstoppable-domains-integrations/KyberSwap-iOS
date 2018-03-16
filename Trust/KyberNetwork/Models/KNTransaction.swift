@@ -3,6 +3,11 @@
 import UIKit
 import BigInt
 
+enum KNTransactionType {
+  case transfer(UnconfirmedTransaction)
+  case exchange(KNDraftExchangeTransaction)
+}
+
 class KNTransaction: NSObject {
 
   let txHash: String

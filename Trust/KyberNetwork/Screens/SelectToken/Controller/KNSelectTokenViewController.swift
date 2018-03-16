@@ -7,7 +7,7 @@ protocol KNSelectTokenViewControllerDelegate: class {
   func selectTokenViewUserDidSelect(_ token: KNToken)
 }
 
-class KNSelectTokenViewController: UIViewController {
+class KNSelectTokenViewController: KNBaseViewController {
 
   fileprivate let selectTokenCellID = "selectTokenCellID"
   fileprivate let selectTokenCellHeight: CGFloat = 60.0
@@ -42,14 +42,12 @@ class KNSelectTokenViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    NSLog("Did open: \(self.className)")
     self.sortTokensByBalances()
     self.tokenTableView.reloadData()
   }
 
   fileprivate func setupUI() {
     self.navigationItem.title = "Select Token".toBeLocalised()
-    self.applyBaseGradientBackground()
     self.tokenTableView.backgroundColor = UIColor.clear
     let nib = UINib(nibName: KNSelectTokenTableViewCell.className, bundle: nil)
     self.tokenTableView.register(nib, forCellReuseIdentifier: selectTokenCellID)
