@@ -186,7 +186,8 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
 
 extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
   func selectTokenViewUserDidSelect(_ token: KNToken) {
-    self.navigationController.popViewController(animated: true)
-    self.rootViewController.updateSelectedToken(token, isSource: self.isSelectingSourceToken)
+    self.navigationController.popViewController(animated: true) {
+      self.rootViewController.updateSelectedToken(token, isSource: self.isSelectingSourceToken)
+    }
   }
 }

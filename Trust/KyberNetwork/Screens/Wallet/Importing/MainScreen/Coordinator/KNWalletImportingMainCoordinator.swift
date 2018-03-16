@@ -63,16 +63,18 @@ extension KNWalletImportingMainCoordinator: KNWalletImportingMainViewControllerD
 
 extension KNWalletImportingMainCoordinator: KNWalletImportingKeystoreCoordinatorDelegate {
   func walletImportKeystoreCoordinatorUserDidImport(wallet: Wallet) {
-    self.importingKeystoreCoordinator.stop()
-    self.removeCoordinator(self.importingKeystoreCoordinator)
-    self.delegate?.walletImportingMainDidImport(wallet: wallet)
+    self.importingKeystoreCoordinator.stop {
+      self.removeCoordinator(self.importingKeystoreCoordinator)
+      self.delegate?.walletImportingMainDidImport(wallet: wallet)
+    }
   }
 }
 
 extension KNWalletImportingMainCoordinator: KNWalletImportingPrivateKeyCoordinatorDelegate {
   func walletImportingPrivateKeyDidImport(wallet: Wallet) {
-    self.importingPrivateKeyCoordinator.stop()
-    self.removeCoordinator(self.importingPrivateKeyCoordinator)
-    self.delegate?.walletImportingMainDidImport(wallet: wallet)
+    self.importingPrivateKeyCoordinator.stop {
+      self.removeCoordinator(self.importingPrivateKeyCoordinator)
+      self.delegate?.walletImportingMainDidImport(wallet: wallet)
+    }
   }
 }

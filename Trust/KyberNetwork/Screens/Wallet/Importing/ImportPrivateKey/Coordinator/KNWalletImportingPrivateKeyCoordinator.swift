@@ -27,8 +27,8 @@ class KNWalletImportingPrivateKeyCoordinator: Coordinator {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
 
-  func stop() {
-    self.navigationController.popViewController(animated: true)
+  func stop(completion: @escaping () -> Void) {
+    self.navigationController.popViewController(animated: true, completion: completion)
   }
 }
 
@@ -50,6 +50,6 @@ extension KNWalletImportingPrivateKeyCoordinator: KNWalletImportingPrivateKeyVie
   }
 
   func walletImportingPrivateKeyDidCancel() {
-    self.stop()
+    self.stop {}
   }
 }
