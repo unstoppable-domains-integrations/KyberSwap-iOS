@@ -99,8 +99,10 @@ class KNExchangeTokenViewController: UIViewController {
     self.expectedRateTimer?.invalidate()
     self.expectedRateTimer = nil
   }
+}
 
-  // MARK: Setup view
+// MARK: Setup view
+extension KNExchangeTokenViewController {
   fileprivate func setupUI() {
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
@@ -174,8 +176,10 @@ class KNExchangeTokenViewController: UIViewController {
 
     self.topPaddingConstraintForExchangeButton.constant = UIDevice.isIphone5 ? exchangeButtonTopPaddingiPhone5 : exchangeButtonTopPaddingiPhone6
   }
+}
 
-  // MARK: Update data
+// MARK: Update data
+extension KNExchangeTokenViewController {
   fileprivate func updateFromToken(_ token: KNToken) {
     self.selectedFromToken = token
     self.updateRates()
@@ -202,8 +206,10 @@ class KNExchangeTokenViewController: UIViewController {
     self.lastEstimateGasUsed = estimateGas
     self.updateTransactionFee()
   }
+}
 
-  // MARK: Update view
+// MARK: Update view
+extension KNExchangeTokenViewController {
   fileprivate func updateFromTokenWhenTokenDidChange() {
     self.fromTokenButton.setTitle("\(self.selectedFromToken.display)", for: .normal)
     let balanceString = self.otherTokenBalances[self.selectedFromToken.address]?.amountShort ?? "0.0000"
@@ -249,11 +255,12 @@ class KNExchangeTokenViewController: UIViewController {
     let destBalance = self.otherTokenBalances[self.selectedToToken.address]?.amountShort ?? "0.0000"
     self.toTokenBalanceLabel.text = "Balance: \(destBalance) \(self.selectedToToken.symbol)".toBeLocalised()
   }
-
-  // MARK: Update data from coordinator
+}
+// MARK: Update data from coordinator
+extension KNExchangeTokenViewController {
   // TODO (Mike): Should be removed
   func updateBalance(usd: BigInt, eth: BigInt) {
-    self.navigationItem.title = "$\(EtherNumberFormatter.short.string(from: usd))"
+    self.navigationItem.title = "US$\(EtherNumberFormatter.short.string(from: usd))"
     self.view.layoutIfNeeded()
   }
 
@@ -289,8 +296,10 @@ class KNExchangeTokenViewController: UIViewController {
       self.displayError(error: error)
     }
   }
+}
 
-  // MARK: Helpers
+// MARK: Helpers & Buttons handlers
+extension KNExchangeTokenViewController {
   fileprivate func validateData(completion: (Result<KNDraftExchangeTransaction?, AnyError>) -> Void) {
     guard
       let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal),
@@ -342,7 +351,6 @@ class KNExchangeTokenViewController: UIViewController {
     )
   }
 
-  // MARK: Button handlers
   @objc func exitButtonPressed(_ sender: Any) {
     self.delegate?.exchangeTokenUserDidClickExit()
   }
