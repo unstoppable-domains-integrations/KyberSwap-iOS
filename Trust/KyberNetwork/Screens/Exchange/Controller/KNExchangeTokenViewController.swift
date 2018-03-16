@@ -10,7 +10,7 @@ protocol KNExchangeTokenViewControllerDelegate: class {
   func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt)
   func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction)
   func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction, expectedRate: BigInt)
-  func exchangeTokenUserDidClickSelectTokenButton(_ token: KNToken, isSource: Bool)
+  func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool)
   func exchangeTokenUserDidClickExit()
 }
 
@@ -36,8 +36,10 @@ class KNExchangeTokenViewController: UIViewController {
   fileprivate var otherTokenBalances: [String: Balance] = [:]
 
   fileprivate var lastEstimateGasUsed: BigInt = BigInt(0)
+
   fileprivate var expectedRate: BigInt = BigInt(0)
   fileprivate var slippageRate: BigInt = BigInt(0)
+  fileprivate var userDidChangeMinRate: Bool = false
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
 
@@ -145,6 +147,8 @@ extension KNExchangeTokenViewController {
 
   fileprivate func setupAdvancedSettingsView() {
     self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
+    self.minRateTextField.delegate = self
+
     self.gasPriceTextField.text = "\(KNGasCoordinator.shared.defaultKNGas)"
     self.gasPriceTextField.delegate = self
 
@@ -182,12 +186,14 @@ extension KNExchangeTokenViewController {
 extension KNExchangeTokenViewController {
   fileprivate func updateFromToken(_ token: KNToken) {
     self.selectedFromToken = token
+    self.userDidChangeMinRate = false
     self.updateRates()
     self.updateFromTokenWhenTokenDidChange()
   }
 
   fileprivate func updateToToken(_ token: KNToken) {
     self.selectedToToken = token
+    self.userDidChangeMinRate = false
     self.updateRates()
     self.updateToTokenWhenTokenDidChange()
   }
@@ -236,7 +242,10 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func updateViewWhenRatesDidChange() {
-    self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
+    if !self.userDidChangeMinRate {
+      self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
+    }
+
     self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(self.expectedRate.shortString(decimals: self.selectedToToken.decimal)) \(self.selectedToToken.symbol)"
     if self.isFocusingFromTokenAmount {
       let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
@@ -260,8 +269,20 @@ extension KNExchangeTokenViewController {
 extension KNExchangeTokenViewController {
   // TODO (Mike): Should be removed
   func updateBalance(usd: BigInt, eth: BigInt) {
-    self.navigationItem.title = "US$\(EtherNumberFormatter.short.string(from: usd))"
+    self.navigationItem.title = "$\(EtherNumberFormatter.short.string(from: usd))"
     self.view.layoutIfNeeded()
+  }
+
+  func updateSelectedToken(_ token: KNToken, isSource: Bool) {
+    if isSource {
+      if self.selectedFromToken == token { return }
+      self.updateFromToken(token)
+      self.updateToToken(token.isETH ? self.kncToken : self.ethToken)
+    } else {
+      if self.selectedToToken == token { return }
+      self.updateToToken(token)
+      self.updateFromToken(token.isETH ? self.kncToken : self.ethToken)
+    }
   }
 
   func ethBalanceDidUpdate(balance: Balance) {
@@ -356,7 +377,11 @@ extension KNExchangeTokenViewController {
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
-    self.delegate?.exchangeTokenUserDidClickSelectTokenButton(self.selectedFromToken, isSource: true)
+    self.delegate?.exchangeTokenUserDidClickSelectTokenButton(
+      source: self.selectedFromToken,
+      dest: self.selectedToToken,
+      isSource: true
+    )
   }
 
   @IBAction func percentageButtonPressed(_ sender: UIButton) {
@@ -371,7 +396,11 @@ extension KNExchangeTokenViewController {
   }
 
   @IBAction func toTokenButtonPressed(_ sender: Any) {
-    self.delegate?.exchangeTokenUserDidClickSelectTokenButton(self.selectedToToken, isSource: false)
+    self.delegate?.exchangeTokenUserDidClickSelectTokenButton(
+      source: self.selectedFromToken,
+      dest: self.selectedToToken,
+      isSource: false
+    )
   }
 
   @IBAction func advancedSwitchDidChange(_ sender: Any) {
@@ -432,6 +461,8 @@ extension KNExchangeTokenViewController: UITextFieldDelegate {
       self.isFocusingFromTokenAmount = false
     } else if textField == self.gasPriceTextField {
       self.updateTransactionFee()
+    } else if textField == self.minRateTextField {
+      self.userDidChangeMinRate = true
     }
     self.shouldUpdateEstimateGasUsed(textField)
     self.expectedRateTimerShouldRepeat(textField)

@@ -33,6 +33,10 @@
 		257A377A205B013E00E86794 /* String+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3779205B013E00E86794 /* String+Kyber.swift */; };
 		257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A377B205B01F000E86794 /* BigInt+Kyber.swift */; };
 		257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A377D205B7BFA00E86794 /* UINavigationController+Kyber.swift */; };
+		257A3784205B9D9100E86794 /* KNSelectTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3782205B9D9100E86794 /* KNSelectTokenViewController.swift */; };
+		257A3785205B9D9100E86794 /* KNSelectTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257A3783205B9D9100E86794 /* KNSelectTokenViewController.xib */; };
+		257A3788205BAB9B00E86794 /* KNSelectTokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3786205BAB9B00E86794 /* KNSelectTokenTableViewCell.swift */; };
+		257A3789205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257A3787205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib */; };
 		25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */; };
 		25CC0A802057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */; };
 		25CC0A812057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */; };
@@ -472,6 +476,10 @@
 		257A3779205B013E00E86794 /* String+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Kyber.swift"; sourceTree = "<group>"; };
 		257A377B205B01F000E86794 /* BigInt+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+Kyber.swift"; sourceTree = "<group>"; };
 		257A377D205B7BFA00E86794 /* UINavigationController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Kyber.swift"; sourceTree = "<group>"; };
+		257A3782205B9D9100E86794 /* KNSelectTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectTokenViewController.swift; sourceTree = "<group>"; };
+		257A3783205B9D9100E86794 /* KNSelectTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSelectTokenViewController.xib; sourceTree = "<group>"; };
+		257A3786205BAB9B00E86794 /* KNSelectTokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectTokenTableViewCell.swift; sourceTree = "<group>"; };
+		257A3787205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSelectTokenTableViewCell.xib; sourceTree = "<group>"; };
 		25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingMainCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingKeystoreViewController.swift; sourceTree = "<group>"; };
 		25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingKeystoreViewController.xib; sourceTree = "<group>"; };
@@ -1008,6 +1016,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				257A377F205B9D6400E86794 /* SelectToken */,
 				25CC0A9A2057E2680009D0D5 /* Exchange */,
 				257740D02057A97F003323EB /* Wallet */,
 				257740C32057943B003323EB /* Splash */,
@@ -1099,6 +1108,33 @@
 			isa = PBXGroup;
 			children = (
 				25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		257A377F205B9D6400E86794 /* SelectToken */ = {
+			isa = PBXGroup;
+			children = (
+				257A3781205B9D7A00E86794 /* Coordinator */,
+				257A3780205B9D7600E86794 /* Controller */,
+			);
+			path = SelectToken;
+			sourceTree = "<group>";
+		};
+		257A3780205B9D7600E86794 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				257A3782205B9D9100E86794 /* KNSelectTokenViewController.swift */,
+				257A3783205B9D9100E86794 /* KNSelectTokenViewController.xib */,
+				257A3786205BAB9B00E86794 /* KNSelectTokenTableViewCell.swift */,
+				257A3787205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		257A3781205B9D7A00E86794 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -2847,9 +2883,11 @@
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				291794FC1F95DE5F00539A30 /* index.html in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
+				257A3789205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
+				257A3785205B9D9100E86794 /* KNSelectTokenViewController.xib in Resources */,
 				25CC0A812057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib in Resources */,
 				257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */,
 				2912CD021F6A830700C6CBE3 /* Assets.xcassets in Resources */,
@@ -3327,6 +3365,8 @@
 				25CC0A992057E1DB0009D0D5 /* KNLoadingInterval.swift in Sources */,
 				737EEDDA201BE3A8009D9D5D /* Lock.swift in Sources */,
 				29FF12F81F747D6C00AFD326 /* Error.swift in Sources */,
+				257A3784205B9D9100E86794 /* KNSelectTokenViewController.swift in Sources */,
+				257A3788205BAB9B00E86794 /* KNSelectTokenTableViewCell.swift in Sources */,
 				73BAA8D1201B2FBC00D6DD75 /* LockCreatePasscodeViewController.swift in Sources */,
 				29AD8A061F93DC8C008E10E7 /* PushDevice.swift in Sources */,
 				294DFBA91FE6EBFB004CEB56 /* NewTokenViewController.swift in Sources */,

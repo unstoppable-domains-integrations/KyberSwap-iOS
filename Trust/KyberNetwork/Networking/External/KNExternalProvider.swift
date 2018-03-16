@@ -171,7 +171,7 @@ class KNExternalProvider {
   }
 
   // Encode function, get transaction count, sign transaction, send signed data
-  func sendApproveERC20Token(account: Account, exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERC20Token(exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     self.requestSendApproveERC20TokenData { [weak self] dataResult in
       guard let `self` = self else { return }
       switch dataResult {
@@ -181,7 +181,7 @@ class KNExternalProvider {
           switch txCountResult {
           case .success(let count):
             self.minTxCount = max(self.minTxCount + 1, count)
-            self.signTransactionData(from: exchangeTransaction, nounce: self.minTxCount, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(forApproving: exchangeTransaction.from, nouce: self.minTxCount, data: data, completion: { [weak self] signResult in
               switch signResult {
               case .success(let signData):
                 self?.sendSignedTransactionData(signData, completion: { sendResult in
@@ -193,7 +193,7 @@ class KNExternalProvider {
                   }
                 })
               case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(AnyError(error)))
               }
             })
           case .failure(let error):
