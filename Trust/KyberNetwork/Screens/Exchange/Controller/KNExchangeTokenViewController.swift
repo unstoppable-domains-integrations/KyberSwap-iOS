@@ -198,11 +198,12 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func updateRates() {
-    if let rate = KNRateCoordinator.shared.tokenRates.first(where: {
-      $0.source == self.selectedFromToken.symbol && $0.dest == self.selectedToToken.symbol
-    }) {
+    if let rate = KNRateCoordinator.shared.getRate(from: self.selectedFromToken, to: self.selectedToToken) {
       self.expectedRate = rate.rate
       self.slippageRate = rate.minRate
+    } else {
+      self.expectedRate = BigInt(0)
+      self.slippageRate = BigInt(0)
     }
     self.updateViewWhenRatesDidChange()
   }
@@ -216,6 +217,7 @@ extension KNExchangeTokenViewController {
 // MARK: Update view
 extension KNExchangeTokenViewController {
   fileprivate func updateFromTokenWhenTokenDidChange() {
+    self.fromTokenButton.setImage(UIImage(named: self.selectedFromToken.icon), for: .normal)
     self.fromTokenButton.setTitle("\(self.selectedFromToken.display)", for: .normal)
     let balanceString = self.otherTokenBalances[self.selectedFromToken.address]?.amountShort ?? "0.0000"
     self.fromTokenBalanceLabel.text = "Balance: \(balanceString) \(self.selectedFromToken.symbol)".toBeLocalised()
@@ -224,6 +226,7 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func updateToTokenWhenTokenDidChange() {
+    self.toTokenButton.setImage(UIImage(named: self.selectedToToken.icon), for: .normal)
     self.toTokenButton.setTitle("\(self.selectedToToken.display)", for: .normal)
     let balanceString = self.otherTokenBalances[self.selectedToToken.address]?.amountShort ?? "0.0000"
     self.toTokenBalanceLabel.text = "Balance: \(balanceString) \(self.selectedToToken.symbol)".toBeLocalised()
@@ -332,16 +335,17 @@ extension KNExchangeTokenViewController {
       completion(.success(nil))
       return
     }
-    if (self.minRateTextField.text ?? "0").fullBigInt(decimals: self.selectedToToken.decimal) == nil {
+    if self.advancedSwitch.isOn && (self.minRateTextField.text ?? "0").fullBigInt(decimals: self.selectedToToken.decimal) == nil {
       completion(.success(nil))
       return
     }
+    let minRate: BigInt? = self.advancedSwitch.isOn ? self.minRateTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) : .none
     let exchange = KNDraftExchangeTransaction(
       from: self.selectedFromToken,
       to: self.selectedToToken,
       amount: amount,
       maxDestAmount: BigInt(2).power(255),
-      minRate: self.minRateTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) ?? self.slippageRate,
+      minRate: minRate,
       gasPrice: gasPrice,
       gasLimit: self.lastEstimateGasUsed
     )

@@ -45,6 +45,7 @@ class KNConfirmTransactionViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.navigationItem.title = "Confirm".toBeLocalised()
 
     self.confirmButton.setTitle("Confirm".uppercased().toBeLocalised(), for: .normal)
     self.confirmButton.rounded(color: .clear, width: 0, radius: 5.0)
@@ -60,7 +61,7 @@ class KNConfirmTransactionViewController: KNBaseViewController {
     switch self.transactionType {
     case .exchange(let trans):
       let amountSpent = "\(trans.from.symbol)\(trans.amount.fullString(decimals: trans.from.decimal))"
-      let usdRate = KNRateCoordinator.shared.usdRates.first(where: { $0.source == trans.from.symbol })?.rate ?? BigInt(0)
+      let usdRate = KNRateCoordinator.shared.usdRate(for: trans.from)?.rate ?? BigInt(0)
       let usdValue = (usdRate * trans.amount).shortString(units: .ether)
       let expectedAmount = trans.amount * (self.expectedRate ?? BigInt(0)) / BigInt(10).power(trans.to.decimal)
       let expectedReceive = "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))"
@@ -75,7 +76,7 @@ class KNConfirmTransactionViewController: KNBaseViewController {
         ("Est. Fee", "ETH\(fee)"),
       ]
     case .transfer:
-        return
+      return
     }
     self.contentTableView.reloadData()
   }

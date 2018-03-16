@@ -13,10 +13,11 @@ class KNSelectTokenTableViewCell: UITableViewCell {
     self.textLabel?.font = self.textLabel?.font.withSize(16)
     self.balanceLabel.textColor = UIColor.white
     self.balanceLabel.text = ""
+    self.selectedBackgroundView = UIView()
   }
 
   func updateCell(with token: KNToken, balance: Balance) {
-    self.imageView?.image = UIImage(named: "ethereum-token")
+    self.imageView?.image = UIImage(named: token.icon)
     self.textLabel?.text = token.display
     self.balanceLabel.text = "\(balance.amountShort)"
   }

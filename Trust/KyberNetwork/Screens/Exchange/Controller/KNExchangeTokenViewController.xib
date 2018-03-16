@@ -72,8 +72,9 @@
                                 <constraint firstAttribute="height" constant="42" id="2FU-w9-thW"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
-                            <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="ETH - Ethereum" image="ethereum-token"/>
+                            <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="ETH - Ethereum" image="eth"/>
                             <connections>
                                 <action selector="fromTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="aZm-eW-i0j"/>
                             </connections>
@@ -150,8 +151,9 @@
                                 <constraint firstAttribute="height" constant="42" id="Dwd-Uf-U6A"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
-                            <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="KNC - Kyber Network Crystal KNC" image="ethereum-token"/>
+                            <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="KNC - Kyber Network Crystal" image="knc"/>
                             <connections>
                                 <action selector="toTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="QuA-mf-HQE"/>
                             </connections>
@@ -330,9 +332,15 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 ETH = 521.1232 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXb-Zr-FNa">
                             <rect key="frame" x="106.5" y="543" width="162.5" height="18"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
-                            <color key="textColor" red="0.0" green="0.78039215689999997" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.0" green="0.97151938904285695" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="8I0-6k-67K">
+                            <rect key="frame" x="322" y="52.5" width="23" height="23"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="sCV-2k-uyk">
+                            <rect key="frame" x="322" y="246" width="23" height="23"/>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="Wey-H4-lXN" firstAttribute="top" secondItem="n82-CO-Nvz" secondAttribute="bottom" constant="10" id="1t1-s3-aKf"/>
@@ -354,6 +362,7 @@
                         <constraint firstItem="ISA-O9-hYb" firstAttribute="width" secondItem="Pc2-Sk-SyP" secondAttribute="width" id="Ki6-Qg-mzT"/>
                         <constraint firstAttribute="trailing" secondItem="GDP-F2-Rzu" secondAttribute="trailing" constant="20" id="LCy-Ba-ybo"/>
                         <constraint firstItem="Kjp-Zr-BZN" firstAttribute="centerX" secondItem="Yry-e0-hbp" secondAttribute="centerX" id="MAZ-HD-bU1"/>
+                        <constraint firstItem="8I0-6k-67K" firstAttribute="centerY" secondItem="n82-CO-Nvz" secondAttribute="centerY" id="N7j-VF-Ewg"/>
                         <constraint firstItem="H9z-2G-bdu" firstAttribute="top" secondItem="ugs-yU-xVY" secondAttribute="bottom" constant="10" id="NCS-yS-4qh"/>
                         <constraint firstItem="ISA-O9-hYb" firstAttribute="top" secondItem="Pc2-Sk-SyP" secondAttribute="top" id="NVA-KC-ePo"/>
                         <constraint firstItem="Kjp-Zr-BZN" firstAttribute="top" secondItem="GDP-F2-Rzu" secondAttribute="bottom" constant="220" id="Oil-fq-lGr"/>
@@ -372,6 +381,7 @@
                         <constraint firstItem="EH0-1j-ihN" firstAttribute="leading" secondItem="Yry-e0-hbp" secondAttribute="leading" constant="20" id="c8P-vE-c0R"/>
                         <constraint firstItem="SbM-lw-BQV" firstAttribute="centerY" secondItem="Kjp-Zr-BZN" secondAttribute="centerY" constant="5" id="fCt-ZK-Rm5"/>
                         <constraint firstItem="GDP-F2-Rzu" firstAttribute="leading" secondItem="3Gb-Se-KUL" secondAttribute="trailing" constant="20" id="fji-Pz-zi4"/>
+                        <constraint firstItem="sCV-2k-uyk" firstAttribute="centerY" secondItem="ORH-uo-aJY" secondAttribute="centerY" id="gDo-N3-Y5L"/>
                         <constraint firstAttribute="trailing" secondItem="qk1-lk-YxP" secondAttribute="trailing" id="gRL-m1-GmE"/>
                         <constraint firstAttribute="trailing" secondItem="n82-CO-Nvz" secondAttribute="trailing" constant="20" id="gho-Kz-H2p"/>
                         <constraint firstAttribute="trailing" secondItem="eYg-kV-N5l" secondAttribute="trailing" constant="20" id="gkN-v6-hzM"/>
@@ -384,9 +394,11 @@
                         <constraint firstItem="H9z-2G-bdu" firstAttribute="leading" secondItem="ugs-yU-xVY" secondAttribute="leading" id="q5V-hg-IQC"/>
                         <constraint firstItem="ugs-yU-xVY" firstAttribute="centerY" secondItem="EH0-1j-ihN" secondAttribute="centerY" id="rZt-sf-Chy"/>
                         <constraint firstItem="Kjp-Zr-BZN" firstAttribute="top" secondItem="DXb-Zr-FNa" secondAttribute="bottom" constant="10" id="u8I-9n-AiS"/>
+                        <constraint firstAttribute="trailing" secondItem="sCV-2k-uyk" secondAttribute="trailing" constant="30" id="uyI-9o-dnr"/>
                         <constraint firstAttribute="trailing" secondItem="ugs-yU-xVY" secondAttribute="trailing" constant="20" id="v6X-7L-Plo"/>
                         <constraint firstItem="SbM-lw-BQV" firstAttribute="top" secondItem="ojR-j6-Xc2" secondAttribute="bottom" constant="5" id="wUz-Zz-fqU"/>
                         <constraint firstItem="n82-CO-Nvz" firstAttribute="top" secondItem="Znl-O9-fFn" secondAttribute="bottom" constant="10" id="x29-he-Oj1"/>
+                        <constraint firstAttribute="trailing" secondItem="8I0-6k-67K" secondAttribute="trailing" constant="30" id="z1l-Ya-odI"/>
                     </constraints>
                 </scrollView>
             </subviews>
@@ -402,6 +414,8 @@
         </view>
     </objects>
     <resources>
-        <image name="ethereum-token" width="21" height="21"/>
+        <image name="arrow_right" width="23" height="23"/>
+        <image name="eth" width="23" height="23"/>
+        <image name="knc" width="23" height="23"/>
     </resources>
 </document>

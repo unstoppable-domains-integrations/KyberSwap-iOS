@@ -17,7 +17,7 @@
     "ETH": {
       "name": "Ethereum",
       "symbol": "ETH",
-      "icon": "eth.svg",
+      "icon": "eth.png",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
       "usd_id":"ethereum"
@@ -25,7 +25,7 @@
     "KNC": {
       "name": "KyberNetwork",
       "symbol": "KNC",
-      "icon": "knc.svg",
+      "icon": "knc.png",
       "address": "0xE5585362D0940519d87d29362115D4cc060C56B3",
       "decimal": 18,
       "usd_id":"kyber-network"
@@ -33,7 +33,7 @@
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "icon": "omg.svg",
+      "icon": "omg.png",
       "address": "0x5b9a857e0C3F2acc5b94f6693536d3Adf5D6e6Be",
       "decimal": 18,
       "usd_id":"omisego"
@@ -41,7 +41,7 @@
     "EOS": {
       "name": "Eos",
       "symbol": "EOS",
-      "icon": "eos.svg",
+      "icon": "eos.png",
       "address": "0xd3c64BbA75859Eb808ACE6F2A6048ecdb2d70817",
       "decimal": 18,
       "usd_id":"eos"
@@ -50,7 +50,7 @@
       "name":"Status",
       "address": "0xF739577d63cdA4a534B0fB92ABf8BBf6EA48d36c",
       "symbol": "SNT",
-      "icon": "snt.svg",
+      "icon": "snt.png",
       "decimal": 18,
       "usd_id":"status"
     },
@@ -58,7 +58,7 @@
       "name":"Aelf",
       "address": "0x7174FCb9C2A49c027C9746983D8262597b5EcCb1",
       "symbol": "ELF",
-      "icon": "aelf.svg",
+      "icon": "aelf.png",
       "decimal": 18,
       "usd_id":"aelf"
     },
@@ -66,7 +66,7 @@
       "name":"Power Ledger",
       "address": "0x2C4EfAa21f09c3C6EEF0Edb001E9bffDE7127D3B",
       "symbol": "POWR",
-      "icon": "pwr.svg",
+      "icon": "pwr.png",
       "decimal": 6,
       "usd_id":"power-ledger"
     },
@@ -74,7 +74,7 @@
       "name":"Mana",
       "address": "0xf5E314c435B3B2EE7c14eA96fCB3307C3a3Ef608",
       "symbol": "MANA",
-      "icon": "mana.svg",
+      "icon": "mana.png",
       "decimal": 18,
       "usd_id":"decentraland"
     },
@@ -82,7 +82,7 @@
       "name":"Basic Attention Token",
       "address": "0x04A34c8f5101Dcc50bF4c64D1C7C124F59bb988c",
       "symbol": "BAT",
-      "icon": "bat.svg",
+      "icon": "bat.png",
       "decimal": 18,
       "usd_id":"basic-attention-token"
     },
@@ -90,7 +90,7 @@
       "name":"Request",
       "address": "0xa448cD1DB463ae738a171C483C56157d6B83B97f",
       "symbol": "REQ",
-      "icon": "req.svg",
+      "icon": "req.png",
       "decimal": 18,
       "usd_id":"request-network"
     },
@@ -98,7 +98,7 @@
       "name":"Gifto",
       "address": "0x6B07b8360832c6bBf05A39D9d443A705032bDc4d",
       "symbol": "GTO",
-      "icon": "gifto.svg",
+      "icon": "gifto.png",
       "decimal": 5,
       "usd_id":"gifto"
     }
