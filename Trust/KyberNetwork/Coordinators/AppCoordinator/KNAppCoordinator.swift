@@ -82,7 +82,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     ]
     exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange", image: nil, tag: 0)
     transferNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
-    walletNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 2)
+    walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
 
     self.navigationController.present(tabbarController, animated: true, completion: nil)
   }
