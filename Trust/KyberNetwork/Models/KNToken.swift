@@ -33,7 +33,19 @@ struct KNToken {
     return "\(symbol) - \(name)"
   }
 
+  static public func ethToken() -> KNToken {
+    return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+  }
+
+  static public func kncToken() -> KNToken {
+    return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isKNC })!
+  }
+
   static public func==(lhs: KNToken, rhs: KNToken) -> Bool {
     return rhs.symbol == lhs.symbol && rhs.address == lhs.address
+  }
+
+  static public func !=(lhs: KNToken, rhs: KNToken) -> Bool {
+    return rhs.symbol != lhs.symbol || rhs.address != lhs.address
   }
 }

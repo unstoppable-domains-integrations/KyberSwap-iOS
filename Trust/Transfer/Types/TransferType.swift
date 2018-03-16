@@ -26,4 +26,9 @@ extension TransferType {
             return Address(string: token.contract)!
         }
     }
+
+  func isETHTransfer() -> Bool {
+    if case .ether = self { return true }
+    return false
+  }
 }
