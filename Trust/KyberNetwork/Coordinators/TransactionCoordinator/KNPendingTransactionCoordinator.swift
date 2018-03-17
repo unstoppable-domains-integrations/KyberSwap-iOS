@@ -6,12 +6,9 @@ import APIKit
 import JSONRPCKit
 import Result
 
-enum KNPendingTxNotificationKeys: String {
-  case completed
-  case failed
-}
-
 class KNPendingTransactionCoordinator {
+
+  static let didUpdateNotificationKey = "KNPendingTransactionCoordinatorNotificationKey"
 
   let storage: TransactionsStorage
   fileprivate var timer: Timer?
@@ -48,7 +45,11 @@ class KNPendingTransactionCoordinator {
         case .success:
           if transaction.date.addingTimeInterval(60) < Date() {
             self.storage.update(state: .completed, for: transaction)
-            KNNotificationUtil.postNotification(for: KNPendingTxNotificationKeys.completed.rawValue, object: transaction, userInfo: nil)
+            KNNotificationUtil.postNotification(
+              for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+              object: transaction.id,
+              userInfo: nil
+            )
           }
         case .failure(let error):
           switch error {
@@ -63,7 +64,11 @@ class KNPendingTransactionCoordinator {
             case .resultObjectParseError:
               if transaction.date.addingTimeInterval(60) < Date() {
                 self.storage.update(state: .failed, for: transaction)
-                KNNotificationUtil.postNotification(for: KNPendingTxNotificationKeys.failed.rawValue, object: transaction, userInfo: nil)
+                KNNotificationUtil.postNotification(
+                  for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+                  object: transaction.id,
+                  userInfo: nil
+                )
               }
             default: break
             }
@@ -99,13 +104,12 @@ class KNPendingTransactionCoordinator {
         )
         self?.storage.delete([transaction])
         self?.storage.add([newTransaction])
-        if receipt.status == "1" {
-          self?.storage.update(state: .completed, for: newTransaction)
-          KNNotificationUtil.postNotification(for: KNPendingTxNotificationKeys.completed.rawValue, object: newTransaction, userInfo: nil)
-        } else {
-          self?.storage.update(state: .failed, for: newTransaction)
-          KNNotificationUtil.postNotification(for: KNPendingTxNotificationKeys.failed.rawValue, object: newTransaction, userInfo: nil)
-        }
+        self?.storage.update(state: receipt.status == "1" ? .completed : .failed, for: newTransaction)
+        KNNotificationUtil.postNotification(
+          for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+          object: newTransaction.id,
+          userInfo: nil
+        )
         completion(nil)
       case .failure(let error):
         completion(error)

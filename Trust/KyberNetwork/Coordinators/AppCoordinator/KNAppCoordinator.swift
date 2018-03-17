@@ -99,28 +99,26 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func addObserveNotificationFromSession() {
-    let complete = Notification.Name(KNPendingTxNotificationKeys.completed.rawValue)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.pendingTransactionDidComplete(_:)), name: complete, object: nil)
-    let fail = Notification.Name(KNPendingTxNotificationKeys.failed.rawValue)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.pendingTransactionDidFail(_:)), name: fail, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.pendingTransactionDidUpdate(_:)),
+      name: Notification.Name(KNPendingTransactionCoordinator.didUpdateNotificationKey),
+      object: nil
+    )
   }
 
   fileprivate func removeObserveNotificationFromSession() {
-    let complete = Notification.Name(KNPendingTxNotificationKeys.completed.rawValue)
-    NotificationCenter.default.removeObserver(self, name: complete, object: nil)
-    let fail = Notification.Name(KNPendingTxNotificationKeys.failed.rawValue)
-    NotificationCenter.default.removeObserver(self, name: fail, object: nil)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(KNPendingTransactionCoordinator.didUpdateNotificationKey),
+      object: nil
+    )
   }
 
-  @objc func pendingTransactionDidComplete(_ sender: Notification) {
-    if let transaction = sender.object as? Transaction {
-      NSLog("Transaction did complete: \(transaction.id)")
-    }
-  }
-
-  @objc func pendingTransactionDidFail(_ sender: Notification) {
-    if let transaction = sender.object as? Transaction {
-      NSLog("Transaction did fail: \(transaction.id)")
+  @objc func pendingTransactionDidUpdate(_ sender: Notification) {
+    if let txHash = sender.object as? String,
+      let transaction = self.session.storage.get(forPrimaryKey: txHash) {
+      NSLog("Did update transaction with state: \(transaction.state == .completed ? "completed" : "failed")")
     }
   }
 }
