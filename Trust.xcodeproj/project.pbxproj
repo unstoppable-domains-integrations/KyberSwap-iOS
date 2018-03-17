@@ -45,6 +45,8 @@
 		257A379B205CDA8100E86794 /* KNPendingTransactionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */; };
 		257A379E205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379D205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift */; };
 		257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */; };
+		257A37A5205D187100E86794 /* KNPendingTransactionStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A37A3205D187100E86794 /* KNPendingTransactionStatusViewController.swift */; };
+		257A37A6205D187100E86794 /* KNPendingTransactionStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257A37A4205D187100E86794 /* KNPendingTransactionStatusViewController.xib */; };
 		25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */; };
 		25CC0A802057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */; };
 		25CC0A812057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */; };
@@ -496,6 +498,8 @@
 		257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionCoordinator.swift; sourceTree = "<group>"; };
 		257A379D205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGetTransactionReceiptRequest.swift; sourceTree = "<group>"; };
 		257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionReceipt.swift; sourceTree = "<group>"; };
+		257A37A3205D187100E86794 /* KNPendingTransactionStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionStatusViewController.swift; sourceTree = "<group>"; };
+		257A37A4205D187100E86794 /* KNPendingTransactionStatusViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPendingTransactionStatusViewController.xib; sourceTree = "<group>"; };
 		25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingMainCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingKeystoreViewController.swift; sourceTree = "<group>"; };
 		25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingKeystoreViewController.xib; sourceTree = "<group>"; };
@@ -1033,6 +1037,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				257A37A1205D180800E86794 /* PendingTransactionStatus */,
 				257A3792205BC26500E86794 /* BaseController */,
 				257A378A205BBF5700E86794 /* ConfirmTransaction */,
 				257A377F205B9D6400E86794 /* SelectToken */,
@@ -1200,6 +1205,23 @@
 				257A379D205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift */,
 			);
 			path = EtherClient;
+			sourceTree = "<group>";
+		};
+		257A37A1205D180800E86794 /* PendingTransactionStatus */ = {
+			isa = PBXGroup;
+			children = (
+				257A37A2205D186300E86794 /* Controller */,
+			);
+			path = PendingTransactionStatus;
+			sourceTree = "<group>";
+		};
+		257A37A2205D186300E86794 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				257A37A3205D187100E86794 /* KNPendingTransactionStatusViewController.swift */,
+				257A37A4205D187100E86794 /* KNPendingTransactionStatusViewController.xib */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		25CC0A7B2057B94C0009D0D5 /* ImportKeystore */ = {
@@ -2960,6 +2982,7 @@
 				257740D92057ABB4003323EB /* KNWalletImportingMainViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
+				257A37A6205D187100E86794 /* KNPendingTransactionStatusViewController.xib in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25CC0ACB2059267B0009D0D5 /* KNExchangeTokenViewController.xib in Resources */,
@@ -3283,6 +3306,7 @@
 				615F10561FCBEF2E008A45AF /* OnboardingPageViewModel.swift in Sources */,
 				29E2E3411F7B1585000CF94A /* ActionButtonRow.swift in Sources */,
 				29FC0CB61F8298820036089F /* TransactionCoordinator.swift in Sources */,
+				257A37A5205D187100E86794 /* KNPendingTransactionStatusViewController.swift in Sources */,
 				25CC0AB820591D720009D0D5 /* KNRecentTradeCoordinator.swift in Sources */,
 				73200B6A2045B8AC00118A82 /* TokensNetwork.swift in Sources */,
 				77872D27202505C00032D687 /* EnterPasswordViewModel.swift in Sources */,
