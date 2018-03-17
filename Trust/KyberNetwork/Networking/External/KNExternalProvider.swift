@@ -286,15 +286,15 @@ class KNExternalProvider {
     let toAddress: Address = self.networkAddress
     let value: BigInt = exchangeTransaction.from.isETH ? exchangeTransaction.amount : BigInt(0)
 
-    // TODO (Mike): Exchange gas limit default is higher than transfer
     let defaultGasLimit: BigInt = {
       return KNGasConfiguration.exchangeTokensGasLimitDefault
     }()
 
     self.requestDataForTokenExchange(exchangeTransaction) { [weak self] dataResult in
+      guard let `self` = self else { return }
       switch dataResult {
       case .success(let data):
-        self?.estimateGasLimit(
+        self.estimateGasLimit(
           from: fromAddress,
           to: toAddress,
           value: value,
@@ -303,12 +303,12 @@ class KNExternalProvider {
           completion: completion
         )
       case .failure(let error):
-        completion(.failure(AnyError(error)))
+        completion(.failure(error))
       }
     }
   }
 
-  func estimateGasLimit(from fromAddr: Address, to toAddr: Address?, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  fileprivate func estimateGasLimit(from fromAddr: Address, to toAddr: Address?, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let request = EstimateGasRequest(
       from: fromAddr,
       to: toAddr,

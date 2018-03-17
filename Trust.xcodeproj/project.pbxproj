@@ -42,6 +42,7 @@
 		257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3793205BC27400E86794 /* KNBaseViewController.swift */; };
 		257A3797205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3795205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift */; };
 		257A3798205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257A3796205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib */; };
+		257A379B205CDA8100E86794 /* KNPendingTransactionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */; };
 		25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */; };
 		25CC0A802057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */; };
 		25CC0A812057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */; };
@@ -490,6 +491,7 @@
 		257A3793205BC27400E86794 /* KNBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBaseViewController.swift; sourceTree = "<group>"; };
 		257A3795205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		257A3796205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionDetailsTableViewCell.xib; sourceTree = "<group>"; };
+		257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingMainCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingKeystoreViewController.swift; sourceTree = "<group>"; };
 		25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingKeystoreViewController.xib; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 		257740C82057948F003323EB /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				257A3799205CDA6000E86794 /* TransactionCoordinator */,
 				25CC0AB520591D520009D0D5 /* InternalCoordinators */,
 				25CC0A8F2057D7140009D0D5 /* BalanceCoordinator */,
 				257740C9205794B3003323EB /* AppCoordinator */,
@@ -1176,6 +1179,14 @@
 				257A3793205BC27400E86794 /* KNBaseViewController.swift */,
 			);
 			path = BaseController;
+			sourceTree = "<group>";
+		};
+		257A3799205CDA6000E86794 /* TransactionCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */,
+			);
+			path = TransactionCoordinator;
 			sourceTree = "<group>";
 		};
 		25CC0A7B2057B94C0009D0D5 /* ImportKeystore */ = {
@@ -3379,6 +3390,7 @@
 				29FF12FB1F74CC8200AFD326 /* EthereumAddressRule.swift in Sources */,
 				294EC1D81FD7FBAB0065EB20 /* BiometryAuthenticationType.swift in Sources */,
 				29E6E0721FEA200D0079265A /* ConfirmPaymentDetailsViewModel.swift in Sources */,
+				257A379B205CDA8100E86794 /* KNPendingTransactionCoordinator.swift in Sources */,
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				29E6E0701FEA12910079265A /* TransactionConfigurator.swift in Sources */,
 				299B5E3B1FD141B70051361C /* BackupViewModel.swift in Sources */,

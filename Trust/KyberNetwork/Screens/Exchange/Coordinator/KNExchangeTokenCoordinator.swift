@@ -114,8 +114,26 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   fileprivate func sendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
     self.session.externalProvider.exchange(exchange: exchangeTransaction) { [weak self] result in
-      self?.navigationController.topViewController?.hideLoading()
-      self?.rootViewController.exchangeTokenDidReturn(result: result)
+      guard let `self` = self else { return }
+      self.navigationController.topViewController?.hideLoading()
+      self.rootViewController.exchangeTokenDidReturn(result: result)
+      if case .success(let txHash) = result {
+        let transaction = Transaction(
+          id: txHash,
+          blockNumber: 0,
+          from: self.session.wallet.address.description,
+          to: self.session.externalProvider.networkAddress.description,
+          value: exchangeTransaction.amount.fullString(decimals: exchangeTransaction.from.decimal),
+          gas: exchangeTransaction.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
+          gasPrice: exchangeTransaction.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
+          gasUsed: "",
+          nonce: "\(self.session.externalProvider.minTxCount)",
+          date: Date(),
+          localizedOperations: [],
+          state: .pending
+        )
+        self.session.storage.add([transaction])
+      }
     }
   }
 

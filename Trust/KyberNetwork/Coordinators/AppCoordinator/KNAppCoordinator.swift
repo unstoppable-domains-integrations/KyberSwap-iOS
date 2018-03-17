@@ -83,6 +83,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
 
     self.navigationController.present(tabbarController, animated: true, completion: nil)
+
+    self.addObserveNotificationFromSession()
   }
 
   func stopLastSession() {
@@ -92,6 +94,33 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.session = nil
       self.balanceCoordinator?.pause()
       self.balanceCoordinator = nil
+      self.removeObserveNotificationFromSession()
+    }
+  }
+
+  fileprivate func addObserveNotificationFromSession() {
+    let complete = Notification.Name(KNPendingTxNotificationKeys.completed.rawValue)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.pendingTransactionDidComplete(_:)), name: complete, object: nil)
+    let fail = Notification.Name(KNPendingTxNotificationKeys.failed.rawValue)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.pendingTransactionDidFail(_:)), name: fail, object: nil)
+  }
+
+  fileprivate func removeObserveNotificationFromSession() {
+    let complete = Notification.Name(KNPendingTxNotificationKeys.completed.rawValue)
+    NotificationCenter.default.removeObserver(self, name: complete, object: nil)
+    let fail = Notification.Name(KNPendingTxNotificationKeys.failed.rawValue)
+    NotificationCenter.default.removeObserver(self, name: fail, object: nil)
+  }
+
+  @objc func pendingTransactionDidComplete(_ sender: Notification) {
+    if let transaction = sender.object as? Transaction {
+      NSLog("Transaction did complete: \(transaction.id)")
+    }
+  }
+
+  @objc func pendingTransactionDidFail(_ sender: Notification) {
+    if let transaction = sender.object as? Transaction {
+      NSLog("Transaction did fail: \(transaction.id)")
     }
   }
 }

@@ -4,6 +4,7 @@ import APIKit
 import JSONRPCKit
 import BigInt
 import TrustKeystore
+import RealmSwift
 
 protocol KNSessionDelegate: class {
   func userDidClickExitSession()
@@ -15,6 +16,10 @@ class KNSession {
   let wallet: Wallet
   let web3Swift: Web3Swift
   let externalProvider: KNExternalProvider
+  let realm: Realm
+  let storage: TransactionsStorage
+
+  fileprivate var pendingTxCoordinator: KNPendingTransactionCoordinator?
 
   init(keystore: Keystore,
        wallet: Wallet) {
@@ -31,14 +36,22 @@ class KNSession {
       account = acc
     }
     self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
+    let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+    self.realm = try! Realm(configuration: config)
+    self.storage = TransactionsStorage(realm: self.realm)
   }
 
   func startSession() {
     self.web3Swift.start()
+    self.pendingTxCoordinator?.stopUpdatingPendingTransactions()
+    self.pendingTxCoordinator = KNPendingTransactionCoordinator(storage: self.storage)
+    self.pendingTxCoordinator?.startUpdatingPendingTransactions()
   }
 
   func stopSession() {
     _ = self.keystore.delete(wallet: self.wallet)
+    self.pendingTxCoordinator?.stopUpdatingPendingTransactions()
+    self.pendingTxCoordinator = nil
   }
 
   static func resumeInternalSession() {

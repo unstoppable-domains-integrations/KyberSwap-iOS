@@ -174,7 +174,7 @@ extension KNExchangeTokenViewController {
     let rateString = self.expectedRate.shortString(decimals: self.selectedToToken.decimal)
     self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(rateString) \(self.selectedToToken.symbol)"
 
-    self.exchangeButton.setTitle("Exchange".toBeLocalised(), for: .normal)
+    self.exchangeButton.setTitle("Exchange".uppercased().toBeLocalised(), for: .normal)
     self.exchangeButton.rounded(color: .clear, width: 0, radius: 5.0)
 
     self.topPaddingConstraintForExchangeButton.constant = UIDevice.isIphone5 ? exchangeButtonTopPaddingiPhone5 : exchangeButtonTopPaddingiPhone6
