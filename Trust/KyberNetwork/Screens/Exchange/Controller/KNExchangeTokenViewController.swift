@@ -9,7 +9,7 @@ import Result
 protocol KNExchangeTokenViewControllerDelegate: class {
   func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt)
   func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction)
-  func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction, expectedRate: BigInt)
+  func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction)
   func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool)
   func exchangeTokenUserDidClickExit()
 }
@@ -345,6 +345,7 @@ extension KNExchangeTokenViewController {
       to: self.selectedToToken,
       amount: amount,
       maxDestAmount: BigInt(2).power(255),
+      expectedRate: self.expectedRate,
       minRate: minRate,
       gasPrice: gasPrice,
       gasLimit: self.lastEstimateGasUsed
@@ -359,6 +360,7 @@ extension KNExchangeTokenViewController {
       to: self.selectedToToken,
       amount: amount,
       maxDestAmount: BigInt(2).power(255),
+      expectedRate: self.expectedRate,
       minRate: .none,
       gasPrice: .none,
       gasLimit: .none
@@ -440,7 +442,7 @@ extension KNExchangeTokenViewController {
       switch result {
       case .success(let exchangeTransaction):
         if let exchange = exchangeTransaction {
-          self.delegate?.exchangeTokenDidClickExchange(exchangeTransaction: exchange, expectedRate: self.expectedRate)
+          self.delegate?.exchangeTokenDidClickExchange(exchangeTransaction: exchange)
         } else {
           let alertController = UIAlertController(title: nil, message: "Invalid exchange data", preferredStyle: .alert)
           alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

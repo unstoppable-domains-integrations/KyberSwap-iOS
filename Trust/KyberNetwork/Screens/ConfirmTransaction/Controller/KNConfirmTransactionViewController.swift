@@ -12,7 +12,6 @@ class KNConfirmTransactionViewController: KNBaseViewController {
 
   fileprivate let confirmTransactionCellID = "confirmTransactionCellID"
   fileprivate var transactionType: KNTransactionType
-  fileprivate var expectedRate: BigInt?
 
   @IBOutlet weak var contentTableView: UITableView!
   @IBOutlet weak var confirmButton: UIButton!
@@ -21,10 +20,9 @@ class KNConfirmTransactionViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNConfirmTransactionViewControllerDelegate?
 
-  init(delegate: KNConfirmTransactionViewControllerDelegate?, type: KNTransactionType, expectedRate: BigInt? = .none) {
+  init(delegate: KNConfirmTransactionViewControllerDelegate?, type: KNTransactionType) {
     self.delegate = delegate
     self.transactionType = type
-    self.expectedRate = expectedRate
     super.init(nibName: KNConfirmTransactionViewController.className, bundle: nil)
   }
 
@@ -63,9 +61,9 @@ class KNConfirmTransactionViewController: KNBaseViewController {
       let amountSpent = "\(trans.from.symbol)\(trans.amount.fullString(decimals: trans.from.decimal))"
       let usdRate = KNRateCoordinator.shared.usdRate(for: trans.from)?.rate ?? BigInt(0)
       let usdValue = (usdRate * trans.amount).shortString(units: .ether)
-      let expectedAmount = trans.amount * (self.expectedRate ?? BigInt(0)) / BigInt(10).power(trans.to.decimal)
+      let expectedAmount = trans.amount * trans.expectedRate / BigInt(10).power(trans.to.decimal)
       let expectedReceive = "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))"
-      let rate = "Rate: \(trans.to.symbol)\((self.expectedRate ?? BigInt(0)).shortString(decimals: trans.to.decimal))"
+      let rate = "Rate: \(trans.to.symbol)\(trans.expectedRate.shortString(decimals: trans.to.decimal))"
       let minRate = trans.minRate?.shortString(decimals: trans.to.decimal) ?? "--"
       let transFee = (trans.gasPrice ?? KNGasConfiguration.gasPriceDefault) * (trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
       let fee = transFee.fullString(units: UnitConfiguration.gasFeeUnit)

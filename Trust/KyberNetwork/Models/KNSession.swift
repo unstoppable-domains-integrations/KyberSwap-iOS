@@ -54,6 +54,12 @@ class KNSession {
     self.pendingTxCoordinator = nil
   }
 
+  func addNewPendingTransaction(_ transaction: Transaction) {
+    // Put here to be able force update new pending transaction immmediately
+    self.storage.add([transaction])
+    self.pendingTxCoordinator?.updatePendingTranscation(transaction)
+  }
+
   static func resumeInternalSession() {
     KNRateCoordinator.shared.resume()
     KNGasCoordinator.shared.resume()

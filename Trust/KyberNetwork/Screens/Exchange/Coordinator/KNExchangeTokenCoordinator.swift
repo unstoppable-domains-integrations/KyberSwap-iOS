@@ -118,21 +118,14 @@ class KNExchangeTokenCoordinator: Coordinator {
       self.navigationController.topViewController?.hideLoading()
       self.rootViewController.exchangeTokenDidReturn(result: result)
       if case .success(let txHash) = result {
-        let transaction = Transaction(
-          id: txHash,
-          blockNumber: 0,
-          from: self.session.wallet.address.description,
-          to: self.session.externalProvider.networkAddress.description,
-          value: exchangeTransaction.amount.fullString(decimals: exchangeTransaction.from.decimal),
-          gas: exchangeTransaction.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
-          gasPrice: exchangeTransaction.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
-          gasUsed: "",
-          nonce: "\(self.session.externalProvider.minTxCount)",
-          date: Date(),
-          localizedOperations: [],
-          state: .pending
+        // temporary: local object contains from and to tokens + expected rate
+        let transaction = exchangeTransaction.toTransaction(
+          hash: txHash,
+          fromAddr: self.session.wallet.address,
+          toAddr: self.session.externalProvider.networkAddress,
+          nounce: self.session.externalProvider.minTxCount
         )
-        self.session.storage.add([transaction])
+        self.session.addNewPendingTransaction(transaction)
       }
     }
   }
@@ -191,12 +184,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
     }
   }
 
-  func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction, expectedRate: BigInt) {
+  func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction) {
     let transactionType = KNTransactionType.exchange(exchangeTransaction)
     let confirmVC = KNConfirmTransactionViewController(
       delegate: self,
-      type: transactionType,
-      expectedRate: expectedRate
+      type: transactionType
     )
     self.navigationController.pushViewController(confirmVC, animated: true)
   }
