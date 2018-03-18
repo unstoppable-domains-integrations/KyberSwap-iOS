@@ -2,9 +2,10 @@
 
 import UIKit
 
-extension UIViewController {
-  func applyBaseGradientBackground() {
-    let colors = [UIColor.Kyber.cyan, UIColor.Kyber.green, UIColor.Kyber.teal]
-    self.view.applyTopRightBottomLeftGradient(with: colors)
-  }
-}
+//extension UIViewController {
+//  func applyBaseGradientBackground() {
+//    let colors = [UIColor.Kyber.cyan, UIColor.Kyber.green, UIColor.Kyber.teal]
+//    self.view.applyTopRightBottomLeftGradient(with: colors)
+//  }
+//}
+

@@ -48,4 +48,21 @@ extension UIView {
     guard let layers = self.layer.sublayers, layers.count > index else { return }
     layers[index].removeFromSuperlayer()
   }
+
+  func applyBaseGradientBackground() {
+    let colors = [UIColor.Kyber.cyan, UIColor.Kyber.green, UIColor.Kyber.teal]
+    self.applyTopRightBottomLeftGradient(with: colors)
+  }
+
+  func rotate360Degrees(duration: CFTimeInterval = 1.0, completionDelegate: AnyObject? = nil) {
+    let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+    rotateAnimation.fromValue = 0.0
+    rotateAnimation.toValue = CGFloat.pi * 2.0
+    rotateAnimation.duration = duration
+
+    if let delegate: AnyObject = completionDelegate {
+      rotateAnimation.delegate = delegate as? CAAnimationDelegate
+    }
+    self.layer.add(rotateAnimation, forKey: nil)
+  }
 }

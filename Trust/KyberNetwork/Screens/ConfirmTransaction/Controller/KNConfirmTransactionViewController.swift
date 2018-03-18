@@ -5,16 +5,18 @@ import BigInt
 
 protocol KNConfirmTransactionViewControllerDelegate: class {
   func confirmTransactionDidConfirm(type: KNTransactionType)
-  func confirmTransactionDidBack()
+  func confirmTransactionDidCancel()
 }
 
-class KNConfirmTransactionViewController: KNBaseViewController {
+class KNConfirmTransactionViewController: UIViewController {
 
   fileprivate let confirmTransactionCellID = "confirmTransactionCellID"
   fileprivate var transactionType: KNTransactionType
 
+  @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var contentTableView: UITableView!
   @IBOutlet weak var confirmButton: UIButton!
+  @IBOutlet weak var cancelButton: UIButton!
 
   fileprivate var data: [(String, String)] = []
 
@@ -37,16 +39,23 @@ class KNConfirmTransactionViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.backButtonPressed(_:)))
-    self.navigationItem.leftBarButtonItem?.tintColor = .white
     self.createData()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+  }
+
   fileprivate func setupUI() {
-    self.navigationItem.title = "Confirm".toBeLocalised()
+
+    self.containerView.rounded(color: .clear, width: 0, radius: 10.0)
+    self.containerView.backgroundColor = UIColor.white
 
     self.confirmButton.setTitle("Confirm".uppercased().toBeLocalised(), for: .normal)
     self.confirmButton.rounded(color: .clear, width: 0, radius: 5.0)
+    self.cancelButton.setTitle("Cancel".uppercased().toBeLocalised(), for: .normal)
+    self.cancelButton.rounded(color: .clear, width: 0, radius: 5.0)
 
     let nib = UINib(nibName: KNTransactionDetailsTableViewCell.className, bundle: nil)
     self.contentTableView.register(nib, forCellReuseIdentifier: confirmTransactionCellID)
@@ -79,8 +88,8 @@ class KNConfirmTransactionViewController: KNBaseViewController {
     self.contentTableView.reloadData()
   }
 
-  @objc func backButtonPressed(_ sender: Any) {
-    self.delegate?.confirmTransactionDidBack()
+  @IBAction func cancelButtonPressed(_ sender: Any) {
+    self.delegate?.confirmTransactionDidCancel()
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {

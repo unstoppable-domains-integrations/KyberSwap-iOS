@@ -6,7 +6,7 @@ class KNBaseViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.applyBaseGradientBackground()
+    self.view.applyBaseGradientBackground()
   }
 
   override func viewDidAppear(_ animated: Bool) {

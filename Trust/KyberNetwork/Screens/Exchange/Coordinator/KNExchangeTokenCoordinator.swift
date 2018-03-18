@@ -18,7 +18,6 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   lazy var rootViewController: KNExchangeTokenViewController = {
     let controller = KNExchangeTokenViewController(delegate: self)
-    controller.applyBaseGradientBackground()
     return controller
   }()
 
@@ -118,7 +117,6 @@ class KNExchangeTokenCoordinator: Coordinator {
       self.navigationController.topViewController?.hideLoading()
       self.rootViewController.exchangeTokenDidReturn(result: result)
       if case .success(let txHash) = result {
-        // temporary: local object contains from and to tokens + expected rate
         let transaction = exchangeTransaction.toTransaction(
           hash: txHash,
           fromAddr: self.session.wallet.address,
@@ -190,7 +188,8 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
       delegate: self,
       type: transactionType
     )
-    self.navigationController.pushViewController(confirmVC, animated: true)
+    confirmVC.modalPresentationStyle = .overFullScreen
+    self.navigationController.topViewController?.present(confirmVC, animated: false, completion: nil)
   }
 
   func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool) {
@@ -212,15 +211,15 @@ extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
-  func confirmTransactionDidBack() {
-    self.navigationController.popViewController(animated: true)
+  func confirmTransactionDidCancel() {
+    self.navigationController.topViewController?.dismiss(animated: false, completion: nil)
   }
 
   func confirmTransactionDidConfirm(type: KNTransactionType) {
-    self.navigationController.popViewController(animated: true) {
+    self.navigationController.topViewController?.dismiss(animated: false, completion: {
       if case .exchange(let exchangeTransaction) = type {
         self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }
-    }
+    })
   }
 }

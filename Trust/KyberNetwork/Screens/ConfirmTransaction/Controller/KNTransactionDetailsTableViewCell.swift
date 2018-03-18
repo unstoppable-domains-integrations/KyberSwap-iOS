@@ -10,10 +10,10 @@ class KNTransactionDetailsTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     self.detailsDataLabel.text = ""
-    self.detailsDataLabel.textColor = .white
+    self.detailsDataLabel.textColor = .black
     self.backgroundColor = .clear
     self.fieldLabel.text = ""
-    self.fieldLabel.textColor = .white
+    self.fieldLabel.textColor = .black
   }
 
   func updateCell(text: String, details: String) {

@@ -312,10 +312,7 @@ extension KNExchangeTokenViewController {
   }
 
   func exchangeTokenDidReturn(result: Result<String, AnyError>) {
-    switch result {
-    case .success(let txID):
-      self.displaySuccess(title: "Transaction Sent", message: txID)
-    case .failure(let error):
+    if case .failure(let error) =  result {
       self.displayError(error: error)
     }
   }
@@ -327,7 +324,7 @@ extension KNExchangeTokenViewController {
     guard
       let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal),
       let balance = self.otherTokenBalances[self.selectedFromToken.address],
-      amount <= balance.value else {
+      amount <= balance.value, !amount.isZero else {
         completion(.success(nil))
         return
     }
