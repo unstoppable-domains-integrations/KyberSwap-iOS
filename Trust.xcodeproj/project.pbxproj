@@ -28,7 +28,6 @@
 		257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740CE20579CDF003323EB /* KNSplashScreenCoordinator.swift */; };
 		257740D82057ABB4003323EB /* KNWalletImportingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740D62057ABB4003323EB /* KNWalletImportingMainViewController.swift */; };
 		257740D92057ABB4003323EB /* KNWalletImportingMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257740D72057ABB4003323EB /* KNWalletImportingMainViewController.xib */; };
-		257740DB2057ABD6003323EB /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740DA2057ABD6003323EB /* UIViewController+Kyber.swift */; };
 		257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740DD2057AC82003323EB /* CAGradientLayer+Kyber.swift */; };
 		257A377A205B013E00E86794 /* String+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3779205B013E00E86794 /* String+Kyber.swift */; };
 		257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A377B205B01F000E86794 /* BigInt+Kyber.swift */; };
@@ -482,7 +481,6 @@
 		257740CE20579CDF003323EB /* KNSplashScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSplashScreenCoordinator.swift; sourceTree = "<group>"; };
 		257740D62057ABB4003323EB /* KNWalletImportingMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingMainViewController.swift; sourceTree = "<group>"; };
 		257740D72057ABB4003323EB /* KNWalletImportingMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingMainViewController.xib; sourceTree = "<group>"; };
-		257740DA2057ABD6003323EB /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
 		257740DD2057AC82003323EB /* CAGradientLayer+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Kyber.swift"; sourceTree = "<group>"; };
 		257A3779205B013E00E86794 /* String+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Kyber.swift"; sourceTree = "<group>"; };
 		257A377B205B01F000E86794 /* BigInt+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+Kyber.swift"; sourceTree = "<group>"; };
@@ -1026,7 +1024,6 @@
 			children = (
 				251ABCC1205792170069687F /* UIColor+Kyber.swift */,
 				257740C020579335003323EB /* UIView+Kyber.swift */,
-				257740DA2057ABD6003323EB /* UIViewController+Kyber.swift */,
 				257740DD2057AC82003323EB /* CAGradientLayer+Kyber.swift */,
 				2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */,
 				257A3779205B013E00E86794 /* String+Kyber.swift */,
@@ -3499,7 +3496,6 @@
 				291F52A21F6B6DCF00B369AB /* EtherClient.swift in Sources */,
 				299B5E421FD2298E0051361C /* ConfigureTransactionViewController.swift in Sources */,
 				294DFBA31FE0E2EA004CEB56 /* TransactionValue.swift in Sources */,
-				257740DB2057ABD6003323EB /* UIViewController+Kyber.swift in Sources */,
 				2912CD2B1F6A833E00C6CBE3 /* TransactionsViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
 				BB5D6A9E20232EE8000FC5AB /* CurrencyRate+Fee.swift in Sources */,
