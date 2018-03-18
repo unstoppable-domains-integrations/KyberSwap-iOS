@@ -102,7 +102,6 @@ class KNPendingTransactionCoordinator {
           localizedOperations: Array(transaction.localizedOperations),
           state: transaction.state
         )
-        self?.storage.delete([transaction])
         self?.storage.add([newTransaction])
         self?.storage.update(state: receipt.status == "1" ? .completed : .failed, for: newTransaction)
         KNNotificationUtil.postNotification(

@@ -58,6 +58,11 @@ class KNSession {
     // Put here to be able force update new pending transaction immmediately
     self.storage.add([transaction])
     self.pendingTxCoordinator?.updatePendingTranscation(transaction)
+    KNNotificationUtil.postNotification(
+      for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+      object: transaction.id,
+      userInfo: nil
+    )
   }
 
   static func resumeInternalSession() {

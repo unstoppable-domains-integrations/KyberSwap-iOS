@@ -14,7 +14,7 @@ class KNSplashScreenCoordinator: Coordinator {
 
   init() {
     self.splashWindow = UIWindow()
-    self.splashWindow.windowLevel = UIWindowLevelStatusBar + 2.0
+    self.splashWindow.windowLevel = UIWindowLevelStatusBar + 1.0
   }
 
   func start() {

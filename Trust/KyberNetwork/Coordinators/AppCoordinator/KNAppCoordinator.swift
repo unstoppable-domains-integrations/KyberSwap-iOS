@@ -13,6 +13,10 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate var currentWallet: Wallet!
   fileprivate var balanceCoordinator: KNBalanceCoordinator?
 
+  fileprivate var pendingTransactionStatus: KNPendingTransactionStatusCoordinator?
+
+  fileprivate var tabbarController: UITabBarController!
+
   lazy var splashScreenCoordinator: KNSplashScreenCoordinator = {
     return KNSplashScreenCoordinator()
   }()
@@ -55,7 +59,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.balanceCoordinator = KNBalanceCoordinator(session: self.session)
     self.balanceCoordinator?.resume()
 
-    let tabbarController = UITabBarController()
+    self.tabbarController = UITabBarController()
     let exchangeCoordinator: KNExchangeTokenCoordinator = {
       let coordinator = KNExchangeTokenCoordinator(
       session: self.session,
@@ -73,7 +77,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     let walletVC = KNBaseViewController()
     let walletNav = UINavigationController(rootViewController: walletVC)
 
-    tabbarController.viewControllers = [
+    self.tabbarController.viewControllers = [
       exchangeCoordinator.navigationController,
       transferNav,
       walletNav,
@@ -82,7 +86,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     transferNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
     walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
 
-    self.navigationController.present(tabbarController, animated: true, completion: nil)
+    self.navigationController.present(self.tabbarController, animated: true, completion: nil)
 
     self.addObserveNotificationFromSession()
   }
@@ -118,6 +122,12 @@ class KNAppCoordinator: NSObject, Coordinator {
   @objc func pendingTransactionDidUpdate(_ sender: Notification) {
     if let txHash = sender.object as? String,
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
+      if self.pendingTransactionStatus == nil {
+        self.pendingTransactionStatus = KNPendingTransactionStatusCoordinator(transaction: transaction)
+        self.pendingTransactionStatus?.start()
+      } else {
+        self.pendingTransactionStatus?.updateTransaction(transaction)
+      }
       NSLog("Did update transaction with state: \(transaction.state == .completed ? "completed" : "failed")")
     }
   }
