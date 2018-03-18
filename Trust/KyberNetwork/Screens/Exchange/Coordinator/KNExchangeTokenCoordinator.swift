@@ -32,6 +32,7 @@ class KNExchangeTokenCoordinator: Coordinator {
     balanceCoordinator: KNBalanceCoordinator
     ) {
     self.navigationController = navigationController
+    self.navigationController.applyStyle()
     self.session = session
     self.balanceCoordinator = balanceCoordinator
     self.navigationController.applyStyle()

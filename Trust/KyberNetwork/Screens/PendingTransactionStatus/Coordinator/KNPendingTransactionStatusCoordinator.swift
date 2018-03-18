@@ -3,49 +3,50 @@
 import UIKit
 import SafariServices
 
+protocol KNPendingTransactionStatusCoordinatorDelegate: class {
+  func pendingTransactionStatusCoordinatorDidClose()
+}
+
 class KNPendingTransactionStatusCoordinator: Coordinator {
 
-  let newWindow: UIWindow
   var transaction: Transaction
+  weak var delegate: KNPendingTransactionStatusCoordinatorDelegate?
 
   var coordinators: [Coordinator] = []
 
+  let navigationController: UINavigationController
   var rootViewController: KNPendingTransactionStatusViewController?
 
-  init(transaction: Transaction) {
+  init(
+    navigationController: UINavigationController,
+    transaction: Transaction,
+    delegate: KNPendingTransactionStatusCoordinatorDelegate?
+    ) {
+    self.navigationController = navigationController
     self.transaction = transaction
-    self.newWindow = UIWindow()
-    self.newWindow.frame = UIScreen.main.bounds
-    self.newWindow.windowLevel = UIWindowLevelAlert + 1.0
-    self.newWindow.isHidden = true
+    self.delegate = delegate
   }
 
   func start() {
     self.rootViewController = KNPendingTransactionStatusViewController(delegate: self, transaction: self.transaction)
-    self.newWindow.rootViewController = self.rootViewController
-    self.newWindow.makeKeyAndVisible()
-    self.rootViewController?.updateViewWithTransaction(transaction)
-    self.newWindow.isHidden = false
+    self.navigationController.present(self.rootViewController!, animated: true, completion: nil)
   }
 
   func stop(completion: @escaping () -> Void) {
-    self.newWindow.isHidden = true
-    completion()
+    self.rootViewController?.dismiss(animated: true, completion: completion)
   }
 
   func updateTransaction(_ transaction: Transaction) {
     self.transaction = transaction
-    if self.newWindow.isHidden {
-      self.start()
-    } else {
-      self.rootViewController?.updateViewWithTransaction(self.transaction)
-    }
+    self.rootViewController?.updateViewWithTransaction(self.transaction)
   }
 }
 
 extension KNPendingTransactionStatusCoordinator: KNPendingTransactionStatusViewControllerDelegate {
   func pendingTransactionStatusVCUserDidClickClose() {
-    self.stop {}
+    self.stop {
+      self.delegate?.pendingTransactionStatusCoordinatorDidClose()
+    }
   }
 
   func pendingTransactionStatusVCUserDidClickMoreDetails() {

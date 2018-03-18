@@ -83,17 +83,20 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
 
   fileprivate func updateView() {
     if self.transaction == nil { return }
-    let gasPrice = EtherNumberFormatter.full.number(from: self.transaction.gasPrice, units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-    let gasUsed = EtherNumberFormatter.full.number(from: self.transaction.gasUsed, units: UnitConfiguration.gasFeeUnit) ?? BigInt(0)
     self.estimateFeeTextLabel.text = "Actual Fee".toBeLocalised()
-    let fee = gasPrice * gasUsed / BigInt(UnitConfiguration.gasFeeUnit.rawValue)
-    var estimateFeeString = "ETH \(fee.fullString(units: UnitConfiguration.gasFeeUnit))"
 
-    let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
-    if let rate = KNRateCoordinator.shared.usdRate(for: ethToken) {
-      let usdValue = rate.rate * fee
-      estimateFeeString = "\(estimateFeeString) ($\(usdValue.shortString(units: .ether)))"
-    }
+    let estimateFeeString: String = {
+      let gasPrice = EtherNumberFormatter.full.number(from: self.transaction.gasPrice, units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+      let gasUsed = EtherNumberFormatter.full.number(from: self.transaction.gasUsed, units: UnitConfiguration.gasFeeUnit) ?? BigInt(0)
+      let fee = gasPrice * gasUsed / BigInt(UnitConfiguration.gasFeeUnit.rawValue)
+      var string = "ETH \(fee.fullString(units: UnitConfiguration.gasFeeUnit))"
+      let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+      if let rate = KNRateCoordinator.shared.usdRate(for: ethToken) {
+        let usdValue = rate.rate * fee
+        string = "\(string) ($\(usdValue.shortString(units: .ether)))"
+      }
+      return string
+    }()
 
     self.estimateFeeValueLabel.text = estimateFeeString
 
@@ -118,11 +121,15 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     let to = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == local.to })!
 
     let amount = EtherNumberFormatter.full.number(from: self.transaction.value, decimals: from.decimal) ?? BigInt(0)
-    var amountString = "\(from.symbol) \(self.transaction.value)"
-    if let rate = KNRateCoordinator.shared.usdRate(for: from) {
-      let usdValue = rate.rate * amount
-      amountString = "\(amountString) \n($\(usdValue.shortString(units: .ether)))"
-    }
+    let amountString: String = {
+      var string = "\(from.symbol) \(self.transaction.value)"
+      if let rate = KNRateCoordinator.shared.usdRate(for: from) {
+        let usdValue = rate.rate * amount
+        string = "\(string) \n($\(usdValue.shortString(units: .ether)))"
+      }
+      return string
+    }()
+
     self.amountLabel.text = amountString
 
     let exchangeRate = EtherNumberFormatter.full.number(from: local.value, decimals: to.decimal) ?? BigInt(0)
@@ -136,7 +143,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     self.transactionTimeTextLabel.text = "Transaction Time".toBeLocalised()
     let dateFormatter: DateFormatter = {
       let formatter = DateFormatter()
-      formatter.dateFormat = "dd MMM yyyy, hh:mm:ss"
+      formatter.dateFormat = "dd MMM yyyy, HH:mm:ss"
       return formatter
     }()
     self.transactionTimeValueLabel.text = dateFormatter.string(from: self.transaction.date)

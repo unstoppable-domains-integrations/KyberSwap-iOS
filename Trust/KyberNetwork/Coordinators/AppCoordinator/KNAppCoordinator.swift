@@ -13,7 +13,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate var currentWallet: Wallet!
   fileprivate var balanceCoordinator: KNBalanceCoordinator?
 
-  fileprivate var pendingTransactionStatus: KNPendingTransactionStatusCoordinator?
+  fileprivate var pendingTransactionStatusCoordinator: KNPendingTransactionStatusCoordinator?
 
   fileprivate var tabbarController: UITabBarController!
 
@@ -86,20 +86,25 @@ class KNAppCoordinator: NSObject, Coordinator {
     transferNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
     walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
 
-    self.navigationController.present(self.tabbarController, animated: true, completion: nil)
+    if let topViewController = self.navigationController.topViewController {
+      topViewController.addChildViewController(self.tabbarController)
+      self.tabbarController.view.frame = topViewController.view.frame
+      self.navigationController.topViewController?.view.addSubview(self.tabbarController.view)
+      self.tabbarController.didMove(toParentViewController: topViewController)
+    }
 
     self.addObserveNotificationFromSession()
   }
 
   func stopLastSession() {
+    self.removeObserveNotificationFromSession()
     self.session.stopSession()
-    self.navigationController.dismiss(animated: true) {
-      self.currentWallet = nil
-      self.session = nil
-      self.balanceCoordinator?.pause()
-      self.balanceCoordinator = nil
-      self.removeObserveNotificationFromSession()
-    }
+    self.currentWallet = nil
+    self.session = nil
+    self.balanceCoordinator?.pause()
+    self.balanceCoordinator = nil
+    self.tabbarController.view.removeFromSuperview()
+    self.tabbarController.removeFromParentViewController()
   }
 
   fileprivate func addObserveNotificationFromSession() {
@@ -122,13 +127,16 @@ class KNAppCoordinator: NSObject, Coordinator {
   @objc func pendingTransactionDidUpdate(_ sender: Notification) {
     if let txHash = sender.object as? String,
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
-      if self.pendingTransactionStatus == nil {
-        self.pendingTransactionStatus = KNPendingTransactionStatusCoordinator(transaction: transaction)
-        self.pendingTransactionStatus?.start()
+      if self.pendingTransactionStatusCoordinator == nil {
+        self.pendingTransactionStatusCoordinator = KNPendingTransactionStatusCoordinator(
+          navigationController: self.navigationController,
+          transaction: transaction,
+          delegate: self
+        )
+        self.pendingTransactionStatusCoordinator?.start()
       } else {
-        self.pendingTransactionStatus?.updateTransaction(transaction)
+        self.pendingTransactionStatusCoordinator?.updateTransaction(transaction)
       }
-      NSLog("Did update transaction with state: \(transaction.state == .completed ? "completed" : "failed")")
     }
   }
 }
@@ -167,5 +175,11 @@ extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
 extension KNAppCoordinator: KNSessionDelegate {
   func userDidClickExitSession() {
     self.stopLastSession()
+  }
+}
+
+extension KNAppCoordinator: KNPendingTransactionStatusCoordinatorDelegate {
+  func pendingTransactionStatusCoordinatorDidClose() {
+    self.pendingTransactionStatusCoordinator = nil
   }
 }
