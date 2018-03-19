@@ -26,6 +26,15 @@ class KNExchangeTokenCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var pendingTransactionListCoordinator: KNPendingTransactionListCoordinator = {
+    let coordinator = KNPendingTransactionListCoordinator(
+      navigationController: self.navigationController,
+      storage: self.session.storage
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+
   fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
 
   init(
@@ -227,6 +236,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
     self.navigationController.pushViewController(self.selectTokenViewController, animated: true)
   }
 
+  func exchangeTokenUserDidClickPendingTransactions() {
+    self.addCoordinator(self.pendingTransactionListCoordinator)
+    self.pendingTransactionListCoordinator.start()
+  }
+
   func exchangeTokenUserDidClickExit() {
     self.delegate?.userDidClickExitSession()
   }
@@ -254,5 +268,23 @@ extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate
         self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }
     })
+  }
+}
+
+extension KNExchangeTokenCoordinator: KNPendingTransactionListCoordinatorDelegate {
+  func pendingTransactionListDidSelectTransferNow() {
+    self.rootViewController.tabBarController?.selectedIndex = 1
+  }
+
+  func pendingTransactionListDidSelectExchangeNow() {
+    self.rootViewController.tabBarController?.selectedIndex = 0
+  }
+
+  func pendingTransactionListDidSelectTransaction(_ transaction: Transaction) {
+    KNNotificationUtil.postNotification(
+      for: kTransactionDidUpdateNotificationKey,
+      object: transaction.id,
+      userInfo: nil
+    )
   }
 }

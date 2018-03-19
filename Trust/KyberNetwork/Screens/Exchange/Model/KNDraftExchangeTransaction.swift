@@ -39,7 +39,7 @@ extension KNDraftExchangeTransaction {
       from: self.from.address,
       to: self.to.address,
       contract: nil,
-      type: "",
+      type: "exchange",
       value: expectedAmount,
       symbol: nil,
       name: nil,

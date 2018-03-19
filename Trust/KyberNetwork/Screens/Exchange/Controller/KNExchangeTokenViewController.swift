@@ -12,6 +12,7 @@ protocol KNExchangeTokenViewControllerDelegate: class {
   func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction)
   func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool)
   func exchangeTokenUserDidClickExit()
+  func exchangeTokenUserDidClickPendingTransactions()
 }
 
 class KNExchangeTokenViewController: KNBaseViewController {
@@ -107,6 +108,9 @@ extension KNExchangeTokenViewController {
   fileprivate func setupUI() {
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "pending_white_icon"), style: .plain, target: self, action: #selector(self.pendingTransactionsPressed(_:)))
+    self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+
     self.setupInitialData()
     self.setupFromToken()
     self.setupToToken()
@@ -385,6 +389,10 @@ extension KNExchangeTokenViewController {
 
   @objc func exitButtonPressed(_ sender: Any) {
     self.delegate?.exchangeTokenUserDidClickExit()
+  }
+
+  @objc func pendingTransactionsPressed(_ sender: Any) {
+    self.delegate?.exchangeTokenUserDidClickPendingTransactions()
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
