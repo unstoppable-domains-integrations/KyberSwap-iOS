@@ -10,7 +10,7 @@ struct KNTransactionReceipt: Decodable {
   let gasUsed: String
   let cumulativeGasUsed: String
   let contractAddress: String
-//  let logs: []
+  let logsData: String
   let logsBloom: String
   let status: String
 }
@@ -24,7 +24,20 @@ extension KNTransactionReceipt {
     let cumulativeGasUsed = dictionary["cumulativeGasUsed"] as? String ?? ""
     let gasUsed = dictionary["gasUsed"] as? String ?? ""
     let contractAddress = dictionary["contractAddress"] as? String ?? ""
-//    let logs: [Any] = dictionary["logs"] as? [Any] ?? []
+    let logsData: String = {
+      if let logs: [JSONDictionary] = dictionary["logs"] as? [JSONDictionary] {
+        for log in logs {
+          let address = log["address"] as? String ?? ""
+          let topics = log["topics"] as? [String] ?? []
+          let data = log["data"] as? String ?? ""
+          if let customRPC = KNEnvironment.default.knCustomRPC, address == customRPC.networkAddress, topics.first == customRPC.tradeTopic {
+            return data
+          }
+        }
+      }
+      return ""
+    }()
+
     let logsBloom = dictionary["logsBloom"] as? String ?? ""
     let status = dictionary["status"] as? String ?? ""
 
@@ -36,7 +49,7 @@ extension KNTransactionReceipt {
       gasUsed: BigInt(gasUsed.drop0x, radix: 16)?.description ?? "",
       cumulativeGasUsed: BigInt(cumulativeGasUsed.drop0x, radix: 16)?.description ?? "",
       contractAddress: contractAddress,
-//      logs: logs,
+      logsData: logsData,
       logsBloom: logsBloom,
       status: status.drop0x
     )
