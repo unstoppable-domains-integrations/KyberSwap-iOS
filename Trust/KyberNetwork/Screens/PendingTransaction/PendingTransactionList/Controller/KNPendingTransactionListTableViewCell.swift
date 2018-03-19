@@ -20,7 +20,7 @@ class KNPendingTransactionListTableViewCell: UITableViewCell {
     guard let localObjc = transaction.localizedOperations.first else { return }
     let fromToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.from })!
 
-    self.amountLabel.text = "\(fromToken.symbol) \(transaction.amount)"
+    self.amountLabel.text = "\(fromToken.symbol) \(transaction.value)"
 
     if localObjc.type == "exchange" {
       let toToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.to })!
