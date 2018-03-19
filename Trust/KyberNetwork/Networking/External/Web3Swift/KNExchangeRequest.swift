@@ -18,3 +18,14 @@ struct KNExchangeRequestEncode: Web3Request {
     return .script(command: run)
   }
 }
+
+struct KNExchangeEvenDataDecode: Web3Request {
+  typealias Response = [String: String]
+
+  let data: String
+
+  var type: Web3RequestType {
+    let run = "web3.eth.abi.decodeParameters([{\"name\": \"src\", \"type\": \"address\"}, {\"name\": \"dest\", \"type\": \"address\"}, {\"name\": \"srcAmount\", \"type\": \"uint256\"}, {\"name\": \"destAmount\", \"type\": \"uint256\"}], \"\(data)\")"
+    return .script(command: run)
+  }
+}
