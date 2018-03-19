@@ -19,7 +19,7 @@ class KNSession {
   let realm: Realm
   let storage: TransactionsStorage
 
-  fileprivate var pendingTxCoordinator: KNPendingTransactionCoordinator?
+  fileprivate var transacionCoordinator: KNTransactionCoordinator?
 
   init(keystore: Keystore,
        wallet: Wallet) {
@@ -43,26 +43,26 @@ class KNSession {
 
   func startSession() {
     self.web3Swift.start()
-    self.pendingTxCoordinator?.stopUpdatingPendingTransactions()
-    self.pendingTxCoordinator = KNPendingTransactionCoordinator(
+    self.transacionCoordinator?.stopUpdatingPendingTransactions()
+    self.transacionCoordinator = KNTransactionCoordinator(
       storage: self.storage,
       web3Swift: self.web3Swift
     )
-    self.pendingTxCoordinator?.startUpdatingPendingTransactions()
+    self.transacionCoordinator?.startUpdatingPendingTransactions()
   }
 
   func stopSession() {
     _ = self.keystore.delete(wallet: self.wallet)
-    self.pendingTxCoordinator?.stopUpdatingPendingTransactions()
-    self.pendingTxCoordinator = nil
+    self.transacionCoordinator?.stopUpdatingPendingTransactions()
+    self.transacionCoordinator = nil
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {
     // Put here to be able force update new pending transaction immmediately
     self.storage.add([transaction])
-    self.pendingTxCoordinator?.updatePendingTranscation(transaction)
+    self.transacionCoordinator?.updatePendingTranscation(transaction)
     KNNotificationUtil.postNotification(
-      for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+      for: KNTransactionCoordinator.didUpdateNotificationKey,
       object: transaction.id,
       userInfo: nil
     )

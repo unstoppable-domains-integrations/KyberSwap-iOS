@@ -269,7 +269,6 @@ extension KNExchangeTokenViewController {
 }
 // MARK: Update data from coordinator
 extension KNExchangeTokenViewController {
-  // TODO (Mike): Should be removed
   func updateBalance(usd: BigInt, eth: BigInt) {
     self.navigationItem.title = "$\(EtherNumberFormatter.short.string(from: usd))"
     self.view.layoutIfNeeded()
@@ -434,6 +433,7 @@ extension KNExchangeTokenViewController {
   }
 
   @IBAction func exchangeButtonPressed(_ sender: Any) {
+    self.view.endEditing(true)
     self.validateData { [weak self] result in
       guard let `self` = self else { return }
       switch result {
@@ -454,6 +454,13 @@ extension KNExchangeTokenViewController {
 
 // MARK: Delegations
 extension KNExchangeTokenViewController: UITextFieldDelegate {
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if let text = textField.text, let int = EtherNumberFormatter.full.number(from: text), int.isZero {
+      textField.text = ""
+    }
+  }
+
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text

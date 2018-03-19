@@ -26,6 +26,8 @@ class KNExchangeTokenCoordinator: Coordinator {
     return controller
   }()
 
+  fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession,
@@ -48,32 +50,32 @@ class KNExchangeTokenCoordinator: Coordinator {
   }
 
   fileprivate func addObserveNotifications() {
-    let name = Notification.Name(KNBalanceCoordinator.KNBalanceNotificationKeys.ethBalanceDidUpdate.rawValue)
+    let ethBalanceName = Notification.Name(kETHBalanceDidUpdateNotificationKey)
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.ethBalanceDidUpdateNotification(_:)),
-      name: name,
+      name: ethBalanceName,
       object: nil
     )
-    let tokenBalanceName = Notification.Name(KNBalanceCoordinator.KNBalanceNotificationKeys.otherTokensBalanceDidUpdate.rawValue)
+    let tokenBalanceName = Notification.Name(kOtherBalanceDidUpdateNotificationKey)
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.tokenBalancesDidUpdateNotification(_:)),
       name: tokenBalanceName,
       object: nil
     )
-    let rateUSDName = Notification.Name(KNRateCoordinator.KNRateNotificationKeys.exchangeRateUSDDidUpdateKey.rawValue)
+    let rateUSDName = Notification.Name(kExchangeUSDRateNotificationKey)
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.usdRateDidUpdateNotification(_:)), name: rateUSDName, object: nil)
   }
 
   fileprivate func removeObserveNotifications() {
-    let name = Notification.Name(KNBalanceCoordinator.KNBalanceNotificationKeys.ethBalanceDidUpdate.rawValue)
-    NotificationCenter.default.removeObserver(self, name: name, object: nil)
-    let tokenBalanceName = Notification.Name(KNBalanceCoordinator.KNBalanceNotificationKeys.otherTokensBalanceDidUpdate.rawValue)
+    let ethBalanceName = Notification.Name(kETHBalanceDidUpdateNotificationKey)
+    NotificationCenter.default.removeObserver(self, name: ethBalanceName, object: nil)
+    let tokenBalanceName = Notification.Name(kOtherBalanceDidUpdateNotificationKey)
     NotificationCenter.default.removeObserver(self, name: tokenBalanceName, object: nil)
-    let rateUSDName = Notification.Name(KNRateCoordinator.KNRateNotificationKeys.exchangeRateUSDDidUpdateKey.rawValue)
+    let rateUSDName = Notification.Name(kExchangeUSDRateNotificationKey)
     NotificationCenter.default.removeObserver(self, name: rateUSDName, object: nil)
   }
 
@@ -166,6 +168,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
             expectedRate: data.0,
             slippageRate: data.1
           )
+          if self?.confirmTransactionViewController != nil {
+            self?.confirmTransactionViewController.updateExpectedRateData(
+              source: source,
+              dest: dest,
+              amount: amount,
+              expectedRate: data.0
+            )
+          }
         }
     }
   }
@@ -185,12 +195,12 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
 
   func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction) {
     let transactionType = KNTransactionType.exchange(exchangeTransaction)
-    let confirmVC = KNConfirmTransactionViewController(
+    self.confirmTransactionViewController = KNConfirmTransactionViewController(
       delegate: self,
       type: transactionType
     )
-    confirmVC.modalPresentationStyle = .overFullScreen
-    self.navigationController.topViewController?.present(confirmVC, animated: false, completion: nil)
+    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
+    self.navigationController.topViewController?.present(self.confirmTransactionViewController, animated: false, completion: nil)
   }
 
   func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool) {
@@ -213,11 +223,14 @@ extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
 
 extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
   func confirmTransactionDidCancel() {
-    self.navigationController.topViewController?.dismiss(animated: false, completion: nil)
+    self.navigationController.topViewController?.dismiss(animated: false, completion: {
+      self.confirmTransactionViewController = nil
+    })
   }
 
   func confirmTransactionDidConfirm(type: KNTransactionType) {
     self.navigationController.topViewController?.dismiss(animated: false, completion: {
+      self.confirmTransactionViewController = nil
       if case .exchange(let exchangeTransaction) = type {
         self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }

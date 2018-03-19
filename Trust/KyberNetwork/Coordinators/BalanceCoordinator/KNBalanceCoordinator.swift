@@ -8,11 +8,6 @@ import TrustKeystore
 
 class KNBalanceCoordinator {
 
-  enum KNBalanceNotificationKeys: String {
-    case ethBalanceDidUpdate
-    case otherTokensBalanceDidUpdate
-  }
-
   fileprivate let session: KNSession
 
   fileprivate var fetchETHBalanceTimer: Timer?
@@ -103,7 +98,7 @@ class KNBalanceCoordinator {
       switch result {
       case .success(let balance):
         self.ethBalance = balance
-        KNNotificationUtil.postNotification(for: KNBalanceNotificationKeys.ethBalanceDidUpdate.rawValue)
+        KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
       case .failure(let error):
         NSLog("Load ETH Balance failed with error: \(error.description)")
       }
@@ -135,7 +130,7 @@ class KNBalanceCoordinator {
     // notify when all load balances are done
     group.notify(queue: .main) {
       self.isFetchingOtherTokensBalance = false
-      KNNotificationUtil.postNotification(for: KNBalanceNotificationKeys.otherTokensBalanceDidUpdate.rawValue)
+      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
     }
   }
 }

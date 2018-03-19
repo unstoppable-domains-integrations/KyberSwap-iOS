@@ -16,6 +16,20 @@ struct KNDraftExchangeTransaction {
 }
 
 extension KNDraftExchangeTransaction {
+
+  func copy(expectedRate: BigInt) -> KNDraftExchangeTransaction {
+    return KNDraftExchangeTransaction(
+      from: self.from,
+      to: self.to,
+      amount: self.amount,
+      maxDestAmount: self.maxDestAmount,
+      expectedRate: expectedRate,
+      minRate: self.minRate,
+      gasPrice: self.gasPrice,
+      gasLimit: self.gasLimit
+    )
+  }
+
   func toTransaction(hash: String, fromAddr: Address, toAddr: Address, nounce: Int) -> Transaction {
     // temporary: local object contains from and to tokens + expected rate
     let expectedAmount: String = {

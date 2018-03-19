@@ -41,7 +41,7 @@
 		257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3793205BC27400E86794 /* KNBaseViewController.swift */; };
 		257A3797205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A3795205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift */; };
 		257A3798205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257A3796205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib */; };
-		257A379B205CDA8100E86794 /* KNPendingTransactionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */; };
+		257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379A205CDA8100E86794 /* KNTransactionCoordinator.swift */; };
 		257A379E205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379D205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift */; };
 		257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */; };
 		257A37A5205D187100E86794 /* KNPendingTransactionStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257A37A3205D187100E86794 /* KNPendingTransactionStatusViewController.swift */; };
@@ -494,7 +494,7 @@
 		257A3793205BC27400E86794 /* KNBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBaseViewController.swift; sourceTree = "<group>"; };
 		257A3795205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		257A3796205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionDetailsTableViewCell.xib; sourceTree = "<group>"; };
-		257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionCoordinator.swift; sourceTree = "<group>"; };
+		257A379A205CDA8100E86794 /* KNTransactionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionCoordinator.swift; sourceTree = "<group>"; };
 		257A379D205CFCC300E86794 /* KNGetTransactionReceiptRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGetTransactionReceiptRequest.swift; sourceTree = "<group>"; };
 		257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionReceipt.swift; sourceTree = "<group>"; };
 		257A37A3205D187100E86794 /* KNPendingTransactionStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionStatusViewController.swift; sourceTree = "<group>"; };
@@ -1193,7 +1193,7 @@
 		257A3799205CDA6000E86794 /* TransactionCoordinator */ = {
 			isa = PBXGroup;
 			children = (
-				257A379A205CDA8100E86794 /* KNPendingTransactionCoordinator.swift */,
+				257A379A205CDA8100E86794 /* KNTransactionCoordinator.swift */,
 			);
 			path = TransactionCoordinator;
 			sourceTree = "<group>";
@@ -3438,7 +3438,7 @@
 				29FF12FB1F74CC8200AFD326 /* EthereumAddressRule.swift in Sources */,
 				294EC1D81FD7FBAB0065EB20 /* BiometryAuthenticationType.swift in Sources */,
 				29E6E0721FEA200D0079265A /* ConfirmPaymentDetailsViewModel.swift in Sources */,
-				257A379B205CDA8100E86794 /* KNPendingTransactionCoordinator.swift in Sources */,
+				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				29E6E0701FEA12910079265A /* TransactionConfigurator.swift in Sources */,
 				299B5E3B1FD141B70051361C /* BackupViewModel.swift in Sources */,

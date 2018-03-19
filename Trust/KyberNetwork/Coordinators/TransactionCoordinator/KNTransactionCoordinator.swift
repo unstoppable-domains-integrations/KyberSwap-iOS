@@ -8,9 +8,9 @@ import JavaScriptKit
 import Result
 import BigInt
 
-class KNPendingTransactionCoordinator {
+class KNTransactionCoordinator {
 
-  static let didUpdateNotificationKey = "KNPendingTransactionCoordinatorNotificationKey"
+  static let didUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
 
   let storage: TransactionsStorage
   let web3Swift: Web3Swift
@@ -50,7 +50,7 @@ class KNPendingTransactionCoordinator {
           if transaction.date.addingTimeInterval(60) < Date() {
             self.storage.update(state: .completed, for: transaction)
             KNNotificationUtil.postNotification(
-              for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+              for: KNTransactionCoordinator.didUpdateNotificationKey,
               object: transaction.id,
               userInfo: nil
             )
@@ -69,7 +69,7 @@ class KNPendingTransactionCoordinator {
               if transaction.date.addingTimeInterval(60) < Date() {
                 self.storage.update(state: .failed, for: transaction)
                 KNNotificationUtil.postNotification(
-                  for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+                  for: KNTransactionCoordinator.didUpdateNotificationKey,
                   object: transaction.id,
                   userInfo: nil
                 )
@@ -141,12 +141,11 @@ class KNPendingTransactionCoordinator {
             nonce: transaction.nonce,
             date: transaction.date,
             localizedOperations: localObjects,
-            state: transaction.state
+            state: receipt.status == "1" ? .completed : .failed
           )
           self?.storage.add([newTransaction])
-          self?.storage.update(state: receipt.status == "1" ? .completed : .failed, for: newTransaction)
           KNNotificationUtil.postNotification(
-            for: KNPendingTransactionCoordinator.didUpdateNotificationKey,
+            for: kTransactionDidUpdateNotificationKey,
             object: newTransaction.id,
             userInfo: nil
           )

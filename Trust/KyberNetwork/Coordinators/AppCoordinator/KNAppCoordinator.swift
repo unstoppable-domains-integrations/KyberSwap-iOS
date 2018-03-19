@@ -110,8 +110,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate func addObserveNotificationFromSession() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(self.pendingTransactionDidUpdate(_:)),
-      name: Notification.Name(KNPendingTransactionCoordinator.didUpdateNotificationKey),
+      selector: #selector(self.transactionStateDidUpdate(_:)),
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
       object: nil
     )
   }
@@ -119,12 +119,12 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate func removeObserveNotificationFromSession() {
     NotificationCenter.default.removeObserver(
       self,
-      name: Notification.Name(KNPendingTransactionCoordinator.didUpdateNotificationKey),
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
       object: nil
     )
   }
 
-  @objc func pendingTransactionDidUpdate(_ sender: Notification) {
+  @objc func transactionStateDidUpdate(_ sender: Notification) {
     if let txHash = sender.object as? String,
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
       if self.pendingTransactionStatusCoordinator == nil {

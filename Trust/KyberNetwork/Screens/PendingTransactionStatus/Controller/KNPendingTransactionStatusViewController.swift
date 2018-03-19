@@ -132,9 +132,16 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
 
     self.amountLabel.text = amountString
 
-    let expectedAmount = EtherNumberFormatter.full.number(from: local.value, decimals: to.decimal) ?? BigInt(0)
-    self.transactionTypeLabel.text = "Exchange To".toBeLocalised()
-    self.detailsTransactionTypeLabel.text = "\(to.symbol) \(expectedAmount.fullString(decimals: to.decimal))"
+    if self.transaction.localizedOperations.isEmpty {
+      // Transfer doesn't have localised operations
+      self.transactionTypeLabel.text = "Transfer To".toBeLocalised()
+      self.detailsTransactionTypeLabel.text = "\(self.transaction.to)"
+    } else {
+      // Exchange
+      let expectedAmount = EtherNumberFormatter.full.number(from: local.value, decimals: to.decimal) ?? BigInt(0)
+      self.transactionTypeLabel.text = "Exchange To".toBeLocalised()
+      self.detailsTransactionTypeLabel.text = "\(to.symbol) \(expectedAmount.fullString(decimals: to.decimal))"
+    }
 
     self.transactionHashTextLabel.text = "Transaction Hash".toBeLocalised()
     self.transactionHashValueLabel.text = self.transaction.id

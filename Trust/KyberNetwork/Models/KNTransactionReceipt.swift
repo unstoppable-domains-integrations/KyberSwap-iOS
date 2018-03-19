@@ -24,13 +24,14 @@ extension KNTransactionReceipt {
     let cumulativeGasUsed = dictionary["cumulativeGasUsed"] as? String ?? ""
     let gasUsed = dictionary["gasUsed"] as? String ?? ""
     let contractAddress = dictionary["contractAddress"] as? String ?? ""
+    let customRPC: KNCustomRPC = KNEnvironment.default.knCustomRPC!
     let logsData: String = {
       if let logs: [JSONDictionary] = dictionary["logs"] as? [JSONDictionary] {
         for log in logs {
           let address = log["address"] as? String ?? ""
           let topics = log["topics"] as? [String] ?? []
           let data = log["data"] as? String ?? ""
-          if let customRPC = KNEnvironment.default.knCustomRPC, address == customRPC.networkAddress, topics.first == customRPC.tradeTopic {
+          if address == customRPC.networkAddress, topics.first == customRPC.tradeTopic {
             return data
           }
         }

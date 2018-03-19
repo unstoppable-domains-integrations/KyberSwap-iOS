@@ -48,7 +48,6 @@ class KNConfirmTransactionViewController: UIViewController {
   }
 
   fileprivate func setupUI() {
-
     self.containerView.rounded(color: .clear, width: 0, radius: 10.0)
     self.containerView.backgroundColor = UIColor.white
 
@@ -86,6 +85,16 @@ class KNConfirmTransactionViewController: UIViewController {
       return
     }
     self.contentTableView.reloadData()
+  }
+
+  func updateExpectedRateData(source: KNToken, dest: KNToken, amount: BigInt, expectedRate: BigInt) {
+    if case .exchange(let transaction) = self.transactionType {
+      if transaction.from == source && transaction.to == dest && transaction.amount == amount {
+        let newTransaction = transaction.copy(expectedRate: expectedRate)
+        self.transactionType = .exchange(newTransaction)
+        self.createData()
+      }
+    }
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

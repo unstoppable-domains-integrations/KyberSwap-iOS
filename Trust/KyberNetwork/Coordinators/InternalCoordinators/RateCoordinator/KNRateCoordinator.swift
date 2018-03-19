@@ -13,11 +13,6 @@ import Moya
 
 class KNRateCoordinator {
 
-  enum KNRateNotificationKeys: String {
-    case exchangeRateDidUpdateKey
-    case exchangeRateUSDDidUpdateKey
-  }
-
   static let shared = KNRateCoordinator()
 
   fileprivate let provider = MoyaProvider<KyberNetworkService>()
@@ -83,7 +78,7 @@ class KNRateCoordinator {
       self.isLoadingExchangeTokenRates = false
       if case .success(let rates) = result {
         self.tokenRates = rates
-        KNNotificationUtil.postNotification(for: KNRateNotificationKeys.exchangeRateDidUpdateKey.rawValue)
+        KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
       }
     }
   }
@@ -96,7 +91,7 @@ class KNRateCoordinator {
       self.isLoadingExchangeUSDRates = false
       if case .success(let rates) = result {
         self.usdRates = rates
-        KNNotificationUtil.postNotification(for: KNRateNotificationKeys.exchangeRateUSDDidUpdateKey.rawValue)
+        KNNotificationUtil.postNotification(for: kExchangeUSDRateNotificationKey)
       }
     }
   }
