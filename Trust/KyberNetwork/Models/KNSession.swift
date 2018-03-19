@@ -44,7 +44,10 @@ class KNSession {
   func startSession() {
     self.web3Swift.start()
     self.pendingTxCoordinator?.stopUpdatingPendingTransactions()
-    self.pendingTxCoordinator = KNPendingTransactionCoordinator(storage: self.storage)
+    self.pendingTxCoordinator = KNPendingTransactionCoordinator(
+      storage: self.storage,
+      web3Swift: self.web3Swift
+    )
     self.pendingTxCoordinator?.startUpdatingPendingTransactions()
   }
 

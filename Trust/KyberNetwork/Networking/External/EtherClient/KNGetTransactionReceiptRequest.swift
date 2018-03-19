@@ -27,4 +27,3 @@ struct KNGetTransactionReceiptRequest: JSONRPCKit.Request {
     return receipt
   }
 }
-
