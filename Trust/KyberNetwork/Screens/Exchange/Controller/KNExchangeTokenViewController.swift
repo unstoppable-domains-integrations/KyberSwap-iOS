@@ -264,13 +264,13 @@ extension KNExchangeTokenViewController {
         let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
         return self.expectedRate * amount / BigInt(10).power(self.selectedToToken.decimal)
       }()
-      self.amountToTokenTextField.text = expectedAmount.shortString(decimals: self.selectedToToken.decimal)
+      self.amountToTokenTextField.text = expectedAmount.fullString(decimals: self.selectedToToken.decimal)
     } else {
       let amountSent: BigInt = {
         let expectedAmount = self.amountToTokenTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) ?? BigInt(0)
         return self.expectedRate.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(self.selectedFromToken.decimal) / self.expectedRate
       }()
-      self.amountFromTokenTextField.text = amountSent.shortString(decimals: self.selectedFromToken.decimal)
+      self.amountFromTokenTextField.text = amountSent.fullString(decimals: self.selectedFromToken.decimal)
     }
   }
 
@@ -476,12 +476,24 @@ extension KNExchangeTokenViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if let text = textField.text, let int = EtherNumberFormatter.full.number(from: text), int.isZero {
       textField.text = ""
+      self.updateViewTextFieldDidChange(textField)
     }
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
+    self.updateViewTextFieldDidChange(textField)
+    return false
+  }
+
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    textField.text = ""
+    self.updateViewTextFieldDidChange(textField)
+    return false
+  }
+
+  fileprivate func updateViewTextFieldDidChange(_ textField: UITextField) {
     if textField == self.amountFromTokenTextField {
       self.isFocusingFromTokenAmount = true
     } else if textField == self.amountToTokenTextField {
@@ -493,6 +505,5 @@ extension KNExchangeTokenViewController: UITextFieldDelegate {
     }
     self.shouldUpdateEstimateGasUsed(textField)
     self.expectedRateTimerShouldRepeat(textField)
-    return false
   }
 }
