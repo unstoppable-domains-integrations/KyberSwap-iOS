@@ -13,12 +13,12 @@ class KNTransactionCoordinator {
   static let didUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
 
   let storage: TransactionsStorage
-  let web3Swift: Web3Swift
+  let externalProvider: KNExternalProvider
   fileprivate var timer: Timer?
 
-  init(storage: TransactionsStorage, web3Swift: Web3Swift) {
+  init(storage: TransactionsStorage, externalProvider: KNExternalProvider) {
     self.storage = storage
-    self.web3Swift = web3Swift
+    self.externalProvider = externalProvider
   }
 
   func startUpdatingPendingTransactions() {
@@ -38,123 +38,65 @@ class KNTransactionCoordinator {
     self.checkTransactionReceipt(transaction) { [weak self] error in
       if error == nil { return }
       guard let `self` = self else { return }
-      let request = GetTransactionRequest(hash: transaction.id)
-      Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
+      self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
         guard let `self` = self else { return }
         if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
-        switch result {
-        case .success:
-          if transaction.date.addingTimeInterval(60) < Date() {
-            self.storage.update(state: .completed, for: transaction)
-            KNNotificationUtil.postNotification(
-              for: KNTransactionCoordinator.didUpdateNotificationKey,
-              object: transaction.id,
-              userInfo: nil
-            )
-          }
-        case .failure(let error):
-          switch error {
-          case .responseError(let err):
-            guard let respError = err as? JSONRPCError else {
-              return
-            }
+        if let error = sessionError {
+          // Failure
+          if case .responseError(let err) = error, let respError = err as? JSONRPCError {
             switch respError {
             case .responseError(let code, let message, _):
               NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)")
               self.storage.delete([transaction])
             case .resultObjectParseError:
               if transaction.date.addingTimeInterval(60) < Date() {
-                self.storage.update(state: .failed, for: transaction)
-                KNNotificationUtil.postNotification(
-                  for: KNTransactionCoordinator.didUpdateNotificationKey,
-                  object: transaction.id,
-                  userInfo: nil
-                )
+                self.updateTransactionStateIfNeeded(transaction, state: .failed)
               }
             default: break
             }
-          default: break
+          }
+        } else {
+          // Success
+          if transaction.date.addingTimeInterval(60) < Date() {
+            self.updateTransactionStateIfNeeded(transaction, state: .completed)
           }
         }
-      }
+      })
     }
   }
 
   fileprivate func checkTransactionReceipt(_ transaction: Transaction, completion: @escaping (Error?) -> Void) {
-    let request = KNGetTransactionReceiptRequest(hash: transaction.id)
-    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
-      guard let `self` = self else { return }
+    self.externalProvider.getReceipt(for: transaction) { [weak self] result in
       switch result {
-      case .success(let receipt):
-        if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending {
+      case .success(let newTx):
+        if let trans = self?.storage.get(forPrimaryKey: newTx.id), trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
-        let web3Decode = KNExchangeEvenDataDecode(data: receipt.logsData)
-        self.web3Swift.request(request: web3Decode, completion: { [weak self] decodeResult in
-          let localObjects: [LocalizedOperationObject] = {
-            let dict: JSONDictionary? = {
-              switch decodeResult {
-              case .success(let dict):
-                return dict
-              case .failure(let error):
-                if let err = error.error as? JSErrorDomain {
-                  if case .invalidReturnType(let object) = err, let json = object as? JSONDictionary {
-                    return json
-                  }
-                }
-              }
-              return nil
-            }()
-            guard let json = dict else { return Array(transaction.localizedOperations) }
-            let valueString: String = {
-              let value = BigInt(json["destAmount"] as? String ?? "") ?? BigInt(0)
-              if let token = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == (json["dest"] as? String ?? "").lowercased() }) {
-                return value.fullString(decimals: token.decimal)
-              }
-              return value.fullString(units: .ether)
-            }()
-            let localObject = LocalizedOperationObject(
-              from: (json["src"] as? String ?? "").lowercased(),
-              to: (json["dest"] as? String ?? "").lowercased(),
-              contract: nil,
-              type: "exchange",
-              value: valueString,
-              symbol: nil,
-              name: nil,
-              decimals: 18
-            )
-            return [localObject]
-          }()
-          let newTransaction = Transaction(
-            id: transaction.id,
-            blockNumber: Int(receipt.blockNumber) ?? transaction.blockNumber,
-            from: transaction.from,
-            to: transaction.to,
-            value: transaction.value,
-            gas: transaction.gas,
-            gasPrice: transaction.gasPrice,
-            gasUsed: receipt.gasUsed,
-            nonce: transaction.nonce,
-            date: transaction.date,
-            localizedOperations: localObjects,
-            state: receipt.status == "1" ? .completed : .failed
-          )
-          self?.storage.add([newTransaction])
-          KNNotificationUtil.postNotification(
-            for: kTransactionDidUpdateNotificationKey,
-            object: newTransaction.id,
-            userInfo: nil
-          )
-          completion(nil)
-        })
+        self?.storage.add([newTx])
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: newTx.id,
+          userInfo: nil
+        )
+        completion(nil)
       case .failure(let error):
         completion(error)
       }
     }
+  }
+
+  fileprivate func updateTransactionStateIfNeeded(_ transaction: Transaction, state: TransactionState) {
+    if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending { return }
+    self.storage.update(state: state, for: transaction)
+    KNNotificationUtil.postNotification(
+      for: KNTransactionCoordinator.didUpdateNotificationKey,
+      object: transaction.id,
+      userInfo: nil
+    )
   }
 
   func stopUpdatingPendingTransactions() {

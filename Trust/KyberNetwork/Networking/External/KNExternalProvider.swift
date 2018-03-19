@@ -136,6 +136,40 @@ class KNExternalProvider {
     }
   }
 
+  func getReceipt(for transaction: Transaction, completion: @escaping (Result<Transaction, AnyError>) -> Void) {
+    let request = KNGetTransactionReceiptRequest(hash: transaction.id)
+    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let receipt):
+        self.getExchangeTransactionDecode(receipt.logsData, completion: { decodeResult in
+          let dict: JSONDictionary? = {
+            if case .success(let json) = decodeResult {
+              return json
+            }
+            return nil
+          }()
+          let newTransaction = receipt.toTransaction(from: transaction, logsDict: dict)
+          completion(.success(newTransaction))
+        })
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func getTransactionByHash(_ hash: String, completion: @escaping (SessionTaskError?) -> Void) {
+    let request = GetTransactionRequest(hash: hash)
+    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
+      switch result {
+      case .success:
+        completion(nil)
+      case .failure(let error):
+        completion(error)
+      }
+    }
+  }
+
   // If the value returned > 0 consider as allowed
   // should check with the current send amount, however the limit is likely set as very big
   func getAllowance(token: KNToken, completion: @escaping (Result<Bool, AnyError>) -> Void) {
@@ -474,6 +508,24 @@ class KNExternalProvider {
         completion(.failure(AnyError(error)))
       }
     })
+  }
+
+  func getExchangeTransactionDecode(_ data: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
+    let request = KNExchangeEvenDataDecode(data: data)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let json):
+        completion(.success(json))
+      case .failure(let error):
+        if let err = error as? JSErrorDomain {
+          if case .invalidReturnType(let object) = err, let json = object as? JSONDictionary {
+            completion(.success(json))
+            return
+          }
+        }
+        completion(.failure(AnyError(error)))
+      }
+    }
   }
 
   func requestDataForTokenTransfer(_ transaction: UnconfirmedTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {

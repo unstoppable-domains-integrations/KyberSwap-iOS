@@ -56,3 +56,47 @@ extension KNTransactionReceipt {
     )
   }
 }
+
+extension KNTransactionReceipt {
+
+  func toTransaction(from transaction: Transaction, logsDict: JSONDictionary?) -> Transaction {
+    let localObjects: [LocalizedOperationObject] = {
+      guard let json = logsDict else {
+        return Array(transaction.localizedOperations)
+      }
+      let (valueString, decimals): (String, Int) = {
+        let value = BigInt(json["destAmount"] as? String ?? "") ?? BigInt(0)
+        if let token = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == (json["dest"] as? String ?? "").lowercased() }) {
+          return (value.fullString(decimals: token.decimal), token.decimal)
+        }
+        return (value.fullString(units: .ether), 18)
+      }()
+      let localObject = LocalizedOperationObject(
+        from: (json["src"] as? String ?? "").lowercased(),
+        to: (json["dest"] as? String ?? "").lowercased(),
+        contract: nil,
+        type: "exchange",
+        value: valueString,
+        symbol: nil,
+        name: nil,
+        decimals: decimals
+      )
+      return [localObject]
+    }()
+    let newTransaction = Transaction(
+      id: transaction.id,
+      blockNumber: Int(self.blockNumber) ?? transaction.blockNumber,
+      from: transaction.from,
+      to: transaction.to,
+      value: transaction.value,
+      gas: transaction.gas,
+      gasPrice: transaction.gasPrice,
+      gasUsed: self.gasUsed,
+      nonce: transaction.nonce,
+      date: transaction.date,
+      localizedOperations: localObjects,
+      state: self.status == "1" ? .completed : .failed
+    )
+    return newTransaction
+  }
+}
