@@ -19,30 +19,38 @@ class KNBalanceCoordinator {
   var otherTokensBalance: [String: Balance] = [:]
 
   var totalBalanceInUSD: BigInt {
-    let rates = KNRateCoordinator.shared.usdRates
-    var value = BigInt(0)
-    if let ethRate = rates.first(where: { $0.source == "ETH" }) {
-      value = ethRate.rate * ethBalance.value
-    }
-    let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-    for token in supportedTokens {
-      if let rate = rates.first(where: { $0.source == token.symbol }), let balance = otherTokensBalance[token.address] {
-        value += rate.rate * balance.value
+    let balanceValue: BigInt = {
+      var value = BigInt(0)
+      let rates = KNRateCoordinator.shared.usdRates
+      if let ethRate = rates.first(where: { $0.source == "ETH" }) {
+        value = ethRate.rate * ethBalance.value
       }
-    }
-    return value
+      let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+      for token in supportedTokens {
+        if let rate = rates.first(where: { $0.source == token.symbol }), let balance = otherTokensBalance[token.address] {
+          value += rate.rate * balance.value
+        }
+      }
+      return value
+    }()
+    return balanceValue
   }
 
   var totalBalanceInETH: BigInt {
-    let rates = KNRateCoordinator.shared.tokenRates
-    var value = ethBalance.value
-    let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-    for token in supportedTokens {
-      if let rate = rates.first(where: { $0.source == token.symbol && $0.dest == "ETH" }), let balance = otherTokensBalance[token.address] {
-        value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
+    let balanceValue: BigInt = {
+      var value = ethBalance.value
+
+      let rates = KNRateCoordinator.shared.tokenRates
+      let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+
+      for token in supportedTokens {
+        if let rate = rates.first(where: { $0.source == token.symbol && $0.dest == "ETH" }), let balance = otherTokensBalance[token.address] {
+          value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
+        }
       }
-    }
-    return value
+      return value
+    }()
+    return balanceValue
   }
 
   init(session: KNSession) {

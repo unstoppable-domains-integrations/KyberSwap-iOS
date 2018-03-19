@@ -160,8 +160,10 @@ extension KNExchangeTokenViewController {
     self.fastGasPriceButton.setTitle("Fast".toBeLocalised(), for: .normal)
     self.fastGasPriceButton.rounded(color: .clear, width: 0, radius: 4.0)
 
-    let fee = BigInt(KNGasCoordinator.shared.defaultKNGas) * self.lastEstimateGasUsed
-    let feeString = fee.shortString(units: UnitConfiguration.gasFeeUnit)
+    let feeString: String = {
+      let fee = BigInt(KNGasCoordinator.shared.defaultKNGas) * self.lastEstimateGasUsed
+      return fee.shortString(units: UnitConfiguration.gasFeeUnit)
+    }()
 
     self.transactionFeeLabel.text = "Transaction Fee: \(feeString) ETH".toBeLocalised()
     self.advancedLabel.text = "Advanced".toBeLocalised()
@@ -235,11 +237,15 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func updateTransactionFee() {
-    var gasPrice = KNGasConfiguration.gasPriceDefault
-    if let gasPriceBigInt = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) {
-      gasPrice = gasPriceBigInt
-    }
-    let fee = gasPrice * self.lastEstimateGasUsed
+    let fee: BigInt = {
+      let gasPrice: BigInt = {
+        if let gasPriceBigInt = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) {
+          return gasPriceBigInt
+        }
+        return KNGasConfiguration.gasPriceDefault
+      }()
+      return gasPrice * self.lastEstimateGasUsed
+    }()
     self.transactionFeeLabel.text = "Transaction Fee: \(fee.shortString(units: EthereumUnit.ether)) ETH"
   }
 
@@ -250,13 +256,17 @@ extension KNExchangeTokenViewController {
 
     self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(self.expectedRate.shortString(decimals: self.selectedToToken.decimal)) \(self.selectedToToken.symbol)"
     if self.isFocusingFromTokenAmount {
-      let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
-      let expectedAmount = self.expectedRate * amount / BigInt(10).power(self.selectedToToken.decimal)
+      let expectedAmount: BigInt = {
+        let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
+        return self.expectedRate * amount / BigInt(10).power(self.selectedToToken.decimal)
+      }()
       self.amountToTokenTextField.text = expectedAmount.shortString(decimals: self.selectedToToken.decimal)
     } else {
-      let expectedAmount = self.amountToTokenTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) ?? BigInt(0)
-      let value = self.expectedRate.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(self.selectedFromToken.decimal) / self.expectedRate
-      self.amountFromTokenTextField.text = value.shortString(decimals: self.selectedFromToken.decimal)
+      let amountSent: BigInt = {
+        let expectedAmount = self.amountToTokenTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) ?? BigInt(0)
+        return self.expectedRate.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(self.selectedFromToken.decimal) / self.expectedRate
+      }()
+      self.amountFromTokenTextField.text = amountSent.shortString(decimals: self.selectedFromToken.decimal)
     }
   }
 
@@ -387,9 +397,11 @@ extension KNExchangeTokenViewController {
 
   @IBAction func percentageButtonPressed(_ sender: UIButton) {
     self.isFocusingFromTokenAmount = true
-    let percent = sender.tag
-    let balance: Balance = self.otherTokenBalances[self.selectedFromToken.address] ?? Balance(value: BigInt(0))
-    let amount: BigInt = balance.value * BigInt(percent) / BigInt(100)
+    let amount: BigInt = {
+      let percent = sender.tag
+      let balance: Balance = self.otherTokenBalances[self.selectedFromToken.address] ?? Balance(value: BigInt(0))
+      return balance.value * BigInt(percent) / BigInt(100)
+    }()
     self.amountFromTokenTextField.text = amount.shortString(decimals: self.selectedFromToken.decimal)
     self.view.layoutIfNeeded()
     self.expectedRateTimerShouldRepeat(sender)

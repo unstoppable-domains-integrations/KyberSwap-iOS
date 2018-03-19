@@ -67,19 +67,35 @@ class KNConfirmTransactionViewController: UIViewController {
     switch self.transactionType {
     case .exchange(let trans):
       let amountSpent = "\(trans.from.symbol)\(trans.amount.fullString(decimals: trans.from.decimal))"
-      let usdRate = KNRateCoordinator.shared.usdRate(for: trans.from)?.rate ?? BigInt(0)
-      let usdValue = (usdRate * trans.amount).shortString(units: .ether)
-      let expectedAmount = trans.amount * trans.expectedRate / BigInt(10).power(trans.to.decimal)
-      let expectedReceive = "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))"
+
+      let usdValue: String = {
+        let usdRate = KNRateCoordinator.shared.usdRate(for: trans.from)?.rate ?? BigInt(0)
+        return (usdRate * trans.amount).shortString(units: .ether)
+      }()
+
+      let expectedReceive: String = {
+        let expectedAmount = trans.amount * trans.expectedRate / BigInt(10).power(trans.to.decimal)
+        return "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))"
+      }()
+
       let rate = "Rate: \(trans.to.symbol)\(trans.expectedRate.shortString(decimals: trans.to.decimal))"
+
       let minRate = trans.minRate?.shortString(decimals: trans.to.decimal) ?? "--"
-      let transFee = (trans.gasPrice ?? KNGasConfiguration.gasPriceDefault) * (trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
-      let fee = transFee.fullString(units: UnitConfiguration.gasFeeUnit)
+
+      let feeString: String = {
+        let transFee: BigInt = {
+          let gasPrice: BigInt = trans.gasPrice ?? KNGasConfiguration.gasPriceDefault
+          let gasLimit: BigInt = trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+          return gasPrice * gasLimit
+        }()
+        return transFee.fullString(units: UnitConfiguration.gasFeeUnit)
+      }()
+
       self.data = [
         ("Amount Sent", "\(amountSpent)\n$\(usdValue)"),
         ("Expected Receive", "\(expectedReceive)\n\(rate)"),
         ("Min Rate", "\(trans.to.symbol)\(minRate)"),
-        ("Est. Fee", "ETH\(fee)"),
+        ("Est. Fee", "ETH\(feeString)"),
       ]
     case .transfer:
       return
