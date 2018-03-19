@@ -18,12 +18,15 @@ struct KNDraftExchangeTransaction {
 extension KNDraftExchangeTransaction {
   func toTransaction(hash: String, fromAddr: Address, toAddr: Address, nounce: Int) -> Transaction {
     // temporary: local object contains from and to tokens + expected rate
+    let expectedAmount: String = {
+      return (self.amount * self.expectedRate / BigInt(10).power(self.to.decimal)).fullString(decimals: self.to.decimal)
+    }()
     let localObject = LocalizedOperationObject(
       from: self.from.address,
       to: self.to.address,
       contract: nil,
       type: "",
-      value: self.expectedRate.fullString(decimals: self.to.decimal),
+      value: expectedAmount,
       symbol: nil,
       name: nil,
       decimals: self.to.decimal
