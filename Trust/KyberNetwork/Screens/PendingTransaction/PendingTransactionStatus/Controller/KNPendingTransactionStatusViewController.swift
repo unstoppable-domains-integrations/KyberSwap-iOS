@@ -117,7 +117,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       self.transactionStatusLabel.textColor = UIColor.Kyber.red
     default:
       self.estimateFeeTextLabel.text = "Est. Fee".toBeLocalised()
-      self.iconImageView.image = UIImage(named: "kn_splash_logo")
+      self.iconImageView.image = UIImage(named: "kyber_pending")
       self.transactionStatusLabel.text = "Transaction Processing".toBeLocalised()
       self.transactionStatusLabel.textColor = UIColor.Kyber.orange
     }
