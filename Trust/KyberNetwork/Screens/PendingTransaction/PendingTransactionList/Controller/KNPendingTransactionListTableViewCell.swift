@@ -14,6 +14,7 @@ class KNPendingTransactionListTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
+    self.rounded(color: .clear, width: 0, radius: 10.0)
   }
 
   func updateCell(with transaction: Transaction) {
@@ -22,7 +23,7 @@ class KNPendingTransactionListTableViewCell: UITableViewCell {
 
     self.amountLabel.text = "\(fromToken.symbol) \(transaction.value)"
 
-    if localObjc.type == "exchange" {
+    if localObjc.type.lowercased() == "exchange" {
       let toToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.to })!
       self.typeLabel.text = "Exchange".toBeLocalised()
       self.toDescriptionLabel.text = "\(toToken.symbol) \(localObjc.value)"

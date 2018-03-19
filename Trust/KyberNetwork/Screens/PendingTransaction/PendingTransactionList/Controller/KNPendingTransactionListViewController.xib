@@ -18,7 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPendingTransactionListViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="exchangeNowButton" destination="aaK-6R-Fkl" id="bnr-QZ-VAL"/>
-                <outlet property="heightContraintForPendingTransactionListView" destination="8eX-w1-BfL" id="nRN-vV-XCT"/>
+                <outlet property="heightContraintForPendingTransactionListView" destination="2DL-h1-as6" id="Ayl-Ai-SpT"/>
                 <outlet property="pendingTransactionLabel" destination="iV6-BF-9tb" id="5tq-BX-EY8"/>
                 <outlet property="pendingTransactionListView" destination="riG-dH-Kpc" id="Fvh-Cu-WBV"/>
                 <outlet property="transactionTableView" destination="4h8-bg-NfR" id="1s9-hy-rcc"/>
@@ -32,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="riG-dH-Kpc">
-                    <rect key="frame" x="20" y="143.5" width="335" height="400"/>
+                    <rect key="frame" x="20" y="144" width="335" height="400"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVh-ZN-Tan">
                             <rect key="frame" x="291" y="20" width="24" height="24"/>
@@ -41,13 +41,13 @@
                                 <action selector="closeButtonPressed:" destination="-1" eventType="touchUpInside" id="LEP-me-Dtx"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Pending Transactions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iV6-BF-9tb">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Pending Transactions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iV6-BF-9tb">
                             <rect key="frame" x="20" y="55" width="295" height="18"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4h8-bg-NfR">
-                            <rect key="frame" x="0.0" y="103" width="335" height="297"/>
+                            <rect key="frame" x="10" y="103" width="315" height="297"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn2-Oi-cQY">
@@ -78,7 +78,8 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="4h8-bg-NfR" secondAttribute="trailing" id="8eX-w1-BfL"/>
+                        <constraint firstAttribute="height" constant="400" id="2DL-h1-as6"/>
+                        <constraint firstItem="4h8-bg-NfR" firstAttribute="centerX" secondItem="iV6-BF-9tb" secondAttribute="centerX" id="5VQ-eW-ZgA"/>
                         <constraint firstItem="hn2-Oi-cQY" firstAttribute="leading" secondItem="aaK-6R-Fkl" secondAttribute="trailing" constant="20" id="Ai3-7o-M6K"/>
                         <constraint firstItem="iV6-BF-9tb" firstAttribute="leading" secondItem="riG-dH-Kpc" secondAttribute="leading" constant="20" id="BlG-cQ-9UR"/>
                         <constraint firstAttribute="trailing" secondItem="iV6-BF-9tb" secondAttribute="trailing" constant="20" id="IH1-64-7fd"/>
@@ -87,13 +88,12 @@
                         <constraint firstAttribute="trailing" secondItem="hVh-ZN-Tan" secondAttribute="trailing" constant="20" id="ea9-Z1-J2Y"/>
                         <constraint firstAttribute="bottom" secondItem="4h8-bg-NfR" secondAttribute="bottom" id="ejD-J8-wHt"/>
                         <constraint firstItem="hn2-Oi-cQY" firstAttribute="height" secondItem="aaK-6R-Fkl" secondAttribute="height" id="hae-I0-yzQ"/>
-                        <constraint firstItem="4h8-bg-NfR" firstAttribute="leading" secondItem="riG-dH-Kpc" secondAttribute="leading" id="iKB-NQ-N1G"/>
+                        <constraint firstItem="4h8-bg-NfR" firstAttribute="leading" secondItem="riG-dH-Kpc" secondAttribute="leading" constant="10" id="iKB-NQ-N1G"/>
                         <constraint firstItem="aaK-6R-Fkl" firstAttribute="top" secondItem="iV6-BF-9tb" secondAttribute="bottom" constant="40" id="jP6-BC-9An"/>
                         <constraint firstAttribute="trailing" secondItem="hn2-Oi-cQY" secondAttribute="trailing" constant="20" id="kdI-wd-74Z"/>
                         <constraint firstItem="4h8-bg-NfR" firstAttribute="top" secondItem="iV6-BF-9tb" secondAttribute="bottom" constant="30" id="l1x-er-mtQ"/>
                         <constraint firstItem="aaK-6R-Fkl" firstAttribute="leading" secondItem="riG-dH-Kpc" secondAttribute="leading" constant="20" id="lFi-Uh-sy0"/>
                         <constraint firstItem="hn2-Oi-cQY" firstAttribute="width" secondItem="aaK-6R-Fkl" secondAttribute="width" id="u5A-Gb-iux"/>
-                        <constraint firstAttribute="height" constant="400" id="v5b-F1-EcJ"/>
                         <constraint firstItem="iV6-BF-9tb" firstAttribute="top" secondItem="riG-dH-Kpc" secondAttribute="top" constant="55" id="xnx-J4-Yuo"/>
                     </constraints>
                 </view>

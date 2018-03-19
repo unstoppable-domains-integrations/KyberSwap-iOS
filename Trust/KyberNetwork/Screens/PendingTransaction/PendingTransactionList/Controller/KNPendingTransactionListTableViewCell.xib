@@ -37,19 +37,19 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 0.31231323524" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqH-Mb-ZC6">
-                        <rect key="frame" x="10" y="28" width="300" height="17"/>
-                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="15"/>
+                        <rect key="frame" x="10" y="28" width="300" height="16"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeO-OL-cah">
-                        <rect key="frame" x="10" y="50" width="17" height="18"/>
+                        <rect key="frame" x="10" y="49" width="17" height="18"/>
                         <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x8dc114d77e857558aefbe8e1a50b460ff9578f1a" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjI-WZ-QcH">
-                        <rect key="frame" x="10" y="73" width="300" height="17"/>
-                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x8dc114d77e857558aefbe8e1a50b460ff9578f1a0x8dc110x8dc114d77e857558aefbe8e1a50b460ff9578f1a0x8dc11" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjI-WZ-QcH">
+                        <rect key="frame" x="10" y="72" width="300" height="22.5"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="10"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -68,6 +68,7 @@
                     <constraint firstItem="yjI-WZ-QcH" firstAttribute="leading" secondItem="DqH-Mb-ZC6" secondAttribute="leading" id="y9b-IM-V85"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.87047991071428577" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="amountLabel" destination="DqH-Mb-ZC6" id="E88-7s-kXE"/>

@@ -43,7 +43,6 @@ class KNPendingTransactionListViewController: UIViewController {
   }
 
   fileprivate func setupUI() {
-
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
 
     self.pendingTransactionListView.rounded(color: .clear, width: 0, radius: 10.0)
@@ -59,6 +58,8 @@ class KNPendingTransactionListViewController: UIViewController {
     self.transactionTableView.rowHeight = KNPendingTransactionListTableViewCell.cellHeight
     self.transactionTableView.delegate = self
     self.transactionTableView.dataSource = self
+
+    self.updateUI()
   }
 
   fileprivate func updateUI() {
@@ -75,12 +76,12 @@ class KNPendingTransactionListViewController: UIViewController {
       self.transactionTableView.isHidden = false
       let viewHeight: CGFloat = {
         let tableViewHeight: CGFloat = KNPendingTransactionListTableViewCell.cellHeight * CGFloat(self.pendingTransactions.count)
-        return min(tableViewHeight + 200, pendingTransactionListMaxHeight)
+        return min(tableViewHeight + 120, pendingTransactionListMaxHeight)
       }()
       self.heightContraintForPendingTransactionListView.constant = viewHeight
       self.transactionTableView.reloadData()
     }
-    self.updateViewConstraints()
+    self.view.setNeedsUpdateConstraints()
     self.view.layoutIfNeeded()
   }
 
@@ -116,7 +117,7 @@ extension KNPendingTransactionListViewController: UITableViewDelegate {
 
 extension KNPendingTransactionListViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 0
+    return 1
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
