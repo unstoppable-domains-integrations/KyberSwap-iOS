@@ -51,19 +51,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Hash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4a-0m-71s">
-                            <rect key="frame" x="20" y="372.5" width="168" height="27"/>
+                            <rect key="frame" x="20" y="379" width="168" height="27"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x3ef8d5818d223ff5faa0c7db10cf0843e5e81dacf635292259a821dde8628907" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2NM-gq-kQ9">
-                            <rect key="frame" x="20" y="405.5" width="335" height="27"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="12"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x3ef8d5818d223ff5faa0c7db10cf0843e5e81dacf635292259a821dde8628907" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2NM-gq-kQ9">
+                            <rect key="frame" x="20" y="412" width="335" height="35.5"/>
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                            <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vRu-Wr-uK3">
-                            <rect key="frame" x="20" y="452.5" width="168" height="27"/>
+                            <rect key="frame" x="20" y="467.5" width="168" height="27"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -74,16 +74,16 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC 543.2319321331" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sby-yA-IZa">
-                            <rect key="frame" x="123.5" y="270" width="128" height="16"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC 543.2319321331" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sby-yA-IZa">
+                            <rect key="frame" x="20" y="270" width="335" height="18"/>
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                            <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="17 March 2018, 11:22:30" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OE-JH-ApR">
-                            <rect key="frame" x="20" y="485.5" width="335" height="13.5"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="12"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="17 March 2018, 11:22:30" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OE-JH-ApR">
+                            <rect key="frame" x="20" y="500.5" width="335" height="18"/>
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                            <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH  1.089138 ($898.3123)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJQ-Kx-3cM">
@@ -93,19 +93,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est. Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Le7-BY-vxT">
-                            <rect key="frame" x="20" y="306" width="77.5" height="27"/>
+                            <rect key="frame" x="20" y="308" width="77.5" height="27"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00105 ETH ($0.654)" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBN-PO-FoD">
-                            <rect key="frame" x="20" y="339" width="335" height="13.5"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="12"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00105 ETH ($0.654)" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBN-PO-FoD">
+                            <rect key="frame" x="20" y="341" width="335" height="18"/>
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                            <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="akf-1H-gN5">
-                            <rect key="frame" x="30" y="529" width="142.5" height="46"/>
+                            <rect key="frame" x="30" y="548.5" width="142.5" height="46"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="g9K-Hs-V7S"/>
@@ -119,7 +119,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDM-86-fEh">
-                            <rect key="frame" x="202.5" y="529" width="142.5" height="46"/>
+                            <rect key="frame" x="202.5" y="548.5" width="142.5" height="46"/>
                             <color key="backgroundColor" red="0.17342154930000001" green="0.50537891499999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" title="More Details">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -164,6 +164,8 @@
                         <constraint firstItem="0OE-JH-ApR" firstAttribute="centerX" secondItem="Psx-yZ-xge" secondAttribute="centerX" id="lhR-nB-zxS"/>
                         <constraint firstItem="iDM-86-fEh" firstAttribute="centerY" secondItem="akf-1H-gN5" secondAttribute="centerY" id="o3w-Un-Ezj"/>
                         <constraint firstItem="eJQ-Kx-3cM" firstAttribute="leading" secondItem="Psx-yZ-xge" secondAttribute="leading" constant="20" id="oVg-aj-rMs"/>
+                        <constraint firstItem="sby-yA-IZa" firstAttribute="leading" secondItem="Psx-yZ-xge" secondAttribute="leading" constant="20" id="qoE-KT-oXz"/>
+                        <constraint firstAttribute="trailing" secondItem="sby-yA-IZa" secondAttribute="trailing" constant="20" id="t2S-CL-yXb"/>
                         <constraint firstItem="iDM-86-fEh" firstAttribute="width" secondItem="akf-1H-gN5" secondAttribute="width" id="tQq-0g-uTR"/>
                         <constraint firstItem="eJQ-Kx-3cM" firstAttribute="centerX" secondItem="Psx-yZ-xge" secondAttribute="centerX" id="wEJ-wu-iUg"/>
                         <constraint firstItem="eJQ-Kx-3cM" firstAttribute="top" secondItem="cFr-5p-0Af" secondAttribute="bottom" constant="30" id="yuK-Zd-hp2"/>

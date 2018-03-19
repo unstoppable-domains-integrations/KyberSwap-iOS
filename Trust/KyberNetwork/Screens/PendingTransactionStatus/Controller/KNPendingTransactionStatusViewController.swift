@@ -108,12 +108,12 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     case .failed, .error:
       self.iconImageView.image = UIImage(named: "fail")
       self.transactionStatusLabel.text = "Transaction Failed".toBeLocalised()
-      self.transactionStatusLabel.textColor = UIColor.red
+      self.transactionStatusLabel.textColor = UIColor.Kyber.red
     default:
       self.estimateFeeTextLabel.text = "Est. Fee".toBeLocalised()
       self.iconImageView.image = UIImage(named: "kn_splash_logo")
       self.transactionStatusLabel.text = "Transaction Processing".toBeLocalised()
-      self.transactionStatusLabel.textColor = UIColor.orange
+      self.transactionStatusLabel.textColor = UIColor.Kyber.orange
     }
 
     let local = self.transaction.localizedOperations.first!
@@ -157,7 +157,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       return
     }
 
-    self.iconImageView.rotate360Degrees(duration: 0.75, completionDelegate: nil)
+    self.iconImageView.rotate360Degrees(duration: 0.75, completion: nil)
   }
 
   @IBAction func closeButtonPressed(_ sender: Any) {
