@@ -7,10 +7,9 @@ import JSONRPCKit
 import JavaScriptKit
 import Result
 import BigInt
+import TrustKeystore
 
 class KNTransactionCoordinator {
-
-  static let didUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
 
   let storage: TransactionsStorage
   let externalProvider: KNExternalProvider
@@ -20,7 +19,83 @@ class KNTransactionCoordinator {
     self.storage = storage
     self.externalProvider = externalProvider
   }
+}
 
+// MARK: Lock data when user confirmed
+extension KNTransactionCoordinator {
+
+  // Prepare data before submitting exchange request
+  // Data needed: gas limit, expected rate
+  static func requestDataPrepareForExchangeTransaction(_ transaction: KNDraftExchangeTransaction, provider: KNExternalProvider, completion: @escaping (Result<KNDraftExchangeTransaction?, AnyError>) -> Void) {
+    DispatchQueue.global().async {
+      var error: AnyError?
+      let group = DispatchGroup()
+
+      // Est Gas Used
+      var gasLimit = transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+      group.enter()
+      provider.getEstimateGasLimit(for: transaction) { result in
+        switch result {
+        case .success(let gas): gasLimit = gas
+        // TODO (Mike): Est. Gas Limit is temp not working
+        //case .failure(let err): error = err
+        default: break
+        }
+        group.leave()
+      }
+
+      // Expected Rate
+      var expectedRate = transaction.expectedRate
+      group.enter()
+      provider.getExpectedRate(
+        from: transaction.from,
+        to: transaction.to,
+        amount: transaction.amount) { result in
+          switch result {
+          case .success(let data): expectedRate = data.0
+          case .failure(let err): error = err
+          }
+          group.leave()
+      }
+
+      // Balance
+      var balance = BigInt(0)
+      group.enter()
+      if transaction.from.isETH {
+        provider.getETHBalance(completion: { result in
+          switch result {
+          case .success(let bal): balance = bal.value
+          case .failure(let err): error = err
+          }
+          group.leave()
+        })
+      } else {
+        provider.getTokenBalance(for: Address(string: transaction.from.address)!, completion: { result in
+          switch result {
+          case .success(let bal): balance = bal
+          case .failure(let err): error = err
+          }
+          group.leave()
+        })
+      }
+
+      group.notify(queue: .main) {
+        if let err = error {
+          completion(.failure(err))
+          return
+        }
+        if balance < transaction.amount {
+          completion(.success(nil))
+          return
+        }
+        completion(.success(transaction.copy(expectedRate: expectedRate, gasLimit: gasLimit)))
+      }
+    }
+  }
+}
+
+// MARK: Pending transactions
+extension KNTransactionCoordinator {
   func startUpdatingPendingTransactions() {
     self.timer?.invalidate()
     self.timer = nil
@@ -93,7 +168,7 @@ class KNTransactionCoordinator {
     if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending { return }
     self.storage.update(state: state, for: transaction)
     KNNotificationUtil.postNotification(
-      for: KNTransactionCoordinator.didUpdateNotificationKey,
+      for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,
       userInfo: nil
     )

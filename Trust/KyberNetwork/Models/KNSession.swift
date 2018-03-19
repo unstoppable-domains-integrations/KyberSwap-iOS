@@ -62,7 +62,7 @@ class KNSession {
     self.storage.add([transaction])
     self.transacionCoordinator?.updatePendingTranscation(transaction)
     KNNotificationUtil.postNotification(
-      for: KNTransactionCoordinator.didUpdateNotificationKey,
+      for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,
       userInfo: nil
     )

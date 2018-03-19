@@ -115,18 +115,37 @@ class KNExchangeTokenCoordinator: Coordinator {
   }
 
   fileprivate func sendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    self.session.externalProvider.exchange(exchange: exchangeTransaction) { [weak self] result in
+    // Lock all data for exchange transaction first
+    KNTransactionCoordinator.requestDataPrepareForExchangeTransaction(
+      exchangeTransaction,
+      provider: self.session.externalProvider) { [weak self] dataResult in
       guard let `self` = self else { return }
-      self.navigationController.topViewController?.hideLoading()
-      self.rootViewController.exchangeTokenDidReturn(result: result)
-      if case .success(let txHash) = result {
-        let transaction = exchangeTransaction.toTransaction(
-          hash: txHash,
-          fromAddr: self.session.wallet.address,
-          toAddr: self.session.externalProvider.networkAddress,
-          nounce: self.session.externalProvider.minTxCount
-        )
-        self.session.addNewPendingTransaction(transaction)
+      switch dataResult {
+      case .success(let tx):
+        guard let exchange = tx else {
+          // Return nil when balance is too low compared to the amoun
+          // Show error balance insufficient
+          self.navigationController.topViewController?.hideLoading()
+          self.navigationController.topViewController?.showInsufficientBalanceAlert()
+          return
+        }
+        self.session.externalProvider.exchange(exchange: exchange) { [weak self] result in
+          guard let `self` = self else { return }
+          self.navigationController.topViewController?.hideLoading()
+          self.rootViewController.exchangeTokenDidReturn(result: result)
+          if case .success(let txHash) = result {
+            let transaction = exchange.toTransaction(
+              hash: txHash,
+              fromAddr: self.session.wallet.address,
+              toAddr: self.session.externalProvider.networkAddress,
+              nounce: self.session.externalProvider.minTxCount
+            )
+            self.session.addNewPendingTransaction(transaction)
+          }
+        }
+      case .failure(let error):
+        self.navigationController.topViewController?.hideLoading()
+        self.navigationController.topViewController?.displayError(error: error)
       }
     }
   }

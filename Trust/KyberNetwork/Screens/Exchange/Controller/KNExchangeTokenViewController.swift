@@ -334,8 +334,8 @@ extension KNExchangeTokenViewController {
       let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal),
       let balance = self.otherTokenBalances[self.selectedFromToken.address],
       amount <= balance.value, !amount.isZero else {
-        completion(.success(nil))
-        return
+      completion(.success(nil))
+      return
     }
     guard let gasPrice = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) else {
       completion(.success(nil))
@@ -453,9 +453,7 @@ extension KNExchangeTokenViewController {
         if let exchange = exchangeTransaction {
           self.delegate?.exchangeTokenDidClickExchange(exchangeTransaction: exchange)
         } else {
-          let alertController = UIAlertController(title: nil, message: "Invalid exchange data", preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+          self.showInvalidDataToMakeTransactionAlert()
         }
       case .failure(let error):
         self.displayError(error: error)

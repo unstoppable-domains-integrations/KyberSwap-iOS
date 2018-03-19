@@ -17,7 +17,7 @@ struct KNDraftExchangeTransaction {
 
 extension KNDraftExchangeTransaction {
 
-  func copy(expectedRate: BigInt) -> KNDraftExchangeTransaction {
+  func copy(expectedRate: BigInt, gasLimit: BigInt? = nil) -> KNDraftExchangeTransaction {
     return KNDraftExchangeTransaction(
       from: self.from,
       to: self.to,
@@ -26,7 +26,7 @@ extension KNDraftExchangeTransaction {
       expectedRate: expectedRate,
       minRate: self.minRate,
       gasPrice: self.gasPrice,
-      gasLimit: self.gasLimit
+      gasLimit: gasLimit ?? self.gasLimit
     )
   }
 
