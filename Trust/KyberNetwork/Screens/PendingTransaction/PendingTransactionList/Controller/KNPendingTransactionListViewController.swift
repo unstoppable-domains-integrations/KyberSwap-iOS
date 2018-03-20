@@ -13,6 +13,7 @@ class KNPendingTransactionListViewController: UIViewController {
 
   fileprivate let transactionListCellID = "transactionListCellID"
   fileprivate let noPendingTransactionViewHeight: CGFloat = 200
+  fileprivate let pendingTransactionListTopViewHeight: CGFloat = 160
   fileprivate let pendingTransactionListMaxHeight: CGFloat = UIScreen.main.bounds.height * 2.0 / 3.0
 
   fileprivate weak var delegate: KNPendingTransactionListViewControllerDelegate?
@@ -76,7 +77,7 @@ class KNPendingTransactionListViewController: UIViewController {
       self.transactionTableView.isHidden = false
       let viewHeight: CGFloat = {
         let tableViewHeight: CGFloat = KNPendingTransactionListTableViewCell.cellHeight * CGFloat(self.pendingTransactions.count)
-        return min(tableViewHeight + 120, pendingTransactionListMaxHeight)
+        return min(tableViewHeight + pendingTransactionListTopViewHeight, pendingTransactionListMaxHeight)
       }()
       self.heightContraintForPendingTransactionListView.constant = viewHeight
       self.transactionTableView.reloadData()

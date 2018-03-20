@@ -31,6 +31,16 @@
                 <outlet property="transactionTimeValueLabel" destination="0OE-JH-ApR" id="QRW-b9-WPb"/>
                 <outlet property="transactionTypeLabel" destination="yGB-qx-0LV" id="CKS-xe-JcD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="bigPaddingConstraints" destination="yuK-Zd-hp2" collectionClass="NSMutableArray" id="GtI-LL-VUG"/>
+                <outletCollection property="bigPaddingConstraints" destination="BSJ-n8-IKt" collectionClass="NSMutableArray" id="0u7-BO-MSU"/>
+                <outletCollection property="bigPaddingConstraints" destination="Knz-ns-CdC" collectionClass="NSMutableArray" id="tHx-Ho-HuU"/>
+                <outletCollection property="smallPaddingConstraints" destination="H62-dv-j2S" collectionClass="NSMutableArray" id="y7D-bs-JmW"/>
+                <outletCollection property="smallPaddingConstraints" destination="fGg-Lt-mwl" collectionClass="NSMutableArray" id="10p-Ny-Ici"/>
+                <outletCollection property="smallPaddingConstraints" destination="MN1-RC-J3p" collectionClass="NSMutableArray" id="0QW-eA-v9U"/>
+                <outletCollection property="smallPaddingConstraints" destination="43R-3b-Oxn" collectionClass="NSMutableArray" id="Gui-cC-vct"/>
+                <outletCollection property="smallPaddingConstraints" destination="ROu-qg-wdu" collectionClass="NSMutableArray" id="buf-Q1-aav"/>
+                <outletCollection property="smallPaddingConstraints" destination="4t9-Wj-WJE" collectionClass="NSMutableArray" id="xvF-ce-fIh"/>
+                <outletCollection property="smallPaddingConstraints" destination="Is8-7z-4H1" collectionClass="NSMutableArray" id="sWa-dJ-745"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

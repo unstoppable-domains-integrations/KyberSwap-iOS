@@ -10,6 +10,11 @@ protocol KNPendingTransactionStatusViewControllerDelegate: class {
 
 class KNPendingTransactionStatusViewController: KNBaseViewController {
 
+  fileprivate let kBigPaddingIphone5: CGFloat = 25
+  fileprivate let kSmallPaddingIphone5: CGFloat = 8
+  fileprivate let kBigPaddingIphone6: CGFloat = 40
+  fileprivate let kSmallPaddingIPhone6: CGFloat = 15
+
   fileprivate weak var delegate: KNPendingTransactionStatusViewControllerDelegate?
   fileprivate var transaction: Transaction!
   fileprivate var timer: Timer?
@@ -33,6 +38,9 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
   @IBOutlet weak var moreDetailsButton: UIButton!
   @IBOutlet weak var closeButton: UIButton!
 
+  @IBOutlet var bigPaddingConstraints: [NSLayoutConstraint]!
+  @IBOutlet var smallPaddingConstraints: [NSLayoutConstraint]!
+  
   init(delegate: KNPendingTransactionStatusViewControllerDelegate?, transaction: Transaction) {
     self.delegate = delegate
     self.transaction = transaction
@@ -66,6 +74,13 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
 
     self.moreDetailsButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.moreDetailsButton.setTitle("More Details".uppercased().toBeLocalised(), for: .normal)
+
+    self.bigPaddingConstraints.forEach({
+      $0.constant = UIDevice.isIphone5 ? kBigPaddingIphone5 : kBigPaddingIphone6
+    })
+    self.smallPaddingConstraints.forEach({
+      $0.constant = UIDevice.isIphone5 ? kSmallPaddingIphone5 : kSmallPaddingIPhone6
+    })
 
     self.updateView()
   }
@@ -103,7 +118,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       return feeString
     }()
 
-    self.estimateFeeValueLabel.text = feeString
+    self.estimateFeeValueLabel.text = "\(feeString.prefix(32))"
 
     // State
     switch self.transaction.state {
@@ -150,7 +165,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       return string
     }()
 
-    self.amountLabel.text = amountString
+    self.amountLabel.text = "\(amountString.prefix(32))"
 
     if localizeOperation.type.lowercased() == "transfer" {
       // Transfer doesn't have localised operations
@@ -161,7 +176,8 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       let to = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localizeOperation.to })!
       let expectedAmount = EtherNumberFormatter.full.number(from: localizeOperation.value, decimals: to.decimal) ?? BigInt(0)
       self.transactionTypeLabel.text = "Exchange To".toBeLocalised()
-      self.detailsTransactionTypeLabel.text = "\(to.symbol) \(expectedAmount.fullString(decimals: to.decimal))"
+      let expectedAmountDisplay = "\(to.symbol) \(expectedAmount.fullString(decimals: to.decimal))".prefix(32)
+      self.detailsTransactionTypeLabel.text = "\(expectedAmountDisplay)"
     }
     self.view.layoutIfNeeded()
   }

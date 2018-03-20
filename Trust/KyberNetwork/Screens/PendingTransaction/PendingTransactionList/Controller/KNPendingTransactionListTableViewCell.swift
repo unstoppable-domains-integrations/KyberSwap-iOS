@@ -4,7 +4,7 @@ import UIKit
 
 class KNPendingTransactionListTableViewCell: UITableViewCell {
 
-  static let cellHeight: CGFloat = 100.0
+  static let cellHeight: CGFloat = 120.0
 
   @IBOutlet weak var typeLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
@@ -27,9 +27,11 @@ class KNPendingTransactionListTableViewCell: UITableViewCell {
       let toToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.to })!
       self.typeLabel.text = "Exchange".toBeLocalised()
       self.toDescriptionLabel.text = "\(toToken.symbol) \(localObjc.value)"
+      self.toDescriptionLabel.font = self.toDescriptionLabel.font.withSize(16)
     } else {
       self.typeLabel.text = "Transfer".toBeLocalised()
       self.toDescriptionLabel.text = transaction.to
+      self.toDescriptionLabel.font = self.toDescriptionLabel.font.withSize(12)
     }
 
     let dateFormatter: DateFormatter = {

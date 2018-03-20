@@ -37,7 +37,7 @@ class KNPendingTransactionListCoordinator: Coordinator {
       self.pendingTxListVC.updatePendingTransactions(self.storage.pendingObjects)
     })
     self.timer?.invalidate()
-    self.timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: { [weak self] _ in
+    self.timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true, block: { [weak self] _ in
       self?.pendingTxListVC.updatePendingTransactions(self?.storage.pendingObjects ?? [])
     })
   }
