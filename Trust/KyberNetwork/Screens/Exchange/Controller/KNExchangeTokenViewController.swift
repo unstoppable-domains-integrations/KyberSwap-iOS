@@ -411,7 +411,7 @@ extension KNExchangeTokenViewController {
       let balance: Balance = self.otherTokenBalances[self.selectedFromToken.address] ?? Balance(value: BigInt(0))
       return balance.value * BigInt(percent) / BigInt(100)
     }()
-    self.amountFromTokenTextField.text = amount.shortString(decimals: self.selectedFromToken.decimal)
+    self.amountFromTokenTextField.text = amount.fullString(decimals: self.selectedFromToken.decimal)
     self.view.layoutIfNeeded()
     self.expectedRateTimerShouldRepeat(sender)
     self.shouldUpdateEstimateGasUsed(sender)
