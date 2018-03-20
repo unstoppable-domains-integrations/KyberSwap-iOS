@@ -19,8 +19,9 @@ class KNExchangeTokenViewController: KNBaseViewController {
 
   fileprivate let advancedSettingsHeight: CGFloat = 150
   fileprivate let exchangeButtonTopPaddingiPhone5: CGFloat = 40
-  fileprivate let exchangeButtonTopPaddingiPhone6: CGFloat = 220
-  fileprivate let exchangeButtonTopPaddingiPhone6Plus: CGFloat = 250
+  fileprivate let exchangeButtonTopPaddingAdvancedSettingsOpen: CGFloat = 220
+  fileprivate let exchangeButtonTopPaddingiPhone6: CGFloat = 120
+  fileprivate let exchangeButtonTopPaddingiPhone6Plus: CGFloat = 160
 
   fileprivate weak var delegate: KNExchangeTokenViewControllerDelegate?
 
@@ -428,7 +429,7 @@ extension KNExchangeTokenViewController {
     if self.advancedSwitch.isOn {
       self.advancedSettingsView.isHidden = false
       self.heightForAdvancedSettingsView.constant = advancedSettingsHeight
-      self.topPaddingConstraintForExchangeButton.constant = exchangeButtonTopPaddingiPhone6
+      self.topPaddingConstraintForExchangeButton.constant = exchangeButtonTopPaddingAdvancedSettingsOpen
     } else {
       self.advancedSettingsView.isHidden = true
       self.heightForAdvancedSettingsView.constant = 0
