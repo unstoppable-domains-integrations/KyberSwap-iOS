@@ -122,6 +122,8 @@ extension KNTransferTokenViewController {
 
   fileprivate func setupAddress() {
     self.toAddressTextLabel.text = "To Address".toBeLocalised()
+    //TODO (Mike): Remove default value
+    self.addressTextField.text = "0x3cf628d49ae46b49b210f0521fbd9f82b461a9e1"
     self.addressTextField.delegate = self
   }
 
@@ -197,9 +199,7 @@ extension KNTransferTokenViewController {
   }
 
   @objc func shouldUpdateEstimateGasUsed(_ sender: Any?) {
-    guard let amount = BigInt(self.amountTextField.text ?? "") else {
-      return
-    }
+    guard let amount = BigInt(self.amountTextField.text ?? "") else { return }
     self.delegate?.transferTokenViewControllerShouldUpdateEstimatedGas(
       for: self.selectedToken,
       amount: amount

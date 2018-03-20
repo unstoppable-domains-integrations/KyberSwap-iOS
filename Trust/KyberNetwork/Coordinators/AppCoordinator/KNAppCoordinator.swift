@@ -71,9 +71,16 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(exchangeCoordinator)
     exchangeCoordinator.start()
 
-    let transferVC = KNTransferTokenViewController(delegate: nil)
-    let transferNav = UINavigationController(rootViewController: transferVC)
-    transferNav.applyStyle()
+    let transferCoordinator: KNTransferTokenCoordinator = {
+      let coordinator = KNTransferTokenCoordinator(
+        session: self.session,
+        balanceCoordinator: self.balanceCoordinator!
+      )
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.addCoordinator(transferCoordinator)
+    transferCoordinator.start()
 
     let walletVC = KNBaseViewController()
     let walletNav = UINavigationController(rootViewController: walletVC)
@@ -81,11 +88,11 @@ class KNAppCoordinator: NSObject, Coordinator {
 
     self.tabbarController.viewControllers = [
       exchangeCoordinator.navigationController,
-      transferNav,
+      transferCoordinator.navigationController,
       walletNav,
     ]
     exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange", image: nil, tag: 0)
-    transferNav.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
+    transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
     walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
 
     if let topViewController = self.navigationController.topViewController {
