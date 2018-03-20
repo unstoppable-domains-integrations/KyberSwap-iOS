@@ -16,6 +16,59 @@ struct KNDraftExchangeTransaction {
 }
 
 extension KNDraftExchangeTransaction {
+  func displayAmount(short: Bool = true) -> String {
+    return short ? amount.shortString(decimals: from.decimal) : amount.fullString(decimals: from.decimal)
+  }
+
+  var expectedReceive: BigInt {
+    return amount * expectedRate / BigInt(10).power(to.decimal)
+  }
+
+  func displayExpectedReceive(short: Bool = true) -> String {
+    return short ? expectedReceive.shortString(decimals: to.decimal) : expectedReceive.fullString(decimals: to.decimal)
+  }
+
+  func displayExpectedRate(short: Bool = true) -> String {
+    return short ? expectedRate.shortString(decimals: to.decimal) : expectedRate.fullString(decimals: to.decimal)
+  }
+
+  func displayMinRate(short: Bool = true) -> String? {
+    return short ? minRate?.shortString(decimals: to.decimal) : minRate?.fullString(decimals: to.decimal)
+  }
+
+  var displayGasPrice: String? {
+    return gasPrice?.shortString(units: UnitConfiguration.gasPriceUnit)
+  }
+
+  var fee: BigInt {
+    return (gasPrice ?? BigInt(0)) * (gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
+  }
+
+  func displayFeeString(short: Bool = true) -> String {
+    return short ? fee.shortString(units: UnitConfiguration.gasFeeUnit) : fee.fullString(units: UnitConfiguration.gasFeeUnit)
+  }
+
+  var usdValueStringForFee: String {
+    let eth = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+    let rate = KNRateCoordinator.shared.usdRate(for: eth)?.rate ?? BigInt(0)
+    return (rate * fee).shortString(units: .ether)
+  }
+
+  var usdRateForFromToken: KNRate? {
+    return KNRateCoordinator.shared.usdRate(for: from)
+  }
+
+  var usdValueStringForFromToken: String {
+    let rate = usdRateForFromToken?.rate ?? BigInt(0)
+    return (rate * amount).shortString(units: .ether)
+  }
+
+  var usdRateForToToken: KNRate? {
+    return KNRateCoordinator.shared.usdRate(for: to)
+  }
+}
+
+extension KNDraftExchangeTransaction {
 
   func copy(expectedRate: BigInt, gasLimit: BigInt? = nil) -> KNDraftExchangeTransaction {
     return KNDraftExchangeTransaction(
