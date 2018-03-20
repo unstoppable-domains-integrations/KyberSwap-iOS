@@ -198,4 +198,19 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
   @IBAction func moreDetailsButtonPressed(_ sender: Any) {
     self.delegate?.pendingTransactionStatusVCUserDidClickMoreDetails()
   }
+
+  @IBAction func shareButtonPressed(_ sender: Any) {
+    let items: [Any] = {
+      var items: [Any] = []
+      let link = "\(KNEnvironment.default.etherScanIOURLString + "tx/\(self.transaction.id)")"
+      items.append(link)
+      if let image = self.view.toImage() {
+        items.append(image)
+      }
+      return items
+    }()
+    let activityController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+    activityController.excludedActivityTypes = []
+    self.present(activityController, animated: true, completion: nil)
+  }
 }

@@ -138,6 +138,13 @@
                                 <action selector="moreDetailsButtonPressed:" destination="-1" eventType="touchUpInside" id="GOW-ve-5A2"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aN-7H-hMP">
+                            <rect key="frame" x="331" y="30" width="24" height="24"/>
+                            <state key="normal" image="share_white_icon"/>
+                            <connections>
+                                <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="eVM-3i-M9Q"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="2NM-gq-kQ9" firstAttribute="leading" secondItem="E4a-0m-71s" secondAttribute="leading" id="0MO-11-nrH"/>
@@ -145,11 +152,13 @@
                         <constraint firstItem="LBN-PO-FoD" firstAttribute="centerX" secondItem="Psx-yZ-xge" secondAttribute="centerX" id="3WQ-2f-k9o"/>
                         <constraint firstItem="cFr-5p-0Af" firstAttribute="centerX" secondItem="Psx-yZ-xge" secondAttribute="centerX" id="3ft-Gg-snu"/>
                         <constraint firstItem="E4a-0m-71s" firstAttribute="top" secondItem="LBN-PO-FoD" secondAttribute="bottom" constant="8" id="43R-3b-Oxn"/>
+                        <constraint firstAttribute="trailing" secondItem="2aN-7H-hMP" secondAttribute="trailing" constant="20" id="46G-dv-91J"/>
                         <constraint firstItem="eYm-1o-yZL" firstAttribute="centerX" secondItem="Psx-yZ-xge" secondAttribute="centerX" id="4bH-eM-aAR"/>
                         <constraint firstItem="vRu-Wr-uK3" firstAttribute="top" secondItem="2NM-gq-kQ9" secondAttribute="bottom" constant="8" id="4t9-Wj-WJE"/>
                         <constraint firstItem="vRu-Wr-uK3" firstAttribute="leading" secondItem="2NM-gq-kQ9" secondAttribute="leading" id="B3p-6X-Mb6"/>
                         <constraint firstItem="cFr-5p-0Af" firstAttribute="top" secondItem="eYm-1o-yZL" secondAttribute="bottom" constant="5" id="BLG-Ng-DpR"/>
                         <constraint firstItem="eYm-1o-yZL" firstAttribute="top" secondItem="Psx-yZ-xge" secondAttribute="top" constant="25" id="BSJ-n8-IKt"/>
+                        <constraint firstItem="2aN-7H-hMP" firstAttribute="top" secondItem="Psx-yZ-xge" secondAttribute="top" constant="30" id="Ge0-co-mTs"/>
                         <constraint firstItem="sby-yA-IZa" firstAttribute="top" secondItem="yGB-qx-0LV" secondAttribute="bottom" constant="8" id="H62-dv-j2S"/>
                         <constraint firstItem="0OE-JH-ApR" firstAttribute="top" secondItem="vRu-Wr-uK3" secondAttribute="bottom" constant="8" id="Is8-7z-4H1"/>
                         <constraint firstItem="yGB-qx-0LV" firstAttribute="top" secondItem="eJQ-Kx-3cM" secondAttribute="bottom" constant="20" id="Knz-ns-CdC"/>
@@ -197,5 +206,6 @@
     </objects>
     <resources>
         <image name="kyber_pending" width="36" height="64"/>
+        <image name="share_white_icon" width="24" height="24"/>
     </resources>
 </document>

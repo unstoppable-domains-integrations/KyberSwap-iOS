@@ -66,4 +66,16 @@ extension UIView {
     self.layer.add(rotateAnimation, forKey: nil)
     CATransaction.commit()
   }
+
+  func toImage() -> UIImage? {
+    let rect = self.bounds
+
+    UIGraphicsBeginImageContext(rect.size)
+    let context = UIGraphicsGetCurrentContext()
+    self.layer.render(in: context!)
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
 }
