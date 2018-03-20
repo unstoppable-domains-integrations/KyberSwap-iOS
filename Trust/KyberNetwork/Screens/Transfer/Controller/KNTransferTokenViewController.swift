@@ -8,7 +8,7 @@ import QRCodeReaderViewController
 
 protocol KNTransferTokenViewControllerDelegate: class {
   func transferTokenViewControllerDidClickTokenButton(_ selectedToken: KNToken)
-  func transferTokenViewControllerShouldUpdateEstimatedGas(for token: KNToken, amount: BigInt)
+  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: KNToken, to address: String?, amount: BigInt)
   func transferTokenViewControllerDidClickTransfer(transaction: UnconfirmedTransaction)
   func transferTokenViewControllerDidClickPendingTransaction()
   func transferTokenViewControllerDidExit()
@@ -128,7 +128,7 @@ extension KNTransferTokenViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    self.gasPriceTextField.text = "\(KNGasCoordinator.shared.defaultKNGas)"
+    self.gasPriceTextField.text = KNGasConfiguration.gasPriceDefault.fullString(units: UnitConfiguration.gasPriceUnit)
     self.gasPriceTextField.delegate = self
 
     self.lowGasPriceButton.setTitle("Low".toBeLocalised(), for: .normal)
@@ -141,7 +141,7 @@ extension KNTransferTokenViewController {
     self.fastGasPriceButton.rounded(color: .clear, width: 0, radius: 4.0)
 
     let feeString: String = {
-      let fee = BigInt(KNGasCoordinator.shared.defaultKNGas) * self.lastEstimateGasUsed
+      let fee = KNGasConfiguration.gasPriceDefault * self.lastEstimateGasUsed
       return fee.shortString(units: UnitConfiguration.gasFeeUnit)
     }()
 
@@ -201,7 +201,8 @@ extension KNTransferTokenViewController {
   @objc func shouldUpdateEstimateGasUsed(_ sender: Any?) {
     guard let amount = BigInt(self.amountTextField.text ?? "") else { return }
     self.delegate?.transferTokenViewControllerShouldUpdateEstimatedGas(
-      for: self.selectedToken,
+      from: self.selectedToken,
+      to: self.addressTextField.text,
       amount: amount
     )
   }

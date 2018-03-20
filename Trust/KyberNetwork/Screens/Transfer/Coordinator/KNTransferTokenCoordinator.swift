@@ -104,6 +104,38 @@ class KNTransferTokenCoordinator: Coordinator {
   }
 
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
+    self.navigationController.topViewController?.displayLoading()
+    KNTransactionCoordinator.requestDataPrepareForTransferTransaction(
+      transaction,
+      provider: self.session.externalProvider) { [weak self] result in
+      guard let `self` = self else { return }
+        switch result {
+        case .success(let newTx):
+          if let newTransaction = newTx {
+            self.session.externalProvider.transfer(transaction: newTransaction, completion: { [weak self] transferResult in
+              guard let `self` = self else { return }
+              self.navigationController.topViewController?.hideLoading()
+              switch transferResult {
+              case .success(let txHash):
+                let tx: Transaction = newTransaction.toTransaction(
+                  wallet: self.session.wallet,
+                  hash: txHash,
+                  nounce: self.session.externalProvider.minTxCount
+                )
+                self.session.addNewPendingTransaction(tx)
+              case .failure:
+                self.rootViewController.coordinatorTransferDidReturn(result: transferResult)
+              }
+            })
+          } else {
+            self.navigationController.topViewController?.hideLoading()
+            self.navigationController.topViewController?.showInsufficientBalanceAlert()
+          }
+        case .failure(let error):
+          self.navigationController.topViewController?.hideLoading()
+          self.navigationController.displayError(error: error.error)
+        }
+    }
   }
 }
 
@@ -122,9 +154,9 @@ extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
     self.navigationController.pushViewController(self.selectTokenViewController, animated: true)
   }
 
-  func transferTokenViewControllerShouldUpdateEstimatedGas(for token: KNToken, amount: BigInt) {
+  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: KNToken, to address: String?, amount: BigInt) {
     let type: TransferType = {
-      if token.isETH { return .ether(destination: nil) }
+      if token.isETH { return .ether(destination: Address(string: address ?? "")) }
       let tokenObject = TokenObject(
         contract: token.address,
         name: token.name,
@@ -139,7 +171,7 @@ extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
     let transaction = UnconfirmedTransaction(
       transferType: type,
       value: amount,
-      to: nil,
+      to: Address(string: address ?? ""),
       data: nil,
       gasLimit: .none,
       gasPrice: .none,
