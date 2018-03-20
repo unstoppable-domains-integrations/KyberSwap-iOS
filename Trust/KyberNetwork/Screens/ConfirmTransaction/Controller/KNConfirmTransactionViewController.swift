@@ -66,36 +66,44 @@ class KNConfirmTransactionViewController: UIViewController {
   fileprivate func createData() {
     switch self.transactionType {
     case .exchange(let trans):
-      let amountSpent = "\(trans.from.symbol)\(trans.amount.fullString(decimals: trans.from.decimal))"
+      let amountSpent = "\(trans.from.symbol)\(trans.amount.fullString(decimals: trans.from.decimal))".prefix(20)
 
-      let usdValue: String = {
+      let usdValue: Substring = {
         let usdRate = KNRateCoordinator.shared.usdRate(for: trans.from)?.rate ?? BigInt(0)
-        return (usdRate * trans.amount).shortString(units: .ether)
+        return (usdRate * trans.amount).shortString(units: .ether).prefix(16)
       }()
 
-      let expectedReceive: String = {
+      let expectedReceive: Substring = {
         let expectedAmount = trans.amount * trans.expectedRate / BigInt(10).power(trans.to.decimal)
-        return "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))"
+        return "\(trans.to.symbol)\(expectedAmount.fullString(decimals: trans.to.decimal))".prefix(20)
       }()
 
-      let rate = "Rate: \(trans.to.symbol)\(trans.expectedRate.shortString(decimals: trans.to.decimal))"
+      let rate = "\(trans.from.symbol)/\(trans.to.symbol): \(trans.expectedRate.fullString(decimals: trans.to.decimal))".prefix(20)
 
-      let minRate = trans.minRate?.shortString(decimals: trans.to.decimal) ?? "--"
+      let minRate = trans.minRate?.fullString(decimals: trans.to.decimal).prefix(20) ?? "--"
 
-      let feeString: String = {
+      let (feeString, usdFeeString): (Substring, Substring) = {
         let transFee: BigInt = {
           let gasPrice: BigInt = trans.gasPrice ?? KNGasConfiguration.gasPriceDefault
           let gasLimit: BigInt = trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
           return gasPrice * gasLimit
         }()
-        return transFee.fullString(units: UnitConfiguration.gasFeeUnit)
+        let usdRate: BigInt = {
+          if let eth = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH }) {
+            return KNRateCoordinator.shared.usdRate(for: eth)?.rate ?? BigInt(0)
+          }
+          return BigInt(0)
+        }()
+        let feeString = transFee.fullString(units: UnitConfiguration.gasFeeUnit).prefix(16)
+        let usdString = (usdRate * transFee).shortString(units: .ether).prefix(16)
+        return (feeString, usdString)
       }()
 
       self.data = [
-        ("Amount Sent", "\(amountSpent)\n$\(usdValue)"),
+        ("Amount Sent", "\(amountSpent)\n($\(usdValue))"),
         ("Expected Receive", "\(expectedReceive)\n\(rate)"),
         ("Min Rate", "\(trans.to.symbol)\(minRate)"),
-        ("Est. Fee", "ETH\(feeString)"),
+        ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
       ]
     case .transfer:
       return
