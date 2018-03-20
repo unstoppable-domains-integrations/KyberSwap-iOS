@@ -48,6 +48,10 @@ class KNConfirmTransactionViewController: UIViewController {
   }
 
   fileprivate func setupUI() {
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapToParentView(_:)))
+    self.view.addGestureRecognizer(tapGesture)
+
     self.containerView.rounded(color: .clear, width: 0, radius: 10.0)
     self.containerView.backgroundColor = UIColor.white
 
@@ -97,6 +101,14 @@ class KNConfirmTransactionViewController: UIViewController {
         self.transactionType = .exchange(newTransaction)
         self.createData()
       }
+    }
+  }
+
+  @objc func didTapToParentView(_ sender: UITapGestureRecognizer) {
+    let touchPoint = sender.location(in: self.view)
+    if touchPoint.x < self.containerView.frame.minX || touchPoint.x > self.containerView.frame.maxX ||
+      touchPoint.y < self.containerView.frame.minY || touchPoint.y > self.containerView.frame.maxY {
+      self.delegate?.confirmTransactionDidCancel()
     }
   }
 
