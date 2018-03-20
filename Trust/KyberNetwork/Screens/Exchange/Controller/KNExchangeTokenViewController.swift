@@ -151,7 +151,7 @@ extension KNExchangeTokenViewController {
     self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
     self.minRateTextField.delegate = self
 
-    self.gasPriceTextField.text = "\(KNGasConfiguration.gasPriceDefault)"
+    self.gasPriceTextField.text = KNGasConfiguration.gasPriceDefault.fullString(units: UnitConfiguration.gasPriceUnit)
     self.gasPriceTextField.delegate = self
 
     self.lowGasPriceButton.setTitle("Low".toBeLocalised(), for: .normal)
