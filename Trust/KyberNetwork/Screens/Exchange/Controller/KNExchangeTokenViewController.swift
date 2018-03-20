@@ -4,8 +4,6 @@ import UIKit
 import BigInt
 import Result
 
-// TODO: Handle for all actions that could lead to change data
-
 protocol KNExchangeTokenViewControllerDelegate: class {
   func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt)
   func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction)
@@ -19,7 +17,7 @@ class KNExchangeTokenViewController: KNBaseViewController {
 
   fileprivate let advancedSettingsHeight: CGFloat = 150
   fileprivate let exchangeButtonTopPaddingiPhone5: CGFloat = 40
-  fileprivate let exchangeButtonTopPaddingAdvancedSettingsOpen: CGFloat = 220
+  fileprivate let exchangeButtonTopPaddingAdvancedSettingsOpen: CGFloat = 210
   fileprivate let exchangeButtonTopPaddingiPhone6: CGFloat = 120
   fileprivate let exchangeButtonTopPaddingiPhone6Plus: CGFloat = 160
 

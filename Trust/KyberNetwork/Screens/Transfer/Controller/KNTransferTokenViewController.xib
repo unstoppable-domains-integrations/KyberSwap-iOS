@@ -140,7 +140,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbo-A7-yEO">
-                            <rect key="frame" x="0.0" y="350" width="375" height="120"/>
+                            <rect key="frame" x="0.0" y="340" width="375" height="120"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fee: 0 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJd-Cf-Xzh">
                                     <rect key="frame" x="121" y="97" width="134.5" height="13"/>
@@ -330,7 +330,7 @@
                         <constraint firstItem="IlU-6a-veg" firstAttribute="width" secondItem="YQH-tY-fbk" secondAttribute="width" id="hGC-HO-DU2"/>
                         <constraint firstItem="rey-RX-5vb" firstAttribute="width" secondItem="gOf-o7-3mc" secondAttribute="width" id="hVN-RU-iAs"/>
                         <constraint firstAttribute="trailing" secondItem="byz-Mz-BV9" secondAttribute="trailing" constant="20" id="hxE-Vv-79h"/>
-                        <constraint firstItem="sbo-A7-yEO" firstAttribute="top" secondItem="lPL-jt-7Ge" secondAttribute="bottom" constant="30" id="jVv-zB-VJe"/>
+                        <constraint firstItem="sbo-A7-yEO" firstAttribute="top" secondItem="lPL-jt-7Ge" secondAttribute="bottom" constant="20" id="jVv-zB-VJe"/>
                         <constraint firstAttribute="trailing" secondItem="lPL-jt-7Ge" secondAttribute="trailing" constant="20" id="lDO-PR-Euw"/>
                         <constraint firstItem="cj5-Mc-kPo" firstAttribute="centerX" secondItem="b66-D7-51n" secondAttribute="centerX" id="mDf-e6-1Dt"/>
                         <constraint firstItem="WeX-zr-i3t" firstAttribute="centerY" secondItem="pfu-t3-c6S" secondAttribute="centerY" constant="5" id="nNG-Dm-axU"/>

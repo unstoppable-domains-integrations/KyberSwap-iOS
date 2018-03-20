@@ -4,6 +4,7 @@ import UIKit
 import Result
 import BigInt
 import TrustKeystore
+import QRCodeReaderViewController
 
 protocol KNTransferTokenViewControllerDelegate: class {
   func transferTokenViewControllerDidClickTokenButton(_ selectedToken: KNToken)
@@ -16,8 +17,8 @@ protocol KNTransferTokenViewControllerDelegate: class {
 class KNTransferTokenViewController: KNBaseViewController {
 
   fileprivate let kAdvancedSettingsHeight: CGFloat = 120
-  fileprivate let kTransferButtonTopPaddingiPhone5: CGFloat = 40
-  fileprivate let kTransferButtonTopPaddingAdvancedSettingsOpen: CGFloat = 200
+  fileprivate let kTransferButtonTopPaddingiPhone5: CGFloat = 60
+  fileprivate let kTransferButtonTopPaddingAdvancedSettingsOpen: CGFloat = 160
   fileprivate let kTransferButtonTopPaddingiPhone6: CGFloat = 160
   fileprivate let kTransferButtonTopPaddingiPhone6Plus: CGFloat = 200
 
@@ -86,12 +87,16 @@ class KNTransferTokenViewController: KNBaseViewController {
     self.estimateGasUsedTimer?.invalidate()
     self.estimateGasUsedTimer = nil
   }
+}
 
+// MARK: Set up UI
+extension KNTransferTokenViewController {
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.setupFromToken()
     self.setupAddress()
     self.setupAdvancedSettingsView()
+    self.setupTransferButton()
   }
 
   fileprivate func setupNavigationBar() {
@@ -120,13 +125,6 @@ class KNTransferTokenViewController: KNBaseViewController {
     self.addressTextField.delegate = self
   }
 
-  fileprivate func updateTokenViewSelectedTokenDidChange() {
-    self.tokenButton.setImage(UIImage(named: self.selectedToken.icon), for: .normal)
-    self.tokenButton.setTitle("\(self.selectedToken.display)", for: .normal)
-    self.updateViewWhenBalancesDidChange()
-    self.amountTextField.text = "0"
-  }
-
   fileprivate func setupAdvancedSettingsView() {
     self.gasPriceTextField.text = "\(KNGasCoordinator.shared.defaultKNGas)"
     self.gasPriceTextField.delegate = self
@@ -151,6 +149,21 @@ class KNTransferTokenViewController: KNBaseViewController {
     self.heightConstraintForAdvancedSettingsView.constant = 0
     self.topPaddingConstraintForTransferButton.constant = UIDevice.isIphone5 ? kTransferButtonTopPaddingiPhone5 : kTransferButtonTopPaddingiPhone6
     self.advancedSettingsView.isHidden = true
+  }
+
+  fileprivate func setupTransferButton() {
+    self.transferButton.setTitle("Transfer".uppercased().toBeLocalised(), for: .normal)
+    self.transferButton.rounded(color: .clear, width: 0, radius: 5.0)
+  }
+}
+
+// MARK: Internal update UI and data
+extension KNTransferTokenViewController {
+  fileprivate func updateTokenViewSelectedTokenDidChange() {
+    self.tokenButton.setImage(UIImage(named: self.selectedToken.icon), for: .normal)
+    self.tokenButton.setTitle("\(self.selectedToken.display)", for: .normal)
+    self.updateViewWhenBalancesDidChange()
+    self.amountTextField.text = "0"
   }
 
   fileprivate func updateSelectedToken(_ token: KNToken) {
@@ -192,7 +205,10 @@ class KNTransferTokenViewController: KNBaseViewController {
       amount: amount
     )
   }
+}
 
+// MARK: Action handlers
+extension KNTransferTokenViewController {
   @objc func exitButtonPressed(_ sender: Any) {
     self.delegate?.transferTokenViewControllerDidExit()
   }
@@ -217,6 +233,9 @@ class KNTransferTokenViewController: KNBaseViewController {
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
+    let qrcode = QRCodeReaderViewController()
+    qrcode.delegate = self
+    self.present(qrcode, animated: true, completion: nil)
   }
 
   @IBAction func gasPriceButtonPressed(_ sender: UIButton) {
@@ -262,7 +281,7 @@ class KNTransferTokenViewController: KNBaseViewController {
   }
 }
 
-// Update from coordinator
+// MARK: External update from coordinator
 extension KNTransferTokenViewController {
 
   func coordinatorUpdateUSDBalance(usd: BigInt) {
@@ -343,6 +362,7 @@ extension KNTransferTokenViewController {
   }
 }
 
+// MARK: TextField Delegation
 extension KNTransferTokenViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if let text = textField.text, let int = EtherNumberFormatter.full.number(from: text), int.isZero {
@@ -368,5 +388,16 @@ extension KNTransferTokenViewController: UITextFieldDelegate {
     if textField == self.addressTextField { return }
     if textField == self.gasPriceTextField { self.updateTransactionFee() }
     self.shouldUpdateEstimateGasUsed(textField)
+  }
+}
+
+// MARK: QRCode Reader Delegation
+extension KNTransferTokenViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) { self.addressTextField.text = result }
   }
 }
