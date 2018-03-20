@@ -10,7 +10,7 @@ protocol KNPendingTransactionStatusViewControllerDelegate: class {
 
 class KNPendingTransactionStatusViewController: KNBaseViewController {
 
-  fileprivate let kBigPaddingIphone5: CGFloat = 25
+  fileprivate let kBigPaddingIphone5: CGFloat = 20
   fileprivate let kSmallPaddingIphone5: CGFloat = 8
   fileprivate let kBigPaddingIphone6: CGFloat = 35
   fileprivate let kSmallPaddingIPhone6: CGFloat = 12
