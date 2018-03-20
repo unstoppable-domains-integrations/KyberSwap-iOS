@@ -50,9 +50,11 @@ class KNPendingTransactionListViewController: UIViewController {
 
     self.exchangeNowButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.exchangeNowButton.setTitle("Exchange Now".toBeLocalised(), for: .normal)
+    self.exchangeNowButton.backgroundColor = UIColor.Kyber.blue
 
     self.transferNowButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.transferNowButton.setTitle("Transfer Now".toBeLocalised(), for: .normal)
+    self.transferNowButton.backgroundColor = UIColor.Kyber.green
 
     let nib = UINib(nibName: KNPendingTransactionListTableViewCell.className, bundle: nil)
     self.transactionTableView.register(nib, forCellReuseIdentifier: transactionListCellID)
