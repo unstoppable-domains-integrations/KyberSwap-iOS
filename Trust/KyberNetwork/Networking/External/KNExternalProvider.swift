@@ -533,7 +533,7 @@ class KNExternalProvider {
       completion(.success(transaction.data ?? Data()))
       return
     }
-    self.web3Swift.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to!.description)) { (result) in
+    self.web3Swift.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to?.description ?? "")) { (result) in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
