@@ -20,7 +20,7 @@ class KNPendingTransactionListCoordinator: Coordinator {
 
   lazy var pendingTxListVC: KNPendingTransactionListViewController = {
     let controller = KNPendingTransactionListViewController(delegate: self, pendingTransactions: self.storage.pendingObjects)
-    controller.modalPresentationStyle = .overFullScreen
+    controller.modalPresentationStyle = .overCurrentContext
     return controller
   }()
 

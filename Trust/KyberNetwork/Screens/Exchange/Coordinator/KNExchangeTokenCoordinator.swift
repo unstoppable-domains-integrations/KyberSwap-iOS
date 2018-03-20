@@ -227,7 +227,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
       delegate: self,
       type: transactionType
     )
-    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
+    self.confirmTransactionViewController.modalPresentationStyle = .overCurrentContext
     self.navigationController.topViewController?.present(self.confirmTransactionViewController, animated: false, completion: nil)
   }
 
