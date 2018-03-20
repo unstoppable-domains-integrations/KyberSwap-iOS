@@ -88,8 +88,41 @@ class KNConfirmTransactionViewController: UIViewController {
         ("Min Rate", "\(trans.to.symbol)\(minRate)"),
         ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
       ]
-    case .transfer:
-      return
+    case .transfer(let trans):
+      let fromToken: KNToken = {
+        switch trans.transferType {
+        case .ether:
+          return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+        case .token(let object):
+          return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == object.contract })!
+        }
+      }()
+      // Amount Transfer & its USD Value
+      let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimal))".prefix(20)
+      let usdValue: String = {
+        let rate = KNRateCoordinator.shared.usdRate(for: fromToken)?.rate ?? BigInt(0)
+        return (rate * trans.value).shortString(units: .ether)
+      }()
+      // Transfer To Address
+      let address = trans.to?.description ?? ""
+      // Est Fee & its USD Value
+      let (feeString, usdFeeString): (Substring, String) = {
+        let gasPrice = trans.gasPrice ?? KNGasConfiguration.gasPriceDefault
+        let gasLimit: BigInt = {
+          if let limit = trans.gasLimit { return limit }
+          return fromToken.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+        }()
+        let fee = gasPrice * gasLimit
+        let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+        let rate = KNRateCoordinator.shared.usdRate(for: ethToken)?.rate ?? BigInt(0)
+        return (fee.fullString(units: .ether).prefix(16), (rate * fee).shortString(units: .ether))
+      }()
+
+      self.data = [
+        ("Amount Sent", "\(amountSent)\n($\(usdValue))"),
+        ("Transfer To", "\(address)"),
+        ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
+      ]
     }
     self.contentTableView.reloadData()
   }
