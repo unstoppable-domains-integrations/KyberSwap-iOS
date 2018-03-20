@@ -12,8 +12,8 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
 
   fileprivate let kBigPaddingIphone5: CGFloat = 25
   fileprivate let kSmallPaddingIphone5: CGFloat = 8
-  fileprivate let kBigPaddingIphone6: CGFloat = 40
-  fileprivate let kSmallPaddingIPhone6: CGFloat = 15
+  fileprivate let kBigPaddingIphone6: CGFloat = 35
+  fileprivate let kSmallPaddingIPhone6: CGFloat = 12
 
   fileprivate weak var delegate: KNPendingTransactionStatusViewControllerDelegate?
   fileprivate var transaction: Transaction!
@@ -105,7 +105,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     let feeString: String = {
       let gasPrice = EtherNumberFormatter.full.number(from: self.transaction.gasPrice, units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
       let gasUsed = EtherNumberFormatter.full.number(from: self.transaction.gasUsed, units: UnitConfiguration.gasFeeUnit) ?? BigInt(0)
-      let fee = gasPrice * gasUsed / BigInt(UnitConfiguration.gasFeeUnit.rawValue)
+      let fee = gasPrice * gasUsed
       let feeString: String = {
         var value = "ETH \(fee.fullString(units: UnitConfiguration.gasFeeUnit))"
         let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!

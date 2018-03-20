@@ -517,7 +517,7 @@ class KNExternalProvider {
       case .success(let json):
         completion(.success(json))
       case .failure(let error):
-        if let err = error as? JSErrorDomain {
+        if let err = error.error as? JSErrorDomain {
           if case .invalidReturnType(let object) = err, let json = object as? JSONDictionary {
             completion(.success(json))
             return

@@ -89,14 +89,7 @@ class KNConfirmTransactionViewController: UIViewController {
         ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
       ]
     case .transfer(let trans):
-      let fromToken: KNToken = {
-        switch trans.transferType {
-        case .ether:
-          return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
-        case .token(let object):
-          return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == object.contract })!
-        }
-      }()
+      let fromToken: KNToken = trans.transferType.knToken()
       // Amount Transfer & its USD Value
       let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimal))".prefix(20)
       let usdValue: String = {
@@ -105,6 +98,9 @@ class KNConfirmTransactionViewController: UIViewController {
       }()
       // Transfer To Address
       let address = trans.to?.description ?? ""
+
+      // Gas Price
+      let gasPriceString = (trans.gasPrice ?? KNGasConfiguration.gasPriceDefault).fullString(units: UnitConfiguration.gasPriceUnit).prefix(20)
       // Est Fee & its USD Value
       let (feeString, usdFeeString): (Substring, String) = {
         let gasPrice = trans.gasPrice ?? KNGasConfiguration.gasPriceDefault
@@ -121,6 +117,7 @@ class KNConfirmTransactionViewController: UIViewController {
       self.data = [
         ("Amount Sent", "\(amountSent)\n($\(usdValue))"),
         ("Transfer To", "\(address)"),
+        ("Gas Price", "\(gasPriceString)"),
         ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
       ]
     }

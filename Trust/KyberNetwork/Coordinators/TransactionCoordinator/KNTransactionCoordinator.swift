@@ -92,6 +92,75 @@ extension KNTransactionCoordinator {
       }
     }
   }
+
+  // Prepare data before submitting transfer request
+  // Data needed: gas limit
+  static func requestDataPrepareForTransferTransaction(_ transaction: UnconfirmedTransaction, provider: KNExternalProvider, completion: @escaping (Result<UnconfirmedTransaction?, AnyError>) -> Void) {
+    DispatchQueue.global().async {
+      var error: AnyError?
+      let group = DispatchGroup()
+
+      let token: KNToken = transaction.transferType.knToken()
+
+      // Est Gas Used
+      var gasLimit: BigInt = {
+        if let gas = transaction.gasLimit { return gas }
+        return token.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+      }()
+      group.enter()
+      provider.getEstimateGasLimit(for: transaction) { result in
+        switch result {
+        case .success(let gas): gasLimit = gas
+          // TODO (Mike): Est. Gas Limit is temp not working
+        //case .failure(let err): error = err
+        default: break
+        }
+        group.leave()
+      }
+
+      // Balance
+      var balance = BigInt(0)
+      group.enter()
+      if token.isETH {
+        provider.getETHBalance(completion: { result in
+          switch result {
+          case .success(let bal): balance = bal.value
+          case .failure(let err): error = err
+          }
+          group.leave()
+        })
+      } else {
+        provider.getTokenBalance(for: Address(string: token.address)!, completion: { result in
+          switch result {
+          case .success(let bal): balance = bal
+          case .failure(let err): error = err
+          }
+          group.leave()
+        })
+      }
+
+      group.notify(queue: .main) {
+        if let err = error {
+          completion(.failure(err))
+          return
+        }
+        if balance < transaction.value {
+          completion(.success(nil))
+          return
+        }
+        let newTransaction = UnconfirmedTransaction(
+          transferType: transaction.transferType,
+          value: transaction.value,
+          to: transaction.to,
+          data: transaction.data,
+          gasLimit: gasLimit,
+          gasPrice: transaction.gasPrice,
+          nonce: transaction.nonce
+        )
+        completion(.success(newTransaction))
+      }
+    }
+  }
 }
 
 // MARK: Pending transactions
@@ -177,5 +246,37 @@ extension KNTransactionCoordinator {
   func stopUpdatingPendingTransactions() {
     self.timer?.invalidate()
     self.timer = nil
+  }
+}
+
+extension UnconfirmedTransaction {
+
+  func toTransaction(wallet: Wallet, hash: String, nounce: Int) -> Transaction {
+    let token: KNToken = self.transferType.knToken()
+
+    let localObject = LocalizedOperationObject(
+      from: token.address,
+      to: "",
+      contract: nil,
+      type: "transfer",
+      value: self.value.fullString(decimals: token.decimal),
+      symbol: nil,
+      name: nil,
+      decimals: token.decimal
+    )
+    return Transaction(
+      id: hash,
+      blockNumber: 0,
+      from: wallet.address.description,
+      to: self.to?.description ?? "",
+      value: self.value.fullString(decimals: token.decimal),
+      gas: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
+      gasPrice: self.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
+      gasUsed: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
+      nonce: "\(nounce)",
+      date: Date(),
+      localizedOperations: [localObject],
+      state: .pending
+    )
   }
 }
