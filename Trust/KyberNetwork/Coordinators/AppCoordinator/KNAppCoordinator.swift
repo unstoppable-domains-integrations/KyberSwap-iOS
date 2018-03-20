@@ -71,11 +71,13 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(exchangeCoordinator)
     exchangeCoordinator.start()
 
-    let transferVC = KNBaseViewController()
+    let transferVC = KNTransferTokenViewController(delegate: nil)
     let transferNav = UINavigationController(rootViewController: transferVC)
+    transferNav.applyStyle()
 
     let walletVC = KNBaseViewController()
     let walletNav = UINavigationController(rootViewController: walletVC)
+    walletNav.applyStyle()
 
     self.tabbarController.viewControllers = [
       exchangeCoordinator.navigationController,
