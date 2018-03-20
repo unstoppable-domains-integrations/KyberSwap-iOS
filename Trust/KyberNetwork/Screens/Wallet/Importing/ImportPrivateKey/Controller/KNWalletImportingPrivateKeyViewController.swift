@@ -8,7 +8,7 @@ protocol KNWalletImportingPrivateKeyViewControllerDelegate: class {
   func walletImportingPrivateKeyDidImport(privateKey: String)
 }
 
-class KNWalletImportingPrivateKeyViewController: UIViewController {
+class KNWalletImportingPrivateKeyViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletImportingPrivateKeyViewControllerDelegate?
 
@@ -31,9 +31,9 @@ class KNWalletImportingPrivateKeyViewController: UIViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    NSLog("Did open: \(self.className)")
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.privateKeyTextField.text = ""
   }
 
   fileprivate func setupUI() {
