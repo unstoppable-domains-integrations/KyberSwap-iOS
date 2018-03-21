@@ -182,7 +182,6 @@ extension KNExchangeTokenViewController {
     self.transactionFeeLabel.text = "Transaction Fee: \(feeString) ETH".toBeLocalised()
     self.advancedLabel.text = "Advanced".toBeLocalised()
 
-    self.heightForAdvancedSettingsView.constant = 0
     self.advancedSettingsView.isHidden = true
   }
 
@@ -437,11 +436,9 @@ extension KNExchangeTokenViewController {
   @IBAction func advancedSwitchDidChange(_ sender: Any) {
     if self.advancedSwitch.isOn {
       self.advancedSettingsView.isHidden = false
-      self.heightForAdvancedSettingsView.constant = advancedSettingsHeight
       self.topPaddingConstraintForExchangeButton.constant = exchangeButtonTopPaddingAdvancedSettingsOpen
     } else {
       self.advancedSettingsView.isHidden = true
-      self.heightForAdvancedSettingsView.constant = 0
       self.topPaddingConstraintForExchangeButton.constant = UIDevice.isIphone5 ? exchangeButtonTopPaddingiPhone5 : exchangeButtonTopPaddingiPhone6
     }
     self.view.updateConstraints()

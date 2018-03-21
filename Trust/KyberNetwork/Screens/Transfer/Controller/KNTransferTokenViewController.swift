@@ -148,7 +148,6 @@ extension KNTransferTokenViewController {
     self.transactionFeeLabel.text = "Transaction Fee: \(feeString) ETH".toBeLocalised()
     self.advancedTextLabel.text = "Advanced".toBeLocalised()
 
-    self.heightConstraintForAdvancedSettingsView.constant = 0
     self.topPaddingConstraintForTransferButton.constant = UIDevice.isIphone5 ? kTransferButtonTopPaddingiPhone5 : kTransferButtonTopPaddingiPhone6
     self.advancedSettingsView.isHidden = true
   }
@@ -256,11 +255,9 @@ extension KNTransferTokenViewController {
   @IBAction func advancedSwitchDidChange(_ sender: UISwitch) {
     if sender.isOn {
       self.advancedSettingsView.isHidden = false
-      self.heightConstraintForAdvancedSettingsView.constant = kAdvancedSettingsHeight
       self.topPaddingConstraintForTransferButton.constant = kTransferButtonTopPaddingAdvancedSettingsOpen
     } else {
       self.advancedSettingsView.isHidden = true
-      self.heightConstraintForAdvancedSettingsView.constant = 0
       self.topPaddingConstraintForTransferButton.constant = UIDevice.isIphone5 ? kTransferButtonTopPaddingiPhone5 : kTransferButtonTopPaddingiPhone6
     }
     self.view.updateConstraints()
