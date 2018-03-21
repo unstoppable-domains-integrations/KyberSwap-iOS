@@ -36,6 +36,7 @@ class KNExchangeTokenViewController: KNBaseViewController {
   fileprivate var otherTokenBalances: [String: Balance] = [:]
 
   fileprivate var lastEstimateGasUsed: BigInt = BigInt(0)
+  fileprivate var estimateGasUsedTimer: Timer?
 
   fileprivate var expectedRate: BigInt = BigInt(0)
   fileprivate var slippageRate: BigInt = BigInt(0)
@@ -92,13 +93,23 @@ class KNExchangeTokenViewController: KNBaseViewController {
     self.expectedRateTimer?.invalidate()
     self.expectedRateTimer = nil
     self.expectedRateTimerShouldRepeat(nil)
-    self.expectedRateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.expectedRateTimerShouldRepeat(_:)), userInfo: nil, repeats: true)
+    self.expectedRateTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] timer in
+      self?.expectedRateTimerShouldRepeat(timer)
+    })
+
+    self.estimateGasUsedTimer?.invalidate()
+    self.shouldUpdateEstimateGasUsed(nil)
+    self.estimateGasUsedTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] timer in
+      self?.shouldUpdateEstimateGasUsed(timer)
+    })
   }
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.expectedRateTimer?.invalidate()
     self.expectedRateTimer = nil
+    self.estimateGasUsedTimer?.invalidate()
+    self.estimateGasUsedTimer = nil
   }
 }
 

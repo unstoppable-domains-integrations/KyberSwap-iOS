@@ -288,9 +288,6 @@ class KNExternalProvider {
 
   // MARK: Estimate Gas
   func getEstimateGasLimit(for transferTransaction: UnconfirmedTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    let fromAddress: Address = self.account.address
-    let toAddress: Address? = self.addressToSend(transferTransaction)
-    let value: BigInt = self.valueToSend(transferTransaction)
 
     let defaultGasLimit: BigInt = {
       if transferTransaction.transferType.isETHTransfer() {
@@ -298,13 +295,14 @@ class KNExternalProvider {
       }
       return KNGasConfiguration.transferTokenGasLimitDefault
     }()
-    self.requestDataForTokenTransfer(transferTransaction) { result in
+    self.requestDataForTokenTransfer(transferTransaction) { [weak self] result in
+      guard let `self` = self else { return }
       switch result {
       case .success(let data):
         self.estimateGasLimit(
-          from: fromAddress,
-          to: toAddress,
-          value: value,
+          from: self.account.address,
+          to: self.addressToSend(transferTransaction),
+          value: self.valueToSend(transferTransaction),
           data: data,
           defaultGasLimit: defaultGasLimit,
           completion: completion
@@ -358,7 +356,7 @@ class KNExternalProvider {
           limit += (limit * 20 / 100)
           return min(limit, defaultGasLimit)
         }()
-        NSLog("------ Estimate gas used: \(EtherNumberFormatter.short.string(from: gasLimit, units: UnitConfiguration.gasFeeUnit)) ------")
+        NSLog("------ Estimate gas used: \(gasLimit.fullString(units: .wei)) ------")
         completion(.success(gasLimit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
@@ -571,13 +569,7 @@ class KNExternalProvider {
 
   // MARK: Helper
   private func valueToSend(_ transaction: UnconfirmedTransaction) -> BigInt {
-    let value: BigInt = {
-      switch transaction.transferType {
-      case .ether: return transaction.value
-      default: return BigInt(0)
-      }
-    }()
-    return value
+    return transaction.transferType.isETHTransfer() ? transaction.value : BigInt(0)
   }
 
   private func addressToSend(_ transaction: UnconfirmedTransaction) -> Address? {

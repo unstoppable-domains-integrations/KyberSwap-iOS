@@ -18,15 +18,15 @@ struct EstimateGasRequest: JSONRPCKit.Request {
     }
 
     var parameters: Any? {
-        let results = [
+      return [
             [
                 "from": from.description,
                 "to": to?.description ?? "",
-                "value": value.description.hexEncoded,
+                // Mike: Temp fix for estimate gas, no value needed
+//                "value": value.description.hexEncoded,
                 "data": data.hexEncoded,
             ],
         ]
-        return results
     }
 
     func response(from resultObject: Any) throws -> Response {

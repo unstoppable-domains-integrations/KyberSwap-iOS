@@ -199,7 +199,7 @@ extension KNTransferTokenViewController {
   }
 
   @objc func shouldUpdateEstimateGasUsed(_ sender: Any?) {
-    guard let amount = BigInt(self.amountTextField.text ?? "") else { return }
+    guard let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimal) else { return }
     self.delegate?.transferTokenViewControllerShouldUpdateEstimatedGas(
       from: self.selectedToken,
       to: self.addressTextField.text,
