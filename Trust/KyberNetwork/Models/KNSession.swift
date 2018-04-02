@@ -49,7 +49,7 @@ class KNSession {
       externalProvider: self.externalProvider,
       wallet: self.wallet
     )
-    self.transacionCoordinator?.startUpdatingPendingTransactions()
+    self.transacionCoordinator?.start()
   }
 
   func stopSession() {

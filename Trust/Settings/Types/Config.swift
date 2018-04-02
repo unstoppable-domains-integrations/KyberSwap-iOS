@@ -92,7 +92,7 @@ struct Config {
             case .poa: return "https://poa.trustwalletapp.com"
             case .sokol: return "https://trust-sokol.herokuapp.com"
             case .custom(let custom):
-                return "" // Enable? make optional
+                return ""
             }
         }()
         return URL(string: urlString)!

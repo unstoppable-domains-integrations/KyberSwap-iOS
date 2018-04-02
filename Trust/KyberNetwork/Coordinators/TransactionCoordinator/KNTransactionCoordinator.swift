@@ -20,17 +20,24 @@ class KNTransactionCoordinator {
   fileprivate var allTxTimer: Timer?
   fileprivate var fetchByPageTimer: Timer?
 
-  deinit {
-    self.stopUpdatingAllTransactions()
-    self.stopUpdatingPendingTransactions()
-    self.fetchByPageTimer?.invalidate()
-    self.fetchByPageTimer = nil
-  }
+  deinit { self.stop() }
 
   init(storage: TransactionsStorage, externalProvider: KNExternalProvider, wallet: Wallet) {
     self.storage = storage
     self.externalProvider = externalProvider
     self.wallet = wallet
+  }
+
+  func start() {
+    self.startUpdatingAllTransactions()
+    self.startUpdatingPendingTransactions()
+  }
+
+  func stop() {
+    //self.stopUpdatingAllTransactions()
+    self.stopUpdatingPendingTransactions()
+    self.fetchByPageTimer?.invalidate()
+    self.fetchByPageTimer = nil
   }
 }
 
@@ -216,7 +223,6 @@ extension KNTransactionCoordinator {
       guard let `self` = self else { return }
         switch result {
         case .success(let transactions):
-          self.storage.add(transactions)
           if transactions.isEmpty || page >= 25 {
             NSLog("Done loading transactions by page, last page: \(page)")
             KNAppTracker.updateTransactionLoadState(.done, for: address)
@@ -259,11 +265,14 @@ extension KNTransactionCoordinator {
             )
             self.storage.add(transactions)
           }
+          NSLog("Successfully fetched \(transactions.count) transactions")
           completion?(.success(transactions))
         } catch let error {
+          NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
           completion?(.failure(AnyError(error)))
         }
       case .failure(let error):
+        NSLog("Fetching transactions failed with error: \(error.prettyError)")
         completion?(.failure(AnyError(error)))
       }
     }
