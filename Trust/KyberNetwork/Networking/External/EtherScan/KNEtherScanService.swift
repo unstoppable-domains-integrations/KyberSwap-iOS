@@ -10,14 +10,14 @@ enum KNEtherScanService {
 
 extension KNEtherScanService: TargetType {
   var baseURL: URL {
-    return URL(string: "https://kovan.etherscan.io")!//KNEnvironment.default.etherScanIOURLString)!
+    switch self {
+    case .getListTransactions(let address, let startBlock, let endBlock, let page):
+      return URL(string: "\(KNEnvironment.default.etherScanIOURLString)api?module=account&action=txlist&address=\(address)&startblock=\(startBlock)&endblock=\(endBlock)&page=\(page)&sort=asc&apikey=\(apiKey)")!
+    }
   }
 
   var path: String {
-    switch self {
-    case .getListTransactions(let address, let startBlock, let endBlock, let page):
-      return "/api?module=account&action=txlist&address=\(address)&startblock=\(startBlock)&endblock=\(endBlock)&page=\(page)&sort=asc&apikey=\(apiKey)"
-    }
+    return ""
   }
 
   var method: Moya.Method {
@@ -34,10 +34,9 @@ extension KNEtherScanService: TargetType {
 
   var headers: [String: String]? {
     return [
-      "Content-type": "application/json",
+      "content-type": "application/json",
       "client": Bundle.main.bundleIdentifier ?? "",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
   }
 }
-

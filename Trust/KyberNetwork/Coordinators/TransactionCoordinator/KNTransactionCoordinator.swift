@@ -18,7 +18,6 @@ class KNTransactionCoordinator {
 
   fileprivate var pendingTxTimer: Timer?
   fileprivate var allTxTimer: Timer?
-  fileprivate var fetchByPageTimer: Timer?
 
   deinit { self.stop() }
 
@@ -36,8 +35,6 @@ class KNTransactionCoordinator {
   func stop() {
     self.stopUpdatingAllTransactions()
     self.stopUpdatingPendingTransactions()
-    self.fetchByPageTimer?.invalidate()
-    self.fetchByPageTimer = nil
   }
 }
 
@@ -202,48 +199,11 @@ extension KNTransactionCoordinator {
           completion: nil
         )
     })
-//    self.fetchTransactionsByPage(
-//      for: self.wallet.address,
-//      page: 0,
-//      retryIfFailed: true) { _ in }
   }
 
   func stopUpdatingAllTransactions() {
     self.allTxTimer?.invalidate()
     self.allTxTimer = nil
-  }
-
-  func fetchTransactionsByPage(for address: Address, page: Int, retryIfFailed: Bool = false, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-    if KNAppTracker.transactionLoadState(for: address) == .done { return }
-    NSLog("Fetch transactions for address: \(address.description) at page \(page)")
-    self.fetchTransaction(
-      for: address,
-      startBlock: 1,
-      page: page) { [weak self] result in
-      guard let `self` = self else { return }
-        switch result {
-        case .success(let transactions):
-          if transactions.isEmpty || page >= 25 {
-            NSLog("Done loading transactions by page, last page: \(page)")
-            KNAppTracker.updateTransactionLoadState(.done, for: address)
-            completion?(.success(transactions))
-            return
-          }
-          self.fetchByPageTimer?.invalidate()
-          self.fetchByPageTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
-            self?.fetchTransactionsByPage(for: address, page: page + 1, completion: completion)
-          })
-        case .failure(let error):
-          NSLog("Fetch transactions at page \(page) failed. Retrieve in 5 secs")
-          KNAppTracker.updateTransactionLoadState(.failed, for: address)
-          completion?(.failure(error))
-          if !retryIfFailed { return }
-          self.fetchByPageTimer?.invalidate()
-          self.fetchByPageTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false, block: { [weak self] _ in
-            self?.fetchTransactionsByPage(for: address, page: page, completion: completion)
-          })
-        }
-    }
   }
 
   func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
@@ -254,7 +214,7 @@ extension KNTransactionCoordinator {
       switch result {
       case .success(let response):
         do {
-          let json: JSONDictionary = try kn_cast(response.mapJSON())
+          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
           let transArr: [JSONDictionary] = try kn_cast(json["result"])
           let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
           let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
@@ -429,9 +389,8 @@ extension RawTransaction {
       gasPrice: gasPrice,
       input: input,
       gasUsed: gasUsed,
-      error: isError,
+      error: isError == "0" ? nil : isError,
       operations: nil
     )
   }
 }
-
