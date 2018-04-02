@@ -82,7 +82,7 @@
 		25CC0ACA2059267B0009D0D5 /* KNExchangeTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AC82059267B0009D0D5 /* KNExchangeTokenViewController.swift */; };
 		25CC0ACB2059267B0009D0D5 /* KNExchangeTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0AC92059267B0009D0D5 /* KNExchangeTokenViewController.xib */; };
 		25CC0ACD2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0ACC2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift */; };
-		25CE6F7220723F7C00A3A2F9 /* KNSessionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE6F7120723F7C00A3A2F9 /* KNSessionTracker.swift */; };
+		25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE6F7120723F7C00A3A2F9 /* KNAppTracker.swift */; };
 		25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
@@ -545,7 +545,7 @@
 		25CC0AC82059267B0009D0D5 /* KNExchangeTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNExchangeTokenViewController.swift; sourceTree = "<group>"; };
 		25CC0AC92059267B0009D0D5 /* KNExchangeTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNExchangeTokenViewController.xib; sourceTree = "<group>"; };
 		25CC0ACC2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNExchangeTokenCoordinator.swift; sourceTree = "<group>"; };
-		25CE6F7120723F7C00A3A2F9 /* KNSessionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSessionTracker.swift; sourceTree = "<group>"; };
+		25CE6F7120723F7C00A3A2F9 /* KNAppTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAppTracker.swift; sourceTree = "<group>"; };
 		25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
@@ -1469,7 +1469,7 @@
 		25CE6F7020723F6800A3A2F9 /* AppTrackers */ = {
 			isa = PBXGroup;
 			children = (
-				25CE6F7120723F7C00A3A2F9 /* KNSessionTracker.swift */,
+				25CE6F7120723F7C00A3A2F9 /* KNAppTracker.swift */,
 			);
 			path = AppTrackers;
 			sourceTree = "<group>";
@@ -3378,7 +3378,7 @@
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
-				25CE6F7220723F7C00A3A2F9 /* KNSessionTracker.swift in Sources */,
+				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				77872D25202505B70032D687 /* EnterPasswordViewController.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
 				25AC248B205FCA3C00989EBA /* KNPendingTransactionListCoordinator.swift in Sources */,

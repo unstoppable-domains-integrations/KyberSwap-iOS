@@ -46,7 +46,8 @@ class KNSession {
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = KNTransactionCoordinator(
       storage: self.storage,
-      externalProvider: self.externalProvider
+      externalProvider: self.externalProvider,
+      wallet: self.wallet
     )
     self.transacionCoordinator?.startUpdatingPendingTransactions()
   }

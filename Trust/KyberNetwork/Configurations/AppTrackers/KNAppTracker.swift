@@ -9,7 +9,7 @@ enum KNTransactionLoadState: Int {
   case failed = 2
 }
 
-class KNSessionTracker {
+class KNAppTracker {
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
   static let userDefaults: UserDefaults = UserDefaults.standard

@@ -14,12 +14,23 @@ class KNTransactionCoordinator {
 
   let storage: TransactionsStorage
   let externalProvider: KNExternalProvider
+  let wallet: Wallet
+
   fileprivate var pendingTxTimer: Timer?
   fileprivate var allTxTimer: Timer?
+  fileprivate var fetchByPageTimer: Timer?
 
-  init(storage: TransactionsStorage, externalProvider: KNExternalProvider) {
+  deinit {
+    self.stopUpdatingAllTransactions()
+    self.stopUpdatingPendingTransactions()
+    self.fetchByPageTimer?.invalidate()
+    self.fetchByPageTimer = nil
+  }
+
+  init(storage: TransactionsStorage, externalProvider: KNExternalProvider, wallet: Wallet) {
     self.storage = storage
     self.externalProvider = externalProvider
+    self.wallet = wallet
   }
 }
 
@@ -167,7 +178,7 @@ extension KNTransactionCoordinator {
 
 // MARK: Update transactions
 extension KNTransactionCoordinator {
-  func startUpdatingAllTransactions(for address: Address) {
+  func startUpdatingAllTransactions() {
     self.stopUpdatingAllTransactions()
     self.allTxTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
@@ -178,12 +189,19 @@ extension KNTransactionCoordinator {
           guard let transaction = self.storage.completedObjects.first else { return 1 }
           return transaction.blockNumber - 2000
         }()
-        self.fetchTransaction(for: address, startBlock: startBlock, completion: { [weak self] result in
+        self.fetchTransaction(
+          for: self.wallet.address,
+          startBlock: startBlock,
+          completion: { [weak self] result in
           if case .success(let transactions) = result {
             self?.storage.add(transactions)
           }
         })
     })
+    self.fetchTransactionsByPage(
+      for: self.wallet.address,
+      page: 0,
+      retryIfFailed: true) { _ in }
   }
 
   func stopUpdatingAllTransactions() {
@@ -191,7 +209,41 @@ extension KNTransactionCoordinator {
     self.allTxTimer = nil
   }
 
-  private func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: @escaping (Result<[Transaction], AnyError>) -> Void) {
+  func fetchTransactionsByPage(for address: Address, page: Int, retryIfFailed: Bool = false, completion: @escaping (Result<[Transaction], AnyError>) -> Void) {
+    if KNAppTracker.transactionLoadState(for: address) == .done { return }
+    NSLog("Fetch transactions for address: \(address.description) at page \(page)")
+    self.fetchTransaction(
+      for: address,
+      startBlock: 1,
+      page: page) { [weak self] result in
+      guard let `self` = self else { return }
+        switch result {
+        case .success(let transactions):
+          self.storage.add(transactions)
+          if transactions.isEmpty || page >= 25 {
+            NSLog("Done loading transactions by page, last page: \(page)")
+            KNAppTracker.updateTransactionLoadState(.done, for: address)
+            completion(.success(transactions))
+            return
+          }
+          self.fetchByPageTimer?.invalidate()
+          self.fetchByPageTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+            self?.fetchTransactionsByPage(for: address, page: page + 1, completion: completion)
+          })
+        case .failure(let error):
+          NSLog("Fetch transactions at page \(page) failed. Retrieve in 5 secs")
+          KNAppTracker.updateTransactionLoadState(.failed, for: address)
+          completion(.failure(error))
+          if !retryIfFailed { return }
+          self.fetchByPageTimer?.invalidate()
+          self.fetchByPageTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false, block: { [weak self] _ in
+            self?.fetchTransactionsByPage(for: address, page: page, completion: completion)
+          })
+        }
+    }
+  }
+
+  func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: @escaping (Result<[Transaction], AnyError>) -> Void) {
     NSLog("Fetch transactions from block \(startBlock) page \(page)")
     let trustProvider = TrustProviderFactory.makeProvider()
     trustProvider.request(.getTransactions(address: address.description, startBlock: startBlock, page: page)) { result in
@@ -201,6 +253,11 @@ extension KNTransactionCoordinator {
           _ = try response.filterSuccessfulStatusCodes()
           let rawTransactions = try response.map(ArrayResponse<RawTransaction>.self).docs
           let transactions: [Transaction] = rawTransactions.flatMap { .from(transaction: $0) }
+          KNNotificationUtil.postNotification(
+            for: kTransactionListDidUpdateNotificationKey,
+            object: transactions,
+            userInfo: nil
+          )
           completion(.success(transactions))
         } catch let error {
           completion(.failure(AnyError(error)))

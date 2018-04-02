@@ -4,6 +4,7 @@ import NotificationCenter
 
 // Transaction Keys
 let kTransactionDidUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
+let kTransactionListDidUpdateNotificationKey = "kTransactionListDidUpdateNotificationKey"
 
 // Balance Keys
 let kETHBalanceDidUpdateNotificationKey = "kETHBalanceDidUpdateNotificationKey"
