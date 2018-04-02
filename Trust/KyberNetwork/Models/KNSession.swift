@@ -80,3 +80,17 @@ class KNSession {
     KNRecentTradeCoordinator.shared.pause()
   }
 }
+
+extension KNSession {
+  var sessionID: String {
+    return KNSession.sessionID(from: self.wallet)
+  }
+
+  static func sessionID(from wallet: Wallet) -> String {
+    return KNSession.sessionID(from: wallet.address)
+  }
+
+  static func sessionID(from address: Address) -> String {
+    return "sessionID-\(address.description)"
+  }
+}

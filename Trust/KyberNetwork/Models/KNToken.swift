@@ -45,6 +45,7 @@ struct KNToken {
     return rhs.symbol == lhs.symbol && rhs.address == lhs.address
   }
 
+  //swiftlint:disable operator_whitespace
   static public func !=(lhs: KNToken, rhs: KNToken) -> Bool {
     return rhs.symbol != lhs.symbol || rhs.address != lhs.address
   }
