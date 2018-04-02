@@ -8,12 +8,14 @@ import JavaScriptKit
 import Result
 import BigInt
 import TrustKeystore
+import Moya
 
 class KNTransactionCoordinator {
 
   let storage: TransactionsStorage
   let externalProvider: KNExternalProvider
-  fileprivate var timer: Timer?
+  fileprivate var pendingTxTimer: Timer?
+  fileprivate var allTxTimer: Timer?
 
   init(storage: TransactionsStorage, externalProvider: KNExternalProvider) {
     self.storage = storage
@@ -163,13 +165,63 @@ extension KNTransactionCoordinator {
   }
 }
 
+// MARK: Update transactions
+extension KNTransactionCoordinator {
+  func startUpdatingAllTransactions(for address: Address) {
+    self.stopUpdatingAllTransactions()
+    self.allTxTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        guard let `self` = self else { return }
+        let startBlock: Int = {
+          guard let transaction = self.storage.completedObjects.first else { return 1 }
+          return transaction.blockNumber - 2000
+        }()
+        self.fetchTransaction(for: address, startBlock: startBlock, completion: { [weak self] result in
+          if case .success(let transactions) = result {
+            self?.storage.add(transactions)
+          }
+        })
+    })
+  }
+
+  func stopUpdatingAllTransactions() {
+    self.allTxTimer?.invalidate()
+    self.allTxTimer = nil
+  }
+
+  private func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: @escaping (Result<[Transaction], AnyError>) -> Void) {
+    NSLog("Fetch transactions from block \(startBlock) page \(page)")
+    let trustProvider = TrustProviderFactory.makeProvider()
+    trustProvider.request(.getTransactions(address: address.description, startBlock: startBlock, page: page)) { result in
+      switch result {
+      case .success(let response):
+        do {
+          _ = try response.filterSuccessfulStatusCodes()
+          let rawTransactions = try response.map(ArrayResponse<RawTransaction>.self).docs
+          let transactions: [Transaction] = rawTransactions.flatMap { .from(transaction: $0) }
+          completion(.success(transactions))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+}
+
 // MARK: Pending transactions
 extension KNTransactionCoordinator {
   func startUpdatingPendingTransactions() {
-    self.timer?.invalidate()
-    self.timer = nil
+    self.pendingTxTimer?.invalidate()
+    self.pendingTxTimer = nil
     self.shouldUpdatePendingTransaction(nil)
-    self.timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] timer in
+    self.pendingTxTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] timer in
       self?.shouldUpdatePendingTransaction(timer)
     })
   }
@@ -244,8 +296,8 @@ extension KNTransactionCoordinator {
   }
 
   func stopUpdatingPendingTransactions() {
-    self.timer?.invalidate()
-    self.timer = nil
+    self.pendingTxTimer?.invalidate()
+    self.pendingTxTimer = nil
   }
 }
 
