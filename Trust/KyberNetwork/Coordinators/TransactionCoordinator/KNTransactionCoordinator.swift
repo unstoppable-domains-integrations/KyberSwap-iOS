@@ -34,7 +34,7 @@ class KNTransactionCoordinator {
   }
 
   func stop() {
-    //self.stopUpdatingAllTransactions()
+    self.stopUpdatingAllTransactions()
     self.stopUpdatingPendingTransactions()
     self.fetchByPageTimer?.invalidate()
     self.fetchByPageTimer = nil
@@ -202,10 +202,10 @@ extension KNTransactionCoordinator {
           completion: nil
         )
     })
-    self.fetchTransactionsByPage(
-      for: self.wallet.address,
-      page: 0,
-      retryIfFailed: true) { _ in }
+//    self.fetchTransactionsByPage(
+//      for: self.wallet.address,
+//      page: 0,
+//      retryIfFailed: true) { _ in }
   }
 
   func stopUpdatingAllTransactions() {
@@ -248,15 +248,16 @@ extension KNTransactionCoordinator {
 
   func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
     NSLog("Fetch transactions from block \(startBlock) page \(page)")
-    let trustProvider = TrustProviderFactory.makeProvider()
-    trustProvider.request(.getTransactions(address: address.description, startBlock: startBlock, page: page)) { [weak self] result in
+    let etherScanProvider = MoyaProvider<KNEtherScanService>()
+    etherScanProvider.request(.getListTransactions(address: address.description, startBlock: startBlock, endBlock: 99999999, page: 0)) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let response):
         do {
-          _ = try response.filterSuccessfulStatusCodes()
-          let rawTransactions = try response.map(ArrayResponse<RawTransaction>.self).docs
-          let transactions: [Transaction] = rawTransactions.flatMap { .from(transaction: $0) }
+          let json: JSONDictionary = try kn_cast(response.mapJSON())
+          let transArr: [JSONDictionary] = try kn_cast(json["result"])
+          let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
+          let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
           if !transactions.isEmpty {
             KNNotificationUtil.postNotification(
               for: kTransactionListDidUpdateNotificationKey,
@@ -268,6 +269,7 @@ extension KNTransactionCoordinator {
           NSLog("Successfully fetched \(transactions.count) transactions")
           completion?(.success(transactions))
         } catch let error {
+          NSLog("Response status code: \(response.statusCode)")
           NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
           completion?(.failure(AnyError(error)))
         }
@@ -399,3 +401,37 @@ extension UnconfirmedTransaction {
     )
   }
 }
+
+extension RawTransaction {
+  static func from(dictionary: JSONDictionary) throws -> RawTransaction {
+    let id: String = try kn_cast(dictionary["hash"])
+    let blockNumber = Int(dictionary["blockNumber"] as? String ?? "0") ?? 0
+    let from: String = try kn_cast(dictionary["from"])
+    let to: String = try kn_cast(dictionary["to"])
+    let value: String = try kn_cast(dictionary["value"])
+    let gas: String = try kn_cast(dictionary["gas"])
+    let gasPrice: String = try kn_cast(dictionary["gasPrice"])
+    let gasUsed: String = try kn_cast(dictionary["gasUsed"])
+    let nonce: Int = Int(dictionary["nonce"] as? String ?? "0") ?? 0
+    let timeStamp: String = try kn_cast(dictionary["timeStamp"])
+    let input: String = try kn_cast(dictionary["input"])
+    let isError: String? = try kn_cast(dictionary["isError"])
+
+    return RawTransaction(
+      hash: id,
+      blockNumber: blockNumber,
+      timeStamp: timeStamp,
+      nonce: nonce,
+      from: from,
+      to: to,
+      value: value,
+      gas: gas,
+      gasPrice: gasPrice,
+      input: input,
+      gasUsed: gasUsed,
+      error: isError,
+      operations: nil
+    )
+  }
+}
+
