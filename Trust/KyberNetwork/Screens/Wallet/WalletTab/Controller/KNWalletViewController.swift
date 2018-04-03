@@ -5,6 +5,9 @@ import BigInt
 
 protocol KNWalletViewControllerDelegate: class {
   func walletViewControllerDidExit()
+  func walletViewControllerDidClickExchange(token: KNToken)
+  func walletViewControllerDidClickTransfer(token: KNToken)
+  func walletViewControllerDidClickReceive(token: KNToken)
 }
 
 class KNWalletViewController: KNBaseViewController {
@@ -20,10 +23,20 @@ class KNWalletViewController: KNBaseViewController {
   fileprivate var expandedRowIDs: [Int] = []
 
   fileprivate var displayedTokens: [KNToken] {
-    if !isHidingSmallAssets { return self.tokens }
-    return self.tokens.filter { token -> Bool in
-      guard let bal = self.balances[token.address], !bal.value.isZero else { return false }
-      return true
+    let tokens: [KNToken] = {
+      if !isHidingSmallAssets { return self.tokens.filter({ return self.balances[$0.address] != nil }) }
+      return self.tokens.filter { token -> Bool in
+        // Remove <= US$1
+        guard let bal = self.balances[token.address], !bal.value.isZero else { return false }
+        if let usdRate = KNRateCoordinator.shared.usdRate(for: token), usdRate.rate * bal.value <= BigInt(EthereumUnit.ether.rawValue) {
+          return false
+        }
+        return true
+      }
+    }()
+    return tokens.sorted {
+      guard let bal0 = self.balances[$0.address], let bal1 = self.balances[$1.address] else { return false }
+      return bal0.value > bal1.value
     }
   }
 
@@ -128,7 +141,7 @@ extension KNWalletViewController: UICollectionViewDelegate {
 
 extension KNWalletViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 20
+    return 10
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -136,7 +149,9 @@ extension KNWalletViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let height: CGFloat = self.expandedRowIDs.contains(indexPath.row) ? 160 : 80
+    let expandedHeight: CGFloat = KNWalletTokenCollectionViewCell.expandedHeight
+    let normalHeight: CGFloat = KNWalletTokenCollectionViewCell.normalHeight
+    let height: CGFloat = self.expandedRowIDs.contains(indexPath.row) ? expandedHeight : normalHeight
     return CGSize(width: collectionView.frame.width, height: height)
   }
 }
@@ -167,11 +182,14 @@ extension KNWalletViewController: UICollectionViewDataSource {
 
 extension KNWalletViewController: KNWalletTokenCollectionViewCellDelegate {
   func walletTokenCollectionViewCellDidClickExchange(token: KNToken) {
+    self.delegate?.walletViewControllerDidClickExchange(token: token)
   }
 
   func walletTokenCollectionViewCellDidClickTransfer(token: KNToken) {
+    self.delegate?.walletViewControllerDidClickTransfer(token: token)
   }
 
   func walletTokenCollectionViewCellDidClickReceive(token: KNToken) {
+    self.delegate?.walletViewControllerDidClickReceive(token: token)
   }
 }

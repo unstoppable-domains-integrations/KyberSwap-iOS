@@ -59,7 +59,7 @@
                     </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="o5I-9Z-Z0l">
-                    <rect key="frame" x="20" y="122" width="335" height="525"/>
+                    <rect key="frame" x="10" y="112" width="355" height="555"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mWh-MK-vJ7">
                         <size key="itemSize" width="50" height="50"/>
@@ -73,13 +73,13 @@
             <constraints>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="9oi-n3-PU5"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JRA-Vf-P4D"/>
-                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="JTV-zh-9N1"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o5I-9Z-Z0l" secondAttribute="trailing" constant="20" id="P2E-GS-OR1"/>
+                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="JTV-zh-9N1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o5I-9Z-Z0l" secondAttribute="trailing" constant="10" id="P2E-GS-OR1"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" id="neL-5z-h95"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="sjD-kh-kv9"/>
-                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="20" id="ujg-PR-Ute"/>
+                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="10" id="ujg-PR-Ute"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qqc-HW-u6o" secondAttribute="trailing" id="vCT-0d-R6h"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="o5I-9Z-Z0l" secondAttribute="bottom" constant="20" id="zjE-H2-gMh"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="o5I-9Z-Z0l" secondAttribute="bottom" id="zjE-H2-gMh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

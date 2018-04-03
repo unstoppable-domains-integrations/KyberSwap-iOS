@@ -15,6 +15,10 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate var pendingTransactionStatusCoordinator: KNPendingTransactionStatusCoordinator?
 
+  fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator!
+  fileprivate var transferCoordinator: KNTransferTokenCoordinator!
+  fileprivate var walletCoordinator: KNWalletCoordinator!
+
   fileprivate var tabbarController: UITabBarController!
 
   lazy var splashScreenCoordinator: KNSplashScreenCoordinator = {
@@ -61,7 +65,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
     self.tabbarController = UITabBarController()
     // Exchange Tab
-    let exchangeCoordinator: KNExchangeTokenCoordinator = {
+    self.exchangeCoordinator = {
       let coordinator = KNExchangeTokenCoordinator(
       session: self.session,
       balanceCoordinator: self.balanceCoordinator!
@@ -69,11 +73,11 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(exchangeCoordinator)
-    exchangeCoordinator.start()
+    self.addCoordinator(self.exchangeCoordinator)
+    self.exchangeCoordinator.start()
 
     // Transfer Tab
-    let transferCoordinator: KNTransferTokenCoordinator = {
+    self.transferCoordinator = {
       let coordinator = KNTransferTokenCoordinator(
         session: self.session,
         balanceCoordinator: self.balanceCoordinator!
@@ -81,11 +85,11 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(transferCoordinator)
-    transferCoordinator.start()
+    self.addCoordinator(self.transferCoordinator)
+    self.transferCoordinator.start()
 
     // Wallet Tab
-    let walletCoordinator: KNWalletCoordinator = {
+    self.walletCoordinator = {
       let coordinator = KNWalletCoordinator(
         session: self.session,
         balanceCoordinator: self.balanceCoordinator!
@@ -93,17 +97,17 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(walletCoordinator)
-    walletCoordinator.start()
+    self.addCoordinator(self.walletCoordinator)
+    self.walletCoordinator.start()
 
     self.tabbarController.viewControllers = [
-      exchangeCoordinator.navigationController,
-      transferCoordinator.navigationController,
-      walletCoordinator.navigationController,
+      self.exchangeCoordinator.navigationController,
+      self.transferCoordinator.navigationController,
+      self.walletCoordinator.navigationController,
     ]
-    exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
-    transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
-    walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
+    self.exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
+    self.transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
+    self.walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
@@ -200,5 +204,21 @@ extension KNAppCoordinator: KNSessionDelegate {
 extension KNAppCoordinator: KNPendingTransactionStatusCoordinatorDelegate {
   func pendingTransactionStatusCoordinatorDidClose() {
     self.pendingTransactionStatusCoordinator = nil
+  }
+}
+
+extension KNAppCoordinator: KNWalletCoordinatorDelegate {
+  func walletCoordinatorDidClickExit() {
+    self.stopLastSession()
+  }
+
+  func walletCoordinatorDidClickExchange(token: KNToken) {
+  }
+
+  func walletCoordinatorDidClickTransfer(token: KNToken) {
+  }
+
+  func walletCoordinatorDidClickReceive(token: KNToken) {
+    // TODO: Handling receive token
   }
 }

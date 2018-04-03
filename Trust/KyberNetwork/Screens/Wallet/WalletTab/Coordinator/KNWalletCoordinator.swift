@@ -2,13 +2,20 @@
 
 import UIKit
 
+protocol KNWalletCoordinatorDelegate: class {
+  func walletCoordinatorDidClickExit()
+  func walletCoordinatorDidClickExchange(token: KNToken)
+  func walletCoordinatorDidClickTransfer(token: KNToken)
+  func walletCoordinatorDidClickReceive(token: KNToken)
+}
+
 class KNWalletCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   let session: KNSession
   let balanceCoordinator: KNBalanceCoordinator
 
-  weak var delegate: KNSessionDelegate?
+  weak var delegate: KNWalletCoordinatorDelegate?
 
   var coordinators: [Coordinator] = []
 
@@ -103,6 +110,18 @@ extension KNWalletCoordinator {
 
 extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   func walletViewControllerDidExit() {
-    self.delegate?.userDidClickExitSession()
+    self.delegate?.walletCoordinatorDidClickExit()
+  }
+
+  func walletViewControllerDidClickExchange(token: KNToken) {
+    self.delegate?.walletCoordinatorDidClickExchange(token: token)
+  }
+
+  func walletViewControllerDidClickTransfer(token: KNToken) {
+    self.delegate?.walletCoordinatorDidClickTransfer(token: token)
+  }
+
+  func walletViewControllerDidClickReceive(token: KNToken) {
+    self.delegate?.walletCoordinatorDidClickReceive(token: token)
   }
 }

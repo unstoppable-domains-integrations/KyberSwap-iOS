@@ -12,6 +12,9 @@ protocol KNWalletTokenCollectionViewCellDelegate: class {
 class KNWalletTokenCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kWalletTokenCollectionViewCell"
+  static let normalHeight: CGFloat = 80.0
+  static let expandedHeight: CGFloat = 125.0
+
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
 
@@ -31,7 +34,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     self.backgroundColor = UIColor.white
-    self.rounded(color: UIColor.Kyber.gray, width: 1.0, radius: 10.0)
+    self.rounded(color: .clear, width: 0, radius: 5.0)
     self.exchangeButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.transferButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.receiveButton.rounded(color: .clear, width: 0, radius: 5.0)
@@ -53,7 +56,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     self.delegate = delegate
     if isExpanded {
       self.heightButtonConstraint.constant = 32
-      self.bottomPaddingConstraint.constant = 32
+      self.bottomPaddingConstraint.constant = 15
     } else {
       self.heightButtonConstraint.constant = 0
       self.bottomPaddingConstraint.constant = 0
