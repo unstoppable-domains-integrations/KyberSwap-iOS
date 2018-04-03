@@ -108,7 +108,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       )
       coordinator.delegate = self
       return coordinator
-    }
+    }()
     self.addCoordinator(self.historyCoordinator)
     self.historyCoordinator.start()
 

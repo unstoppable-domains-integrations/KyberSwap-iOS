@@ -6,11 +6,12 @@ class KNHistoryCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   let session: KNSession
-  var coordinator: [Coordinator] = []
+
+  var coordinators: [Coordinator] = []
 
   weak var delegate: KNSessionDelegate?
 
-  lazy var rootViewController = KNHistoryViewController = {
+  lazy var rootViewController: KNHistoryViewController = {
     let controller = KNHistoryViewController(delegate: self)
     controller.loadViewIfNeeded()
     return controller
@@ -26,7 +27,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func start() {
-    self.navigationController = [self.rootViewController]
+    self.navigationController.viewControllers = [self.rootViewController]
   }
 
   func stop() {
