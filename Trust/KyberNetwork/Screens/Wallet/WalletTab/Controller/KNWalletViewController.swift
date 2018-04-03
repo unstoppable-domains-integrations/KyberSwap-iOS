@@ -17,6 +17,8 @@ class KNWalletViewController: KNBaseViewController {
   fileprivate var totalETHBalance: BigInt = BigInt(0)
   fileprivate var totalUSDBalance: BigInt = BigInt(0)
 
+  fileprivate var expandedRowIDs: [Int] = []
+
   fileprivate var displayedTokens: [KNToken] {
     if !isHidingSmallAssets { return self.tokens }
     return self.tokens.filter { token -> Bool in
@@ -30,7 +32,7 @@ class KNWalletViewController: KNBaseViewController {
 
   @IBOutlet weak var hideSmallAssetsButton: UIButton!
 
-  @IBOutlet weak var tokensTableView: UITableView!
+  @IBOutlet weak var tokensCollectionView: UICollectionView!
 
   init(delegate: KNWalletViewControllerDelegate?) {
     self.delegate = delegate
@@ -50,7 +52,7 @@ class KNWalletViewController: KNBaseViewController {
     self.setupNavigationBar()
     self.setupEstimatedTotalValue()
     self.setupSmallAssets()
-    self.setupTokensTableView()
+    self.setupTokensCollectionView()
   }
 
   fileprivate func setupNavigationBar() {
@@ -69,21 +71,19 @@ class KNWalletViewController: KNBaseViewController {
     self.hideSmallAssetsButton.setTitle(text.toBeLocalised(), for: .normal)
   }
 
-  fileprivate func setupTokensTableView() {
-    let nib = UINib(nibName: KNWalletTokenTableViewCell.className, bundle: nil)
-    self.tokensTableView.register(nib, forCellReuseIdentifier: KNWalletTokenTableViewCell.cellID)
-    self.tokensTableView.estimatedRowHeight = 80.0
-    self.tokensTableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+  fileprivate func setupTokensCollectionView() {
+    let nib = UINib(nibName: KNWalletTokenCollectionViewCell.className, bundle: nil)
+    self.tokensCollectionView.register(nib, forCellWithReuseIdentifier: KNWalletTokenCollectionViewCell.cellID)
 
-    self.tokensTableView.delegate = self
-    self.tokensTableView.dataSource = self
+    self.tokensCollectionView.delegate = self
+    self.tokensCollectionView.dataSource = self
   }
 
   @IBAction func hideSmallAssetsButtonPressed(_ sender: Any) {
     self.isHidingSmallAssets = !self.isHidingSmallAssets
     let text = self.isHidingSmallAssets ? "Show small assets" : "Hide small assets"
     self.hideSmallAssetsButton.setTitle(text.toBeLocalised(), for: .normal)
-    self.tokensTableView.reloadData()
+    self.tokensCollectionView.reloadData()
   }
 
   @objc func exitButtonPressed(_ sender: Any) {
@@ -93,7 +93,7 @@ class KNWalletViewController: KNBaseViewController {
 
 extension KNWalletViewController {
   fileprivate func updateViewWhenBalanceDidUpdate() {
-    self.tokensTableView.reloadData()
+    self.tokensCollectionView.reloadData()
     self.view.layoutIfNeeded()
   }
 
@@ -115,29 +115,63 @@ extension KNWalletViewController {
   }
 }
 
-extension KNWalletViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-  }
-
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return UIView()
+extension KNWalletViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    if let index = self.expandedRowIDs.index(of: indexPath.row) {
+      self.expandedRowIDs.remove(at: index)
+    } else {
+      self.expandedRowIDs.append(indexPath.row)
+    }
+    collectionView.reloadData()
   }
 }
 
-extension KNWalletViewController: UITableViewDataSource {
-  func numberOfSections(in tableView: UITableView) -> Int {
+extension KNWalletViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 20
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let height: CGFloat = self.expandedRowIDs.contains(indexPath.row) ? 160 : 80
+    return CGSize(width: collectionView.frame.width, height: height)
+  }
+}
+
+extension KNWalletViewController: UICollectionViewDataSource {
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
   }
 
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.displayedTokens.count
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: KNWalletTokenTableViewCell.cellID, for: indexPath) as! KNWalletTokenTableViewCell
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNWalletTokenCollectionViewCell.cellID, for: indexPath) as! KNWalletTokenCollectionViewCell
     let token: KNToken = self.displayedTokens[indexPath.row]
     let balance: Balance = self.balances[token.address] ?? Balance(value: BigInt(0))
-    cell.updateCell(with: token, balance: balance)
+
+    cell.updateCell(
+      with: token,
+      balance: balance,
+      isExpanded: self.expandedRowIDs.contains(indexPath.row),
+      delegate: self
+    )
     return cell
+  }
+}
+
+extension KNWalletViewController: KNWalletTokenCollectionViewCellDelegate {
+  func walletTokenCollectionViewCellDidClickExchange(token: KNToken) {
+  }
+
+  func walletTokenCollectionViewCellDidClickTransfer(token: KNToken) {
+  }
+
+  func walletTokenCollectionViewCellDidClickReceive(token: KNToken) {
   }
 }

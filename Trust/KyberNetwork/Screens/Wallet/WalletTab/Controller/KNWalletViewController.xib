@@ -20,7 +20,7 @@
                 <outlet property="estimatedBalanceAmountLabel" destination="GyP-Qg-C8a" id="WyQ-lc-Zg9"/>
                 <outlet property="estimatedValueContainerView" destination="qqc-HW-u6o" id="4gp-uW-Jex"/>
                 <outlet property="hideSmallAssetsButton" destination="vMF-6w-UgW" id="gF6-bC-lAT"/>
-                <outlet property="tokensTableView" destination="RON-db-Oxd" id="4IF-nm-YAn"/>
+                <outlet property="tokensCollectionView" destination="o5I-9Z-Z0l" id="oy4-aB-Zp1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -48,10 +48,6 @@
                         <constraint firstAttribute="trailing" secondItem="GyP-Qg-C8a" secondAttribute="trailing" constant="10" id="gOj-6u-GGC"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RON-db-Oxd">
-                    <rect key="frame" x="0.0" y="102" width="375" height="565"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMF-6w-UgW">
                     <rect key="frame" x="15" y="72" width="112" height="30"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
@@ -62,18 +58,28 @@
                         <action selector="hideSmallAssetsButtonPressed:" destination="-1" eventType="touchUpInside" id="Yo7-HK-kyc"/>
                     </connections>
                 </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="o5I-9Z-Z0l">
+                    <rect key="frame" x="20" y="122" width="335" height="525"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mWh-MK-vJ7">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="9oi-n3-PU5"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JRA-Vf-P4D"/>
-                <constraint firstItem="RON-db-Oxd" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" id="O6c-g0-0lG"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="RON-db-Oxd" secondAttribute="bottom" id="ijO-aZ-zDk"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RON-db-Oxd" secondAttribute="trailing" id="jHc-5k-v62"/>
+                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="JTV-zh-9N1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o5I-9Z-Z0l" secondAttribute="trailing" constant="20" id="P2E-GS-OR1"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" id="neL-5z-h95"/>
-                <constraint firstItem="RON-db-Oxd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="p9N-IR-aKb"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="sjD-kh-kv9"/>
+                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="20" id="ujg-PR-Ute"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qqc-HW-u6o" secondAttribute="trailing" id="vCT-0d-R6h"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="o5I-9Z-Z0l" secondAttribute="bottom" constant="20" id="zjE-H2-gMh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
