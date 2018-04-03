@@ -49,25 +49,28 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RON-db-Oxd">
-                    <rect key="frame" x="0.0" y="133" width="375" height="534"/>
+                    <rect key="frame" x="0.0" y="102" width="375" height="565"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMF-6w-UgW">
-                    <rect key="frame" x="15" y="87" width="112" height="30"/>
+                    <rect key="frame" x="15" y="72" width="112" height="30"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                     <state key="normal" title="Hide small assets">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
+                    <connections>
+                        <action selector="hideSmallAssetsButtonPressed:" destination="-1" eventType="touchUpInside" id="Yo7-HK-kyc"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="9oi-n3-PU5"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JRA-Vf-P4D"/>
-                <constraint firstItem="RON-db-Oxd" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="16" id="O6c-g0-0lG"/>
+                <constraint firstItem="RON-db-Oxd" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" id="O6c-g0-0lG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="RON-db-Oxd" secondAttribute="bottom" id="ijO-aZ-zDk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RON-db-Oxd" secondAttribute="trailing" id="jHc-5k-v62"/>
-                <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" constant="15" id="neL-5z-h95"/>
+                <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" id="neL-5z-h95"/>
                 <constraint firstItem="RON-db-Oxd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="p9N-IR-aKb"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="sjD-kh-kv9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qqc-HW-u6o" secondAttribute="trailing" id="vCT-0d-R6h"/>

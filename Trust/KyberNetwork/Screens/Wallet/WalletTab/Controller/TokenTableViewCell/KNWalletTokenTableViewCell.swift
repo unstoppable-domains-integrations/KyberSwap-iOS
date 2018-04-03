@@ -10,4 +10,8 @@ class KNWalletTokenTableViewCell: UITableViewCell {
     super.awakeFromNib()
     // Initialization code
   }
+
+  func updateCell(with token: KNToken, balance: Balance) {
+    
+  }
 }

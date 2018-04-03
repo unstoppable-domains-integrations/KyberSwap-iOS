@@ -79,10 +79,20 @@ class KNWalletViewController: KNBaseViewController {
     self.tokensTableView.delegate = self
     self.tokensTableView.dataSource = self
   }
+
+  @IBAction func hideSmallAssetsButtonPressed(_ sender: Any) {
+    self.isHidingSmallAssets = !self.isHidingSmallAssets
+    let text = self.isHidingSmallAssets ? "Show small assets" : "Hide small assets"
+    self.hideSmallAssetsButton.setTitle(text.toBeLocalised(), for: .normal)
+    self.tokensTableView.reloadData()
+  }
+
+  @objc func exitButtonPressed(_ sender: Any) {
+    self.delegate?.walletViewControllerDidExit()
+  }
 }
 
 extension KNWalletViewController {
-
   fileprivate func updateViewWhenBalanceDidUpdate() {
     self.tokensTableView.reloadData()
     self.view.layoutIfNeeded()
@@ -99,7 +109,7 @@ extension KNWalletViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return nil
+    return UIView()
   }
 }
 
@@ -114,12 +124,9 @@ extension KNWalletViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: KNWalletTokenTableViewCell.cellID, for: indexPath) as! KNWalletTokenTableViewCell
+    let token: KNToken = self.displayedTokens[indexPath.row]
+    let balance: Balance = self.balances[token.address] ?? Balance(value: BigInt(0))
+    cell.updateCell(with: token, balance: balance)
     return cell
-  }
-}
-
-extension KNWalletViewController {
-  @objc func exitButtonPressed(_ sender: Any) {
-    self.delegate?.walletViewControllerDidExit()
   }
 }
