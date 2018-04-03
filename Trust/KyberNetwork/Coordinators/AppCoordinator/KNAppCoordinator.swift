@@ -60,6 +60,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.balanceCoordinator?.resume()
 
     self.tabbarController = UITabBarController()
+    // Exchange Tab
     let exchangeCoordinator: KNExchangeTokenCoordinator = {
       let coordinator = KNExchangeTokenCoordinator(
       session: self.session,
@@ -71,6 +72,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(exchangeCoordinator)
     exchangeCoordinator.start()
 
+    // Transfer Tab
     let transferCoordinator: KNTransferTokenCoordinator = {
       let coordinator = KNTransferTokenCoordinator(
         session: self.session,
@@ -82,18 +84,26 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(transferCoordinator)
     transferCoordinator.start()
 
-    let walletVC = KNBaseViewController()
-    let walletNav = UINavigationController(rootViewController: walletVC)
-    walletNav.applyStyle()
+    // Wallet Tab
+    let walletCoordinator: KNWalletCoordinator = {
+      let coordinator = KNWalletCoordinator(
+        session: self.session,
+        balanceCoordinator: self.balanceCoordinator!
+      )
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.addCoordinator(walletCoordinator)
+    walletCoordinator.start()
 
     self.tabbarController.viewControllers = [
       exchangeCoordinator.navigationController,
       transferCoordinator.navigationController,
-      walletNav,
+      walletCoordinator.navigationController,
     ]
-    exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange", image: nil, tag: 0)
-    transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer", image: nil, tag: 1)
-    walletNav.tabBarItem = UITabBarItem(title: "Wallet", image: nil, tag: 2)
+    exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
+    transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
+    walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
