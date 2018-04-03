@@ -9,12 +9,23 @@ protocol KNWalletViewControllerDelegate: class {
 class KNWalletViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletViewControllerDelegate?
+  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+  fileprivate var isHidingSmallAssets: Bool = false
 
-  @IBOutlet weak var estimatedValueTextLabel: UILabel!
+  fileprivate var balances: [String: Balance] = [:]
+
+  fileprivate var displayedTokens: [KNToken] {
+    if !isHidingSmallAssets { return self.tokens }
+    return self.tokens.filter { token -> Bool in
+      guard let bal = self.balances[token.address], !bal.value.isZero else { return false }
+      return true
+    }
+  }
+
+  @IBOutlet weak var estimatedValueContainerView: UIView!
   @IBOutlet weak var estimatedBalanceAmountLabel: UILabel!
 
-  @IBOutlet weak var smallAssetsTextLabel: UILabel!
-  @IBOutlet weak var smallAssetsSwitch: UISwitch!
+  @IBOutlet weak var hideSmallAssetsButton: UIButton!
 
   @IBOutlet weak var tokensTableView: UITableView!
 
@@ -38,6 +49,9 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.setupNavigationBar()
+    self.setupEstimatedTotalValue()
+    self.setupSmallAssets()
+    self.setupTokensTableView()
   }
 
   fileprivate func setupNavigationBar() {
@@ -47,20 +61,60 @@ class KNWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupEstimatedTotalValue() {
-    self.estimatedValueTextLabel.text = "Estimated Value".toBeLocalised()
-    self.estimatedBalanceAmountLabel.text = "0 ETH\n0 USD"
+    self.estimatedBalanceAmountLabel.text = "0 ETH = 0 USD"
+    self.estimatedValueContainerView.rounded(color: UIColor.Kyber.gray, width: 0.5, radius: 0)
   }
 
   fileprivate func setupSmallAssets() {
-    self.smallAssetsTextLabel.text = "Small assets".toBeLocalised()
-    self.smallAssetsSwitch.isOn = true
+    let text = self.isHidingSmallAssets ? "Show small assets" : "Hide small assets"
+    self.hideSmallAssetsButton.setTitle(text.toBeLocalised(), for: .normal)
   }
 
   fileprivate func setupTokensTableView() {
     let nib = UINib(nibName: KNWalletTokenTableViewCell.className, bundle: nil)
-    self.tokensTableView.register(nin, forCellReuseIdentifier: KNWalletTokenTableViewCell.cellID)
+    self.tokensTableView.register(nib, forCellReuseIdentifier: KNWalletTokenTableViewCell.cellID)
     self.tokensTableView.estimatedRowHeight = 80.0
     self.tokensTableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+    self.tokensTableView.delegate = self
+    self.tokensTableView.dataSource = self
+  }
+}
+
+extension KNWalletViewController {
+
+  fileprivate func updateViewWhenBalanceDidUpdate() {
+    self.tokensTableView.reloadData()
+    self.view.layoutIfNeeded()
+  }
+
+  func updateTokenBalances(_ balances: [String: Balance]) {
+    balances.forEach { self.balances[$0.key] = $0.value }
+    self.updateViewWhenBalanceDidUpdate()
+  }
+}
+
+extension KNWalletViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return nil
+  }
+}
+
+extension KNWalletViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.displayedTokens.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: KNWalletTokenTableViewCell.cellID, for: indexPath) as! KNWalletTokenTableViewCell
+    return cell
   }
 }
 

@@ -18,9 +18,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="estimatedBalanceAmountLabel" destination="GyP-Qg-C8a" id="WyQ-lc-Zg9"/>
-                <outlet property="estimatedValueTextLabel" destination="59K-yH-pdK" id="i7b-rN-4Fk"/>
-                <outlet property="smallAssetsSwitch" destination="P0N-aP-Ucf" id="3XS-qP-Bxy"/>
-                <outlet property="smallAssetsTextLabel" destination="JDi-KZ-J6L" id="oXq-Ia-HJI"/>
+                <outlet property="estimatedValueContainerView" destination="qqc-HW-u6o" id="4gp-uW-Jex"/>
+                <outlet property="hideSmallAssetsButton" destination="vMF-6w-UgW" id="gF6-bC-lAT"/>
                 <outlet property="tokensTableView" destination="RON-db-Oxd" id="4IF-nm-YAn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -31,17 +30,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qqc-HW-u6o">
-                    <rect key="frame" x="0.0" y="20" width="375" height="97.5"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="52"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Value" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59K-yH-pdK">
-                            <rect key="frame" x="135" y="15" width="104.5" height="18"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 2.03123 \n USD 1,312.3123" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyP-Qg-C8a">
-                            <rect key="frame" x="39" y="53" width="296.5" height="24.5"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="22"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 2.03123 = USD 1,312.3123" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyP-Qg-C8a">
+                            <rect key="frame" x="10" y="16" width="355" height="20"/>
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -49,38 +42,34 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="GyP-Qg-C8a" firstAttribute="centerX" secondItem="qqc-HW-u6o" secondAttribute="centerX" id="0Ud-fb-NmM"/>
-                        <constraint firstAttribute="bottom" secondItem="GyP-Qg-C8a" secondAttribute="bottom" constant="20" id="KSj-7b-DfJ"/>
-                        <constraint firstItem="59K-yH-pdK" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="top" constant="15" id="TcQ-hy-GHv"/>
-                        <constraint firstItem="GyP-Qg-C8a" firstAttribute="top" secondItem="59K-yH-pdK" secondAttribute="bottom" constant="20" id="X9J-2z-3gG"/>
-                        <constraint firstItem="59K-yH-pdK" firstAttribute="centerX" secondItem="qqc-HW-u6o" secondAttribute="centerX" id="dEL-pj-Zed"/>
+                        <constraint firstItem="GyP-Qg-C8a" firstAttribute="leading" secondItem="qqc-HW-u6o" secondAttribute="leading" constant="10" id="EeN-za-agx"/>
+                        <constraint firstAttribute="bottom" secondItem="GyP-Qg-C8a" secondAttribute="bottom" constant="16" id="KSj-7b-DfJ"/>
+                        <constraint firstItem="GyP-Qg-C8a" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="top" constant="16" id="Lj4-UN-1RH"/>
+                        <constraint firstAttribute="trailing" secondItem="GyP-Qg-C8a" secondAttribute="trailing" constant="10" id="gOj-6u-GGC"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Small assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDi-KZ-J6L">
-                    <rect key="frame" x="10" y="132.5" width="69" height="16"/>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P0N-aP-Ucf">
-                    <rect key="frame" x="89" y="125" width="51" height="31"/>
-                </switch>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RON-db-Oxd">
-                    <rect key="frame" x="0.0" y="176" width="375" height="491"/>
+                    <rect key="frame" x="0.0" y="133" width="375" height="534"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMF-6w-UgW">
+                    <rect key="frame" x="15" y="87" width="112" height="30"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <state key="normal" title="Hide small assets">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="9oi-n3-PU5"/>
-                <constraint firstItem="JDi-KZ-J6L" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="BBv-fE-aOZ"/>
-                <constraint firstItem="RON-db-Oxd" firstAttribute="top" secondItem="P0N-aP-Ucf" secondAttribute="bottom" constant="20" id="DVX-Rr-Jr3"/>
-                <constraint firstItem="P0N-aP-Ucf" firstAttribute="centerY" secondItem="JDi-KZ-J6L" secondAttribute="centerY" id="GOg-Z2-Vay"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JRA-Vf-P4D"/>
-                <constraint firstItem="P0N-aP-Ucf" firstAttribute="leading" secondItem="JDi-KZ-J6L" secondAttribute="trailing" constant="10" id="hmT-tk-RrA"/>
+                <constraint firstItem="RON-db-Oxd" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="16" id="O6c-g0-0lG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="RON-db-Oxd" secondAttribute="bottom" id="ijO-aZ-zDk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RON-db-Oxd" secondAttribute="trailing" id="jHc-5k-v62"/>
-                <constraint firstItem="JDi-KZ-J6L" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" constant="15" id="nAY-MX-ByS"/>
+                <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" constant="15" id="neL-5z-h95"/>
                 <constraint firstItem="RON-db-Oxd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="p9N-IR-aKb"/>
+                <constraint firstItem="vMF-6w-UgW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="sjD-kh-kv9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qqc-HW-u6o" secondAttribute="trailing" id="vCT-0d-R6h"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
