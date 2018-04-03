@@ -75,7 +75,7 @@ class KNWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupEstimatedTotalValue() {
-    self.estimatedBalanceAmountLabel.text = "0 ETH = 0 USD"
+    self.estimatedBalanceAmountLabel.text = "ETH 0 = USD $0"
     self.estimatedValueContainerView.rounded(color: UIColor.Kyber.gray, width: 0.5, radius: 0)
   }
 
@@ -112,7 +112,7 @@ extension KNWalletViewController {
 
   fileprivate func updateEstimatedTotalValue() {
     let ethString = "ETH \(EtherNumberFormatter.short.string(from: self.totalETHBalance))"
-    let usdString = "USD \(EtherNumberFormatter.short.string(from: self.totalUSDBalance))"
+    let usdString = "USD $\(EtherNumberFormatter.short.string(from: self.totalUSDBalance))"
     self.estimatedBalanceAmountLabel.text = "\(ethString) = \(usdString)"
   }
 
@@ -145,7 +145,7 @@ extension KNWalletViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    return UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

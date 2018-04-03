@@ -89,19 +89,24 @@ class KNExchangeTokenCoordinator: Coordinator {
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
-    self.rootViewController.otherTokenBalanceDidUpdate(balances: self.balanceCoordinator.otherTokensBalance)
+    self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+    self.rootViewController.coordinatorDidUpdateOtherTokenBalanceDidUpdate(balances: self.balanceCoordinator.otherTokensBalance)
     self.selectTokenViewController.updateTokenBalances(self.balanceCoordinator.otherTokensBalance)
   }
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
-    self.rootViewController.ethBalanceDidUpdate(balance: self.balanceCoordinator.ethBalance)
+    self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+    self.rootViewController.coordinatorDidUpdateEthBalanceDidUpdate(balance: self.balanceCoordinator.ethBalance)
     self.selectTokenViewController.updateETHBalance(self.balanceCoordinator.ethBalance)
   }
 
   @objc func usdRateDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.updateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+    self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
+  }
+
+  func appCoordinatorShouldOpenExchangeForToken(_ token: KNToken, isReceived: Bool = false) {
+    self.rootViewController.coordinatorDidUpdateSelectedToken(token, isSource: !isReceived)
+    self.rootViewController.tabBarController?.selectedIndex = 0
   }
 
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
@@ -141,7 +146,7 @@ class KNExchangeTokenCoordinator: Coordinator {
         self.session.externalProvider.exchange(exchange: exchange) { [weak self] result in
           guard let `self` = self else { return }
           self.navigationController.topViewController?.hideLoading()
-          self.rootViewController.exchangeTokenDidReturn(result: result)
+          self.rootViewController.coordinatorExchangeTokenDidReturn(result: result)
           if case .success(let txHash) = result {
             let transaction = exchange.toTransaction(
               hash: txHash,
@@ -189,7 +194,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
       to: dest,
       amount: amount) { [weak self] (result) in
         if case .success(let data) = result {
-          self?.rootViewController.updateEstimateRateDidChange(
+          self?.rootViewController.coordinatorDidUpdateEstimateRate(
             source: source,
             dest: dest,
             amount: amount,
@@ -211,7 +216,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
   func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction) {
     self.session.externalProvider.getEstimateGasLimit(for: exchangeTransaction) { [weak self] result in
       if case .success(let estimate) = result {
-        self?.rootViewController.updateEstimateGasUsed(
+        self?.rootViewController.coordinatorDidUpdateEstimateGasUsed(
           source: exchangeTransaction.from,
           dest: exchangeTransaction.to,
           amount: exchangeTransaction.amount,
@@ -249,7 +254,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
 extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
   func selectTokenViewUserDidSelect(_ token: KNToken) {
     self.navigationController.popViewController(animated: true) {
-      self.rootViewController.updateSelectedToken(token, isSource: self.isSelectingSourceToken)
+      self.rootViewController.coordinatorDidUpdateSelectedToken(token, isSource: self.isSelectingSourceToken)
     }
   }
 }

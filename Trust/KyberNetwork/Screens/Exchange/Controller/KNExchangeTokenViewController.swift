@@ -292,12 +292,12 @@ extension KNExchangeTokenViewController {
 }
 // MARK: Update data from coordinator
 extension KNExchangeTokenViewController {
-  func updateBalance(usd: BigInt, eth: BigInt) {
+  func coordinatorDidUpdateBalance(usd: BigInt, eth: BigInt) {
     self.navigationItem.title = "$\(EtherNumberFormatter.short.string(from: usd))"
     self.view.layoutIfNeeded()
   }
 
-  func updateSelectedToken(_ token: KNToken, isSource: Bool) {
+  func coordinatorDidUpdateSelectedToken(_ token: KNToken, isSource: Bool) {
     if isSource {
       if self.selectedFromToken == token { return }
       self.updateFromToken(token)
@@ -309,31 +309,31 @@ extension KNExchangeTokenViewController {
     }
   }
 
-  func ethBalanceDidUpdate(balance: Balance) {
+  func coordinatorDidUpdateEthBalanceDidUpdate(balance: Balance) {
     self.ethBalance = balance
     self.otherTokenBalances[self.ethToken.address] = balance
     self.updateViewWhenBalancesDidChange()
   }
 
-  func otherTokenBalanceDidUpdate(balances: [String: Balance]) {
+  func coordinatorDidUpdateOtherTokenBalanceDidUpdate(balances: [String: Balance]) {
     self.otherTokenBalances = balances
     self.otherTokenBalances[self.ethToken.address] = self.ethBalance
     self.updateViewWhenBalancesDidChange()
   }
 
-  func updateEstimateRateDidChange(source: KNToken, dest: KNToken, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
+  func coordinatorDidUpdateEstimateRate(source: KNToken, dest: KNToken, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
     if source != self.selectedFromToken || dest != self.selectedToToken { return }
     self.expectedRate = expectedRate
     self.slippageRate = slippageRate
     self.updateViewWhenRatesDidChange()
   }
 
-  func updateEstimateGasUsed(source: KNToken, dest: KNToken, amount: BigInt, estimate: BigInt) {
+  func coordinatorDidUpdateEstimateGasUsed(source: KNToken, dest: KNToken, amount: BigInt, estimate: BigInt) {
     if source != self.selectedFromToken || dest != self.selectedToToken { return }
     self.updateEstimateGasUsed(estimate)
   }
 
-  func exchangeTokenDidReturn(result: Result<String, AnyError>) {
+  func coordinatorExchangeTokenDidReturn(result: Result<String, AnyError>) {
     if case .failure(let error) =  result {
       self.displayError(error: error)
     }

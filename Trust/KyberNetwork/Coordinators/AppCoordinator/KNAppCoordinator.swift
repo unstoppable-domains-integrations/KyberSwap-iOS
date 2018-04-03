@@ -213,12 +213,16 @@ extension KNAppCoordinator: KNWalletCoordinatorDelegate {
   }
 
   func walletCoordinatorDidClickExchange(token: KNToken) {
+    self.exchangeCoordinator.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
   }
 
   func walletCoordinatorDidClickTransfer(token: KNToken) {
+    if self.transferCoordinator != nil {
+      self.transferCoordinator.appCoordinatorShouldOpenTransferForToken(token)
+    }
   }
 
   func walletCoordinatorDidClickReceive(token: KNToken) {
-    // TODO: Handling receive token
+    self.exchangeCoordinator.appCoordinatorShouldOpenExchangeForToken(token, isReceived: true)
   }
 }

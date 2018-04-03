@@ -137,6 +137,11 @@ class KNTransferTokenCoordinator: Coordinator {
         }
     }
   }
+
+  func appCoordinatorShouldOpenTransferForToken(_ token: KNToken) {
+    self.rootViewController.coordinatorSelectedTokenDidUpdate(token)
+    self.rootViewController.tabBarController?.selectedIndex = 1
+  }
 }
 
 extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
