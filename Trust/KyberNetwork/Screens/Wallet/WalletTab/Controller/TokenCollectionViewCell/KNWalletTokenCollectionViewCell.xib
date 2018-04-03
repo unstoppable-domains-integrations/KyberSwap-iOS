@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="TimesNewRoman.ttf">
+            <string>TimesNewRomanPSMT</string>
+        </array>
+        <array key="TimesNewRomanBold.ttf">
+            <string>TimesNewRomanPS-BoldMT</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNWalletTokenCollectionViewCell" customModule="Trust" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="Y4S-UU-AsQ">
+                        <rect key="frame" x="20" y="10" width="23" height="23"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IlD-B6-sJR">
+                        <rect key="frame" x="59" y="12.5" width="31.5" height="18"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US$1,312,340.5884" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAc-QW-a5K">
+                        <rect key="frame" x="180" y="45.5" width="130" height="18"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exchange" translatesAutoresizingMaskIntoConstraints="NO" id="By3-I2-hcG">
+                        <rect key="frame" x="286" y="10" width="24" height="24"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="=" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXj-zE-dq5">
+                        <rect key="frame" x="152" y="45.5" width="16" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="MI4-rI-h1h"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bb0-xr-8m7">
+                        <rect key="frame" x="20" y="96" width="80" height="32"/>
+                        <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="atI-Uh-lqM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <state key="normal" title="Exchange">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="exchangeButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="6xs-H4-EZy"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.12313" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3W-1I-LT6">
+                        <rect key="frame" x="10" y="45.5" width="130" height="18"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GnI-wt-oj0">
+                        <rect key="frame" x="120" y="96" width="80" height="32"/>
+                        <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <state key="normal" title="Transfer">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="transferButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="TLI-vg-eYy"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mva-9h-LHw">
+                        <rect key="frame" x="220" y="96" width="80" height="32"/>
+                        <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                        <state key="normal" title="Receive">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="receiveButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="14T-rk-R9F"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Y4S-UU-AsQ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="3Xj-wl-iBM"/>
+                <constraint firstItem="NAc-QW-a5K" firstAttribute="leading" secondItem="LXj-zE-dq5" secondAttribute="trailing" constant="12" id="5Hu-or-e4y"/>
+                <constraint firstAttribute="bottom" secondItem="Bb0-xr-8m7" secondAttribute="bottom" constant="32" id="5sh-aj-5iY"/>
+                <constraint firstItem="LXj-zE-dq5" firstAttribute="leading" secondItem="P3W-1I-LT6" secondAttribute="trailing" constant="12" id="60I-HJ-tKk"/>
+                <constraint firstItem="GnI-wt-oj0" firstAttribute="height" secondItem="Bb0-xr-8m7" secondAttribute="height" id="66q-FX-jlz"/>
+                <constraint firstAttribute="trailing" secondItem="mva-9h-LHw" secondAttribute="trailing" constant="20" id="6do-sQ-2yQ"/>
+                <constraint firstItem="Bb0-xr-8m7" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="7lm-ju-rb9"/>
+                <constraint firstItem="P3W-1I-LT6" firstAttribute="top" secondItem="IlD-B6-sJR" secondAttribute="bottom" constant="15" id="8A1-iK-o5P"/>
+                <constraint firstItem="By3-I2-hcG" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="Cb4-xd-Fx9"/>
+                <constraint firstItem="IlD-B6-sJR" firstAttribute="leading" secondItem="Y4S-UU-AsQ" secondAttribute="trailing" constant="16" id="CmV-zm-pHZ"/>
+                <constraint firstItem="NAc-QW-a5K" firstAttribute="centerY" secondItem="P3W-1I-LT6" secondAttribute="centerY" id="FtK-TD-Ipz"/>
+                <constraint firstItem="mva-9h-LHw" firstAttribute="leading" secondItem="GnI-wt-oj0" secondAttribute="trailing" constant="20" id="Ilr-Oh-P12"/>
+                <constraint firstAttribute="trailing" secondItem="By3-I2-hcG" secondAttribute="trailing" constant="10" id="Kyj-Ot-rQr"/>
+                <constraint firstAttribute="trailing" secondItem="NAc-QW-a5K" secondAttribute="trailing" constant="10" id="NXy-OZ-vw7"/>
+                <constraint firstItem="GnI-wt-oj0" firstAttribute="centerY" secondItem="Bb0-xr-8m7" secondAttribute="centerY" id="OFC-2B-iB7"/>
+                <constraint firstItem="P3W-1I-LT6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="UNR-3b-cVD"/>
+                <constraint firstItem="mva-9h-LHw" firstAttribute="width" secondItem="GnI-wt-oj0" secondAttribute="width" id="VAr-yh-fAV"/>
+                <constraint firstItem="mva-9h-LHw" firstAttribute="height" secondItem="GnI-wt-oj0" secondAttribute="height" id="Xk6-PJ-aqU"/>
+                <constraint firstItem="GnI-wt-oj0" firstAttribute="width" secondItem="Bb0-xr-8m7" secondAttribute="width" id="YO6-ur-3Az"/>
+                <constraint firstItem="mva-9h-LHw" firstAttribute="centerY" secondItem="GnI-wt-oj0" secondAttribute="centerY" id="dWO-UU-4UA"/>
+                <constraint firstItem="LXj-zE-dq5" firstAttribute="centerY" secondItem="P3W-1I-LT6" secondAttribute="centerY" id="die-TW-Kcc"/>
+                <constraint firstItem="GnI-wt-oj0" firstAttribute="leading" secondItem="Bb0-xr-8m7" secondAttribute="trailing" constant="20" id="hXp-jC-u0d"/>
+                <constraint firstItem="LXj-zE-dq5" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="ico-98-b4l"/>
+                <constraint firstItem="Y4S-UU-AsQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="jaT-g1-ode"/>
+                <constraint firstItem="IlD-B6-sJR" firstAttribute="centerY" secondItem="Y4S-UU-AsQ" secondAttribute="centerY" id="lJm-XF-lj5"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="bottomPaddingConstraint" destination="5sh-aj-5iY" id="XrK-P3-6Rc"/>
+                <outlet property="exchangeButton" destination="Bb0-xr-8m7" id="w6r-OH-Yip"/>
+                <outlet property="heightButtonConstraint" destination="atI-Uh-lqM" id="uSQ-cB-RyZ"/>
+                <outlet property="iconImageView" destination="Y4S-UU-AsQ" id="wNa-bY-P7C"/>
+                <outlet property="receiveButton" destination="mva-9h-LHw" id="qq3-T7-V1m"/>
+                <outlet property="tokenBalanceAmountLabel" destination="P3W-1I-LT6" id="ESI-mT-s1r"/>
+                <outlet property="tokenNameLabel" destination="IlD-B6-sJR" id="hTT-he-aqV"/>
+                <outlet property="tokenUSDAmountLabel" destination="NAc-QW-a5K" id="81X-6B-fQI"/>
+                <outlet property="transferButton" destination="GnI-wt-oj0" id="sbm-cm-pyn"/>
+            </connections>
+            <point key="canvasLocation" x="-29" y="84"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="eth" width="23" height="23"/>
+        <image name="exchange" width="24" height="24"/>
+    </resources>
+</document>
