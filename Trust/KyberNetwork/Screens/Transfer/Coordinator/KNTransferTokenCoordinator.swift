@@ -45,7 +45,6 @@ class KNTransferTokenCoordinator: Coordinator {
     self.navigationController.applyStyle()
     self.session = session
     self.balanceCoordinator = balanceCoordinator
-    self.navigationController.applyStyle()
   }
 
   func start() {

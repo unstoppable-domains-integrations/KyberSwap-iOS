@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 protocol KNWalletViewControllerDelegate: class {
   func walletViewControllerDidExit()
@@ -13,6 +14,8 @@ class KNWalletViewController: KNBaseViewController {
   fileprivate var isHidingSmallAssets: Bool = false
 
   fileprivate var balances: [String: Balance] = [:]
+  fileprivate var totalETHBalance: BigInt = BigInt(0)
+  fileprivate var totalUSDBalance: BigInt = BigInt(0)
 
   fileprivate var displayedTokens: [KNToken] {
     if !isHidingSmallAssets { return self.tokens }
@@ -41,10 +44,6 @@ class KNWalletViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
   }
 
   fileprivate func setupUI() {
@@ -98,9 +97,21 @@ extension KNWalletViewController {
     self.view.layoutIfNeeded()
   }
 
-  func updateTokenBalances(_ balances: [String: Balance]) {
+  fileprivate func updateEstimatedTotalValue() {
+    let ethString = "ETH \(EtherNumberFormatter.short.string(from: self.totalETHBalance))"
+    let usdString = "USD \(EtherNumberFormatter.short.string(from: self.totalUSDBalance))"
+    self.estimatedBalanceAmountLabel.text = "\(ethString) = \(usdString)"
+  }
+
+  func coordinatorUpdateTokenBalances(_ balances: [String: Balance]) {
     balances.forEach { self.balances[$0.key] = $0.value }
     self.updateViewWhenBalanceDidUpdate()
+  }
+
+  func coordinatorUpdateBalanceInETHAndUSD(ethBalance: BigInt, usdBalance: BigInt) {
+    self.totalETHBalance = ethBalance
+    self.totalUSDBalance = usdBalance
+    self.updateEstimatedTotalValue()
   }
 }
 

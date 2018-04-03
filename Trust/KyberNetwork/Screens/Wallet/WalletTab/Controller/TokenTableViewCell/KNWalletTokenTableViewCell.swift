@@ -12,6 +12,5 @@ class KNWalletTokenTableViewCell: UITableViewCell {
   }
 
   func updateCell(with token: KNToken, balance: Balance) {
-    
   }
 }
