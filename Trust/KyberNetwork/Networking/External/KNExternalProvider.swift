@@ -384,7 +384,7 @@ class KNExternalProvider {
   private func signTransactionData(from exchange: KNDraftExchangeTransaction, nounce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction: SignTransaction = SignTransaction(
       value: exchange.from.isETH ? exchange.amount : BigInt(0),
-      account: account,
+      account: self.account,
       to: self.networkAddress,
       nonce: nounce,
       data: data,

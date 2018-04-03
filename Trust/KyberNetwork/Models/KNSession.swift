@@ -56,6 +56,10 @@ class KNSession {
     _ = self.keystore.delete(wallet: self.wallet)
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = nil
+
+    // Clear all data & tracker
+    KNAppTracker.updateTransactionLoadState(.none, for: self.wallet.address)
+    self.storage.deleteAll()
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {
