@@ -13,7 +13,9 @@ class KNWalletCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
 
   lazy var rootViewController: KNWalletViewController = {
-    return KNWalletViewController(delegate: self)
+    let controller = KNWalletViewController(delegate: self)
+    controller.loadViewIfNeeded()
+    return controller
   }()
 
   init(

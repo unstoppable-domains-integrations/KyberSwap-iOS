@@ -59,6 +59,7 @@ class KNTransferTokenViewController: KNBaseViewController {
   init(delegate: KNTransferTokenViewControllerDelegate?) {
     self.delegate = delegate
     super.init(nibName: KNTransferTokenViewController.className, bundle: nil)
+    self.loadViewIfNeeded()
   }
 
   required init?(coder aDecoder: NSCoder) {

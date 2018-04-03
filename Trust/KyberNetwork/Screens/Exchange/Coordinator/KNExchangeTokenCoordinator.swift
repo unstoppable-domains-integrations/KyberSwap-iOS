@@ -18,6 +18,7 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   lazy var rootViewController: KNExchangeTokenViewController = {
     let controller = KNExchangeTokenViewController(delegate: self)
+    controller.loadViewIfNeeded()
     return controller
   }()
 

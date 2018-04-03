@@ -17,6 +17,7 @@ class KNTransferTokenCoordinator: Coordinator {
 
   lazy var rootViewController: KNTransferTokenViewController = {
     let controller = KNTransferTokenViewController(delegate: self)
+    controller.loadViewIfNeeded()
     return controller
   }()
 
