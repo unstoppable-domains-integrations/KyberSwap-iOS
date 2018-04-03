@@ -18,6 +18,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator!
   fileprivate var transferCoordinator: KNTransferTokenCoordinator!
   fileprivate var walletCoordinator: KNWalletCoordinator!
+  fileprivate var historyCoordinator: KNHistoryCoordinator!
 
   fileprivate var tabbarController: UITabBarController!
 
@@ -100,14 +101,27 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(self.walletCoordinator)
     self.walletCoordinator.start()
 
+    // History tab
+    self.historyCoordinator = {
+      let coordinator = KNHistoryCoordinator(
+        session: self.session
+      )
+      coordinator.delegate = self
+      return coordinator
+    }
+    self.addCoordinator(self.historyCoordinator)
+    self.historyCoordinator.start()
+
     self.tabbarController.viewControllers = [
       self.exchangeCoordinator.navigationController,
       self.transferCoordinator.navigationController,
       self.walletCoordinator.navigationController,
+      self.historyCoordinator.navigationController
     ]
     self.exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
     self.transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
     self.walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
+    self.historyCoordinator.navigationController.tabBarItem = UITabBarItem(title: "History".toBeLocalised(), image: nil, tag: 3)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
