@@ -116,7 +116,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.exchangeCoordinator.navigationController,
       self.transferCoordinator.navigationController,
       self.walletCoordinator.navigationController,
-      self.historyCoordinator.navigationController
+      self.historyCoordinator.navigationController,
     ]
     self.exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
     self.transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
@@ -129,6 +129,8 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.navigationController.topViewController?.view.addSubview(self.tabbarController.view)
       self.tabbarController.didMove(toParentViewController: topViewController)
     }
+    // Set select wallet tab
+    self.tabbarController.selectedIndex = 2
 
     self.addObserveNotificationFromSession()
   }

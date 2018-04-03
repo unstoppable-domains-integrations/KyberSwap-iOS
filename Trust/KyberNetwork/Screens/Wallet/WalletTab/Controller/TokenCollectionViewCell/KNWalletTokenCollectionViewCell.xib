@@ -28,10 +28,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="Y4S-UU-AsQ">
-                        <rect key="frame" x="20" y="10" width="23" height="23"/>
+                        <rect key="frame" x="10" y="10" width="23" height="23"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IlD-B6-sJR">
-                        <rect key="frame" x="59" y="12.5" width="31.5" height="18"/>
+                        <rect key="frame" x="49" y="12.5" width="31.5" height="18"/>
                         <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -122,7 +122,7 @@
                 <constraint firstItem="LXj-zE-dq5" firstAttribute="centerY" secondItem="P3W-1I-LT6" secondAttribute="centerY" id="die-TW-Kcc"/>
                 <constraint firstItem="GnI-wt-oj0" firstAttribute="leading" secondItem="Bb0-xr-8m7" secondAttribute="trailing" constant="20" id="hXp-jC-u0d"/>
                 <constraint firstItem="LXj-zE-dq5" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="ico-98-b4l"/>
-                <constraint firstItem="Y4S-UU-AsQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="jaT-g1-ode"/>
+                <constraint firstItem="Y4S-UU-AsQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="jaT-g1-ode"/>
                 <constraint firstItem="IlD-B6-sJR" firstAttribute="centerY" secondItem="Y4S-UU-AsQ" secondAttribute="centerY" id="lJm-XF-lj5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
