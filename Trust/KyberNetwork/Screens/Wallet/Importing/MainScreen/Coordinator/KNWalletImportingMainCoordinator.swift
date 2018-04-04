@@ -59,6 +59,12 @@ extension KNWalletImportingMainCoordinator: KNWalletImportingMainViewControllerD
     self.addCoordinator(self.importingPrivateKeyCoordinator)
     self.importingPrivateKeyCoordinator.start()
   }
+
+  // MARK: DEBUG only
+  func walletImportingMainScreenUserDidClickDebug() {
+    let debugVC = KNDebugMenuViewController()
+    self.navigationController.topViewController?.present(debugVC, animated: true, completion: nil)
+  }
 }
 
 extension KNWalletImportingMainCoordinator: KNWalletImportingKeystoreCoordinatorDelegate {

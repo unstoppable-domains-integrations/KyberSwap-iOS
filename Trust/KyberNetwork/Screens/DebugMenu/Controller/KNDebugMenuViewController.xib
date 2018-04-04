@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="TimesNewRoman.ttf">
+            <string>TimesNewRomanPSMT</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNDebugMenuViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="envNetworkAddressLabel" destination="LMd-z4-XBO" id="kOn-yt-Mdu"/>
+                <outlet property="envReserveAddressLabel" destination="oWg-AM-auF" id="hNO-SV-Wdq"/>
+                <outlet property="environmentEndpointLabel" destination="Fno-hk-Yyx" id="sZO-yP-2rY"/>
+                <outlet property="environmentSegmentedControl" destination="MOS-Kz-cCU" id="O2N-X5-Wwa"/>
+                <outlet property="internalCacheEndpointLabel" destination="oVm-EZ-tyy" id="ywZ-Jy-Tiu"/>
+                <outlet property="internalSegmentedControl" destination="9oC-Vj-wZz" id="HEn-Cs-GIX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Internal Cache Endpoint" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPb-po-axj">
+                    <rect key="frame" x="20" y="100" width="156.5" height="18"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9oC-Vj-wZz">
+                    <rect key="frame" x="106" y="138" width="163" height="29"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <segments>
+                        <segment title="Staging"/>
+                        <segment title="Production"/>
+                    </segments>
+                    <connections>
+                        <action selector="internalSegmentedControlDidChange:" destination="-1" eventType="valueChanged" id="hCV-xr-MqG"/>
+                    </connections>
+                </segmentedControl>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Environment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVp-GK-Mz6">
+                    <rect key="frame" x="20" y="226" width="84" height="18"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MOS-Kz-cCU">
+                    <rect key="frame" x="57.5" y="264" width="259" height="29"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <segments>
+                        <segment title="Main"/>
+                        <segment title="Test"/>
+                        <segment title="Prod"/>
+                        <segment title="Rops"/>
+                        <segment title="Kovan"/>
+                    </segments>
+                    <connections>
+                        <action selector="environmentSegmentedControl:" destination="-1" eventType="valueChanged" id="1CV-bE-4NY"/>
+                    </connections>
+                </segmentedControl>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://staging-cache.kyber.network" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVm-EZ-tyy">
+                    <rect key="frame" x="88" y="182" width="200" height="16"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://kovan.infura.io/DtzEYY0Km2BA3YwyJcBG" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fno-hk-Yyx">
+                    <rect key="frame" x="20" y="307" width="335" height="16"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Address: 0x643211b405c9a14139142e1104250bbcd94bd0ef" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMd-z4-XBO">
+                    <rect key="frame" x="20" y="338" width="335" height="31.5"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve Address: 0x2d1ceabd5a1cd16581ad199031601615a434a2cd" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWg-AM-auF">
+                    <rect key="frame" x="20" y="385.5" width="335" height="31.5"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FyX-vc-cEz">
+                    <rect key="frame" x="16" y="40" width="33" height="30"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <state key="normal" title="Back">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="backPressed:" destination="-1" eventType="touchUpInside" id="a6Y-RV-BDZ"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdn-Iy-L2C">
+                    <rect key="frame" x="319" y="40" width="40" height="30"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <state key="normal" title="Apply">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="applyPressed:" destination="-1" eventType="touchUpInside" id="Knp-Eg-wAZ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="GVp-GK-Mz6" firstAttribute="top" secondItem="9oC-Vj-wZz" secondAttribute="bottom" constant="60" id="05c-gX-L7v"/>
+                <constraint firstItem="FyX-vc-cEz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="4E9-oj-5gd"/>
+                <constraint firstItem="FyX-vc-cEz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="5ul-Uj-qNw"/>
+                <constraint firstItem="9oC-Vj-wZz" firstAttribute="top" secondItem="OPb-po-axj" secondAttribute="bottom" constant="20" id="8f6-Kx-XKQ"/>
+                <constraint firstItem="OPb-po-axj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="80" id="92X-FC-kks"/>
+                <constraint firstItem="Fno-hk-Yyx" firstAttribute="centerX" secondItem="MOS-Kz-cCU" secondAttribute="centerX" id="9ZN-fh-Sz7"/>
+                <constraint firstItem="LMd-z4-XBO" firstAttribute="top" secondItem="Fno-hk-Yyx" secondAttribute="bottom" constant="15" id="E6h-CN-T4k"/>
+                <constraint firstItem="oWg-AM-auF" firstAttribute="trailing" secondItem="LMd-z4-XBO" secondAttribute="trailing" id="IV4-ol-0gd"/>
+                <constraint firstItem="9oC-Vj-wZz" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="LTI-M3-WDe"/>
+                <constraint firstItem="GVp-GK-Mz6" firstAttribute="leading" secondItem="OPb-po-axj" secondAttribute="leading" id="Nk0-ii-gKA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="zdn-Iy-L2C" secondAttribute="trailing" constant="16" id="S4p-bc-jZD"/>
+                <constraint firstItem="OPb-po-axj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Stb-pL-s4Z"/>
+                <constraint firstItem="Fno-hk-Yyx" firstAttribute="top" secondItem="MOS-Kz-cCU" secondAttribute="bottom" constant="15" id="VqR-vC-RKp"/>
+                <constraint firstItem="zdn-Iy-L2C" firstAttribute="top" secondItem="FyX-vc-cEz" secondAttribute="top" id="Xe1-kg-uFB"/>
+                <constraint firstItem="LMd-z4-XBO" firstAttribute="leading" secondItem="Fno-hk-Yyx" secondAttribute="leading" id="awX-v7-FiE"/>
+                <constraint firstItem="oWg-AM-auF" firstAttribute="top" secondItem="LMd-z4-XBO" secondAttribute="bottom" constant="16" id="b4t-IY-Dfa"/>
+                <constraint firstItem="MOS-Kz-cCU" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cw1-Sg-Vhc"/>
+                <constraint firstItem="LMd-z4-XBO" firstAttribute="trailing" secondItem="Fno-hk-Yyx" secondAttribute="trailing" id="emq-eg-hw5"/>
+                <constraint firstItem="Fno-hk-Yyx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="iis-3e-UV1"/>
+                <constraint firstItem="oVm-EZ-tyy" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="lgw-jW-jNN"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Fno-hk-Yyx" secondAttribute="trailing" constant="20" id="pcB-bi-0kY"/>
+                <constraint firstItem="oVm-EZ-tyy" firstAttribute="top" secondItem="9oC-Vj-wZz" secondAttribute="bottom" constant="16" id="pjF-qa-nAc"/>
+                <constraint firstItem="MOS-Kz-cCU" firstAttribute="top" secondItem="GVp-GK-Mz6" secondAttribute="bottom" constant="20" id="udy-BY-8ba"/>
+                <constraint firstItem="oWg-AM-auF" firstAttribute="leading" secondItem="LMd-z4-XBO" secondAttribute="leading" id="xk4-ZP-gxv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="34.5" y="77.5"/>
+        </view>
+    </objects>
+</document>

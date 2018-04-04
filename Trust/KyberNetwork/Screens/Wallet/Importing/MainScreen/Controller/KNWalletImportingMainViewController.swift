@@ -5,6 +5,7 @@ import UIKit
 protocol KNWalletImportingMainViewControllerDelegate: class {
   func walletImportingMainScreenUserDidClickImportAddressByKeystore()
   func walletImportingMainScreenUserDidClickImportAddressByPrivateKey()
+  func walletImportingMainScreenUserDidClickDebug()
 }
 
 class KNWalletImportingMainViewController: KNBaseViewController {
@@ -19,6 +20,7 @@ class KNWalletImportingMainViewController: KNBaseViewController {
   @IBOutlet weak var privateKeyButton: UIButton!
   @IBOutlet weak var privateKeyLabel: UILabel!
 
+  @IBOutlet weak var debugButton: UIButton!
   init(delegate: KNWalletImportingMainViewControllerDelegate?) {
     self.delegate = delegate
     super.init(nibName: KNWalletImportingMainViewController.className, bundle: nil)
@@ -43,6 +45,8 @@ class KNWalletImportingMainViewController: KNBaseViewController {
 
     self.privateKeyButton.rounded(color: .clear, width: 0, radius: 10.0)
     self.privateKeyLabel.text = "Private Key".toBeLocalised()
+
+    self.debugButton.isHidden = !isDebug
   }
 
   @IBAction func keystoreButtonPressed(_ sender: Any) {
@@ -51,5 +55,9 @@ class KNWalletImportingMainViewController: KNBaseViewController {
 
   @IBAction func privateKeyButtonPressed(_ sender: Any) {
     self.delegate?.walletImportingMainScreenUserDidClickImportAddressByPrivateKey()
+  }
+
+  @IBAction func debugButtonPressed(_ sender: Any) {
+    self.delegate?.walletImportingMainScreenUserDidClickDebug()
   }
 }
