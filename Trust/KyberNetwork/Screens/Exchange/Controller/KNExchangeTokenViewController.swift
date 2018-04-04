@@ -441,7 +441,7 @@ extension KNExchangeTokenViewController {
       self.advancedSettingsView.isHidden = true
       self.topPaddingConstraintForExchangeButton.constant = UIDevice.isIphone5 ? exchangeButtonTopPaddingiPhone5 : exchangeButtonTopPaddingiPhone6
     }
-    self.view.updateConstraints()
+    self.view.setNeedsUpdateConstraints()
   }
 
   @IBAction func lowGasPriceButtonPressed(_ sender: Any) {

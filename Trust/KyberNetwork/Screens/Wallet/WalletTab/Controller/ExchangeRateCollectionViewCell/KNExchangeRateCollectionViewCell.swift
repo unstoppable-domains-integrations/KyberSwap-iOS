@@ -30,7 +30,7 @@ class KNExchangeRateCollectionViewCell: UICollectionViewCell {
       //source and USD
       self.tokenSymbolLabel.text = "\(source.symbol)/USD"
       if let exchangeRate = KNRateCoordinator.shared.usdRate(for: source) {
-        self.exchangeRateLabel.text = exchangeRate.displayRate
+        self.exchangeRateLabel.text = EtherNumberFormatter.short.string(from: exchangeRate.rate, units: .ether)
       } else {
         self.exchangeRateLabel.text = "-.-"
       }

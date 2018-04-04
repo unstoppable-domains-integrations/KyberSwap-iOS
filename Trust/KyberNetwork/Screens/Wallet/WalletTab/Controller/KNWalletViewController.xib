@@ -19,6 +19,8 @@
             <connections>
                 <outlet property="estimatedBalanceAmountLabel" destination="GyP-Qg-C8a" id="WyQ-lc-Zg9"/>
                 <outlet property="estimatedValueContainerView" destination="qqc-HW-u6o" id="4gp-uW-Jex"/>
+                <outlet property="exchangeRateCollectionView" destination="NNa-fY-McP" id="xYW-zt-E2X"/>
+                <outlet property="heightConstraintForExchangeRateCollectionView" destination="PXi-R4-fLm" id="HIP-4d-dOg"/>
                 <outlet property="hideSmallAssetsButton" destination="vMF-6w-UgW" id="gF6-bC-lAT"/>
                 <outlet property="tokensCollectionView" destination="o5I-9Z-Z0l" id="oy4-aB-Zp1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -59,9 +61,29 @@
                     </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="o5I-9Z-Z0l">
-                    <rect key="frame" x="10" y="112" width="355" height="555"/>
+                    <rect key="frame" x="10" y="182" width="355" height="485"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mWh-MK-vJ7">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agv-ad-Bfe">
+                    <rect key="frame" x="322" y="70" width="37" height="34"/>
+                    <state key="normal" title="Rate"/>
+                    <connections>
+                        <action selector="exchangeRateButtonPressed:" destination="-1" eventType="touchUpInside" id="7N1-G3-8bp"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="NNa-fY-McP">
+                    <rect key="frame" x="0.0" y="112" width="375" height="60"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="PXi-R4-fLm"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gOG-x1-mo8">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -71,17 +93,23 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Agv-ad-Bfe" secondAttribute="trailing" constant="16" id="5Z2-4c-8CB"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="9oi-n3-PU5"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NNa-fY-McP" secondAttribute="trailing" id="B42-11-7kn"/>
                 <constraint firstItem="qqc-HW-u6o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JRA-Vf-P4D"/>
                 <constraint firstItem="o5I-9Z-Z0l" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="JTV-zh-9N1"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o5I-9Z-Z0l" secondAttribute="trailing" constant="10" id="P2E-GS-OR1"/>
+                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="top" secondItem="NNa-fY-McP" secondAttribute="bottom" constant="10" id="ed7-Qu-w4g"/>
+                <constraint firstItem="Agv-ad-Bfe" firstAttribute="centerY" secondItem="vMF-6w-UgW" secondAttribute="centerY" id="jLD-2i-pwm"/>
+                <constraint firstItem="NNa-fY-McP" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="10" id="jOM-ei-P5s"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="bottom" id="neL-5z-h95"/>
                 <constraint firstItem="vMF-6w-UgW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="sjD-kh-kv9"/>
-                <constraint firstItem="o5I-9Z-Z0l" firstAttribute="top" secondItem="vMF-6w-UgW" secondAttribute="bottom" constant="10" id="ujg-PR-Ute"/>
+                <constraint firstItem="NNa-fY-McP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tDG-VY-hls"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qqc-HW-u6o" secondAttribute="trailing" id="vCT-0d-R6h"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="o5I-9Z-Z0l" secondAttribute="bottom" id="zjE-H2-gMh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="34.5" y="77.5"/>
         </view>
     </objects>
 </document>

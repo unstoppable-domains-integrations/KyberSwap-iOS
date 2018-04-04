@@ -18,7 +18,7 @@ class KNRate: NSObject {
       if let rateDouble = Double(rateString) {
         rate = BigInt(rateDouble)
         minRate = rate
-        if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: rate * BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))))") }
+        if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))))") }
       } else {
         throw CastError(actualValue: String.self, expectedType: Double.self)
       }
@@ -35,13 +35,5 @@ class KNRate: NSObject {
         throw CastError(actualValue: String.self, expectedType: BigInt.self)
       }
     }
-  }
-
-  var displayRate: String {
-    return EtherNumberFormatter.short.string(from: rate)
-  }
-
-  var displayMinRate: String {
-    return EtherNumberFormatter.full.string(from: minRate)
   }
 }

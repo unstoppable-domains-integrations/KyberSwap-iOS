@@ -56,12 +56,11 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     self.delegate = delegate
     if isExpanded {
       self.heightButtonConstraint.constant = 32
-      self.bottomPaddingConstraint.constant = 15
+      self.bottomPaddingConstraint.constant = 12
     } else {
       self.heightButtonConstraint.constant = 0
       self.bottomPaddingConstraint.constant = 0
     }
-    self.setNeedsUpdateConstraints()
     self.layoutIfNeeded()
   }
 

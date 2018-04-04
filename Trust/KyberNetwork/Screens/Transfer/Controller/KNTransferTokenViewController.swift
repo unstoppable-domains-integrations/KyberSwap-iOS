@@ -261,7 +261,7 @@ extension KNTransferTokenViewController {
       self.advancedSettingsView.isHidden = true
       self.topPaddingConstraintForTransferButton.constant = UIDevice.isIphone5 ? kTransferButtonTopPaddingiPhone5 : kTransferButtonTopPaddingiPhone6
     }
-    self.view.updateConstraints()
+    self.view.setNeedsUpdateConstraints()
   }
 
   @IBAction func transferButtonPressed(_ sender: Any) {
