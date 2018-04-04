@@ -110,7 +110,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
         var value = "ETH \(fee.fullString(units: UnitConfiguration.gasFeeUnit))"
         let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
         if let rate = KNRateCoordinator.shared.usdRate(for: ethToken) {
-          let usdValue = rate.rate * fee
+          let usdValue = rate.rate * fee / BigInt(EthereumUnit.ether.rawValue)
           value = "\(value) ($\(usdValue.shortString(units: .ether)))"
         }
         return value
@@ -159,7 +159,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     let amountString: String = {
       var string = "\(from.symbol) \(self.transaction.value)"
       if let rate = KNRateCoordinator.shared.usdRate(for: from) {
-        let usdValue = rate.rate * amount
+        let usdValue = rate.rate * amount / BigInt(EthereumUnit.ether.rawValue)
         string = "\(string) \n($\(usdValue.shortString(units: .ether)))"
       }
       return string

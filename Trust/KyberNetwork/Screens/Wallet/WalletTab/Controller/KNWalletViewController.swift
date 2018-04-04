@@ -28,7 +28,7 @@ class KNWalletViewController: KNBaseViewController {
       return self.tokens.filter { token -> Bool in
         // Remove <= US$1
         guard let bal = self.balances[token.address], !bal.value.isZero else { return false }
-        if let usdRate = KNRateCoordinator.shared.usdRate(for: token), usdRate.rate * bal.value <= BigInt(EthereumUnit.ether.rawValue) {
+        if let usdRate = KNRateCoordinator.shared.usdRate(for: token), usdRate.rate * bal.value / BigInt(EthereumUnit.ether.rawValue) <= BigInt(EthereumUnit.ether.rawValue) {
           return false
         }
         return true

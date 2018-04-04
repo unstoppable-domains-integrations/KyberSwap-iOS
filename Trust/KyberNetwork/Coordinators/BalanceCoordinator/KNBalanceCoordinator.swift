@@ -23,12 +23,12 @@ class KNBalanceCoordinator {
       var value = BigInt(0)
       let rates = KNRateCoordinator.shared.usdRates
       if let ethRate = rates.first(where: { $0.source == "ETH" }) {
-        value = ethRate.rate * ethBalance.value
+        value = ethRate.rate * ethBalance.value / BigInt(EthereumUnit.ether.rawValue)
       }
       let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
       for token in supportedTokens {
         if let rate = rates.first(where: { $0.source == token.symbol }), let balance = otherTokensBalance[token.address] {
-          value += rate.rate * balance.value
+          value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
         }
       }
       return value

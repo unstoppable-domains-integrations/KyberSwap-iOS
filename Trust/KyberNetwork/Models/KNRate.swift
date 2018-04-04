@@ -16,9 +16,9 @@ class KNRate: NSObject {
       dest = "USD"
       let rateString: String = try kn_cast(dictionary["price_usd"])
       if let rateDouble = Double(rateString) {
-        rate = BigInt(rateDouble)
+        rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))
         minRate = rate
-        if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))))") }
+        if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: rate))") }
       } else {
         throw CastError(actualValue: String.self, expectedType: Double.self)
       }

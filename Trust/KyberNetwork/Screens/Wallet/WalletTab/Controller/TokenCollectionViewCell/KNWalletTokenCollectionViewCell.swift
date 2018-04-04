@@ -46,7 +46,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     self.tokenBalanceAmountLabel.text = balance.amountShort
     if let usdRate = KNRateCoordinator.shared.usdRate(for: token) {
       let amountString: String = {
-        return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value)
+        return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)) 
       }()
       self.tokenUSDAmountLabel.text = "US$\(amountString)"
     } else {

@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 class KNExchangeRateCollectionViewCell: UICollectionViewCell {
 

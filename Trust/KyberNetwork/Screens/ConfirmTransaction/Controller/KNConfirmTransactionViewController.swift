@@ -94,7 +94,7 @@ class KNConfirmTransactionViewController: UIViewController {
       let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimal))".prefix(20)
       let usdValue: String = {
         let rate = KNRateCoordinator.shared.usdRate(for: fromToken)?.rate ?? BigInt(0)
-        return (rate * trans.value).shortString(units: .ether)
+        return (rate * trans.value / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether)
       }()
       // Transfer To Address
       let address = trans.to?.description ?? ""
@@ -111,7 +111,7 @@ class KNConfirmTransactionViewController: UIViewController {
         let fee = gasPrice * gasLimit
         let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
         let rate = KNRateCoordinator.shared.usdRate(for: ethToken)?.rate ?? BigInt(0)
-        return (fee.fullString(units: .ether).prefix(16), (rate * fee).shortString(units: .ether))
+        return (fee.fullString(units: .ether).prefix(16), (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether))
       }()
 
       self.data = [
