@@ -28,23 +28,30 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txAmountLabel.text = ""
   }
 
-  func updateCell(with transaction: KNHistoryTransaction) {
+  func updateCell(with transaction: KNHistoryTransaction, tokens: [KNToken]) {
     self.txDateLabel.text = self.dateFormatter.string(from: transaction.date)
     if transaction.to.isEmpty && transaction.fromToken.isEmpty && transaction.toToken.isEmpty {
+      self.txIconImageView.image = UIImage(named: "transaction_received")
       // Receive token
       self.txTypeLabel.text = "Receive"
       self.txDetailsLabel.text = transaction.from
     } else if !transaction.fromToken.isEmpty && !transaction.toToken.isEmpty {
       // Exchange token
       // TODO: Fix me
-      self.txTypeLabel.text = "Exchange from ETH to KNC"
-      self.txDetailsLabel.text = "1 ETH for 370.4333 KNC"
+      let fromToken = tokens.first(where: { $0.address == transaction.fromToken })
+      let toToken = tokens.first(where: { $0.address == transaction.toToken })
+      self.txTypeLabel.text = "Exchange from \(fromToken?.symbol ?? "token") to \(toToken?.symbol ?? "token"))"
+      self.txDetailsLabel.text = "1 \(fromToken?.symbol ?? "token") for 370.4333 \(toToken?.symbol ?? "token")"
+      self.txAmountLabel.text = (EtherNumberFormatter.full.number(from: transaction.value, decimals: 0))?.shortString(decimals: fromToken?.decimal ?? 18)
+      self.txIconImageView.image = UIImage(named: "exchange")
     } else {
       // Transfer
       // TODO: Fix me
-      self.txTypeLabel.text = "Transfer token"
+      let fromToken = tokens.first(where: { $0.address == transaction.fromToken })
+      self.txTypeLabel.text = "Transfer \(fromToken?.symbol ?? "token")"
       self.txDetailsLabel.text = transaction.to
+      self.txAmountLabel.text = (EtherNumberFormatter.full.number(from: transaction.value, decimals: 0))?.shortString(decimals: fromToken?.decimal ?? 18)
+      self.txIconImageView.image = UIImage(named: "transaction_sent")
     }
-    self.txAmountLabel.text = EtherNumberFormatter.full.number(from: transaction.value, decimals: 18)?.shortString(decimals: 18)
   }
 }

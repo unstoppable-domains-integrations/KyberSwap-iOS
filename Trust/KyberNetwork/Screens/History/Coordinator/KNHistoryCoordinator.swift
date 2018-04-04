@@ -29,6 +29,7 @@ class KNHistoryCoordinator: Coordinator {
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
     self.historyTransactionsDidUpdate(nil)
+    self.addObserveNotification()
   }
 
   fileprivate func addObserveNotification() {

@@ -10,6 +10,7 @@ protocol KNHistoryViewControllerDelegate: class {
 class KNHistoryViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNHistoryViewControllerDelegate?
+  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
 
   fileprivate var transactions: [KNHistoryTransaction] = []
   @IBOutlet weak var transactionCollectionView: UICollectionView!
@@ -54,6 +55,7 @@ class KNHistoryViewController: KNBaseViewController {
 extension KNHistoryViewController {
   func coordinatorUpdateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
     self.transactions = transactions
+    self.transactionCollectionView.reloadData()
   }
 }
 
@@ -91,7 +93,7 @@ extension KNHistoryViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNTransactionCollectionViewCell.cellID, for: indexPath) as! KNTransactionCollectionViewCell
     let tran = self.transactions[indexPath.row]
-    cell.updateCell(with: tran)
+    cell.updateCell(with: tran, tokens: self.tokens)
     return cell
   }
 }
