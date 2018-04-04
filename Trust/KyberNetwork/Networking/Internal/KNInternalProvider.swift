@@ -56,23 +56,23 @@ class KNInternalProvider {
   }
 
   // MARK: History trade
-  func getKNRecentTrades(completion: @escaping (Result<[KNTransaction], AnyError>) -> Void) {
-    self.performFetchRequest(service: .getHistoryOneColumn) { (result) in
-      switch result {
-      case .success(let json):
-        do {
-          if isDebug { print("Load recent trades successfully: \(json)") }
-          let jsonArray: [JSONDictionary] = try kn_cast(json["data"])
-          let transactions = try jsonArray.map({ return try KNTransaction(dictionary: $0) })
-          completion(.success(transactions))
-        } catch let error {
-          completion(.failure(AnyError(error)))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
-  }
+//  func getKNRecentTrades(completion: @escaping (Result<[KNTransaction], AnyError>) -> Void) {
+//    self.performFetchRequest(service: .getHistoryOneColumn) { (result) in
+//      switch result {
+//      case .success(let json):
+//        do {
+//          if isDebug { print("Load recent trades successfully: \(json)") }
+//          let jsonArray: [JSONDictionary] = try kn_cast(json["data"])
+//          let transactions = try jsonArray.map({ return try KNTransaction(dictionary: $0) })
+//          completion(.success(transactions))
+//        } catch let error {
+//          completion(.failure(AnyError(error)))
+//        }
+//      case .failure(let error):
+//        completion(.failure(error))
+//      }
+//    }
+//  }
 
   // MARK: Latest block
   func getKNLatestBlock(completion: @escaping (Result<String, AnyError>) -> Void) {
