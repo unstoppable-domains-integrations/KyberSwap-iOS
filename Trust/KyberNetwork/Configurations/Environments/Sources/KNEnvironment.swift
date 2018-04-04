@@ -2,20 +2,20 @@
 
 import UIKit
 
-enum KNEnvironment {
+enum KNEnvironment: Int {
 
-  case mainnetTest
-  case production
-  case staging
-  case ropsten
-  case kovan
+  case mainnetTest = 0
+  case production = 1
+  case staging = 2
+  case ropsten = 3
+  case kovan = 4
 
   static let internalBaseEndpoint: String = {
-    isDebug ? "https://staging-cache.kyber.network" : "https://production-cache.kyber.network"
+    return KNAppTracker.internalCacheEndpoint()
   }()
 
   static var `default`: KNEnvironment {
-    return KNEnvironment.kovan
+    return KNAppTracker.externalEnvironment()
   }
 
   var chainID: Int {

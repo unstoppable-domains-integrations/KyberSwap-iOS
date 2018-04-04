@@ -58,7 +58,7 @@ class KNSession {
     self.transacionCoordinator = nil
 
     // Clear all data & tracker
-    KNAppTracker.updateTransactionLoadState(.none, for: self.wallet.address)
+    KNAppTracker.resetAppTrackerDidExitSession(self)
     self.storage.deleteAll()
   }
 
