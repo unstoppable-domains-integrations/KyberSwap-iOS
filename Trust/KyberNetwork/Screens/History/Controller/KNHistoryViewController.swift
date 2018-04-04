@@ -11,6 +11,8 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNHistoryViewControllerDelegate?
 
+  fileprivate var transactions: [KNHistoryTransaction] = []
+
   init(delegate: KNHistoryViewControllerDelegate?) {
     self.delegate = delegate
     super.init(nibName: KNHistoryViewController.className, bundle: nil)
@@ -37,5 +39,11 @@ class KNHistoryViewController: KNBaseViewController {
 
   @objc func exitButtonPressed(_ sender: Any) {
     self.delegate?.historyViewControllerDidClickExit()
+  }
+}
+
+extension KNHistoryViewController {
+  func coordinatorUpdateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    self.transactions = transactions
   }
 }

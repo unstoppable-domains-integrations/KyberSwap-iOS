@@ -57,6 +57,7 @@
 		257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257B84AE2074D7B8003DD40E /* Assets.xcassets */; };
 		257B84B32074E9E4003DD40E /* KNTransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257B84B12074E9E4003DD40E /* KNTransactionCollectionViewCell.swift */; };
 		257B84B42074E9E4003DD40E /* KNTransactionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257B84B22074E9E4003DD40E /* KNTransactionCollectionViewCell.xib */; };
+		257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257B84B520750F1D003DD40E /* KNHistoryTransaction.swift */; };
 		25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */; };
 		25AC2482205FBED900989EBA /* KNPendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */; };
 		25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */; };
@@ -535,6 +536,7 @@
 		257B84AE2074D7B8003DD40E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		257B84B12074E9E4003DD40E /* KNTransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionCollectionViewCell.swift; sourceTree = "<group>"; };
 		257B84B22074E9E4003DD40E /* KNTransactionCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionCollectionViewCell.xib; sourceTree = "<group>"; };
+		257B84B520750F1D003DD40E /* KNHistoryTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHistoryTransaction.swift; sourceTree = "<group>"; };
 		25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListTableViewCell.swift; sourceTree = "<group>"; };
@@ -1035,6 +1037,7 @@
 				251ABCA820578E7B0069687F /* KNToken.swift */,
 				25CC0A8D2057D0410009D0D5 /* KNSession.swift */,
 				257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */,
+				257B84B520750F1D003DD40E /* KNHistoryTransaction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3705,6 +3708,7 @@
 				29D72A2A1F6A8D1500CE9209 /* AppCoordinator.swift in Sources */,
 				290B2B671F9266630053C83E /* SettingsAction.swift in Sources */,
 				293E626F1FA2ED1400CB0A66 /* InCoordinator.swift in Sources */,
+				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				29E9CFCB1FE70D5B00017744 /* TokensBalanceService.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,

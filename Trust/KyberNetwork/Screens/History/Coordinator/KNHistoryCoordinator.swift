@@ -28,9 +28,39 @@ class KNHistoryCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
+    self.historyTransactionsDidUpdate(nil)
+  }
+
+  fileprivate func addObserveNotification() {
+    let name = Notification.Name(kTransactionListDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.historyTransactionsDidUpdate(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   func stop() {
+    self.removeObserveNotification()
+  }
+
+  fileprivate func removeObserveNotification() {
+    let name = Notification.Name(kTransactionListDidUpdateNotificationKey)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: name,
+      object: nil
+    )
+  }
+
+  @objc func historyTransactionsDidUpdate(_ sender: Any?) {
+    let transactions: [KNHistoryTransaction] = {
+      return self.session.realm.objects(KNHistoryTransaction.self)
+        .sorted(byKeyPath: "date", ascending: false)
+        .filter { !$0.id.isEmpty }
+    }()
+    self.rootViewController.coordinatorUpdateHistoryTransactions(transactions)
   }
 }
 
@@ -39,6 +69,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   }
 
   func historyViewControllerDidClickExit() {
+    self.stop()
     self.delegate?.userDidClickExitSession()
   }
 }

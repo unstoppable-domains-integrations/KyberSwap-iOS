@@ -247,6 +247,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
   }
 
   func exchangeTokenUserDidClickExit() {
+    self.stop()
     self.delegate?.userDidClickExitSession()
   }
 }

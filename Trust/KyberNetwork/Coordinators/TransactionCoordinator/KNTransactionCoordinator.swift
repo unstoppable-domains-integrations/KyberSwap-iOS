@@ -219,12 +219,8 @@ extension KNTransactionCoordinator {
           let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
           let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
           if !transactions.isEmpty {
-            KNNotificationUtil.postNotification(
-              for: kTransactionListDidUpdateNotificationKey,
-              object: transactions,
-              userInfo: nil
-            )
             self.storage.add(transactions)
+            self.updateHistoryTransactions(from: transactions)
           }
           NSLog("Successfully fetched \(transactions.count) transactions")
           completion?(.success(transactions))
@@ -238,6 +234,19 @@ extension KNTransactionCoordinator {
         completion?(.failure(AnyError(error)))
       }
     }
+  }
+
+  func updateHistoryTransactions(from transactions: [Transaction]) {
+    let historyTransactions = transactions.map({return KNHistoryTransaction(transaction: $0, wallet: self.wallet)})
+    let realm = self.storage.realm
+    realm.beginWrite()
+    realm.add(historyTransactions, update: true)
+    try! realm.commitWrite()
+    KNNotificationUtil.postNotification(
+      for: kTransactionListDidUpdateNotificationKey,
+      object: transactions,
+      userInfo: nil
+    )
   }
 }
 
@@ -331,7 +340,6 @@ extension KNTransactionCoordinator {
 }
 
 extension UnconfirmedTransaction {
-
   func toTransaction(wallet: Wallet, hash: String, nounce: Int) -> Transaction {
     let token: KNToken = self.transferType.knToken()
 

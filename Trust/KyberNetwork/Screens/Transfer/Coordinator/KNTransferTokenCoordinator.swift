@@ -198,6 +198,7 @@ extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
   }
 
   func transferTokenViewControllerDidExit() {
+    self.stop()
     self.delegate?.userDidClickExitSession()
   }
 }

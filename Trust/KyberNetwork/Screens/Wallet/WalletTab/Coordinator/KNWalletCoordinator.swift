@@ -110,6 +110,7 @@ extension KNWalletCoordinator {
 
 extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   func walletViewControllerDidExit() {
+    self.stop()
     self.delegate?.walletCoordinatorDidClickExit()
   }
 

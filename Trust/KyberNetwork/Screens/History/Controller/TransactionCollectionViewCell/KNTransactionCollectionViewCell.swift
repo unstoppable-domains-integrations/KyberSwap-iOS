@@ -28,6 +28,23 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txAmountLabel.text = ""
   }
 
-  func updateCell(with transaction: Transaction) {
+  func updateCell(with transaction: KNHistoryTransaction) {
+    self.txDateLabel.text = self.dateFormatter.string(from: transaction.date)
+    if transaction.to.isEmpty && transaction.fromToken.isEmpty && transaction.toToken.isEmpty {
+      // Receive token
+      self.txTypeLabel.text = "Receive"
+      self.txDetailsLabel.text = transaction.from
+    } else if !transaction.fromToken.isEmpty && !transaction.toToken.isEmpty {
+      // Exchange token
+      // TODO: Fix me
+      self.txTypeLabel.text = "Exchange from ETH to KNC"
+      self.txDetailsLabel.text = "1 ETH for 370.4333 KNC"
+    } else {
+      // Transfer
+      // TODO: Fix me
+      self.txTypeLabel.text = "Transfer token"
+      self.txDetailsLabel.text = transaction.to
+    }
+    self.txAmountLabel.text = EtherNumberFormatter.full.number(from: transaction.value, decimals: 18)?.shortString(decimals: 18)
   }
 }
