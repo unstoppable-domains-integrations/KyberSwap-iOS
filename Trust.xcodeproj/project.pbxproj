@@ -55,6 +55,8 @@
 		257B84AC2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257B84AA2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.swift */; };
 		257B84AD2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257B84AB2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.xib */; };
 		257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257B84AE2074D7B8003DD40E /* Assets.xcassets */; };
+		257B84B32074E9E4003DD40E /* KNTransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257B84B12074E9E4003DD40E /* KNTransactionCollectionViewCell.swift */; };
+		257B84B42074E9E4003DD40E /* KNTransactionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257B84B22074E9E4003DD40E /* KNTransactionCollectionViewCell.xib */; };
 		25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */; };
 		25AC2482205FBED900989EBA /* KNPendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */; };
 		25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */; };
@@ -531,6 +533,8 @@
 		257B84AA2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNExchangeRateCollectionViewCell.swift; sourceTree = "<group>"; };
 		257B84AB2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNExchangeRateCollectionViewCell.xib; sourceTree = "<group>"; };
 		257B84AE2074D7B8003DD40E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		257B84B12074E9E4003DD40E /* KNTransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionCollectionViewCell.swift; sourceTree = "<group>"; };
+		257B84B22074E9E4003DD40E /* KNTransactionCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionCollectionViewCell.xib; sourceTree = "<group>"; };
 		25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListTableViewCell.swift; sourceTree = "<group>"; };
@@ -1336,6 +1340,15 @@
 			path = ExchangeRateCollectionViewCell;
 			sourceTree = "<group>";
 		};
+		257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				257B84B12074E9E4003DD40E /* KNTransactionCollectionViewCell.swift */,
+				257B84B22074E9E4003DD40E /* KNTransactionCollectionViewCell.xib */,
+			);
+			path = TransactionCollectionViewCell;
+			sourceTree = "<group>";
+		};
 		25AC2489205FCA1E00989EBA /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1595,6 +1608,7 @@
 		25CE6F8C2073E03800A3A2F9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
 				25CE6F8F2073E0BC00A3A2F9 /* KNHistoryViewController.swift */,
 				25CE6F902073E0BC00A3A2F9 /* KNHistoryViewController.xib */,
 			);
@@ -3206,6 +3220,7 @@
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
+				257B84B42074E9E4003DD40E /* KNTransactionCollectionViewCell.xib in Resources */,
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
 				25CE6F7C20737B5E00A3A2F9 /* KNWalletViewController.xib in Resources */,
 				257A3785205B9D9100E86794 /* KNSelectTokenViewController.xib in Resources */,
@@ -3620,6 +3635,7 @@
 				25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				771AA962200D5EC700D25403 /* PassphraseViewModel.swift in Sources */,
+				257B84B32074E9E4003DD40E /* KNTransactionCollectionViewCell.swift in Sources */,
 				25CE6F7B20737B5E00A3A2F9 /* KNWalletViewController.swift in Sources */,
 				73C41C71201B46AD00243C6C /* LockEnterPasscodeViewModel.swift in Sources */,
 				2959960C1FAB03EC00DB66A8 /* CoinbaseBuyWidget.swift in Sources */,
