@@ -25,8 +25,8 @@ class KNHistoryTransaction: Object {
     self.id = transaction.id
     self.blockNumber = transaction.blockNumber
     self.date = transaction.date
-    self.from = transaction.from
-    if self.from != wallet.address.description {
+    self.from = transaction.from.lowercased()
+    if self.from != wallet.address.description.lowercased() {
       // receive tokens
       // TODO: Check which token received
       self.to = ""
@@ -35,19 +35,19 @@ class KNHistoryTransaction: Object {
       self.value = transaction.value
     } else {
       // transfer or exchange
-      if let netAddress = KNEnvironment.default.knCustomRPC?.networkAddress, netAddress == transaction.to {
+      if let netAddress = KNEnvironment.default.knCustomRPC?.networkAddress, netAddress == transaction.to.lowercased() {
         // An exchange, because the receiver is network address
         // either exchange from ETH to token or token to ETH, can check by using value
         //TODO: Get value, from/to tokens, rate
       } else {
         // a transfer, either transfer eth or a token
-        if let token = tokens.first(where: { $0.address == transaction.to }) {
+        if let token = tokens.first(where: { $0.address == transaction.to.lowercased() }) {
           // transfer token
           self.fromToken = token.address
           // TODO: Get receiver address + amount
         } else {
           self.fromToken = (tokens.first(where: { $0.isETH })?.address) ?? ""
-          self.to = transaction.to
+          self.to = transaction.to.lowercased()
           self.value = transaction.value
         }
       }

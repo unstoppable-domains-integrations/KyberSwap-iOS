@@ -166,6 +166,13 @@ class KNAppCoordinator: NSObject, Coordinator {
   @objc func transactionStateDidUpdate(_ sender: Notification) {
     if let txHash = sender.object as? String,
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
+
+      let historyTransaction = KNHistoryTransaction(transaction: transaction, wallet: self.session.wallet)
+      self.session.realm.beginWrite()
+      self.session.realm.add(historyTransaction, update: true)
+      try! self.session.realm.commitWrite()
+      KNNotificationUtil.postNotification(for: kTransactionListDidUpdateNotificationKey)
+
       if self.pendingTransactionStatusCoordinator == nil {
         self.pendingTransactionStatusCoordinator = KNPendingTransactionStatusCoordinator(
           navigationController: self.navigationController,

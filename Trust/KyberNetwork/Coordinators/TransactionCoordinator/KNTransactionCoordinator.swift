@@ -237,7 +237,7 @@ extension KNTransactionCoordinator {
   }
 
   func updateHistoryTransactions(from transactions: [Transaction]) {
-    let historyTransactions = transactions.map({return KNHistoryTransaction(transaction: $0, wallet: self.wallet)})
+    let historyTransactions = transactions.map({ return KNHistoryTransaction(transaction: $0, wallet: self.wallet )})
     let realm = self.storage.realm
     realm.beginWrite()
     realm.add(historyTransactions, update: true)
