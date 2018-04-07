@@ -3,7 +3,7 @@
 import UIKit
 
 protocol KNHistoryViewControllerDelegate: class {
-  func historyViewControllerDidSelectTransaction(_ transaction: Transaction)
+  func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction)
   func historyViewControllerDidClickExit()
 }
 
@@ -61,6 +61,8 @@ extension KNHistoryViewController {
 
 extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let transaction = self.transactions[indexPath.row]
+    self.delegate?.historyViewControllerDidSelectTransaction(transaction)
   }
 }
 

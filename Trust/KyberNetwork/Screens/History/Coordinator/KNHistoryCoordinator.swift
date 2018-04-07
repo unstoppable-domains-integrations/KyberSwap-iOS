@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import SafariServices
 
 class KNHistoryCoordinator: Coordinator {
 
@@ -66,7 +67,11 @@ class KNHistoryCoordinator: Coordinator {
 }
 
 extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
-  func historyViewControllerDidSelectTransaction(_ transaction: Transaction) {
+  func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction) {
+    if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(transaction.id)") {
+      let controller = SFSafariViewController(url: url)
+      self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
+    }
   }
 
   func historyViewControllerDidClickExit() {
