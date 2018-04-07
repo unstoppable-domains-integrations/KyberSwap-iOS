@@ -13,4 +13,9 @@ class KNBaseViewController: UIViewController {
     super.viewDidAppear(animated)
     NSLog("Did present: \(self.className)")
   }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.view.applyBaseGradientBackground()
+  }
 }

@@ -56,6 +56,29 @@ class KNHistoryTransaction: Object {
     self.state = transaction.state.rawValue
   }
 
+  // init from new transaction created in the app
+  convenience init(newTransaction: Transaction) {
+    self.init()
+    self.id = newTransaction.id
+    self.blockNumber = newTransaction.blockNumber
+    self.date = newTransaction.date
+    self.from = newTransaction.from
+    self.to = newTransaction.to
+    self.value = newTransaction.value
+    self.gasUsed = newTransaction.gasUsed
+    self.state = newTransaction.state.rawValue
+    if let localObject = newTransaction.localizedOperations.first {
+      if localObject.type == "exchange" {
+        self.fromToken = localObject.from
+        self.toToken = localObject.to
+        self.toValue = localObject.value
+      } else if localObject.type == "transfer" {
+        self.fromToken = localObject.from
+        self.value = localObject.value
+      }
+    }
+  }
+
   override static func primaryKey() -> String? {
     return "id"
   }
