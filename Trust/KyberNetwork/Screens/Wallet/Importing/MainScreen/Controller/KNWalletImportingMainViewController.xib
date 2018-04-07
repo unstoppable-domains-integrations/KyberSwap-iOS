@@ -11,6 +11,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="TimesNewRoman.ttf">
+            <string>TimesNewRomanPSMT</string>
+        </array>
         <array key="TimesNewRomanBold.ttf">
             <string>TimesNewRomanPS-BoldMT</string>
         </array>
@@ -18,6 +21,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletImportingMainViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="createWalletButton" destination="pB6-kz-pUE" id="LLe-s0-kze"/>
                 <outlet property="debugButton" destination="vfQ-cg-jAB" id="wSv-cF-86Q"/>
                 <outlet property="importWalletLabel" destination="1QS-yJ-BQB" id="OId-fb-hwY"/>
                 <outlet property="keystoreButton" destination="sni-8x-mek" id="Q1v-85-HWt"/>
@@ -82,6 +86,20 @@
                         <action selector="debugButtonPressed:" destination="-1" eventType="touchUpInside" id="XwC-ah-B2O"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pB6-kz-pUE">
+                    <rect key="frame" x="20" y="595" width="335" height="42"/>
+                    <color key="backgroundColor" red="0.17342154930000001" green="0.50537891499999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="0rI-Ue-ZHg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <state key="normal" title="CREATE WALLET">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="createWalletPressed:" destination="-1" eventType="touchUpInside" id="zWX-jL-zJl"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.086274509799999996" green="0.62745098040000002" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -98,9 +116,12 @@
                 <constraint firstItem="WqJ-Ot-jMw" firstAttribute="trailing" secondItem="Dwa-ie-hRF" secondAttribute="trailing" constant="-10" id="G9i-Gp-fyt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vfQ-cg-jAB" secondAttribute="trailing" constant="20" id="HMU-fV-UBM"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Dwa-ie-hRF" secondAttribute="trailing" constant="30" id="O0f-GE-OXJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pB6-kz-pUE" secondAttribute="trailing" constant="20" id="OCV-W2-dY2"/>
                 <constraint firstItem="Dwa-ie-hRF" firstAttribute="leading" secondItem="sni-8x-mek" secondAttribute="trailing" constant="30" id="RT6-Yq-zev"/>
                 <constraint firstItem="1QS-yJ-BQB" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="100" id="TI3-ID-WJc"/>
                 <constraint firstItem="WqJ-Ot-jMw" firstAttribute="centerX" secondItem="Dwa-ie-hRF" secondAttribute="centerX" id="afQ-Yn-52K"/>
+                <constraint firstItem="pB6-kz-pUE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="dgq-U9-Rbz"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="pB6-kz-pUE" secondAttribute="bottom" constant="30" id="fNo-Tf-A5e"/>
                 <constraint firstItem="tuI-Ik-m5W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="nX4-mL-k7z"/>
                 <constraint firstItem="Dwa-ie-hRF" firstAttribute="centerY" secondItem="sni-8x-mek" secondAttribute="centerY" id="ngB-EV-cdF"/>
                 <constraint firstItem="tuI-Ik-m5W" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="poO-xJ-2Rl"/>

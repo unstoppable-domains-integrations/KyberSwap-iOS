@@ -6,6 +6,7 @@ protocol KNWalletImportingMainViewControllerDelegate: class {
   func walletImportingMainScreenUserDidClickImportAddressByKeystore()
   func walletImportingMainScreenUserDidClickImportAddressByPrivateKey()
   func walletImportingMainScreenUserDidClickDebug()
+  func walletImportingMainScreenCreateWalletPressed()
 }
 
 class KNWalletImportingMainViewController: KNBaseViewController {
@@ -21,6 +22,9 @@ class KNWalletImportingMainViewController: KNBaseViewController {
   @IBOutlet weak var privateKeyLabel: UILabel!
 
   @IBOutlet weak var debugButton: UIButton!
+
+  @IBOutlet weak var createWalletButton: UIButton!
+
   init(delegate: KNWalletImportingMainViewControllerDelegate?) {
     self.delegate = delegate
     super.init(nibName: KNWalletImportingMainViewController.className, bundle: nil)
@@ -46,6 +50,8 @@ class KNWalletImportingMainViewController: KNBaseViewController {
     self.privateKeyButton.rounded(color: .clear, width: 0, radius: 10.0)
     self.privateKeyLabel.text = "Private Key".toBeLocalised()
 
+    self.createWalletButton.setTitle("Create Wallet".uppercased().toBeLocalised(), for: .normal)
+    self.createWalletButton.rounded(color: .clear, width: 0, radius: 5.0)
     //self.debugButton.isHidden = !isDebug
   }
 
@@ -59,5 +65,9 @@ class KNWalletImportingMainViewController: KNBaseViewController {
 
   @IBAction func debugButtonPressed(_ sender: Any) {
     self.delegate?.walletImportingMainScreenUserDidClickDebug()
+  }
+
+  @IBAction func createWalletPressed(_ sender: Any) {
+    self.delegate?.walletImportingMainScreenCreateWalletPressed()
   }
 }

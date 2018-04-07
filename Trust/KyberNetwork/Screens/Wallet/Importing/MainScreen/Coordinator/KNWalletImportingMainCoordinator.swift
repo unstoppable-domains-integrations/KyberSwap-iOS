@@ -18,6 +18,12 @@ class KNWalletImportingMainCoordinator: Coordinator {
     return KNWalletImportingMainViewController(delegate: self)
   }()
 
+  lazy var createPasswordController: KNCreatePasswordViewController = {
+    let controller = KNCreatePasswordViewController(delegate: self)
+    controller.modalPresentationStyle = .overFullScreen
+    return controller
+  }()
+
   lazy var importingKeystoreCoordinator: KNWalletImportingKeystoreCoordinator = {
     let coordinator = KNWalletImportingKeystoreCoordinator(
       navigationController: self.navigationController,
@@ -60,6 +66,10 @@ extension KNWalletImportingMainCoordinator: KNWalletImportingMainViewControllerD
     self.importingPrivateKeyCoordinator.start()
   }
 
+  func walletImportingMainScreenCreateWalletPressed() {
+    self.navigationController.topViewController?.present(self.createPasswordController, animated: true, completion: nil)
+  }
+
   // MARK: DEBUG only
   func walletImportingMainScreenUserDidClickDebug() {
     let debugVC = KNDebugMenuViewController()
@@ -81,6 +91,22 @@ extension KNWalletImportingMainCoordinator: KNWalletImportingPrivateKeyCoordinat
     self.importingPrivateKeyCoordinator.stop {
       self.removeCoordinator(self.importingPrivateKeyCoordinator)
       self.delegate?.walletImportingMainDidImport(wallet: wallet)
+    }
+  }
+}
+
+extension KNWalletImportingMainCoordinator: KNCreatePasswordViewControllerDelegate {
+  func createPasswordUserDidFinish(_ password: String) {
+    self.navigationController.topViewController?.displayLoading(text: "Creating Wallet...", animated: true)
+    self.keystore.createAccount(with: password) { [weak self] result in
+      self?.navigationController.topViewController?.hideLoading()
+      switch result {
+      case .success(let account):
+        let wallet = Wallet(type: .real(account))
+        self?.delegate?.walletImportingMainDidImport(wallet: wallet)
+      case .failure(let error):
+        self?.navigationController.topViewController?.displayError(error: error)
+      }
     }
   }
 }
