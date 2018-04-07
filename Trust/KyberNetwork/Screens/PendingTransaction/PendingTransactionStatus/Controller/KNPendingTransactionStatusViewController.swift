@@ -40,7 +40,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
 
   @IBOutlet var bigPaddingConstraints: [NSLayoutConstraint]!
   @IBOutlet var smallPaddingConstraints: [NSLayoutConstraint]!
-  
+
   init(delegate: KNPendingTransactionStatusViewControllerDelegate?, transaction: Transaction) {
     self.delegate = delegate
     self.transaction = transaction

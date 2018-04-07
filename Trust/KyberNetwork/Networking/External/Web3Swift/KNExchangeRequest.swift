@@ -19,7 +19,7 @@ struct KNExchangeRequestEncode: Web3Request {
   }
 }
 
-struct KNExchangeEvenDataDecode: Web3Request {
+struct KNExchangeEventDataDecode: Web3Request {
   typealias Response = [String: String]
 
   let data: String

@@ -509,7 +509,7 @@ class KNExternalProvider {
   }
 
   func getExchangeTransactionDecode(_ data: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
-    let request = KNExchangeEvenDataDecode(data: data)
+    let request = KNExchangeEventDataDecode(data: data)
     self.web3Swift.request(request: request) { result in
       switch result {
       case .success(let json):
