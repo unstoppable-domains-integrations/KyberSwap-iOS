@@ -135,7 +135,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
     self.walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
     self.historyCoordinator.navigationController.tabBarItem = UITabBarItem(title: "History".toBeLocalised(), image: nil, tag: 3)
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings", image: nil, selectedImage: 4)
+    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 4)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)

@@ -57,6 +57,14 @@ class KNWalletImportingPrivateKeyViewController: KNBaseViewController {
     self.present(qrcodeReader, animated: true, completion: nil)
   }
 
+  @IBAction func importFilebuttonPressed(_ sender: Any) {
+    let types = ["public.text", "public.content", "public.item", "public.data"]
+    let controller = TrustDocumentPickerViewController(documentTypes: types, in: .import)
+    controller.delegate = self
+    controller.modalPresentationStyle = .formSheet
+    present(controller, animated: true, completion: nil)
+  }
+
   @IBAction func importButtonPressed(_ sender: Any) {
     self.delegate?.walletImportingPrivateKeyDidImport(privateKey: self.privateKeyTextField.text ?? "")
   }
@@ -70,6 +78,16 @@ extension KNWalletImportingPrivateKeyViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.privateKeyTextField.text = result
+    }
+  }
+}
+
+extension KNWalletImportingPrivateKeyViewController: UIDocumentPickerDelegate {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    if controller.documentPickerMode == UIDocumentPickerMode.import {
+      if let text = try? String(contentsOfFile: url.path) {
+        self.privateKeyTextField.text = text
+      }
     }
   }
 }

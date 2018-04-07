@@ -58,9 +58,7 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
 
   fileprivate func backupPrivateKey() {
     if case .real(let account) = self.session.wallet.type {
-      self.navigationController.topViewController?.displayLoading(text: "Preparing data...", animated: true)
       let result = self.session.keystore.exportPrivateKey(account: account)
-      self.navigationController.topViewController?.hideLoading()
       switch result {
       case .success(let data):
         self.exportDataString(data.hexString)

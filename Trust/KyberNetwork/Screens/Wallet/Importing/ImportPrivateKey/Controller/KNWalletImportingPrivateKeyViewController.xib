@@ -62,13 +62,6 @@
                         <action selector="importButtonPressed:" destination="-1" eventType="touchUpInside" id="F9g-IO-cdq"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="On9-p9-Ock">
-                    <rect key="frame" x="333" y="162" width="22" height="22"/>
-                    <state key="normal" image="qr_code_icon"/>
-                    <connections>
-                        <action selector="scanQRCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="obI-H9-iGD"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sak-Tl-Ogu">
                     <rect key="frame" x="20" y="30" width="35" height="30"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
@@ -79,18 +72,34 @@
                         <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="jy5-h9-uFO"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8B-SN-h6g">
+                    <rect key="frame" x="332" y="161" width="23" height="23"/>
+                    <state key="normal" image="keystore_import"/>
+                    <connections>
+                        <action selector="importFilebuttonPressed:" destination="-1" eventType="touchUpInside" id="Hxq-ET-vle"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="On9-p9-Ock">
+                    <rect key="frame" x="300" y="162" width="22" height="22"/>
+                    <state key="normal" image="qr_code_icon"/>
+                    <connections>
+                        <action selector="scanQRCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="obI-H9-iGD"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.086274509799999996" green="0.62745098040000002" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Z9S-R2-gJL" firstAttribute="top" secondItem="On9-p9-Ock" secondAttribute="bottom" constant="10" id="B55-VE-OL0"/>
                 <constraint firstItem="Ilm-Wm-1Id" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="BEv-z7-3Ah"/>
+                <constraint firstItem="w8B-SN-h6g" firstAttribute="trailing" secondItem="Z9S-R2-gJL" secondAttribute="trailing" id="CJR-qT-BK8"/>
                 <constraint firstItem="Z9S-R2-gJL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Eta-cu-wx7"/>
+                <constraint firstItem="w8B-SN-h6g" firstAttribute="bottom" secondItem="On9-p9-Ock" secondAttribute="bottom" id="O2u-VD-Gci"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ilm-Wm-1Id" secondAttribute="trailing" constant="20" id="X7x-dp-SqE"/>
                 <constraint firstItem="Sak-Tl-Ogu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="bvx-Xn-rcy"/>
-                <constraint firstItem="On9-p9-Ock" firstAttribute="trailing" secondItem="Z9S-R2-gJL" secondAttribute="trailing" id="f99-i6-PRC"/>
                 <constraint firstItem="Sak-Tl-Ogu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="htD-HC-1v3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Ilm-Wm-1Id" secondAttribute="bottom" constant="20" id="q69-Ec-lbt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z9S-R2-gJL" secondAttribute="trailing" constant="20" id="rYJ-mW-7bt"/>
+                <constraint firstItem="w8B-SN-h6g" firstAttribute="leading" secondItem="On9-p9-Ock" secondAttribute="trailing" constant="10" id="uUg-Q3-s6a"/>
                 <constraint firstItem="Z9S-R2-gJL" firstAttribute="top" secondItem="Koj-hg-V7D" secondAttribute="bottom" constant="40" id="vOS-kr-ONR"/>
                 <constraint firstItem="Koj-hg-V7D" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="100" id="yxw-Pw-34G"/>
                 <constraint firstItem="Koj-hg-V7D" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="zbh-LY-0MU"/>
@@ -99,6 +108,7 @@
         </view>
     </objects>
     <resources>
+        <image name="keystore_import" width="23" height="23"/>
         <image name="qr_code_icon" width="22" height="22"/>
     </resources>
 </document>
