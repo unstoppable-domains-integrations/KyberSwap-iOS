@@ -42,7 +42,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9oC-Vj-wZz">
-                    <rect key="frame" x="106" y="152" width="163" height="29"/>
+                    <rect key="frame" x="20" y="152" width="163" height="29"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Staging"/>
@@ -63,7 +63,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MOS-Kz-cCU">
-                    <rect key="frame" x="57.5" y="292" width="259" height="29"/>
+                    <rect key="frame" x="20" y="292" width="259" height="29"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Main"/>
@@ -76,25 +76,25 @@
                         <action selector="environmentSegmentedControl:" destination="-1" eventType="valueChanged" id="1CV-bE-4NY"/>
                     </connections>
                 </segmentedControl>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://staging-cache.kyber.network" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVm-EZ-tyy">
-                    <rect key="frame" x="88" y="196" width="200" height="16"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://staging-cache.kyber.network" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVm-EZ-tyy">
+                    <rect key="frame" x="155" y="196" width="200" height="16"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://kovan.infura.io/DtzEYY0Km2BA3YwyJcBG" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fno-hk-Yyx">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://kovan.infura.io/DtzEYY0Km2BA3YwyJcBG" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fno-hk-Yyx">
                     <rect key="frame" x="20" y="335" width="335" height="16"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Address: 0x643211b405c9a14139142e1104250bbcd94bd0ef" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMd-z4-XBO">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Address: 0x643211b405c9a14139142e1104250bbcd94bd0ef" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMd-z4-XBO">
                     <rect key="frame" x="20" y="366" width="335" height="31.5"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve Address: 0x2d1ceabd5a1cd16581ad199031601615a434a2cd" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWg-AM-auF">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve Address: 0x2d1ceabd5a1cd16581ad199031601615a434a2cd" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWg-AM-auF">
                     <rect key="frame" x="20" y="413.5" width="335" height="31.5"/>
                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -126,14 +126,15 @@
                 <constraint firstItem="GVp-GK-Mz6" firstAttribute="top" secondItem="9oC-Vj-wZz" secondAttribute="bottom" constant="60" id="05c-gX-L7v"/>
                 <constraint firstItem="FyX-vc-cEz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="4E9-oj-5gd"/>
                 <constraint firstItem="FyX-vc-cEz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="5ul-Uj-qNw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oVm-EZ-tyy" secondAttribute="trailing" constant="20" id="6HC-kb-cyq"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="GVp-GK-Mz6" secondAttribute="trailing" id="6Ue-Dx-Ef0"/>
                 <constraint firstItem="9oC-Vj-wZz" firstAttribute="top" secondItem="OPb-po-axj" secondAttribute="bottom" constant="20" id="8f6-Kx-XKQ"/>
                 <constraint firstItem="OPb-po-axj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="80" id="92X-FC-kks"/>
-                <constraint firstItem="Fno-hk-Yyx" firstAttribute="centerX" secondItem="MOS-Kz-cCU" secondAttribute="centerX" id="9ZN-fh-Sz7"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OPb-po-axj" secondAttribute="trailing" id="A1j-3C-0u3"/>
+                <constraint firstItem="9oC-Vj-wZz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="C2M-1z-6wQ"/>
                 <constraint firstItem="LMd-z4-XBO" firstAttribute="top" secondItem="Fno-hk-Yyx" secondAttribute="bottom" constant="15" id="E6h-CN-T4k"/>
                 <constraint firstItem="oWg-AM-auF" firstAttribute="trailing" secondItem="LMd-z4-XBO" secondAttribute="trailing" id="IV4-ol-0gd"/>
-                <constraint firstItem="9oC-Vj-wZz" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="LTI-M3-WDe"/>
+                <constraint firstItem="MOS-Kz-cCU" firstAttribute="leading" secondItem="9oC-Vj-wZz" secondAttribute="leading" id="Kvl-MO-TCy"/>
                 <constraint firstItem="GVp-GK-Mz6" firstAttribute="leading" secondItem="OPb-po-axj" secondAttribute="leading" id="Nk0-ii-gKA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="zdn-Iy-L2C" secondAttribute="trailing" constant="16" id="S4p-bc-jZD"/>
                 <constraint firstItem="OPb-po-axj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Stb-pL-s4Z"/>
@@ -141,10 +142,8 @@
                 <constraint firstItem="zdn-Iy-L2C" firstAttribute="top" secondItem="FyX-vc-cEz" secondAttribute="top" id="Xe1-kg-uFB"/>
                 <constraint firstItem="LMd-z4-XBO" firstAttribute="leading" secondItem="Fno-hk-Yyx" secondAttribute="leading" id="awX-v7-FiE"/>
                 <constraint firstItem="oWg-AM-auF" firstAttribute="top" secondItem="LMd-z4-XBO" secondAttribute="bottom" constant="16" id="b4t-IY-Dfa"/>
-                <constraint firstItem="MOS-Kz-cCU" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cw1-Sg-Vhc"/>
                 <constraint firstItem="LMd-z4-XBO" firstAttribute="trailing" secondItem="Fno-hk-Yyx" secondAttribute="trailing" id="emq-eg-hw5"/>
                 <constraint firstItem="Fno-hk-Yyx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="iis-3e-UV1"/>
-                <constraint firstItem="oVm-EZ-tyy" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="lgw-jW-jNN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Fno-hk-Yyx" secondAttribute="trailing" constant="20" id="pcB-bi-0kY"/>
                 <constraint firstItem="oVm-EZ-tyy" firstAttribute="top" secondItem="9oC-Vj-wZz" secondAttribute="bottom" constant="16" id="pjF-qa-nAc"/>
                 <constraint firstItem="MOS-Kz-cCU" firstAttribute="top" secondItem="GVp-GK-Mz6" secondAttribute="bottom" constant="20" id="udy-BY-8ba"/>
