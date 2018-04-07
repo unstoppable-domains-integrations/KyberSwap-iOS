@@ -46,7 +46,7 @@ class KNWalletImportingMainViewController: KNBaseViewController {
     self.privateKeyButton.rounded(color: .clear, width: 0, radius: 10.0)
     self.privateKeyLabel.text = "Private Key".toBeLocalised()
 
-    self.debugButton.isHidden = !isDebug
+    //self.debugButton.isHidden = !isDebug
   }
 
   @IBAction func keystoreButtonPressed(_ sender: Any) {
