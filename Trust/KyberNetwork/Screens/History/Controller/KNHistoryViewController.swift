@@ -12,7 +12,8 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
 
-  fileprivate var transactions: [KNHistoryTransaction] = []
+  fileprivate var sectionsData: [String: [KNHistoryTransaction]] = [:]
+  fileprivate var sectionHeaders: [String] = []
   @IBOutlet weak var transactionCollectionView: UICollectionView!
 
   init(delegate: KNHistoryViewControllerDelegate?) {
@@ -43,6 +44,8 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate func setupCollectionView() {
     let nib = UINib(nibName: KNTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNTransactionCollectionViewCell.cellID)
+    let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
+    self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
   }
@@ -53,16 +56,17 @@ class KNHistoryViewController: KNBaseViewController {
 }
 
 extension KNHistoryViewController {
-  func coordinatorUpdateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
-    self.transactions = transactions
+  func coordinatorUpdateHistoryTransactions(_ data: [String: [KNHistoryTransaction]], dates: [String]) {
+    self.sectionsData = data
+    self.sectionHeaders = dates
     self.transactionCollectionView.reloadData()
   }
 }
 
 extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let transaction = self.transactions[indexPath.row]
-    self.delegate?.historyViewControllerDidSelectTransaction(transaction)
+    guard let transactions = self.sectionsData[self.sectionHeaders[indexPath.section]] else { return }
+    self.delegate?.historyViewControllerDidSelectTransaction(transactions[indexPath.row])
   }
 }
 
@@ -81,21 +85,41 @@ extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
       height: KNTransactionCollectionViewCell.cellHeight
     )
   }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    return CGSize(
+      width: collectionView.frame.width,
+      height: 32
+    )
+  }
 }
 
 extension KNHistoryViewController: UICollectionViewDataSource {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
+    return self.sectionHeaders.count
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.transactions.count
+    return self.sectionsData[self.sectionHeaders[section]]?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNTransactionCollectionViewCell.cellID, for: indexPath) as! KNTransactionCollectionViewCell
-    let tran = self.transactions[indexPath.row]
+    guard let trans = self.sectionsData[self.sectionHeaders[indexPath.section]] else { return cell }
+    let tran = trans[indexPath.row]
     cell.updateCell(with: tran, tokens: self.tokens)
     return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    switch kind {
+    case UICollectionElementKindSectionHeader:
+      let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: KNTransactionCollectionReusableView.viewID, for: indexPath) as! KNTransactionCollectionReusableView
+      headerView.updateView(with: self.sectionHeaders[indexPath.section])
+      return headerView
+    default:
+      assertionFailure("Unhandling")
+      return UICollectionReusableView()
+    }
   }
 }

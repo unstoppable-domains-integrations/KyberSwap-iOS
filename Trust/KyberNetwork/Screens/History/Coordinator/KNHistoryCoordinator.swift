@@ -5,6 +5,11 @@ import SafariServices
 
 class KNHistoryCoordinator: Coordinator {
 
+  fileprivate lazy var dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy MMM dd"
+    return formatter
+  }()
   let navigationController: UINavigationController
   let session: KNSession
 
@@ -58,7 +63,25 @@ class KNHistoryCoordinator: Coordinator {
 
   @objc func historyTransactionsDidUpdate(_ sender: Any?) {
     let transactions: [KNHistoryTransaction] = self.session.storage.historyTransactions
-    self.rootViewController.coordinatorUpdateHistoryTransactions(transactions)
+
+    let dates: [String] = {
+      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+      var uniqueDates = [String]()
+      dates.forEach { if !uniqueDates.contains($0) { uniqueDates.append($0) }}
+      return uniqueDates
+    }()
+
+    let sectionData: [String: [KNHistoryTransaction]] = {
+      var data: [String: [KNHistoryTransaction]] = [:]
+      transactions.forEach { tx in
+        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+        trans.append(tx)
+        data[self.dateFormatter.string(from: tx.date)] = trans
+      }
+      return data
+    }()
+
+    self.rootViewController.coordinatorUpdateHistoryTransactions(sectionData, dates: dates)
   }
 }
 
