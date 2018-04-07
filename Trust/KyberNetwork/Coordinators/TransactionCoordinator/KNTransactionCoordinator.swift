@@ -225,7 +225,6 @@ extension KNTransactionCoordinator {
           NSLog("Successfully fetched \(transactions.count) transactions")
           completion?(.success(transactions))
         } catch let error {
-          NSLog("Response status code: \(response.statusCode)")
           NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
           completion?(.failure(AnyError(error)))
         }
@@ -237,14 +236,10 @@ extension KNTransactionCoordinator {
   }
 
   func updateHistoryTransactions(from transactions: [Transaction]) {
-    //swiftlint:disable opening_brace
     let historyTransactions = transactions.map({
       return KNHistoryTransaction(transaction: $0, wallet: self.wallet)
     })
-    let realm = self.storage.realm
-    realm.beginWrite()
-    realm.add(historyTransactions, update: true)
-    try! realm.commitWrite()
+    self.storage.addHistoryTransactions(historyTransactions)
     KNNotificationUtil.postNotification(
       for: kTransactionListDidUpdateNotificationKey,
       object: transactions,
@@ -403,5 +398,19 @@ extension RawTransaction {
       error: isError == "0" ? nil : isError,
       operations: nil
     )
+  }
+}
+
+extension TransactionsStorage {
+  func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    self.realm.beginWrite()
+    self.realm.add(transactions, update: true)
+    try! realm.commitWrite()
+  }
+
+  var historyTransactions: [KNHistoryTransaction] {
+    return self.realm.objects(KNHistoryTransaction.self)
+      .sorted(byKeyPath: "date", ascending: false)
+      .filter { !$0.id.isEmpty }
   }
 }

@@ -168,9 +168,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
 
       let historyTransaction = KNHistoryTransaction(transaction: transaction, wallet: self.session.wallet)
-      self.session.realm.beginWrite()
-      self.session.realm.add(historyTransaction, update: true)
-      try! self.session.realm.commitWrite()
+      self.session.storage.addHistoryTransactions([historyTransaction])
       KNNotificationUtil.postNotification(for: kTransactionListDidUpdateNotificationKey)
 
       if self.pendingTransactionStatusCoordinator == nil {

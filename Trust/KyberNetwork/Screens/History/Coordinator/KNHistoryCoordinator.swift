@@ -57,11 +57,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   @objc func historyTransactionsDidUpdate(_ sender: Any?) {
-    let transactions: [KNHistoryTransaction] = {
-      return self.session.realm.objects(KNHistoryTransaction.self)
-        .sorted(byKeyPath: "date", ascending: false)
-        .filter { !$0.id.isEmpty }
-    }()
+    let transactions: [KNHistoryTransaction] = self.session.storage.historyTransactions
     self.rootViewController.coordinatorUpdateHistoryTransactions(transactions)
   }
 }
