@@ -63,6 +63,9 @@
 		257C9FC52078A9F800EE0128 /* KNTransactionCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FC32078A9F800EE0128 /* KNTransactionCollectionReusableView.xib */; };
 		257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FC72078F6A500EE0128 /* KNCreatePasswordViewController.swift */; };
 		257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */; };
+		257C9FCF2078FB3C00EE0128 /* KNSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */; };
+		257C9FD02078FB3C00EE0128 /* KNSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */; };
+		257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */; };
 		25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */; };
 		25AC2482205FBED900989EBA /* KNPendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */; };
 		25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */; };
@@ -547,6 +550,9 @@
 		257C9FC32078A9F800EE0128 /* KNTransactionCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionCollectionReusableView.xib; sourceTree = "<group>"; };
 		257C9FC72078F6A500EE0128 /* KNCreatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNCreatePasswordViewController.swift; sourceTree = "<group>"; };
 		257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNCreatePasswordViewController.xib; sourceTree = "<group>"; };
+		257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsViewController.swift; sourceTree = "<group>"; };
+		257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSettingsViewController.xib; sourceTree = "<group>"; };
+		257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsCoordinator.swift; sourceTree = "<group>"; };
 		25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListTableViewCell.swift; sourceTree = "<group>"; };
@@ -1128,12 +1134,13 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				257C9FC62078F68E00EE0128 /* CreatePassword */,
-				257B84A22074C29B003DD40E /* DebugMenu */,
+				257C9FCB2078FB2000EE0128 /* Settings */,
 				25CE6F8A2073E02500A3A2F9 /* History */,
 				257740D02057A97F003323EB /* Wallet */,
 				256051812060F22300D5588E /* Transfer */,
 				25CC0A9A2057E2680009D0D5 /* Exchange */,
+				257C9FC62078F68E00EE0128 /* CreatePassword */,
+				257B84A22074C29B003DD40E /* DebugMenu */,
 				257A377F205B9D6400E86794 /* SelectToken */,
 				25DBB57F205FB9080020F19D /* PendingTransaction */,
 				257A378A205BBF5700E86794 /* ConfirmTransaction */,
@@ -1380,6 +1387,32 @@
 				257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */,
 			);
 			path = CreatePassword;
+			sourceTree = "<group>";
+		};
+		257C9FCB2078FB2000EE0128 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				257C9FD12078FB4800EE0128 /* Coordinator */,
+				257C9FCC2078FB2700EE0128 /* Controller */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		257C9FCC2078FB2700EE0128 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */,
+				257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		257C9FD12078FB4800EE0128 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		25AC2489205FCA1E00989EBA /* Coordinator */ = {
@@ -3263,6 +3296,7 @@
 				257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */,
 				73CBC75F2020CBF800374666 /* AccountViewCell.xib in Resources */,
 				257740D92057ABB4003323EB /* KNWalletImportingMainViewController.xib in Resources */,
+				257C9FD02078FB3C00EE0128 /* KNSettingsViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				257B84AD2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.xib in Resources */,
@@ -3889,9 +3923,11 @@
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
 				CCCD74FD1FD2D38D004A087D /* CheckDeviceCoordinator.swift in Sources */,
 				25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */,
+				257C9FCF2078FB3C00EE0128 /* KNSettingsViewController.swift in Sources */,
 				73BAA8D3201B2FF800D6DD75 /* LockEnterPasscodeViewController.swift in Sources */,
 				29E2E33E1F7A2423000CF94A /* TransactionHeaderView.swift in Sources */,
 				291F52BF1F6C874E00B369AB /* AccountsViewController.swift in Sources */,
+				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
