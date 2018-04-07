@@ -90,8 +90,9 @@ class TransactionsStorage {
     }
 
     func deleteAll() {
-        try! realm.write {
-            realm.delete(realm.objects(Transaction.self))
-        }
+      try! realm.write {
+        realm.delete(realm.objects(Transaction.self))
+      }
+      self.deleteAllHistoryTransactions()
     }
 }

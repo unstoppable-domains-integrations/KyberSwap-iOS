@@ -401,11 +401,24 @@ extension RawTransaction {
   }
 }
 
+// MARK: Transaction Storage Extension
 extension TransactionsStorage {
   func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
     self.realm.beginWrite()
     self.realm.add(transactions, update: true)
     try! realm.commitWrite()
+  }
+
+  func deleteHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    try! self.realm.write {
+      self.realm.delete(transactions)
+    }
+  }
+
+  func deleteAllHistoryTransactions() {
+    try! self.realm.write {
+      self.realm.delete(self.realm.objects(KNHistoryTransaction.self))
+    }
   }
 
   var historyTransactions: [KNHistoryTransaction] {

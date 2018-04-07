@@ -353,6 +353,7 @@ class KNExternalProvider {
       case .success(let value):
         let gasLimit: BigInt = {
           var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+          // Used  120% of estimated gas for safer
           limit += (limit * 20 / 100)
           return min(limit, defaultGasLimit)
         }()
