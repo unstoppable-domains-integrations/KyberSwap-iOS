@@ -66,6 +66,8 @@
 		257C9FCF2078FB3C00EE0128 /* KNSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */; };
 		257C9FD02078FB3C00EE0128 /* KNSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */; };
 		257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */; };
+		258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EB2081F22C00BD4068 /* KNReachability.swift */; };
+		258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */; };
 		25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */; };
 		25AC2482205FBED900989EBA /* KNPendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */; };
 		25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */; };
@@ -553,6 +555,8 @@
 		257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsViewController.swift; sourceTree = "<group>"; };
 		257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSettingsViewController.xib; sourceTree = "<group>"; };
 		257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsCoordinator.swift; sourceTree = "<group>"; };
+		258C47EB2081F22C00BD4068 /* KNReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNReachability.swift; sourceTree = "<group>"; };
+		258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Kyber.swift"; sourceTree = "<group>"; };
 		25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		25AC2480205FBED900989EBA /* KNPendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		25AC2483205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListTableViewCell.swift; sourceTree = "<group>"; };
@@ -1101,6 +1105,7 @@
 				257A377D205B7BFA00E86794 /* UINavigationController+Kyber.swift */,
 				25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */,
 				257C9FBF2078A5E400EE0128 /* Array+Kyber.swift */,
+				258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1415,6 +1420,14 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		258C47EA2081F20600BD4068 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				258C47EB2081F22C00BD4068 /* KNReachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		25AC2489205FCA1E00989EBA /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1486,6 +1499,7 @@
 		25CC0A922057DD2A0009D0D5 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				258C47EA2081F20600BD4068 /* Reachability */,
 				25CC0AAC2059186E0009D0D5 /* Internal */,
 				25CC0A942057DD3D0009D0D5 /* External */,
 			);
@@ -3734,6 +3748,7 @@
 				77B3BF3C201908ED00EEC15A /* ConfirmCoordinator.swift in Sources */,
 				298542F91FBE9A0100CB5081 /* CryptoAddressValidator.swift in Sources */,
 				291F52C11F6C8A1F00B369AB /* AccountsViewModel.swift in Sources */,
+				258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */,
 				7721A6CC202EFBC5004DB16C /* AddCustomNetworkViewController.swift in Sources */,
 				77872D322027AA4A0032D687 /* SliderTextFieldRow.swift in Sources */,
 				298542E31FBA722F00CB5081 /* ContainerView.swift in Sources */,
@@ -3850,6 +3865,7 @@
 				293112121FC4F48400966EEA /* ServiceProvider.swift in Sources */,
 				73C5CF45201A7CAB00C74316 /* LockPasscodeViewController.swift in Sources */,
 				2912CD2F1F6A83A100C6CBE3 /* ImportWalletViewController.swift in Sources */,
+				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				A2B7ECAE2039001300828E7D /* ExportPrivateKeyViewController.swift in Sources */,
 				7721A6D0202EFD07004DB16C /* AddCustomNetworkCoordinator.swift in Sources */,
 				257A37A9205DA06400E86794 /* KNPendingTransactionStatusCoordinator.swift in Sources */,
