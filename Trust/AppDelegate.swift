@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             print("EtherKeystore init issue.")
         }
         branchCoordinator.didFinishLaunchingWithOptions(launchOptions: launchOptions)
+        KNReachability.shared.startNetworkReachabilityObserver()
         return true
     }
 
@@ -34,10 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationDidBecomeActive(_ application: UIApplication) {
         Lokalise.shared.checkForUpdates { _, _ in }
         coordinator.appDidBecomeActive()
+        KNReachability.shared.startNetworkReachabilityObserver()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         coordinator.appWillEnterBackground()
+      KNReachability.shared.stopNetworkReachabilityObserver()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

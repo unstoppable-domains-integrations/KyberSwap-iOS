@@ -12,8 +12,11 @@ class KNReachability: NSObject {
   let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
 
   fileprivate var previousStatus: NetworkReachabilityManager.NetworkReachabilityStatus = .unknown
+  fileprivate var isListening: Bool = false
 
   func startNetworkReachabilityObserver() {
+    if self.isListening { return }
+    self.isListening = true
     self.reachabilityManager?.listener = { status in
       switch status {
       case .reachable(let type):
@@ -42,5 +45,11 @@ class KNReachability: NSObject {
       self.previousStatus = status
     }
     self.reachabilityManager?.startListening()
+  }
+
+  func stopNetworkReachabilityObserver() {
+    if !self.isListening { return }
+    self.isListening = false
+    self.reachabilityManager?.stopListening()
   }
 }
