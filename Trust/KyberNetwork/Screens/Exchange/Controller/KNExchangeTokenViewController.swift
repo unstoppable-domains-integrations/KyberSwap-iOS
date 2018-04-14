@@ -347,14 +347,17 @@ extension KNExchangeTokenViewController {
       let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal),
       let balance = self.otherTokenBalances[self.selectedFromToken.address],
       amount <= balance.value, !amount.isZero else {
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to exchange")
       completion(.success(nil))
       return
     }
     guard let gasPrice = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) else {
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid gas price amount to exchange")
       completion(.success(nil))
       return
     }
     if self.advancedSwitch.isOn && (self.minRateTextField.text ?? "0").fullBigInt(decimals: self.selectedToToken.decimal) == nil {
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid min rate to exchange")
       completion(.success(nil))
       return
     }
@@ -467,11 +470,12 @@ extension KNExchangeTokenViewController {
       case .success(let exchangeTransaction):
         if let exchange = exchangeTransaction {
           self.delegate?.exchangeTokenDidClickExchange(exchangeTransaction: exchange)
-        } else {
-          self.showInvalidDataToMakeTransactionAlert()
-        }
+        }// else {
+          //self.showInvalidDataToMakeTransactionAlert()
+        //}
       case .failure(let error):
-        self.displayError(error: error)
+        //self.displayError(error: error)
+        self.showErrorTopBannerMessage(with: "Error", message: error.description)
       }
     }
   }

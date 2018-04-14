@@ -270,11 +270,12 @@ extension KNTransferTokenViewController {
       case .success(let trans):
         if let transaction = trans {
           self?.delegate?.transferTokenViewControllerDidClickTransfer(transaction: transaction)
-        } else {
-          self?.showInvalidDataToMakeTransactionAlert()
-        }
+        } //else {
+          //self?.showInvalidDataToMakeTransactionAlert()
+        //}
       case .failure(let error):
-        self?.displayError(error: error.error)
+        //self?.displayError(error: error.error)
+        self?.showErrorTopBannerMessage(with: "Error", message: error.description)
       }
     }
   }
@@ -319,16 +320,19 @@ extension KNTransferTokenViewController {
       let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimal),
       let balance = self.otherTokenBalances[self.selectedToken.address],
       amount <= balance.value, !amount.isZero else {
+        self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to transfer")
         completion(.success(nil))
         return
     }
 
     guard let address = Address(string: self.addressTextField.text ?? "") else {
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid address to transfer")
       completion(.success(nil))
       return
     }
 
     guard let gasPrice = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) else {
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid gas price to transfer")
       completion(.success(nil))
       return
     }
