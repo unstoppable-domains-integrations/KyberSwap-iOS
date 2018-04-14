@@ -42,6 +42,7 @@ PODS:
   - SipHash (1.2.0)
   - StatefulViewController (3.0)
   - SwiftLint (0.24.1)
+  - SwiftMessages (4.1.0)
   - TrezorCrypto (0.0.4)
   - TrustKeystore (0.2.1):
     - BigInt
@@ -73,6 +74,7 @@ DEPENDENCIES:
   - SeedStackViewController
   - StatefulViewController
   - SwiftLint
+  - SwiftMessages
   - TrustKeystore (~> 0.2.1)
   - TrustWeb3Provider (from `https://github.com/TrustWallet/trust-web3-provider`, branch `master`)
 
@@ -132,10 +134,11 @@ SPEC CHECKSUMS:
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
   SwiftLint: 2e4b89feed5909c42c3735bbd6745f4345c4b772
+  SwiftMessages: 1bacc783c8f10bdfdc57c14860cae8a1f1fa6591
   TrezorCrypto: 7f87a2296cf13872b21565c29fd9f7882dd00803
   TrustKeystore: b9fc8e0d72de3e8f9c97f46802172d6f14a004aa
   TrustWeb3Provider: ac0bdf19b4c6c4d6ec0f03ddb85b83e32bda3a9a
 
-PODFILE CHECKSUM: db648df84dbc7d6740c8047fc5f85de3e3ca9505
+PODFILE CHECKSUM: 15e7e8b3c9edcf1bf44145c938cd418df2a26fbc
 
 COCOAPODS: 1.4.0
