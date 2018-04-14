@@ -27,17 +27,20 @@ class KNReachability: NSObject {
         }
         let notiName = Notification.Name(rawValue: KNReachability.kNetworkReachableNotificationKey)
         NotificationCenter.default.post(name: notiName, object: type)
-        if self.previousStatus == .notReachable {
+        if self.previousStatus == .notReachable || self.previousStatus == .unknown {
           self.showSuccessTopBannerMessage(with: "Network Restore", message: "")
         }
       case .unknown:
         NSLog("Network reachability is unknown")
+        if self.previousStatus != .unknown {
+          self.showSuccessTopBannerMessage(with: "Check your internet connection", message: "")
+        }
         let notiName = Notification.Name(rawValue: KNReachability.kNetworkUnreachableNotificationKey)
         NotificationCenter.default.post(name: notiName, object: nil)
       case .notReachable:
         NSLog("Network is not reachable.")
         if self.previousStatus != .notReachable {
-          self.showWarningTopBannerMessage(with: "Network Error", message: "No internet connection")
+          self.showWarningTopBannerMessage(with: "No internet connection", message: "")
         }
         let notiName = Notification.Name(rawValue: KNReachability.kNetworkUnreachableNotificationKey)
         NotificationCenter.default.post(name: notiName, object: nil)
