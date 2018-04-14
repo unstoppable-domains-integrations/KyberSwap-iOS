@@ -22,8 +22,13 @@ extension NSObject {
       view.configureTheme(theme)
       view.configureDropShadow()
       view.button?.isHidden = true
-      let iconText = ["🤔", "😳", "🙄", "😶"].sm_random()!
-      view.configureContent(title: title, body: message, iconText: iconText)
+      if theme == .success {
+        let iconText = ["😁", "😄", "😆", "😉", "😎", "😍"].sm_random()!
+        view.configureContent(title: title, body: message, iconText: iconText)
+      } else {
+        let iconText = ["🤔", "😳", "🙄", "😶", "😰", "😢", "😥"].sm_random()!
+        view.configureContent(title: title, body: message, iconText: iconText)
+      }
       return view
     }()
     let config: SwiftMessages.Config = {
