@@ -14,11 +14,7 @@
              "type": "none_prune"
              },
              {
-             "endPoint" : "https://mew.giveth.io/",
-             "type": "prune"
-             },
-             {
-             "endPoint" : "https://node.kyber.network",
+             "endPoint" : "https://semi-node.kyber.network",
              "type": "prune"
              }
              ],
@@ -29,7 +25,7 @@
     "ETH": {
       "name": "Ethereum",
       "symbol": "ETH",
-      "icon": "eth.png",
+      "icon": "eth.svg",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
       "usd_id":"ethereum"
@@ -37,15 +33,23 @@
     "KNC": {
       "name": "KyberNetwork",
       "symbol": "KNC",
-      "icon": "knc.png",
+      "icon": "knc.svg",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimal": 18,
       "usd_id":"kyber-network"
     },
+    "DAI": {
+      "name" : "DAI",
+      "symbol": "DAI",
+      "icon": "dai.svg",
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+      "decimal": 18,
+      "usd_id":"dai"
+    },
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "icon": "omg.png",
+      "icon": "omg.svg",
       "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
       "decimal": 18,
       "usd_id":"omisego"
@@ -53,7 +57,7 @@
     "EOS": {
       "name": "Eos",
       "symbol": "EOS",
-      "icon": "eos.png",
+      "icon": "eos.svg",
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
       "decimal": 18,
       "usd_id":"eos"
@@ -62,7 +66,7 @@
       "name":"Status",
       "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
       "symbol": "SNT",
-      "icon": "snt.png",
+      "icon": "snt.svg",
       "decimal": 18,
       "usd_id":"status"
     },
@@ -70,7 +74,7 @@
       "name":"Aelf",
       "address": "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",
       "symbol": "ELF",
-      "icon": "aelf.png",
+      "icon": "aelf.svg",
       "decimal": 18,
       "usd_id":"aelf"
     },
@@ -78,15 +82,15 @@
       "name":"Power Ledger",
       "address": "0x595832f8fc6bf59c85c527fec3740a1b7a361269",
       "symbol": "POWR",
-      "icon": "pwr.png",
+      "icon": "pwr.svg",
       "decimal": 6,
       "usd_id":"power-ledger"
     },
     "MANA": {
-      "name":"Mana",
+      "name":"Decentraland",
       "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
       "symbol": "MANA",
-      "icon": "mana.png",
+      "icon": "mana.svg",
       "decimal": 18,
       "usd_id":"decentraland"
     },
@@ -94,7 +98,7 @@
       "name":"Basic Attention Token",
       "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "symbol": "BAT",
-      "icon": "bat.png",
+      "icon": "bat.svg",
       "decimal": 18,
       "usd_id":"basic-attention-token"
     },
@@ -102,7 +106,7 @@
       "name":"Request",
       "address": "0x8f8221afbb33998d8584a2b05749ba73c37a938a",
       "symbol": "REQ",
-      "icon": "req.png",
+      "icon": "req.svg",
       "decimal": 18,
       "usd_id":"request-network"
     },
@@ -110,7 +114,7 @@
       "name":"Gifto",
       "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
       "symbol": "GTO",
-      "icon": "gifto.png",
+      "icon": "gifto.svg",
       "decimal": 5,
       "usd_id":"gifto"
     },
@@ -118,7 +122,7 @@
       "name":"Raiden",
       "address": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
       "symbol": "RDN",
-      "icon": "rdn.png",
+      "icon": "rdn.svg",
       "decimal": 18,
       "usd_id":"raiden-network-token"
     },
@@ -126,7 +130,7 @@
       "name":"AppCoins",
       "address": "0x1a7a8bd9106f2b8d977e08582dc7d24c723ab0db",
       "symbol": "APPC",
-      "icon": "appc.png",
+      "icon": "appc.svg",
       "decimal": 18,
       "usd_id":"appcoins"
     },
@@ -134,7 +138,7 @@
       "name":"Enigma",
       "address": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
       "symbol": "ENG",
-      "icon": "eng.png",
+      "icon": "eng.svg",
       "decimal": 8,
       "usd_id":"enigma-project"
     },
@@ -142,9 +146,57 @@
       "name":"Salt",
       "address": "0x4156d3342d5c385a87d264f90653733592000581",
       "symbol": "SALT",
-      "icon": "salt.png",
+      "icon": "salt.svg",
       "decimal": 8,
       "usd_id":"salt"
+    },
+    "BQX": {
+      "name" : "Ethos",
+      "address": "0x5af2be193a6abca9c8817001f45744777db30756",
+      "symbol": "BQX",
+      "decimal": 8,
+      "icon": "bqx.svg",
+      "usd_id":"ethos"
+    },
+    "ADX": {
+      "name": "AdEx",
+      "address": "0x4470bb87d77b963a013db939be332f927f2b992e",
+      "symbol": "ADX",
+      "decimal": 4,
+      "icon": "adx.svg",
+      "usd_id": "adx-net"
+    },
+    "AST": {
+      "name": "AirSwap",
+      "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
+      "symbol": "AST",
+      "decimal": 4,
+      "icon": "ast.svg",
+      "usd_id": "airswap"
+    },
+    "RCN": {
+      "name": "Ripio Credit Network",
+      "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
+      "symbol": "RCN",
+      "decimal": 18,
+      "icon": "rcn.svg",
+      "usd_id": "ripio-credit-network"
+    },
+    "ZIL": {
+      "name": "Zilliqa",
+      "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
+      "symbol": "ZIL",
+      "decimal": 12,
+      "icon": "zil.svg",
+      "usd_id":"zilliqa"
+    },
+    "LINK": {
+      "name": "Chain Link",
+      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+      "symbol": "LINK",
+      "decimal": 18,
+      "icon": "link.svg",
+      "usd_id":"chainlink"
     }
   },
   "ethScanUrl": "https://etherscan.io/",
