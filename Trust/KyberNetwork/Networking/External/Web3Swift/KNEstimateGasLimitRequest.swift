@@ -8,7 +8,11 @@ import BigInt
 struct KNEstimateGasLimitRequest: JSONRPCKit.Request {
   typealias Response = String
 
-  let transaction: SignTransaction
+  let from: Address
+  let to: Address?
+  let value: BigInt
+  let data: Data
+  let gasPrice: BigInt
 
   var method: String {
     return "eth_estimateGas"
@@ -17,11 +21,11 @@ struct KNEstimateGasLimitRequest: JSONRPCKit.Request {
   var parameters: Any? {
     return [
       [
-        "from": transaction.account.address.description.lowercased(),
-        "to": transaction.to?.description.lowercased() ?? "",
-        "gasPrice": transaction.gasPrice.hexEncoded,
-        "value": transaction.value.hexEncoded,
-        "data": transaction.data.hexEncoded,
+        "from": from.description.lowercased(),
+        "to": to?.description.lowercased() ?? "0x",
+        "gasPrice": gasPrice.hexEncoded,
+        "value": value.hexEncoded,
+        "data": data.hexEncoded,
         ],
     ]
   }

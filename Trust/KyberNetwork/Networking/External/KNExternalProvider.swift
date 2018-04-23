@@ -299,18 +299,12 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch result {
       case .success(let data):
-        let signTransaction: SignTransaction = SignTransaction(
-          value: self.valueToSend(transferTransaction),
-          account: self.account,
-          to: self.addressToSend(transferTransaction),
-          nonce: self.minTxCount,
-          data: data,
-          gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
-          gasLimit: transferTransaction.gasLimit ?? defaultGasLimit,
-          chainID: KNEnvironment.default.chainID
-        )
         self.estimateGasLimit(
-          signTransaction: signTransaction,
+          from: self.account.address,
+          to: self.addressToSend(transferTransaction),
+          gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
+          value: self.valueToSend(transferTransaction),
+          data: data,
           defaultGasLimit: defaultGasLimit,
           completion: completion
         )
@@ -331,18 +325,12 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch dataResult {
       case .success(let data):
-        let signTransaction: SignTransaction = SignTransaction(
-          value: value,
-          account: self.account,
-          to: self.networkAddress,
-          nonce: self.minTxCount,
-          data: data,
-          gasPrice: exchangeTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
-          gasLimit: exchangeTransaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault,
-          chainID: KNEnvironment.default.chainID
-        )
         self.estimateGasLimit(
-          signTransaction: signTransaction,
+          from: self.account.address,
+          to: self.networkAddress,
+          gasPrice: exchangeTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
+          value: value,
+          data: data,
           defaultGasLimit: defaultGasLimit,
           completion: completion
         )
@@ -352,8 +340,14 @@ class KNExternalProvider {
     }
   }
 
-  fileprivate func estimateGasLimit(signTransaction: SignTransaction, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    let request = KNEstimateGasLimitRequest(transaction: signTransaction)
+  fileprivate func estimateGasLimit(from: Address, to: Address?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    let request = KNEstimateGasLimitRequest(
+      from: from,
+      to: to,
+      value: value,
+      data: data,
+      gasPrice: gasPrice
+    )
     NSLog("------ Estimate gas used ------")
     Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
       switch result {
@@ -535,8 +529,8 @@ class KNExternalProvider {
   }
 
   func requestDataForTokenTransfer(_ transaction: UnconfirmedTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    if case .ether = transaction.transferType {
-      completion(.success(transaction.data ?? Data()))
+    if transaction.transferType.isETHTransfer() {
+      completion(.success(Data()))
       return
     }
     self.web3Swift.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to?.description ?? "")) { (result) in
