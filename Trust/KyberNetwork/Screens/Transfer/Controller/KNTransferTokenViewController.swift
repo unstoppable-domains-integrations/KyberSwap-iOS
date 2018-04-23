@@ -320,19 +320,19 @@ extension KNTransferTokenViewController {
       let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimal),
       let balance = self.otherTokenBalances[self.selectedToken.address],
       amount <= balance.value, !amount.isZero else {
-        self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to transfer")
+        self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to transfer".toBeLocalised())
         completion(.success(nil))
         return
     }
 
     guard let address = Address(string: self.addressTextField.text ?? "") else {
-      self.showErrorTopBannerMessage(with: "Error", message: "Invalid address to transfer")
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid address to transfer".toBeLocalised())
       completion(.success(nil))
       return
     }
 
     guard let gasPrice = self.gasPriceTextField.text?.fullBigInt(units: UnitConfiguration.gasPriceUnit) else {
-      self.showErrorTopBannerMessage(with: "Error", message: "Invalid gas price to transfer")
+      self.showErrorTopBannerMessage(with: "Error", message: "Invalid gas price to transfer".toBeLocalised())
       completion(.success(nil))
       return
     }
