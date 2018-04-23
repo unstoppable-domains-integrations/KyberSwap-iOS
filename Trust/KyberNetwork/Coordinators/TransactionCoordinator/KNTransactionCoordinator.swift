@@ -189,13 +189,24 @@ extension KNTransactionCoordinator {
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-        let startBlock: Int = {
-          guard let transaction = self.storage.completedObjects.first else { return 1 }
-          return transaction.blockNumber - 2000
+//        let startBlock: Int = {
+//          guard let transaction = self.storage.completedObjects.first else { return 1 }
+//          return transaction.blockNumber - 2000
+//          return 1
+//        }()
+//        self.fetchTransaction(
+//          for: self.wallet.address,
+//          startBlock: startBlock,
+//          completion: nil
+//        )
+        let fromDate: Date? = {
+          guard let transaction = self.storage.historyTransactions.first else { return nil }
+          return Date(timeIntervalSince1970: Double(transaction.blockTimestamp))
         }()
-        self.fetchTransaction(
-          for: self.wallet.address,
-          startBlock: startBlock,
+        self.fetchHistoryTransactions(
+          from: fromDate,
+          toDate: nil,
+          address: self.wallet.address.description,
           completion: nil
         )
     })
@@ -206,40 +217,57 @@ extension KNTransactionCoordinator {
     self.allTxTimer = nil
   }
 
-  func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-    NSLog("Fetch transactions from block \(startBlock) page \(page)")
-    let etherScanProvider = MoyaProvider<KNEtherScanService>()
-    etherScanProvider.request(.getListTransactions(address: address.description, startBlock: startBlock, endBlock: 99999999, page: 0)) { [weak self] result in
-      guard let `self` = self else { return }
+//  func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
+//    NSLog("Fetch transactions from block \(startBlock) page \(page)")
+//    let etherScanProvider = MoyaProvider<KNEtherScanService>()
+//    etherScanProvider.request(.getListTransactions(address: address.description, startBlock: startBlock, endBlock: 99999999, page: 0)) { [weak self] result in
+//      guard let `self` = self else { return }
+//      switch result {
+//      case .success(let response):
+//        do {
+//          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
+//          let transArr: [JSONDictionary] = try kn_cast(json["result"])
+//          let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
+//          let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
+//          if !transactions.isEmpty {
+//            self.storage.add(transactions)
+//            self.updateHistoryTransactions(from: transactions)
+//          }
+//          NSLog("Successfully fetched \(transactions.count) transactions")
+//          completion?(.success(transactions))
+//        } catch let error {
+//          NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
+//          completion?(.failure(AnyError(error)))
+//        }
+//      case .failure(let error):
+//        NSLog("Fetching transactions failed with error: \(error.prettyError)")
+//        completion?(.failure(AnyError(error)))
+//      }
+//    }
+//  }
+
+  func fetchHistoryTransactions(from fromDate: Date?, toDate: Date?, address: String, completion: ((Result<[KNHistoryTransaction], AnyError>) -> Void)?) {
+    let trackerProvider = MoyaProvider<KNTrackerService>()
+    trackerProvider.request(.getTrades(fromDate: fromDate, toDate: toDate, address: address)) { result in
       switch result {
       case .success(let response):
         do {
           let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
-          let transArr: [JSONDictionary] = try kn_cast(json["result"])
-          let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
-          let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
-          if !transactions.isEmpty {
-            self.storage.add(transactions)
-            self.updateHistoryTransactions(from: transactions)
-          }
-          NSLog("Successfully fetched \(transactions.count) transactions")
-          completion?(.success(transactions))
-        } catch let error {
-          NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
-          completion?(.failure(AnyError(error)))
+          let transArr: [JSONDictionary] = try kn_cast(json["data"])
+          let historyTransactions: [KNHistoryTransaction] = try transArr.map({ return try KNHistoryTransaction(dictionary: $0) })
+          self.updateHistoryTransactions(historyTransactions)
+          completion?(.success(historyTransactions))
+        } catch let err {
+          completion?(.failure(AnyError(err)))
         }
       case .failure(let error):
-        NSLog("Fetching transactions failed with error: \(error.prettyError)")
         completion?(.failure(AnyError(error)))
       }
     }
   }
 
-  func updateHistoryTransactions(from transactions: [Transaction]) {
-    let historyTransactions = transactions.map({
-      return KNHistoryTransaction(transaction: $0, wallet: self.wallet)
-    })
-    self.storage.addHistoryTransactions(historyTransactions)
+  func updateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    self.storage.addHistoryTransactions(transactions)
     KNNotificationUtil.postNotification(
       for: kTransactionListDidUpdateNotificationKey,
       object: transactions,
@@ -423,7 +451,7 @@ extension TransactionsStorage {
 
   var historyTransactions: [KNHistoryTransaction] {
     return self.realm.objects(KNHistoryTransaction.self)
-      .sorted(byKeyPath: "date", ascending: false)
+      .sorted(byKeyPath: "blockTimestamp", ascending: false)
       .filter { !$0.id.isEmpty }
   }
 }

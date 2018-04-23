@@ -43,3 +43,52 @@ extension KyberNetworkService: TargetType {
     ]
   }
 }
+
+enum KNTrackerService {
+  case getTrades(fromDate: Date?, toDate: Date?, address: String)
+}
+
+extension KNTrackerService: TargetType {
+
+  var baseURL: URL {
+    let baseURLString = KNEnvironment.internalTrackerEndpoint
+    switch self {
+    case .getTrades(let fromDate, let toDate, let address):
+      let path: String = {
+        var path = "/api/search?q=\(address)&exportData=true"
+        if let date = fromDate {
+          path += "&fromDate=\(date.timeIntervalSince1970)"
+        }
+        if let date = toDate {
+          path += "&toDate=\(date.timeIntervalSince1970)"
+        }
+        return path
+      }()
+      return URL(string: baseURLString + path)!
+    }
+  }
+
+  var path: String {
+    return ""
+  }
+
+  var method: Moya.Method {
+    return .get
+  }
+
+  var task: Task {
+    return .requestPlain
+  }
+
+  var sampleData: Data {
+    return Data() // sample data for UITest
+  }
+
+  var headers: [String: String]? {
+    return [
+      "content-type": "application/json",
+      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
+  }
+}

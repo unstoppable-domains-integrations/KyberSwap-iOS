@@ -29,29 +29,19 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
   }
 
   func updateCell(with transaction: KNHistoryTransaction, tokens: [KNToken]) {
-    self.txDateLabel.text = self.dateFormatter.string(from: transaction.date)
-    if transaction.to.isEmpty && transaction.fromToken.isEmpty && transaction.toToken.isEmpty {
-      self.txIconImageView.image = UIImage(named: "transaction_received")
-      // Receive token
-      self.txTypeLabel.text = "Receive"
-      self.txDetailsLabel.text = transaction.from
-    } else if !transaction.fromToken.isEmpty && !transaction.toToken.isEmpty {
-      // Exchange token
-      // TODO: Fix me
-      let fromToken = tokens.first(where: { $0.address == transaction.fromToken })
-      let toToken = tokens.first(where: { $0.address == transaction.toToken })
-      self.txTypeLabel.text = "Exchange from \(fromToken?.symbol ?? "token") to \(toToken?.symbol ?? "token"))"
-      self.txDetailsLabel.text = "1 \(fromToken?.symbol ?? "token") for 370.4333 \(toToken?.symbol ?? "token")"
-      self.txAmountLabel.text = (EtherNumberFormatter.full.number(from: transaction.value, decimals: 0))?.shortString(decimals: fromToken?.decimal ?? 18)
-      self.txIconImageView.image = UIImage(named: "exchange")
-    } else {
-      // Transfer
-      // TODO: Fix me
-      let fromToken = tokens.first(where: { $0.address == transaction.fromToken })
-      self.txTypeLabel.text = "Transfer \(fromToken?.symbol ?? "token")"
-      self.txDetailsLabel.text = transaction.to
-      self.txAmountLabel.text = (EtherNumberFormatter.full.number(from: transaction.value, decimals: 0))?.shortString(decimals: fromToken?.decimal ?? 18)
-      self.txIconImageView.image = UIImage(named: "transaction_sent")
+    self.txDateLabel.text = self.dateFormatter.string(from: Date(timeIntervalSince1970: Double(transaction.blockTimestamp)))
+    self.txTypeLabel.text = "Exchange"
+    self.txIconImageView.image = UIImage(named: "exchange")
+    guard
+      let from = tokens.first(where: { $0.address.lowercased() == transaction.makerTokenAddress.lowercased() }),
+      let to = tokens.first(where: { $0.address.lowercased() == transaction.takerTokenAddress }) else {
+      self.txDetailsLabel.text = ""
+      self.txAmountLabel.text = ""
+      return
     }
+    let fromAmount: String = EtherNumberFormatter.short.number(from: transaction.makerTokenAmount, decimals: 0)?.shortString(decimals: from.decimal) ?? "0.00"
+    let toAmount: String = EtherNumberFormatter.short.number(from: transaction.takerTokenAmount, decimals: 0)?.shortString(decimals: to.decimal) ?? "0.00"
+    self.txDetailsLabel.text = "From \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
+    self.txAmountLabel.text = "\(fromAmount) \(transaction.makerTokenSymbol)"
   }
 }

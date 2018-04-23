@@ -34,7 +34,9 @@ class KNHistoryCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    self.historyTransactionsDidUpdate(nil)
+    if !self.session.storage.historyTransactions.isEmpty {
+      self.historyTransactionsDidUpdate(nil)
+    }
     self.addObserveNotification()
   }
 
@@ -65,7 +67,7 @@ class KNHistoryCoordinator: Coordinator {
     let transactions: [KNHistoryTransaction] = self.session.storage.historyTransactions
 
     let dates: [String] = {
-      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+      let dates = transactions.map { return self.dateFormatter.string(from: Date(timeIntervalSince1970: Double($0.blockTimestamp))) }
       var uniqueDates = [String]()
       dates.forEach { if !uniqueDates.contains($0) { uniqueDates.append($0) }}
       return uniqueDates
@@ -74,9 +76,10 @@ class KNHistoryCoordinator: Coordinator {
     let sectionData: [String: [KNHistoryTransaction]] = {
       var data: [String: [KNHistoryTransaction]] = [:]
       transactions.forEach { tx in
-        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+        let date = Date(timeIntervalSince1970: Double(tx.blockTimestamp))
+        var trans = data[self.dateFormatter.string(from: date)] ?? []
         trans.append(tx)
-        data[self.dateFormatter.string(from: tx.date)] = trans
+        data[self.dateFormatter.string(from: date)] = trans
       }
       return data
     }()

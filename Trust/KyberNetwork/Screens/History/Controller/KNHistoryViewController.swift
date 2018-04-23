@@ -14,7 +14,12 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate var sectionsData: [String: [KNHistoryTransaction]] = [:]
   fileprivate var sectionHeaders: [String] = []
+
+  @IBOutlet weak var noHistoryTransactionsLabel: UILabel!
   @IBOutlet weak var transactionCollectionView: UICollectionView!
+
+  fileprivate var hasUpdatedData: Bool = false
+  fileprivate var isShowingLoading: Bool = false
 
   init(delegate: KNHistoryViewControllerDelegate?) {
     self.delegate = delegate
@@ -28,6 +33,17 @@ class KNHistoryViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if !self.hasUpdatedData && !self.isShowingLoading {
+      self.isShowingLoading = true
+      self.displayLoading(text: "Loading Transactions...", animated: true)
+    }
+    if KNEnvironment.default != .production && KNEnvironment.default != .staging {
+      self.showWarningTopBannerMessage(with: "Warning", message: "History Transaction only works for production or staging env")
+    }
   }
 
   fileprivate func setupUI() {
@@ -48,6 +64,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
+
+    self.noHistoryTransactionsLabel.text = "No history transactions".toBeLocalised()
+    self.noHistoryTransactionsLabel.isHidden = true
   }
 
   @objc func exitButtonPressed(_ sender: Any) {
@@ -57,8 +76,17 @@ class KNHistoryViewController: KNBaseViewController {
 
 extension KNHistoryViewController {
   func coordinatorUpdateHistoryTransactions(_ data: [String: [KNHistoryTransaction]], dates: [String]) {
+    self.hasUpdatedData = true
+    if self.isShowingLoading { self.hideLoading() }
     self.sectionsData = data
     self.sectionHeaders = dates
+    if self.sectionsData.isEmpty {
+      self.noHistoryTransactionsLabel.isHidden = false
+      self.transactionCollectionView.isHidden = true
+    } else {
+      self.noHistoryTransactionsLabel.isHidden = true
+      self.transactionCollectionView.isHidden = false
+    }
     self.transactionCollectionView.reloadData()
   }
 }

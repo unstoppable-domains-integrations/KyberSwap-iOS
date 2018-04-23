@@ -9,9 +9,15 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="TimesNewRoman.ttf">
+            <string>TimesNewRomanPSMT</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNHistoryViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="noHistoryTransactionsLabel" destination="6pp-oS-9os" id="i94-wS-evJ"/>
                 <outlet property="transactionCollectionView" destination="oeZ-dP-Rut" id="TzK-da-nmD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -31,13 +37,22 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No history transactions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pp-oS-9os">
+                    <rect key="frame" x="20" y="40" width="335" height="18"/>
+                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oeZ-dP-Rut" secondAttribute="trailing" constant="10" id="1Fs-os-FYt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6pp-oS-9os" secondAttribute="trailing" constant="20" id="NRr-eN-pfE"/>
                 <constraint firstItem="oeZ-dP-Rut" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="Wt6-vY-Pvn"/>
+                <constraint firstItem="6pp-oS-9os" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="aEc-re-NLx"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="oeZ-dP-Rut" secondAttribute="bottom" constant="10" id="b18-BJ-adl"/>
                 <constraint firstItem="oeZ-dP-Rut" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="ldH-Bz-K3G"/>
+                <constraint firstItem="6pp-oS-9os" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="xLK-9q-kT5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
