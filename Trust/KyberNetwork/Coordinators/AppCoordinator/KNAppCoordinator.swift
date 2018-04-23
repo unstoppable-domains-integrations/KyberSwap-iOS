@@ -181,10 +181,6 @@ class KNAppCoordinator: NSObject, Coordinator {
     if let txHash = sender.object as? String,
       let transaction = self.session.storage.get(forPrimaryKey: txHash) {
 
-      let historyTransaction = KNHistoryTransaction(newTransaction: transaction)
-      self.session.storage.addHistoryTransactions([historyTransaction])
-      KNNotificationUtil.postNotification(for: kTransactionListDidUpdateNotificationKey)
-
       if self.pendingTransactionStatusCoordinator == nil {
         self.pendingTransactionStatusCoordinator = KNPendingTransactionStatusCoordinator(
           navigationController: self.navigationController,

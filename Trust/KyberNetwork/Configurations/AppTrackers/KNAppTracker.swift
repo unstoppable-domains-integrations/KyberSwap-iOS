@@ -13,11 +13,24 @@ class KNAppTracker {
 
   // Env
   static let kInternalCacheEndpointKey: String = "kInternalCacheEndpointKey"
+  static let kInternalTrackerEndpointKey: String = "kInternalTrackerEndpointKey"
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
 
   static let userDefaults: UserDefaults = UserDefaults.standard
+
+  static func internalTrackerEndpoint() -> String {
+    if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
+      return value
+    }
+    return isDebug ? "http://52.77.238.156:3000" : "https://tracker.kyber.network"
+  }
+
+  static func updateInternalTrackerEndpoint(value: String) {
+    userDefaults.set(value, forKey: kInternalTrackerEndpointKey)
+    userDefaults.synchronize()
+  }
 
   // Internal cache endpoint key
   static func internalCacheEndpoint() -> String {

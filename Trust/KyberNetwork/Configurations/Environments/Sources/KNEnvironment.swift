@@ -14,6 +14,10 @@ enum KNEnvironment: Int {
     return KNAppTracker.internalCacheEndpoint()
   }()
 
+  static let internalTrackerEndpoint: String = {
+    return KNAppTracker.internalTrackerEndpoint()
+  }()
+
   static var `default`: KNEnvironment {
     return KNAppTracker.externalEnvironment()
   }
