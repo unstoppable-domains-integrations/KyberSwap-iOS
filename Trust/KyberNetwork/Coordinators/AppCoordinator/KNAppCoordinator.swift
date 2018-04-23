@@ -15,9 +15,9 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate var pendingTransactionStatusCoordinator: KNPendingTransactionStatusCoordinator?
 
-  fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator!
-  fileprivate var transferCoordinator: KNTransferTokenCoordinator!
-  fileprivate var walletCoordinator: KNWalletCoordinator!
+  fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator?
+  fileprivate var transferCoordinator: KNTransferTokenCoordinator?
+  fileprivate var walletCoordinator: KNWalletCoordinator?
   fileprivate var historyCoordinator: KNHistoryCoordinator!
   fileprivate var settingsCoordinator: KNSettingsCoordinator!
 
@@ -81,8 +81,8 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.exchangeCoordinator)
-    self.exchangeCoordinator.start()
+    self.addCoordinator(self.exchangeCoordinator!)
+    self.exchangeCoordinator?.start()
 
     // Transfer Tab
     self.transferCoordinator = {
@@ -93,8 +93,8 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.transferCoordinator)
-    self.transferCoordinator.start()
+    self.addCoordinator(self.transferCoordinator!)
+    self.transferCoordinator?.start()
 
     // Wallet Tab
     self.walletCoordinator = {
@@ -105,8 +105,8 @@ class KNAppCoordinator: NSObject, Coordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.walletCoordinator)
-    self.walletCoordinator.start()
+    self.addCoordinator(self.walletCoordinator!)
+    self.walletCoordinator?.start()
 
     // History tab
     self.historyCoordinator = {
@@ -131,15 +131,15 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.settingsCoordinator.start()
 
     self.tabbarController.viewControllers = [
-      self.exchangeCoordinator.navigationController,
-      self.transferCoordinator.navigationController,
-      self.walletCoordinator.navigationController,
+      self.exchangeCoordinator!.navigationController,
+      self.transferCoordinator!.navigationController,
+      self.walletCoordinator!.navigationController,
       self.historyCoordinator.navigationController,
       self.settingsCoordinator.navigationController,
     ]
-    self.exchangeCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
-    self.transferCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
-    self.walletCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
+    self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
+    self.transferCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
+    self.walletCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
     self.historyCoordinator.navigationController.tabBarItem = UITabBarItem(title: "History".toBeLocalised(), image: nil, tag: 3)
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 4)
 
@@ -165,11 +165,11 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.tabbarController.view.removeFromSuperview()
     self.tabbarController.removeFromParentViewController()
     // Stop all coordinators in tabs and re-assign to nil
-    self.exchangeCoordinator.stop()
+    self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
-    self.transferCoordinator.stop()
+    self.transferCoordinator?.stop()
     self.transferCoordinator = nil
-    self.walletCoordinator.stop()
+    self.walletCoordinator?.stop()
     self.walletCoordinator = nil
     self.historyCoordinator.stop()
     self.historyCoordinator = nil
@@ -248,45 +248,25 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Notification) {
-    if self.walletCoordinator != nil {
-      self.walletCoordinator.exchangeRateDidUpdateNotification(sender)
-    }
+    self.walletCoordinator?.exchangeRateDidUpdateNotification(sender)
   }
 
   @objc func exchangeRateUSDDidUpdateNotification(_ sender: Notification) {
-    if self.exchangeCoordinator != nil {
-      self.exchangeCoordinator.usdRateDidUpdateNotification(sender)
-    }
-    if self.transferCoordinator != nil {
-      self.transferCoordinator.usdRateDidUpdateNotification(sender)
-    }
-    if self.walletCoordinator != nil {
-      self.walletCoordinator.exchangeRateDidUpdateNotification(sender)
-    }
+    self.exchangeCoordinator?.usdRateDidUpdateNotification(sender)
+    self.transferCoordinator?.usdRateDidUpdateNotification(sender)
+    self.walletCoordinator?.exchangeRateDidUpdateNotification(sender)
   }
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Notification) {
-    if self.exchangeCoordinator != nil {
-      self.exchangeCoordinator.ethBalanceDidUpdateNotification(sender)
-    }
-    if self.transferCoordinator != nil {
-      self.transferCoordinator.ethBalanceDidUpdateNotification(sender)
-    }
-    if self.walletCoordinator != nil {
-      self.walletCoordinator.ethBalanceDidUpdateNotification(sender)
-    }
+    self.exchangeCoordinator?.ethBalanceDidUpdateNotification(sender)
+    self.transferCoordinator?.ethBalanceDidUpdateNotification(sender)
+    self.walletCoordinator?.ethBalanceDidUpdateNotification(sender)
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Notification) {
-    if self.exchangeCoordinator != nil {
-      self.exchangeCoordinator.tokenBalancesDidUpdateNotification(sender)
-    }
-    if self.transferCoordinator != nil {
-      self.transferCoordinator.tokenBalancesDidUpdateNotification(sender)
-    }
-    if self.walletCoordinator != nil {
-      self.walletCoordinator.tokenBalancesDidUpdateNotification(sender)
-    }
+    self.exchangeCoordinator?.tokenBalancesDidUpdateNotification(sender)
+    self.transferCoordinator?.tokenBalancesDidUpdateNotification(sender)
+    self.walletCoordinator?.tokenBalancesDidUpdateNotification(sender)
   }
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
@@ -356,16 +336,14 @@ extension KNAppCoordinator: KNWalletCoordinatorDelegate {
   }
 
   func walletCoordinatorDidClickExchange(token: KNToken) {
-    self.exchangeCoordinator.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
   }
 
   func walletCoordinatorDidClickTransfer(token: KNToken) {
-    if self.transferCoordinator != nil {
-      self.transferCoordinator.appCoordinatorShouldOpenTransferForToken(token)
-    }
+    self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(token)
   }
 
   func walletCoordinatorDidClickReceive(token: KNToken) {
-    self.exchangeCoordinator.appCoordinatorShouldOpenExchangeForToken(token, isReceived: true)
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: true)
   }
 }
