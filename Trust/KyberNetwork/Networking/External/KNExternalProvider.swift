@@ -299,11 +299,18 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch result {
       case .success(let data):
-        self.estimateGasLimit(
-          from: self.account.address,
-          to: self.addressToSend(transferTransaction),
+        let signTransaction: SignTransaction = SignTransaction(
           value: self.valueToSend(transferTransaction),
+          account: self.account,
+          to: self.addressToSend(transferTransaction),
+          nonce: self.minTxCount,
           data: data,
+          gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
+          gasLimit: transferTransaction.gasLimit ?? defaultGasLimit,
+          chainID: KNEnvironment.default.chainID
+        )
+        self.estimateGasLimit(
+          signTransaction: signTransaction,
           defaultGasLimit: defaultGasLimit,
           completion: completion
         )
@@ -314,8 +321,6 @@ class KNExternalProvider {
   }
 
   func getEstimateGasLimit(for exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    let fromAddress: Address = self.account.address
-    let toAddress: Address = self.networkAddress
     let value: BigInt = exchangeTransaction.from.isETH ? exchangeTransaction.amount : BigInt(0)
 
     let defaultGasLimit: BigInt = {
@@ -326,11 +331,18 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch dataResult {
       case .success(let data):
-        self.estimateGasLimit(
-          from: fromAddress,
-          to: toAddress,
+        let signTransaction: SignTransaction = SignTransaction(
           value: value,
+          account: self.account,
+          to: self.networkAddress,
+          nonce: self.minTxCount,
           data: data,
+          gasPrice: exchangeTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
+          gasLimit: exchangeTransaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault,
+          chainID: KNEnvironment.default.chainID
+        )
+        self.estimateGasLimit(
+          signTransaction: signTransaction,
           defaultGasLimit: defaultGasLimit,
           completion: completion
         )
@@ -340,13 +352,8 @@ class KNExternalProvider {
     }
   }
 
-  fileprivate func estimateGasLimit(from fromAddr: Address, to toAddr: Address?, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    let request = EstimateGasRequest(
-      from: fromAddr,
-      to: toAddr,
-      value: value,
-      data: data
-    )
+  fileprivate func estimateGasLimit(signTransaction: SignTransaction, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    let request = KNEstimateGasLimitRequest(transaction: signTransaction)
     NSLog("------ Estimate gas used ------")
     Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
       switch result {
