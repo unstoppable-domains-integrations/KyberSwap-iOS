@@ -23,7 +23,7 @@ class KNExchangeRateCollectionViewCell: UICollectionViewCell {
       // between 2 tokens
       self.tokenSymbolLabel.text = "\(source.symbol)/\(dest.symbol)"
       if let exchangeRate = KNRateCoordinator.shared.getRate(from: source, to: dest) {
-        self.exchangeRateLabel.text = EtherNumberFormatter.short.string(from: exchangeRate.rate, decimals: dest.decimal)
+        self.exchangeRateLabel.text = EtherNumberFormatter.short.string(from: exchangeRate.rate)
       } else {
         self.exchangeRateLabel.text = "-.-"
       }
@@ -31,7 +31,7 @@ class KNExchangeRateCollectionViewCell: UICollectionViewCell {
       //source and USD
       self.tokenSymbolLabel.text = "\(source.symbol)/USD"
       if let exchangeRate = KNRateCoordinator.shared.usdRate(for: source) {
-        self.exchangeRateLabel.text = EtherNumberFormatter.short.string(from: exchangeRate.rate, units: .ether)
+        self.exchangeRateLabel.text = EtherNumberFormatter.short.string(from: exchangeRate.rate)
       } else {
         self.exchangeRateLabel.text = "-.-"
       }
