@@ -51,56 +51,24 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    self.addObserveNotifications()
   }
 
   func stop() {
-    self.removeObserveNotifications()
   }
 
-  fileprivate func addObserveNotifications() {
-    let ethBalanceName = Notification.Name(kETHBalanceDidUpdateNotificationKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.ethBalanceDidUpdateNotification(_:)),
-      name: ethBalanceName,
-      object: nil
-    )
-    let tokenBalanceName = Notification.Name(kOtherBalanceDidUpdateNotificationKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.tokenBalancesDidUpdateNotification(_:)),
-      name: tokenBalanceName,
-      object: nil
-    )
-    let rateUSDName = Notification.Name(kExchangeUSDRateNotificationKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.usdRateDidUpdateNotification(_:)), name: rateUSDName, object: nil)
-  }
-
-  fileprivate func removeObserveNotifications() {
-    let ethBalanceName = Notification.Name(kETHBalanceDidUpdateNotificationKey)
-    NotificationCenter.default.removeObserver(self, name: ethBalanceName, object: nil)
-    let tokenBalanceName = Notification.Name(kOtherBalanceDidUpdateNotificationKey)
-    NotificationCenter.default.removeObserver(self, name: tokenBalanceName, object: nil)
-    let rateUSDName = Notification.Name(kExchangeUSDRateNotificationKey)
-    NotificationCenter.default.removeObserver(self, name: rateUSDName, object: nil)
-  }
-
-  @objc func tokenBalancesDidUpdateNotification(_ sender: Any) {
+  func tokenBalancesDidUpdateNotification(_ sender: Any) {
     self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
     self.rootViewController.coordinatorDidUpdateOtherTokenBalanceDidUpdate(balances: self.balanceCoordinator.otherTokensBalance)
     self.selectTokenViewController.updateTokenBalances(self.balanceCoordinator.otherTokensBalance)
   }
 
-  @objc func ethBalanceDidUpdateNotification(_ sender: Any) {
+  func ethBalanceDidUpdateNotification(_ sender: Any) {
     self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
     self.rootViewController.coordinatorDidUpdateEthBalanceDidUpdate(balance: self.balanceCoordinator.ethBalance)
     self.selectTokenViewController.updateETHBalance(self.balanceCoordinator.ethBalance)
   }
 
-  @objc func usdRateDidUpdateNotification(_ sender: Any) {
+  func usdRateDidUpdateNotification(_ sender: Any) {
     self.rootViewController.coordinatorDidUpdateBalance(usd: self.balanceCoordinator.totalBalanceInUSD, eth: self.balanceCoordinator.totalBalanceInETH)
   }
 

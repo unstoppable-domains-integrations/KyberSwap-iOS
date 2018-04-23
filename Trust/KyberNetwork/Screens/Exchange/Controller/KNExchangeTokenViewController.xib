@@ -189,14 +189,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="0.0" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a8z-a7-rTn">
-                                    <rect key="frame" x="132.5" y="49" width="160" height="30"/>
+                                    <rect key="frame" x="122.5" y="49" width="160" height="30"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZS-Uh-W6n">
-                                    <rect key="frame" x="178.5" y="94" width="64" height="20"/>
+                                    <rect key="frame" x="168.5" y="94" width="64" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3B5-HY-tbm"/>
@@ -211,7 +211,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4b-eW-OoY">
-                                    <rect key="frame" x="132.5" y="94" width="36" height="20"/>
+                                    <rect key="frame" x="122.5" y="94" width="36" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="36" id="YaD-QB-qLd"/>
@@ -227,7 +227,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qJ-pc-wgw">
-                                    <rect key="frame" x="252.5" y="94" width="40" height="20"/>
+                                    <rect key="frame" x="242.5" y="94" width="40" height="20"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="iYD-9g-RcR"/>
@@ -243,19 +243,19 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEl-V2-Wxt">
-                                    <rect key="frame" x="68" y="55.5" width="54.5" height="16"/>
+                                    <rect key="frame" x="58" y="55.5" width="54.5" height="16"/>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gwei" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpg-gm-NiF">
-                                    <rect key="frame" x="262.5" y="57.5" width="23.5" height="13.5"/>
+                                    <rect key="frame" x="252.5" y="57.5" width="23.5" height="13.5"/>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="0.0" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="iJ0-s8-HQu">
-                                    <rect key="frame" x="132.5" y="9" width="160" height="30"/>
+                                    <rect key="frame" x="122.5" y="9" width="160" height="30"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="160" id="oq5-Rw-9XJ"/>
@@ -265,7 +265,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEd-RB-Ry7">
-                                    <rect key="frame" x="70" y="16" width="52.5" height="16"/>
+                                    <rect key="frame" x="60" y="16" width="52.5" height="16"/>
                                     <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -281,7 +281,7 @@
                                 <constraint firstItem="4qJ-pc-wgw" firstAttribute="centerY" secondItem="1ZS-Uh-W6n" secondAttribute="centerY" id="HZH-KO-qVm"/>
                                 <constraint firstAttribute="height" constant="150" id="Qt3-3z-xeX"/>
                                 <constraint firstItem="Wpg-gm-NiF" firstAttribute="centerY" secondItem="a8z-a7-rTn" secondAttribute="centerY" id="RTU-1w-Y90"/>
-                                <constraint firstItem="iJ0-s8-HQu" firstAttribute="centerX" secondItem="qk1-lk-YxP" secondAttribute="centerX" constant="25" id="SNf-Rh-dts"/>
+                                <constraint firstItem="iJ0-s8-HQu" firstAttribute="centerX" secondItem="qk1-lk-YxP" secondAttribute="centerX" constant="15" id="SNf-Rh-dts"/>
                                 <constraint firstItem="Z4b-eW-OoY" firstAttribute="centerY" secondItem="1ZS-Uh-W6n" secondAttribute="centerY" id="SQs-iZ-z8n"/>
                                 <constraint firstItem="qEd-RB-Ry7" firstAttribute="centerY" secondItem="iJ0-s8-HQu" secondAttribute="centerY" id="Wf5-UQ-xVr"/>
                                 <constraint firstItem="1ZS-Uh-W6n" firstAttribute="top" secondItem="a8z-a7-rTn" secondAttribute="bottom" constant="15" id="XLm-ke-pMZ"/>

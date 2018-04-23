@@ -28,6 +28,9 @@ class KNSettingsCoordinator: Coordinator {
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
   }
+
+  func stop() {
+  }
 }
 
 extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
