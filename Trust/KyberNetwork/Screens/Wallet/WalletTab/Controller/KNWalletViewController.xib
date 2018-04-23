@@ -35,19 +35,28 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="52"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 2.03123 = USD 1,312.3123" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyP-Qg-C8a">
-                            <rect key="frame" x="10" y="16" width="355" height="20"/>
+                            <rect key="frame" x="40" y="16" width="295" height="20"/>
                             <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CCN-FZ-0gw">
+                            <rect key="frame" x="341" y="14" width="24" height="24"/>
+                            <state key="normal" image="arrow_right_black"/>
+                            <connections>
+                                <action selector="openWalletDetailsButtonPressed:" destination="-1" eventType="touchUpInside" id="UMW-vV-UFU"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="GyP-Qg-C8a" firstAttribute="centerX" secondItem="qqc-HW-u6o" secondAttribute="centerX" id="0Ud-fb-NmM"/>
-                        <constraint firstItem="GyP-Qg-C8a" firstAttribute="leading" secondItem="qqc-HW-u6o" secondAttribute="leading" constant="10" id="EeN-za-agx"/>
+                        <constraint firstItem="GyP-Qg-C8a" firstAttribute="leading" secondItem="qqc-HW-u6o" secondAttribute="leading" constant="40" id="EeN-za-agx"/>
                         <constraint firstAttribute="bottom" secondItem="GyP-Qg-C8a" secondAttribute="bottom" constant="16" id="KSj-7b-DfJ"/>
                         <constraint firstItem="GyP-Qg-C8a" firstAttribute="top" secondItem="qqc-HW-u6o" secondAttribute="top" constant="16" id="Lj4-UN-1RH"/>
-                        <constraint firstAttribute="trailing" secondItem="GyP-Qg-C8a" secondAttribute="trailing" constant="10" id="gOj-6u-GGC"/>
+                        <constraint firstAttribute="trailing" secondItem="CCN-FZ-0gw" secondAttribute="trailing" constant="10" id="Uff-Cb-cCw"/>
+                        <constraint firstItem="CCN-FZ-0gw" firstAttribute="centerY" secondItem="GyP-Qg-C8a" secondAttribute="centerY" id="c63-9l-UmE"/>
+                        <constraint firstAttribute="trailing" secondItem="GyP-Qg-C8a" secondAttribute="trailing" constant="40" id="gOj-6u-GGC"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMF-6w-UgW">
@@ -112,4 +121,7 @@
             <point key="canvasLocation" x="34.5" y="77.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="arrow_right_black" width="24" height="24"/>
+    </resources>
 </document>

@@ -5,6 +5,7 @@ import BigInt
 
 protocol KNWalletViewControllerDelegate: class {
   func walletViewControllerDidExit()
+  func walletViewControllerDidClickTopView()
   func walletViewControllerDidClickExchange(token: KNToken)
   func walletViewControllerDidClickTransfer(token: KNToken)
   func walletViewControllerDidClickReceive(token: KNToken)
@@ -89,6 +90,9 @@ class KNWalletViewController: KNBaseViewController {
   fileprivate func setupEstimatedTotalValue() {
     self.estimatedBalanceAmountLabel.text = "ETH 0 = USD $0"
     self.estimatedValueContainerView.rounded(color: UIColor.Kyber.gray, width: 0.5, radius: 0)
+    UITapGestureRecognizer(addToView: self.estimatedValueContainerView) {
+      self.delegate?.walletViewControllerDidClickTopView()
+    }
   }
 
   fileprivate func setupSmallAssets() {
@@ -133,6 +137,10 @@ class KNWalletViewController: KNBaseViewController {
       self.exchangeRateCollectionView.reloadData()
       self.view.layoutIfNeeded()
     }
+  }
+
+  @IBAction func openWalletDetailsButtonPressed(_ sender: Any) {
+    self.delegate?.walletViewControllerDidClickTopView()
   }
 
   @objc func exitButtonPressed(_ sender: Any) {

@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import SafariServices
 
 protocol KNWalletCoordinatorDelegate: class {
   func walletCoordinatorDidClickExit()
@@ -70,6 +71,13 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   func walletViewControllerDidExit() {
     self.stop()
     self.delegate?.walletCoordinatorDidClickExit()
+  }
+
+  func walletViewControllerDidClickTopView() {
+    if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "/address/" + self.session.wallet.address.description) {
+      let controller = SFSafariViewController(url: url)
+      self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
+    }
   }
 
   func walletViewControllerDidClickExchange(token: KNToken) {
