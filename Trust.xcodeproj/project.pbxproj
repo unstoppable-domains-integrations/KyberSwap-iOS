@@ -113,6 +113,10 @@
 		25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */; };
 		25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1EE208DE24F00A9090D /* BigInt.swift */; };
 		25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1F0208DE40F00A9090D /* KNEstimateGasLimitRequest.swift */; };
+		25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1FA208F0D9900A9090D /* KNPasscodeUtil.swift */; };
+		25E9E1FE208F139E00A9090D /* KNPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1FC208F139E00A9090D /* KNPasscodeViewController.swift */; };
+		25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E9E1FD208F139E00A9090D /* KNPasscodeViewController.xib */; };
+		25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E200208F34ED00A9090D /* KNPasscodeCoordinator.swift */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
 		290B2B5F1F9177860053C83E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5E1F9177860053C83E /* UIImage.swift */; };
@@ -604,6 +608,10 @@
 		25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
 		25E9E1EE208DE24F00A9090D /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
 		25E9E1F0208DE40F00A9090D /* KNEstimateGasLimitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNEstimateGasLimitRequest.swift; sourceTree = "<group>"; };
+		25E9E1FA208F0D9900A9090D /* KNPasscodeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPasscodeUtil.swift; sourceTree = "<group>"; };
+		25E9E1FC208F139E00A9090D /* KNPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPasscodeViewController.swift; sourceTree = "<group>"; };
+		25E9E1FD208F139E00A9090D /* KNPasscodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPasscodeViewController.xib; sourceTree = "<group>"; };
+		25E9E200208F34ED00A9090D /* KNPasscodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPasscodeCoordinator.swift; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
 		290B2B5E1F9177860053C83E /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -1143,6 +1151,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				25E9E1F3208F036F00A9090D /* Passcode */,
 				257C9FCB2078FB2000EE0128 /* Settings */,
 				25CE6F8A2073E02500A3A2F9 /* History */,
 				257740D02057A97F003323EB /* Wallet */,
@@ -1728,6 +1737,41 @@
 				25AC2484205FC3C200989EBA /* KNPendingTransactionListTableViewCell.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		25E9E1F3208F036F00A9090D /* Passcode */ = {
+			isa = PBXGroup;
+			children = (
+				25E9E1F9208F0D8400A9090D /* Utils */,
+				25E9E1F5208F0D2E00A9090D /* Controller */,
+				25E9E1F4208F0D2600A9090D /* Coordinator */,
+			);
+			path = Passcode;
+			sourceTree = "<group>";
+		};
+		25E9E1F4208F0D2600A9090D /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25E9E200208F34ED00A9090D /* KNPasscodeCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		25E9E1F5208F0D2E00A9090D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				25E9E1FC208F139E00A9090D /* KNPasscodeViewController.swift */,
+				25E9E1FD208F139E00A9090D /* KNPasscodeViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		25E9E1F9208F0D8400A9090D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				25E9E1FA208F0D9900A9090D /* KNPasscodeUtil.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		290B2B511F8F4F840053C83E /* Localization */ = {
@@ -3304,6 +3348,7 @@
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
 				257A3789205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
+				25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
@@ -3608,6 +3653,7 @@
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
 				251ABCA720578E630069687F /* KNParseUtil.swift in Sources */,
+				25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */,
 				29F114F21FA7966300114A29 /* PrivateKeyRule.swift in Sources */,
 				77E81D962036883B00534C99 /* NotificationsViewModel.swift in Sources */,
 				296106C41F7640C50006164B /* TokenViewCellViewModel.swift in Sources */,
@@ -3898,6 +3944,7 @@
 				73C41C73201B5EFF00243C6C /* LockCreatePasscodeViewModel.swift in Sources */,
 				2959961A1FADB79300DB66A8 /* TokenTransfer.swift in Sources */,
 				295247E71F835BA0007FDC31 /* InfoHeaderView.swift in Sources */,
+				25E9E1FE208F139E00A9090D /* KNPasscodeViewController.swift in Sources */,
 				29B6AED61F7CA4A700EC6DE3 /* TransactionConfiguration.swift in Sources */,
 				29F1C84C1FEC4F6F003780D8 /* TokensFooterView.swift in Sources */,
 				29F114F41FA8117C00114A29 /* SendCoordinator.swift in Sources */,
@@ -3946,6 +3993,7 @@
 				BB03A86D20416AF600649DA0 /* BalanceStatus.swift in Sources */,
 				775DF436203DFF2D009CD082 /* OpenseaClient.swift in Sources */,
 				29D03F1D1F712183006E548C /* Button.swift in Sources */,
+				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
 				CCCD74FD1FD2D38D004A087D /* CheckDeviceCoordinator.swift in Sources */,
 				25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */,

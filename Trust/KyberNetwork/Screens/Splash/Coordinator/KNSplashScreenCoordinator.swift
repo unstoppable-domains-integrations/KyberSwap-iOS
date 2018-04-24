@@ -29,6 +29,7 @@ class KNSplashScreenCoordinator: Coordinator {
   func stop(completion: @escaping () -> Void) {
     self.splashVC.moveSplashLogoAnimation {
       self.splashWindow.isHidden = true
+      completion()
     }
   }
 }
