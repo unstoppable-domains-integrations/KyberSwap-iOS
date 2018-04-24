@@ -9,7 +9,7 @@ class KNTransferTokenCoordinator: Coordinator {
   let navigationController: UINavigationController
   let session: KNSession
   let balanceCoordinator: KNBalanceCoordinator
-  let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+  let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
 
   weak var delegate: KNSessionDelegate?
 

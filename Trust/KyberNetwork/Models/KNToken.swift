@@ -34,11 +34,11 @@ struct KNToken {
   }
 
   static public func ethToken() -> KNToken {
-    return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+    return KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
   }
 
   static public func kncToken() -> KNToken {
-    return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isKNC })!
+    return KNJSONLoaderUtil.shared.tokens.first(where: { $0.isKNC })!
   }
 
   static public func==(lhs: KNToken, rhs: KNToken) -> Bool {

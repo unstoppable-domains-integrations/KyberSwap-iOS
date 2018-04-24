@@ -10,7 +10,7 @@ protocol KNHistoryViewControllerDelegate: class {
 class KNHistoryViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNHistoryViewControllerDelegate?
-  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
 
   fileprivate var sectionsData: [String: [KNHistoryTransaction]] = [:]
   fileprivate var sectionHeaders: [String] = []

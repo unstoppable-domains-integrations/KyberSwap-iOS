@@ -19,12 +19,12 @@ class KNPendingTransactionListTableViewCell: UITableViewCell {
 
   func updateCell(with transaction: Transaction) {
     guard let localObjc = transaction.localizedOperations.first else { return }
-    let fromToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.from })!
+    let fromToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == localObjc.from })!
 
     self.amountLabel.text = "\(fromToken.symbol) \(transaction.value)"
 
     if localObjc.type.lowercased() == "exchange" {
-      let toToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localObjc.to })!
+      let toToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == localObjc.to })!
       self.typeLabel.text = "Exchange".toBeLocalised()
       self.toDescriptionLabel.text = "\(toToken.symbol) \(localObjc.value)"
       self.toDescriptionLabel.font = self.toDescriptionLabel.font.withSize(16)

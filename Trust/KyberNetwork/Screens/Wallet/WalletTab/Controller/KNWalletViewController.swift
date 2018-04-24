@@ -14,7 +14,7 @@ protocol KNWalletViewControllerDelegate: class {
 class KNWalletViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletViewControllerDelegate?
-  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
   fileprivate var isHidingSmallAssets: Bool = false
 
   fileprivate var balances: [String: Balance] = [:]

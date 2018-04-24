@@ -49,7 +49,7 @@ extension KNDraftExchangeTransaction {
   }
 
   var usdValueStringForFee: String {
-    let eth = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+    let eth = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
     let rate = KNRateCoordinator.shared.usdRate(for: eth)?.rate ?? BigInt(0)
     return (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether)
   }

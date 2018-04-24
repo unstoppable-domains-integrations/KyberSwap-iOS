@@ -109,7 +109,7 @@ class KNConfirmTransactionViewController: UIViewController {
           return fromToken.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
         }()
         let fee = gasPrice * gasLimit
-        let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+        let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
         let rate = KNRateCoordinator.shared.usdRate(for: ethToken)?.rate ?? BigInt(0)
         return (fee.fullString(units: .ether).prefix(16), (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether))
       }()

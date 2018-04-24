@@ -108,7 +108,7 @@ extension KNTransferTokenViewController {
   }
 
   fileprivate func setupFromToken() {
-    self.ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+    self.ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
     self.selectedToken = self.ethToken
 
     self.fromTextLabel.text = "From".toBeLocalised()

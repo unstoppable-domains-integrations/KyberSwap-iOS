@@ -37,9 +37,9 @@ extension TransferType {
   func knToken() -> KNToken {
     switch self {
     case .ether:
-      return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+      return KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
     case .token(let object):
-      return KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == object.contract })!
+      return KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == object.contract })!
     }
   }
 }

@@ -53,7 +53,7 @@ extension KNWalletCoordinator {
   }
 
   func ethBalanceDidUpdateNotification(_ sender: Any) {
-    if let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH }) {
+    if let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH }) {
       self.rootViewController.coordinatorUpdateTokenBalances([ethToken.address: self.balanceCoordinator.ethBalance])
     }
     self.exchangeRateDidUpdateNotification(sender)

@@ -108,7 +108,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       let fee = gasPrice * gasUsed
       let feeString: String = {
         var value = "ETH \(fee.fullString(units: UnitConfiguration.gasFeeUnit))"
-        let ethToken = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.isETH })!
+        let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
         if let rate = KNRateCoordinator.shared.usdRate(for: ethToken) {
           let usdValue = rate.rate * fee / BigInt(EthereumUnit.ether.rawValue)
           value = "\(value) ($\(usdValue.shortString(units: .ether)))"
@@ -152,7 +152,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     // Amount & Type
     guard let localizeOperation = self.transaction.localizedOperations.first else { return }
 
-    let from = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localizeOperation.from })!
+    let from = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == localizeOperation.from })!
 
     let amount = EtherNumberFormatter.full.number(from: self.transaction.value, decimals: from.decimal) ?? BigInt(0)
 
@@ -173,7 +173,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
       self.detailsTransactionTypeLabel.text = "\(self.transaction.to)"
     } else {
       // Exchange
-      let to = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile().first(where: { $0.address == localizeOperation.to })!
+      let to = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == localizeOperation.to })!
       let expectedAmount = EtherNumberFormatter.full.number(from: localizeOperation.value, decimals: to.decimal) ?? BigInt(0)
       self.transactionTypeLabel.text = "Exchange To".toBeLocalised()
       let expectedAmountDisplay = "\(to.symbol) \(expectedAmount.fullString(decimals: to.decimal))".prefix(32)

@@ -6,6 +6,14 @@ typealias JSONDictionary = [String: Any]
 
 class KNJSONLoaderUtil {
 
+  static let shared = KNJSONLoaderUtil()
+
+  let tokens: [KNToken]
+
+  init() {
+    self.tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+  }
+
   static func loadListSupportedTokensFromJSONFile() -> [KNToken] {
     let configFileName = KNEnvironment.default.configFileName
     guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: configFileName) else { return [] }

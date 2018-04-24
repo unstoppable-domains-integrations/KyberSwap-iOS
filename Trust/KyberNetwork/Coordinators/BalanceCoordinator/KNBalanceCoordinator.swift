@@ -25,7 +25,7 @@ class KNBalanceCoordinator {
       if let ethRate = rates.first(where: { $0.source == "ETH" }) {
         value = ethRate.rate * ethBalance.value / BigInt(EthereumUnit.ether.rawValue)
       }
-      let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+      let supportedTokens = KNJSONLoaderUtil.shared.tokens
       for token in supportedTokens {
         if let rate = rates.first(where: { $0.source == token.symbol }), let balance = otherTokensBalance[token.address] {
           value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
@@ -41,7 +41,7 @@ class KNBalanceCoordinator {
       var value = ethBalance.value
 
       let rates = KNRateCoordinator.shared.tokenRates
-      let supportedTokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+      let supportedTokens = KNJSONLoaderUtil.shared.tokens
 
       for token in supportedTokens {
         if let rate = rates.first(where: { $0.source == token.symbol && $0.dest == "ETH" }), let balance = otherTokensBalance[token.address] {
@@ -116,7 +116,7 @@ class KNBalanceCoordinator {
   @objc func fetchOtherTokensBalance(_ sender: Timer?) {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
-    let tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+    let tokens = KNJSONLoaderUtil.shared.tokens
     let group = DispatchGroup()
     for token in tokens {
       if let contractAddress = Address(string: token.address), token.symbol != "ETH" {
