@@ -18,6 +18,14 @@ class KNSettingsCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var listWalletsCoordinator: KNListWalletsCoordinator = {
+    return KNListWalletsCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      delegate: self
+    )
+  }()
+
   lazy var passcodeCoordinator: KNPasscodeCoordinator = {
     let coordinator = KNPasscodeCoordinator(
       navigationController: self.navigationController,
@@ -45,6 +53,7 @@ class KNSettingsCoordinator: Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.listWalletsCoordinator.updateNewSession(session)
     //TODO Update address for settings page
   }
 }
@@ -55,7 +64,7 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
-    //TODO: Open list of wallets
+    self.listWalletsCoordinator.start()
   }
 
   func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {
@@ -145,5 +154,19 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
 extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCancel() {
     self.rootViewController.userDidCancelCreatePasscode()
+  }
+}
+
+extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
+  func listWalletsCoordinatorDidClickBack() {
+    self.listWalletsCoordinator.stop { }
+  }
+
+  func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.listWalletsCoordinator.stop { }
+  }
+
+  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    self.listWalletsCoordinator.stop { }
   }
 }
