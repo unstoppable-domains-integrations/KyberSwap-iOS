@@ -27,7 +27,7 @@ class KNReachability: NSObject {
         }
         let notiName = Notification.Name(rawValue: KNReachability.kNetworkReachableNotificationKey)
         NotificationCenter.default.post(name: notiName, object: type)
-        if self.previousStatus == .notReachable || self.previousStatus == .unknown {
+        if self.previousStatus == .notReachable {
           self.showSuccessTopBannerMessage(with: "Network Restore", message: "")
         }
       case .unknown:
