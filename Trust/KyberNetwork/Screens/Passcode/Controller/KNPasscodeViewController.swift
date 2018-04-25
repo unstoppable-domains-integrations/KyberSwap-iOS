@@ -18,12 +18,13 @@ enum KNPasscodeViewType {
 }
 
 class KNPasscodeViewController: KNBaseViewController {
-
   fileprivate let viewType: KNPasscodeViewType
   fileprivate weak var delegate: KNPasscodeViewControllerDelegate?
 
   fileprivate var currentPasscode = ""
   fileprivate var firstPasscode: String?
+
+  fileprivate var timer: Timer?
 
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var errorLabel: UILabel!
@@ -51,7 +52,25 @@ class KNPasscodeViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    self.showBioAuthenticationIfNeeded()
+    self.updateUI()
+    if self.viewType == .authenticate {
+      if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+          if KNPasscodeUtil.shared.timeToAllowNewAttempt() == 0 {
+            KNPasscodeUtil.shared.deleteNumberAttempts()
+            KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
+            self.timer?.invalidate()
+          }
+          self.updateUI()
+        })
+      }
+    }
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.timer?.invalidate()
+    self.timer = nil
   }
 
   fileprivate func setupUI() {
@@ -69,19 +88,24 @@ class KNPasscodeViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  fileprivate func showBioAuthenticationIfNeeded() {
+  func showBioAuthenticationIfNeeded() {
     if self.viewType == .setPasscode { return }
+    if KNPasscodeUtil.shared.timeToAllowNewAttempt() > 0 { return }
     var error: NSError?
     let context = LAContext()
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
       return
     }
-    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Use touchID/faceID to secure your account".toBeLocalised()) { [unowned self] (success, error) in
+    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Use touchID/faceID to secure your account".toBeLocalised()) { [weak self] (success, error) in
+      guard let `self` = self else { return }
       if success {
         self.delegate?.passcodeViewControllerDidSuccessEvaluatePolicyWithBio()
       } else {
         guard let error = error else { return }
-        let message = self.errorMessageForLAErrorCode(error.code)
+        guard let message = self.errorMessageForLAErrorCode(error.code) else {
+          // User cancelled using bio
+          return
+        }
         let alert = UIAlertController(title: "Try Again".toBeLocalised(), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
           self.showBioAuthenticationIfNeeded()
@@ -92,7 +116,40 @@ class KNPasscodeViewController: KNBaseViewController {
     }
   }
 
+  func resetUI() {
+    self.currentPasscode = ""
+    self.firstPasscode = nil
+    self.updateUI()
+  }
+
+  func userDidTypeWrongPasscode() {
+    // shake passcode view
+    self.currentPasscode = ""
+    self.updateUI()
+
+    let keypath = "position"
+    let animation = CABasicAnimation(keyPath: keypath)
+    animation.duration = 0.07
+    animation.repeatCount = 4
+    animation.autoreverses = true
+    animation.fromValue = NSValue(cgPoint: CGPoint(x: self.passcodeContainerView.center.x - 10, y: self.passcodeContainerView.center.y))
+    animation.toValue = NSValue(cgPoint: CGPoint(x: self.passcodeContainerView.center.x + 10, y: self.passcodeContainerView.center.y))
+    self.passcodeContainerView.layer.add(animation, forKey: keypath)
+
+    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
+      self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+        if KNPasscodeUtil.shared.timeToAllowNewAttempt() == 0 {
+          KNPasscodeUtil.shared.deleteNumberAttempts()
+          KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
+          self.timer?.invalidate()
+        }
+        self.updateUI()
+      })
+    }
+  }
+
   @IBAction func digitButtonPressed(_ sender: UIButton) {
+    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 { return }
     self.currentPasscode = "\(self.currentPasscode)\(sender.tag)"
     if self.currentPasscode.count == 6 {
       self.userDidEnterPasscode()
@@ -158,7 +215,7 @@ extension KNPasscodeViewController {
     return "Cancel".toBeLocalised()
   }
 
-  func errorMessageForLAErrorCode(_ errorCode: Int ) -> String {
+  func errorMessageForLAErrorCode(_ errorCode: Int ) -> String? {
     if #available(iOS 11.0, *) {
       switch errorCode {
       case LAError.biometryLockout.rawValue:
@@ -178,6 +235,8 @@ extension KNPasscodeViewController {
       return "Too many failed attempts. Please try to use passcode".toBeLocalised()
     case LAError.touchIDNotAvailable.rawValue:
       return "TouchID/FaceID is not available on the device".toBeLocalised()
+    case LAError.appCancel.rawValue, LAError.userCancel.rawValue, LAError.userFallback.rawValue:
+      return nil
     default:
       return "Something went wrong. Try to use passcode".toBeLocalised()
     }
