@@ -1120,13 +1120,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		256051812060F22300D5588E /* Transfer */ = {
+		256051812060F22300D5588E /* TransferTab */ = {
 			isa = PBXGroup;
 			children = (
-				2560518720610A3500D5588E /* Coordinator */,
-				256051822060F2CC00D5588E /* Controller */,
+				25BE32982090968A00D760FB /* TransferVC */,
 			);
-			path = Transfer;
+			path = TransferTab;
 			sourceTree = "<group>";
 		};
 		256051822060F2CC00D5588E /* Controller */ = {
@@ -1149,12 +1148,12 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				257C9FCB2078FB2000EE0128 /* SettingsTab */,
+				25CE6F8A2073E02500A3A2F9 /* HistoryTab */,
+				257740D02057A97F003323EB /* WalletTab */,
+				256051812060F22300D5588E /* TransferTab */,
+				25CC0A9A2057E2680009D0D5 /* ExchangeTab */,
 				25E9E1F3208F036F00A9090D /* Passcode */,
-				257C9FCB2078FB2000EE0128 /* Settings */,
-				25CE6F8A2073E02500A3A2F9 /* History */,
-				257740D02057A97F003323EB /* Wallet */,
-				256051812060F22300D5588E /* Transfer */,
-				25CC0A9A2057E2680009D0D5 /* Exchange */,
 				257C9FC62078F68E00EE0128 /* CreatePassword */,
 				257B84A22074C29B003DD40E /* DebugMenu */,
 				257A377F205B9D6400E86794 /* SelectToken */,
@@ -1211,13 +1210,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		257740D02057A97F003323EB /* Wallet */ = {
+		257740D02057A97F003323EB /* WalletTab */ = {
 			isa = PBXGroup;
 			children = (
-				25CE6F7820737AF700A3A2F9 /* WalletTab */,
+				25CE6F7820737AF700A3A2F9 /* WalletVC */,
 				257740D22057A9A2003323EB /* Importing */,
 			);
-			path = Wallet;
+			path = WalletTab;
 			sourceTree = "<group>";
 		};
 		257740D22057A9A2003323EB /* Importing */ = {
@@ -1405,13 +1404,13 @@
 			path = CreatePassword;
 			sourceTree = "<group>";
 		};
-		257C9FCB2078FB2000EE0128 /* Settings */ = {
+		257C9FCB2078FB2000EE0128 /* SettingsTab */ = {
 			isa = PBXGroup;
 			children = (
-				257C9FD12078FB4800EE0128 /* Coordinator */,
-				257C9FCC2078FB2700EE0128 /* Controller */,
+				25BE32952090961600D760FB /* ListWalletsVC */,
+				25BE32962090963C00D760FB /* SettingsVC */,
 			);
-			path = Settings;
+			path = SettingsTab;
 			sourceTree = "<group>";
 		};
 		257C9FCC2078FB2700EE0128 /* Controller */ = {
@@ -1444,6 +1443,50 @@
 				25AC248A205FCA3C00989EBA /* KNPendingTransactionListCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		25BE32952090961600D760FB /* ListWalletsVC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ListWalletsVC;
+			sourceTree = "<group>";
+		};
+		25BE32962090963C00D760FB /* SettingsVC */ = {
+			isa = PBXGroup;
+			children = (
+				257C9FD12078FB4800EE0128 /* Coordinator */,
+				257C9FCC2078FB2700EE0128 /* Controller */,
+			);
+			path = SettingsVC;
+			sourceTree = "<group>";
+		};
+		25BE32972090967100D760FB /* HistoryVC */ = {
+			isa = PBXGroup;
+			children = (
+				25CE6F8C2073E03800A3A2F9 /* Controller */,
+				25CE6F8B2073E03100A3A2F9 /* Coordinator */,
+			);
+			path = HistoryVC;
+			sourceTree = "<group>";
+		};
+		25BE32982090968A00D760FB /* TransferVC */ = {
+			isa = PBXGroup;
+			children = (
+				2560518720610A3500D5588E /* Coordinator */,
+				256051822060F2CC00D5588E /* Controller */,
+			);
+			path = TransferVC;
+			sourceTree = "<group>";
+		};
+		25BE32992090969600D760FB /* ExchangeVC */ = {
+			isa = PBXGroup;
+			children = (
+				25CC0A9B2057E2940009D0D5 /* Model */,
+				25CC0AC52059260A0009D0D5 /* Coordinator */,
+				25CC0AC4205926040009D0D5 /* Controller */,
+			);
+			path = ExchangeVC;
 			sourceTree = "<group>";
 		};
 		25CC0A7B2057B94C0009D0D5 /* ImportKeystore */ = {
@@ -1535,14 +1578,12 @@
 			path = LoadingInterval;
 			sourceTree = "<group>";
 		};
-		25CC0A9A2057E2680009D0D5 /* Exchange */ = {
+		25CC0A9A2057E2680009D0D5 /* ExchangeTab */ = {
 			isa = PBXGroup;
 			children = (
-				25CC0AC52059260A0009D0D5 /* Coordinator */,
-				25CC0AC4205926040009D0D5 /* Controller */,
-				25CC0A9B2057E2940009D0D5 /* Model */,
+				25BE32992090969600D760FB /* ExchangeVC */,
 			);
-			path = Exchange;
+			path = ExchangeTab;
 			sourceTree = "<group>";
 		};
 		25CC0A9B2057E2940009D0D5 /* Model */ = {
@@ -1642,13 +1683,13 @@
 			path = EtherScan;
 			sourceTree = "<group>";
 		};
-		25CE6F7820737AF700A3A2F9 /* WalletTab */ = {
+		25CE6F7820737AF700A3A2F9 /* WalletVC */ = {
 			isa = PBXGroup;
 			children = (
 				25CE6F7E20737B8700A3A2F9 /* Coordinator */,
 				25CE6F7D20737B7D00A3A2F9 /* Controller */,
 			);
-			path = WalletTab;
+			path = WalletVC;
 			sourceTree = "<group>";
 		};
 		25CE6F7D20737B7D00A3A2F9 /* Controller */ = {
@@ -1679,13 +1720,12 @@
 			path = TokenCollectionViewCell;
 			sourceTree = "<group>";
 		};
-		25CE6F8A2073E02500A3A2F9 /* History */ = {
+		25CE6F8A2073E02500A3A2F9 /* HistoryTab */ = {
 			isa = PBXGroup;
 			children = (
-				25CE6F8C2073E03800A3A2F9 /* Controller */,
-				25CE6F8B2073E03100A3A2F9 /* Coordinator */,
+				25BE32972090967100D760FB /* HistoryVC */,
 			);
-			path = History;
+			path = HistoryTab;
 			sourceTree = "<group>";
 		};
 		25CE6F8B2073E03100A3A2F9 /* Coordinator */ = {
