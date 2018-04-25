@@ -16,13 +16,6 @@ class KNPasscodeUtil {
 
   let keychain: KeychainSwift = KeychainSwift(keyPrefix: kKeychainPrefix)
 
-  lazy var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .short
-    return formatter
-  }()
-
   static let shared = KNPasscodeUtil()
 
   // MARK: Passcode
@@ -69,8 +62,8 @@ class KNPasscodeUtil {
   }
 
   func currentMaxAttemptTime() -> Date? {
-    guard let maxAttemptTime = self.keychain.get(kMaxAttemptTime) else { return nil }
-    return self.dateFormatter.date(from: maxAttemptTime)
+    guard let maxAttemptTime = self.keychain.get(kMaxAttemptTime), let double = Double(maxAttemptTime) else { return nil }
+    return Date(timeIntervalSince1970: double)
   }
 
   // Time in second to allow user tries again
@@ -86,7 +79,7 @@ class KNPasscodeUtil {
 
   @discardableResult
   func recordNewMaxAttemptTime() -> Bool {
-    let time = self.dateFormatter.string(from: Date())
+    let time = String(Date().timeIntervalSince1970)
     return self.keychain.set(time, forKey: kMaxAttemptTime)
   }
 
