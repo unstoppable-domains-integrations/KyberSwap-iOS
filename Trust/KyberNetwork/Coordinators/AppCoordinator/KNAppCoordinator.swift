@@ -27,6 +27,10 @@ class KNAppCoordinator: NSObject, Coordinator {
     return KNSplashScreenCoordinator()
   }()
 
+  lazy var authenticationCoordinator: KNPasscodeCoordinator = {
+    return KNPasscodeCoordinator(type: .authenticate)
+  }()
+
   lazy var walletImportingMainCoordinator: KNWalletImportingMainCoordinator = {
     let coordinator = KNWalletImportingMainCoordinator(
       navigationController: self.navigationController,
@@ -54,8 +58,6 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.addCoordinator(self.splashScreenCoordinator)
-    self.splashScreenCoordinator.start()
     self.addCoordinator(self.walletImportingMainCoordinator)
     self.walletImportingMainCoordinator.start()
     if let wallet = self.keystore.wallets.first {
@@ -290,6 +292,8 @@ class KNAppCoordinator: NSObject, Coordinator {
 // Application state
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
+    self.splashScreenCoordinator.start()
+    self.authenticationCoordinator.start()
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
@@ -299,6 +303,11 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.balanceCoordinator?.resume()
+    self.splashScreenCoordinator.stop()
+  }
+
+  func appWillEnterForeground() {
+    self.authenticationCoordinator.start()
   }
 
   func appWillEnterBackground() {

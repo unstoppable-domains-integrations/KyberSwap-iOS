@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+      self.coordinator.appWillEnterForeground()
     }
 
     func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplicationExtensionPointIdentifier) -> Bool {
