@@ -4,7 +4,7 @@ import UIKit
 
 class KNSplashScreenCoordinator: Coordinator {
 
-  let splashWindow: UIWindow
+  let splashWindow: UIWindow = UIWindow()
 
   var coordinators: [Coordinator] = []
 
@@ -13,23 +13,25 @@ class KNSplashScreenCoordinator: Coordinator {
   }()
 
   init() {
-    self.splashWindow = UIWindow()
-    self.splashWindow.windowLevel = UIWindowLevelStatusBar + 1.0
+    self.splashWindow.windowLevel = UIWindowLevelStatusBar + 2.0
   }
 
   func start() {
     self.splashWindow.rootViewController = self.splashVC
-    self.splashWindow.makeKeyAndVisible()
     self.splashWindow.isHidden = false
-    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-      self.stop { }
-    }
+//    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+//      self.stop { }
+//    }
   }
 
-  func stop(completion: @escaping () -> Void) {
-    self.splashVC.moveSplashLogoAnimation {
-      self.splashWindow.isHidden = true
-      completion()
-    }
+  func stop() {
+    self.splashWindow.isHidden = true
   }
+//
+//  func stop(completion: @escaping () -> Void) {
+//    self.splashVC.moveSplashLogoAnimation {
+//      self.splashWindow.isHidden = true
+//      completion()
+//    }
+//  }
 }
