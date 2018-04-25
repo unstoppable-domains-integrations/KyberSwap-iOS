@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 import SafariServices
 
 protocol KNWalletCoordinatorDelegate: class {
@@ -13,8 +14,7 @@ protocol KNWalletCoordinatorDelegate: class {
 class KNWalletCoordinator: Coordinator {
 
   let navigationController: UINavigationController
-  let session: KNSession
-  let balanceCoordinator: KNBalanceCoordinator
+  private(set) var session: KNSession
 
   weak var delegate: KNWalletCoordinatorDelegate?
 
@@ -28,13 +28,11 @@ class KNWalletCoordinator: Coordinator {
 
   init(
     navigationController: UINavigationController = UINavigationController(),
-    session: KNSession,
-    balanceCoordinator: KNBalanceCoordinator
+    session: KNSession
     ) {
     self.navigationController = navigationController
     self.navigationController.applyStyle()
     self.session = session
-    self.balanceCoordinator = balanceCoordinator
   }
 
   func start() {
@@ -47,22 +45,33 @@ class KNWalletCoordinator: Coordinator {
 
 // Update from appcoordinator
 extension KNWalletCoordinator {
-  func tokenBalancesDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.coordinatorUpdateTokenBalances(self.balanceCoordinator.otherTokensBalance)
-    self.exchangeRateDidUpdateNotification(sender)
+
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+    self.session = session
   }
 
-  func ethBalanceDidUpdateNotification(_ sender: Any) {
+  func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
+    self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
+    self.appCoordinatorExchangeRateDidUpdate(
+      totalBalanceInUSD: totalBalanceInUSD,
+      totalBalanceInETH: totalBalanceInETH
+    )
+  }
+
+  func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
     if let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH }) {
-      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.address: self.balanceCoordinator.ethBalance])
+      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.address: ethBalance])
     }
-    self.exchangeRateDidUpdateNotification(sender)
+    self.appCoordinatorExchangeRateDidUpdate(
+      totalBalanceInUSD: totalBalanceInUSD,
+      totalBalanceInETH: totalBalanceInETH
+    )
   }
 
-  func exchangeRateDidUpdateNotification(_ sender: Any) {
+  func appCoordinatorExchangeRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
     self.rootViewController.coordinatorUpdateBalanceInETHAndUSD(
-      ethBalance: self.balanceCoordinator.totalBalanceInETH,
-      usdBalance: self.balanceCoordinator.totalBalanceInUSD
+      ethBalance: totalBalanceInETH,
+      usdBalance: totalBalanceInUSD
     )
   }
 }

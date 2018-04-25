@@ -6,7 +6,7 @@ class KNSettingsCoordinator: Coordinator {
 
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
-  let session: KNSession
+  private(set) var session: KNSession
 
   weak var delegate: KNSessionDelegate?
 
@@ -41,6 +41,11 @@ class KNSettingsCoordinator: Coordinator {
   }
 
   func stop() {
+  }
+
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+    self.session = session
+    //TODO Update address for settings page
   }
 }
 

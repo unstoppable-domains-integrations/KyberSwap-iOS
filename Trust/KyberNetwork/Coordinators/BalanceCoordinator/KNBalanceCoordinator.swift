@@ -8,7 +8,7 @@ import TrustKeystore
 
 class KNBalanceCoordinator {
 
-  fileprivate let session: KNSession
+  fileprivate var session: KNSession
 
   fileprivate var fetchETHBalanceTimer: Timer?
   fileprivate var isFetchingETHBalance: Bool = false
@@ -55,6 +55,11 @@ class KNBalanceCoordinator {
 
   init(session: KNSession) {
     self.session = session
+  }
+
+  func restartNewSession(_ session: KNSession) {
+    self.session = session
+    self.resume()
   }
 
   func resume() {

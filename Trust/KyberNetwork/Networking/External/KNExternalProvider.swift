@@ -10,7 +10,7 @@ import JavaScriptKit
 class KNExternalProvider {
 
   let keystore: Keystore
-  let account: Account
+  fileprivate var account: Account
   let web3Swift: Web3Swift
   let knCustomRPC: KNCustomRPC!
   let networkAddress: Address!
@@ -26,6 +26,10 @@ class KNExternalProvider {
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
     self.reserveAddress = Address(string: customRPC.reserveAddress)
+  }
+
+  func updateNewAccount(_ account: Account) {
+    self.account = account
   }
 
   // MARK: Balance

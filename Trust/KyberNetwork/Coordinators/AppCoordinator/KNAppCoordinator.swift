@@ -2,6 +2,7 @@
 
 import UIKit
 import IQKeyboardManager
+import BigInt
 
 class KNAppCoordinator: NSObject, Coordinator {
 
@@ -78,8 +79,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     // Exchange Tab
     self.exchangeCoordinator = {
       let coordinator = KNExchangeTokenCoordinator(
-      session: self.session,
-      balanceCoordinator: self.balanceCoordinator!
+      session: self.session
       )
       coordinator.delegate = self
       return coordinator
@@ -90,8 +90,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     // Transfer Tab
     self.transferCoordinator = {
       let coordinator = KNTransferTokenCoordinator(
-        session: self.session,
-        balanceCoordinator: self.balanceCoordinator!
+        session: self.session
       )
       coordinator.delegate = self
       return coordinator
@@ -102,8 +101,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     // Wallet Tab
     self.walletCoordinator = {
       let coordinator = KNWalletCoordinator(
-        session: self.session,
-        balanceCoordinator: self.balanceCoordinator!
+        session: self.session
       )
       coordinator.delegate = self
       return coordinator
@@ -158,7 +156,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addObserveNotificationFromSession()
   }
 
-  func stopLastSession() {
+  func stopAllSessions() {
     self.removeObserveNotificationFromSession()
 
     self.session.stopSession()
@@ -183,6 +181,21 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.historyCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
+  }
+
+  // Switching account, restart a new session
+  func restartNewSession(_ wallet: Wallet) {
+    self.removeObserveNotificationFromSession()
+    self.balanceCoordinator?.pause()
+    self.session.switchSession(wallet)
+    self.balanceCoordinator?.restartNewSession(self.session)
+    // wallet tab
+    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.transferCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.walletCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.tabbarController.selectedIndex = 2
   }
 
   fileprivate func addObserveNotificationFromSession() {
@@ -256,25 +269,72 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Notification) {
-    self.walletCoordinator?.exchangeRateDidUpdateNotification(sender)
+    guard let balanceCoordinator = self.balanceCoordinator else { return }
+
+    self.walletCoordinator?.appCoordinatorExchangeRateDidUpdate(
+      totalBalanceInUSD: balanceCoordinator.totalBalanceInUSD,
+      totalBalanceInETH: balanceCoordinator.totalBalanceInETH
+    )
   }
 
   @objc func exchangeRateUSDDidUpdateNotification(_ sender: Notification) {
-    self.exchangeCoordinator?.usdRateDidUpdateNotification(sender)
-    self.transferCoordinator?.usdRateDidUpdateNotification(sender)
-    self.walletCoordinator?.exchangeRateDidUpdateNotification(sender)
+    guard let balanceCoordinator = self.balanceCoordinator else { return }
+    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
+
+    self.exchangeCoordinator?.appCoordinatorUSDRateDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH
+    )
+    self.transferCoordinator?.appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: totalUSD)
+    self.walletCoordinator?.appCoordinatorExchangeRateDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH
+    )
   }
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Notification) {
-    self.exchangeCoordinator?.ethBalanceDidUpdateNotification(sender)
-    self.transferCoordinator?.ethBalanceDidUpdateNotification(sender)
-    self.walletCoordinator?.ethBalanceDidUpdateNotification(sender)
+    guard let balanceCoordinator = self.balanceCoordinator else { return }
+    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
+    let ethBalance: Balance = balanceCoordinator.ethBalance
+
+    self.exchangeCoordinator?.appCoordinatorETHBalanceDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH,
+      ethBalance: ethBalance
+    )
+    self.transferCoordinator?.appCoordinatorETHBalanceDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      ethBalance: ethBalance
+    )
+    self.walletCoordinator?.appCoordinatorETHBalanceDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH,
+      ethBalance: ethBalance
+    )
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Notification) {
-    self.exchangeCoordinator?.tokenBalancesDidUpdateNotification(sender)
-    self.transferCoordinator?.tokenBalancesDidUpdateNotification(sender)
-    self.walletCoordinator?.tokenBalancesDidUpdateNotification(sender)
+    guard let balanceCoordinator = self.balanceCoordinator else { return }
+    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
+    let otherTokensBalance: [String: Balance] = balanceCoordinator.otherTokensBalance
+
+    self.exchangeCoordinator?.appCoordinatorTokenBalancesDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH,
+      otherTokensBalance: otherTokensBalance
+    )
+    self.transferCoordinator?.appCoordinatorTokenBalancesDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      otherTokensBalance: otherTokensBalance
+    )
+    self.walletCoordinator?.appCoordinatorTokenBalancesDidUpdate(
+      totalBalanceInUSD: totalUSD,
+      totalBalanceInETH: totalETH,
+      otherTokensBalance: otherTokensBalance
+    )
   }
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
@@ -338,7 +398,7 @@ extension KNAppCoordinator: KNSessionDelegate {
     let alertController = UIAlertController(title: "Exit".toBeLocalised(), message: "Do you want to exit and remove all wallets from the app?".toBeLocalised(), preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-      self.stopLastSession()
+      self.stopAllSessions()
     }))
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
@@ -352,7 +412,7 @@ extension KNAppCoordinator: KNPendingTransactionStatusCoordinatorDelegate {
 
 extension KNAppCoordinator: KNWalletCoordinatorDelegate {
   func walletCoordinatorDidClickExit() {
-    self.stopLastSession()
+    self.userDidClickExitSession()
   }
 
   func walletCoordinatorDidClickExchange(token: KNToken) {

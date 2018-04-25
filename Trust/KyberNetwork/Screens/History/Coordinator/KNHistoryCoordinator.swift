@@ -11,7 +11,7 @@ class KNHistoryCoordinator: Coordinator {
     return formatter
   }()
   let navigationController: UINavigationController
-  let session: KNSession
+  private(set) var session: KNSession
 
   var coordinators: [Coordinator] = []
 
@@ -52,6 +52,10 @@ class KNHistoryCoordinator: Coordinator {
 
   func stop() {
     self.removeObserveNotification()
+  }
+
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+    self.session = session
   }
 
   fileprivate func removeObserveNotification() {

@@ -7,8 +7,7 @@ import TrustKeystore
 class KNTransferTokenCoordinator: Coordinator {
 
   let navigationController: UINavigationController
-  let session: KNSession
-  let balanceCoordinator: KNBalanceCoordinator
+  private(set) var session: KNSession
   let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
 
   weak var delegate: KNSessionDelegate?
@@ -39,13 +38,11 @@ class KNTransferTokenCoordinator: Coordinator {
 
   init(
     navigationController: UINavigationController = UINavigationController(),
-    session: KNSession,
-    balanceCoordinator: KNBalanceCoordinator
+    session: KNSession
     ) {
     self.navigationController = navigationController
     self.navigationController.applyStyle()
     self.session = session
-    self.balanceCoordinator = balanceCoordinator
   }
 
   func start() {
@@ -55,22 +52,33 @@ class KNTransferTokenCoordinator: Coordinator {
   func stop() {
   }
 
-  func tokenBalancesDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.coordinatorUpdateUSDBalance(usd: self.balanceCoordinator.totalBalanceInUSD)
-    self.rootViewController.coordinatorOtherTokenBalanceDidUpdate(balances: self.balanceCoordinator.otherTokensBalance)
-    self.selectTokenViewController.updateTokenBalances(self.balanceCoordinator.otherTokensBalance)
+  // MARK: Update from app coordinator
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+    self.session = session
   }
 
-  func ethBalanceDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.coordinatorUpdateUSDBalance(usd: self.balanceCoordinator.totalBalanceInUSD)
-    self.rootViewController.coordinatorETHBalanceDidUpdate(balance: self.balanceCoordinator.ethBalance)
-    self.selectTokenViewController.updateETHBalance(self.balanceCoordinator.ethBalance)
+  func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, otherTokensBalance: [String: Balance]) {
+    self.rootViewController.coordinatorUpdateUSDBalance(usd: totalBalanceInUSD)
+    self.rootViewController.coordinatorOtherTokenBalanceDidUpdate(balances: otherTokensBalance)
+    self.selectTokenViewController.updateTokenBalances(otherTokensBalance)
   }
 
-  func usdRateDidUpdateNotification(_ sender: Any) {
-    self.rootViewController.coordinatorUpdateUSDBalance(usd: self.balanceCoordinator.totalBalanceInUSD)
+  func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, ethBalance: Balance) {
+    self.rootViewController.coordinatorUpdateUSDBalance(usd: totalBalanceInUSD)
+    self.rootViewController.coordinatorETHBalanceDidUpdate(balance: ethBalance)
+    self.selectTokenViewController.updateETHBalance(ethBalance)
   }
 
+  func appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: BigInt) {
+    self.rootViewController.coordinatorUpdateUSDBalance(usd: totalBalanceInUSD)
+  }
+
+  func appCoordinatorShouldOpenTransferForToken(_ token: KNToken) {
+    self.rootViewController.coordinatorSelectedTokenDidUpdate(token)
+    self.rootViewController.tabBarController?.selectedIndex = 1
+  }
+
+  // MARK: Network requests
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
     self.navigationController.topViewController?.displayLoading()
     KNTransactionCoordinator.requestDataPrepareForTransferTransaction(
@@ -104,11 +112,6 @@ class KNTransferTokenCoordinator: Coordinator {
           self.navigationController.displayError(error: error.error)
         }
     }
-  }
-
-  func appCoordinatorShouldOpenTransferForToken(_ token: KNToken) {
-    self.rootViewController.coordinatorSelectedTokenDidUpdate(token)
-    self.rootViewController.tabBarController?.selectedIndex = 1
   }
 }
 
