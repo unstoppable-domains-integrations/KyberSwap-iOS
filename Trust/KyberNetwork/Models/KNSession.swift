@@ -53,7 +53,7 @@ class KNSession {
   }
 
   func stopSession() {
-    _ = self.keystore.delete(wallet: self.wallet)
+    self.keystore.wallets.forEach { _ = self.keystore.delete(wallet: $0) }
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = nil
 

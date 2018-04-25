@@ -60,7 +60,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   func start() {
     self.addCoordinator(self.walletImportingMainCoordinator)
     self.walletImportingMainCoordinator.start()
-    if let wallet = self.keystore.wallets.first {
+    if let wallet = self.keystore.recentlyUsedWallet {
       self.startNewSession(with: wallet)
     }
     self.addInternalObserveNotification()
@@ -329,7 +329,12 @@ extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
 
 extension KNAppCoordinator: KNSessionDelegate {
   func userDidClickExitSession() {
-    self.stopLastSession()
+    let alertController = UIAlertController(title: "Exit".toBeLocalised(), message: "Do you want to exit and remove all wallets from the app?".toBeLocalised(), preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+      self.stopLastSession()
+    }))
+    self.navigationController.present(alertController, animated: true, completion: nil)
   }
 }
 
