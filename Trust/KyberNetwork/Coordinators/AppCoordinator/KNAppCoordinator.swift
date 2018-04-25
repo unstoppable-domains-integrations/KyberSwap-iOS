@@ -7,7 +7,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   let navigationController: UINavigationController
   let window: UIWindow
-  let keystore: Keystore
+  fileprivate var keystore: Keystore
   var coordinators: [Coordinator] = []
   fileprivate var session: KNSession!
   fileprivate var currentWallet: Wallet!
@@ -60,13 +60,14 @@ class KNAppCoordinator: NSObject, Coordinator {
   func start() {
     self.addCoordinator(self.walletImportingMainCoordinator)
     self.walletImportingMainCoordinator.start()
-    if let wallet = self.keystore.recentlyUsedWallet {
+    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
       self.startNewSession(with: wallet)
     }
     self.addInternalObserveNotification()
   }
 
   func startNewSession(with wallet: Wallet) {
+    self.keystore.recentlyUsedWallet = wallet
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
@@ -159,13 +160,18 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func stopLastSession() {
     self.removeObserveNotificationFromSession()
+
     self.session.stopSession()
     self.currentWallet = nil
+    self.keystore.recentlyUsedWallet = nil
     self.session = nil
+
     self.balanceCoordinator?.pause()
     self.balanceCoordinator = nil
+
     self.tabbarController.view.removeFromSuperview()
     self.tabbarController.removeFromParentViewController()
+
     // Stop all coordinators in tabs and re-assign to nil
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
