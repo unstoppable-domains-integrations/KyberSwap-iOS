@@ -11,9 +11,20 @@ class KNSettingsCoordinator: Coordinator {
   weak var delegate: KNSessionDelegate?
 
   lazy var rootViewController: KNSettingsViewController = {
-    let controller = KNSettingsViewController(delegate: self)
-    controller.loadViewIfNeeded()
+    let controller = KNSettingsViewController(
+      address: self.session.wallet.address.description,
+      delegate: self
+    )
     return controller
+  }()
+
+  lazy var passcodeCoordinator: KNPasscodeCoordinator = {
+    let coordinator = KNPasscodeCoordinator(
+      navigationController: self.navigationController,
+      type: .setPasscode
+    )
+    coordinator.delegate = self
+    return coordinator
   }()
 
   init(
@@ -36,6 +47,18 @@ class KNSettingsCoordinator: Coordinator {
 extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
   func settingsViewControllerDidClickExit() {
     self.delegate?.userDidClickExitSession()
+  }
+
+  func settingsViewControllerWalletsButtonPressed() {
+    //TODO: Open list of wallets
+  }
+
+  func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {
+    if isOn {
+      self.passcodeCoordinator.start()
+    } else {
+      KNPasscodeUtil.shared.deletePasscode()
+    }
   }
 
   func settingsViewControllerBackUpButtonPressed() {
@@ -111,5 +134,11 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
         })
       }
     }
+  }
+}
+
+extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCancel() {
+    self.rootViewController.userDidCancelCreatePasscode()
   }
 }

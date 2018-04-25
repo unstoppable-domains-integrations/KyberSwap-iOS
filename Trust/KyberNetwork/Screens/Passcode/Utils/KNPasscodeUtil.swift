@@ -34,7 +34,10 @@ class KNPasscodeUtil {
 
   @discardableResult
   func deletePasscode() -> Bool {
-    return SAMKeychain.deletePassword(forService: kServiceKey, account: kAccountKey)
+    if self.currentPasscode() != nil {
+      return SAMKeychain.deletePassword(forService: kServiceKey, account: kAccountKey)
+    }
+    return false
   }
 
   func currentNumberAttempts() -> Int {
@@ -58,7 +61,10 @@ class KNPasscodeUtil {
 
   @discardableResult
   func deleteNumberAttempts() -> Bool {
-    return self.keychain.delete(kNumberAttempts)
+    if self.keychain.get(kNumberAttempts) != nil {
+      return self.keychain.delete(kNumberAttempts)
+    }
+    return false
   }
 
   func currentMaxAttemptTime() -> Date? {
@@ -85,6 +91,9 @@ class KNPasscodeUtil {
 
   @discardableResult
   func deleteCurrentMaxAttemptTime() -> Bool {
-    return self.keychain.delete(kMaxAttemptTime)
+    if self.keychain.get(kMaxAttemptTime) != nil {
+      return self.keychain.delete(kMaxAttemptTime)
+    }
+    return false
   }
 }

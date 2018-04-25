@@ -2,11 +2,18 @@
 
 import UIKit
 
+protocol KNPasscodeCoordinatorDelegate: class {
+  func passcodeCoordinatorDidCancel()
+}
+
 class KNPasscodeCoordinator: NSObject, Coordinator {
 
+  let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
   var coordinators: [Coordinator] = []
+
+  weak var delegate: KNPasscodeCoordinatorDelegate?
 
   lazy var passcodeViewController: KNPasscodeViewController = {
     let controller = KNPasscodeViewController(viewType: self.type, delegate: self)
@@ -14,29 +21,42 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  init(type: KNPasscodeViewType) {
+  init(
+    navigationController: UINavigationController = UINavigationController(),
+    type: KNPasscodeViewType
+    ) {
+    self.navigationController = navigationController
     self.type = type
     super.init()
-    self.window.windowLevel = UIWindowLevelStatusBar + 1.0
-    self.window.rootViewController = self.passcodeViewController
-    self.window.isHidden = true
+    if self.type == .authenticate {
+      self.window.windowLevel = UIWindowLevelStatusBar + 1.0
+      self.window.rootViewController = self.passcodeViewController
+      self.window.isHidden = true
+    }
   }
 
   func start() {
-    if KNPasscodeUtil.shared.currentPasscode() == nil { return }
+    if KNPasscodeUtil.shared.currentPasscode() == nil && self.type == .authenticate { return }
     DispatchQueue.main.async {
       self.passcodeViewController.resetUI()
-      self.window.makeKeyAndVisible()
-      self.window.isHidden = false
       if self.type == .authenticate {
+        self.window.makeKeyAndVisible()
+        self.window.isHidden = false
         self.passcodeViewController.showBioAuthenticationIfNeeded()
+      } else {
+        self.navigationController.present(self.passcodeViewController, animated: true, completion: nil)
       }
     }
   }
 
-  func stop() {
+  func stop(completion: @escaping () -> Void) {
     DispatchQueue.main.async {
-      self.window.isHidden = true
+      if self.type == .authenticate {
+        self.window.isHidden = true
+        completion()
+      } else {
+        self.navigationController.dismiss(animated: true, completion: completion)
+      }
     }
   }
 }
@@ -46,18 +66,18 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
   func passcodeViewControllerDidSuccessEvaluatePolicyWithBio() {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
-    self.stop()
+    self.stop {}
   }
 
   func passcodeViewControllerDidEnterPasscode(_ passcode: String) {
     guard let currentPasscode = KNPasscodeUtil.shared.currentPasscode() else {
-      self.stop()
+      self.stop {}
       return
     }
     if currentPasscode == passcode {
       KNPasscodeUtil.shared.deleteNumberAttempts()
       KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
-      self.stop()
+      self.stop {}
     } else {
       KNPasscodeUtil.shared.recordNewAttempt()
       if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
@@ -69,10 +89,13 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
 
   // Create passcode
   func passcodeViewControllerDidCancel() {
-    self.stop()
+    self.stop {
+      self.delegate?.passcodeCoordinatorDidCancel()
+    }
   }
 
   func passcodeViewControllerDidCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
+    self.stop {}
   }
 }

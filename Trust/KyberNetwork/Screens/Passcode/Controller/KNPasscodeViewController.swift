@@ -181,6 +181,7 @@ class KNPasscodeViewController: KNBaseViewController {
       } else {
         self.firstPasscode = nil
         self.currentPasscode = ""
+        self.updateUI()
       }
     }
   }

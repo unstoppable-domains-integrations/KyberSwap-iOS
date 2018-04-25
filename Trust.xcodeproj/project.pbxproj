@@ -64,7 +64,6 @@
 		257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FC72078F6A500EE0128 /* KNCreatePasswordViewController.swift */; };
 		257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */; };
 		257C9FCF2078FB3C00EE0128 /* KNSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */; };
-		257C9FD02078FB3C00EE0128 /* KNSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */; };
 		257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */; };
 		258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EB2081F22C00BD4068 /* KNReachability.swift */; };
 		258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */; };
@@ -559,7 +558,6 @@
 		257C9FC72078F6A500EE0128 /* KNCreatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNCreatePasswordViewController.swift; sourceTree = "<group>"; };
 		257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNCreatePasswordViewController.xib; sourceTree = "<group>"; };
 		257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsViewController.swift; sourceTree = "<group>"; };
-		257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSettingsViewController.xib; sourceTree = "<group>"; };
 		257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsCoordinator.swift; sourceTree = "<group>"; };
 		258C47EB2081F22C00BD4068 /* KNReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNReachability.swift; sourceTree = "<group>"; };
 		258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Kyber.swift"; sourceTree = "<group>"; };
@@ -1420,7 +1418,6 @@
 			isa = PBXGroup;
 			children = (
 				257C9FCD2078FB3C00EE0128 /* KNSettingsViewController.swift */,
-				257C9FCE2078FB3C00EE0128 /* KNSettingsViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3361,7 +3358,6 @@
 				257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */,
 				73CBC75F2020CBF800374666 /* AccountViewCell.xib in Resources */,
 				257740D92057ABB4003323EB /* KNWalletImportingMainViewController.xib in Resources */,
-				257C9FD02078FB3C00EE0128 /* KNSettingsViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				257B84AD2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.xib in Resources */,
