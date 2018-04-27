@@ -16,6 +16,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
   static let expandedHeight: CGFloat = 125.0
 
   @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var iconTextLabel: UILabel!
   @IBOutlet weak var tokenNameLabel: UILabel!
 
   @IBOutlet weak var tokenBalanceAmountLabel: UILabel!
@@ -28,7 +29,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var bottomPaddingConstraint: NSLayoutConstraint!
   @IBOutlet weak var heightButtonConstraint: NSLayoutConstraint!
 
-  fileprivate var token: KNToken!
+  fileprivate var tokenObject: TokenObject!
   fileprivate weak var delegate: KNWalletTokenCollectionViewCellDelegate?
 
   override func awakeFromNib() {
@@ -38,21 +39,40 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     self.exchangeButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.transferButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.receiveButton.rounded(color: .clear, width: 0, radius: 5.0)
+    self.iconImageView.rounded(
+      color: .clear,
+      width: 0,
+      radius: self.iconImageView.frame.width / 2.0
+    )
+    self.iconTextLabel.rounded(
+      color: .clear,
+      width: 0,
+      radius: self.iconTextLabel.frame.width / 2.0
+    )
   }
 
-  func updateCell(with token: KNToken, balance: Balance, isExpanded: Bool, delegate: KNWalletTokenCollectionViewCellDelegate?) {
-    self.iconImageView.image = UIImage(named: token.icon)
-    self.tokenNameLabel.text = token.symbol
+  func updateCell(with tokenObject: TokenObject, balance: Balance, isExpanded: Bool, delegate: KNWalletTokenCollectionViewCellDelegate?) {
+    if let iconImage = UIImage(named: KNTokenStorage.iconImageName(for: tokenObject)) {
+      self.iconImageView.image = iconImage
+      self.iconImageView.isHidden = false
+      self.iconTextLabel.isHidden = true
+    } else {
+      self.iconTextLabel.text = String(tokenObject.symbol.prefix(1)).uppercased()
+      self.iconTextLabel.isHidden = false
+      self.iconImageView.isHidden = true
+    }
+
+    self.tokenNameLabel.text = tokenObject.symbol
     self.tokenBalanceAmountLabel.text = balance.amountShort
-    if let usdRate = KNRateCoordinator.shared.usdRate(for: token) {
+    if let usdRate = KNRateCoordinator.shared.usdRate(for: tokenObject) {
       let amountString: String = {
         return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)) 
       }()
       self.tokenUSDAmountLabel.text = "US$\(amountString)"
     } else {
-      self.tokenUSDAmountLabel.text = "US$0.00"
+      self.tokenUSDAmountLabel.text = "US$-.--"
     }
-    self.token = token
+    self.tokenObject = tokenObject
     self.delegate = delegate
     if isExpanded {
       self.heightButtonConstraint.constant = 32
@@ -65,14 +85,21 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
   }
 
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
-    self.delegate?.walletTokenCollectionViewCellDidClickExchange(token: self.token)
+    //TODO: Temporary
+    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+      self.delegate?.walletTokenCollectionViewCellDidClickExchange(token: token)
+    }
   }
 
   @IBAction func transferButtonPressed(_ sender: UIButton) {
-    self.delegate?.walletTokenCollectionViewCellDidClickTransfer(token: self.token)
+    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+      self.delegate?.walletTokenCollectionViewCellDidClickTransfer(token: token)
+    }
   }
 
   @IBAction func receiveButtonPressed(_ sender: UIButton) {
-    self.delegate?.walletTokenCollectionViewCellDidClickReceive(token: self.token)
+    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+      self.delegate?.walletTokenCollectionViewCellDidClickReceive(token: token)
+    }
   }
 }

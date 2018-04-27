@@ -15,6 +15,7 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletViewControllerDelegate?
   fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
+  fileprivate var tokenObjects: [TokenObject] = []
   fileprivate var isHidingSmallAssets: Bool = false
 
   fileprivate var balances: [String: Balance] = [:]
@@ -23,12 +24,12 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate var expandedRowIDs: [Int] = []
 
-  fileprivate var displayedTokens: [KNToken] {
-    let tokens: [KNToken] = {
-      if !isHidingSmallAssets { return self.tokens.filter({ return self.balances[$0.address] != nil }) }
-      return self.tokens.filter { token -> Bool in
+  fileprivate var displayedTokens: [TokenObject] {
+    let tokens: [TokenObject] = {
+      if !isHidingSmallAssets { self.tokenObjects.filter({ return self.balances[$0.contract] != nil }) }
+      return self.tokenObjects.filter { token -> Bool in
         // Remove <= US$1
-        guard let bal = self.balances[token.address], !bal.value.isZero else { return false }
+        guard let bal = self.balances[token.contract], !bal.value.isZero else { return false }
         if let usdRate = KNRateCoordinator.shared.usdRate(for: token), usdRate.rate * bal.value / BigInt(EthereumUnit.ether.rawValue) <= BigInt(EthereumUnit.ether.rawValue) {
           return false
         }
@@ -36,7 +37,7 @@ class KNWalletViewController: KNBaseViewController {
       }
     }()
     return tokens.sorted {
-      guard let bal0 = self.balances[$0.address], let bal1 = self.balances[$1.address] else { return false }
+      guard let bal0 = self.balances[$0.contract], let bal1 = self.balances[$1.contract] else { return false }
       return bal0.value > bal1.value
     }
   }
@@ -170,6 +171,11 @@ extension KNWalletViewController {
     self.totalUSDBalance = usdBalance
     self.updateEstimatedTotalValue()
   }
+
+  func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
+    self.tokenObjects = tokenObjects
+    self.tokensCollectionView.reloadData()
+  }
 }
 
 extension KNWalletViewController: UICollectionViewDelegate {
@@ -229,10 +235,10 @@ extension KNWalletViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     if collectionView == self.tokensCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNWalletTokenCollectionViewCell.cellID, for: indexPath) as! KNWalletTokenCollectionViewCell
-      let token: KNToken = self.displayedTokens[indexPath.row]
-      let balance: Balance = self.balances[token.address] ?? Balance(value: BigInt(0))
+      let tokenObject: TokenObject = self.displayedTokens[indexPath.row]
+      let balance: Balance = self.balances[tokenObject.contract] ?? Balance(value: BigInt(0))
       cell.updateCell(
-        with: token,
+        with: tokenObject,
         balance: balance,
         isExpanded: self.expandedRowIDs.contains(indexPath.row),
         delegate: self

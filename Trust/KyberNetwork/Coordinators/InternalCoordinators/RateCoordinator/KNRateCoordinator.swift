@@ -33,6 +33,10 @@ class KNRateCoordinator {
     return self.usdRates.first(where: { $0.source == token.symbol })
   }
 
+  func usdRate(for token: TokenObject) -> KNRate? {
+    return self.usdRates.first(where: { $0.source == token.symbol })
+  }
+
   init() {}
 
   func resume() {

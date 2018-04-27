@@ -123,17 +123,17 @@ class KNBalanceCoordinator {
   @objc func fetchOtherTokensBalance(_ sender: Timer?) {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
-    let tokens = KNJSONLoaderUtil.shared.tokens
+    let tokens = self.session.tokenStorage.tokens
     let group = DispatchGroup()
     for token in tokens {
-      if let contractAddress = Address(string: token.address), token.symbol != "ETH" {
+      if let contractAddress = Address(string: token.contract), token.symbol != "ETH" {
         group.enter()
         self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
           guard let `self` = self else { return }
           switch result {
           case .success(let bigInt):
             let balance = Balance(value: bigInt)
-            self.otherTokensBalance[token.address] = balance
+            self.otherTokensBalance[token.contract] = balance
             NSLog("Done loading \(token.symbol) balance: \(balance.amountFull)")
           case .failure(let error):
             NSLog("Load \(token.symbol) balance failed with error: \(error.description)")

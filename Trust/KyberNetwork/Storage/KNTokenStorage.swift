@@ -41,6 +41,11 @@ class KNTokenStorage {
     return self.tokens.first(where: { $0.contract == knc.address })!
   }
 
+  static func iconImageName(for token: TokenObject) -> String {
+    let localTokens = KNJSONLoaderUtil.shared.tokens
+    return localTokens.first(where: { $0.address == token.contract })?.icon ?? ""
+  }
+
   func get(forPrimaryKey key: String) -> TokenObject? {
     return self.realm.object(ofType: TokenObject.self, forPrimaryKey: key)
   }

@@ -18,6 +18,10 @@ class KNWalletCoordinator: Coordinator {
 
   weak var delegate: KNWalletCoordinatorDelegate?
 
+  fileprivate var tokens: [TokenObject] {
+    return self.session.tokenStorage.tokens
+  }
+
   var coordinators: [Coordinator] = []
 
   lazy var rootViewController: KNWalletViewController = {
@@ -36,6 +40,7 @@ class KNWalletCoordinator: Coordinator {
   }
 
   func start() {
+    self.rootViewController.coordinatorUpdateTokenObjects(self.tokens)
     self.navigationController.viewControllers = [self.rootViewController]
   }
 
@@ -48,6 +53,7 @@ extension KNWalletCoordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.rootViewController.coordinatorUpdateTokenObjects(self.tokens)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {

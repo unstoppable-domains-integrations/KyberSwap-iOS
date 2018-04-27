@@ -15,7 +15,7 @@ extension KNEtherScanService: TargetType {
     case .getListTransactions(let address, let startBlock, let endBlock, let page):
       return URL(string: "http://api.etherscan.io/api?module=account&action=txlist&address=\(address)&startblock=\(startBlock)&endblock=\(endBlock)&page=\(page)&sort=asc&apikey=\(apiKey)")!
     case .getListTokenTransactions(let address, let startBlock, let page, let sort):
-      return URL(string: "http://api.etherscan.io/api?module=account&action=tokentx&address=\(address)&page=\(page)&offset=200&startblock=\(startBlock)&sort=\(sort)&apikey=\(apiKey)")!
+      return URL(string: "http://api.etherscan.io/api?module=account&action=tokentx&address=0x63825c174ab367968ec60f061753d3bbd36a0d8f&page=\(page)&offset=200&startblock=\(startBlock)&sort=\(sort)&apikey=\(apiKey)")!
     }
   }
 
