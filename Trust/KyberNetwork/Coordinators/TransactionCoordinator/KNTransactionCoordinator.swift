@@ -289,21 +289,32 @@ extension KNTransactionCoordinator {
 // MARK: ERC20 Token transactions
 extension KNTransactionCoordinator {
   func startUpdatingListERC20TokenTransactions() {
-//    self.tokenTxTimer?.invalidate()
-//    self.tokenTxTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-//      repeats: true,
-//      block: { _ in
-//      let startBlock: Int = {
-//        return 0
-//      }()
-//      self.fetchListERC20TokenTransactions(
-//        forAddress: self.wallet.address.description,
-//        startBlock: startBlock,
-//        endBlock: 999999999,
-//        completion: nil
-//      )
-//    })
+    self.tokenTxTimer?.invalidate()
+    if KNAppTracker.transactionLoadState(for: self.wallet.address) != .done {
+      self.initialFetchERC20TokenTransactions(
+        forAddress: self.wallet.address,
+        page: 1,
+        completion: nil
+      )
+    }
+    self.tokenTxTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { _ in
+      let startBlock: Int = {
+        guard let transaction = self.transactionStorage.tokenTransactions.first else {
+          return 0
+        }
+        return transaction.blockNumber
+      }()
+      self.fetchListERC20TokenTransactions(
+        forAddress: self.wallet.address.description,
+        startBlock: startBlock,
+        page: 1,
+        sort: "asc",
+        completion: nil
+      )
+    })
   }
 
   func stopUpdatingListERC20TokenTransactions() {
@@ -311,10 +322,22 @@ extension KNTransactionCoordinator {
     self.tokenTxTimer = nil
   }
 
-  func fetchListERC20TokenTransactions(forAddress address: String, startBlock: Int, endBlock: Int, completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?) {
+  func fetchListERC20TokenTransactions(
+    forAddress address: String,
+    startBlock: Int,
+    page: Int,
+    sort: String,
+    completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?
+    ) {
     print("---- ERC20 Token Transactions: Fetching ----")
     let provider = MoyaProvider<KNEtherScanService>()
-    provider.request(.getListTokenTransactions(address: address, startBlock: startBlock, endBlock: endBlock)) { [weak self] result in
+    let service = KNEtherScanService.getListTokenTransactions(
+      address: address,
+      startBlock: startBlock,
+      page: page,
+      sort: sort
+    )
+    provider.request(service) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let response):
@@ -336,7 +359,44 @@ extension KNTransactionCoordinator {
     }
   }
 
+  func initialFetchERC20TokenTransactions(forAddress address: Address, page: Int = 1, completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?) {
+    self.fetchListERC20TokenTransactions(
+      forAddress: address.description,
+      startBlock: 1,
+      page: page,
+      sort: "desc") { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let transactions):
+        if transactions.isEmpty || self.transactionStorage.tokenTransactions.count >= 5000 {
+          // done loading or too many transactions
+          KNAppTracker.updateTransactionLoadState(.done, for: address)
+        } else {
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25, execute: {
+            self.initialFetchERC20TokenTransactions(
+              forAddress: address,
+              page: page + 1,
+              completion: nil
+            )
+          })
+        }
+        completion?(.success(transactions))
+      case .failure(let error):
+        KNAppTracker.updateTransactionLoadState(.failed, for: address)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5.0, execute: {
+          self.initialFetchERC20TokenTransactions(
+            forAddress: address,
+            page: page + 1,
+            completion: nil
+          )
+        })
+        completion?(.failure(AnyError(error)))
+      }
+    }
+  }
+
   func updateListTokenTransactions(_ transactions: [KNTokenTransaction]) {
+    self.transactionStorage.add(transactions: transactions)
     var tokenObjects: [TokenObject] = []
     transactions.forEach { tx in
       if let token = tx.getToken(), !tokenObjects.contains(token) {

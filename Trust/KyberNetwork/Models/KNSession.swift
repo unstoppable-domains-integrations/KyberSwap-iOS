@@ -68,10 +68,9 @@ class KNSession {
       let tokenStorage = KNTokenStorage(realm: realm)
       tokenStorage.deleteAll()
       _ = self.keystore.delete(wallet: wallet)
+      KNAppTracker.resetAppTrackerData(for: wallet.address)
     }
 
-    // Clear all data & tracker
-    KNAppTracker.resetAppTrackerDidExitSession(self)
     self.keystore.recentlyUsedWallet = nil
   }
 
@@ -79,9 +78,6 @@ class KNSession {
   func switchSession(_ wallet: Wallet) {
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = nil
-
-    // Clear all data & tracker
-    KNAppTracker.resetAppTrackerDidExitSession(self)
 
     self.wallet = wallet
     self.keystore.recentlyUsedWallet = wallet

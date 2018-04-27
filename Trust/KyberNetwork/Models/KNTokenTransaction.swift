@@ -8,8 +8,8 @@ import TrustKeystore
 class KNTokenTransaction: Object {
 
   @objc dynamic var id: String = ""
-  @objc dynamic var blockNumber: String = ""
-  @objc dynamic var timeStamp: String = ""
+  @objc dynamic var blockNumber: Int = 0
+  @objc dynamic var date: Date = Date()
   @objc dynamic var nonce: String = ""
   @objc dynamic var blockHash: String = ""
   @objc dynamic var from: String = ""
@@ -30,8 +30,10 @@ class KNTokenTransaction: Object {
   convenience init(dictionary: JSONDictionary) throws {
     self.init()
     self.id = try kn_cast(dictionary["hash"])
-    self.blockNumber = try kn_cast(dictionary["blockNumber"])
-    self.timeStamp = try kn_cast(dictionary["timeStamp"])
+    let blockNumberString: String = try kn_cast(dictionary["blockNumber"])
+    self.blockNumber = Int(blockNumberString) ?? 0
+    let timeStamp: String = try kn_cast(dictionary["timeStamp"])
+    self.date = Date(timeIntervalSince1970: Double(timeStamp) ?? 0.0)
     self.nonce = try kn_cast(dictionary["nonce"])
     self.blockHash = try kn_cast(dictionary["blockHash"])
     self.from = try kn_cast(dictionary["from"])
@@ -48,10 +50,6 @@ class KNTokenTransaction: Object {
     self.cumulativeGasUsed = try kn_cast(dictionary["cumulativeGasUsed"])
     self.input = try kn_cast(dictionary["input"])
     self.confirmations = try kn_cast(dictionary["confirmations"])
-  }
-
-  var date: Date {
-    return Date(timeIntervalSince1970: Double(timeStamp)!)
   }
 
   override static func primaryKey() -> String? {

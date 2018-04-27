@@ -1,6 +1,5 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-import UIKit
 import RealmSwift
 import TrustKeystore
 import BigInt

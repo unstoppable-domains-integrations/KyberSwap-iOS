@@ -76,7 +76,7 @@ class KNAppTracker {
   }
 
   // Reset app tracker
-  static func resetAppTrackerDidExitSession(_ session: KNSession) {
-    self.updateTransactionLoadState(.none, for: session.wallet.address)
+  static func resetAppTrackerData(for address: Address) {
+    self.updateTransactionLoadState(.none, for: address)
   }
 }
