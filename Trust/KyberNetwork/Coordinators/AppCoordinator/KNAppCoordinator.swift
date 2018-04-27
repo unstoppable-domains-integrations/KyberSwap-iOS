@@ -198,7 +198,10 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.tabbarController.selectedIndex = 2
     self.addObserveNotificationFromSession()
   }
+}
 
+// MARK: Notification
+extension KNAppCoordinator {
   fileprivate func addObserveNotificationFromSession() {
     NotificationCenter.default.addObserver(
       self,
@@ -218,6 +221,20 @@ class KNAppCoordinator: NSObject, Coordinator {
       self,
       selector: #selector(self.tokenBalancesDidUpdateNotification(_:)),
       name: tokenBalanceName,
+      object: nil
+    )
+    let tokenTxListName = Notification.Name(kTokenTransactionListDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.tokenTransactionListDidUpdate(_:)),
+      name: tokenTxListName,
+      object: nil
+    )
+    let tokenObjectListName = Notification.Name(kTokenObjectListDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.tokenObjectListDidUpdate(_:)),
+      name: tokenObjectListName,
       object: nil
     )
   }
@@ -252,6 +269,16 @@ class KNAppCoordinator: NSObject, Coordinator {
     NotificationCenter.default.removeObserver(
       self,
       name: Notification.Name(kOtherBalanceDidUpdateNotificationKey),
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kTokenTransactionListDidUpdateNotificationKey),
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kTokenObjectListDidUpdateNotificationKey),
       object: nil
     )
   }
@@ -353,6 +380,12 @@ class KNAppCoordinator: NSObject, Coordinator {
         self.pendingTransactionStatusCoordinator?.updateTransaction(transaction)
       }
     }
+  }
+
+  @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
+  }
+
+  @objc func tokenObjectListDidUpdate(_ sender: Notification) {
   }
 }
 

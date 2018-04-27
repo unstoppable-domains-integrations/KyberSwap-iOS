@@ -397,6 +397,7 @@ extension KNTransactionCoordinator {
 
   func updateListTokenTransactions(_ transactions: [KNTokenTransaction]) {
     self.transactionStorage.add(transactions: transactions)
+    KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
     var tokenObjects: [TokenObject] = []
     transactions.forEach { tx in
       if let token = tx.getToken(), !tokenObjects.contains(token) {
@@ -405,6 +406,7 @@ extension KNTransactionCoordinator {
     }
     if !tokenObjects.isEmpty {
       self.tokenStorage.add(tokens: tokenObjects)
+      KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
     }
   }
 }
