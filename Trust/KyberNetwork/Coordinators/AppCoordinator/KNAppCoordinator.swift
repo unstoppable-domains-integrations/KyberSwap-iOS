@@ -340,7 +340,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
     if let txHash = sender.object as? String,
-      let transaction = self.session.storage.get(forPrimaryKey: txHash) {
+      let transaction = self.session.transactionStorage.get(forPrimaryKey: txHash) {
 
       if self.pendingTransactionStatusCoordinator == nil {
         self.pendingTransactionStatusCoordinator = KNPendingTransactionStatusCoordinator(

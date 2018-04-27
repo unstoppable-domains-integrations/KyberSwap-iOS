@@ -29,7 +29,7 @@ class KNExchangeTokenCoordinator: Coordinator {
   lazy var pendingTransactionListCoordinator: KNPendingTransactionListCoordinator = {
     let coordinator = KNPendingTransactionListCoordinator(
       navigationController: self.navigationController,
-      storage: self.session.storage
+      storage: self.session.transactionStorage
     )
     coordinator.delegate = self
     return coordinator

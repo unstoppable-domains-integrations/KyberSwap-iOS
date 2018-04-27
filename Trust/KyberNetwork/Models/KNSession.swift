@@ -17,7 +17,8 @@ class KNSession {
   let web3Swift: Web3Swift
   let externalProvider: KNExternalProvider
   private(set) var realm: Realm
-  private(set) var storage: TransactionsStorage
+  private(set) var transactionStorage: TransactionsStorage
+  private(set) var tokenStorage: KNTokenStorage
 
   fileprivate var transacionCoordinator: KNTransactionCoordinator?
 
@@ -38,14 +39,15 @@ class KNSession {
     self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
     let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
     self.realm = try! Realm(configuration: config)
-    self.storage = TransactionsStorage(realm: self.realm)
+    self.transactionStorage = TransactionsStorage(realm: self.realm)
+    self.tokenStorage = KNTokenStorage(realm: self.realm)
   }
 
   func startSession() {
     self.web3Swift.start()
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = KNTransactionCoordinator(
-      storage: self.storage,
+      storage: self.transactionStorage,
       externalProvider: self.externalProvider,
       wallet: self.wallet
     )
@@ -53,13 +55,22 @@ class KNSession {
   }
 
   func stopSession() {
-    self.keystore.wallets.forEach { _ = self.keystore.delete(wallet: $0) }
     self.transacionCoordinator?.stopUpdatingPendingTransactions()
     self.transacionCoordinator = nil
 
+    self.keystore.wallets.forEach { wallet in
+      // delete all storage for each wallet
+      let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+      let realm = try! Realm(configuration: config)
+      let transactionStorage = TransactionsStorage(realm: realm)
+      transactionStorage.deleteAll()
+      let tokenStorage = KNTokenStorage(realm: realm)
+      tokenStorage.deleteAll()
+      _ = self.keystore.delete(wallet: wallet)
+    }
+
     // Clear all data & tracker
     KNAppTracker.resetAppTrackerDidExitSession(self)
-    self.storage.deleteAll()
     self.keystore.recentlyUsedWallet = nil
   }
 
@@ -81,12 +92,13 @@ class KNSession {
     self.externalProvider.updateNewAccount(account)
     let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
     self.realm = try! Realm(configuration: config)
-    self.storage = TransactionsStorage(realm: self.realm)
+    self.transactionStorage = TransactionsStorage(realm: self.realm)
+    self.tokenStorage = KNTokenStorage(realm: self.realm)
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {
     // Put here to be able force update new pending transaction immmediately
-    self.storage.add([transaction])
+    self.transactionStorage.add([transaction])
     self.transacionCoordinator?.updatePendingTranscation(transaction)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,

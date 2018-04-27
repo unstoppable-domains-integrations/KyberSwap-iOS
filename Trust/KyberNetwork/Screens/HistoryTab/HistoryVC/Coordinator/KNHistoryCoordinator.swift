@@ -34,7 +34,7 @@ class KNHistoryCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    if !self.session.storage.historyTransactions.isEmpty {
+    if !self.session.transactionStorage.historyTransactions.isEmpty {
       self.historyTransactionsDidUpdate(nil)
     }
     self.addObserveNotification()
@@ -68,7 +68,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   @objc func historyTransactionsDidUpdate(_ sender: Any?) {
-    let transactions: [KNHistoryTransaction] = self.session.storage.historyTransactions
+    let transactions: [KNHistoryTransaction] = self.session.transactionStorage.historyTransactions
 
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: Date(timeIntervalSince1970: Double($0.blockTimestamp))) }

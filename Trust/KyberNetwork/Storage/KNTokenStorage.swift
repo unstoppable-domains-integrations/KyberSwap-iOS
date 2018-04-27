@@ -42,6 +42,10 @@ class KNTokenStorage {
     return self.tokens.first(where: { $0.contract == knc.address })!
   }
 
+  func get(forPrimaryKey key: String) -> TokenObject? {
+    return self.realm.object(ofType: TokenObject.self, forPrimaryKey: key)
+  }
+
   func addCustom(token: ERC20Token) {
     let newToken = TokenObject(
       contract: token.contract.description.lowercased(),
