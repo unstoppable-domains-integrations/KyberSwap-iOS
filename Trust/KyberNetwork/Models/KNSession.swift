@@ -45,9 +45,10 @@ class KNSession {
 
   func startSession() {
     self.web3Swift.start()
-    self.transacionCoordinator?.stopUpdatingPendingTransactions()
+    self.transacionCoordinator?.stop()
     self.transacionCoordinator = KNTransactionCoordinator(
-      storage: self.transactionStorage,
+      transactionStorage: self.transactionStorage,
+      tokenStorage: self.tokenStorage,
       externalProvider: self.externalProvider,
       wallet: self.wallet
     )
@@ -55,7 +56,7 @@ class KNSession {
   }
 
   func stopSession() {
-    self.transacionCoordinator?.stopUpdatingPendingTransactions()
+    self.transacionCoordinator?.stop()
     self.transacionCoordinator = nil
 
     self.keystore.wallets.forEach { wallet in

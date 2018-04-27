@@ -12,28 +12,38 @@ import Moya
 
 class KNTransactionCoordinator {
 
-  let storage: TransactionsStorage
+  let transactionStorage: TransactionsStorage
+  let tokenStorage: KNTokenStorage
   let externalProvider: KNExternalProvider
   let wallet: Wallet
 
   fileprivate var pendingTxTimer: Timer?
   fileprivate var allTxTimer: Timer?
+  fileprivate var tokenTxTimer: Timer?
 
   deinit { self.stop() }
 
-  init(storage: TransactionsStorage, externalProvider: KNExternalProvider, wallet: Wallet) {
-    self.storage = storage
+  init(
+    transactionStorage: TransactionsStorage,
+    tokenStorage: KNTokenStorage,
+    externalProvider: KNExternalProvider,
+    wallet: Wallet
+    ) {
+    self.transactionStorage = transactionStorage
+    self.tokenStorage = tokenStorage
     self.externalProvider = externalProvider
     self.wallet = wallet
   }
 
   func start() {
     self.startUpdatingAllTransactions()
+    self.startUpdatingListERC20TokenTransactions()
     self.startUpdatingPendingTransactions()
   }
 
   func stop() {
     self.stopUpdatingAllTransactions()
+    self.stopUpdatingListERC20TokenTransactions()
     self.stopUpdatingPendingTransactions()
   }
 }
@@ -200,7 +210,7 @@ extension KNTransactionCoordinator {
 //          completion: nil
 //        )
         let fromDate: Date? = {
-          guard let transaction = self.storage.historyTransactions.first else { return nil }
+          guard let transaction = self.transactionStorage.historyTransactions.first else { return nil }
           return Date(timeIntervalSince1970: Double(transaction.blockTimestamp))
         }()
         self.fetchHistoryTransactions(
@@ -267,12 +277,75 @@ extension KNTransactionCoordinator {
   }
 
   func updateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
-    self.storage.addHistoryTransactions(transactions)
+    self.transactionStorage.addHistoryTransactions(transactions)
     KNNotificationUtil.postNotification(
       for: kTransactionListDidUpdateNotificationKey,
       object: transactions,
       userInfo: nil
     )
+  }
+}
+
+// MARK: ERC20 Token transactions
+extension KNTransactionCoordinator {
+  func startUpdatingListERC20TokenTransactions() {
+//    self.tokenTxTimer?.invalidate()
+//    self.tokenTxTimer = Timer.scheduledTimer(
+//      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+//      repeats: true,
+//      block: { _ in
+//      let startBlock: Int = {
+//        return 0
+//      }()
+//      self.fetchListERC20TokenTransactions(
+//        forAddress: self.wallet.address.description,
+//        startBlock: startBlock,
+//        endBlock: 999999999,
+//        completion: nil
+//      )
+//    })
+  }
+
+  func stopUpdatingListERC20TokenTransactions() {
+    self.tokenTxTimer?.invalidate()
+    self.tokenTxTimer = nil
+  }
+
+  func fetchListERC20TokenTransactions(forAddress address: String, startBlock: Int, endBlock: Int, completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?) {
+    print("---- ERC20 Token Transactions: Fetching ----")
+    let provider = MoyaProvider<KNEtherScanService>()
+    provider.request(.getListTokenTransactions(address: address, startBlock: startBlock, endBlock: endBlock)) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let response):
+        do {
+          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
+          let data: [JSONDictionary] = try kn_cast(json["result"])
+          let transactions = try data.map({ return try KNTokenTransaction(dictionary: $0) })
+          self.updateListTokenTransactions(transactions)
+          print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
+          completion?(.success(transactions))
+        } catch let error {
+          print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+          completion?(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+        completion?(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func updateListTokenTransactions(_ transactions: [KNTokenTransaction]) {
+    var tokenObjects: [TokenObject] = []
+    transactions.forEach { tx in
+      if let token = tx.getToken(), !tokenObjects.contains(token) {
+        tokenObjects.append(token)
+      }
+    }
+    if !tokenObjects.isEmpty {
+      self.tokenStorage.add(tokens: tokenObjects)
+    }
   }
 }
 
@@ -291,7 +364,7 @@ extension KNTransactionCoordinator {
   }
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
-    self.storage.pendingObjects.forEach { self.updatePendingTranscation($0) }
+    self.transactionStorage.pendingObjects.forEach { self.updatePendingTranscation($0) }
   }
 
   func updatePendingTranscation(_ transaction: Transaction) {
@@ -300,7 +373,7 @@ extension KNTransactionCoordinator {
       guard let `self` = self else { return }
       self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
         guard let `self` = self else { return }
-        if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending {
+        if let trans = self.transactionStorage.get(forPrimaryKey: transaction.id), trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
@@ -310,7 +383,7 @@ extension KNTransactionCoordinator {
             switch respError {
             case .responseError(let code, let message, _):
               NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)")
-              self.storage.delete([transaction])
+              self.transactionStorage.delete([transaction])
             case .resultObjectParseError:
               if transaction.date.addingTimeInterval(60) < Date() {
                 self.updateTransactionStateIfNeeded(transaction, state: .failed)
@@ -332,11 +405,11 @@ extension KNTransactionCoordinator {
     self.externalProvider.getReceipt(for: transaction) { [weak self] result in
       switch result {
       case .success(let newTx):
-        if let trans = self?.storage.get(forPrimaryKey: newTx.id), trans.state != .pending {
+        if let trans = self?.transactionStorage.get(forPrimaryKey: newTx.id), trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
-        self?.storage.add([newTx])
+        self?.transactionStorage.add([newTx])
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: newTx.id,
@@ -350,8 +423,8 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func updateTransactionStateIfNeeded(_ transaction: Transaction, state: TransactionState) {
-    if let trans = self.storage.get(forPrimaryKey: transaction.id), trans.state != .pending { return }
-    self.storage.update(state: state, for: transaction)
+    if let trans = self.transactionStorage.get(forPrimaryKey: transaction.id), trans.state != .pending { return }
+    self.transactionStorage.update(state: state, for: transaction)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,
