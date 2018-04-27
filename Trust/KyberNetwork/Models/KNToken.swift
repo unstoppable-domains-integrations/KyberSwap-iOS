@@ -50,3 +50,17 @@ struct KNToken {
     return rhs.symbol != lhs.symbol || rhs.address != lhs.address
   }
 }
+
+extension KNToken {
+  func toTokenObject() -> TokenObject {
+    return TokenObject(
+      contract: self.address,
+      name: self.name,
+      symbol: self.symbol,
+      decimals: self.decimal,
+      value: "0",
+      isCustom: false,
+      isDisabled: false
+    )
+  }
+}

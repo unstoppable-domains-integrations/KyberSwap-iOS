@@ -21,6 +21,7 @@
 		251ABCBF205790B10069687F /* KNJSONLoaderUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */; };
 		251ABCC2205792170069687F /* UIColor+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCC1205792170069687F /* UIColor+Kyber.swift */; };
 		2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */; };
+		255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255C40EA2092D64F00475871 /* KNTokenStorage.swift */; };
 		256051852060F2E900D5588E /* KNTransferTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256051832060F2E900D5588E /* KNTransferTokenViewController.swift */; };
 		256051862060F2E900D5588E /* KNTransferTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256051842060F2E900D5588E /* KNTransferTokenViewController.xib */; };
 		2560518920610A5700D5588E /* KNTransferTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2560518820610A5700D5588E /* KNTransferTokenCoordinator.swift */; };
@@ -518,6 +519,7 @@
 		251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNJSONLoaderUtil.swift; sourceTree = "<group>"; };
 		251ABCC1205792170069687F /* UIColor+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Kyber.swift"; sourceTree = "<group>"; };
 		2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Kyber.swift"; sourceTree = "<group>"; };
+		255C40EA2092D64F00475871 /* KNTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTokenStorage.swift; sourceTree = "<group>"; };
 		256051832060F2E900D5588E /* KNTransferTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransferTokenViewController.swift; sourceTree = "<group>"; };
 		256051842060F2E900D5588E /* KNTransferTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransferTokenViewController.xib; sourceTree = "<group>"; };
 		2560518820610A5700D5588E /* KNTransferTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransferTokenCoordinator.swift; sourceTree = "<group>"; };
@@ -1035,6 +1037,7 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				255C40EC2092DB6200475871 /* Storage */,
 				257740C82057948F003323EB /* Coordinators */,
 				257740C2205793C6003323EB /* Screens */,
 				251ABCC0205792080069687F /* Extensions */,
@@ -1124,6 +1127,14 @@
 				258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		255C40EC2092DB6200475871 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				255C40EA2092D64F00475871 /* KNTokenStorage.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		256051812060F22300D5588E /* TransferTab */ = {
@@ -3744,6 +3755,7 @@
 				77872D232023F43B0032D687 /* TransactionsTracker.swift in Sources */,
 				29FA00CE201CA64E002F7DC5 /* DappCommand.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
+				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				290B2B651F91A4880053C83E /* TransactionsFooterView.swift in Sources */,
 				293B8B431F70815900356286 /* BalanceTitleView.swift in Sources */,
 				29DBF2A11F9DA6EF00327C60 /* BackupViewController.swift in Sources */,
