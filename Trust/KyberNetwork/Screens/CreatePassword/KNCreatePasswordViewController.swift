@@ -38,7 +38,7 @@ class KNCreatePasswordViewController: UIViewController {
   }
 
   fileprivate func setupUI() {
-    self.containerView.rounded(color: .clear, width: 0, radius: 10.0)
+    self.containerView.rounded(color: .clear, width: 0, radius: 5.0)
 
     self.passwordTextField.text = ""
     self.confirmPasswordTextField.text = ""

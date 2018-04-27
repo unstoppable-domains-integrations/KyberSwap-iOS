@@ -43,7 +43,7 @@ class KNWalletImportingPrivateKeyViewController: KNBaseViewController {
     self.privateKeyTextField.text = ""
 
     self.importButton.setTitle("Import".uppercased().toBeLocalised(), for: .normal)
-    self.importButton.rounded(color: .clear, width: 0, radius: 10.0)
+    self.importButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.importButton.backgroundColor = UIColor.Kyber.blue
   }
 

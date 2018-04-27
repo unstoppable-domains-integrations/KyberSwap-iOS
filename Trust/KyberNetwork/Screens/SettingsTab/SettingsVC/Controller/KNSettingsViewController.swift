@@ -14,9 +14,10 @@ protocol KNSettingsViewControllerDelegate: class {
 class KNSettingsViewController: FormViewController {
 
   fileprivate weak var delegate: KNSettingsViewControllerDelegate?
-  fileprivate let address: String
+  fileprivate var address: String
 
   fileprivate var passcodeRow: SwitchRow!
+  fileprivate var walletsCell: ButtonRow!
 
   init(address: String, delegate: KNSettingsViewControllerDelegate?) {
     self.address = address
@@ -37,8 +38,8 @@ class KNSettingsViewController: FormViewController {
     self.setupNavigationBar()
 
     form = Form()
-    +++ Section("Account")
-    <<< AppFormAppearance.button { button in
+    var accountSection = Section("Account")
+    self.walletsCell = AppFormAppearance.button { button in
       button.cellStyle = .value1
     }.onCellSelection { [unowned self] _, _ in
       self.delegate?.settingsViewControllerWalletsButtonPressed()
@@ -49,7 +50,8 @@ class KNSettingsViewController: FormViewController {
       cell.detailTextLabel?.text = String(self.address.prefix(16)) + "..."
       cell.accessoryType = .disclosureIndicator
     }
-    <<< AppFormAppearance.button { button in
+    accountSection += [self.walletsCell]
+    accountSection <<< AppFormAppearance.button { button in
       button.cellStyle = .value1
     }.onCellSelection { [unowned self] _, _ in
       self.delegate?.settingsViewControllerBackUpButtonPressed()
@@ -59,6 +61,8 @@ class KNSettingsViewController: FormViewController {
       cell.textLabel?.text = "Backup".toBeLocalised()
       cell.accessoryType = .disclosureIndicator
     }
+    form += [accountSection]
+
     var securitySection = Section("Security")
     form += [securitySection]
     self.passcodeRow = SwitchRow("SwitchRow") {
@@ -92,5 +96,11 @@ class KNSettingsViewController: FormViewController {
   func userDidCancelCreatePasscode() {
     self.passcodeRow.value = false
     self.passcodeRow.updateCell()
+  }
+
+  func userDidSelectNewWallet(with address: String) {
+    self.address = address
+    self.walletsCell.cell.detailTextLabel?.text = String(self.address.prefix(16)) + "..."
+    self.walletsCell.updateCell()
   }
 }

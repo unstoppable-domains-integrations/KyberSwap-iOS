@@ -59,6 +59,8 @@ class KNBalanceCoordinator {
 
   func restartNewSession(_ session: KNSession) {
     self.session = session
+    self.ethBalance = Balance(value: BigInt(0))
+    self.otherTokensBalance = [:]
     self.resume()
   }
 

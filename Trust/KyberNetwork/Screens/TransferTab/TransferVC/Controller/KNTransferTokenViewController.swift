@@ -112,7 +112,7 @@ extension KNTransferTokenViewController {
     self.selectedToken = self.ethToken
 
     self.fromTextLabel.text = "From".toBeLocalised()
-    self.tokenButton.rounded(color: .white, width: 1.0, radius: 10.0)
+    self.tokenButton.rounded(color: .white, width: 1.0, radius: 5.0)
 
     self.amountTextLabel.text = "Amount".toBeLocalised()
     self.amountTextField.delegate = self

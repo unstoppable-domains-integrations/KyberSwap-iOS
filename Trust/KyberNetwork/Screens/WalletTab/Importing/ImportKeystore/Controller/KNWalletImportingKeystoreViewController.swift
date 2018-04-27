@@ -50,7 +50,7 @@ class KNWalletImportingKeystoreViewController: KNBaseViewController {
 
     self.passwordLabel.text = "Password".toBeLocalised()
 
-    self.importButton.rounded(color: .clear, width: 0, radius: 10.0)
+    self.importButton.rounded(color: .clear, width: 0, radius: 5.0)
     self.importButton.setTitle("Import".uppercased().toBeLocalised(), for: .normal)
     self.importButton.backgroundColor = UIColor.Kyber.blue
   }

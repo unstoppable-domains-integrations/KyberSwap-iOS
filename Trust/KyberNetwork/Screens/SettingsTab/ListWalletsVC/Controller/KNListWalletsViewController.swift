@@ -20,6 +20,7 @@ class KNListWalletsViewController: KNBaseViewController {
   @IBOutlet weak var addWalletButton: UIButton!
   @IBOutlet weak var walletTableView: UITableView!
 
+  @IBOutlet weak var heightConstraintForWalletTableView: NSLayoutConstraint!
   init(delegate: KNListWalletsViewControllerDelegate?) {
     self.delegate = delegate
     super.init(nibName: KNListWalletsViewController.className, bundle: nil)
@@ -34,34 +35,41 @@ class KNListWalletsViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  fileprivate func setupUI() {
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     self.setupNaivagationBar()
+  }
+
+  fileprivate func setupUI() {
     self.setupWalletTableView()
     self.setupAddWallet()
   }
 
   fileprivate func setupNaivagationBar() {
     self.navigationItem.title = "Wallets"
-    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.backButtonPressed(_:)))
-    self.navigationItem.backBarButtonItem?.tintColor = .white
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.backButtonPressed(_:)))
+    self.navigationItem.leftBarButtonItem?.tintColor = .white
   }
 
   fileprivate func setupWalletTableView() {
     self.walletTableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellID)
-    self.walletTableView.rowHeight = 60
+    self.walletTableView.rowHeight = 60.0
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
     self.walletTableView.backgroundColor = .white
+    self.heightConstraintForWalletTableView.constant = 0
   }
 
   fileprivate func setupAddWallet() {
-    self.addWalletButton.rounded(color: .clear, width: 0, radius: 10.0)
+    self.addWalletButton.rounded(color: .clear, width: 0, radius: 5.0)
   }
 
   func updateView(with wallets: [Wallet], currentWallet: Wallet) {
     self.listWallets = wallets
     self.currentWallet = currentWallet
+    self.heightConstraintForWalletTableView.constant = CGFloat(wallets.count) * 60.0
     self.walletTableView.reloadData()
+    self.updateViewConstraints()
   }
 
   @objc func backButtonPressed(_ sender: Any) {
@@ -69,6 +77,7 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   @IBAction func addWalletButtonPressed(_ sender: UIButton) {
+    self.delegate?.listWalletsViewControllerDidSelectAddWallet()
   }
 }
 
@@ -88,13 +97,18 @@ extension KNListWalletsViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return nil
+    return UIView()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath)
-    cell.textLabel?.text = self.listWallets[indexPath.row].address.description
+    cell.textLabel?.text = String(self.listWallets[indexPath.row].address.description.prefix(32)) + "..."
     cell.backgroundColor = .white
+    if self.listWallets[indexPath.row] == self.currentWallet {
+      cell.accessoryType = .checkmark
+    } else {
+      cell.accessoryType = .none
+    }
     return cell
   }
 }

@@ -22,6 +22,12 @@ class KNListWalletsCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var createWalletCoordinator: KNWalletImportingMainCoordinator = {
+    let coordinator = KNWalletImportingMainCoordinator(keystore: self.session.keystore)
+    coordinator.delegate = self
+    return coordinator
+  }()
+
   init(
     navigationController: UINavigationController,
     session: KNSession,
@@ -37,8 +43,8 @@ class KNListWalletsCoordinator: Coordinator {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
 
-  func stop(completion: @escaping () -> Void) {
-    self.rootViewController.dismiss(animated: true, completion: completion)
+  func stop() {
+    self.navigationController.popViewController(animated: false)
   }
 
   func updateNewSession(_ session: KNSession) {
@@ -53,7 +59,8 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
   }
 
   func listWalletsViewControllerDidSelectAddWallet() {
-    //TODO: Show add wallet
+    self.createWalletCoordinator.start()
+    self.navigationController.topViewController?.present(self.createWalletCoordinator.navigationController, animated: true, completion: nil)
   }
 
   func listWalletsViewControllerDidSelectWallet(_ wallet: Wallet) {
@@ -67,5 +74,12 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
     }))
     self.navigationController.topViewController?.present(alert, animated: true, completion: nil)
+  }
+}
+
+extension KNListWalletsCoordinator: KNWalletImportingMainCoordinatorDelegate {
+  func walletImportingMainDidImport(wallet: Wallet) {
+    self.rootViewController.updateView(with: self.session.keystore.wallets, currentWallet: self.session.wallet)
+    self.navigationController.topViewController?.dismiss(animated: true, completion: nil)
   }
 }

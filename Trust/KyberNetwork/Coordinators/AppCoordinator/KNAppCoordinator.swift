@@ -196,6 +196,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 2
+    self.addObserveNotificationFromSession()
   }
 
   fileprivate func addObserveNotificationFromSession() {
@@ -425,5 +426,15 @@ extension KNAppCoordinator: KNWalletCoordinatorDelegate {
 
   func walletCoordinatorDidClickReceive(token: KNToken) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: true)
+  }
+}
+
+extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
+  func settingsCoordinatorUserDidSelectExit() {
+    self.userDidClickExitSession()
+  }
+
+  func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
   }
 }

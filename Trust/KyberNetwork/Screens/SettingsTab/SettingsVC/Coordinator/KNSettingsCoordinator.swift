@@ -2,13 +2,18 @@
 
 import UIKit
 
+protocol KNSettingsCoordinatorDelegate: class {
+  func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
+  func settingsCoordinatorUserDidSelectExit()
+}
+
 class KNSettingsCoordinator: Coordinator {
 
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   private(set) var session: KNSession
 
-  weak var delegate: KNSessionDelegate?
+  weak var delegate: KNSettingsCoordinatorDelegate?
 
   lazy var rootViewController: KNSettingsViewController = {
     let controller = KNSettingsViewController(
@@ -60,7 +65,7 @@ class KNSettingsCoordinator: Coordinator {
 
 extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
   func settingsViewControllerDidClickExit() {
-    self.delegate?.userDidClickExitSession()
+    self.delegate?.settingsCoordinatorUserDidSelectExit()
   }
 
   func settingsViewControllerWalletsButtonPressed() {
@@ -159,14 +164,17 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
 
 extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   func listWalletsCoordinatorDidClickBack() {
-    self.listWalletsCoordinator.stop { }
+    self.listWalletsCoordinator.stop()
   }
 
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.listWalletsCoordinator.stop { }
+    self.listWalletsCoordinator.stop()
+    if wallet == self.session.wallet { return }
+    self.rootViewController.userDidSelectNewWallet(with: wallet.address.description)
+    self.delegate?.settingsCoordinatorUserDidSelectNewWallet(wallet)
   }
 
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    self.listWalletsCoordinator.stop { }
+    self.listWalletsCoordinator.stop()
   }
 }

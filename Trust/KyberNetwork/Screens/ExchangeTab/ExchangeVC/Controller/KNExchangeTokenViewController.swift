@@ -138,7 +138,7 @@ extension KNExchangeTokenViewController {
 
   fileprivate func setupFromToken() {
     self.fromTokenLabel.text = "From".toBeLocalised()
-    self.fromTokenButton.rounded(color: UIColor.white, width: 1.0, radius: 10.0)
+    self.fromTokenButton.rounded(color: UIColor.white, width: 1.0, radius: 5.0)
 
     self.amountFromTokenLabel.text = "Amount".toBeLocalised()
     self.amountFromTokenTextField.text = "0"
@@ -150,7 +150,7 @@ extension KNExchangeTokenViewController {
 
   fileprivate func setupToToken() {
     self.toTokenLabel.text = "To".toBeLocalised()
-    self.toTokenButton.rounded(color: UIColor.white, width: 1.0, radius: 10.0)
+    self.toTokenButton.rounded(color: UIColor.white, width: 1.0, radius: 5.0)
 
     self.amountToTokenTextField.text = "0"
     self.amountToTokenTextField.delegate = self

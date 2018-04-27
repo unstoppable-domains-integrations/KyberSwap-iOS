@@ -12,7 +12,7 @@ protocol KNSessionDelegate: class {
 
 class KNSession {
 
-  let keystore: Keystore
+  private(set) var keystore: Keystore
   private(set) var wallet: Wallet
   let web3Swift: Web3Swift
   let externalProvider: KNExternalProvider
@@ -60,6 +60,7 @@ class KNSession {
     // Clear all data & tracker
     KNAppTracker.resetAppTrackerDidExitSession(self)
     self.storage.deleteAll()
+    self.keystore.recentlyUsedWallet = nil
   }
 
   // Switch between wallets
@@ -70,6 +71,9 @@ class KNSession {
     // Clear all data & tracker
     KNAppTracker.resetAppTrackerDidExitSession(self)
 
+    self.wallet = wallet
+    self.keystore.recentlyUsedWallet = wallet
+
     var account: Account!
     if case .real(let acc) = self.wallet.type {
       account = acc
@@ -78,7 +82,6 @@ class KNSession {
     let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
     self.realm = try! Realm(configuration: config)
     self.storage = TransactionsStorage(realm: self.realm)
-    self.wallet = wallet
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {
