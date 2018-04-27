@@ -26,7 +26,7 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate var displayedTokens: [TokenObject] {
     let tokens: [TokenObject] = {
-      if !isHidingSmallAssets { self.tokenObjects.filter({ return self.balances[$0.contract] != nil }) }
+      if !isHidingSmallAssets { return self.tokenObjects.filter({ return self.balances[$0.contract] != nil }) }
       return self.tokenObjects.filter { token -> Bool in
         // Remove <= US$1
         guard let bal = self.balances[token.contract], !bal.value.isZero else { return false }

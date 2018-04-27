@@ -439,6 +439,11 @@ class KNExternalProvider {
   }
 
   func getTokenBalanceDecodeData(balance: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if balance == "0x" {
+      // Fix: Can not decode 0x to uint
+      completion(.success(BigInt(0)))
+      return
+    }
     let request = GetERC20BalanceDecode(data: balance)
     self.web3Swift.request(request: request) { result in
       switch result {
