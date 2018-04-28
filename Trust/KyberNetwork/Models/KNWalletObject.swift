@@ -3,7 +3,7 @@
 import UIKit
 import RealmSwift
 
-class KNWallet: Object {
+class KNWalletObject: Object {
 
   @objc dynamic var address: String = ""
   @objc dynamic var name: String = ""

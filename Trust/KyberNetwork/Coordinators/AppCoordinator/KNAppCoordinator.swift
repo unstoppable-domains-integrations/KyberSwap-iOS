@@ -160,6 +160,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.removeObserveNotificationFromSession()
 
     self.session.stopSession()
+    KNWalletStorage.shared.deleteAll()
+
     self.currentWallet = nil
     self.keystore.recentlyUsedWallet = nil
     self.session = nil
@@ -422,6 +424,8 @@ extension KNAppCoordinator {
 
 extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
   func walletImportingMainDidImport(wallet: Wallet) {
+    let walletObject = KNWalletObject(address: wallet.address.description)
+    KNWalletStorage.shared.add(wallets: [walletObject])
     self.navigationController.topViewController?.displayLoading(text: "", animated: true)
     Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
       guard let `self` = self else { return }

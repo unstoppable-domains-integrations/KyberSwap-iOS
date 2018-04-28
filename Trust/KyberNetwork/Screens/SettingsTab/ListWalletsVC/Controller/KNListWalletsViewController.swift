@@ -52,7 +52,8 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   fileprivate func setupWalletTableView() {
-    self.walletTableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellID)
+    let nib = UINib(nibName: KNListWalletsTableViewCell.className, bundle: nil)
+    self.walletTableView.register(nib, forCellReuseIdentifier: kCellID)
     self.walletTableView.rowHeight = 60.0
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
@@ -101,10 +102,12 @@ extension KNListWalletsViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath)
-    cell.textLabel?.text = String(self.listWallets[indexPath.row].address.description.prefix(32)) + "..."
-    cell.backgroundColor = .white
-    if self.listWallets[indexPath.row] == self.currentWallet {
+    let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! KNListWalletsTableViewCell
+    let wallet = self.listWallets[indexPath.row]
+    if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
+      cell.updateCell(with: walletObject)
+    }
+    if wallet == self.currentWallet {
       cell.accessoryType = .checkmark
     } else {
       cell.accessoryType = .none
