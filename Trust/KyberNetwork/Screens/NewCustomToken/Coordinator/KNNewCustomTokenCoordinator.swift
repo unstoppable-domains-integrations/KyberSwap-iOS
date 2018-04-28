@@ -9,14 +9,18 @@ class KNNewCustomTokenCoordinator: Coordinator {
   let token: ERC20Token?
   var coordinators: [Coordinator] = []
 
-  lazy var navController: UINavigationController = {
-    let controller: KNNewCustomTokenViewController = {
-      let viewModel = KNNewCustomTokenViewModel(token: self.token)
-      return KNNewCustomTokenViewController(viewModel: viewModel, delegate: self)
-    }()
-    let navController = UINavigationController(rootViewController: controller)
-    navController.applyStyle()
-    return navController
+//  lazy var rootViewController: KNNewCustomTokenViewController = {
+//    let controller = KNNewCustomTokenViewController(
+//      viewModel: KNNewCustomTokenViewModel(token: self.token),
+//      delegate: self
+//    )
+//    return controller
+//  }()
+
+  lazy var rootViewController: NewTokenViewController = {
+    let newTokenVC = NewTokenViewController(token: .none)
+    newTokenVC.delegate = self
+    return newTokenVC
   }()
 
   init(
@@ -30,6 +34,8 @@ class KNNewCustomTokenCoordinator: Coordinator {
   }
 
   func start() {
+    let navController = UINavigationController(rootViewController: self.rootViewController)
+//    navController.applyStyle()
     self.navigationController.present(navController, animated: true, completion: nil)
   }
 
@@ -38,12 +44,20 @@ class KNNewCustomTokenCoordinator: Coordinator {
   }
 }
 
-extension KNNewCustomTokenCoordinator: KNNewCustomTokenViewControllerDelegate {
-  func didCancel(in viewController: KNNewCustomTokenViewController) {
-    self.stop()
-  }
+//extension KNNewCustomTokenCoordinator: KNNewCustomTokenViewControllerDelegate {
+//  func didCancel(in viewController: KNNewCustomTokenViewController) {
+//    self.stop()
+//  }
+//
+//  func didAddToken(_ token: ERC20Token, in viewController: KNNewCustomTokenViewController) {
+//    self.storage.addCustom(token: token)
+//    KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
+//    self.stop()
+//  }
+//}
 
-  func didAddToken(_ token: ERC20Token, in viewController: KNNewCustomTokenViewController) {
+extension KNNewCustomTokenCoordinator: NewTokenViewControllerDelegate {
+  func didAddToken(token: ERC20Token, in viewController: NewTokenViewController) {
     self.storage.addCustom(token: token)
     KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
     self.stop()
