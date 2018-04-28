@@ -58,6 +58,7 @@ class KNExchangeTokenCoordinator: Coordinator {
 extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.navigationController.popToRootViewController(animated: false)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {

@@ -58,7 +58,7 @@ class KNSettingsCoordinator: Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
-    self.listWalletsCoordinator.updateNewSession(session)
+    self.navigationController.popToRootViewController(animated: false)
     //TODO Update address for settings page
   }
 }

@@ -44,14 +44,14 @@ class KNWalletCoordinator: Coordinator {
     self.navigationController.viewControllers = [self.rootViewController]
   }
 
-  func stop() {
-  }
+  func stop() { }
 }
 
 // Update from appcoordinator
 extension KNWalletCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.navigationController.popToRootViewController(animated: false)
     self.rootViewController.coordinatorUpdateTokenObjects(self.tokens)
   }
 
@@ -111,5 +111,11 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   }
 
   func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any) {
+    let coordinator = KNNewCustomTokenCoordinator(
+      navigationController: self.navigationController,
+      storage: self.session.tokenStorage,
+      token: nil
+    )
+    coordinator.start()
   }
 }
