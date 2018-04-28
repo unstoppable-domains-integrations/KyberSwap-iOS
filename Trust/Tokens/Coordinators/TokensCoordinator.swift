@@ -144,4 +144,7 @@ extension TokensCoordinator: NewTokenViewControllerDelegate {
         tokensViewController.fetch()
         dismiss()
     }
+
+    func didCancel(in viewController: NewTokenViewController) {
+    }
 }

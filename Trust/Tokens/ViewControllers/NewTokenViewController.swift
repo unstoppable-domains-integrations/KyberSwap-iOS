@@ -7,6 +7,7 @@ import QRCodeReaderViewController
 
 protocol NewTokenViewControllerDelegate: class {
     func didAddToken(token: ERC20Token, in viewController: NewTokenViewController)
+    func didCancel(in viewController: NewTokenViewController)
 }
 
 class NewTokenViewController: FormViewController {
@@ -46,8 +47,6 @@ class NewTokenViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = viewModel.title
 
         let recipientRightView = FieldAppereance.addressFieldRightView(
             pasteAction: { [unowned self] in self.pasteAction() },
@@ -92,7 +91,15 @@ class NewTokenViewController: FormViewController {
                 $0.value = self.viewModel.decimals
             }
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finish))
+        navigationItem.title = self.viewModel.title
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(self.finish))
+        navigationItem.rightBarButtonItem?.tintColor = .white
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancel))
+        navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+
+    @objc func cancel() {
+      self.delegate?.didCancel(in: self)
     }
 
     @objc func finish() {

@@ -111,11 +111,20 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   }
 
   func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any) {
-    let coordinator = KNNewCustomTokenCoordinator(
-      navigationController: self.navigationController,
-      storage: self.session.tokenStorage,
-      token: nil
-    )
-    coordinator.start()
+    let viewController = NewTokenViewController(token: .none)
+    viewController.delegate = self
+    self.navigationController.pushViewController(viewController, animated: true)
+  }
+}
+
+extension KNWalletCoordinator: NewTokenViewControllerDelegate {
+  func didCancel(in viewController: NewTokenViewController) {
+    self.navigationController.popViewController(animated: true)
+  }
+
+  func didAddToken(token: ERC20Token, in viewController: NewTokenViewController) {
+    self.session.tokenStorage.addCustom(token: token)
+    KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
+    self.navigationController.popViewController(animated: true)
   }
 }

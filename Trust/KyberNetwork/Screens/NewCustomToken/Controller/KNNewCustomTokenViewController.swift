@@ -5,7 +5,7 @@ import Eureka
 import TrustKeystore
 import QRCodeReaderViewController
 
-struct KNNewCustomTokenViewModel {
+class KNNewCustomTokenViewModel {
 
   fileprivate let token: ERC20Token?
 
