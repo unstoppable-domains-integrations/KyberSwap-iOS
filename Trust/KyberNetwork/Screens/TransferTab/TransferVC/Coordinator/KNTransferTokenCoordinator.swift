@@ -51,8 +51,10 @@ class KNTransferTokenCoordinator: Coordinator {
 
   func stop() {
   }
+}
 
-  // MARK: Update from app coordinator
+// MARK: Update from app coordinator
+extension KNTransferTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
   }
@@ -78,7 +80,12 @@ class KNTransferTokenCoordinator: Coordinator {
     self.rootViewController.tabBarController?.selectedIndex = 1
   }
 
-  // MARK: Network requests
+  func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
+  }
+}
+
+// MARK: Network requests
+extension KNTransferTokenCoordinator {
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
     self.navigationController.topViewController?.displayLoading()
     KNTransactionCoordinator.requestDataPrepareForTransferTransaction(

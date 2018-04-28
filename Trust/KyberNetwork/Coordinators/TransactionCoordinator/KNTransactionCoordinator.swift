@@ -305,7 +305,7 @@ extension KNTransactionCoordinator {
         guard let transaction = self.transactionStorage.tokenTransactions.first else {
           return 0
         }
-        return transaction.blockNumber
+        return transaction.blockNumber + 1
       }()
       self.fetchListERC20TokenTransactions(
         forAddress: self.wallet.address.description,

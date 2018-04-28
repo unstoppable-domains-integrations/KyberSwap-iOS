@@ -52,7 +52,10 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   func stop() {
   }
+}
 
+// MARK: Update from app coordinator
+extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
   }
@@ -78,6 +81,12 @@ class KNExchangeTokenCoordinator: Coordinator {
     self.rootViewController.tabBarController?.selectedIndex = 0
   }
 
+  func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
+  }
+}
+
+// MARK: Network requests
+extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
     self.navigationController.topViewController?.displayLoading()
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in

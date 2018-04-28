@@ -386,6 +386,10 @@ extension KNAppCoordinator {
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {
+    let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
+    self.walletCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.transferCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 }
 

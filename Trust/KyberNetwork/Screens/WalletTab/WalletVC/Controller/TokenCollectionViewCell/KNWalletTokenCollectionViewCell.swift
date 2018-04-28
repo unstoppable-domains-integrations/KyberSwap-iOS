@@ -70,7 +70,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
       }()
       self.tokenUSDAmountLabel.text = "US$\(amountString)"
     } else {
-      self.tokenUSDAmountLabel.text = "US$-.--"
+      self.tokenUSDAmountLabel.text = "US$0"
     }
     self.tokenObject = tokenObject
     self.delegate = delegate

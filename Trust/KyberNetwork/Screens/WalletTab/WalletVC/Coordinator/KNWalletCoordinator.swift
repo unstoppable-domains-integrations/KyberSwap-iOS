@@ -50,7 +50,6 @@ class KNWalletCoordinator: Coordinator {
 
 // Update from appcoordinator
 extension KNWalletCoordinator {
-
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateTokenObjects(self.tokens)
@@ -79,6 +78,10 @@ extension KNWalletCoordinator {
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD
     )
+  }
+
+  func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
+    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
   }
 }
 

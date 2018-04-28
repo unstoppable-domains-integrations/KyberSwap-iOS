@@ -54,4 +54,14 @@ enum KNEnvironment: Int {
     case .kovan: return "config_env_kovan"
     }
   }
+
+  var apiEtherScanEndpoint: String {
+    switch self {
+    case .mainnetTest: return ""
+    case .production: return "http://api.etherscan.io/"
+    case .staging: return ""
+    case .ropsten: return "http://api-ropsten.etherscan.io/"
+    case .kovan: return "http://api-kovan.etherscan.io/"
+    }
+  }
 }
