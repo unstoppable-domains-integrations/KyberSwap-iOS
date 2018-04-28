@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1D2831CD94641E5166E3A798 /* Pods_TrustUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEE09E815DB68F6634F89AA /* Pods_TrustUITests.framework */; };
+		2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502AC16209475BE007F23CD /* KNListWalletsTableViewCell.swift */; };
+		2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */; };
+		2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502AC1A20947794007F23CD /* KNWalletObject.swift */; };
+		2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502AC1C20947840007F23CD /* KNWalletStorage.swift */; };
 		251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCA420578E630069687F /* KNNotificationUtil.swift */; };
 		251ABCA720578E630069687F /* KNParseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCA520578E630069687F /* KNParseUtil.swift */; };
 		251ABCA920578E7B0069687F /* KNToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCA820578E7B0069687F /* KNToken.swift */; };
@@ -511,6 +515,10 @@
 
 /* Begin PBXFileReference section */
 		0AEE09E815DB68F6634F89AA /* Pods_TrustUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2502AC16209475BE007F23CD /* KNListWalletsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListWalletsTableViewCell.swift; sourceTree = "<group>"; };
+		2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsTableViewCell.xib; sourceTree = "<group>"; };
+		2502AC1A20947794007F23CD /* KNWalletObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletObject.swift; sourceTree = "<group>"; };
+		2502AC1C20947840007F23CD /* KNWalletStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletStorage.swift; sourceTree = "<group>"; };
 		251ABCA420578E630069687F /* KNNotificationUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNNotificationUtil.swift; sourceTree = "<group>"; };
 		251ABCA520578E630069687F /* KNParseUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNParseUtil.swift; sourceTree = "<group>"; };
 		251ABCA820578E7B0069687F /* KNToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNToken.swift; sourceTree = "<group>"; };
@@ -1044,6 +1052,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2502AC152094758C007F23CD /* ListWalletsTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				2502AC16209475BE007F23CD /* KNListWalletsTableViewCell.swift */,
+				2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */,
+			);
+			path = ListWalletsTableViewCell;
+			sourceTree = "<group>";
+		};
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
@@ -1088,6 +1105,7 @@
 				257A379F205CFEF300E86794 /* KNTransactionReceipt.swift */,
 				257B84B520750F1D003DD40E /* KNHistoryTransaction.swift */,
 				255C40ED2092E09600475871 /* KNTokenTransaction.swift */,
+				2502AC1A20947794007F23CD /* KNWalletObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1162,6 +1180,7 @@
 			children = (
 				255C40EA2092D64F00475871 /* KNTokenStorage.swift */,
 				255C40EF209306B800475871 /* KNTokenTransactionStorage.swift */,
+				2502AC1C20947840007F23CD /* KNWalletStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1550,6 +1569,7 @@
 		25BE329E209096ED00D760FB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				2502AC152094758C007F23CD /* ListWalletsTableViewCell */,
 				25BE329A209096E800D760FB /* KNListWalletsViewController.swift */,
 				25BE329B209096E800D760FB /* KNListWalletsViewController.xib */,
 			);
@@ -3484,6 +3504,7 @@
 				25AC2482205FBED900989EBA /* KNPendingTransactionListViewController.xib in Resources */,
 				256051862060F2E900D5588E /* KNTransferTokenViewController.xib in Resources */,
 				25CC0ACB2059267B0009D0D5 /* KNExchangeTokenViewController.xib in Resources */,
+				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
 				257A3798205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib in Resources */,
 				257C9FC52078A9F800EE0128 /* KNTransactionCollectionReusableView.xib in Resources */,
 				25CE6F892073B4F100A3A2F9 /* KNWalletTokenCollectionViewCell.xib in Resources */,
@@ -4106,6 +4127,7 @@
 				298542F31FBD594D00CB5081 /* SettingsViewModel.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,
 				775DF441203E3A5D009CD082 /* NonFungibleTokenViewModel.swift in Sources */,
+				2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */,
 				CCA4FE381FD428B300749AE4 /* JailbreakChecker.swift in Sources */,
 				291A1B651F974E8600ADEC80 /* WalletEntryPoint.swift in Sources */,
 				2959960E1FAB05C200DB66A8 /* TransactionsEmptyView.swift in Sources */,
@@ -4120,6 +4142,7 @@
 				257C9FCF2078FB3C00EE0128 /* KNSettingsViewController.swift in Sources */,
 				73BAA8D3201B2FF800D6DD75 /* LockEnterPasscodeViewController.swift in Sources */,
 				29E2E33E1F7A2423000CF94A /* TransactionHeaderView.swift in Sources */,
+				2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */,
 				291F52BF1F6C874E00B369AB /* AccountsViewController.swift in Sources */,
 				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
@@ -4127,6 +4150,7 @@
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
 				29F1C83E1FEB5C91003780D8 /* EditTokensViewController.swift in Sources */,
+				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
 				296AF9A31F733AB30058AF78 /* WalletCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

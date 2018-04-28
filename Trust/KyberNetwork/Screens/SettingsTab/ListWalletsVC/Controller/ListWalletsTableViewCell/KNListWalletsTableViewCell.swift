@@ -4,15 +4,19 @@ import UIKit
 
 class KNListWalletsTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+  @IBOutlet weak var walletIconImageView: UIImageView!
+  @IBOutlet weak var walletNameLabel: UILabel!
+  @IBOutlet weak var walletAddressLabel: UILabel!
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.walletNameLabel.text = "Untitled".toBeLocalised()
+    self.walletAddressLabel.text = ""
+  }
 
-        // Configure the view for the selected state
-    }
-    
+  func updateCell(with wallet: KNWalletObject) {
+    self.walletNameLabel.text = wallet.name
+    self.walletAddressLabel.text = wallet.address
+    self.layoutIfNeeded()
+  }
 }
