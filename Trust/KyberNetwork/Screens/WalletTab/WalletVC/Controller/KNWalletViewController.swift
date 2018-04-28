@@ -87,8 +87,8 @@ class KNWalletViewController: KNBaseViewController {
     self.navigationItem.title = "Wallet"
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(self.addTokenManuallyPressed(_:)))
-    self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+//    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(self.addTokenManuallyPressed(_:)))
+//    self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
   }
 
   fileprivate func setupEstimatedTotalValue() {
