@@ -35,6 +35,7 @@ class KNCreatePasswordViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    self.passwordTextField.becomeFirstResponder()
   }
 
   fileprivate func setupUI() {

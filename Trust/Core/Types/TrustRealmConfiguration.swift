@@ -11,4 +11,10 @@ struct RealmConfiguration {
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(account.address.description.lowercased())-\(chainID).realm")
         return config
     }
+
+    static func globalConfiguration(for chainID: Int) -> Realm.Configuration {
+      var config = Realm.Configuration()
+      config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
+      return config
+    }
 }
