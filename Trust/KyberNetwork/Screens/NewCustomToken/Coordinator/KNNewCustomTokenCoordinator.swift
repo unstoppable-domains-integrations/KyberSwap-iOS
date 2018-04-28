@@ -9,6 +9,16 @@ class KNNewCustomTokenCoordinator: Coordinator {
   let token: ERC20Token?
   var coordinators: [Coordinator] = []
 
+  lazy var navController: UINavigationController = {
+    let controller: KNNewCustomTokenViewController = {
+      let viewModel = KNNewCustomTokenViewModel(token: self.token)
+      return KNNewCustomTokenViewController(viewModel: viewModel, delegate: self)
+    }()
+    let navController = UINavigationController(rootViewController: controller)
+    navController.applyStyle()
+    return navController
+  }()
+
   init(
     navigationController: UINavigationController,
     storage: KNTokenStorage,
@@ -20,27 +30,20 @@ class KNNewCustomTokenCoordinator: Coordinator {
   }
 
   func start() {
-    let navController: UINavigationController = {
-      let controller = NewTokenViewController(token: self.token)
-      controller.delegate = self
-      // Don't want to modify their NewTokenViewController
-      controller.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.didClickCancelButton(_:)))
-      return UINavigationController(rootViewController: controller)
-    }()
-    self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
+    self.navigationController.present(navController, animated: true, completion: nil)
   }
 
   func stop() {
-    self.navigationController.topViewController?.dismiss(animated: true, completion: nil)
-  }
-
-  @objc func didClickCancelButton(_ sender: Any) {
-    self.stop()
+    self.navigationController.dismiss(animated: true, completion: nil)
   }
 }
 
-extension KNNewCustomTokenCoordinator: NewTokenViewControllerDelegate {
-  func didAddToken(token: ERC20Token, in viewController: NewTokenViewController) {
+extension KNNewCustomTokenCoordinator: KNNewCustomTokenViewControllerDelegate {
+  func didCancel(in viewController: KNNewCustomTokenViewController) {
+    self.stop()
+  }
+
+  func didAddToken(_ token: ERC20Token, in viewController: KNNewCustomTokenViewController) {
     self.storage.addCustom(token: token)
     KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
     self.stop()
