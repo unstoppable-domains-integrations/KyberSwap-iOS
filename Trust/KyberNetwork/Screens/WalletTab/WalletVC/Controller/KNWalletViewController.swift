@@ -4,11 +4,12 @@ import UIKit
 import BigInt
 
 protocol KNWalletViewControllerDelegate: class {
-  func walletViewControllerDidExit()
-  func walletViewControllerDidClickTopView()
-  func walletViewControllerDidClickExchange(token: KNToken)
-  func walletViewControllerDidClickTransfer(token: KNToken)
-  func walletViewControllerDidClickReceive(token: KNToken)
+  func walletViewController(_ controller: KNWalletViewController, didExit sender: Any)
+  func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any)
+  func walletViewController(_ controller: KNWalletViewController, didClickWallet sender: Any)
+  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: KNToken)
+  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: KNToken)
+  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: KNToken)
 }
 
 class KNWalletViewController: KNBaseViewController {
@@ -26,7 +27,7 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate var displayedTokens: [TokenObject] {
     let tokens: [TokenObject] = {
-      if !isHidingSmallAssets { return self.tokenObjects.filter({ return self.balances[$0.contract] != nil }) }
+      if !isHidingSmallAssets { return self.tokenObjects }//self.tokenObjects.filter({ return self.balances[$0.contract] != nil }) }
       return self.tokenObjects.filter { token -> Bool in
         // Remove <= US$1
         guard let bal = self.balances[token.contract], !bal.value.isZero else { return false }
@@ -86,13 +87,15 @@ class KNWalletViewController: KNBaseViewController {
     self.navigationItem.title = "Wallet"
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(self.addTokenManuallyPressed(_:)))
+    self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
   }
 
   fileprivate func setupEstimatedTotalValue() {
     self.estimatedBalanceAmountLabel.text = "ETH 0 = USD $0"
     self.estimatedValueContainerView.rounded(color: UIColor.Kyber.gray, width: 0.5, radius: 0)
     UITapGestureRecognizer(addToView: self.estimatedValueContainerView) {
-      self.delegate?.walletViewControllerDidClickTopView()
+      self.delegate?.walletViewController(self, didClickWallet: self.estimatedValueContainerView)
     }
   }
 
@@ -141,11 +144,15 @@ class KNWalletViewController: KNBaseViewController {
   }
 
   @IBAction func openWalletDetailsButtonPressed(_ sender: Any) {
-    self.delegate?.walletViewControllerDidClickTopView()
+    self.delegate?.walletViewController(self, didClickWallet: sender)
   }
 
   @objc func exitButtonPressed(_ sender: Any) {
-    self.delegate?.walletViewControllerDidExit()
+    self.delegate?.walletViewController(self, didExit: sender)
+  }
+
+  @objc func addTokenManuallyPressed(_ sender: Any) {
+    self.delegate?.walletViewController(self, didClickAddTokenManually: sender)
   }
 }
 
@@ -254,14 +261,14 @@ extension KNWalletViewController: UICollectionViewDataSource {
 
 extension KNWalletViewController: KNWalletTokenCollectionViewCellDelegate {
   func walletTokenCollectionViewCellDidClickExchange(token: KNToken) {
-    self.delegate?.walletViewControllerDidClickExchange(token: token)
+    self.delegate?.walletViewController(self, didClickExchange: token)
   }
 
   func walletTokenCollectionViewCellDidClickTransfer(token: KNToken) {
-    self.delegate?.walletViewControllerDidClickTransfer(token: token)
+    self.delegate?.walletViewController(self, didClickTransfer: token)
   }
 
   func walletTokenCollectionViewCellDidClickReceive(token: KNToken) {
-    self.delegate?.walletViewControllerDidClickReceive(token: token)
+    self.delegate?.walletViewController(self, didClickReceive: token)
   }
 }

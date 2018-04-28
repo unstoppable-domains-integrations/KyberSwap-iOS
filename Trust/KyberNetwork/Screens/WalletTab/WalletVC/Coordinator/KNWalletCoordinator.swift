@@ -86,27 +86,30 @@ extension KNWalletCoordinator {
 }
 
 extension KNWalletCoordinator: KNWalletViewControllerDelegate {
-  func walletViewControllerDidExit() {
+  func walletViewController(_ controller: KNWalletViewController, didExit sender: Any) {
     self.stop()
     self.delegate?.walletCoordinatorDidClickExit()
   }
 
-  func walletViewControllerDidClickTopView() {
+  func walletViewController(_ controller: KNWalletViewController, didClickWallet sender: Any) {
     if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "/address/" + self.session.wallet.address.description) {
       let controller = SFSafariViewController(url: url)
       self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
     }
   }
 
-  func walletViewControllerDidClickExchange(token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: KNToken) {
     self.delegate?.walletCoordinatorDidClickExchange(token: token)
   }
 
-  func walletViewControllerDidClickTransfer(token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: KNToken) {
     self.delegate?.walletCoordinatorDidClickTransfer(token: token)
   }
 
-  func walletViewControllerDidClickReceive(token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: KNToken) {
     self.delegate?.walletCoordinatorDidClickReceive(token: token)
+  }
+
+  func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any) {
   }
 }
