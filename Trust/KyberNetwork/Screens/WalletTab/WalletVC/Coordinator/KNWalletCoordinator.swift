@@ -83,6 +83,10 @@ extension KNWalletCoordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
   }
+
+  func appCoordinatorCoinTickerDidUpdate() {
+    self.rootViewController.coordinatorCoinTickerDidUpdate()
+  }
 }
 
 extension KNWalletCoordinator: KNWalletViewControllerDelegate {

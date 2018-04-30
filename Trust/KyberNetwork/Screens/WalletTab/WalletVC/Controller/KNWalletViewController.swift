@@ -188,6 +188,10 @@ extension KNWalletViewController {
     self.tokenObjects = tokenObjects
     self.tokensCollectionView.reloadData()
   }
+
+  func coordinatorCoinTickerDidUpdate() {
+    self.tokensCollectionView.reloadData()
+  }
 }
 
 extension KNWalletViewController: UICollectionViewDelegate {

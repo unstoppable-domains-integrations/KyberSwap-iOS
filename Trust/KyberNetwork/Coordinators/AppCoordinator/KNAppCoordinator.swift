@@ -239,6 +239,13 @@ extension KNAppCoordinator {
       name: tokenObjectListName,
       object: nil
     )
+    let coinTickerName = Notification.Name(kCoinTickersDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.coinTickerDidUpdate(_:)),
+      name: coinTickerName,
+      object: nil
+    )
   }
 
   fileprivate func addInternalObserveNotification() {
@@ -282,6 +289,11 @@ extension KNAppCoordinator {
       self,
       name: Notification.Name(kTokenObjectListDidUpdateNotificationKey),
       object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kCoinTickersDidUpdateNotificationKey),
+      object: self
     )
   }
 
@@ -392,6 +404,10 @@ extension KNAppCoordinator {
     self.walletCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.transferCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+  }
+
+  @objc func coinTickerDidUpdate(_ sender: Notification) {
+    self.walletCoordinator?.appCoordinatorCoinTickerDidUpdate()
   }
 }
 
