@@ -10,33 +10,94 @@ class KNCoinTickerCoordinator {
 
   static let shared = KNCoinTickerCoordinator()
   private let provider: MoyaProvider = MoyaProvider<KNCoinMarketCapService>()
+  fileprivate var allCoinTickersTimer: Timer?
+  fileprivate var isLoadingAllCoinTickers: Bool = false
+  fileprivate var lastUpdate: Date?
 
-  private var coinTickers: [JSONDictionary] = []
+  func start() {
+    self.startLoadingAllCoinTickers()
+  }
 
-  func fetchCoinTickers(limit: Int = 0, currency: String = "USD", completion: ((Result<[JSONDictionary], AnyError>) -> Void)?) {
+  func stop() {
+    self.stopLoadingAllCoinTickers()
+  }
+
+  fileprivate func startLoadingAllCoinTickers() {
+    self.allCoinTickersTimer?.invalidate()
+    // Immediately fetch when it is started
+    if self.lastUpdate == nil || Date().timeIntervalSince(self.lastUpdate!) >= KNLoadingInterval.loadingCoinTickerInterval {
+      self.isLoadingAllCoinTickers = true
+      self.fetchCoinTickers { [weak self] _ in
+        self?.lastUpdate = Date()
+        self?.isLoadingAllCoinTickers = false
+      }
+    }
+    self.allCoinTickersTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.loadingCoinTickerInterval,
+      repeats: true,
+      block: { [weak self] _ in
+      if self?.isLoadingAllCoinTickers == false {
+        self?.isLoadingAllCoinTickers = true
+        self?.fetchCoinTickers(completion: { _ in
+          self?.lastUpdate = Date()
+          self?.isLoadingAllCoinTickers = false
+        })
+      }
+    })
+  }
+
+  fileprivate func stopLoadingAllCoinTickers() {
+    self.isLoadingAllCoinTickers = false
+    self.allCoinTickersTimer?.invalidate()
+    self.allCoinTickersTimer = nil
+  }
+
+  // inital fetch until it is success for the first time
+  fileprivate func initialFetchAllCoinTickers() {
+    self.fetchCoinTickers(limit: 0) { [weak self] result in
+      if case .failure = result {
+        let timeOut = DispatchTime.now() + KNLoadingInterval.defaultLoadingInterval
+        DispatchQueue.main.asyncAfter(deadline: timeOut, execute: {
+          self?.initialFetchAllCoinTickers()
+        })
+      }
+    }
+  }
+
+  fileprivate  func fetchCoinTickers(limit: Int = 0, currency: String = "USD", completion: ((Result<[KNCoinTicker], AnyError>) -> Void)?) {
+    print("---- Coin Tickers: Fetching limit: \(limit), currency: \(currency) ----")
     self.provider.request(.loadCoinTickers(limit: limit, currency: currency)) { [weak self] result in
+      guard let `self` = self else { return }
+      if self.isLoadingAllCoinTickers == false { return }
       switch result {
       case .success(let resp):
         do {
           let jsonArr: [JSONDictionary] = try kn_cast(resp.mapJSON(failsOnEmptyData: false))
-          self?.coinTickers = jsonArr
-          completion?(.success(jsonArr))
+          let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
+          KNCoinTickerStorage.shared.update(coinTickers: coinTickers)
+          print("---- Coin Tickers: Successful limit: \(limit), currency: \(currency) ----")
+          completion?(.success(coinTickers))
         } catch let error {
+          print("---- Coin Tickers: Parse error: \(error.prettyError) ----")
           completion?(.failure(AnyError(error)))
         }
       case .failure(let error):
+        print("---- Coin Tickers: Fetch error: \(error.prettyError) ----")
         completion?(.failure(AnyError(error)))
       }
     }
   }
 
-  func fetchCoinTicker(id: String, currency: String = "USD", completion: ((Result<JSONDictionary, AnyError>) -> Void)?) {
+  fileprivate  func fetchCoinTicker(id: String, currency: String = "USD", completion: ((Result<KNCoinTicker, AnyError>) -> Void)?) {
     self.provider.request(.loadCoinTicker(id: id, currency: currency)) { [weak self] result in
+      guard let _ = `self` else { return }
       switch result {
       case .success(let resp):
         do {
           let json: JSONDictionary = try kn_cast(resp.mapJSON(failsOnEmptyData: false))
-          completion?(.success(json))
+          let coinTicker: KNCoinTicker = KNCoinTicker(dict: json, currency: currency)
+          KNCoinTickerStorage.shared.update(coinTickers: [coinTicker])
+          completion?(.success(coinTicker))
         } catch let error {
           completion?(.failure(AnyError(error)))
         }
