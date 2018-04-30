@@ -44,4 +44,16 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txDetailsLabel.text = "From \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
     self.txAmountLabel.text = "\(fromAmount) \(transaction.makerTokenSymbol)"
   }
+
+  func updateCell(with transaction: KNTokenTransaction) {
+    self.txDateLabel.text = self.dateFormatter.string(from: transaction.date)
+    self.txTypeLabel.text = "Token Transaction"
+    self.txIconImageView.image = UIImage(named: "exchange")
+    self.txDetailsLabel.text = "\(transaction.to)"
+    let amountString: String = {
+      let number = EtherNumberFormatter.short.number(from: transaction.value, decimals: 0)
+      return number?.shortString(decimals: Int(transaction.tokenDecimal) ?? 0) ?? "0.0"
+    }()
+    self.txAmountLabel.text = "\(amountString) \(transaction.tokenSymbol)"
+  }
 }
