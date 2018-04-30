@@ -393,6 +393,10 @@ extension KNAppCoordinator {
       } else {
         self.pendingTransactionStatusCoordinator?.updateTransaction(transaction)
       }
+      // Force load new token transactions to faster updating history view
+      if transaction.state == .completed {
+        self.session.transacionCoordinator?.forceFetchTokenTransactions()
+      }
     }
   }
 

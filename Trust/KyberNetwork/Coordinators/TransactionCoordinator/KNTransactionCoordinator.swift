@@ -300,26 +300,30 @@ extension KNTransactionCoordinator {
     self.tokenTxTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
       repeats: true,
-      block: { _ in
-      let startBlock: Int = {
-        guard let transaction = self.transactionStorage.tokenTransactions.first else {
-          return 0
-        }
-        return transaction.blockNumber + 1
-      }()
-      self.fetchListERC20TokenTransactions(
-        forAddress: self.wallet.address.description,
-        startBlock: startBlock,
-        page: 1,
-        sort: "asc",
-        completion: nil
-      )
+      block: { [weak self] _ in
+      self?.forceFetchTokenTransactions()
     })
   }
 
   func stopUpdatingListERC20TokenTransactions() {
     self.tokenTxTimer?.invalidate()
     self.tokenTxTimer = nil
+  }
+
+  func forceFetchTokenTransactions() {
+    let startBlock: Int = {
+      guard let transaction = self.transactionStorage.tokenTransactions.first else {
+        return 0
+      }
+      return transaction.blockNumber + 1
+    }()
+    self.fetchListERC20TokenTransactions(
+      forAddress: self.wallet.address.description,
+      startBlock: startBlock,
+      page: 1,
+      sort: "asc",
+      completion: nil
+    )
   }
 
   func fetchListERC20TokenTransactions(

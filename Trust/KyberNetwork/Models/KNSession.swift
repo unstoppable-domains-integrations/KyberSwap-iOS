@@ -20,7 +20,7 @@ class KNSession {
   private(set) var transactionStorage: TransactionsStorage
   private(set) var tokenStorage: KNTokenStorage
 
-  fileprivate var transacionCoordinator: KNTransactionCoordinator?
+  private(set) var transacionCoordinator: KNTransactionCoordinator?
 
   init(keystore: Keystore,
        wallet: Wallet) {
