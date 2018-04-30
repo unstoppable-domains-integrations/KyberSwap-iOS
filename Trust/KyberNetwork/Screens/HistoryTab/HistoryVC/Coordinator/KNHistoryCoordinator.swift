@@ -37,6 +37,7 @@ class KNHistoryCoordinator: Coordinator {
     if !self.session.transactionStorage.historyTransactions.isEmpty {
       self.historyTransactionsDidUpdate(nil)
     }
+    self.appCoordinatorTokensTransactionsDidUpdate()
     self.addObserveNotification()
   }
 
@@ -56,6 +57,8 @@ class KNHistoryCoordinator: Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.historyTransactionsDidUpdate(nil)
+    self.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   fileprivate func removeObserveNotification() {
@@ -88,12 +91,49 @@ class KNHistoryCoordinator: Coordinator {
       return data
     }()
 
-    self.rootViewController.coordinatorUpdateHistoryTransactions(sectionData, dates: dates)
+    self.rootViewController.coordinatorUpdateHistoryTransactions(
+      data: sectionData,
+      dates: dates,
+      ownerAddress: self.session.wallet.address.description
+    )
+  }
+
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    let transactions: [KNTokenTransaction] = self.session.transactionStorage.tokenTransactions
+
+    let dates: [String] = {
+      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+      var uniqueDates = [String]()
+      dates.forEach { if !uniqueDates.contains($0) { uniqueDates.append($0) }}
+      return uniqueDates
+    }()
+
+    let sectionData: [String: [KNTokenTransaction]] = {
+      var data: [String: [KNTokenTransaction]] = [:]
+      transactions.forEach { tx in
+        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+        trans.append(tx)
+        data[self.dateFormatter.string(from: tx.date)] = trans
+      }
+      return data
+    }()
+    self.rootViewController.coordinatorUpdateTokenTransactions(
+      data: sectionData,
+      dates: dates,
+      ownerAddress: self.session.wallet.address.description
+    )
   }
 }
 
 extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction) {
+    if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(transaction.id)") {
+      let controller = SFSafariViewController(url: url)
+      self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
+    }
+  }
+
+  func historyViewControllerDidSelectTokenTransaction(_ transaction: KNTokenTransaction) {
     if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(transaction.id)") {
       let controller = SFSafariViewController(url: url)
       self.navigationController.topViewController?.present(controller, animated: true, completion: nil)

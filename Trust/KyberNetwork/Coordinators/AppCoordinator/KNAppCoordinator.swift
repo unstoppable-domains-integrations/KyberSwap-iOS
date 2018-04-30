@@ -397,6 +397,7 @@ extension KNAppCoordinator {
   }
 
   @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {
