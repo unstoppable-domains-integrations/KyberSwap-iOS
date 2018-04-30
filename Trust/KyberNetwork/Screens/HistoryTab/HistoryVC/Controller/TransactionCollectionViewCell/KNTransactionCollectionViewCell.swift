@@ -28,9 +28,9 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txAmountLabel.text = ""
   }
 
-  func updateCell(with transaction: KNHistoryTransaction, tokens: [KNToken]) {
+  func updateCell(with transaction: KNHistoryTransaction, tokens: [KNToken], ownerAddress: String) {
     self.txDateLabel.text = self.dateFormatter.string(from: Date(timeIntervalSince1970: Double(transaction.blockTimestamp)))
-    self.txTypeLabel.text = "Exchange"
+    self.txTypeLabel.text = "Exchanged"
     self.txIconImageView.image = UIImage(named: "exchange")
     guard
       let from = tokens.first(where: { $0.address.lowercased() == transaction.makerTokenAddress.lowercased() }),
@@ -42,18 +42,33 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     let fromAmount: String = EtherNumberFormatter.short.number(from: transaction.makerTokenAmount, decimals: 0)?.shortString(decimals: from.decimal) ?? "0.00"
     let toAmount: String = EtherNumberFormatter.short.number(from: transaction.takerTokenAmount, decimals: 0)?.shortString(decimals: to.decimal) ?? "0.00"
     self.txDetailsLabel.text = "From \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
-    self.txAmountLabel.text = "\(fromAmount) \(transaction.makerTokenSymbol)"
+
+    let amountSign = transaction.makerAddress == ownerAddress ? "-" : "+"
+    let amountColor = transaction.makerAddress == ownerAddress ? UIColor.Kyber.red : UIColor.Kyber.green
+
+    self.txAmountLabel.text = "\(amountSign)\(fromAmount) \(transaction.makerTokenSymbol)"
+    self.txAmountLabel.textColor = amountColor
   }
 
-  func updateCell(with transaction: KNTokenTransaction) {
+  func updateCell(with transaction: KNTokenTransaction, ownerAddress: String) {
+    let isSent: Bool = ownerAddress.lowercased() == transaction.from.lowercased()
     self.txDateLabel.text = self.dateFormatter.string(from: transaction.date)
-    self.txTypeLabel.text = "Token Transaction"
-    self.txIconImageView.image = UIImage(named: "exchange")
+    self.txTypeLabel.text = {
+      return isSent ? "Sent" : "Received"
+    }()
+    self.txIconImageView.image = {
+      return isSent ? UIImage(named: "transaction_sent") : UIImage(named: "transaction_received")
+    }()
     self.txDetailsLabel.text = "\(transaction.to)"
     let amountString: String = {
       let number = EtherNumberFormatter.short.number(from: transaction.value, decimals: 0)
-      return number?.shortString(decimals: Int(transaction.tokenDecimal) ?? 0) ?? "0.0"
+      let amount: String = number?.shortString(decimals: Int(transaction.tokenDecimal) ?? 0) ?? "0.0"
+      let sign: String = isSent ? "-" : "+"
+      return sign + amount
     }()
     self.txAmountLabel.text = "\(amountString) \(transaction.tokenSymbol)"
+    self.txAmountLabel.textColor = {
+      return isSent ? UIColor.Kyber.red : UIColor.Kyber.green
+    }()
   }
 }
