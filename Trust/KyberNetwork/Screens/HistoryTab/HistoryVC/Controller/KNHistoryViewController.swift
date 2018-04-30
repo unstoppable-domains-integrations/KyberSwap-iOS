@@ -4,6 +4,7 @@ import UIKit
 
 protocol KNHistoryViewControllerDelegate: class {
   func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction)
+  func historyViewControllerDidSelectTokenTransaction(_ transaction: KNTokenTransaction)
   func historyViewControllerDidClickExit()
 }
 
@@ -12,9 +13,15 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
 
-  fileprivate var sectionsData: [String: [KNHistoryTransaction]] = [:]
-  fileprivate var sectionHeaders: [String] = []
+  fileprivate var trackerData: [String: [KNHistoryTransaction]] = [:]
+  fileprivate var trackerHeaders: [String] = []
 
+  fileprivate var tokensTxData: [String: [KNTokenTransaction]] = [:]
+  fileprivate var tokensTxHeaders: [String] = []
+
+  fileprivate var ownerAddress: String = ""
+
+  @IBOutlet weak var segmentedControl: UISegmentedControl!
   @IBOutlet weak var noHistoryTransactionsLabel: UILabel!
   @IBOutlet weak var transactionCollectionView: UICollectionView!
 
@@ -41,9 +48,6 @@ class KNHistoryViewController: KNBaseViewController {
       self.isShowingLoading = true
       self.displayLoading(text: "Loading Transactions...", animated: true)
     }
-    if KNEnvironment.default != .production && KNEnvironment.default != .staging {
-      self.showWarningTopBannerMessage(with: "Warning", message: "History Transaction only works for production or staging env")
-    }
   }
 
   fileprivate func setupUI() {
@@ -58,6 +62,7 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupCollectionView() {
+    self.segmentedControl.rounded(color: .clear, width: 0, radius: 5.0)
     let nib = UINib(nibName: KNTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNTransactionCollectionViewCell.cellID)
     let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
@@ -69,18 +74,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.noHistoryTransactionsLabel.isHidden = true
   }
 
-  @objc func exitButtonPressed(_ sender: Any) {
-    self.delegate?.historyViewControllerDidClickExit()
-  }
-}
-
-extension KNHistoryViewController {
-  func coordinatorUpdateHistoryTransactions(_ data: [String: [KNHistoryTransaction]], dates: [String]) {
-    self.hasUpdatedData = true
-    if self.isShowingLoading { self.hideLoading() }
-    self.sectionsData = data
-    self.sectionHeaders = dates
-    if self.sectionsData.isEmpty {
+  fileprivate func updateUIWhenDataDidChange() {
+    let headers = self.segmentedControl.selectedSegmentIndex == 0 ? self.trackerHeaders : self.tokensTxHeaders
+    if headers.isEmpty {
       self.noHistoryTransactionsLabel.isHidden = false
       self.transactionCollectionView.isHidden = true
     } else {
@@ -89,12 +85,51 @@ extension KNHistoryViewController {
     }
     self.transactionCollectionView.reloadData()
   }
+
+  @objc func exitButtonPressed(_ sender: Any) {
+    self.delegate?.historyViewControllerDidClickExit()
+  }
+
+  @IBAction func segmentedControlValueDidChange(_ sender: UISegmentedControl) {
+    self.updateUIWhenDataDidChange()
+  }
+}
+
+extension KNHistoryViewController {
+  func coordinatorUpdateHistoryTransactions(
+    data: [String: [KNHistoryTransaction]],
+    dates: [String],
+    ownerAddress: String
+    ) {
+    self.hasUpdatedData = true
+    if self.isShowingLoading { self.hideLoading() }
+    self.trackerData = data
+    self.trackerHeaders = dates
+    self.ownerAddress = ownerAddress
+    self.updateUIWhenDataDidChange()
+  }
+
+  func coordinatorUpdateTokenTransactions(
+    data: [String: [KNTokenTransaction]],
+    dates: [String],
+    ownerAddress: String
+    ) {
+    self.tokensTxData = data
+    self.tokensTxHeaders = dates
+    self.ownerAddress = ownerAddress
+    self.updateUIWhenDataDidChange()
+  }
 }
 
 extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let transactions = self.sectionsData[self.sectionHeaders[indexPath.section]] else { return }
-    self.delegate?.historyViewControllerDidSelectTransaction(transactions[indexPath.row])
+    if self.segmentedControl.selectedSegmentIndex == 0 {
+      guard let transactions = self.trackerData[self.trackerHeaders[indexPath.section]] else { return }
+      self.delegate?.historyViewControllerDidSelectTransaction(transactions[indexPath.row])
+    } else {
+      guard let transactions = self.tokensTxData[self.tokensTxHeaders[indexPath.section]] else { return }
+      self.delegate?.historyViewControllerDidSelectTokenTransaction(transactions[indexPath.row])
+    }
   }
 }
 
@@ -124,18 +159,30 @@ extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
 
 extension KNHistoryViewController: UICollectionViewDataSource {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return self.sectionHeaders.count
+    if self.segmentedControl.selectedSegmentIndex == 0 {
+      return self.trackerHeaders.count
+    }
+    return self.tokensTxHeaders.count
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.sectionsData[self.sectionHeaders[section]]?.count ?? 0
+    if self.segmentedControl.selectedSegmentIndex == 0 {
+      return self.trackerData[self.trackerHeaders[section]]?.count ?? 0
+    }
+    return self.tokensTxData[self.tokensTxHeaders[section]]?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNTransactionCollectionViewCell.cellID, for: indexPath) as! KNTransactionCollectionViewCell
-    guard let trans = self.sectionsData[self.sectionHeaders[indexPath.section]] else { return cell }
-    let tran = trans[indexPath.row]
-    cell.updateCell(with: tran, tokens: self.tokens)
+    if self.segmentedControl.selectedSegmentIndex == 0 {
+      guard let trans = self.trackerData[self.trackerHeaders[indexPath.section]] else { return cell }
+      let tran = trans[indexPath.row]
+      cell.updateCell(with: tran, tokens: self.tokens, ownerAddress: self.ownerAddress)
+    } else {
+      guard let trans = self.tokensTxData[self.tokensTxHeaders[indexPath.section]] else { return cell }
+      let tran = trans[indexPath.row]
+      cell.updateCell(with: tran, ownerAddress: self.ownerAddress)
+    }
     return cell
   }
 
@@ -143,7 +190,14 @@ extension KNHistoryViewController: UICollectionViewDataSource {
     switch kind {
     case UICollectionElementKindSectionHeader:
       let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: KNTransactionCollectionReusableView.viewID, for: indexPath) as! KNTransactionCollectionReusableView
-      headerView.updateView(with: self.sectionHeaders[indexPath.section])
+      let data: String = {
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+          return self.trackerHeaders[indexPath.section]
+        } else {
+          return self.tokensTxHeaders[indexPath.section]
+        }
+      }()
+      headerView.updateView(with: data)
       return headerView
     default:
       assertionFailure("Unhandling")
