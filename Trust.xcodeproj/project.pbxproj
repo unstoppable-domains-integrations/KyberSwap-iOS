@@ -86,6 +86,7 @@
 		25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25BE329B209096E800D760FB /* KNListWalletsViewController.xib */; };
 		25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */; };
 		25C9D7012096C82300FB121F /* KNCoinMarketCapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C9D7002096C82300FB121F /* KNCoinMarketCapService.swift */; };
+		25C9D7042096CA3F00FB121F /* KNCoinTickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C9D7032096CA3F00FB121F /* KNCoinTickerCoordinator.swift */; };
 		25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */; };
 		25CC0A802057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */; };
 		25CC0A812057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */; };
@@ -594,6 +595,7 @@
 		25BE329B209096E800D760FB /* KNListWalletsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsViewController.xib; sourceTree = "<group>"; };
 		25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListWalletsCoordinator.swift; sourceTree = "<group>"; };
 		25C9D7002096C82300FB121F /* KNCoinMarketCapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCoinMarketCapService.swift; sourceTree = "<group>"; };
+		25C9D7032096CA3F00FB121F /* KNCoinTickerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCoinTickerCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A792057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingMainCoordinator.swift; sourceTree = "<group>"; };
 		25CC0A7E2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletImportingKeystoreViewController.swift; sourceTree = "<group>"; };
 		25CC0A7F2057B9D70009D0D5 /* KNWalletImportingKeystoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletImportingKeystoreViewController.xib; sourceTree = "<group>"; };
@@ -1245,6 +1247,7 @@
 		257740C82057948F003323EB /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				25C9D7022096CA2F00FB121F /* CoinTickerCoordinator */,
 				257A3799205CDA6000E86794 /* TransactionCoordinator */,
 				25CC0AB520591D520009D0D5 /* InternalCoordinators */,
 				25CC0A8F2057D7140009D0D5 /* BalanceCoordinator */,
@@ -1592,6 +1595,14 @@
 				25C9D7002096C82300FB121F /* KNCoinMarketCapService.swift */,
 			);
 			path = CoinMarketCap;
+			sourceTree = "<group>";
+		};
+		25C9D7022096CA2F00FB121F /* CoinTickerCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25C9D7032096CA3F00FB121F /* KNCoinTickerCoordinator.swift */,
+			);
+			path = CoinTickerCoordinator;
 			sourceTree = "<group>";
 		};
 		25CC0A7B2057B94C0009D0D5 /* ImportKeystore */ = {
@@ -3981,6 +3992,7 @@
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
 				73200B7020488C9300118A82 /* TrustNetworkProtocol.swift in Sources */,
 				29FF12FB1F74CC8200AFD326 /* EthereumAddressRule.swift in Sources */,
+				25C9D7042096CA3F00FB121F /* KNCoinTickerCoordinator.swift in Sources */,
 				294EC1D81FD7FBAB0065EB20 /* BiometryAuthenticationType.swift in Sources */,
 				29E6E0721FEA200D0079265A /* ConfirmPaymentDetailsViewModel.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
