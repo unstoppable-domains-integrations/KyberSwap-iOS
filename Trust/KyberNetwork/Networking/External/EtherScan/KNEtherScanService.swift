@@ -39,9 +39,7 @@ extension KNEtherScanService: TargetType {
 
   var headers: [String: String]? {
     return [
-      "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
-      "client-build": Bundle.main.buildNumber ?? "",
+      "content-type": "application/json"
     ]
   }
 }
