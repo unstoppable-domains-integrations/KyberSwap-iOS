@@ -21,6 +21,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet weak var tokenBalanceAmountLabel: UILabel!
   @IBOutlet weak var tokenUSDAmountLabel: UILabel!
+  @IBOutlet weak var percentageChangedLabel: UILabel!
 
   @IBOutlet weak var exchangeButton: UIButton!
   @IBOutlet weak var transferButton: UIButton!
@@ -36,9 +37,10 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     super.awakeFromNib()
     self.backgroundColor = UIColor.white
     self.rounded(color: .clear, width: 0, radius: 5.0)
-    self.exchangeButton.rounded(color: .clear, width: 0, radius: 5.0)
-    self.transferButton.rounded(color: .clear, width: 0, radius: 5.0)
-    self.receiveButton.rounded(color: .clear, width: 0, radius: 5.0)
+    self.percentageChangedLabel.rounded(color: .clear, width: 0, radius: 2.5)
+    self.exchangeButton.rounded(color: .clear, width: 0, radius: 2.5)
+    self.transferButton.rounded(color: .clear, width: 0, radius: 2.5)
+    self.receiveButton.rounded(color: .clear, width: 0, radius: 2.5)
     self.iconImageView.rounded(
       color: .clear,
       width: 0,
@@ -62,11 +64,39 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
       self.iconImageView.isHidden = true
     }
 
-    self.tokenNameLabel.text = tokenObject.symbol
+    let percentageChanged: String = {
+      if let coinTicker = KNCoinTickerStorage.shared.coinTicker(for: tokenObject) {
+        if coinTicker.percentChange24h.starts(with: "-") {
+          return "\(coinTicker.percentChange24h)%"
+        }
+        return "+\(coinTicker.percentChange24h)%"
+      }
+      return "+0.00%"
+    }()
+    self.percentageChangedLabel.text = percentageChanged
+    self.percentageChangedLabel.backgroundColor = percentageChanged.starts(with: "-") ? UIColor.Kyber.red : UIColor.Kyber.green
+
+    let attributedText: NSAttributedString = {
+      let symbolAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.dark,
+        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(16)
+      ]
+      let nameAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
+        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(12)
+      ]
+      let attributedString = NSMutableAttributedString()
+      attributedString.append(NSAttributedString(string: tokenObject.symbol, attributes: symbolAttributes))
+      attributedString.append(NSAttributedString(string: "\n\(tokenObject.name)", attributes: nameAttributes))
+      return attributedString
+    }()
+    self.tokenNameLabel.attributedText = attributedText
+
     self.tokenBalanceAmountLabel.text = balance.amountShort
+
     if let usdRate = KNRateCoordinator.shared.usdRate(for: tokenObject) {
       let amountString: String = {
-        return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)) 
+        return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue))
       }()
       self.tokenUSDAmountLabel.text = "US$\(amountString)"
     } else {

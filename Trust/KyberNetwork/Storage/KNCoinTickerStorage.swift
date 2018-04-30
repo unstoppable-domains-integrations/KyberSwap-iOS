@@ -45,4 +45,17 @@ class KNCoinTickerStorage {
       realm.delete(realm.objects(KNCoinTicker.self))
     }
   }
+
+  func coinTicker(for tokenObject: TokenObject) -> KNCoinTicker? {
+    return self.coinTickerForToken(
+      withName: tokenObject.name.replacingOccurrences(of: " ", with: "").lowercased(),
+      symbol: tokenObject.symbol
+    )
+  }
+
+  func coinTickerForToken(withName name: String, symbol: String) -> KNCoinTicker? {
+    let tickers = self.coinTickers.filter { return $0.symbol == symbol }
+    if tickers.count == 1 { return tickers[0] }
+    return tickers.first(where: { $0.name.replacingOccurrences(of: " ", with: "").lowercased() == name })
+  }
 }
