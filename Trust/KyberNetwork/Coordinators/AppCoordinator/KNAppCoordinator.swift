@@ -403,6 +403,7 @@ extension KNAppCoordinator {
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
+    KNCoinTickerCoordinator.shared.start()
   }
 
   func appDidBecomeActive() {
@@ -414,11 +415,13 @@ extension KNAppCoordinator {
 
   func appWillEnterForeground() {
     self.authenticationCoordinator.start()
+    KNCoinTickerCoordinator.shared.start()
   }
 
   func appWillEnterBackground() {
     KNSession.pauseInternalSession()
     self.balanceCoordinator?.pause()
+    KNCoinTickerCoordinator.shared.stop()
   }
 }
 

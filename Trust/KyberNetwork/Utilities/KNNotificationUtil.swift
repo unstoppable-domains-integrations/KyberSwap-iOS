@@ -18,6 +18,8 @@ let kOtherBalanceDidUpdateNotificationKey = "kOtherBalanceDidUpdateNotificationK
 let kExchangeTokenRateNotificationKey = "kExchangeTokenRateNotificationKey"
 let kExchangeUSDRateNotificationKey = "kExchangeUSDRateNotificationKey"
 
+let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotificationKey"
+
 class KNNotificationUtil {
 
   static func postNotification(for key: String, object: Any? = nil, userInfo: [AnyHashable: Any]? = nil) {
