@@ -25,63 +25,63 @@ class KNCoinTicker: Object {
   @objc dynamic var marketCapCurrency: Double = 0
   @objc dynamic var lastUpdated: Date = Date()
 
-  convenience init(dict: JSONDictionary, currency: String) throws {
+  convenience init(dict: JSONDictionary, currency: String) {
     self.init()
-    self.id = try kn_cast(dict["id"])
-    self.name = try kn_cast(dict["name"])
-    self.symbol = try kn_cast(dict["symbol"])
-    self.rank = try {
-      let rankString: String = try kn_cast(dict["rank"])
-      return try kn_cast(rankString)
+    self.id = dict["id"] as? String ?? ""
+    self.name = dict["name"] as? String ?? ""
+    self.symbol = dict["symbol"] as? String ?? ""
+    self.rank = {
+      let rankString: String = dict["rank"] as? String ?? ""
+      return Int(rankString) ?? 0
     }()
-    self.priceUSD = try {
-      let priceUSDString: String = try kn_cast(dict["price_usd"])
-      return try kn_cast(priceUSDString)
+    self.priceUSD = {
+      let priceUSDString: String = dict["price_usd"] as? String ?? ""
+      return Double(priceUSDString) ?? 0
     }()
-    self.priceBTC = try {
-      let priceBTCString: String = try kn_cast(dict["price_btc"])
-      return try kn_cast(priceBTCString)
+    self.priceBTC = {
+      let priceBTCString: String = dict["price_btc"] as? String ?? ""
+      return Double(priceBTCString) ?? 0
     }()
-    self.volumeUSD24h = try {
-      let volumeUSD24hString: String = try kn_cast(dict["24h_volume_usd"])
-      return try kn_cast(volumeUSD24hString)
+    self.volumeUSD24h = {
+      let volumeUSD24hString: String = dict["24h_volume_usd"] as? String ?? ""
+      return Double(volumeUSD24hString) ?? 0
     }()
-    self.marketCapUSD = try {
-      let marketCapUSDString: String = try kn_cast(dict["market_cap_usd"])
-      return try kn_cast(marketCapUSDString)
+    self.marketCapUSD = {
+      let marketCapUSDString: String = dict["market_cap_usd"] as? String ?? ""
+      return Double(marketCapUSDString) ?? 0
     }()
-    self.availableSupply = try {
-      let availableSupplyString: String = try kn_cast(dict["available_supply"])
-      return try kn_cast(availableSupplyString)
+    self.availableSupply = {
+      let availableSupplyString: String = dict["available_supply"] as? String ?? ""
+      return Double(availableSupplyString) ?? 0
     }()
-    self.totalSupply = try {
-      let totalSupplyString: String = try kn_cast(dict["total_supply"])
-      return try kn_cast(totalSupplyString)
+    self.totalSupply = {
+      let totalSupplyString: String = dict["total_supply"] as? String ?? ""
+      return Double(totalSupplyString) ?? 0
     }()
-    self.maxSupply = try {
-      let maxSupplyString: String = try kn_cast(dict["max_supply"])
-      return try kn_cast(maxSupplyString)
+    self.maxSupply = {
+      let maxSupplyString: String = dict["max_supply"] as? String ?? ""
+      return Double(maxSupplyString) ?? 0
     }()
-    self.percentChange1h = try kn_cast(dict["percent_change_1h"])
-    self.percentChange24h = try kn_cast(dict["percent_change_24h"])
-    self.percentChange7d = try kn_cast(dict["percent_change_7d"])
-    self.lastUpdated = try {
-      let lastUpdatedString: String = try kn_cast(dict["last_updated"])
-      let lastUpdatedDouble: Double = try kn_cast(lastUpdatedString)
+    self.percentChange1h = dict["percent_change_1h"] as? String ?? ""
+    self.percentChange24h = dict["percent_change_24h"] as? String ?? ""
+    self.percentChange7d = dict["percent_change_7d"] as? String ?? ""
+    self.lastUpdated = {
+      let lastUpdatedString: String = dict["last_updated"] as? String ?? ""
+      let lastUpdatedDouble: Double = Double(lastUpdatedString) ?? 0
       return Date(timeIntervalSince1970: lastUpdatedDouble)
     }()
     self.currency = currency
-    self.priceCurrency = try {
-      let priceCurrencyString: String = try kn_cast(dict["price_\(currency.lowercased())"])
-      return try kn_cast(priceCurrencyString)
+    self.priceCurrency = {
+      let priceCurrencyString: String = dict["price_\(currency.lowercased())"] as? String ?? ""
+      return Double(priceCurrencyString) ?? 0
     }()
-    self.volume24hCurrency = try {
-      let volumeCurrency24hString: String = try kn_cast(dict["24h_volume_\(currency.lowercased())"])
-      return try kn_cast(volumeCurrency24hString)
+    self.volume24hCurrency = {
+      let volumeCurrency24hString: String = dict["24h_volume_\(currency.lowercased())"] as? String ?? ""
+      return Double(volumeCurrency24hString) ?? 0
     }()
-    self.marketCapCurrency = try {
-      let marketCapCurrencyString: String = try kn_cast(dict["market_cap_\(currency.lowercased())"])
-      return try kn_cast(marketCapCurrencyString)
+    self.marketCapCurrency = {
+      let marketCapCurrencyString: String = dict["market_cap_\(currency.lowercased())"] as? String ?? ""
+      return Double(marketCapCurrencyString) ?? 0
     }()
   }
 
