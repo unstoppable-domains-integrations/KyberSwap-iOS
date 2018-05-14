@@ -53,7 +53,14 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     )
   }
 
-  func updateCell(with tokenObject: TokenObject, balance: Balance, isExpanded: Bool, delegate: KNWalletTokenCollectionViewCellDelegate?) {
+  func updateCell(
+    with tokenObject: TokenObject,
+    balance: Balance,
+    coinTicker: KNCoinTicker?,
+    usdRate: KNRate?,
+    isExpanded: Bool,
+    delegate: KNWalletTokenCollectionViewCellDelegate?
+    ) {
     if let iconImage = UIImage(named: KNTokenStorage.iconImageName(for: tokenObject)) {
       self.iconImageView.image = iconImage
       self.iconImageView.isHidden = false
@@ -65,7 +72,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     }
 
     let percentageChanged: String = {
-      if let coinTicker = KNCoinTickerStorage.shared.coinTicker(for: tokenObject) {
+      if let coinTicker = coinTicker {
         if coinTicker.percentChange24h.starts(with: "-") {
           return "\(coinTicker.percentChange24h)%"
         }
@@ -79,11 +86,11 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     let attributedText: NSAttributedString = {
       let symbolAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.dark,
-        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(16)
+        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(16),
       ]
       let nameAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(12)
+        NSAttributedStringKey.font: self.tokenNameLabel.font.withSize(12),
       ]
       let attributedString = NSMutableAttributedString()
       attributedString.append(NSAttributedString(string: tokenObject.symbol, attributes: symbolAttributes))
@@ -94,7 +101,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
 
     self.tokenBalanceAmountLabel.text = balance.amountShort
 
-    if let usdRate = KNRateCoordinator.shared.usdRate(for: tokenObject) {
+    if let usdRate = usdRate {
       let amountString: String = {
         return EtherNumberFormatter.short.string(from: usdRate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue))
       }()

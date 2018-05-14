@@ -26,14 +26,23 @@ class KNRateCoordinator {
   fileprivate(set) var usdRates: [KNRate] = []
 
   func getRate(from: KNToken, to: KNToken) -> KNRate? {
+    if let rate = KNRate.rate(from: from, toToken: to) { return rate }
     return self.tokenRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol })
   }
 
   func usdRate(for token: KNToken) -> KNRate? {
+    // Take data from coinmarketcap if we had
+    if let coinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.isData(for: token) }) {
+      return KNRate.rateUSD(from: coinTicker)
+    }
     return self.usdRates.first(where: { $0.source == token.symbol })
   }
 
   func usdRate(for token: TokenObject) -> KNRate? {
+    // Take data from coinmarketcap if we had
+    if let coinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.isData(for: token) }) {
+      return KNRate.rateUSD(from: coinTicker)
+    }
     return self.usdRates.first(where: { $0.source == token.symbol })
   }
 

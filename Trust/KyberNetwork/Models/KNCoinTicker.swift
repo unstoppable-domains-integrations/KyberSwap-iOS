@@ -89,3 +89,15 @@ class KNCoinTicker: Object {
     return "id"
   }
 }
+
+extension KNCoinTicker {
+  func isData(for token: KNToken) -> Bool {
+    return self.symbol == token.symbol
+    && self.name.replacingOccurrences(of: " ", with: "").lowercased() == token.name.replacingOccurrences(of: " ", with: "").lowercased()
+  }
+
+  func isData(for token: TokenObject) -> Bool {
+    return self.symbol == token.symbol
+      && self.name.replacingOccurrences(of: " ", with: "").lowercased() == token.name.replacingOccurrences(of: " ", with: "").lowercased()
+  }
+}

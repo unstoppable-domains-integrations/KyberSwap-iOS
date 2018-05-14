@@ -21,6 +21,22 @@ struct KNToken {
     usdID = try kn_cast(dictionary["usd_id"])
   }
 
+  init(
+    name: String,
+    symbol: String,
+    icon: String = "",
+    address: String,
+    decimal: Int,
+    usdID: String = ""
+    ) {
+    self.name = name
+    self.symbol = symbol
+    self.icon = icon
+    self.address = address
+    self.decimal = decimal
+    self.usdID = usdID
+  }
+
   var isETH: Bool {
     return symbol == "ETH"
   }
@@ -61,6 +77,15 @@ extension KNToken {
       value: "0",
       isCustom: false,
       isDisabled: false
+    )
+  }
+
+  static func from(tokenObject: TokenObject) -> KNToken {
+    return KNToken(
+      name: tokenObject.name,
+      symbol: tokenObject.symbol,
+      address: tokenObject.contract,
+      decimal: tokenObject.decimals
     )
   }
 }

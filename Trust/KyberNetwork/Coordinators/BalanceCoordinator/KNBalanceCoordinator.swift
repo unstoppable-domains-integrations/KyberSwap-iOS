@@ -21,13 +21,12 @@ class KNBalanceCoordinator {
   var totalBalanceInUSD: BigInt {
     let balanceValue: BigInt = {
       var value = BigInt(0)
-      let rates = KNRateCoordinator.shared.usdRates
-      if let ethRate = rates.first(where: { $0.source == "ETH" }) {
+      if let ethRate = KNRateCoordinator.shared.usdRate(for: KNToken.ethToken()) {
         value = ethRate.rate * ethBalance.value / BigInt(EthereumUnit.ether.rawValue)
       }
-      let supportedTokens = KNJSONLoaderUtil.shared.tokens
-      for token in supportedTokens {
-        if let rate = rates.first(where: { $0.source == token.symbol }), let balance = otherTokensBalance[token.address] {
+      let tokens = self.session.tokenStorage.tokens
+      for token in tokens {
+        if let balance = otherTokensBalance[token.contract], !balance.value.isZero, let rate = KNRateCoordinator.shared.usdRate(for: token) {
           value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
         }
       }
@@ -40,11 +39,12 @@ class KNBalanceCoordinator {
     let balanceValue: BigInt = {
       var value = ethBalance.value
 
-      let rates = KNRateCoordinator.shared.tokenRates
-      let supportedTokens = KNJSONLoaderUtil.shared.tokens
+      let tokenObjects = self.session.tokenStorage.tokens
+      let ethToken = KNToken.ethToken()
 
-      for token in supportedTokens {
-        if let rate = rates.first(where: { $0.source == token.symbol && $0.dest == "ETH" }), let balance = otherTokensBalance[token.address] {
+      for tokenObj in tokenObjects {
+        let token = KNToken.from(tokenObject: tokenObj)
+        if let balance = otherTokensBalance[token.address], !balance.value.isZero, let rate = KNRateCoordinator.shared.getRate(from: token, to: ethToken) {
           value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
         }
       }
