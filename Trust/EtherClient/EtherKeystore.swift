@@ -81,10 +81,10 @@ open class EtherKeystore: Keystore {
     @available(iOS 10.0, *)
     func createAccount(with password: String, completion: @escaping (Result<Account, KeystoreError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let account = self.createAccout(password: password)
-            DispatchQueue.main.async {
-                completion(.success(account))
-            }
+          let account = self.createAccout(password: password)
+          DispatchQueue.main.async {
+            completion(.success(account))
+          }
         }
     }
 
@@ -124,28 +124,14 @@ open class EtherKeystore: Keystore {
                     completion(.failure(error))
                 }
             }
-        case .mnemonic:
-            let key = ""
-            // TODO: Implement it
-            keystore(for: key, password: newPassword) { result in
-                switch result {
-                case .success(let value):
-                    self.importKeystore(
-                        value: value,
-                        password: newPassword,
-                        newPassword: newPassword
-                    ) { result in
-                        switch result {
-                        case .success(let account):
-                            completion(.success(Wallet(type: .real(account))))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    }
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
+        case .mnemonic(let words, let password):
+          let key = words.joined(separator: " ")
+          do {
+            let account = try keyStore.import(mnemonic: key, password: password)
+            completion(.success(Wallet(type: .real(account))))
+          } catch let error {
+            completion(.failure(KeystoreError.failedToImport(error)))
+          }
         case .watch(let address):
             let addressString = address.description
             guard !watchAddresses.contains(addressString) else {
@@ -262,6 +248,13 @@ open class EtherKeystore: Keystore {
             return .failure(KeystoreError.failedToExportPrivateKey)
         }
 
+    }
+
+    func exportMnemonics(account: Account) -> Result<String, KeystoreError> {
+      if let wallet = keyStore.wallet(for: account.address) {
+        return .success(wallet.mnemonic)
+      }
+      return .failure(KeystoreError.failedToExportMnemonics)
     }
 
     func delete(wallet: Wallet) -> Result<Void, KeystoreError> {
