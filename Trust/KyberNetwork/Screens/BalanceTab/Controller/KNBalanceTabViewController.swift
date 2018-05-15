@@ -99,6 +99,11 @@ class KNBalanceTabViewController: UIViewController {
         target: self,
         action: #selector(self.displayDataTypePickerViewDonePressed(_:))
       )
+      let flexibleSpaceBtn = UIBarButtonItem(
+        barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+        target: nil,
+        action: nil
+      )
       doneBtn.tintColor = UIColor(hex: "505352")
       let cancelBtn = UIBarButtonItem(
         barButtonSystemItem: .cancel,
@@ -106,7 +111,7 @@ class KNBalanceTabViewController: UIViewController {
         action: #selector(self.displayDataTypePickerViewCancelPressed(_:))
       )
       cancelBtn.tintColor = UIColor(hex: "505352")
-      toolBar.setItems([cancelBtn, doneBtn], animated: false)
+      toolBar.setItems([cancelBtn, flexibleSpaceBtn, doneBtn], animated: false)
       return toolBar
     }()
     self.fakeFilterSortTextField.inputAccessoryView = toolBar
