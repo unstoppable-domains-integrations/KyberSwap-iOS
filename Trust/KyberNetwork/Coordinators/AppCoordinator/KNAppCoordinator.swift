@@ -18,7 +18,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator?
   fileprivate var transferCoordinator: KNTransferTokenCoordinator?
-  fileprivate var walletCoordinator: KNWalletCoordinator?
+  fileprivate var balanceTabCoordinator: KNBalanceTabCoordinator!
   fileprivate var historyCoordinator: KNHistoryCoordinator!
   fileprivate var settingsCoordinator: KNSettingsCoordinator!
 
@@ -98,16 +98,16 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(self.transferCoordinator!)
     self.transferCoordinator?.start()
 
-    // Wallet Tab
-    self.walletCoordinator = {
-      let coordinator = KNWalletCoordinator(
+    // Balance Tab
+    self.balanceTabCoordinator = {
+      let coordinator = KNBalanceTabCoordinator(
         session: self.session
       )
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.walletCoordinator!)
-    self.walletCoordinator?.start()
+    self.addCoordinator(self.balanceTabCoordinator)
+    self.balanceTabCoordinator.start()
 
     // History tab
     self.historyCoordinator = {
@@ -134,14 +134,47 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.tabbarController.viewControllers = [
       self.exchangeCoordinator!.navigationController,
       self.transferCoordinator!.navigationController,
-      self.walletCoordinator!.navigationController,
+      self.balanceTabCoordinator.navigationController,
       self.historyCoordinator.navigationController,
       self.settingsCoordinator.navigationController,
     ]
-    self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Exchange".toBeLocalised(), image: nil, tag: 0)
-    self.transferCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Transfer".toBeLocalised(), image: nil, tag: 1)
-    self.walletCoordinator?.navigationController.tabBarItem = UITabBarItem(title: "Wallet".toBeLocalised(), image: nil, tag: 2)
-    self.historyCoordinator.navigationController.tabBarItem = UITabBarItem(title: "History".toBeLocalised(), image: nil, tag: 3)
+    self.tabbarController.tabBar.tintColor = UIColor(hex: "5ec2ba")
+    self.exchangeCoordinator?.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "Exchange".toBeLocalised(),
+        image: UIImage(named: "exchange_tab_icon"),
+        selectedImage: UIImage(named: "exchange_tab_icon")
+      )
+      tabBarItem.tag = 0
+      return tabBarItem
+    }()
+    self.transferCoordinator?.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "Send".toBeLocalised(),
+        image: UIImage(named: "send_tab_icon"),
+        selectedImage: UIImage(named: "send_tab_icon")
+      )
+      tabBarItem.tag = 1
+      return tabBarItem
+    }()
+    self.balanceTabCoordinator.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "Balance".toBeLocalised(),
+        image: UIImage(named: "balance_tab_icon"),
+        selectedImage: UIImage(named: "balance_tab_icon")
+      )
+      tabBarItem.tag = 2
+      return tabBarItem
+    }()
+    self.historyCoordinator.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "History".toBeLocalised(),
+        image: UIImage(named: "history_tab_icon"),
+        selectedImage: UIImage(named: "history_tab_icon")
+      )
+      tabBarItem.tag = 3
+      return tabBarItem
+    }()
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 4)
 
     if let topViewController = self.navigationController.topViewController {
@@ -177,8 +210,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.exchangeCoordinator = nil
     self.transferCoordinator?.stop()
     self.transferCoordinator = nil
-    self.walletCoordinator?.stop()
-    self.walletCoordinator = nil
+    self.balanceTabCoordinator.stop()
+    self.balanceTabCoordinator = nil
     self.historyCoordinator.stop()
     self.historyCoordinator = nil
     self.settingsCoordinator.stop()
@@ -194,7 +227,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     // wallet tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.transferCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.walletCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 2
@@ -313,7 +346,7 @@ extension KNAppCoordinator {
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Notification) {
     guard let balanceCoordinator = self.balanceCoordinator else { return }
 
-    self.walletCoordinator?.appCoordinatorExchangeRateDidUpdate(
+    self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: balanceCoordinator.totalBalanceInUSD,
       totalBalanceInETH: balanceCoordinator.totalBalanceInETH
     )
@@ -329,7 +362,7 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH
     )
     self.transferCoordinator?.appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: totalUSD)
-    self.walletCoordinator?.appCoordinatorExchangeRateDidUpdate(
+    self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH
     )
@@ -350,7 +383,7 @@ extension KNAppCoordinator {
       totalBalanceInUSD: totalUSD,
       ethBalance: ethBalance
     )
-    self.walletCoordinator?.appCoordinatorETHBalanceDidUpdate(
+    self.balanceTabCoordinator.appCoordinatorETHBalanceDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
       ethBalance: ethBalance
@@ -372,7 +405,7 @@ extension KNAppCoordinator {
       totalBalanceInUSD: totalUSD,
       otherTokensBalance: otherTokensBalance
     )
-    self.walletCoordinator?.appCoordinatorTokenBalancesDidUpdate(
+    self.balanceTabCoordinator.appCoordinatorTokenBalancesDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
       otherTokensBalance: otherTokensBalance
@@ -406,13 +439,13 @@ extension KNAppCoordinator {
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-    self.walletCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.balanceTabCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.transferCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
   @objc func coinTickerDidUpdate(_ sender: Notification) {
-    self.walletCoordinator?.appCoordinatorCoinTickerDidUpdate()
+    self.balanceTabCoordinator.appCoordinatorCoinTickerDidUpdate()
   }
 }
 
@@ -501,5 +534,19 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet) {
     self.restartNewSession(wallet)
+  }
+}
+
+extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
+  func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject) {
+    let token: KNToken = KNToken.from(tokenObject: tokenObject)
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token)
+    self.tabbarController.selectedIndex = 0
+  }
+
+  func balanceTabCoordinatorShouldOpenSend(for tokenObject: TokenObject) {
+    let token: KNToken = KNToken.from(tokenObject: tokenObject)
+    self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(token)
+    self.tabbarController.selectedIndex = 1
   }
 }
