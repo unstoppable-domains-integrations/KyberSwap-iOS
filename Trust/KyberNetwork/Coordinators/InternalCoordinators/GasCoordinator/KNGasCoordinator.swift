@@ -83,11 +83,9 @@ class KNGasCoordinator {
       guard let `self` = self else { return }
       self.isLoadingMaxKNGasPrice = false
       if case .success(let data) = result {
-        do {
-          let dataString: String = try kn_cast(data["data"])
-          self.maxKNGas = Double(dataString) ?? self.maxKNGas
-          KNNotificationUtil.postNotification(for: KNGasNotificationKeys.knMaxGasPriceDidUpdateKey.rawValue)
-        } catch {}
+        let dataString: String = data["data"] as? String ?? ""
+        self.maxKNGas = Double(dataString) ?? self.maxKNGas
+        KNNotificationUtil.postNotification(for: KNGasNotificationKeys.knMaxGasPriceDidUpdateKey.rawValue)
       }
     }
   }
@@ -105,18 +103,14 @@ class KNGasCoordinator {
   }
 
   fileprivate func updateGasPrice(dataJSON: JSONDictionary) throws {
-    do {
-      let stringDefault: String = try kn_cast(dataJSON["default"])
-      self.defaultKNGas = Double(stringDefault) ?? self.defaultKNGas
-      let stringLow: String = try kn_cast(dataJSON["low"])
-      self.lowKNGas = Double(stringLow) ?? self.lowKNGas
-      let stringStandard: String = try kn_cast(dataJSON["standard"])
-      self.standardKNGas = Double(stringStandard) ?? self.standardKNGas
-      let stringFast: String = try kn_cast(dataJSON["fast"])
-      self.fastKNGas = Double(stringFast) ?? self.fastKNGas
-    } catch {
-      throw CastError(actualValue: String.self, expectedType: Double.self)
-    }
+    let stringDefault: String = dataJSON["default"] as? String ?? ""
+    self.defaultKNGas = Double(stringDefault) ?? self.defaultKNGas
+    let stringLow: String = dataJSON["low"] as? String ?? ""
+    self.lowKNGas = Double(stringLow) ?? self.lowKNGas
+    let stringStandard: String = dataJSON["standard"] as? String ?? ""
+    self.standardKNGas = Double(stringStandard) ?? self.standardKNGas
+    let stringFast: String = dataJSON["fast"] as? String ?? ""
+    self.fastKNGas = Double(stringFast) ?? self.fastKNGas
     KNNotificationUtil.postNotification(for: KNGasNotificationKeys.knGasPriceDidUpdateKey.rawValue)
   }
 }

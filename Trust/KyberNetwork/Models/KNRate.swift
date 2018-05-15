@@ -12,9 +12,9 @@ class KNRate: NSObject {
 
   init(dictionary: JSONDictionary, isUSDRate: Bool = false) throws {
     if isUSDRate {
-      source = try kn_cast(dictionary["symbol"])
+      source = dictionary["symbol"] as? String ?? ""
       dest = "USD"
-      let rateString: String = try kn_cast(dictionary["price_usd"])
+      let rateString: String = dictionary["price_usd"] as? String ?? ""
       if let rateDouble = Double(rateString) {
         rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))
         minRate = rate
@@ -23,10 +23,10 @@ class KNRate: NSObject {
         throw CastError(actualValue: String.self, expectedType: Double.self)
       }
     } else {
-      source = try kn_cast(dictionary["source"])
-      dest =  try kn_cast(dictionary["dest"])
-      let rateString: String = try kn_cast(dictionary["rate"])
-      let minRateString: String = try kn_cast(dictionary["minRate"])
+      source = dictionary["source"] as? String ?? ""
+      dest =  dictionary["dest"] as? String ?? ""
+      let rateString: String = dictionary["rate"] as? String ?? ""
+      let minRateString: String = dictionary["minRate"] as? String ?? ""
       if let rateDouble = Double(rateString), let minRateDouble = Double(minRateString) {
         rate = BigInt(rateDouble)
         minRate = BigInt(minRateDouble)

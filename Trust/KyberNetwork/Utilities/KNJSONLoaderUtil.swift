@@ -18,13 +18,8 @@ class KNJSONLoaderUtil {
     let configFileName = KNEnvironment.default.configFileName
     guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: configFileName) else { return [] }
     guard let tokensJSON = json["tokens"] as? JSONDictionary else { return [] }
-    do {
-      return try tokensJSON.values.map({ return try KNToken(dictionary: try kn_cast($0)) })
-    } catch let error {
-      print("---> Error: Cast json to KNToken failed with error: \(error.localizedDescription)")
-      print("---> JSON Array: \(tokensJSON)")
-      return []
-    }
+    let tokens = tokensJSON.values.map({ return KNToken(dictionary: $0 as? JSONDictionary ?? [:]) })
+    return tokens
   }
 
   static func jsonDataFromFile(with name: String) -> JSONDictionary? {

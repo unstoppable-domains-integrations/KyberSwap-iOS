@@ -235,8 +235,8 @@ extension KNTransactionCoordinator {
 //      switch result {
 //      case .success(let response):
 //        do {
-//          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
-//          let transArr: [JSONDictionary] = try kn_cast(json["result"])
+//          let json: JSONDictionary = response.mapJSON(failsOnEmptyData: false))
+//          let transArr: [JSONDictionary] = json["result"])
 //          let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
 //          let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
 //          if !transactions.isEmpty {
@@ -262,9 +262,9 @@ extension KNTransactionCoordinator {
       switch result {
       case .success(let response):
         do {
-          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
-          let transArr: [JSONDictionary] = try kn_cast(json["data"])
-          let historyTransactions: [KNHistoryTransaction] = try transArr.map({ return try KNHistoryTransaction(dictionary: $0) })
+          let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let transArr: [JSONDictionary] = json["data"] as? [JSONDictionary] ?? []
+          let historyTransactions: [KNHistoryTransaction] = transArr.map({ return KNHistoryTransaction(dictionary: $0) })
           self.updateHistoryTransactions(historyTransactions)
           completion?(.success(historyTransactions))
         } catch let err {
@@ -346,9 +346,9 @@ extension KNTransactionCoordinator {
       switch result {
       case .success(let response):
         do {
-          let json: JSONDictionary = try kn_cast(response.mapJSON(failsOnEmptyData: false))
-          let data: [JSONDictionary] = try kn_cast(json["result"])
-          let transactions = try data.map({ return try KNTokenTransaction(dictionary: $0) })
+          let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
+          let transactions = data.map({ return KNTokenTransaction(dictionary: $0) })
           self.updateListTokenTransactions(transactions)
           print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
           completion?(.success(transactions))
@@ -536,19 +536,19 @@ extension UnconfirmedTransaction {
 }
 
 extension RawTransaction {
-  static func from(dictionary: JSONDictionary) throws -> RawTransaction {
-    let id: String = try kn_cast(dictionary["hash"])
+  static func from(dictionary: JSONDictionary) -> RawTransaction {
+    let id: String = dictionary["hash"] as? String ?? ""
     let blockNumber = Int(dictionary["blockNumber"] as? String ?? "0") ?? 0
-    let from: String = try kn_cast(dictionary["from"])
-    let to: String = try kn_cast(dictionary["to"])
-    let value: String = try kn_cast(dictionary["value"])
-    let gas: String = try kn_cast(dictionary["gas"])
-    let gasPrice: String = try kn_cast(dictionary["gasPrice"])
-    let gasUsed: String = try kn_cast(dictionary["gasUsed"])
+    let from: String = dictionary["from"] as? String ?? ""
+    let to: String = dictionary["to"] as? String ?? ""
+    let value: String = dictionary["value"] as? String ?? ""
+    let gas: String = dictionary["gas"] as? String ?? ""
+    let gasPrice: String = dictionary["gasPrice"] as? String ?? ""
+    let gasUsed: String = dictionary["gasUsed"] as? String ?? ""
     let nonce: Int = Int(dictionary["nonce"] as? String ?? "0") ?? 0
-    let timeStamp: String = try kn_cast(dictionary["timeStamp"])
-    let input: String = try kn_cast(dictionary["input"])
-    let isError: String? = try kn_cast(dictionary["isError"])
+    let timeStamp: String = dictionary["timeStamp"] as? String ?? ""
+    let input: String = dictionary["input"] as? String ?? ""
+    let isError: String? = dictionary["isError"] as? String
 
     return RawTransaction(
       hash: id,

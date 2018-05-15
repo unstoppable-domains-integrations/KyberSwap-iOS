@@ -15,12 +15,11 @@ struct KNCustomRPC {
     let name: String = dictionary["chainName"] as? String ?? ""
     let symbol = name
     var endpoint: String
-    do {
-      let connections: JSONDictionary = try kn_cast(dictionary["connections"])
-      let https: [JSONDictionary] = try kn_cast(connections["http"])
+    if let connections: JSONDictionary = dictionary["connections"] as? JSONDictionary,
+      let https: [JSONDictionary] = connections["http"] as? [JSONDictionary] {
       let endpointJSON: JSONDictionary = https.count > 1 ? https[1] : https[0]
-      endpoint = try kn_cast(endpointJSON["endPoint"])
-    } catch {
+      endpoint = endpointJSON["endPoint"] as? String ?? ""
+    } else {
       endpoint = dictionary["endpoint"] as? String ?? ""
     }
     self.networkAddress = dictionary["network"] as? String ?? ""

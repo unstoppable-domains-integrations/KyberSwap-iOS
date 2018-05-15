@@ -24,7 +24,7 @@ class KNInternalProvider {
       switch result {
       case .success(let object):
         do {
-          let jsonArr: [JSONDictionary] = try kn_cast(object["data"])
+          let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
           if isDebug { print("Load KN exchange rates successfully: \(jsonArr)") }
           let rates = try jsonArr.map({ return try KNRate(dictionary: $0) })
           completion(.success(rates))
@@ -42,7 +42,7 @@ class KNInternalProvider {
       switch result {
       case .success(let object):
         do {
-          let jsonArr: [JSONDictionary] = try kn_cast(object["data"])
+          let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
           if isDebug { print("Load KN USD exchange rates successfully: \(jsonArr)") }
           let rates = try jsonArr.map({ return try KNRate(dictionary: $0, isUSDRate: true) })
           completion(.success(rates))
@@ -79,13 +79,9 @@ class KNInternalProvider {
     self.performFetchRequest(service: .getLatestBlock) { (result) in
       switch result {
       case .success(let json):
-        do {
-          if isDebug { print("Load recent trades successfully: \(json)") }
-          let latestBlock: String = try kn_cast(json["data"])
-          completion(.success(latestBlock))
-        } catch let error {
-          completion(.failure(AnyError(error)))
-        }
+        if isDebug { print("Load recent trades successfully: \(json)") }
+        let latestBlock: String = json["data"] as? String ?? ""
+        completion(.success(latestBlock))
       case .failure(let error):
         completion(.failure(AnyError(error)))
       }
@@ -96,13 +92,9 @@ class KNInternalProvider {
     self.performFetchRequest(service: .getKyberEnabled) { (result) in
       switch result {
       case .success(let json):
-        do {
-          if isDebug { print("Load recent trades successfully: \(json)") }
-          let isEnabled: Bool = try kn_cast(json["data"])
-          completion(.success(isEnabled))
-        } catch let error {
-          completion(.failure(AnyError(error)))
-        }
+        if isDebug { print("Load recent trades successfully: \(json)") }
+        let isEnabled: Bool = json["data"] as? Bool ?? false
+        completion(.success(isEnabled))
       case .failure(let error):
         completion(.failure(AnyError(error)))
       }
@@ -115,7 +107,7 @@ class KNInternalProvider {
       case .success(let response):
         do {
           _ = try response.filterSuccessfulStatusCodes()
-          let json: JSONDictionary = try kn_cast(response.mapJSON())
+          let json: JSONDictionary = try response.mapJSON() as? JSONDictionary ?? [:]
           completion(.success(json))
         } catch let error {
           completion(.failure(AnyError(error)))

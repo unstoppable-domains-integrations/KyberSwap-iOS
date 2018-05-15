@@ -182,13 +182,7 @@ class KNExternalProvider {
       completion(.success(true))
       return
     }
-    let tokenAddress: Address
-    do {
-      tokenAddress = try kn_cast(Address(string: token.address))
-    } catch let error {
-      completion(.failure(AnyError(error)))
-      return
-    }
+    let tokenAddress: Address = Address(string: token.address)!
     self.getTokenAllowanceEncodeData { dataResult in
       switch dataResult {
       case .success(let data):
@@ -260,15 +254,8 @@ class KNExternalProvider {
 
   // MARK: Rate
   func getExpectedRate(from: KNToken, to: KNToken, amount: BigInt, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
-    var source: Address!
-    var dest: Address!
-    do {
-      source = try kn_cast(Address(string: from.address))
-      dest = try kn_cast(Address(string: to.address))
-    } catch let error {
-      completion(.failure(AnyError(error)))
-      return
-    }
+    let source: Address = Address(string: from.address)!
+    let dest: Address = Address(string: to.address)!
     self.getExpectedRateEncodeData(source: source, dest: dest, amount: amount) { [weak self] dataResult in
       guard let `self` = self else { return }
       switch dataResult {

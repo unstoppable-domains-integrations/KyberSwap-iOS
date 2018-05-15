@@ -12,13 +12,13 @@ struct KNToken {
   let decimal: Int
   let usdID: String
 
-  init(dictionary: JSONDictionary) throws {
-    name = try kn_cast(dictionary["name"])
-    symbol = try kn_cast(dictionary["symbol"])
-    icon = try kn_cast(dictionary["icon"])
-    address = try kn_cast(dictionary["address"])
-    decimal = try kn_cast(dictionary["decimal"])
-    usdID = try kn_cast(dictionary["usd_id"])
+  init(dictionary: JSONDictionary) {
+    name = dictionary["name"] as? String ?? ""
+    symbol = dictionary["symbol"] as? String ?? ""
+    icon = dictionary["icon"] as? String ?? ""
+    address = dictionary["address"] as? String ?? ""
+    decimal = dictionary["decimal"] as? Int ?? 0
+    usdID = dictionary["usd_id"] as? String ?? ""
   }
 
   init(

@@ -31,6 +31,7 @@ class KNBalanceTabCoordinator: Coordinator {
     session: KNSession
     ) {
     self.navigationController = navigationController
+    self.navigationController.applyStyle()
     self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
@@ -87,12 +88,23 @@ extension KNBalanceTabCoordinator {
 
 extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController) {
+    // TODO: Implement it
+    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
   }
 
   func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {
+    // TODO: Implement it
+//    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
+    let controller = NewTokenViewController(token: nil)
+    controller.delegate = self
+    let navController = UINavigationController(rootViewController: controller)
+    navController.applyStyle()
+    self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
   }
 
   func balanceTabDidSelectWalletListButton(in controller: KNBalanceTabViewController) {
+    // TODO: Implement it
+    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
   }
 
   func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
@@ -101,5 +113,18 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
 
   func balanceTabDidSelectExchange(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
     self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: tokenObject)
+  }
+}
+
+extension KNBalanceTabCoordinator: NewTokenViewControllerDelegate {
+  func didAddToken(token: ERC20Token, in viewController: NewTokenViewController) {
+    self.session.tokenStorage.addCustom(token: token)
+    self.navigationController.topViewController?.dismiss(animated: true, completion: {
+      KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
+    })
+  }
+
+  func didCancel(in viewController: NewTokenViewController) {
+    self.navigationController.topViewController?.dismiss(animated: true, completion: nil)
   }
 }

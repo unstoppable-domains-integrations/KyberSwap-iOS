@@ -61,9 +61,9 @@ struct KNTokenBalanceCollectionViewCellModel {
 
   var colorChange24h: UIColor {
     if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
-      return String(percentageChange) == "-" ? UIColor(hex: "f7f7f7") : UIColor(hex: "5ec2ba")
+      return String(percentageChange) == "-" ? UIColor(hex: "d0021b") : UIColor(hex: "5ec2ba")
     }
-    return UIColor.Kyber.green
+    return UIColor(hex: "5ec2ba")
   }
 
   var backgroundColorChange24h: UIColor {

@@ -25,24 +25,24 @@ class KNHistoryTransaction: Object {
   @objc dynamic var collectedFees: String = ""
 
   // There are more information returned
-  convenience init(dictionary: JSONDictionary) throws {
+  convenience init(dictionary: JSONDictionary) {
     self.init()
-    self.id = try kn_cast(dictionary["tx"])
-    self.blockNumber = try kn_cast(dictionary["blockNumber"])
-    self.blockHash = try kn_cast(dictionary["blockHash"])
-    self.blockTimestamp = try kn_cast(dictionary["blockTimestamp"])
-    self.makerAddress = try kn_cast(dictionary["makerAddress"])
-    self.makerTokenAddress = try kn_cast(dictionary["makerTokenAddress"])
-    self.makerTokenSymbol = try kn_cast(dictionary["makerTokenSymbol"])
-    self.makerTokenAmount = try kn_cast(dictionary["makerTokenAmount"])
-    self.takerAddress = try kn_cast(dictionary["takerAddress"])
-    self.takerTokenAddress = try kn_cast(dictionary["takerTokenAddress"])
-    self.takerTokenSymbol = try kn_cast(dictionary["takerTokenSymbol"])
-    self.takerTokenAmount = try kn_cast(dictionary["takerTokenAmount"])
-    self.gasLimit = try kn_cast(dictionary["gasLimit"])
-    self.gasPrice = try kn_cast(dictionary["gasPrice"])
-    self.gasUsed = try kn_cast(dictionary["gasUsed"])
-    self.collectedFees = try kn_cast(dictionary["collectedFees"])
+    self.id = dictionary["tx"] as? String ?? ""
+    self.blockNumber = dictionary["blockNumber"] as? Int ?? 0
+    self.blockHash = dictionary["blockHash"] as? String ?? ""
+    self.blockTimestamp = dictionary["blockTimestamp"] as? Int64 ?? 0
+    self.makerAddress = dictionary["makerAddress"] as? String ?? ""
+    self.makerTokenAddress = dictionary["makerTokenAddress"] as? String ?? ""
+    self.makerTokenSymbol = dictionary["makerTokenSymbol"] as? String ?? ""
+    self.makerTokenAmount = dictionary["makerTokenAmount"] as? String ?? ""
+    self.takerAddress = dictionary["takerAddress"] as? String ?? ""
+    self.takerTokenAddress = dictionary["takerTokenAddress"] as? String ?? ""
+    self.takerTokenSymbol = dictionary["takerTokenSymbol"] as? String ?? ""
+    self.takerTokenAmount = dictionary["takerTokenAmount"] as? String ?? ""
+    self.gasLimit = dictionary["gasLimit"] as? Int64 ?? 0
+    self.gasPrice = dictionary["gasPrice"] as? Int64 ?? 0
+    self.gasUsed = dictionary["gasUsed"] as? Int64 ?? 0
+    self.collectedFees = dictionary["collectedFees"] as? String ?? ""
   }
 
   override static func primaryKey() -> String? {

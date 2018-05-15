@@ -72,14 +72,13 @@ class KNCoinTickerCoordinator {
       switch result {
       case .success(let resp):
         do {
-          let jsonArr: [JSONDictionary] = try kn_cast(resp.mapJSON(failsOnEmptyData: false))
+          let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
           let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
           KNCoinTickerStorage.shared.update(coinTickers: coinTickers)
           KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
           print("---- Coin Tickers: Successful limit: \(limit), currency: \(currency) ----")
           completion?(.success(coinTickers))
         } catch let error {
-          print("---- Coin Tickers: Parse error: \(error.prettyError) ----")
           completion?(.failure(AnyError(error)))
         }
       case .failure(let error):
@@ -95,7 +94,7 @@ class KNCoinTickerCoordinator {
       switch result {
       case .success(let resp):
         do {
-          let json: JSONDictionary = try kn_cast(resp.mapJSON(failsOnEmptyData: false))
+          let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let coinTicker: KNCoinTicker = KNCoinTicker(dict: json, currency: currency)
           KNCoinTickerStorage.shared.update(coinTickers: [coinTicker])
           KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
