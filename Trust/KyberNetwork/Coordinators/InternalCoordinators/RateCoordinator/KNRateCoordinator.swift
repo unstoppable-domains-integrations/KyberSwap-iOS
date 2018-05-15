@@ -50,37 +50,37 @@ class KNRateCoordinator {
 
   func resume() {
     // Immediate fetch data from server, then run timers with interview 60 seconds
-    self.fetchExchangeTokenRate(nil)
-    self.exchangeTokenRatesTimer?.invalidate()
-
-    self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-      target: self,
-      selector: #selector(self.fetchExchangeTokenRate(_:)),
-      userInfo: nil,
-      repeats: true
-    )
-
-    self.fetchExchangeUSDRates(nil)
-    self.exchangeUSDRatesTimer?.invalidate()
-
-    self.exchangeUSDRatesTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-      target: self,
-      selector: #selector(self.fetchExchangeUSDRates(_:)),
-      userInfo: nil,
-      repeats: true
-    )
+//    self.fetchExchangeTokenRate(nil)
+//    self.exchangeTokenRatesTimer?.invalidate()
+//
+//    self.exchangeTokenRatesTimer = Timer.scheduledTimer(
+//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
+//      target: self,
+//      selector: #selector(self.fetchExchangeTokenRate(_:)),
+//      userInfo: nil,
+//      repeats: true
+//    )
+//
+//    self.fetchExchangeUSDRates(nil)
+//    self.exchangeUSDRatesTimer?.invalidate()
+//
+//    self.exchangeUSDRatesTimer = Timer.scheduledTimer(
+//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
+//      target: self,
+//      selector: #selector(self.fetchExchangeUSDRates(_:)),
+//      userInfo: nil,
+//      repeats: true
+//    )
   }
 
   func pause() {
-    self.exchangeTokenRatesTimer?.invalidate()
-    self.exchangeTokenRatesTimer = nil
-    self.isLoadingExchangeTokenRates = false
-
-    self.exchangeUSDRatesTimer?.invalidate()
-    self.exchangeUSDRatesTimer = nil
-    self.isLoadingExchangeUSDRates = false
+//    self.exchangeTokenRatesTimer?.invalidate()
+//    self.exchangeTokenRatesTimer = nil
+//    self.isLoadingExchangeTokenRates = false
+//
+//    self.exchangeUSDRatesTimer?.invalidate()
+//    self.exchangeUSDRatesTimer = nil
+//    self.isLoadingExchangeUSDRates = false
   }
 
   @objc func fetchExchangeTokenRate(_ sender: Any?) {
