@@ -59,6 +59,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    KNSupportedTokenStorage.shared.addLocalSupportedTokens()
     self.addCoordinator(self.walletImportingMainCoordinator)
     self.walletImportingMainCoordinator.start()
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
@@ -295,6 +296,13 @@ extension KNAppCoordinator {
       name: rateUSDName,
       object: nil
     )
+    let supportedTokensName = Notification.Name(kSupportedTokenListDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.tokenObjectListDidUpdate(_:)),
+      name: supportedTokensName,
+      object: nil
+    )
   }
 
   fileprivate func removeObserveNotificationFromSession() {
@@ -341,9 +349,16 @@ extension KNAppCoordinator {
       name: Notification.Name(kExchangeUSDRateNotificationKey),
       object: nil
     )
+    let supportedTokensName = Notification.Name(kSupportedTokenListDidUpdateNotificationKey)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: supportedTokensName,
+      object: nil
+    )
   }
 
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Notification) {
+    if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
 
     self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
@@ -353,6 +368,7 @@ extension KNAppCoordinator {
   }
 
   @objc func exchangeRateUSDDidUpdateNotification(_ sender: Notification) {
+    if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
@@ -369,6 +385,7 @@ extension KNAppCoordinator {
   }
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Notification) {
+    if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
@@ -391,6 +408,7 @@ extension KNAppCoordinator {
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Notification) {
+    if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
@@ -413,6 +431,7 @@ extension KNAppCoordinator {
   }
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
+    if self.session == nil { return }
     if let txHash = sender.object as? String,
       let transaction = self.session.transactionStorage.get(forPrimaryKey: txHash) {
 
@@ -434,10 +453,13 @@ extension KNAppCoordinator {
   }
 
   @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
+    if self.session == nil { return }
     self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {
+    if self.session == nil { return }
+    self.session.tokenStorage.addKyberSupportedTokens()
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
     self.balanceTabCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
@@ -445,6 +467,7 @@ extension KNAppCoordinator {
   }
 
   @objc func coinTickerDidUpdate(_ sender: Notification) {
+    if self.session == nil { return }
     self.balanceTabCoordinator.appCoordinatorCoinTickerDidUpdate()
   }
 }
@@ -514,15 +537,15 @@ extension KNAppCoordinator: KNWalletCoordinatorDelegate {
     self.userDidClickExitSession()
   }
 
-  func walletCoordinatorDidClickExchange(token: KNToken) {
+  func walletCoordinatorDidClickExchange(token: TokenObject) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
   }
 
-  func walletCoordinatorDidClickTransfer(token: KNToken) {
+  func walletCoordinatorDidClickTransfer(token: TokenObject) {
     self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(token)
   }
 
-  func walletCoordinatorDidClickReceive(token: KNToken) {
+  func walletCoordinatorDidClickReceive(token: TokenObject) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: true)
   }
 }
@@ -539,14 +562,12 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
 extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject) {
-    let token: KNToken = KNToken.from(tokenObject: tokenObject)
-    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(token)
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject)
     self.tabbarController.selectedIndex = 0
   }
 
   func balanceTabCoordinatorShouldOpenSend(for tokenObject: TokenObject) {
-    let token: KNToken = KNToken.from(tokenObject: tokenObject)
-    self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(token)
+    self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(tokenObject)
     self.tabbarController.selectedIndex = 1
   }
 }

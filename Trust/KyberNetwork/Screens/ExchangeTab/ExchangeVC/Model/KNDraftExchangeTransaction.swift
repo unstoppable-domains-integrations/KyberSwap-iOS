@@ -5,8 +5,8 @@ import TrustKeystore
 import BigInt
 
 struct KNDraftExchangeTransaction {
-  let from: KNToken
-  let to: KNToken
+  let from: TokenObject
+  let to: TokenObject
   let amount: BigInt
   let maxDestAmount: BigInt
   let expectedRate: BigInt
@@ -17,23 +17,23 @@ struct KNDraftExchangeTransaction {
 
 extension KNDraftExchangeTransaction {
   func displayAmount(short: Bool = true) -> String {
-    return short ? amount.shortString(decimals: from.decimal) : amount.fullString(decimals: from.decimal)
+    return short ? amount.shortString(decimals: from.decimals) : amount.fullString(decimals: from.decimals)
   }
 
   var expectedReceive: BigInt {
-    return amount * expectedRate / BigInt(10).power(to.decimal)
+    return amount * expectedRate / BigInt(10).power(to.decimals)
   }
 
   func displayExpectedReceive(short: Bool = true) -> String {
-    return short ? expectedReceive.shortString(decimals: to.decimal) : expectedReceive.fullString(decimals: to.decimal)
+    return short ? expectedReceive.shortString(decimals: to.decimals) : expectedReceive.fullString(decimals: to.decimals)
   }
 
   func displayExpectedRate(short: Bool = true) -> String {
-    return short ? expectedRate.shortString(decimals: to.decimal) : expectedRate.fullString(decimals: to.decimal)
+    return short ? expectedRate.shortString(decimals: to.decimals) : expectedRate.fullString(decimals: to.decimals)
   }
 
   func displayMinRate(short: Bool = true) -> String? {
-    return short ? minRate?.shortString(decimals: to.decimal) : minRate?.fullString(decimals: to.decimal)
+    return short ? minRate?.shortString(decimals: to.decimals) : minRate?.fullString(decimals: to.decimals)
   }
 
   var displayGasPrice: String? {
@@ -49,7 +49,7 @@ extension KNDraftExchangeTransaction {
   }
 
   var usdValueStringForFee: String {
-    let eth = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
+    let eth = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH })!
     let rate = KNRateCoordinator.shared.usdRate(for: eth)?.rate ?? BigInt(0)
     return (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether)
   }
@@ -86,24 +86,24 @@ extension KNDraftExchangeTransaction {
   func toTransaction(hash: String, fromAddr: Address, toAddr: Address, nounce: Int) -> Transaction {
     // temporary: local object contains from and to tokens + expected rate
     let expectedAmount: String = {
-      return (self.amount * self.expectedRate / BigInt(10).power(self.to.decimal)).fullString(decimals: self.to.decimal)
+      return (self.amount * self.expectedRate / BigInt(10).power(self.to.decimals)).fullString(decimals: self.to.decimals)
     }()
     let localObject = LocalizedOperationObject(
-      from: self.from.address,
-      to: self.to.address,
+      from: self.from.contract,
+      to: self.to.contract,
       contract: nil,
       type: "exchange",
       value: expectedAmount,
       symbol: nil,
       name: nil,
-      decimals: self.to.decimal
+      decimals: self.to.decimals
     )
     return Transaction(
       id: hash,
       blockNumber: 0,
       from: fromAddr.description,
       to: toAddr.description,
-      value: self.amount.fullString(decimals: self.from.decimal),
+      value: self.amount.fullString(decimals: self.from.decimals),
       gas: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
       gasPrice: self.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
       gasUsed: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",

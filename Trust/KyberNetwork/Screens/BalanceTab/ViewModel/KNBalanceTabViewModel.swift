@@ -19,9 +19,13 @@ enum KNBalanceDisplayDataType {
 class KNBalanceTabViewModel: NSObject {
 
   private(set) var wallet: KNWalletObject
-  private(set) var supportedTokens: [String: KNToken] = [:]
   private(set) var tokenObjects: [TokenObject] = []
+  // cointicker with key is symbol + name
   private(set) var coinTickers: [String: KNCoinTicker] = [:]
+  // cointicker with key is symbol only (due to inconsistent between KN and CMC
+  private(set) var symbolCoinTickers: [String: KNCoinTicker] = [:]
+  // cointicker with key is name only (due to custom symbol name from KN supported token)
+  private(set) var nameCoinTickers: [String: KNCoinTicker] = [:]
 
   private(set) var tokensDisplayType: KNTokensDisplayType = .change24h
   private(set) var displayedTokens: [TokenObject] = []
@@ -45,8 +49,9 @@ class KNBalanceTabViewModel: NSObject {
     coinTickers.forEach {
       let identifier = $0.symbol + " " + $0.name.replacingOccurrences(of: " ", with: "").lowercased()
       self.coinTickers[identifier] = $0
+      self.symbolCoinTickers[$0.symbol] = $0
+      self.nameCoinTickers[$0.name.replacingOccurrences(of: " ", with: "").lowercased()] = $0
     }
-    KNJSONLoaderUtil.shared.tokens.forEach { self.supportedTokens[$0.address] = $0 }
   }
 
   // MARK: Wallet data
@@ -122,11 +127,7 @@ class KNBalanceTabViewModel: NSObject {
   }
 
   func iconName(for token: TokenObject) -> String? {
-    return self.supportedTokens[token.contract]?.icon
-  }
-
-  func isKyberListed(for token: TokenObject) -> Bool {
-    return self.supportedTokens[token.contract] != nil
+    return token.icon
   }
 
   func expandedTokenIndex() -> Int? {
@@ -138,9 +139,7 @@ class KNBalanceTabViewModel: NSObject {
   // to reduce number of reloading collection view
 
   func updateTokenObjects(_ tokenObjects: [TokenObject]) -> Bool {
-    if self.tokenObjects == tokenObjects {
-      return false
-    }
+    if self.tokenObjects == tokenObjects { return false }
     self.tokenObjects = tokenObjects
     self.createDisplayedData()
     return true
@@ -169,7 +168,6 @@ class KNBalanceTabViewModel: NSObject {
   }
 
   fileprivate func createDisplayedData() {
-    let coinTickers = KNCoinTickerStorage.shared.coinTickers
     // Compute displayed token objects sorted by displayed type
     self.displayedTokens = {
       switch self.tokensDisplayType {
@@ -178,27 +176,24 @@ class KNBalanceTabViewModel: NSObject {
           return self.displayedTokenComparator(left: $0, right: $1)
         })
       case .kyberListed:
-        return self.tokenObjects.filter { return self.supportedTokens[$0.contract] != nil }
+        return self.tokenObjects.filter { return $0.isSupported }
       case .kyberNotListed:
-        return self.tokenObjects.filter { return self.supportedTokens[$0.contract] == nil }
+        return self.tokenObjects.filter { return !$0.isSupported }
       }
     }()
-    self.displayedCoinTickers = []
-
-    self.displayedTokens.forEach { token in
-      let coinTicker: KNCoinTicker? = {
-        let tickers = coinTickers.filter { return $0.symbol == token.symbol }
-        if tickers.count == 1 { return tickers[0] }
-        return tickers.first(where: { $0.name.replacingOccurrences(of: " ", with: "").lowercased() == token.name.lowercased() })
-      }()
-      self.displayedCoinTickers.append(coinTicker)
-    }
+    self.displayedCoinTickers = self.displayedTokens.map({
+      let name = $0.name.replacingOccurrences(of: " ", with: "").lowercased()
+      let coinTicker = self.coinTickers[$0.symbolAndNameID] ?? self.nameCoinTickers[name] ?? self.symbolCoinTickers[$0.symbol]
+      return coinTicker
+    })
   }
 
   // Either display by 24h change, balance value, or balance holding
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
-    let id0 = left.symbol + " " + left.name.replacingOccurrences(of: " ", with: "").lowercased()
-    let id1 = right.symbol + " " + right.name.replacingOccurrences(of: " ", with: "").lowercased()
+    let name0 = left.name.replacingOccurrences(of: " ", with: "").lowercased()
+    let name1 = right.name.replacingOccurrences(of: " ", with: "").lowercased()
+    let id0 = left.symbol + " " + name0
+    let id1 = right.symbol + " " + name1
     guard let balance0 = self.balances[left.contract] else { return false }
     guard let balance1 = self.balances[right.contract] else { return true }
     // sort by balance holdings (number of coins)
@@ -206,11 +201,13 @@ class KNBalanceTabViewModel: NSObject {
       return balance0.value > balance1.value
     }
     // display by change 24h or balance value in USD
-    guard let ticker0 = self.coinTickers[id0] else { return false }
-    guard let ticker1 = self.coinTickers[id1] else { return true }
+    guard let ticker0 = self.coinTickers[id0] ?? self.nameCoinTickers[name0] ?? self.symbolCoinTickers[left.symbol] else { return false }
+    guard let ticker1 = self.coinTickers[id1] ?? self.nameCoinTickers[name1] ?? self.symbolCoinTickers[right.symbol] else { return true }
     if self.tokensDisplayType == .change24h {
       // sort by 24h change
-      return Double(ticker0.percentChange24h)! > Double(ticker1.percentChange24h)!
+      guard let double0 = Double(ticker0.percentChange24h) else { return false }
+      guard let double1 = Double(ticker1.percentChange24h) else { return true }
+      return double0 > double1
     } else {
       // sort by balance in USD
       let rate0 = KNRate.rateUSD(from: ticker0)

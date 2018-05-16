@@ -5,10 +5,10 @@ import BigInt
 import Result
 
 protocol KNExchangeTokenViewControllerDelegate: class {
-  func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt)
+  func exchangeTokenAmountDidChange(source: TokenObject, dest: TokenObject, amount: BigInt)
   func exchangeTokenShouldUpdateEstimateGasUsed(exchangeTransaction: KNDraftExchangeTransaction)
   func exchangeTokenDidClickExchange(exchangeTransaction: KNDraftExchangeTransaction)
-  func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool)
+  func exchangeTokenUserDidClickSelectTokenButton(source: TokenObject, dest: TokenObject, isSource: Bool)
   func exchangeTokenUserDidClickExit()
   func exchangeTokenUserDidClickPendingTransactions()
 }
@@ -23,11 +23,11 @@ class KNExchangeTokenViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNExchangeTokenViewControllerDelegate?
 
-  fileprivate let ethToken: KNToken = KNToken.ethToken()
-  fileprivate let kncToken: KNToken = KNToken.kncToken()
+  fileprivate let ethToken: TokenObject = KNSupportedTokenStorage.shared.ethToken
+  fileprivate let kncToken: TokenObject = KNSupportedTokenStorage.shared.kncToken
 
-  fileprivate var selectedFromToken: KNToken!
-  fileprivate var selectedToToken: KNToken!
+  fileprivate var selectedFromToken: TokenObject!
+  fileprivate var selectedToToken: TokenObject!
 
   fileprivate var isFocusingFromTokenAmount: Bool = true
 
@@ -159,7 +159,7 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
+    self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimals)
     self.minRateTextField.delegate = self
 
     self.gasPriceTextField.text = KNGasConfiguration.gasPriceDefault.fullString(units: UnitConfiguration.gasPriceUnit)
@@ -186,7 +186,7 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func setupExchangeButton() {
-    let rateString = self.expectedRate.shortString(decimals: self.selectedToToken.decimal)
+    let rateString = self.expectedRate.shortString(decimals: self.selectedToToken.decimals)
     self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(rateString) \(self.selectedToToken.symbol)"
 
     self.exchangeButton.setTitle("Exchange".uppercased().toBeLocalised(), for: .normal)
@@ -198,14 +198,14 @@ extension KNExchangeTokenViewController {
 
 // MARK: Update data
 extension KNExchangeTokenViewController {
-  fileprivate func updateFromToken(_ token: KNToken) {
+  fileprivate func updateFromToken(_ token: TokenObject) {
     self.selectedFromToken = token
     self.userDidChangeMinRate = false
     self.updateRates()
     self.updateFromTokenWhenTokenDidChange()
   }
 
-  fileprivate func updateToToken(_ token: KNToken) {
+  fileprivate func updateToToken(_ token: TokenObject) {
     self.selectedToToken = token
     self.userDidChangeMinRate = false
     self.updateRates()
@@ -234,7 +234,7 @@ extension KNExchangeTokenViewController {
   fileprivate func updateFromTokenWhenTokenDidChange() {
     self.fromTokenButton.setImage(UIImage(named: self.selectedFromToken.icon), for: .normal)
     self.fromTokenButton.setTitle("\(self.selectedFromToken.display)", for: .normal)
-    let balanceString = self.otherTokenBalances[self.selectedFromToken.address]?.amountShort ?? "0.0000"
+    let balanceString = self.otherTokenBalances[self.selectedFromToken.contract]?.amountShort ?? "0.0000"
     self.fromTokenBalanceLabel.text = "Balance: \(balanceString) \(self.selectedFromToken.symbol)".toBeLocalised()
     self.amountFromTokenTextField.text = "0"
     self.amountToTokenTextField.text = "0"
@@ -243,7 +243,7 @@ extension KNExchangeTokenViewController {
   fileprivate func updateToTokenWhenTokenDidChange() {
     self.toTokenButton.setImage(UIImage(named: self.selectedToToken.icon), for: .normal)
     self.toTokenButton.setTitle("\(self.selectedToToken.display)", for: .normal)
-    let balanceString = self.otherTokenBalances[self.selectedToToken.address]?.amountShort ?? "0.0000"
+    let balanceString = self.otherTokenBalances[self.selectedToToken.contract]?.amountShort ?? "0.0000"
     self.toTokenBalanceLabel.text = "Balance: \(balanceString) \(self.selectedToToken.symbol)".toBeLocalised()
     self.amountFromTokenTextField.text = "0"
     self.amountToTokenTextField.text = "0"
@@ -264,29 +264,29 @@ extension KNExchangeTokenViewController {
 
   fileprivate func updateViewWhenRatesDidChange() {
     if !self.userDidChangeMinRate {
-      self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimal)
+      self.minRateTextField.text = self.slippageRate.fullString(decimals: self.selectedToToken.decimals)
     }
 
-    self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(self.expectedRate.shortString(decimals: self.selectedToToken.decimal)) \(self.selectedToToken.symbol)"
+    self.expectedRateLabel.text = "1 \(self.selectedFromToken.symbol) = \(self.expectedRate.shortString(decimals: self.selectedToToken.decimals)) \(self.selectedToToken.symbol)"
     if self.isFocusingFromTokenAmount {
       let expectedAmount: BigInt = {
-        let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
-        return self.expectedRate * amount / BigInt(10).power(self.selectedToToken.decimal)
+        let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimals) ?? BigInt(0)
+        return self.expectedRate * amount / BigInt(10).power(self.selectedToToken.decimals)
       }()
-      self.amountToTokenTextField.text = expectedAmount.fullString(decimals: self.selectedToToken.decimal)
+      self.amountToTokenTextField.text = expectedAmount.fullString(decimals: self.selectedToToken.decimals)
     } else {
       let amountSent: BigInt = {
-        let expectedAmount = self.amountToTokenTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) ?? BigInt(0)
-        return self.expectedRate.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(self.selectedFromToken.decimal) / self.expectedRate
+        let expectedAmount = self.amountToTokenTextField.text?.fullBigInt(decimals: self.selectedToToken.decimals) ?? BigInt(0)
+        return self.expectedRate.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(self.selectedFromToken.decimals) / self.expectedRate
       }()
-      self.amountFromTokenTextField.text = amountSent.fullString(decimals: self.selectedFromToken.decimal)
+      self.amountFromTokenTextField.text = amountSent.fullString(decimals: self.selectedFromToken.decimals)
     }
   }
 
   fileprivate func updateViewWhenBalancesDidChange() {
-    let sourceBalance = self.otherTokenBalances[self.selectedFromToken.address]?.amountShort ?? "0.0000"
+    let sourceBalance = self.otherTokenBalances[self.selectedFromToken.contract]?.amountShort ?? "0.0000"
     self.fromTokenBalanceLabel.text = "Balance: \(sourceBalance) \(self.selectedFromToken.symbol)".toBeLocalised()
-    let destBalance = self.otherTokenBalances[self.selectedToToken.address]?.amountShort ?? "0.0000"
+    let destBalance = self.otherTokenBalances[self.selectedToToken.contract]?.amountShort ?? "0.0000"
     self.toTokenBalanceLabel.text = "Balance: \(destBalance) \(self.selectedToToken.symbol)".toBeLocalised()
   }
 }
@@ -297,7 +297,7 @@ extension KNExchangeTokenViewController {
     self.view.layoutIfNeeded()
   }
 
-  func coordinatorDidUpdateSelectedToken(_ token: KNToken, isSource: Bool) {
+  func coordinatorDidUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource {
       if self.selectedFromToken == token { return }
       self.updateFromToken(token)
@@ -311,24 +311,24 @@ extension KNExchangeTokenViewController {
 
   func coordinatorDidUpdateEthBalanceDidUpdate(balance: Balance) {
     self.ethBalance = balance
-    self.otherTokenBalances[self.ethToken.address] = balance
+    self.otherTokenBalances[self.ethToken.contract] = balance
     self.updateViewWhenBalancesDidChange()
   }
 
   func coordinatorDidUpdateOtherTokenBalanceDidUpdate(balances: [String: Balance]) {
     self.otherTokenBalances = balances
-    self.otherTokenBalances[self.ethToken.address] = self.ethBalance
+    self.otherTokenBalances[self.ethToken.contract] = self.ethBalance
     self.updateViewWhenBalancesDidChange()
   }
 
-  func coordinatorDidUpdateEstimateRate(source: KNToken, dest: KNToken, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
+  func coordinatorDidUpdateEstimateRate(source: TokenObject, dest: TokenObject, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
     if source != self.selectedFromToken || dest != self.selectedToToken { return }
     self.expectedRate = expectedRate
     self.slippageRate = slippageRate
     self.updateViewWhenRatesDidChange()
   }
 
-  func coordinatorDidUpdateEstimateGasUsed(source: KNToken, dest: KNToken, amount: BigInt, estimate: BigInt) {
+  func coordinatorDidUpdateEstimateGasUsed(source: TokenObject, dest: TokenObject, amount: BigInt, estimate: BigInt) {
     if source != self.selectedFromToken || dest != self.selectedToToken { return }
     self.updateEstimateGasUsed(estimate)
   }
@@ -344,8 +344,8 @@ extension KNExchangeTokenViewController {
 extension KNExchangeTokenViewController {
   fileprivate func validateData(completion: (Result<KNDraftExchangeTransaction?, AnyError>) -> Void) {
     guard
-      let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal),
-      let balance = self.otherTokenBalances[self.selectedFromToken.address],
+      let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimals),
+      let balance = self.otherTokenBalances[self.selectedFromToken.contract],
       amount <= balance.value, !amount.isZero else {
       self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to exchange".toBeLocalised())
       completion(.success(nil))
@@ -356,12 +356,12 @@ extension KNExchangeTokenViewController {
       completion(.success(nil))
       return
     }
-    if self.advancedSwitch.isOn && (self.minRateTextField.text ?? "0").fullBigInt(decimals: self.selectedToToken.decimal) == nil {
+    if self.advancedSwitch.isOn && (self.minRateTextField.text ?? "0").fullBigInt(decimals: self.selectedToToken.decimals) == nil {
       self.showErrorTopBannerMessage(with: "Error", message: "Invalid min rate to exchange".toBeLocalised())
       completion(.success(nil))
       return
     }
-    let minRate: BigInt? = self.advancedSwitch.isOn ? self.minRateTextField.text?.fullBigInt(decimals: self.selectedToToken.decimal) : .none
+    let minRate: BigInt? = self.advancedSwitch.isOn ? self.minRateTextField.text?.fullBigInt(decimals: self.selectedToToken.decimals) : .none
     let exchange = KNDraftExchangeTransaction(
       from: self.selectedFromToken,
       to: self.selectedToToken,
@@ -376,7 +376,7 @@ extension KNExchangeTokenViewController {
   }
 
   fileprivate func shouldUpdateEstimateGasUsed(_ sender: Any?) {
-    let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
+    let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimals) ?? BigInt(0)
     let exchange = KNDraftExchangeTransaction(
       from: self.selectedFromToken,
       to: self.selectedToToken,
@@ -391,7 +391,7 @@ extension KNExchangeTokenViewController {
   }
 
   @objc func expectedRateTimerShouldRepeat(_ sender: Any?) {
-    let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimal) ?? BigInt(0)
+    let amount = self.amountFromTokenTextField.text?.fullBigInt(decimals: self.selectedFromToken.decimals) ?? BigInt(0)
     self.delegate?.exchangeTokenAmountDidChange(
       source: self.selectedFromToken,
       dest: self.selectedToToken,
@@ -419,10 +419,10 @@ extension KNExchangeTokenViewController {
     self.isFocusingFromTokenAmount = true
     let amount: BigInt = {
       let percent = sender.tag
-      let balance: Balance = self.otherTokenBalances[self.selectedFromToken.address] ?? Balance(value: BigInt(0))
+      let balance: Balance = self.otherTokenBalances[self.selectedFromToken.contract] ?? Balance(value: BigInt(0))
       return balance.value * BigInt(percent) / BigInt(100)
     }()
-    self.amountFromTokenTextField.text = amount.fullString(decimals: self.selectedFromToken.decimal)
+    self.amountFromTokenTextField.text = amount.fullString(decimals: self.selectedFromToken.decimals)
     self.view.layoutIfNeeded()
     self.expectedRateTimerShouldRepeat(sender)
     self.shouldUpdateEstimateGasUsed(sender)

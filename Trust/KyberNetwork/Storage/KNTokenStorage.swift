@@ -7,22 +7,22 @@ import BigInt
 class KNTokenStorage {
 
   private(set) var realm: Realm
-  private let supportedTokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
 
   init(realm: Realm) {
     self.realm = realm
     self.addKyberSupportedTokens()
   }
 
-  private func addKyberSupportedTokens() {
-    let supportedTokeObjects = self.supportedTokens.map({ return $0.toTokenObject() })
+  func addKyberSupportedTokens() {
     // update balance
-    supportedTokeObjects.forEach { tokenObject in
+    let supportedTokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
+    let tokenObjects = supportedTokens.map({ return $0.clone() })
+    tokenObjects.forEach { tokenObject in
       if let token = self.tokens.first(where: { $0.contract == tokenObject.contract }) {
         tokenObject.value = token.value
       }
     }
-    self.add(tokens: supportedTokeObjects)
+    self.add(tokens: tokenObjects)
   }
 
   var tokens: [TokenObject] {
@@ -32,18 +32,11 @@ class KNTokenStorage {
   }
 
   var ethToken: TokenObject {
-    let eth = self.supportedTokens.first(where: { $0.isETH })!
-    return self.tokens.first(where: { $0.contract == eth.address })!
+   return self.tokens.first(where: { $0.isETH })!
   }
 
   var kncToken: TokenObject {
-    let knc = self.supportedTokens.first(where: { $0.isKNC })!
-    return self.tokens.first(where: { $0.contract == knc.address })!
-  }
-
-  static func iconImageName(for token: TokenObject) -> String {
-    let localTokens = KNJSONLoaderUtil.shared.tokens
-    return localTokens.first(where: { $0.address == token.contract })?.icon ?? ""
+    return self.tokens.first(where: { $0.isKNC })!
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {
@@ -51,6 +44,8 @@ class KNTokenStorage {
   }
 
   func addCustom(token: ERC20Token) {
+    // Don't add custom token if it is existed
+    if self.tokens.first(where: { $0.contract == token.contract.description.lowercased() }) != nil { return }
     let newToken = TokenObject(
       contract: token.contract.description.lowercased(),
       name: token.name,
@@ -65,7 +60,7 @@ class KNTokenStorage {
   func add(tokens: [TokenObject]) {
     self.realm.beginWrite()
     self.realm.add(tokens, update: true)
-    try!self.realm.commitWrite()
+    try! self.realm.commitWrite()
   }
 
   func updateBalance(for token: TokenObject, balance: BigInt) {

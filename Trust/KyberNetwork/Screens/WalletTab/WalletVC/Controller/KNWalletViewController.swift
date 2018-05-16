@@ -7,15 +7,15 @@ protocol KNWalletViewControllerDelegate: class {
   func walletViewController(_ controller: KNWalletViewController, didExit sender: Any)
   func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any)
   func walletViewController(_ controller: KNWalletViewController, didClickWallet sender: Any)
-  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: KNToken)
-  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: KNToken)
-  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: KNToken)
+  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: TokenObject)
+  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: TokenObject)
+  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: TokenObject)
 }
 
 class KNWalletViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNWalletViewControllerDelegate?
-  fileprivate let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
+  fileprivate let tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   fileprivate var tokenObjects: [TokenObject] = []
   fileprivate var displayedTokens: [TokenObject] = []
   fileprivate var coinTickers: [KNCoinTicker?] = []
@@ -28,8 +28,8 @@ class KNWalletViewController: KNBaseViewController {
 
   fileprivate var expandedRowIDs: [Int] = []
 
-  fileprivate lazy var exchangeTokens: [(KNToken, KNToken?)] = {
-    var result: [(KNToken, KNToken?)] = []
+  fileprivate lazy var exchangeTokens: [(TokenObject, TokenObject?)] = {
+    var result: [(TokenObject, TokenObject?)] = []
     guard let eth = self.tokens.first(where: { $0.isETH }) else { return result }
     self.tokens.forEach({ if !$0.isETH { result.append(($0, eth)) } })
     self.tokens.forEach({ if !$0.isETH { result.append((eth, $0)) } })
@@ -306,15 +306,15 @@ extension KNWalletViewController: UICollectionViewDataSource {
 }
 
 extension KNWalletViewController: KNWalletTokenCollectionViewCellDelegate {
-  func walletTokenCollectionViewCellDidClickExchange(token: KNToken) {
+  func walletTokenCollectionViewCellDidClickExchange(token: TokenObject) {
     self.delegate?.walletViewController(self, didClickExchange: token)
   }
 
-  func walletTokenCollectionViewCellDidClickTransfer(token: KNToken) {
+  func walletTokenCollectionViewCellDidClickTransfer(token: TokenObject) {
     self.delegate?.walletViewController(self, didClickTransfer: token)
   }
 
-  func walletTokenCollectionViewCellDidClickReceive(token: KNToken) {
+  func walletTokenCollectionViewCellDidClickReceive(token: TokenObject) {
     self.delegate?.walletViewController(self, didClickReceive: token)
   }
 }

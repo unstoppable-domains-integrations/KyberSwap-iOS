@@ -61,8 +61,8 @@ extension KNBalanceTabCoordinator {
     )
   }
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
-    if let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH }) {
-      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.address: ethBalance])
+    if let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH }) {
+      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
     }
     self.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalBalanceInUSD,
@@ -84,6 +84,10 @@ extension KNBalanceTabCoordinator {
   func appCoordinatorCoinTickerDidUpdate() {
     self.rootViewController.coordinatorCoinTickerDidUpdate()
   }
+
+  func appCoordinatorSupportedTokensDidUpdate(tokenObjects: [TokenObject]) {
+    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
+  }
 }
 
 extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
@@ -94,7 +98,6 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
 
   func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {
     // TODO: Implement it
-//    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
     let controller = NewTokenViewController(token: nil)
     controller.delegate = self
     let navController = UINavigationController(rootViewController: controller)

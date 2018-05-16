@@ -4,7 +4,7 @@ import UIKit
 import BigInt
 
 protocol KNSelectTokenViewControllerDelegate: class {
-  func selectTokenViewUserDidSelect(_ token: KNToken)
+  func selectTokenViewUserDidSelect(_ token: TokenObject)
 }
 
 class KNSelectTokenViewController: KNBaseViewController {
@@ -14,12 +14,12 @@ class KNSelectTokenViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNSelectTokenViewControllerDelegate?
 
-  fileprivate var availableTokens: [KNToken] = []
+  fileprivate var availableTokens: [TokenObject] = []
   fileprivate var tokenBalances: [String: Balance] = [:]
 
   @IBOutlet weak var tokenTableView: UITableView!
 
-  init(delegate: KNSelectTokenViewControllerDelegate?, availableTokens: [KNToken]) {
+  init(delegate: KNSelectTokenViewControllerDelegate?, availableTokens: [TokenObject]) {
     self.delegate = delegate
     self.availableTokens = availableTokens
     super.init(nibName: KNSelectTokenViewController.className, bundle: nil)
@@ -58,8 +58,8 @@ class KNSelectTokenViewController: KNBaseViewController {
 
   fileprivate func sortTokensByBalances() {
     self.availableTokens.sort { (token1, token2) -> Bool in
-      let balance1 = self.tokenBalances[token1.address] ?? Balance(value: BigInt(0))
-      let balance2 = self.tokenBalances[token2.address] ?? Balance(value: BigInt(0))
+      let balance1 = self.tokenBalances[token1.contract] ?? Balance(value: BigInt(0))
+      let balance2 = self.tokenBalances[token2.contract] ?? Balance(value: BigInt(0))
       return balance1.value > balance2.value
     }
     self.tokenTableView.reloadData()
@@ -67,7 +67,7 @@ class KNSelectTokenViewController: KNBaseViewController {
 
   func updateETHBalance(_ balance: Balance) {
     if let eth = self.availableTokens.first(where: { $0.isETH }) {
-      self.tokenBalances[eth.address] = balance
+      self.tokenBalances[eth.contract] = balance
     }
     if self.tokenTableView != nil {
       self.sortTokensByBalances()
@@ -108,7 +108,7 @@ extension KNSelectTokenViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let token = self.availableTokens[indexPath.row]
     let cell = tableView.dequeueReusableCell(withIdentifier: selectTokenCellID, for: indexPath) as! KNSelectTokenTableViewCell
-    let balance = self.tokenBalances[token.address] ?? Balance(value: BigInt(0))
+    let balance = self.tokenBalances[token.contract] ?? Balance(value: BigInt(0))
     cell.updateCell(with: token, balance: balance)
     return cell
   }

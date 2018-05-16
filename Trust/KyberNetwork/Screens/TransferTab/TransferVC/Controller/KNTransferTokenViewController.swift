@@ -7,8 +7,8 @@ import TrustKeystore
 import QRCodeReaderViewController
 
 protocol KNTransferTokenViewControllerDelegate: class {
-  func transferTokenViewControllerDidClickTokenButton(_ selectedToken: KNToken)
-  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: KNToken, to address: String?, amount: BigInt)
+  func transferTokenViewControllerDidClickTokenButton(_ selectedToken: TokenObject)
+  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: TokenObject, to address: String?, amount: BigInt)
   func transferTokenViewControllerDidClickTransfer(transaction: UnconfirmedTransaction)
   func transferTokenViewControllerDidClickPendingTransaction()
   func transferTokenViewControllerDidExit()
@@ -24,8 +24,8 @@ class KNTransferTokenViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNTransferTokenViewControllerDelegate?
 
-  fileprivate var ethToken: KNToken!
-  fileprivate var selectedToken: KNToken!
+  fileprivate var ethToken: TokenObject!
+  fileprivate var selectedToken: TokenObject!
 
   fileprivate var otherTokenBalances: [String: Balance] = [:]
   fileprivate var lastEstimateGasUsed: BigInt = KNGasConfiguration.transferETHGasLimitDefault
@@ -108,7 +108,7 @@ extension KNTransferTokenViewController {
   }
 
   fileprivate func setupFromToken() {
-    self.ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
+    self.ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH })!
     self.selectedToken = self.ethToken
 
     self.fromTextLabel.text = "From".toBeLocalised()
@@ -168,7 +168,7 @@ extension KNTransferTokenViewController {
     self.amountTextField.text = "0"
   }
 
-  fileprivate func updateSelectedToken(_ token: KNToken) {
+  fileprivate func updateSelectedToken(_ token: TokenObject) {
     self.selectedToken = token
     let estGasUsed: BigInt = token.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
     self.updateTokenViewSelectedTokenDidChange()
@@ -194,12 +194,12 @@ extension KNTransferTokenViewController {
   }
 
   fileprivate func updateViewWhenBalancesDidChange() {
-    let sourceBalance = self.otherTokenBalances[self.selectedToken.address]?.amountShort ?? "0.0000"
+    let sourceBalance = self.otherTokenBalances[self.selectedToken.contract]?.amountShort ?? "0.0000"
     self.tokenBalanceLabel.text = "Balance: \(sourceBalance) \(self.selectedToken.symbol)".toBeLocalised()
   }
 
   @objc func shouldUpdateEstimateGasUsed(_ sender: Any?) {
-    guard let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimal) else { return }
+    guard let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimals) else { return }
     self.delegate?.transferTokenViewControllerShouldUpdateEstimatedGas(
       from: self.selectedToken,
       to: self.addressTextField.text,
@@ -225,10 +225,10 @@ extension KNTransferTokenViewController {
   @IBAction func percentageButtonPressed(_ sender: UIButton) {
     let amount: BigInt = {
       let percent = sender.tag
-      let balance: Balance = self.otherTokenBalances[self.selectedToken.address] ?? Balance(value: BigInt(0))
+      let balance: Balance = self.otherTokenBalances[self.selectedToken.contract] ?? Balance(value: BigInt(0))
       return balance.value * BigInt(percent) / BigInt(100)
     }()
-    self.amountTextField.text = amount.fullString(decimals: self.selectedToken.decimal)
+    self.amountTextField.text = amount.fullString(decimals: self.selectedToken.decimals)
     self.view.layoutIfNeeded()
     self.shouldUpdateEstimateGasUsed(sender)
   }
@@ -290,7 +290,7 @@ extension KNTransferTokenViewController {
   }
 
   func coordinatorETHBalanceDidUpdate(balance: Balance) {
-    self.otherTokenBalances[self.ethToken.address] = balance
+    self.otherTokenBalances[self.ethToken.contract] = balance
     self.updateViewWhenBalancesDidChange()
   }
 
@@ -299,12 +299,12 @@ extension KNTransferTokenViewController {
     self.updateViewWhenBalancesDidChange()
   }
 
-  func coordinatorSelectedTokenDidUpdate(_ token: KNToken) {
+  func coordinatorSelectedTokenDidUpdate(_ token: TokenObject) {
     if self.selectedToken == token { return }
     self.updateSelectedToken(token)
   }
 
-  func coordinatorEstimateGasUsedDidUpdate(token: KNToken, amount: BigInt, estimate: BigInt) {
+  func coordinatorEstimateGasUsedDidUpdate(token: TokenObject, amount: BigInt, estimate: BigInt) {
     if token != self.selectedToken { return }
     self.updateEstimateGasUsed(estimate)
   }
@@ -317,8 +317,8 @@ extension KNTransferTokenViewController {
 extension KNTransferTokenViewController {
   fileprivate func validateData(completion: (Result<UnconfirmedTransaction?, AnyError>) -> Void) {
     guard
-      let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimal),
-      let balance = self.otherTokenBalances[self.selectedToken.address],
+      let amount = self.amountTextField.text?.fullBigInt(decimals: self.selectedToken.decimals),
+      let balance = self.otherTokenBalances[self.selectedToken.contract],
       amount <= balance.value, !amount.isZero else {
         self.showErrorTopBannerMessage(with: "Error", message: "Invalid amount to transfer".toBeLocalised())
         completion(.success(nil))
@@ -342,10 +342,10 @@ extension KNTransferTokenViewController {
         return TransferType.ether(destination: address)
       }
       let tokenObject = TokenObject(
-        contract: self.selectedToken.address,
+        contract: self.selectedToken.contract,
         name: self.selectedToken.name,
         symbol: self.selectedToken.symbol,
-        decimals: self.selectedToken.decimal,
+        decimals: self.selectedToken.decimals,
         value: self.amountTextField.text ?? "0.0",
         isCustom: false,
         isDisabled: false)

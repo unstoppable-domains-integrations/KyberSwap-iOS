@@ -52,7 +52,7 @@ class KNWalletImportingMainViewController: KNBaseViewController {
 
     self.createWalletButton.setTitle("Create Wallet".uppercased().toBeLocalised(), for: .normal)
     self.createWalletButton.rounded(color: .clear, width: 0, radius: 5.0)
-    //self.debugButton.isHidden = !isDebug
+    self.debugButton.isHidden = true
   }
 
   @IBAction func keystoreButtonPressed(_ sender: Any) {

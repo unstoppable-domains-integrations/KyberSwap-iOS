@@ -28,19 +28,19 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txAmountLabel.text = ""
   }
 
-  func updateCell(with transaction: KNHistoryTransaction, tokens: [KNToken], ownerAddress: String) {
+  func updateCell(with transaction: KNHistoryTransaction, tokens: [TokenObject], ownerAddress: String) {
     self.txDateLabel.text = self.dateFormatter.string(from: Date(timeIntervalSince1970: Double(transaction.blockTimestamp)))
     self.txTypeLabel.text = "Exchanged"
     self.txIconImageView.image = UIImage(named: "exchange")
     guard
-      let from = tokens.first(where: { $0.address.lowercased() == transaction.makerTokenAddress.lowercased() }),
-      let to = tokens.first(where: { $0.address.lowercased() == transaction.takerTokenAddress }) else {
+      let from = tokens.first(where: { $0.contract.lowercased() == transaction.makerTokenAddress.lowercased() }),
+      let to = tokens.first(where: { $0.contract.lowercased() == transaction.takerTokenAddress }) else {
       self.txDetailsLabel.text = ""
       self.txAmountLabel.text = ""
       return
     }
-    let fromAmount: String = EtherNumberFormatter.short.number(from: transaction.makerTokenAmount, decimals: 0)?.shortString(decimals: from.decimal) ?? "0.00"
-    let toAmount: String = EtherNumberFormatter.short.number(from: transaction.takerTokenAmount, decimals: 0)?.shortString(decimals: to.decimal) ?? "0.00"
+    let fromAmount: String = EtherNumberFormatter.short.number(from: transaction.makerTokenAmount, decimals: 0)?.shortString(decimals: from.decimals) ?? "0.00"
+    let toAmount: String = EtherNumberFormatter.short.number(from: transaction.takerTokenAmount, decimals: 0)?.shortString(decimals: to.decimals) ?? "0.00"
     self.txDetailsLabel.text = "From \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
 
     let amountSign = transaction.makerAddress == ownerAddress ? "-" : "+"

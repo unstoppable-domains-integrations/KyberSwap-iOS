@@ -6,12 +6,10 @@ import RealmSwift
 class KNCoinTickerStorage {
 
   static let shared = KNCoinTickerStorage()
-  private let realm: Realm
-
-  init() {
+  lazy var realm: Realm = {
     let config = RealmConfiguration.globalConfiguration(for: KNEnvironment.default.chainID)
-    self.realm = try! Realm(configuration: config)
-  }
+    return try! Realm(configuration: config)
+  }()
 
   var coinTickers: [KNCoinTicker] {
     return self.realm.objects(KNCoinTicker.self)

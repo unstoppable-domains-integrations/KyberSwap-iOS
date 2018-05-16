@@ -10,6 +10,9 @@ let kTransactionListDidUpdateNotificationKey = "kTransactionListDidUpdateNotific
 let kTokenTransactionListDidUpdateNotificationKey = "kTokenTransactionListDidUpdateNotificationKey"
 let kTokenObjectListDidUpdateNotificationKey = "kTokenObjectListDidUpdateNotificationKey"
 
+// Tokens
+let kSupportedTokenListDidUpdateNotificationKey = "kSupportedTokenListDidUpdateNotificationKey"
+
 // Balance Keys
 let kETHBalanceDidUpdateNotificationKey = "kETHBalanceDidUpdateNotificationKey"
 let kOtherBalanceDidUpdateNotificationKey = "kOtherBalanceDidUpdateNotificationKey"

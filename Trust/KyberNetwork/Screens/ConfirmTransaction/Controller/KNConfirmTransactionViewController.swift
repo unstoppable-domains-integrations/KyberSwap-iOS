@@ -89,9 +89,9 @@ class KNConfirmTransactionViewController: UIViewController {
         ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
       ]
     case .transfer(let trans):
-      let fromToken: KNToken = trans.transferType.knToken()
+      let fromToken: TokenObject = trans.transferType.tokenObject()
       // Amount Transfer & its USD Value
-      let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimal))".prefix(20)
+      let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimals))".prefix(20)
       let usdValue: String = {
         let rate = KNRateCoordinator.shared.usdRate(for: fromToken)?.rate ?? BigInt(0)
         return (rate * trans.value / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether)
@@ -109,7 +109,7 @@ class KNConfirmTransactionViewController: UIViewController {
           return fromToken.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
         }()
         let fee = gasPrice * gasLimit
-        let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
+        let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH })!
         let rate = KNRateCoordinator.shared.usdRate(for: ethToken)?.rate ?? BigInt(0)
         return (fee.fullString(units: .ether).prefix(16), (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether))
       }()
@@ -124,7 +124,7 @@ class KNConfirmTransactionViewController: UIViewController {
     self.contentTableView.reloadData()
   }
 
-  func updateExpectedRateData(source: KNToken, dest: KNToken, amount: BigInt, expectedRate: BigInt) {
+  func updateExpectedRateData(source: TokenObject, dest: TokenObject, amount: BigInt, expectedRate: BigInt) {
     if case .exchange(let transaction) = self.transactionType {
       if transaction.from == source && transaction.to == dest && transaction.amount == amount {
         let newTransaction = transaction.copy(expectedRate: expectedRate)

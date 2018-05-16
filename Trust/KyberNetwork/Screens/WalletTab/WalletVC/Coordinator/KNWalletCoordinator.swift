@@ -6,9 +6,9 @@ import SafariServices
 
 protocol KNWalletCoordinatorDelegate: class {
   func walletCoordinatorDidClickExit()
-  func walletCoordinatorDidClickExchange(token: KNToken)
-  func walletCoordinatorDidClickTransfer(token: KNToken)
-  func walletCoordinatorDidClickReceive(token: KNToken)
+  func walletCoordinatorDidClickExchange(token: TokenObject)
+  func walletCoordinatorDidClickTransfer(token: TokenObject)
+  func walletCoordinatorDidClickReceive(token: TokenObject)
 }
 
 class KNWalletCoordinator: Coordinator {
@@ -64,9 +64,8 @@ extension KNWalletCoordinator {
   }
 
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
-    if let ethToken = KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH }) {
-      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.address: ethBalance])
-    }
+    let ethToken = KNSupportedTokenStorage.shared.ethToken
+    self.rootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
     self.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalBalanceInUSD,
       totalBalanceInETH: totalBalanceInETH
@@ -102,15 +101,15 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
     }
   }
 
-  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickExchange token: TokenObject) {
     self.delegate?.walletCoordinatorDidClickExchange(token: token)
   }
 
-  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: TokenObject) {
     self.delegate?.walletCoordinatorDidClickTransfer(token: token)
   }
 
-  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: KNToken) {
+  func walletViewController(_ controller: KNWalletViewController, didClickReceive token: TokenObject) {
     self.delegate?.walletCoordinatorDidClickReceive(token: token)
   }
 

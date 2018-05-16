@@ -176,13 +176,13 @@ class KNExternalProvider {
 
   // If the value returned > 0 consider as allowed
   // should check with the current send amount, however the limit is likely set as very big
-  func getAllowance(token: KNToken, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func getAllowance(token: TokenObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     if token.isETH {
       // ETH no need to request for approval
       completion(.success(true))
       return
     }
-    let tokenAddress: Address = Address(string: token.address)!
+    let tokenAddress: Address = Address(string: token.contract)!
     self.getTokenAllowanceEncodeData { dataResult in
       switch dataResult {
       case .success(let data):
@@ -253,9 +253,9 @@ class KNExternalProvider {
   }
 
   // MARK: Rate
-  func getExpectedRate(from: KNToken, to: KNToken, amount: BigInt, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
-    let source: Address = Address(string: from.address)!
-    let dest: Address = Address(string: to.address)!
+  func getExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
+    let source: Address = Address(string: from.contract)!
+    let dest: Address = Address(string: to.contract)!
     self.getExpectedRateEncodeData(source: source, dest: dest, amount: amount) { [weak self] dataResult in
       guard let `self` = self else { return }
       switch dataResult {
@@ -388,11 +388,11 @@ class KNExternalProvider {
     self.signTransactionData(from: signTransaction, completion: completion)
   }
 
-  private func signTransactionData(forApproving token: KNToken, nouce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(forApproving token: TokenObject, nouce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
-      to: Address(string: token.address),
+      to: Address(string: token.contract),
       nonce: nouce,
       data: data,
       gasPrice: KNGasConfiguration.gasPriceDefault,

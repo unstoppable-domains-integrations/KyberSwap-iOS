@@ -13,20 +13,17 @@ struct KNTokenBalanceCollectionViewCellModel {
   let icon: String?
   let coinTicker: KNCoinTicker?
   let balance: Balance?
-  let isKyberListed: Bool
 
   init(
     token: TokenObject,
     icon: String?,
     coinTicker: KNCoinTicker?,
-    balance: Balance?,
-    isKyberListed: Bool
+    balance: Balance?
     ) {
     self.token = token
     self.icon = icon
     self.coinTicker = coinTicker
     self.balance = balance
-    self.isKyberListed = isKyberListed
   }
 
   var displayBalance: String {
@@ -53,7 +50,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   var displayChange24h: String {
-    if let percentageChange = coinTicker?.percentChange24h {
+    if let percentageChange = coinTicker?.percentChange24h, !percentageChange.isEmpty {
       return "\(percentageChange)%"
     }
     return ""
@@ -67,7 +64,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   var backgroundColorChange24h: UIColor {
-    return coinTicker == nil ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.white
+    return coinTicker == nil || coinTicker?.percentChange24h.isEmpty == true ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.white
   }
 
   var displayPrice: String {
@@ -82,7 +79,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   var displayKyberListed: String {
-    return isKyberListed ? "Kyber Listed" : ""
+    return self.token.isSupported ? "Kyber Listed".toBeLocalised() : ""
   }
 }
 

@@ -54,7 +54,7 @@ extension KNRate {
     )
   }
 
-  static func rate(from token: KNToken, toToken: KNToken) -> KNRate? {
+  static func rate(from token: TokenObject, toToken: TokenObject) -> KNRate? {
     let coinTickers = KNCoinTickerStorage.shared.coinTickers
     if let fromCoinTicker = coinTickers.first(where: { $0.isData(for: token) }),
       let toCoinTicker = coinTickers.first(where: { $0.isData(for: toToken) }),
@@ -70,7 +70,7 @@ extension KNRate {
   }
 
   static func rateETH(from coinTicker: KNCoinTicker) -> KNRate? {
-    if let ethCoinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.id == "ethereum" }), ethCoinTicker.priceUSD > 0 {
+    if let ethCoinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.symbol == "ETH" && $0.name.lowercased() == "ethereum" }), ethCoinTicker.priceUSD > 0 {
       let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
       return KNRate(
         source: coinTicker.symbol,

@@ -4,9 +4,9 @@ import UIKit
 import BigInt
 
 protocol KNWalletTokenCollectionViewCellDelegate: class {
-  func walletTokenCollectionViewCellDidClickExchange(token: KNToken)
-  func walletTokenCollectionViewCellDidClickTransfer(token: KNToken)
-  func walletTokenCollectionViewCellDidClickReceive(token: KNToken)
+  func walletTokenCollectionViewCellDidClickExchange(token: TokenObject)
+  func walletTokenCollectionViewCellDidClickTransfer(token: TokenObject)
+  func walletTokenCollectionViewCellDidClickReceive(token: TokenObject)
 }
 
 class KNWalletTokenCollectionViewCell: UICollectionViewCell {
@@ -61,7 +61,7 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
     isExpanded: Bool,
     delegate: KNWalletTokenCollectionViewCellDelegate?
     ) {
-    if let iconImage = UIImage(named: KNTokenStorage.iconImageName(for: tokenObject)) {
+    if let iconImage = UIImage(named: tokenObject.icon) {
       self.iconImageView.image = iconImage
       self.iconImageView.isHidden = false
       self.iconTextLabel.isHidden = true
@@ -123,19 +123,19 @@ class KNWalletTokenCollectionViewCell: UICollectionViewCell {
 
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
     //TODO: Temporary
-    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+    if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract == self.tokenObject.contract }) {
       self.delegate?.walletTokenCollectionViewCellDidClickExchange(token: token)
     }
   }
 
   @IBAction func transferButtonPressed(_ sender: UIButton) {
-    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+    if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract == self.tokenObject.contract }) {
       self.delegate?.walletTokenCollectionViewCellDidClickTransfer(token: token)
     }
   }
 
   @IBAction func receiveButtonPressed(_ sender: UIButton) {
-    if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == self.tokenObject.contract }) {
+    if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract == self.tokenObject.contract }) {
       self.delegate?.walletTokenCollectionViewCellDidClickReceive(token: token)
     }
   }

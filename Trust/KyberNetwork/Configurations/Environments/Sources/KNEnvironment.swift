@@ -57,9 +57,9 @@ enum KNEnvironment: Int {
 
   var apiEtherScanEndpoint: String {
     switch self {
-    case .mainnetTest: return ""
+    case .mainnetTest: return "http://api.etherscan.io/"
     case .production: return "http://api.etherscan.io/"
-    case .staging: return ""
+    case .staging: return "http://api-kovan.etherscan.io/"
     case .ropsten: return "http://api-ropsten.etherscan.io/"
     case .kovan: return "http://api-kovan.etherscan.io/"
     }

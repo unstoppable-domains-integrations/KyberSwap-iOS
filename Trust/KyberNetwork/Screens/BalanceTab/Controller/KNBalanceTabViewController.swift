@@ -287,14 +287,12 @@ extension KNBalanceTabViewController: UICollectionViewDataSource {
     let coinTicker: KNCoinTicker? = self.viewModel.coinTicker(for: row)
     let balance: Balance? = self.viewModel.balance(for: tokenObject)
     let icon: String? = self.viewModel.iconName(for: tokenObject)
-    let isKyberListed: Bool = self.viewModel.isKyberListed(for: tokenObject)
 
     let cellModel = KNTokenBalanceCollectionViewCellModel(
       token: tokenObject,
       icon: icon,
       coinTicker: coinTicker,
-      balance: balance,
-      isKyberListed: isKyberListed
+      balance: balance
     )
     cell.updateCell(
       with: cellModel,

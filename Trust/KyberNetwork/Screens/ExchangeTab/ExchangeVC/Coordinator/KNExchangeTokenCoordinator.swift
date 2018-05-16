@@ -8,7 +8,7 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   fileprivate(set) var session: KNSession
-  let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
+  let tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
 
   weak var delegate: KNSessionDelegate?
@@ -77,7 +77,7 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorDidUpdateBalance(usd: totalBalanceInUSD, eth: totalBalanceInETH)
   }
 
-  func appCoordinatorShouldOpenExchangeForToken(_ token: KNToken, isReceived: Bool = false) {
+  func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.rootViewController.coordinatorDidUpdateSelectedToken(token, isSource: !isReceived)
     self.rootViewController.tabBarController?.selectedIndex = 0
   }
@@ -167,7 +167,7 @@ extension KNExchangeTokenCoordinator {
 }
 
 extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
-  func exchangeTokenAmountDidChange(source: KNToken, dest: KNToken, amount: BigInt) {
+  func exchangeTokenAmountDidChange(source: TokenObject, dest: TokenObject, amount: BigInt) {
     self.session.externalProvider.getExpectedRate(
       from: source,
       to: dest,
@@ -215,7 +215,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
     self.navigationController.topViewController?.present(self.confirmTransactionViewController, animated: false, completion: nil)
   }
 
-  func exchangeTokenUserDidClickSelectTokenButton(source: KNToken, dest: KNToken, isSource: Bool) {
+  func exchangeTokenUserDidClickSelectTokenButton(source: TokenObject, dest: TokenObject, isSource: Bool) {
     self.isSelectingSourceToken = isSource
     self.navigationController.pushViewController(self.selectTokenViewController, animated: true)
   }
@@ -232,7 +232,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTokenViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSelectTokenViewControllerDelegate {
-  func selectTokenViewUserDidSelect(_ token: KNToken) {
+  func selectTokenViewUserDidSelect(_ token: TokenObject) {
     self.navigationController.popViewController(animated: true) {
       self.rootViewController.coordinatorDidUpdateSelectedToken(token, isSource: self.isSelectingSourceToken)
     }

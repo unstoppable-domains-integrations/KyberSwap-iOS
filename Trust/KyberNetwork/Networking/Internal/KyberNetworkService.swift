@@ -46,10 +46,10 @@ extension KyberNetworkService: TargetType {
 
 enum KNTrackerService {
   case getTrades(fromDate: Date?, toDate: Date?, address: String)
+  case getSupportedTokens()
 }
 
 extension KNTrackerService: TargetType {
-
   var baseURL: URL {
     let baseURLString = KNEnvironment.internalTrackerEndpoint
     switch self {
@@ -65,6 +65,8 @@ extension KNTrackerService: TargetType {
         return path
       }()
       return URL(string: baseURLString + path)!
+    case .getSupportedTokens:
+      return URL(string: baseURLString + "/api/tokens/supported")!
     }
   }
 

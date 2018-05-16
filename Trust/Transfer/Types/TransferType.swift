@@ -34,12 +34,12 @@ extension TransferType {
 }
 
 extension TransferType {
-  func knToken() -> KNToken {
+  func tokenObject() -> TokenObject {
     switch self {
     case .ether:
-      return KNJSONLoaderUtil.shared.tokens.first(where: { $0.isETH })!
+      return KNSupportedTokenStorage.shared.ethToken
     case .token(let object):
-      return KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == object.contract })!
+      return object
     }
   }
 }

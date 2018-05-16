@@ -8,7 +8,7 @@ class KNTransferTokenCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   private(set) var session: KNSession
-  let tokens: [KNToken] = KNJSONLoaderUtil.shared.tokens
+  let tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
 
   weak var delegate: KNSessionDelegate?
 
@@ -76,7 +76,7 @@ extension KNTransferTokenCoordinator {
     self.rootViewController.coordinatorUpdateUSDBalance(usd: totalBalanceInUSD)
   }
 
-  func appCoordinatorShouldOpenTransferForToken(_ token: KNToken) {
+  func appCoordinatorShouldOpenTransferForToken(_ token: TokenObject) {
     self.rootViewController.coordinatorSelectedTokenDidUpdate(token)
     self.rootViewController.tabBarController?.selectedIndex = 1
   }
@@ -134,19 +134,19 @@ extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
     self.navigationController.topViewController?.present(self.confirmTransactionViewController, animated: false, completion: nil)
   }
 
-  func transferTokenViewControllerDidClickTokenButton(_ selectedToken: KNToken) {
+  func transferTokenViewControllerDidClickTokenButton(_ selectedToken: TokenObject) {
     self.navigationController.pushViewController(self.selectTokenViewController, animated: true)
   }
 
-  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: KNToken, to address: String?, amount: BigInt) {
+  func transferTokenViewControllerShouldUpdateEstimatedGas(from token: TokenObject, to address: String?, amount: BigInt) {
     let type: TransferType = {
       if token.isETH { return .ether(destination: Address(string: address ?? "")) }
       let tokenObject = TokenObject(
-        contract: token.address,
+        contract: token.contract,
         name: token.name,
         symbol: token.symbol,
-        decimals: token.decimal,
-        value: amount.fullString(decimals: token.decimal),
+        decimals: token.decimals,
+        value: amount.fullString(decimals: token.decimals),
         isCustom: false,
         isDisabled: false)
       return TransferType.token(tokenObject)
@@ -183,7 +183,7 @@ extension KNTransferTokenCoordinator: KNTransferTokenViewControllerDelegate {
 }
 
 extension KNTransferTokenCoordinator: KNSelectTokenViewControllerDelegate {
-  func selectTokenViewUserDidSelect(_ token: KNToken) {
+  func selectTokenViewUserDidSelect(_ token: TokenObject) {
     self.navigationController.popViewController(animated: true) {
       self.rootViewController.coordinatorSelectedTokenDidUpdate(token)
     }

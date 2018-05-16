@@ -8,17 +8,17 @@ class KNJSONLoaderUtil {
 
   static let shared = KNJSONLoaderUtil()
 
-  let tokens: [KNToken]
+  let tokens: [TokenObject]
 
   init() {
     self.tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
   }
 
-  static func loadListSupportedTokensFromJSONFile() -> [KNToken] {
+  static func loadListSupportedTokensFromJSONFile() -> [TokenObject] {
     let configFileName = KNEnvironment.default.configFileName
     guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: configFileName) else { return [] }
     guard let tokensJSON = json["tokens"] as? JSONDictionary else { return [] }
-    let tokens = tokensJSON.values.map({ return KNToken(dictionary: $0 as? JSONDictionary ?? [:]) })
+    let tokens = tokensJSON.values.map({ return TokenObject(localDict: $0 as? JSONDictionary ?? [:]) })
     return tokens
   }
 

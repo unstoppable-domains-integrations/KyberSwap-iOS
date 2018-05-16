@@ -18,7 +18,7 @@ class KNExchangeRateCollectionViewCell: UICollectionViewCell {
     self.exchangeRateLabel.text = ""
   }
 
-  func updateCell(with source: KNToken, dest: KNToken?) {
+  func updateCell(with source: TokenObject, dest: TokenObject?) {
     if let dest = dest {
       // between 2 tokens
       self.tokenSymbolLabel.text = "\(source.symbol)/\(dest.symbol)"

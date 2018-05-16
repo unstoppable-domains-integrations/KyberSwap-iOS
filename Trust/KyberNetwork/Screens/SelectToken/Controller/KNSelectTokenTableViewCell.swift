@@ -16,7 +16,7 @@ class KNSelectTokenTableViewCell: UITableViewCell {
     self.selectedBackgroundView = UIView()
   }
 
-  func updateCell(with token: KNToken, balance: Balance) {
+  func updateCell(with token: TokenObject, balance: Balance) {
     self.imageView?.image = UIImage(named: token.icon)
     self.textLabel?.text = token.display
     self.balanceLabel.text = "\(balance.amountShort)"

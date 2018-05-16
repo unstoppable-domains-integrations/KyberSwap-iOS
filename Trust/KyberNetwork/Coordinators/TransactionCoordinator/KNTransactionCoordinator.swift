@@ -97,7 +97,7 @@ extension KNTransactionCoordinator {
           group.leave()
         })
       } else {
-        provider.getTokenBalance(for: Address(string: transaction.from.address)!, completion: { result in
+        provider.getTokenBalance(for: Address(string: transaction.from.contract)!, completion: { result in
           switch result {
           case .success(let bal): balance = bal
           case .failure(let err): error = err
@@ -127,7 +127,7 @@ extension KNTransactionCoordinator {
       var error: AnyError?
       let group = DispatchGroup()
 
-      let token: KNToken = transaction.transferType.knToken()
+      let token: TokenObject = transaction.transferType.tokenObject()
 
       // Est Gas Used
       var gasLimit: BigInt = {
@@ -157,7 +157,7 @@ extension KNTransactionCoordinator {
           group.leave()
         })
       } else {
-        provider.getTokenBalance(for: Address(string: token.address)!, completion: { result in
+        provider.getTokenBalance(for: Address(string: token.contract)!, completion: { result in
           switch result {
           case .success(let bal): balance = bal
           case .failure(let err): error = err
@@ -404,9 +404,7 @@ extension KNTransactionCoordinator {
     KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
     var tokenObjects: [TokenObject] = []
     transactions.forEach { tx in
-      if let token = tx.getToken(), !tokenObjects.contains(token) {
-        tokenObjects.append(token)
-      }
+      if let token = tx.getToken(), !tokenObjects.contains(token), !self.tokenStorage.tokens.contains(token) { tokenObjects.append(token) }
     }
     if !tokenObjects.isEmpty {
       self.tokenStorage.add(tokens: tokenObjects)
@@ -506,24 +504,24 @@ extension KNTransactionCoordinator {
 
 extension UnconfirmedTransaction {
   func toTransaction(wallet: Wallet, hash: String, nounce: Int) -> Transaction {
-    let token: KNToken = self.transferType.knToken()
+    let token: TokenObject = self.transferType.tokenObject()
 
     let localObject = LocalizedOperationObject(
-      from: token.address,
+      from: token.contract,
       to: "",
       contract: nil,
       type: "transfer",
-      value: self.value.fullString(decimals: token.decimal),
+      value: self.value.fullString(decimals: token.decimals),
       symbol: nil,
       name: nil,
-      decimals: token.decimal
+      decimals: token.decimals
     )
     return Transaction(
       id: hash,
       blockNumber: 0,
       from: wallet.address.description,
       to: self.to?.description ?? "",
-      value: self.value.fullString(decimals: token.decimal),
+      value: self.value.fullString(decimals: token.decimals),
       gas: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
       gasPrice: self.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
       gasUsed: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",

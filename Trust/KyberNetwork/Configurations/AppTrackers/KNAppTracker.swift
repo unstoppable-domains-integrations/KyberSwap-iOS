@@ -18,13 +18,15 @@ class KNAppTracker {
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
 
+  static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static func internalTrackerEndpoint() -> String {
     if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
       return value
     }
-    return isDebug ? "http://52.77.238.156:3000" : "https://tracker.kyber.network"
+    return "https://tracker.kyber.network"
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
@@ -32,12 +34,12 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  // Internal cache endpoint key
+  // MARK: Internal cache endpoint key
   static func internalCacheEndpoint() -> String {
     if let value = userDefaults.object(forKey: kInternalCacheEndpointKey) as? String {
       return value
     }
-    return isDebug ? "https://staging-cache.kyber.network" : "https://production-cache.kyber.network"
+    return "https://production-cache.kyber.network"
   }
 
   static func updateInternalCacheEndpoint(value: String) {
@@ -45,12 +47,12 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  // External environment
+  // MARK: External environment
   static func externalEnvironment() -> KNEnvironment {
     if let value = userDefaults.object(forKey: kExternalEnvironmentKey) as? Int, let env = KNEnvironment(rawValue: value) {
       return env
     }
-    return isDebug ? KNEnvironment.kovan : KNEnvironment.mainnetTest
+    return KNEnvironment.mainnetTest
   }
 
   static func updateExternalEnvironment(_ env: KNEnvironment) {
@@ -58,7 +60,7 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  // Transaction load state
+  // MARK: Transaction load state
   static func transactionLoadState(for address: Address) -> KNTransactionLoadState {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionLoadStateKey + sessionID
@@ -75,7 +77,21 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  // Reset app tracker
+  // MARK: Supported Tokens
+  static func updateSuccessfullyLoadSupportedTokens() {
+    let time = Date().timeIntervalSince1970
+    userDefaults.set(time, forKey: kSupportedLoadingTimeKey)
+    userDefaults.synchronize()
+  }
+
+  static func getSuccessfullyLoadSupportedTokensDate() -> Date? {
+    guard let time = userDefaults.value(forKey: kSupportedLoadingTimeKey) as? Double else {
+      return nil
+    }
+    return Date(timeIntervalSince1970: time)
+  }
+
+  // MARK: Reset app tracker
   static func resetAppTrackerData(for address: Address) {
     self.updateTransactionLoadState(.none, for: address)
   }

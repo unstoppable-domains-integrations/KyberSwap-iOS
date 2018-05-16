@@ -66,8 +66,8 @@ extension KNTransactionReceipt {
       }
       let (valueString, decimals): (String, Int) = {
         let value = BigInt(json["destAmount"] as? String ?? "") ?? BigInt(0)
-        if let token = KNJSONLoaderUtil.shared.tokens.first(where: { $0.address == (json["dest"] as? String ?? "").lowercased() }) {
-          return (value.fullString(decimals: token.decimal), token.decimal)
+        if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract == (json["dest"] as? String ?? "").lowercased() }) {
+          return (value.fullString(decimals: token.decimals), token.decimals)
         }
         return (value.fullString(units: .ether), 18)
       }()
