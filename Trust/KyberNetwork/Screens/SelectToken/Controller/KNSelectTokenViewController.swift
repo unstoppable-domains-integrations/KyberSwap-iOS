@@ -60,7 +60,7 @@ class KNSelectTokenViewController: KNBaseViewController {
     self.availableTokens.sort { (token1, token2) -> Bool in
       let balance1 = self.tokenBalances[token1.contract] ?? Balance(value: BigInt(0))
       let balance2 = self.tokenBalances[token2.contract] ?? Balance(value: BigInt(0))
-      return balance1.value > balance2.value
+      return balance1.value > balance2.value || (balance1.value == balance2.value && token1.contract < token2.contract)
     }
     self.tokenTableView.reloadData()
   }
@@ -69,18 +69,14 @@ class KNSelectTokenViewController: KNBaseViewController {
     if let eth = self.availableTokens.first(where: { $0.isETH }) {
       self.tokenBalances[eth.contract] = balance
     }
-    if self.tokenTableView != nil {
-      self.sortTokensByBalances()
-    }
+    if self.tokenTableView != nil { self.sortTokensByBalances() }
   }
 
   func updateTokenBalances(_ balances: [String: Balance]) {
     for (key, value) in balances {
       self.tokenBalances[key] = value
     }
-    if self.tokenTableView != nil {
-      self.sortTokensByBalances()
-    }
+    if self.tokenTableView != nil { self.sortTokensByBalances() }
   }
 
   @objc func backButtonPressed(_ sender: Any) {
