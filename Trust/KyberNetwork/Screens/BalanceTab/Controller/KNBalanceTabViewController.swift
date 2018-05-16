@@ -11,7 +11,7 @@ protocol KNBalanceTabViewControllerDelegate: class {
   func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController)
 }
 
-class KNBalanceTabViewController: UIViewController {
+class KNBalanceTabViewController: KNBaseViewController {
 
   @IBOutlet weak var balanceTopView: UIView!
   @IBOutlet weak var walletIconImageView: UIImageView!

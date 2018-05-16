@@ -41,6 +41,14 @@ class KNAppCoordinator: NSObject, Coordinator {
     return coordinator
   }()
 
+  lazy var landingPageCoordinator: KNLandingPageCoordinator = {
+    let coordinator = KNLandingPageCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+    return coordinator
+  }()
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,
@@ -60,14 +68,17 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func start() {
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
-    self.addCoordinator(self.walletImportingMainCoordinator)
-    self.walletImportingMainCoordinator.start()
+    self.addCoordinator(self.landingPageCoordinator)
+    self.landingPageCoordinator.start()
+//    self.addCoordinator(self.walletImportingMainCoordinator)
+//    self.walletImportingMainCoordinator.start()
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
       self.startNewSession(with: wallet)
     }
     self.addInternalObserveNotification()
   }
 
+  //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
     self.keystore.recentlyUsedWallet = wallet
     self.currentWallet = wallet

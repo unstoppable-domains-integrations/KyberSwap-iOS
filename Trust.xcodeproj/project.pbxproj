@@ -95,6 +95,9 @@
 		25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25BE329B209096E800D760FB /* KNListWalletsViewController.xib */; };
 		25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */; };
 		25C45ABE20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */; };
+		25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */; };
+		25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */; };
+		25C45AC720AC3EF600CDA1FF /* KNLandingPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45AC620AC3EF600CDA1FF /* KNLandingPageCoordinator.swift */; };
 		25C9D7012096C82300FB121F /* KNCoinMarketCapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C9D7002096C82300FB121F /* KNCoinMarketCapService.swift */; };
 		25C9D7042096CA3F00FB121F /* KNCoinTickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C9D7032096CA3F00FB121F /* KNCoinTickerCoordinator.swift */; };
 		25C9D7082096CDAC00FB121F /* KNCoinTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C9D7072096CDAC00FB121F /* KNCoinTicker.swift */; };
@@ -615,6 +618,9 @@
 		25BE329B209096E800D760FB /* KNListWalletsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsViewController.xib; sourceTree = "<group>"; };
 		25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListWalletsCoordinator.swift; sourceTree = "<group>"; };
 		25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenCoordinator.swift; sourceTree = "<group>"; };
+		25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLandingPageViewController.swift; sourceTree = "<group>"; };
+		25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNLandingPageViewController.xib; sourceTree = "<group>"; };
+		25C45AC620AC3EF600CDA1FF /* KNLandingPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLandingPageCoordinator.swift; sourceTree = "<group>"; };
 		25C9D7002096C82300FB121F /* KNCoinMarketCapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCoinMarketCapService.swift; sourceTree = "<group>"; };
 		25C9D7032096CA3F00FB121F /* KNCoinTickerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCoinTickerCoordinator.swift; sourceTree = "<group>"; };
 		25C9D7072096CDAC00FB121F /* KNCoinTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCoinTicker.swift; sourceTree = "<group>"; };
@@ -1263,6 +1269,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				25C45ABF20AC3D7400CDA1FF /* LandingPage */,
 				255DC60A20A9495F002C2BBF /* BalanceTab */,
 				257C9FCB2078FB2000EE0128 /* SettingsTab */,
 				25CE6F8A2073E02500A3A2F9 /* HistoryTab */,
@@ -1667,6 +1674,32 @@
 				25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */,
 			);
 			path = SupportedTokenCoordinator;
+			sourceTree = "<group>";
+		};
+		25C45ABF20AC3D7400CDA1FF /* LandingPage */ = {
+			isa = PBXGroup;
+			children = (
+				25C45AC520AC3EE400CDA1FF /* Coordinator */,
+				25C45AC020AC3D8400CDA1FF /* Controller */,
+			);
+			path = LandingPage;
+			sourceTree = "<group>";
+		};
+		25C45AC020AC3D8400CDA1FF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */,
+				25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		25C45AC520AC3EE400CDA1FF /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				25C45AC620AC3EF600CDA1FF /* KNLandingPageCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		25C9D6FF2096C80900FB121F /* CoinMarketCap */ = {
@@ -3580,6 +3613,7 @@
 				25A6AEC720A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.xib in Resources */,
 				25CC0A8C2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.xib in Resources */,
 				25AC2486205FC3C200989EBA /* KNPendingTransactionListTableViewCell.xib in Resources */,
+				25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */,
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				291794FC1F95DE5F00539A30 /* index.html in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
@@ -4005,6 +4039,7 @@
 				296421951F70C1EC00EB363B /* LoadingView.swift in Sources */,
 				251ABCC2205792170069687F /* UIColor+Kyber.swift in Sources */,
 				2961BD071FB146EB00C4B840 /* ChainState.swift in Sources */,
+				25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */,
 				A2B7ECAC2038FFBC00828E7D /* ExportPrivateKeyViewModel.swift in Sources */,
 				25CC0A8B2057C6C50009D0D5 /* KNWalletImportingPrivateKeyViewController.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
@@ -4264,6 +4299,7 @@
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
+				25C45AC720AC3EF600CDA1FF /* KNLandingPageCoordinator.swift in Sources */,
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
 				29F1C83E1FEB5C91003780D8 /* EditTokensViewController.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,

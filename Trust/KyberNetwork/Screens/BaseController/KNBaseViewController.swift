@@ -4,18 +4,13 @@ import UIKit
 
 class KNBaseViewController: UIViewController {
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.view.applyBaseGradientBackground()
-  }
-
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     NSLog("Did present: \(self.className)")
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.view.applyBaseGradientBackground()
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    NSLog("Did dismiss: \(self.className)")
   }
 }
