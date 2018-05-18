@@ -123,6 +123,7 @@ class KNImportWalletViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIWithCurrentPage(_ page: Int) {
+    self.view.endEditing(true)
     UIView.animate(withDuration: 0.15) {
       self.pageControl.currentPage = page
       self.buttonsTabBar.selectedItem = self.buttonsTabBar.items?.first(where: { $0.tag == page })
