@@ -8,7 +8,8 @@ import TrustKeystore
 
 class KNBalanceCoordinator {
 
-  fileprivate var session: KNSession
+  fileprivate var session: KNSession!
+  fileprivate var ethToken: TokenObject
 
   fileprivate var fetchETHBalanceTimer: Timer?
   fileprivate var isFetchingETHBalance: Bool = false
@@ -52,12 +53,16 @@ class KNBalanceCoordinator {
     return balanceValue
   }
 
+  deinit { self.session = nil }
+
   init(session: KNSession) {
     self.session = session
+    self.ethToken = session.tokenStorage.ethToken
   }
 
   func restartNewSession(_ session: KNSession) {
     self.session = session
+    self.ethToken = session.tokenStorage.ethToken
     self.ethBalance = Balance(value: BigInt(0))
     self.otherTokensBalance = [:]
     self.resume()
@@ -112,6 +117,9 @@ class KNBalanceCoordinator {
       switch result {
       case .success(let balance):
         self.ethBalance = balance
+        if self.session != nil {
+          self.session.tokenStorage.updateBalance(for: self.ethToken, balance: balance.value)
+        }
         KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
       case .failure(let error):
         NSLog("Load ETH Balance failed with error: \(error.description)")
@@ -133,6 +141,9 @@ class KNBalanceCoordinator {
           case .success(let bigInt):
             let balance = Balance(value: bigInt)
             self.otherTokensBalance[contract] = balance
+            if self.session != nil {
+              self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
+            }
           case .failure(let error):
             print("---- Balance: Fetch token balance failed with error: \(error.description). ----")
           }

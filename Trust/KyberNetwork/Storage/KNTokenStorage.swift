@@ -69,6 +69,14 @@ class KNTokenStorage {
     }
   }
 
+  func updateBalance(for address: Address, balance: BigInt) {
+    if let token = self.tokens.first(where: { $0.contract == address.description }) {
+      try! self.realm.write {
+        token.value = balance.description
+      }
+    }
+  }
+
   func delete(tokens: [TokenObject]) {
     realm.beginWrite()
     realm.delete(tokens)
