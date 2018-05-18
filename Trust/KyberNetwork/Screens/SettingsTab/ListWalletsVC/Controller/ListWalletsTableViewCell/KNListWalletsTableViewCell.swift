@@ -17,6 +17,11 @@ class KNListWalletsTableViewCell: UITableViewCell {
   func updateCell(with wallet: KNWalletObject) {
     self.walletNameLabel.text = wallet.name
     self.walletAddressLabel.text = wallet.address
+    if let image = UIImage(named: wallet.icon) {
+      self.walletIconImageView.image = image
+    } else {
+      self.walletIconImageView.image = UIImage(named: "settings-wallet")
+    }
     self.layoutIfNeeded()
   }
 }
