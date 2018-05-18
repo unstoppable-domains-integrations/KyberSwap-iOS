@@ -157,6 +157,9 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCreatePasscode() {
+  }
+
   func passcodeCoordinatorDidCancel() {
     self.rootViewController.userDidCancelCreatePasscode()
   }

@@ -203,6 +203,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func stopAllSessions() {
+    KNPasscodeUtil.shared.deletePasscode()
     self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
     self.removeObserveNotificationFromSession()
 

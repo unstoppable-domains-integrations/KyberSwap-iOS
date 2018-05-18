@@ -14,6 +14,9 @@ class KNLandingPageCoordinator: Coordinator {
   let keystore: Keystore
   var coordinators: [Coordinator] = []
 
+  fileprivate var createdWallet: Wallet?
+  fileprivate var createdName: String?
+
   lazy var rootViewController: KNLandingPageViewController = {
     let controller = KNLandingPageViewController()
     controller.loadViewIfNeeded()
@@ -25,6 +28,15 @@ class KNLandingPageCoordinator: Coordinator {
     let coordinator = KNImportWalletCoordinator(
       navigationController: self.navigationController,
       keystore: self.keystore
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+
+  lazy var passcodeCoordinator: KNPasscodeCoordinator = {
+    let coordinator = KNPasscodeCoordinator(
+      navigationController: self.navigationController,
+      type: .setPasscode
     )
     coordinator.delegate = self
     return coordinator
@@ -65,6 +77,24 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidImport(wallet: Wallet, name: String) {
+    self.createdWallet = wallet
+    self.createdName = name
+    if self.keystore.wallets.count == 1 {
+      KNPasscodeUtil.shared.deletePasscode()
+      self.passcodeCoordinator.start()
+    } else {
+      self.delegate?.landingPageCoordinator(import: wallet, name: name)
+    }
+  }
+}
+
+extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCancel() {
+    self.passcodeCoordinator.stop { }
+  }
+
+  func passcodeCoordinatorDidCreatePasscode() {
+    guard let wallet = self.createdWallet, let name = self.createdName else { return }
     self.delegate?.landingPageCoordinator(import: wallet, name: name)
   }
 }

@@ -4,6 +4,7 @@ import UIKit
 
 protocol KNPasscodeCoordinatorDelegate: class {
   func passcodeCoordinatorDidCancel()
+  func passcodeCoordinatorDidCreatePasscode()
 }
 
 class KNPasscodeCoordinator: NSObject, Coordinator {
@@ -44,7 +45,8 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
         self.window.isHidden = false
         self.passcodeViewController.showBioAuthenticationIfNeeded()
       } else {
-        self.navigationController.present(self.passcodeViewController, animated: true, completion: nil)
+//        self.navigationController.present(self.passcodeViewController, animated: true, completion: nil)
+        self.navigationController.pushViewController(self.passcodeViewController, animated: true)
       }
     }
   }
@@ -55,7 +57,7 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
         self.window.isHidden = true
         completion()
       } else {
-        self.navigationController.dismiss(animated: true, completion: completion)
+        self.navigationController.popViewController(animated: true, completion: completion)
       }
     }
   }
@@ -66,7 +68,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
   func passcodeViewControllerDidSuccessEvaluatePolicyWithBio() {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
-    self.stop {}
+    self.stop { }
   }
 
   func passcodeViewControllerDidEnterPasscode(_ passcode: String) {
@@ -89,13 +91,11 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
 
   // Create passcode
   func passcodeViewControllerDidCancel() {
-    self.stop {
-      self.delegate?.passcodeCoordinatorDidCancel()
-    }
+    self.delegate?.passcodeCoordinatorDidCancel()
   }
 
   func passcodeViewControllerDidCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
-    self.stop {}
+    self.delegate?.passcodeCoordinatorDidCreatePasscode()
   }
 }

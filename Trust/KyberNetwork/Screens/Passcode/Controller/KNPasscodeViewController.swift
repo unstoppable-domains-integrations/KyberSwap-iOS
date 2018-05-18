@@ -45,6 +45,10 @@ class KNPasscodeViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
@@ -110,7 +114,7 @@ class KNPasscodeViewController: KNBaseViewController {
         alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
           self.showBioAuthenticationIfNeeded()
         }))
-        alert.addAction(UIAlertAction(title: "Enter passcode", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Enter passcode".toBeLocalised(), style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
       }
     }
@@ -191,17 +195,22 @@ extension KNPasscodeViewController {
   fileprivate var titleText: String {
     switch self.viewType {
     case .authenticate:
-      return "Enter your passcode".toBeLocalised()
+      return "Enter passcode".toBeLocalised()
     case .setPasscode:
       if self.firstPasscode != nil {
-        return "Confirm your passcode".toBeLocalised()
+        return "Repeat passcode".toBeLocalised()
       }
-      return "Enter a new passcode".toBeLocalised()
+      return "Enter passcode".toBeLocalised()
     }
   }
 
   fileprivate var errorText: String {
-    if self.viewType == .setPasscode { return "" }
+    if self.viewType == .setPasscode {
+      if self.firstPasscode == nil {
+        return "Your passcode is used to access your wallets".toBeLocalised()
+      }
+      return "Remember this code to access your wallets".toBeLocalised()
+    }
     if KNPasscodeUtil.shared.currentNumberAttempts() == 0 { return "" }
     if KNPasscodeUtil.shared.isExceedNumberAttempt() {
       return "Too many attempts, please try in \(KNPasscodeUtil.shared.timeToAllowNewAttempt()) second(s).".toBeLocalised()
@@ -212,8 +221,9 @@ extension KNPasscodeViewController {
 
   fileprivate var actionButtonTitle: String {
     if !self.currentPasscode.isEmpty { return "Delete".toBeLocalised() }
-    if self.viewType == .authenticate { return "" }
-    return "Cancel".toBeLocalised()
+    return ""
+    //if self.viewType == .authenticate { return "" }
+    //return "Cancel".toBeLocalised()
   }
 
   func errorMessageForLAErrorCode(_ errorCode: Int ) -> String? {
