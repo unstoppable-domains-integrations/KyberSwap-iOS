@@ -30,6 +30,18 @@ class KNImportJSONViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    let attributedString: NSAttributedString = {
+      return NSAttributedString(
+        string: "Import from Files/Dropbox/etc".toBeLocalised(),
+        attributes: self.buttonAttributes
+      )
+    }()
+    self.importJSONButton.setAttributedTitle(attributedString, for: .normal)
+    self.enterPasswordTextField.text = ""
+  }
+
   fileprivate func setupUI() {
     self.importJSONTextLabel.text = "1. Import your JSON file".toBeLocalised()
     self.importJSONButton.rounded(radius: 4.0)

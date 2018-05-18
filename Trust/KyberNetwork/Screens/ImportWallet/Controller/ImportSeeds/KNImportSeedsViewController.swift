@@ -23,6 +23,11 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.nextButton.rounded(radius: 4.0)
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.seedsTextView.text = ""
+  }
+
   @IBAction func nextButtonPressed(_ sender: Any) {
     if let seeds = self.seedsTextView.text {
       let words = seeds.replacingOccurrences(of: "  ", with: " ").split(separator: " ").filter { return !$0.isEmpty }

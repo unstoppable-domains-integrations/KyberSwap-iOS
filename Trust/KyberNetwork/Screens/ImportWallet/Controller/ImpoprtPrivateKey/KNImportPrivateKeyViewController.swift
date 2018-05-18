@@ -21,14 +21,18 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  fileprivate func setupUI() {
-    let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.enterPrivateKeyTextField.text = ""
+  }
 
+  fileprivate func setupUI() {
     self.enterPrivateKeyTextLabel.text = "1. Enter your Private Key".toBeLocalised()
     self.enterPrivateKeyTextField.rounded(radius: 4.0)
-    self.enterPrivateKeyTextField.leftView = paddingView
+    self.enterPrivateKeyTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
     self.enterPrivateKeyTextField.leftViewMode = .always
-    self.enterPrivateKeyTextField.rightView = paddingView
+    self.enterPrivateKeyTextField.rightViewMode = .always
+    self.enterPrivateKeyTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0))
 
     self.nextButton.rounded(radius: 4.0)
   }
