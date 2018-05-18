@@ -73,8 +73,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.landingPageCoordinator.start()
 //    self.addCoordinator(self.walletImportingMainCoordinator)
 //    self.walletImportingMainCoordinator.start()
-    // TODO: Open passcode view if wallet is imported + no passcode
-    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
+    // For security, should always have passcode protection when user has imported wallets
+    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first, KNPasscodeUtil.shared.currentPasscode() != nil {
       self.startNewSession(with: wallet)
     }
     self.addInternalObserveNotification()

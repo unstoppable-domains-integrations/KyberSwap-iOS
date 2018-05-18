@@ -52,6 +52,11 @@ class KNLandingPageCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
+    if !self.keystore.wallets.isEmpty, KNPasscodeUtil.shared.currentPasscode() == nil {
+      // In case user imported a wallet and kill the app during settings passcode
+      self.newWallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first
+      self.passcodeCoordinator.start()
+    }
   }
 }
 

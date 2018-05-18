@@ -195,19 +195,19 @@ extension KNPasscodeViewController {
   fileprivate var titleText: String {
     switch self.viewType {
     case .authenticate:
-      return "Enter passcode".toBeLocalised()
+      return "Enter your PIN".toBeLocalised()
     case .setPasscode:
       if self.firstPasscode != nil {
-        return "Repeat passcode".toBeLocalised()
+        return "Repeat PIN".toBeLocalised()
       }
-      return "Enter passcode".toBeLocalised()
+      return "Set PIN".toBeLocalised()
     }
   }
 
   fileprivate var errorText: String {
     if self.viewType == .setPasscode {
       if self.firstPasscode == nil {
-        return "Your passcode is used to access your wallets".toBeLocalised()
+        return "Your PIN is used to access your wallets".toBeLocalised()
       }
       return "Remember this code to access your wallets".toBeLocalised()
     }
@@ -241,7 +241,7 @@ extension KNPasscodeViewController {
     case LAError.authenticationFailed.rawValue:
       return "Invalid authentication.".toBeLocalised()
     case LAError.passcodeNotSet.rawValue:
-      return "Passcode is not set on the device".toBeLocalised()
+      return "PIN is not set on the device".toBeLocalised()
     case LAError.touchIDLockout.rawValue:
       return "Too many failed attempts. Please try to use passcode".toBeLocalised()
     case LAError.touchIDNotAvailable.rawValue:
@@ -249,7 +249,7 @@ extension KNPasscodeViewController {
     case LAError.appCancel.rawValue, LAError.userCancel.rawValue, LAError.userFallback.rawValue:
       return nil
     default:
-      return "Something went wrong. Try to use passcode".toBeLocalised()
+      return "Something went wrong. Try to use PIN".toBeLocalised()
     }
   }
 }
