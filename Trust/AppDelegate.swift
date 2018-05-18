@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        coordinator.appWillEnterBackground()
+        coordinator.appDidEnterBackground()
       KNReachability.shared.stopNetworkReachabilityObserver()
     }
 

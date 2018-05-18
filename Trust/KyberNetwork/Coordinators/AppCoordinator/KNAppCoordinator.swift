@@ -510,7 +510,8 @@ extension KNAppCoordinator {
     KNCoinTickerCoordinator.shared.start()
   }
 
-  func appWillEnterBackground() {
+  func appDidEnterBackground() {
+    self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
     self.balanceCoordinator?.pause()
     KNCoinTickerCoordinator.shared.stop()
