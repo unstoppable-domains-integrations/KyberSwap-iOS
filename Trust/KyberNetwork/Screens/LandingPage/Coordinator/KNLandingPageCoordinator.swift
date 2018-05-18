@@ -4,7 +4,7 @@ import UIKit
 import SafariServices
 
 protocol KNLandingPageCoordinatorDelegate: class {
-  func landingPageCoordinator(import wallet: Wallet, name: String)
+  func landingPageCoordinator(import wallet: Wallet)
 }
 
 class KNLandingPageCoordinator: Coordinator {
@@ -14,8 +14,7 @@ class KNLandingPageCoordinator: Coordinator {
   let keystore: Keystore
   var coordinators: [Coordinator] = []
 
-  fileprivate var createdWallet: Wallet?
-  fileprivate var createdName: String?
+  fileprivate var newWallet: Wallet?
 
   lazy var rootViewController: KNLandingPageViewController = {
     let controller = KNLandingPageViewController()
@@ -76,14 +75,13 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
 }
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String) {
-    self.createdWallet = wallet
-    self.createdName = name
+  func importWalletCoordinatorDidImport(wallet: Wallet) {
+    self.newWallet = wallet
     if self.keystore.wallets.count == 1 {
       KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
     } else {
-      self.delegate?.landingPageCoordinator(import: wallet, name: name)
+      self.delegate?.landingPageCoordinator(import: wallet)
     }
   }
 }
@@ -94,7 +92,7 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
   }
 
   func passcodeCoordinatorDidCreatePasscode() {
-    guard let wallet = self.createdWallet, let name = self.createdName else { return }
-    self.delegate?.landingPageCoordinator(import: wallet, name: name)
+    guard let wallet = self.newWallet else { return }
+    self.delegate?.landingPageCoordinator(import: wallet)
   }
 }

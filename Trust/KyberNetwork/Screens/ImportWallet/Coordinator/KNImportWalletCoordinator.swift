@@ -3,7 +3,7 @@
 import UIKit
 
 protocol KNImportWalletCoordinatorDelegate: class {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String)
+  func importWalletCoordinatorDidImport(wallet: Wallet)
 }
 
 class KNImportWalletCoordinator: Coordinator {
@@ -12,6 +12,8 @@ class KNImportWalletCoordinator: Coordinator {
   let navigationController: UINavigationController
   let keystore: Keystore
   var coordinators: [Coordinator] = []
+
+  fileprivate var importedWallet: Wallet?
 
   lazy var rootViewController: KNImportWalletViewController = {
     let controller = KNImportWalletViewController()
@@ -67,14 +69,31 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       switch result {
       case .success(let wallet):
         print("Successfully import wallet")
-        //TODO: Show create name
         // add new wallet into database in case user exits app
         let walletObject = KNWalletObject(address: wallet.address.description)
         KNWalletStorage.shared.add(wallets: [walletObject])
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: "Untitled")
+        self.importedWallet = wallet
+        let enterNameVC: KNEnterWalletNameViewController = {
+          let viewModel = KNEnterWalletNameViewModel(walletObject: walletObject)
+          let controller = KNEnterWalletNameViewController(viewModel: viewModel)
+          controller.delegate = self
+          controller.modalPresentationStyle = .overFullScreen
+          return controller
+        }()
+        self.navigationController.topViewController?.present(enterNameVC, animated: false, completion: nil)
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
       }
     }
+  }
+}
+
+extension KNImportWalletCoordinator: KNEnterWalletNameViewControllerDelegate {
+  func enterWalletNameDidNext(sender: KNEnterWalletNameViewController, walletObject: KNWalletObject) {
+    KNWalletStorage.shared.add(wallets: [walletObject])
+    guard let wallet = self.importedWallet else { return }
+    self.navigationController.topViewController?.dismiss(animated: false, completion: {
+      self.delegate?.importWalletCoordinatorDidImport(wallet: wallet)
+    })
   }
 }

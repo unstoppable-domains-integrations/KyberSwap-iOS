@@ -73,6 +73,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.landingPageCoordinator.start()
 //    self.addCoordinator(self.walletImportingMainCoordinator)
 //    self.walletImportingMainCoordinator.start()
+    // TODO: Open passcode view if wallet is imported + no passcode
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
       self.startNewSession(with: wallet)
     }
@@ -517,9 +518,7 @@ extension KNAppCoordinator {
 }
 
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
-  func landingPageCoordinator(import wallet: Wallet, name: String) {
-    let walletObject = KNWalletObject(address: wallet.address.description, name: name)
-    KNWalletStorage.shared.add(wallets: [walletObject])
+  func landingPageCoordinator(import wallet: Wallet) {
     self.startNewSession(with: wallet)
   }
 }
