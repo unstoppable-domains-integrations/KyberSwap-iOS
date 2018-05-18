@@ -6,7 +6,6 @@ import Moya
 import JSONRPCKit
 import APIKit
 import BigInt
-import QRCodeReaderViewController
 import TrustKeystore
 
 class KNGasCoordinator {

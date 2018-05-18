@@ -10,7 +10,7 @@ class KNWalletObject: Object {
   @objc dynamic var icon: String = ""
   @objc dynamic var date: Date = Date()
 
-  convenience init(address: String) {
+  convenience init(address: String, name: String = "Untitled") {
     self.init()
     self.address = address
     // TODO: Implement it

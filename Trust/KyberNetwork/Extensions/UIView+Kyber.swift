@@ -4,7 +4,7 @@ import UIKit
 
 extension UIView {
 
-  func rounded(color: UIColor, width: CGFloat, radius: CGFloat) {
+  func rounded(color: UIColor = .clear, width: CGFloat = 0.0, radius: CGFloat) {
     self.layer.borderColor = color.cgColor
     self.layer.borderWidth = width
     self.layer.cornerRadius = radius

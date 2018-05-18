@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportSeedsViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="descLabel" destination="WhK-I2-j2i" id="yS3-eD-pSd"/>
+                <outlet property="nextButton" destination="F1b-jf-zFf" id="e4a-Tj-fzb"/>
+                <outlet property="recoverSeedsLabel" destination="vYN-r3-AGA" id="kto-oO-YzR"/>
+                <outlet property="seedsTextView" destination="ohb-22-VVl" id="CcS-ix-Fy9"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recover with seeds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYN-r3-AGA">
+                    <rect key="frame" x="110" y="36" width="155.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WhK-I2-j2i">
+                    <rect key="frame" x="45" y="69" width="285" height="81.5"/>
+                    <string key="text">Only for wallets created with
+ Kyber  Mobile App. Please use seed, the 24 random words assigned when you create the wallet.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ohb-22-VVl">
+                    <rect key="frame" x="45" y="170.5" width="285" height="142.5"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="ohb-22-VVl" secondAttribute="height" multiplier="2:1" id="qdo-z0-TVo"/>
+                    </constraints>
+                    <string key="text">this is just a test for your reference my code is awesome if it has any bugs then it is my hidden features and thank you for discovering it</string>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1b-jf-zFf">
+                    <rect key="frame" x="35" y="589" width="305" height="48"/>
+                    <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="78q-ON-jDJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <state key="normal" title="NEXT">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="9ux-CD-CCU"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ohb-22-VVl" firstAttribute="top" secondItem="WhK-I2-j2i" secondAttribute="bottom" constant="20" id="4o6-9c-wMb"/>
+                <constraint firstAttribute="trailing" secondItem="F1b-jf-zFf" secondAttribute="trailing" constant="35" id="EsI-Xv-vCc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="F1b-jf-zFf" secondAttribute="bottom" constant="30" id="F1D-F9-fSy"/>
+                <constraint firstItem="WhK-I2-j2i" firstAttribute="top" secondItem="vYN-r3-AGA" secondAttribute="bottom" constant="12" id="JiU-E0-xys"/>
+                <constraint firstItem="WhK-I2-j2i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="MSp-x2-ECo"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ohb-22-VVl" secondAttribute="trailing" constant="45" id="P3h-Id-a9c"/>
+                <constraint firstItem="vYN-r3-AGA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="ReR-tT-V2G"/>
+                <constraint firstItem="F1b-jf-zFf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="ZQ4-z0-G1q"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WhK-I2-j2i" secondAttribute="trailing" constant="45" id="dUn-xo-SRW"/>
+                <constraint firstItem="ohb-22-VVl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="hU8-mz-fn0"/>
+                <constraint firstItem="vYN-r3-AGA" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="onZ-7s-Koy"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

@@ -46,6 +46,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       navigationController: self.navigationController,
       keystore: self.keystore
     )
+    coordinator.delegate = self
     return coordinator
   }()
 
@@ -510,6 +511,19 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     self.balanceCoordinator?.pause()
     KNCoinTickerCoordinator.shared.stop()
+  }
+}
+
+extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
+  func landingPageCoordinator(import wallet: Wallet, name: String) {
+    let walletObject = KNWalletObject(address: wallet.address.description, name: name)
+    KNWalletStorage.shared.add(wallets: [walletObject])
+    self.navigationController.topViewController?.displayLoading(text: "", animated: true)
+    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+      guard let `self` = self else { return }
+      self.navigationController.topViewController?.hideLoading()
+      self.startNewSession(with: wallet)
+    }
   }
 }
 

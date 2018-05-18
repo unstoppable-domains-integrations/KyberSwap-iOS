@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportJSONViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="enterPasswordTextField" destination="5OF-yq-LyQ" id="8PM-fi-EUJ"/>
+                <outlet property="enterPasswordTextLabel" destination="kAC-IV-eEM" id="Su2-EB-dod"/>
+                <outlet property="importJSONButton" destination="Kef-NW-6Ru" id="JJq-I7-DXO"/>
+                <outlet property="importJSONTextLabel" destination="Nkp-PO-VWf" id="UFk-ZS-2Ga"/>
+                <outlet property="nextButton" destination="6bU-jo-KwQ" id="vJx-Fq-aJt"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Import your JSON file" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkp-PO-VWf">
+                    <rect key="frame" x="35" y="55" width="189" height="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-NW-6Ru">
+                    <rect key="frame" x="35" y="85" width="305" height="48"/>
+                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="3pq-40-kHc"/>
+                    </constraints>
+                    <state key="normal">
+                        <attributedString key="attributedTitle">
+                            <fragment content="Import from Files/Dropbox/etc">
+                                <attributes>
+                                    <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <font key="NSFont" size="16" name=".AppleSystemUIFont"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
+                    <connections>
+                        <action selector="importJSONButtonPressed:" destination="-1" eventType="touchUpInside" id="LeI-gO-ebg"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. Enter Password to Decrypt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAC-IV-eEM">
+                    <rect key="frame" x="35" y="163" width="232.5" height="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5OF-yq-LyQ">
+                    <rect key="frame" x="35" y="193" width="305" height="48"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="zhE-NE-AZW"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bU-jo-KwQ">
+                    <rect key="frame" x="35" y="584" width="305" height="48"/>
+                    <color key="backgroundColor" red="0.36862745098039218" green="0.76078431372549016" blue="0.72941176470588232" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Orv-wj-DvP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <state key="normal" title="NEXT">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="cAa-Pw-2K3"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Nkp-PO-VWf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="6a0-UJ-dc4"/>
+                <constraint firstItem="Nkp-PO-VWf" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="35" id="FHh-y5-pBZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6bU-jo-KwQ" secondAttribute="trailing" constant="35" id="Fp8-HT-KIW"/>
+                <constraint firstItem="6bU-jo-KwQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="KQz-fQ-CQN"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="top" secondItem="Nkp-PO-VWf" secondAttribute="bottom" constant="10" id="N1A-zL-BXS"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="leading" secondItem="kAC-IV-eEM" secondAttribute="leading" id="PFX-CY-igZ"/>
+                <constraint firstItem="kAC-IV-eEM" firstAttribute="top" secondItem="Kef-NW-6Ru" secondAttribute="bottom" constant="30" id="aKq-pe-cOr"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="h3o-l0-VhK"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="top" secondItem="kAC-IV-eEM" secondAttribute="bottom" constant="10" id="jhW-bf-baL"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="6bU-jo-KwQ" secondAttribute="bottom" constant="35" id="rCV-JK-cNi"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="leading" secondItem="Nkp-PO-VWf" secondAttribute="leading" id="u5i-Tb-Pcy"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="trailing" secondItem="Kef-NW-6Ru" secondAttribute="trailing" id="uAf-7s-R9U"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Kef-NW-6Ru" secondAttribute="trailing" constant="35" id="xKG-PP-kAo"/>
+                <constraint firstItem="kAC-IV-eEM" firstAttribute="leading" secondItem="Kef-NW-6Ru" secondAttribute="leading" id="yZb-ye-EHo"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

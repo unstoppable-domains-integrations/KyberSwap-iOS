@@ -3,8 +3,13 @@
 import UIKit
 import SafariServices
 
+protocol KNLandingPageCoordinatorDelegate: class {
+  func landingPageCoordinator(import wallet: Wallet, name: String)
+}
+
 class KNLandingPageCoordinator: Coordinator {
 
+  weak var delegate: KNLandingPageCoordinatorDelegate?
   let navigationController: UINavigationController
   let keystore: Keystore
   var coordinators: [Coordinator] = []
@@ -14,6 +19,15 @@ class KNLandingPageCoordinator: Coordinator {
     controller.loadViewIfNeeded()
     controller.delegate = self
     return controller
+  }()
+
+  lazy var importWalletCoordinator: KNImportWalletCoordinator = {
+    let coordinator = KNImportWalletCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+    coordinator.delegate = self
+    return coordinator
   }()
 
   init(
@@ -37,8 +51,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   }
 
   func landingPageImportWalletPressed(sender: KNLandingPageViewController) {
-    // TODO: Implement it
-    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Todolist")
+    self.importWalletCoordinator.start()
   }
 
   func landingPageTermAndConditionPressed(sender: KNLandingPageViewController) {
@@ -47,5 +60,11 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
       return SFSafariViewController(url: url)
     }()
     self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
+  }
+}
+
+extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String) {
+    self.delegate?.landingPageCoordinator(import: wallet, name: name)
   }
 }
