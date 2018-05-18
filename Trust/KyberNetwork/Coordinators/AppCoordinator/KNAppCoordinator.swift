@@ -203,6 +203,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func stopAllSessions() {
+    self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
     self.removeObserveNotificationFromSession()
 
     self.session.stopSession()
@@ -518,12 +519,7 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   func landingPageCoordinator(import wallet: Wallet, name: String) {
     let walletObject = KNWalletObject(address: wallet.address.description, name: name)
     KNWalletStorage.shared.add(wallets: [walletObject])
-    self.navigationController.topViewController?.displayLoading(text: "", animated: true)
-    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-      guard let `self` = self else { return }
-      self.navigationController.topViewController?.hideLoading()
-      self.startNewSession(with: wallet)
-    }
+    self.startNewSession(with: wallet)
   }
 }
 
