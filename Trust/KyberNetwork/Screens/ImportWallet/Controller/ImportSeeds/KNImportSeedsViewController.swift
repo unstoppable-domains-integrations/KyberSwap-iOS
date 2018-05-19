@@ -9,7 +9,7 @@ protocol KNImportSeedsViewControllerDelegate: class {
 class KNImportSeedsViewController: KNBaseViewController {
 
   weak var delegate: KNImportSeedsViewControllerDelegate?
-  fileprivate let numberWords: Int = 24
+  fileprivate let numberWords: Int = 12
 
   @IBOutlet weak var recoverSeedsLabel: UILabel!
   @IBOutlet weak var descLabel: UILabel!
@@ -39,7 +39,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       } else {
         self.parent?.showErrorTopBannerMessage(
           with: "Invalid seeds".toBeLocalised(),
-          message: "Seeds should have exactly 24 words".toBeLocalised())
+          message: "Seeds should have exactly 12 words".toBeLocalised())
       }
     } else {
       self.parent?.showErrorTopBannerMessage(

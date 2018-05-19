@@ -88,6 +88,12 @@ open class EtherKeystore: Keystore {
         }
     }
 
+    func create12wordsAccount(with password: String) throws -> Account {
+        let mnemonic = Mnemonic.generate(strength: 128)
+        let account = try self.keyStore.import(mnemonic: mnemonic, password: password)
+        return account
+    }
+
     func importWallet(type: ImportType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void) {
         let newPassword = PasswordGenerator.generateRandom()
         switch type {

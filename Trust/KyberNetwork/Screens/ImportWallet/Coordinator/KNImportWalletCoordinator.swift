@@ -40,7 +40,6 @@ class KNImportWalletCoordinator: Coordinator {
 }
 
 extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
-  
   func importWalletViewControllerDidBack(sender: KNImportWalletViewController) {
     self.stop()
   }
