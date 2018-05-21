@@ -21,6 +21,7 @@ class KNWalletImportingMainCoordinator: Coordinator {
   lazy var createPasswordController: KNCreatePasswordViewController = {
     let controller = KNCreatePasswordViewController(delegate: self)
     controller.modalPresentationStyle = .overFullScreen
+    controller.modalTransitionStyle = .crossDissolve
     return controller
   }()
 

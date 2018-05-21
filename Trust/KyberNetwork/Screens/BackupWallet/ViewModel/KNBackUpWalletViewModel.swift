@@ -45,8 +45,21 @@ class KNBackUpWalletViewModel {
     return self.currentWordIndex == 0 ? "Paper Only".toBeLocalised() : ""
   }
 
-  var descriptionText: String {
-    return self.currentWordIndex == 0 ? "We will give you a list of 12 random words. Please write them down on paper and keep safe.\n\nThis paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.".toBeLocalised() : ""
+  var descriptionAttributedText: NSMutableAttributedString {
+    if self.currentWordIndex > 0 { return NSMutableAttributedString() }
+    let regularttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular),
+    ]
+    let boldAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold),
+    ]
+    let attributedString = NSMutableAttributedString()
+    attributedString.append(NSAttributedString(string: "We will give you a list of 12 random words. Please ".toBeLocalised(), attributes: regularttributes))
+    attributedString.append(NSAttributedString(string: "write them down on paper ".toBeLocalised(), attributes: boldAttributes))
+    attributedString.append(NSAttributedString(string: "and keep safe.\n\nThis paper key is ".toBeLocalised(), attributes: regularttributes))
+    attributedString.append(NSAttributedString(string: "the only way ".toBeLocalised(), attributes: boldAttributes))
+    attributedString.append(NSAttributedString(string: "to restore your Kyber Wallet if you lose your phone or forget your password.".toBeLocalised(), attributes: regularttributes))
+    return attributedString
   }
 
   var writeDownWordsText: String {

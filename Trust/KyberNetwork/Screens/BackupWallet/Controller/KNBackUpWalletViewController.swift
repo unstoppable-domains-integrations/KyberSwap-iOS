@@ -53,7 +53,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
       animations: {
         self.backupWalletLabel.text = self.viewModel.backUpWalletText
         self.titlelabel.text = self.viewModel.titleText
-        self.descriptionLabel.text = self.viewModel.descriptionText
+        self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
         self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
         self.timeLeft = self.defaultTime
         self.wroteDownButton.setTitle("\(self.timeLeft) second(s)", for: .disabled)

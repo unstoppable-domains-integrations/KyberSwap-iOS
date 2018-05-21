@@ -98,6 +98,7 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
   fileprivate func backupKeystore() {
     let createPassword = KNCreatePasswordViewController(delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
+    createPassword.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
   }
 
