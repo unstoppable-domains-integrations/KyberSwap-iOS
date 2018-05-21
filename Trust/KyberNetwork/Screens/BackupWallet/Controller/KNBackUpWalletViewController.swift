@@ -41,6 +41,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
     self.backupWalletLabel.text = self.viewModel.backUpWalletText
     self.wroteDownButton.setBackgroundColor(.lightGray, forState: .disabled)
     self.wroteDownButton.setBackgroundColor(UIColor(hex: "5ec2ba"), forState: .normal)
+    self.wroteDownButton.semanticContentAttribute = .forceRightToLeft
     self.updateUI()
   }
 
@@ -78,6 +79,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
         self.wroteDownButton.setTitle(self.viewModel.wroteDownButtonTitle, for: .normal)
         self.wroteDownButton.isEnabled = true
       }
+      self.view.layoutIfNeeded()
     }
   }
 

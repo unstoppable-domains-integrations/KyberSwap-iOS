@@ -19,10 +19,11 @@ class KNBackUpWalletViewModel {
     let attributedString: NSMutableAttributedString = {
       let idAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.foregroundColor: UIColor(hex: "04140b"),
-        ]
+        NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17),
+      ]
       let wordAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.foregroundColor: UIColor(hex: "f89f50"),
-        ]
+      ]
       let attributedString = NSMutableAttributedString()
       attributedString.append(NSAttributedString(string: "\(wordID)", attributes: idAttributes))
       attributedString.append(NSAttributedString(string: " \(word)", attributes: wordAttributes))
@@ -45,7 +46,7 @@ class KNBackUpWalletViewModel {
   }
 
   var descriptionText: String {
-    return self.currentWordIndex == 0 ? "We will give you a list of 12 random words. Please write them down on paper and keep safe.\nThis paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.".toBeLocalised() : ""
+    return self.currentWordIndex == 0 ? "We will give you a list of 12 random words. Please write them down on paper and keep safe.\n\nThis paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.".toBeLocalised() : ""
   }
 
   var writeDownWordsText: String {

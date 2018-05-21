@@ -57,7 +57,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4M-eJ-doh">
-                    <rect key="frame" x="35" y="212.5" width="305" height="142.5"/>
+                    <rect key="frame" x="40" y="212.5" width="295" height="142.5"/>
                     <string key="text">We will give you a list of 12 random words. Please write them down on paper and keep safe.
 
 This paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.</string>
@@ -93,15 +93,15 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     <color key="textColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMz-jJ-yOj">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMz-jJ-yOj">
                     <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <color key="backgroundColor" red="0.36862745098039218" green="0.76078431372549016" blue="0.72941176470588232" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="alC-CA-biv"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
-                    <state key="normal" title="I wrote down the words from 1 to 4">
+                    <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="-12" minY="0.0" maxX="12" maxY="0.0"/>
+                    <state key="normal" title="I wrote down the words from 1 to 4" image="back_up_marker_icon">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -120,7 +120,6 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="EFQ-zS-3p3" secondAttribute="trailing" id="D8j-rl-llZ"/>
                 <constraint firstItem="0bq-7j-6SD" firstAttribute="leading" secondItem="gxk-M0-lif" secondAttribute="leading" id="GcG-fD-frB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wMz-jJ-yOj" secondAttribute="trailing" id="JQr-ad-x1H"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="n4M-eJ-doh" secondAttribute="trailing" constant="35" id="NaP-CT-01K"/>
                 <constraint firstItem="E4K-Cp-0tn" firstAttribute="leading" secondItem="qfr-Pf-WLO" secondAttribute="leading" id="QyB-tx-80R"/>
                 <constraint firstItem="gxk-M0-lif" firstAttribute="top" secondItem="E4K-Cp-0tn" secondAttribute="bottom" constant="5" id="RLf-Qm-YgB"/>
                 <constraint firstItem="jjI-kU-ibR" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="TA4-Ok-cDC"/>
@@ -129,7 +128,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 <constraint firstItem="wMz-jJ-yOj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="U2q-ES-kcQ"/>
                 <constraint firstItem="ZyO-Zr-cRC" firstAttribute="centerX" secondItem="n4M-eJ-doh" secondAttribute="centerX" id="Yw5-P0-xK4"/>
                 <constraint firstItem="qfr-Pf-WLO" firstAttribute="top" secondItem="ZyO-Zr-cRC" secondAttribute="bottom" constant="10" id="euF-Ix-8JQ"/>
-                <constraint firstItem="n4M-eJ-doh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="jZo-60-Yjo"/>
+                <constraint firstItem="n4M-eJ-doh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="jZo-60-Yjo"/>
                 <constraint firstItem="qfr-Pf-WLO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="80" id="kAS-Lu-xfj"/>
                 <constraint firstItem="EFQ-zS-3p3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pPb-jK-TRX"/>
                 <constraint firstItem="E4K-Cp-0tn" firstAttribute="top" secondItem="qfr-Pf-WLO" secondAttribute="bottom" constant="5" id="xHT-O7-kgO"/>
@@ -139,5 +138,6 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
     </objects>
     <resources>
         <image name="back_up_icon" width="49" height="49"/>
+        <image name="back_up_marker_icon" width="18" height="18"/>
     </resources>
 </document>
