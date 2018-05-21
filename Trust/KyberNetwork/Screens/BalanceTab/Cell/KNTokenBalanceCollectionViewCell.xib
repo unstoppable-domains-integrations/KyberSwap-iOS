@@ -99,7 +99,7 @@
                             <constraint firstItem="jJU-v9-vta" firstAttribute="top" secondItem="LkM-5c-BYz" secondAttribute="bottom" constant="2.5" id="obo-fb-GbL"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxG-cA-rS2">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxG-cA-rS2">
                         <rect key="frame" x="0.0" y="0.0" width="319.5" height="90"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSO-YB-u9y">

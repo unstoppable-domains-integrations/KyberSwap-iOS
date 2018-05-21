@@ -174,6 +174,14 @@ class KNBalanceTabViewController: KNBaseViewController {
 
 // MARK: Update from coordinator
 extension KNBalanceTabViewController {
+  func coordinatorUpdateSessionWithNewViewModel(_ viewModel: KNBalanceTabViewModel) {
+    self.viewModel = viewModel
+    self.updateWalletUI()
+    self.updateBalanceUI()
+    self.updateFilterSortTokenButton()
+    self.tokensBalanceCollectionView.reloadData()
+  }
+
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
     if self.viewModel.updateTokenObjects(tokenObjects) {
       self.tokensBalanceCollectionView.reloadData()

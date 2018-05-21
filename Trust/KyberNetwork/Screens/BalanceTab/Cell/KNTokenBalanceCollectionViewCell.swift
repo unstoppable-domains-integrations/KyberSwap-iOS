@@ -108,6 +108,8 @@ class KNTokenBalanceCollectionViewCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    self.tokenDataContainerView.isHidden = true
+    self.buttonContainerView.isHidden = false
     // Token data view
     self.tokenBalanceLabel.text = ""
     self.tokenBalanceInUSDLabel.text = ""
@@ -126,8 +128,6 @@ class KNTokenBalanceCollectionViewCell: UICollectionViewCell {
     // Button view
     self.exchangeButton.rounded(color: .clear, width: 0, radius: 4.0)
     self.sendButton.rounded(color: .clear, width: 0, radius: 4.0)
-    self.tokenDataContainerView.isHidden = true
-    self.buttonContainerView.isHidden = false
   }
 
   override func layoutSubviews() {

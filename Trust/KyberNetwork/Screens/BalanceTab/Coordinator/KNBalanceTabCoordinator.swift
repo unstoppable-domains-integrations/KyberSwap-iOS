@@ -50,8 +50,15 @@ extension KNBalanceTabCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.navigationController.popToRootViewController(animated: false)
-    let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
+    let viewModel: KNBalanceTabViewModel = {
+      let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
+      let address: String = session.wallet.address.description
+      let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+      let viewModel = KNBalanceTabViewModel(wallet: walletObject)
+      _ = viewModel.updateTokenObjects(tokenObjects)
+      return viewModel
+    }()
+    self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
   }
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
     self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
