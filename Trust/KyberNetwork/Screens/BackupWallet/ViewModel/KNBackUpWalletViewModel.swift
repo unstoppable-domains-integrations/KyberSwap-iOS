@@ -13,15 +13,6 @@ class KNBackUpWalletViewModel {
     self.seeds = seeds
   }
 
-//  var currentDisplayWords: [String] {
-//    var displays: [String] = []
-//    for id in 0..<self.numberWords {
-//      let word = "\(self.currentWordIndex + id + 1) \(self.seeds[self.currentWordIndex + id])"
-//      displays.append(word)
-//    }
-//    return displays
-//  }
-
   func attributedString(for id: Int) -> NSAttributedString {
     let wordID: Int = id + self.currentWordIndex + 1
     let word: String = self.seeds[wordID - 1]

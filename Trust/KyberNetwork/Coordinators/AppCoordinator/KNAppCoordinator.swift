@@ -71,8 +71,6 @@ class KNAppCoordinator: NSObject, Coordinator {
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
     self.addCoordinator(self.landingPageCoordinator)
     self.landingPageCoordinator.start()
-//    self.addCoordinator(self.walletImportingMainCoordinator)
-//    self.walletImportingMainCoordinator.start()
     // For security, should always have passcode protection when user has imported wallets
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first, KNPasscodeUtil.shared.currentPasscode() != nil {
       self.startNewSession(with: wallet)
@@ -208,15 +206,15 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
     self.removeObserveNotificationFromSession()
 
+    self.balanceCoordinator?.pause()
+    self.balanceCoordinator = nil
+
     self.session.stopSession()
     KNWalletStorage.shared.deleteAll()
 
     self.currentWallet = nil
     self.keystore.recentlyUsedWallet = nil
     self.session = nil
-
-    self.balanceCoordinator?.pause()
-    self.balanceCoordinator = nil
 
     self.tabbarController.view.removeFromSuperview()
     self.tabbarController.removeFromParentViewController()

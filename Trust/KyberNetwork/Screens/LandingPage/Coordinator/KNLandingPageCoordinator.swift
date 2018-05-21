@@ -88,9 +88,10 @@ class KNLandingPageCoordinator: Coordinator {
       let controller = KNEnterWalletNameViewController(viewModel: viewModel)
       controller.delegate = self
       controller.modalPresentationStyle = .overFullScreen
+      controller.modalTransitionStyle = .crossDissolve
       return controller
     }()
-    self.navigationController.topViewController?.present(enterNameVC, animated: false, completion: nil)
+    self.navigationController.topViewController?.present(enterNameVC, animated: true, completion: nil)
   }
 }
 
@@ -98,6 +99,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landingPageCreateWalletPressed(sender: KNLandingPageViewController) {
     let createPassword = KNCreatePasswordViewController(delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
+    createPassword.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
   }
 

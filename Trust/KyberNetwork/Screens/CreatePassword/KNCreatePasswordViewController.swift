@@ -32,13 +32,13 @@ class KNCreatePasswordViewController: UIViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.passwordTextField.becomeFirstResponder()
   }
 
   fileprivate func setupUI() {
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     self.containerView.rounded(color: .clear, width: 0, radius: 5.0)
 
     self.passwordTextField.text = ""
@@ -46,9 +46,9 @@ class KNCreatePasswordViewController: UIViewController {
     self.passwordTextField.delegate = self
     self.confirmPasswordTextField.delegate = self
 
-    self.errorPasswordLabel.text = "Field requires"
+    self.errorPasswordLabel.text = "Field requires".toBeLocalised()
     self.errorPasswordLabel.isHidden = true
-    self.errorConfirmPasswordLabel.text = "Passwords mismatch"
+    self.errorConfirmPasswordLabel.text = "Passwords mismatch".toBeLocalised()
     self.errorConfirmPasswordLabel.isHidden = true
 
     self.doneButton.rounded(color: .clear, width: 0, radius: 5.0)
