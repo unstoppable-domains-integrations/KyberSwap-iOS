@@ -13,8 +13,6 @@ class KNImportWalletCoordinator: Coordinator {
   let keystore: Keystore
   var coordinators: [Coordinator] = []
 
-  fileprivate var importedWallet: Wallet?
-
   lazy var rootViewController: KNImportWalletViewController = {
     let controller = KNImportWalletViewController()
     controller.delegate = self
@@ -67,32 +65,10 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       self.navigationController.topViewController?.hideLoading()
       switch result {
       case .success(let wallet):
-        print("Successfully import wallet")
-        // add new wallet into database in case user exits app
-        let walletObject = KNWalletObject(address: wallet.address.description)
-        KNWalletStorage.shared.add(wallets: [walletObject])
-        self.importedWallet = wallet
-        let enterNameVC: KNEnterWalletNameViewController = {
-          let viewModel = KNEnterWalletNameViewModel(walletObject: walletObject)
-          let controller = KNEnterWalletNameViewController(viewModel: viewModel)
-          controller.delegate = self
-          controller.modalPresentationStyle = .overFullScreen
-          return controller
-        }()
-        self.navigationController.topViewController?.present(enterNameVC, animated: false, completion: nil)
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet)
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
       }
     }
-  }
-}
-
-extension KNImportWalletCoordinator: KNEnterWalletNameViewControllerDelegate {
-  func enterWalletNameDidNext(sender: KNEnterWalletNameViewController, walletObject: KNWalletObject) {
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    guard let wallet = self.importedWallet else { return }
-    self.navigationController.topViewController?.dismiss(animated: false, completion: {
-      self.delegate?.importWalletCoordinatorDidImport(wallet: wallet)
-    })
   }
 }

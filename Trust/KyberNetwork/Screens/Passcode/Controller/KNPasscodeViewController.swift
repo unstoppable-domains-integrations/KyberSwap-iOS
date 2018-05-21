@@ -165,10 +165,10 @@ class KNPasscodeViewController: KNBaseViewController {
     if !self.currentPasscode.isEmpty {
       self.currentPasscode = String(self.currentPasscode.prefix(self.currentPasscode.count - 1))
       self.updateUI()
-    } else {
-      if self.viewType == .authenticate { return }
-      self.delegate?.passcodeViewControllerDidCancel()
-    }
+    } //else {
+      //if self.viewType == .authenticate { return }
+      //self.delegate?.passcodeViewControllerDidCancel()
+    //}
   }
 
   fileprivate func userDidEnterPasscode() {

@@ -39,7 +39,11 @@ class KNListWalletsCoordinator: Coordinator {
   }
 
   func start() {
-    self.rootViewController.updateView(with: self.session.keystore.wallets, currentWallet: self.session.wallet)
+    self.syncWalletData()
+    self.rootViewController.updateView(
+      with: self.session.keystore.wallets,
+      currentWallet: self.session.wallet
+    )
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
 
@@ -49,13 +53,18 @@ class KNListWalletsCoordinator: Coordinator {
 
   func updateNewSession(_ session: KNSession) {
     self.session = session
-    self.session.keystore.wallets.forEach { wallet in
-      if KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) == nil {
-        let walletObject = KNWalletObject(address: wallet.address.description)
-        KNWalletStorage.shared.add(wallets: [walletObject])
-      }
-    }
-    self.rootViewController.updateView(with: self.session.keystore.wallets, currentWallet: self.session.wallet)
+    self.syncWalletData()
+    self.rootViewController.updateView(
+      with: self.session.keystore.wallets,
+      currentWallet: self.session.wallet
+    )
+  }
+
+  fileprivate func syncWalletData() {
+    let walletObjects = self.session.keystore.wallets.filter {
+      return KNWalletStorage.shared.get(forPrimaryKey: $0.address.description) == nil
+    }.map { return KNWalletObject(address: $0.address.description) }
+    KNWalletStorage.shared.add(wallets: walletObjects)
   }
 }
 

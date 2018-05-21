@@ -20,7 +20,7 @@ class KNEnterWalletNameViewModel {
   var name: String { return self.walletObject.name }
 
   func walletObject(with newName: String) -> KNWalletObject {
-    return self.walletObject.copy(withNewName: newName)
+    return self.walletObject.copy(withNewName: newName.isEmpty ? "Untitled" : newName)
   }
 }
 
@@ -58,8 +58,8 @@ class KNEnterWalletNameViewController: KNBaseViewController {
     self.nextButton.rounded(radius: 4.0)
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.nameTextField.text = self.viewModel.name
     self.nameTextField.becomeFirstResponder()
   }
@@ -67,6 +67,8 @@ class KNEnterWalletNameViewController: KNBaseViewController {
   @IBAction func nextButtonPressed(_ sender: Any) {
     self.nameTextField.resignFirstResponder()
     let walletObject = self.viewModel.walletObject(with: self.nameTextField.text ?? "")
-    self.delegate?.enterWalletNameDidNext(sender: self, walletObject: walletObject)
+    self.dismiss(animated: false) {
+      self.delegate?.enterWalletNameDidNext(sender: self, walletObject: walletObject)
+    }
   }
 }

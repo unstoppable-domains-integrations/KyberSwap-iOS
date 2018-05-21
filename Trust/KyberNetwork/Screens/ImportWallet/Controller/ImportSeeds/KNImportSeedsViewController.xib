@@ -34,7 +34,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WhK-I2-j2i">
                     <rect key="frame" x="45" y="69" width="285" height="81.5"/>
                     <string key="text">Only for wallets created with
- Kyber  Mobile App. Please use seed, the 24 random words assigned when you create the wallet.</string>
+ Kyber  Mobile App. Please use seed, the 12 random words assigned when you create the wallet.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>

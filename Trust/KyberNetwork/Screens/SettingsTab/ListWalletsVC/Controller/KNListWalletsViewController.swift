@@ -106,6 +106,10 @@ extension KNListWalletsViewController: UITableViewDataSource {
     let wallet = self.listWallets[indexPath.row]
     if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
       cell.updateCell(with: walletObject)
+    } else {
+      let walletObject = KNWalletObject(address: wallet.address.description)
+      KNWalletStorage.shared.add(wallets: [walletObject])
+      cell.updateCell(with: walletObject)
     }
     if wallet == self.currentWallet {
       cell.accessoryType = .checkmark
