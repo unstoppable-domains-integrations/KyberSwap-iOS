@@ -8,6 +8,18 @@ protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: Wallet)
 }
 
+/**
+ Flow:
+ 1. Create Wallet:
+  - Enter password
+  - Backup 12 words seed for new wallet
+  - Enter wallet name
+  - Enter passcode (if it is the first wallet)
+ 2. Import Wallet:
+  - JSON/Private Key/Seeds
+  - Enter wallet name
+  - Enter passcode (if it is the first wallet)
+ */
 class KNLandingPageCoordinator: Coordinator {
 
   weak var delegate: KNLandingPageCoordinatorDelegate?
@@ -68,6 +80,8 @@ class KNLandingPageCoordinator: Coordinator {
     }
   }
 
+  // Enter wallet name (optional) for each imported/created wallet
+  // After name will be settings passcode if it is the first added wallet
   fileprivate func openEnterWalletName(walletObject: KNWalletObject) {
     let enterNameVC: KNEnterWalletNameViewController = {
       let viewModel = KNEnterWalletNameViewModel(walletObject: walletObject)
