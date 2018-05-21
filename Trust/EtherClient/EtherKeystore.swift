@@ -88,9 +88,10 @@ open class EtherKeystore: Keystore {
         }
     }
 
-    func create12wordsAccount(with password: String) throws -> Account {
+    func create12wordsAccount(with password: String) -> Account {
         let mnemonic = Mnemonic.generate(strength: 128)
-        let account = try self.keyStore.import(mnemonic: mnemonic, password: password)
+        let account = try! self.keyStore.import(mnemonic: mnemonic, password: password)
+        let _ = self.setPassword(password, for: account)
         return account
     }
 
@@ -134,6 +135,7 @@ open class EtherKeystore: Keystore {
           let key = words.joined(separator: " ")
           do {
             let account = try keyStore.import(mnemonic: key, password: password)
+            _ = setPassword(password, for: account)
             completion(.success(Wallet(type: .real(account))))
           } catch let error {
             completion(.failure(KeystoreError.failedToImport(error)))

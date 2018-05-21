@@ -13,7 +13,7 @@ protocol Keystore {
     static var current: Wallet? { get }
     @available(iOS 10.0, *)
     func createAccount(with password: String, completion: @escaping (Result<Account, KeystoreError>) -> Void)
-    func create12wordsAccount(with password: String) throws -> Account
+    func create12wordsAccount(with password: String) -> Account
     func importWallet(type: ImportType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void)
     func keystore(for privateKey: String, password: String, completion: @escaping (Result<String, KeystoreError>) -> Void)
     func importKeystore(value: String, password: String, newPassword: String, completion: @escaping (Result<Account, KeystoreError>) -> Void)
