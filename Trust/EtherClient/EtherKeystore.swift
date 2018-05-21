@@ -236,6 +236,22 @@ open class EtherKeystore: Keystore {
         guard let account = getAccount(for: account.address) else {
             return .failure(.accountNotFound)
         }
+        // account created from 12 words seeds
+        if account.type == .hierarchicalDeterministicWallet {
+          do {
+            let key = try KeystoreKey(password: password)
+            var privateKey = try key.decrypt(password: password)
+            defer {
+              privateKey.resetBytes(in: 0..<privateKey.count)
+            }
+
+            let newKey = try KeystoreKey(password: newPassword, key: privateKey)
+            let data = try JSONEncoder().encode(newKey)
+            return .success(data)
+          } catch {
+            return .failure(.failedToDecryptKey)
+          }
+        }
         do {
             let data = try keyStore.export(account: account, password: password, newPassword: newPassword)
             return (.success(data))
@@ -248,6 +264,16 @@ open class EtherKeystore: Keystore {
     func exportPrivateKey(account: Account) -> Result<Data, KeystoreError> {
         guard let password = getPassword(for: account) else {
             return .failure(KeystoreError.accountNotFound)
+        }
+        // account created from 12 words seeds
+        if account.type == .hierarchicalDeterministicWallet {
+            do {
+              let key = try KeystoreKey(password: password)
+              let privateKey = try key.decrypt(password: password)
+              return .success(privateKey)
+            } catch {
+              return .failure(KeystoreError.failedToExportPrivateKey)
+            }
         }
         do {
             let privateKey = try keyStore.exportPrivateKey(account: account, password: password)

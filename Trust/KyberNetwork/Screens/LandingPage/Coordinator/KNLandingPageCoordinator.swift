@@ -136,6 +136,7 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
     guard let wallet = self.newWallet else { return }
     self.navigationController.topViewController?.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
+      self.navigationController.topViewController?.hideLoading()
       self.delegate?.landingPageCoordinator(import: wallet)
     }
   }
@@ -169,14 +170,10 @@ extension KNLandingPageCoordinator: KNCreatePasswordViewControllerDelegate {
 
     let account: Account! = {
       if case .real(let acc) = wallet.type { return acc }
-      return nil
-    }()
-
-    if account == nil {
       // Failed to get account from wallet, show enter name
       self.openEnterWalletName(walletObject: walletObject)
-      return
-    }
+      fatalError("Wallet type is not real wallet")
+    }()
 
     self.isCreate = true
     self.newWallet = wallet
@@ -196,6 +193,7 @@ extension KNLandingPageCoordinator: KNCreatePasswordViewControllerDelegate {
     } else {
       // Failed to get seeds result, temporary open create name for wallet
       self.openEnterWalletName(walletObject: walletObject)
+      fatalError("Can not get seeds from account")
     }
   }
 }

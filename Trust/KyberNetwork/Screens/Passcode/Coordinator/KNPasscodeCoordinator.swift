@@ -45,7 +45,6 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
         self.window.isHidden = false
         self.passcodeViewController.showBioAuthenticationIfNeeded()
       } else {
-//        self.navigationController.present(self.passcodeViewController, animated: true, completion: nil)
         self.navigationController.pushViewController(self.passcodeViewController, animated: true)
       }
     }
