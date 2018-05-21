@@ -72,7 +72,9 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.addCoordinator(self.landingPageCoordinator)
     self.landingPageCoordinator.start()
     // For security, should always have passcode protection when user has imported wallets
-    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first, KNPasscodeUtil.shared.currentPasscode() != nil {
+    // In case user created a new wallet, it should be backed up
+    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first,
+      KNPasscodeUtil.shared.currentPasscode() != nil, KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == true {
       self.startNewSession(with: wallet)
     }
     self.addInternalObserveNotification()

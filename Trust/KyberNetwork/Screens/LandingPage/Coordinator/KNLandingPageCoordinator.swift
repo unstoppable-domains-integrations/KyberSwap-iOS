@@ -66,8 +66,7 @@ class KNLandingPageCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    if !self.keystore.wallets.isEmpty,
-      let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
+    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
       if KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == false {
         // Open back up wallet if it is created from app and not backed up yet
         self.newWallet = wallet
