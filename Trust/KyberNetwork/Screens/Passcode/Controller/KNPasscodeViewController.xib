@@ -9,11 +9,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="TimesNewRoman.ttf">
-            <string>TimesNewRomanPSMT</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPasscodeViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -51,7 +46,7 @@
                         <constraint firstAttribute="width" constant="60" id="69b-ql-DBr"/>
                         <constraint firstAttribute="height" constant="60" id="wxH-07-LNG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="5">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -65,7 +60,7 @@
                         <constraint firstAttribute="width" constant="60" id="nKo-l0-fRh"/>
                         <constraint firstAttribute="height" constant="60" id="sK5-g8-fCB"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="4">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -79,7 +74,7 @@
                         <constraint firstAttribute="height" constant="60" id="cat-9F-2rJ"/>
                         <constraint firstAttribute="width" constant="60" id="tE4-O1-vxq"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="6">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -88,12 +83,12 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iko-Cb-5k8">
-                    <rect key="frame" x="157" y="233.5" width="60" height="60"/>
+                    <rect key="frame" x="157.5" y="233.5" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="bo9-8W-80D"/>
                         <constraint firstAttribute="height" constant="60" id="owj-TI-wRb"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="2">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -102,12 +97,12 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOq-K5-z3m">
-                    <rect key="frame" x="77" y="233.5" width="60" height="60"/>
+                    <rect key="frame" x="78" y="233.5" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="IIP-8Z-anm"/>
                         <constraint firstAttribute="height" constant="60" id="c6D-q2-n5H"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="1">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -116,12 +111,12 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C5h-n8-Fpg">
-                    <rect key="frame" x="237" y="233.5" width="60" height="60"/>
+                    <rect key="frame" x="237.5" y="233.5" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="RB8-d2-2Z3"/>
                         <constraint firstAttribute="height" constant="60" id="wUV-gg-fsS"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="3">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -135,7 +130,7 @@
                         <constraint firstAttribute="height" constant="60" id="FXI-8e-oF4"/>
                         <constraint firstAttribute="width" constant="60" id="vwo-5y-RwD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="8">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -149,7 +144,7 @@
                         <constraint firstAttribute="height" constant="60" id="NDn-9M-lJR"/>
                         <constraint firstAttribute="width" constant="60" id="cJ8-Cx-1tX"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="7">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -163,7 +158,7 @@
                         <constraint firstAttribute="width" constant="60" id="3jt-Tz-6J7"/>
                         <constraint firstAttribute="height" constant="60" id="vTe-hH-ezK"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="9">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -177,7 +172,7 @@
                         <constraint firstAttribute="width" constant="60" id="A5G-Ak-gNZ"/>
                         <constraint firstAttribute="height" constant="60" id="hKq-XA-DXa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
                     <state key="normal" title="0">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -186,11 +181,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-rp-M12">
-                    <rect key="frame" x="285" y="607" width="60" height="30"/>
+                    <rect key="frame" x="285" y="604" width="60" height="33"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="gQ1-6Y-nYz"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <state key="normal" title="Cancel">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
