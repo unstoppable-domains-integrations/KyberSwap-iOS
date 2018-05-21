@@ -23,7 +23,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.enterPrivateKeyTextField.text = isDebug ? "f4e72838eb3b07d2508289042e49c7996d06c3c4907922485fd6565646bc3f1e" : ""
+    self.enterPrivateKeyTextField.text = ""
   }
 
   fileprivate func setupUI() {
