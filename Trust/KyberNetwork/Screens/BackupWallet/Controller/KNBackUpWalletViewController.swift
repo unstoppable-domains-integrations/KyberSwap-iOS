@@ -56,7 +56,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
         self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
         self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
         self.timeLeft = self.defaultTime
-        self.wroteDownButton.setTitle("\(self.timeLeft) second(s)", for: .disabled)
+        self.wroteDownButton.setTitle("\(self.timeLeft) seconds", for: .disabled)
         self.wroteDownButton.isEnabled = false
 
         for id in 0..<self.viewModel.numberWords {
@@ -73,7 +73,9 @@ class KNBackUpWalletViewController: KNBaseViewController {
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
       self.timeLeft -= 1
       if self.timeLeft > 0 {
-        self.wroteDownButton.setTitle("\(self.timeLeft) second(s)", for: .disabled)
+        // FIXME: Using localizing plurals
+        let title: String = self.timeLeft == 1 ? "1 second" : "\(self.timeLeft) seconds"
+        self.wroteDownButton.setTitle(title, for: .disabled)
         self.updateWroteDownButton()
       } else {
         self.wroteDownButton.setTitle(self.viewModel.wroteDownButtonTitle, for: .normal)

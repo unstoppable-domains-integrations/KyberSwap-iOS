@@ -92,70 +92,10 @@ class KNLandingPageCoordinator: Coordinator {
     }()
     self.navigationController.topViewController?.present(enterNameVC, animated: true, completion: nil)
   }
-}
-
-extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
-  func landingPageCreateWalletPressed(sender: KNLandingPageViewController) {
-    let createPassword = KNCreatePasswordViewController(delegate: self)
-    createPassword.modalPresentationStyle = .overCurrentContext
-    createPassword.modalTransitionStyle = .crossDissolve
-    self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
-  }
-
-  func landingPageImportWalletPressed(sender: KNLandingPageViewController) {
-    self.importWalletCoordinator.start()
-  }
-
-  func landingPageTermAndConditionPressed(sender: KNLandingPageViewController) {
-    guard let url = URL(string: "https://home.kyber.network/assets/tac.pdf") else { return }
-    let safariVC: SFSafariViewController = {
-      return SFSafariViewController(url: url)
-    }()
-    self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
-  }
-}
-
-extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
-  func importWalletCoordinatorDidImport(wallet: Wallet) {
-    // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description)
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.newWallet = wallet
-    self.isCreate = false
-    self.keystore.recentlyUsedWallet = wallet
-    self.openEnterWalletName(walletObject: walletObject)
-  }
-}
-
-extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
-    self.passcodeCoordinator.stop { }
-  }
-
-  func passcodeCoordinatorDidCreatePasscode() {
-    guard let wallet = self.newWallet else { return }
-    self.navigationController.topViewController?.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
-      self.navigationController.topViewController?.hideLoading()
-      self.delegate?.landingPageCoordinator(import: wallet)
-    }
-  }
-}
-
-extension KNLandingPageCoordinator: KNCreatePasswordViewControllerDelegate {
-  func createPasswordUserDidFinish(_ password: String) {
-    DispatchQueue.global(qos: .userInitiated).async {
-      let account = self.keystore.create12wordsAccount(with: password)
-      DispatchQueue.main.async {
-        let wallet = Wallet(type: WalletType.real(account))
-        self.openBackUpWallet(wallet)
-      }
-    }
-  }
 
   /**
-    Open back up wallet view for new wallet created from the app
-    Always using 12 words seeds to back up the wallet
+   Open back up wallet view for new wallet created from the app
+   Always using 12 words seeds to back up the wallet
    */
   fileprivate func openBackUpWallet(_ wallet: Wallet) {
     let walletObject: KNWalletObject = {
@@ -194,6 +134,58 @@ extension KNLandingPageCoordinator: KNCreatePasswordViewControllerDelegate {
       // Failed to get seeds result, temporary open create name for wallet
       self.openEnterWalletName(walletObject: walletObject)
       fatalError("Can not get seeds from account")
+    }
+  }
+}
+
+extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
+  func landingPageCreateWalletPressed(sender: KNLandingPageViewController) {
+    let password = PasswordGenerator.generateRandom()
+    DispatchQueue.global(qos: .userInitiated).async {
+      let account = self.keystore.create12wordsAccount(with: password)
+      DispatchQueue.main.async {
+        let wallet = Wallet(type: WalletType.real(account))
+        self.openBackUpWallet(wallet)
+      }
+    }
+  }
+
+  func landingPageImportWalletPressed(sender: KNLandingPageViewController) {
+    self.importWalletCoordinator.start()
+  }
+
+  func landingPageTermAndConditionPressed(sender: KNLandingPageViewController) {
+    guard let url = URL(string: "https://home.kyber.network/assets/tac.pdf") else { return }
+    let safariVC: SFSafariViewController = {
+      return SFSafariViewController(url: url)
+    }()
+    self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
+  }
+}
+
+extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
+  func importWalletCoordinatorDidImport(wallet: Wallet) {
+    // add new wallet into database in case user exits app
+    let walletObject = KNWalletObject(address: wallet.address.description)
+    KNWalletStorage.shared.add(wallets: [walletObject])
+    self.newWallet = wallet
+    self.isCreate = false
+    self.keystore.recentlyUsedWallet = wallet
+    self.openEnterWalletName(walletObject: walletObject)
+  }
+}
+
+extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCancel() {
+    self.passcodeCoordinator.stop { }
+  }
+
+  func passcodeCoordinatorDidCreatePasscode() {
+    guard let wallet = self.newWallet else { return }
+    self.navigationController.topViewController?.displayLoading()
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
+      self.navigationController.topViewController?.hideLoading()
+      self.delegate?.landingPageCoordinator(import: wallet)
     }
   }
 }
