@@ -144,11 +144,9 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
 
 extension KNLandingPageCoordinator: KNCreatePasswordViewControllerDelegate {
   func createPasswordUserDidFinish(_ password: String) {
-    self.navigationController.topViewController?.displayLoading(text: "Creating wallet...", animated: true)
     DispatchQueue.global(qos: .userInitiated).async {
       let account = self.keystore.create12wordsAccount(with: password)
       DispatchQueue.main.async {
-        self.navigationController.topViewController?.hideLoading()
         let wallet = Wallet(type: WalletType.real(account))
         self.openBackUpWallet(wallet)
       }

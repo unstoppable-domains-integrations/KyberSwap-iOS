@@ -131,6 +131,7 @@ class KNBalanceTabViewController: KNBaseViewController {
     )
     self.tokensBalanceCollectionView.delegate = self
     self.tokensBalanceCollectionView.dataSource = self
+    self.tokensBalanceCollectionView.reloadData()
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
