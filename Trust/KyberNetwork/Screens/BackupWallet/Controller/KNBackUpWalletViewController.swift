@@ -136,7 +136,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
     } else {
       self.firstWordTextField.text = ""
       self.secondWordTextField.text = ""
-      self.completeButton.isHidden = self.isCompleteButtonEnabled
+      self.completeButton.isEnabled = self.isCompleteButtonEnabled
       self.showWarningTopBannerMessage(with: "Wrong", message: "Wrong wrong wrong wrong wrong wrong")
     }
   }
@@ -153,7 +153,7 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
 
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
-    self.completeButton.isHidden = self.isCompleteButtonEnabled
+    self.completeButton.isEnabled = self.isCompleteButtonEnabled
     return false
   }
 }
