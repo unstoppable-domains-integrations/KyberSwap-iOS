@@ -10,8 +10,11 @@ enum KNBackUpWalletState {
 class KNBackUpWalletViewModel {
   let seeds: [String]
   var state: KNBackUpWalletState = .backup
+
   var firstWordID: Int
   var secondWordID: Int
+
+  var numberWrongs: Int = 0
 
   let numberWords: Int = 4
   fileprivate let maxWords: Int = 12
@@ -21,6 +24,12 @@ class KNBackUpWalletViewModel {
     self.seeds = seeds
     self.firstWordID = Int(arc4random() % 12)
     self.secondWordID = (self.firstWordID + Int(arc4random() % 11 + 1)) % 12
+  }
+
+  func backupAgain() {
+    self.state = .backup
+    self.currentWordIndex = 0
+    self.numberWrongs = 0
   }
 
   lazy var defaultTime: Int = {

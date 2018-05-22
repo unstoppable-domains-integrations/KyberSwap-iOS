@@ -137,7 +137,16 @@ class KNBackUpWalletViewController: KNBaseViewController {
       self.firstWordTextField.text = ""
       self.secondWordTextField.text = ""
       self.completeButton.isEnabled = self.isCompleteButtonEnabled
-      self.showWarningTopBannerMessage(with: "Wrong", message: "Wrong wrong wrong wrong wrong wrong")
+      self.viewModel.numberWrongs += 1
+      let popupVC: KNTestBackUpIncorrectWordsViewController = {
+        let viewModel = KNTestBackUpIncorrectWordsViewModel(isFirstTime: self.viewModel.numberWrongs == 1)
+        let controller = KNTestBackUpIncorrectWordsViewController(viewModel: viewModel)
+        controller.delegate = self
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalTransitionStyle = .crossDissolve
+        return controller
+      }()
+      self.present(popupVC, animated: true, completion: nil)
     }
   }
 }
@@ -155,5 +164,13 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
     textField.text = ""
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
     return false
+  }
+}
+
+extension KNBackUpWalletViewController: KNTestBackUpIncorrectWordsViewControllerDelegate {
+  func testBackUpIncorrectWordsViewDidPressSecondButton(sender: KNTestBackUpIncorrectWordsViewController) {
+    // back up again button pressed
+    self.viewModel.backupAgain()
+    self.updateUI()
   }
 }
