@@ -11,9 +11,9 @@ class KNBackUpWalletViewController: KNBaseViewController {
   weak var delegate: KNBackUpWalletViewControllerDelegate?
   fileprivate var viewModel: KNBackUpWalletViewModel
 
-  fileprivate let defaultTime: Int = isDebug ? 5 : 15
-  fileprivate var timeLeft: Int = 15
+  fileprivate var timeLeft: Int = 0
 
+  @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var backupWalletLabel: UILabel!
   @IBOutlet weak var titlelabel: UILabel!
   @IBOutlet weak var descriptionLabel: UILabel!
@@ -22,6 +22,13 @@ class KNBackUpWalletViewController: KNBaseViewController {
   @IBOutlet var wordLabels: [UILabel]!
 
   @IBOutlet weak var wroteDownButton: UIButton!
+  @IBOutlet weak var firstWordTextField: UITextField!
+  @IBOutlet weak var secondWordTextField: UITextField!
+  @IBOutlet weak var completeButton: UIButton!
+
+  var isCompleteButtonEnabled: Bool {
+    return self.firstWordTextField.text?.isEmpty == false && self.secondWordTextField.text?.isEmpty == false
+  }
 
   init(viewModel: KNBackUpWalletViewModel) {
     self.viewModel = viewModel
@@ -38,10 +45,27 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.backupWalletLabel.text = self.viewModel.backUpWalletText
+    self.iconImageView.image = UIImage(named: self.viewModel.iconName)
+    self.backupWalletLabel.text = self.viewModel.headerText
+
     self.wroteDownButton.setBackgroundColor(.lightGray, forState: .disabled)
     self.wroteDownButton.setBackgroundColor(UIColor(hex: "5ec2ba"), forState: .normal)
     self.wroteDownButton.semanticContentAttribute = .forceRightToLeft
+
+    self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
+    self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    self.firstWordTextField.delegate = self
+
+    self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
+    self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    self.secondWordTextField.delegate = self
+
+    self.completeButton.rounded(radius: 4.0)
+    self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
+    self.completeButton.setBackgroundColor(.lightGray, forState: .disabled)
+    self.completeButton.setBackgroundColor(UIColor(hex: "5ec2ba"), forState: .normal)
+    self.completeButton.isEnabled = self.isCompleteButtonEnabled
+
     self.updateUI()
   }
 
@@ -51,22 +75,35 @@ class KNBackUpWalletViewController: KNBaseViewController {
       delay: 0,
       options: UIViewAnimationOptions.curveEaseInOut,
       animations: {
-        self.backupWalletLabel.text = self.viewModel.backUpWalletText
+        self.iconImageView.image = UIImage(named: self.viewModel.iconName)
+        self.backupWalletLabel.text = self.viewModel.headerText
         self.titlelabel.text = self.viewModel.titleText
         self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
         self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
-        self.timeLeft = self.defaultTime
+        self.writeDownWordsTextLabel.isHidden = self.viewModel.isWriteDownWordsLabelHidden
+        self.timeLeft = self.viewModel.defaultTime
         self.wroteDownButton.setTitle("\(self.timeLeft) seconds", for: .disabled)
         self.wroteDownButton.isEnabled = false
+        self.wroteDownButton.isHidden = self.viewModel.isListWordsLabelsHidden
 
         for id in 0..<self.viewModel.numberWords {
           let label = self.wordLabels.first(where: { $0.tag == id })
           label?.attributedText = self.viewModel.attributedString(for: id)
+          label?.isHidden = self.viewModel.isListWordsLabelsHidden
         }
+
+        self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+        self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+
+        self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
+        self.completeButton.isEnabled = self.isCompleteButtonEnabled
+        self.view.layoutIfNeeded()
       }, completion: nil
     )
 
-    self.updateWroteDownButton()
+    if self.viewModel.state == .backup {
+      self.updateWroteDownButton()
+    }
   }
 
   fileprivate func updateWroteDownButton() {
@@ -86,10 +123,37 @@ class KNBackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func wroteDownButtonPressed(_ sender: UIButton) {
-    if self.viewModel.updateNextBackUpWords() {
+    self.viewModel.updateNextBackUpWords()
+    self.updateUI()
+  }
+
+  @IBAction func completeButtonPressed(_ sender: Any) {
+    guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
+      return
+    }
+    if self.viewModel.isTestPassed(firstWord: firstWord, secondWord: secondWord) {
       self.delegate?.backupWalletViewControllerDidFinish()
     } else {
-      self.updateUI()
+      self.firstWordTextField.text = ""
+      self.secondWordTextField.text = ""
+      self.completeButton.isHidden = self.isCompleteButtonEnabled
+      self.showWarningTopBannerMessage(with: "Wrong", message: "Wrong wrong wrong wrong wrong wrong")
     }
+  }
+}
+
+extension KNBackUpWalletViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text
+    self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    self.view.layoutIfNeeded()
+    return false
+  }
+
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    textField.text = ""
+    self.completeButton.isHidden = self.isCompleteButtonEnabled
+    return false
   }
 }

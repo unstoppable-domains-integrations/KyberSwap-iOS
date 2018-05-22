@@ -137,6 +137,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
 extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
     let wallet = self.viewModel.wallet(at: indexPath.row)
     self.hideMenu(animated: true) {
       if wallet != self.viewModel.currentWallet {

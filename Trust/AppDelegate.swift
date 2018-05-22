@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        Lokalise.shared.checkForUpdates { _, _ in }
+        //Lokalise.shared.checkForUpdates { _, _ in }
         coordinator.appDidBecomeActive()
         KNReachability.shared.startNetworkReachabilityObserver()
     }

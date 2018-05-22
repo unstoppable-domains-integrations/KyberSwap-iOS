@@ -2,8 +2,16 @@
 
 import UIKit
 
+enum KNBackUpWalletState {
+  case backup
+  case testBackup
+}
+
 class KNBackUpWalletViewModel {
   let seeds: [String]
+  var state: KNBackUpWalletState = .backup
+  var firstWordID: Int
+  var secondWordID: Int
 
   let numberWords: Int = 4
   fileprivate let maxWords: Int = 12
@@ -11,10 +19,17 @@ class KNBackUpWalletViewModel {
 
   init(seeds: [String]) {
     self.seeds = seeds
+    self.firstWordID = Int(arc4random() % 12)
+    self.secondWordID = (self.firstWordID + Int(arc4random() % 11 + 1)) % 12
   }
+
+  lazy var defaultTime: Int = {
+    return isDebug ? 3 : 15
+  }()
 
   func attributedString(for id: Int) -> NSAttributedString {
     let wordID: Int = id + self.currentWordIndex + 1
+    if wordID > self.seeds.count { return NSMutableAttributedString() }
     let word: String = self.seeds[wordID - 1]
     let attributedString: NSMutableAttributedString = {
       let idAttributes: [NSAttributedStringKey: Any] = [
@@ -32,20 +47,24 @@ class KNBackUpWalletViewModel {
     return attributedString
   }
 
-  func updateNextBackUpWords() -> Bool {
+  func updateNextBackUpWords() {
     self.currentWordIndex += self.numberWords
-    return self.currentWordIndex >= self.maxWords - 1
+    if self.currentWordIndex >= self.maxWords - 1 {
+      self.state = .testBackup
+    } else {
+      self.state = .backup
+    }
   }
 
-  var backUpWalletText: String {
+  lazy var backUpWalletText: String = {
     return "Backup Your Wallet".toBeLocalised()
-  }
+  }()
 
-  var titleText: String {
+  var backUpTitleText: String {
     return self.currentWordIndex == 0 ? "Paper Only".toBeLocalised() : ""
   }
 
-  var descriptionAttributedText: NSMutableAttributedString {
+  var backUpDescAttributedString: NSMutableAttributedString {
     if self.currentWordIndex > 0 { return NSMutableAttributedString() }
     let regularttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular),
@@ -68,5 +87,73 @@ class KNBackUpWalletViewModel {
 
   var wroteDownButtonTitle: String {
     return "I wrote down the words from \(self.currentWordIndex + 1) to \(self.currentWordIndex + self.numberWords)".toBeLocalised()
+  }
+
+  lazy var testingBackUpText: String = {
+    return "Test your Backup".toBeLocalised()
+  }()
+
+  lazy var testingBackUpDescText: NSMutableAttributedString = {
+    let regularttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular),
+      ]
+    let attributedString = NSMutableAttributedString()
+    attributedString.append(NSAttributedString(
+      string: "To make sure you have written down all of your backup words. Please enter the following.".toBeLocalised(),
+      attributes: regularttributes
+    ))
+    return attributedString
+  }()
+
+  lazy var completeButtonText: String = {
+    return "Complete".toBeLocalised().uppercased()
+  }()
+
+  var iconName: String {
+    return self.state == .backup ? "back_up_icon" : "test_back_up_icon"
+  }
+
+  var headerText: String {
+    return self.state == .backup ? self.backUpWalletText : self.testingBackUpText
+  }
+
+  var titleText: String {
+    return self.state == .backup ? self.backUpTitleText : ""
+  }
+
+  var descriptionAttributedText: NSAttributedString {
+    return self.state == .backup ? self.backUpDescAttributedString : self.testingBackUpDescText
+  }
+
+  var isWriteDownWordsLabelHidden: Bool {
+    return self.state == .testBackup
+  }
+
+  var isListWordsLabelsHidden: Bool {
+    return self.state == .testBackup
+  }
+
+  var isWroteDownButtonHidden: Bool {
+    return self.state == .testBackup
+  }
+
+  var isTestWordsTextFieldHidden: Bool {
+    return self.state == .backup
+  }
+
+  var firstWordTextFieldPlaceholder: String {
+    return "Word #\(self.firstWordID)".toBeLocalised()
+  }
+
+  var secondWordTextFieldPlaceholder: String {
+    return "Word #\(self.secondWordID)".toBeLocalised()
+  }
+
+  var isCompleteButtonHidden: Bool {
+    return self.state == .backup
+  }
+
+  func isTestPassed(firstWord: String, secondWord: String) -> Bool {
+    return self.seeds[self.firstWordID - 1] == firstWord && self.seeds[self.secondWordID - 1] == secondWord
   }
 }

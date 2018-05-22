@@ -13,6 +13,7 @@ protocol KNLandingPageCoordinatorDelegate: class {
  1. Create Wallet:
   - Enter password
   - Backup 12 words seed for new wallet
+  - Testing backup
   - Enter wallet name
   - Enter passcode (if it is the first wallet)
  2. Import Wallet:
