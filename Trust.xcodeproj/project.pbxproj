@@ -36,6 +36,8 @@
 		256051852060F2E900D5588E /* KNTransferTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256051832060F2E900D5588E /* KNTransferTokenViewController.swift */; };
 		256051862060F2E900D5588E /* KNTransferTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256051842060F2E900D5588E /* KNTransferTokenViewController.xib */; };
 		2560518920610A5700D5588E /* KNTransferTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2560518820610A5700D5588E /* KNTransferTokenCoordinator.swift */; };
+		256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */; };
+		256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */; };
 		257740C120579335003323EB /* UIView+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740C020579335003323EB /* UIView+Kyber.swift */; };
 		257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257740C420579456003323EB /* KNSplashScreenViewController.xib */; };
 		257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740C520579456003323EB /* KNSplashScreenViewController.swift */; };
@@ -573,6 +575,8 @@
 		256051832060F2E900D5588E /* KNTransferTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransferTokenViewController.swift; sourceTree = "<group>"; };
 		256051842060F2E900D5588E /* KNTransferTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransferTokenViewController.xib; sourceTree = "<group>"; };
 		2560518820610A5700D5588E /* KNTransferTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransferTokenCoordinator.swift; sourceTree = "<group>"; };
+		256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabHamburgerMenuViewController.swift; sourceTree = "<group>"; };
+		256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBalanceTabHamburgerMenuViewController.xib; sourceTree = "<group>"; };
 		257740C020579335003323EB /* UIView+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Kyber.swift"; sourceTree = "<group>"; };
 		257740C420579456003323EB /* KNSplashScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNSplashScreenViewController.xib; sourceTree = "<group>"; };
 		257740C520579456003323EB /* KNSplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSplashScreenViewController.swift; sourceTree = "<group>"; };
@@ -1263,6 +1267,7 @@
 		255DC60F20A949AD002C2BBF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				256E61EA20B3C0650084CA3F /* HamburgerMenu */,
 				255DC60B20A94980002C2BBF /* KNBalanceTabViewController.swift */,
 				255DC60C20A94980002C2BBF /* KNBalanceTabViewController.xib */,
 			);
@@ -1292,6 +1297,15 @@
 				2560518820610A5700D5588E /* KNTransferTokenCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		256E61EA20B3C0650084CA3F /* HamburgerMenu */ = {
+			isa = PBXGroup;
+			children = (
+				256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */,
+				256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */,
+			);
+			path = HamburgerMenu;
 			sourceTree = "<group>";
 		};
 		257740C2205793C6003323EB /* Screens */ = {
@@ -3736,6 +3750,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				613D04891FDE15F8008DE72E /* COMODO ECC Domain Validation Secure Server CA 2.cer in Resources */,
+				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
 				257A3791205BC1E300E86794 /* KNConfirmTransactionViewController.xib in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -4440,6 +4455,7 @@
 				2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */,
 				291F52BF1F6C874E00B369AB /* AccountsViewController.swift in Sources */,
 				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,
+				256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
