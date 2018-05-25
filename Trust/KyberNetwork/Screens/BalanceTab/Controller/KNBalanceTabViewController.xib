@@ -151,6 +151,7 @@
                 </collectionView>
             </subviews>
             <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="EN6-Ah-tJJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2kY-ig-7Qu"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="EN6-Ah-tJJ" secondAttribute="trailing" id="7xM-BH-fl5"/>
@@ -168,7 +169,16 @@
                 <constraint firstItem="OFS-ky-cKH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wJ1-yv-TuE"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="05c-17-obg" appends="YES" id="7zk-lc-HJe"/>
+            </connections>
         </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="05c-17-obg">
+            <rectEdge key="edges" right="YES"/>
+            <connections>
+                <action selector="gestureScreenEdgePan:" destination="-1" id="63j-Hd-GKU"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
         <image name="add_circle_grey" width="14" height="14"/>

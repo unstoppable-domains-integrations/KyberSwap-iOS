@@ -192,6 +192,10 @@ class KNBalanceTabViewController: KNBaseViewController {
   @objc func displayDataTypePickerViewCancelPressed(_ sender: Any?) {
     self.fakeFilterSortTextField.resignFirstResponder()
   }
+
+  @IBAction func gestureScreenEdgePan(_ sender: UIScreenEdgePanGestureRecognizer) {
+    self.hamburgerMenu.gestureScreenEdgePanAction(sender)
+  }
 }
 
 // MARK: Update from coordinator

@@ -51,6 +51,9 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var settingsButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
+  @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
+  fileprivate var screenEdgePanRecognizer: UIScreenEdgePanGestureRecognizer?
+
   fileprivate var viewModel: KNBalanceTabHamburgerMenuViewModel
   weak var delegate: KNBalanceTabHamburgerMenuViewControllerDelegate?
 
@@ -110,6 +113,8 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.view.alpha = 1
       self.view.layoutIfNeeded()
     }, completion: { _ in
+      self.screenEdgePanRecognizer?.isEnabled = false
+      self.panGestureRecognizer.isEnabled = true
       self.walletListTableView.reloadData()
       completion?()
     })
@@ -122,6 +127,8 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.view.alpha = 0
       self.view.layoutIfNeeded()
     }, completion: { _ in
+      self.screenEdgePanRecognizer?.isEnabled = true
+      self.panGestureRecognizer.isEnabled = false
       self.view.isHidden = true
       completion?()
     })
@@ -140,6 +147,63 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
   @IBAction func settingsButtonPressed(_ sender: Any) {
     self.delegate?.balanceTabHamburgerMenuDidSelectSettings(sender: self)
+  }
+
+  func gestureScreenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if self.screenEdgePanRecognizer == nil { self.screenEdgePanRecognizer = sender }
+    switch sender.state {
+    case .began:
+      self.view.isHidden = false
+      self.view.alpha = 0
+    case .changed:
+      let translationX = -sender.translation(in: sender.view).x
+      if -self.hamburgerView.frame.width + translationX >= 0 {
+        self.hamburgerMenuViewTrailingConstraint.constant = 0
+        self.view.alpha = 1
+      } else if translationX < 0 {
+        self.hamburgerMenuViewTrailingConstraint.constant = -self.hamburgerView.frame.width
+        self.view.alpha = 0
+      } else {
+        self.hamburgerMenuViewTrailingConstraint.constant = -self.hamburgerView.frame.width + translationX
+        let ratio = translationX / self.hamburgerView.frame.width
+        self.view.alpha = ratio
+      }
+      self.view.layoutIfNeeded()
+    default:
+      if self.hamburgerMenuViewTrailingConstraint.constant < -self.hamburgerView.frame.width / 2 {
+        self.hideMenu(animated: true)
+      } else {
+        self.openMenu(animated: true)
+      }
+    }
+  }
+
+  @IBAction func gesturePanActionRecognized(_ sender: UIPanGestureRecognizer) {
+    switch sender.state {
+    case .began:
+      //do nothing here
+      print("Pan gesture began")
+    case .changed:
+      let translationX = sender.translation(in: sender.view).x
+      if translationX <= 0 {
+        self.hamburgerMenuViewTrailingConstraint.constant = 0
+        self.view.alpha = 1
+      } else if self.hamburgerView.frame.width - translationX <= 0 {
+        self.hamburgerMenuViewTrailingConstraint.constant = -self.hamburgerView.frame.width
+        self.view.alpha = 0
+      } else {
+        self.hamburgerMenuViewTrailingConstraint.constant = -translationX
+        let ratio = (self.hamburgerView.frame.width - translationX) / self.hamburgerView.frame.width
+        self.view.alpha = ratio
+      }
+      self.view.layoutIfNeeded()
+    default:
+      if self.hamburgerMenuViewTrailingConstraint.constant < -self.hamburgerView.frame.width / 2 {
+        self.hideMenu(animated: true)
+      } else {
+        self.openMenu(animated: true)
+      }
+    }
   }
 }
 

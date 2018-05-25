@@ -15,6 +15,7 @@
                 <outlet property="hamburgerMenuViewTrailingConstraint" destination="md2-TE-yB9" id="309-qb-7aO"/>
                 <outlet property="hamburgerView" destination="cBS-qe-UMl" id="8LU-Qd-IMM"/>
                 <outlet property="manageWalletButton" destination="Lb8-gi-XYA" id="tpt-GC-mSI"/>
+                <outlet property="panGestureRecognizer" destination="0Ip-B4-Knc" id="uUT-MX-DDw"/>
                 <outlet property="settingsButton" destination="fnT-P7-tl2" id="snZ-vi-axz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletListTableView" destination="cWZ-m5-3ET" id="Y6D-qH-VEn"/>
@@ -82,12 +83,21 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="cBS-qe-UMl" secondAttribute="bottom" id="TeE-3e-2cw"/>
                 <constraint firstItem="cBS-qe-UMl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="bdA-jZ-BFG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cBS-qe-UMl" secondAttribute="trailing" id="md2-TE-yB9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="0Ip-B4-Knc" appends="YES" id="fyG-W6-iqr"/>
+            </connections>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="0Ip-B4-Knc">
+            <connections>
+                <action selector="gesturePanActionRecognized:" destination="-1" id="0I6-5a-JKy"/>
+            </connections>
+        </panGestureRecognizer>
     </objects>
 </document>
