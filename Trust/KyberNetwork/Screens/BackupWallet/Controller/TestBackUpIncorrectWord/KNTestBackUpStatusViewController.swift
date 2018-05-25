@@ -2,15 +2,30 @@
 
 import UIKit
 
-protocol KNTestBackUpIncorrectWordsViewControllerDelegate: class {
-  func testBackUpIncorrectWordsViewDidPressSecondButton(sender: KNTestBackUpIncorrectWordsViewController)
+protocol KNTestBackUpStatusViewControllerDelegate: class {
+  func testBackUpStatusViewDidPressSecondButton(sender: KNTestBackUpStatusViewController)
+  func testBackUpStatusViewDidComplete(sender: KNTestBackUpStatusViewController)
 }
 
-struct KNTestBackUpIncorrectWordsViewModel {
+struct KNTestBackUpStatusViewModel {
+  let isSuccess: Bool
   let isFirstTime: Bool
 
-  init(isFirstTime: Bool = true) {
+  init(isFirstTime: Bool, isSuccess: Bool) {
     self.isFirstTime = isFirstTime
+    self.isSuccess = isSuccess
+  }
+
+  var backgroundColor: UIColor {
+    return self.isSuccess ? UIColor(hex: "395497") : UIColor.black.withAlphaComponent(0.5)
+  }
+
+  var isContainerViewHidden: Bool {
+    return self.isSuccess
+  }
+
+  var isSuccessViewHidden: Bool {
+    return !self.isSuccess
   }
 
   var title: String {
@@ -42,7 +57,7 @@ struct KNTestBackUpIncorrectWordsViewModel {
   }
 }
 
-class KNTestBackUpIncorrectWordsViewController: KNBaseViewController {
+class KNTestBackUpStatusViewController: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
 
@@ -54,12 +69,14 @@ class KNTestBackUpIncorrectWordsViewController: KNBaseViewController {
 
   @IBOutlet weak var secondButtonWidthConstraint: NSLayoutConstraint!
 
-  fileprivate var viewModel: KNTestBackUpIncorrectWordsViewModel
-  weak var delegate: KNTestBackUpIncorrectWordsViewControllerDelegate?
+  @IBOutlet weak var successContainerView: UIView!
 
-  init(viewModel: KNTestBackUpIncorrectWordsViewModel) {
+  fileprivate var viewModel: KNTestBackUpStatusViewModel
+  weak var delegate: KNTestBackUpStatusViewControllerDelegate?
+
+  init(viewModel: KNTestBackUpStatusViewModel) {
     self.viewModel = viewModel
-    super.init(nibName: KNTestBackUpIncorrectWordsViewController.className, bundle: nil)
+    super.init(nibName: KNTestBackUpStatusViewController.className, bundle: nil)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -68,7 +85,9 @@ class KNTestBackUpIncorrectWordsViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.view.backgroundColor = self.viewModel.backgroundColor
     self.containerView.rounded(radius: 10.0)
+    self.containerView.isHidden = self.viewModel.isContainerViewHidden
     self.titleLabel.text = self.viewModel.title
     self.messageLabel.text = self.viewModel.message
 
@@ -83,7 +102,16 @@ class KNTestBackUpIncorrectWordsViewController: KNBaseViewController {
     } else {
       self.secondButtonWidthConstraint.constant = self.containerView.frame.width / 2.0
     }
+    self.successContainerView.isHidden = self.viewModel.isSuccessViewHidden
     self.view.updateConstraints()
+    if self.viewModel.isSuccess {
+      Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { [weak self] _ in
+        guard let `self` = self else { return }
+        self.dismiss(animated: true) {
+          self.delegate?.testBackUpStatusViewDidComplete(sender: self)
+        }
+      })
+    }
   }
 
   @IBAction func firstButtonPressed(_ sender: Any) {
@@ -92,7 +120,7 @@ class KNTestBackUpIncorrectWordsViewController: KNBaseViewController {
 
   @IBAction func secondButtonPressed(_ sender: Any) {
     self.dismiss(animated: true) {
-      self.delegate?.testBackUpIncorrectWordsViewDidPressSecondButton(sender: self)
+      self.delegate?.testBackUpStatusViewDidPressSecondButton(sender: self)
     }
   }
 }

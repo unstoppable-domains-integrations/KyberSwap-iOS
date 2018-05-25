@@ -131,23 +131,31 @@ class KNBackUpWalletViewController: KNBaseViewController {
     guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
       return
     }
+    var isFirstTime: Bool = false
+    var isSuccess: Bool = false
     if self.viewModel.isTestPassed(firstWord: firstWord, secondWord: secondWord) {
-      self.delegate?.backupWalletViewControllerDidFinish()
+      isFirstTime = false
+      isSuccess = true
     } else {
       self.firstWordTextField.text = ""
       self.secondWordTextField.text = ""
       self.completeButton.isEnabled = self.isCompleteButtonEnabled
       self.viewModel.numberWrongs += 1
-      let popupVC: KNTestBackUpIncorrectWordsViewController = {
-        let viewModel = KNTestBackUpIncorrectWordsViewModel(isFirstTime: self.viewModel.numberWrongs == 1)
-        let controller = KNTestBackUpIncorrectWordsViewController(viewModel: viewModel)
-        controller.delegate = self
-        controller.modalPresentationStyle = .overCurrentContext
-        controller.modalTransitionStyle = .crossDissolve
-        return controller
-      }()
-      self.present(popupVC, animated: true, completion: nil)
+      isFirstTime = self.viewModel.numberWrongs == 1
+      isSuccess = false
     }
+    let popupVC: KNTestBackUpStatusViewController = {
+      let viewModel = KNTestBackUpStatusViewModel(
+        isFirstTime: isFirstTime,
+        isSuccess: isSuccess
+      )
+      let controller = KNTestBackUpStatusViewController(viewModel: viewModel)
+      controller.delegate = self
+      controller.modalPresentationStyle = .overCurrentContext
+      controller.modalTransitionStyle = .crossDissolve
+      return controller
+    }()
+    self.present(popupVC, animated: true, completion: nil)
   }
 }
 
@@ -167,8 +175,12 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
   }
 }
 
-extension KNBackUpWalletViewController: KNTestBackUpIncorrectWordsViewControllerDelegate {
-  func testBackUpIncorrectWordsViewDidPressSecondButton(sender: KNTestBackUpIncorrectWordsViewController) {
+extension KNBackUpWalletViewController: KNTestBackUpStatusViewControllerDelegate {
+  func testBackUpStatusViewDidComplete(sender: KNTestBackUpStatusViewController) {
+    self.delegate?.backupWalletViewControllerDidFinish()
+  }
+
+  func testBackUpStatusViewDidPressSecondButton(sender: KNTestBackUpStatusViewController) {
     // back up again button pressed
     self.viewModel.backupAgain()
     self.updateUI()

@@ -161,8 +161,8 @@
 		25E9E1FE208F139E00A9090D /* KNPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1FC208F139E00A9090D /* KNPasscodeViewController.swift */; };
 		25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E9E1FD208F139E00A9090D /* KNPasscodeViewController.xib */; };
 		25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E200208F34ED00A9090D /* KNPasscodeCoordinator.swift */; };
-		25EBE93120B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBE92F20B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.swift */; };
-		25EBE93220B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25EBE93020B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.xib */; };
+		25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBE92F20B40CC000A57579 /* KNTestBackUpStatusViewController.swift */; };
+		25EBE93220B40CC000A57579 /* KNTestBackUpStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25EBE93020B40CC000A57579 /* KNTestBackUpStatusViewController.xib */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
 		290B2B5F1F9177860053C83E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5E1F9177860053C83E /* UIImage.swift */; };
@@ -702,8 +702,8 @@
 		25E9E1FC208F139E00A9090D /* KNPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPasscodeViewController.swift; sourceTree = "<group>"; };
 		25E9E1FD208F139E00A9090D /* KNPasscodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPasscodeViewController.xib; sourceTree = "<group>"; };
 		25E9E200208F34ED00A9090D /* KNPasscodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPasscodeCoordinator.swift; sourceTree = "<group>"; };
-		25EBE92F20B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTestBackUpIncorrectWordsViewController.swift; sourceTree = "<group>"; };
-		25EBE93020B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTestBackUpIncorrectWordsViewController.xib; sourceTree = "<group>"; };
+		25EBE92F20B40CC000A57579 /* KNTestBackUpStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTestBackUpStatusViewController.swift; sourceTree = "<group>"; };
+		25EBE93020B40CC000A57579 /* KNTestBackUpStatusViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTestBackUpStatusViewController.xib; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
 		290B2B5E1F9177860053C83E /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -2194,8 +2194,8 @@
 		25EBE92E20B40C8B00A57579 /* TestBackUpIncorrectWord */ = {
 			isa = PBXGroup;
 			children = (
-				25EBE92F20B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.swift */,
-				25EBE93020B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.xib */,
+				25EBE92F20B40CC000A57579 /* KNTestBackUpStatusViewController.swift */,
+				25EBE93020B40CC000A57579 /* KNTestBackUpStatusViewController.xib */,
 			);
 			path = TestBackUpIncorrectWord;
 			sourceTree = "<group>";
@@ -3781,7 +3781,7 @@
 				255DC60E20A94980002C2BBF /* KNBalanceTabViewController.xib in Resources */,
 				257A3789205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
-				25EBE93220B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.xib in Resources */,
+				25EBE93220B40CC000A57579 /* KNTestBackUpStatusViewController.xib in Resources */,
 				25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
@@ -4476,7 +4476,7 @@
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
 				25C45AC720AC3EF600CDA1FF /* KNLandingPageCoordinator.swift in Sources */,
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
-				25EBE93120B40CC000A57579 /* KNTestBackUpIncorrectWordsViewController.swift in Sources */,
+				25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */,
 				29F1C83E1FEB5C91003780D8 /* EditTokensViewController.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
 				296AF9A31F733AB30058AF78 /* WalletCoordinator.swift in Sources */,

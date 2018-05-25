@@ -10,13 +10,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTestBackUpIncorrectWordsViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTestBackUpStatusViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="containerView" destination="y0y-zQ-l9R" id="WiC-0g-0cz"/>
                 <outlet property="firstButton" destination="Z0B-hj-7l8" id="Lhy-KP-jbS"/>
                 <outlet property="messageLabel" destination="SWU-7O-zO9" id="Nd1-2N-r89"/>
                 <outlet property="secondButton" destination="CL6-fZ-du6" id="kMr-e0-ttO"/>
                 <outlet property="secondButtonWidthConstraint" destination="msI-ml-s0g" id="jnD-tx-Wp2"/>
+                <outlet property="successContainerView" destination="dlH-ry-0It" id="ZRF-ZI-v1A"/>
                 <outlet property="titleLabel" destination="5WQ-tn-CFc" id="JED-ES-Aq6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -87,14 +88,43 @@
                         <constraint firstAttribute="trailing" secondItem="5WQ-tn-CFc" secondAttribute="trailing" constant="25" id="qX8-W7-j66"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlH-ry-0It">
+                    <rect key="frame" x="67" y="223.5" width="240" height="240"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_up_success_icon" translatesAutoresizingMaskIntoConstraints="NO" id="N7w-IT-Jb3">
+                            <rect key="frame" x="88.5" y="20" width="63" height="63"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Completed!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3e2-8C-cbc">
+                            <rect key="frame" x="26.5" y="103" width="188" height="26.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="240" id="NUQ-GM-3w3"/>
+                        <constraint firstItem="N7w-IT-Jb3" firstAttribute="centerX" secondItem="dlH-ry-0It" secondAttribute="centerX" id="PsI-2o-cRW"/>
+                        <constraint firstItem="3e2-8C-cbc" firstAttribute="centerX" secondItem="N7w-IT-Jb3" secondAttribute="centerX" id="SvK-Hh-ALQ"/>
+                        <constraint firstItem="3e2-8C-cbc" firstAttribute="top" secondItem="N7w-IT-Jb3" secondAttribute="bottom" constant="20" id="X4c-uj-DqJ"/>
+                        <constraint firstItem="N7w-IT-Jb3" firstAttribute="top" secondItem="dlH-ry-0It" secondAttribute="top" constant="20" id="aJc-vj-Zdr"/>
+                        <constraint firstAttribute="width" constant="240" id="yQd-7d-kIb"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="y0y-zQ-l9R" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-30" id="1Oh-gY-mxX"/>
                 <constraint firstItem="y0y-zQ-l9R" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="89f-qP-Sav"/>
+                <constraint firstItem="dlH-ry-0It" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="XEh-UC-lWw"/>
+                <constraint firstItem="dlH-ry-0It" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="gZ4-LT-2yc"/>
                 <constraint firstItem="y0y-zQ-l9R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="m1b-9T-nwJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="40.5" y="53.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="back_up_success_icon" width="63" height="63"/>
+    </resources>
 </document>
