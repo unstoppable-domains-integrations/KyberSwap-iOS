@@ -20,6 +20,7 @@ class KNSettingsCoordinator: Coordinator {
       address: self.session.wallet.address.description,
       delegate: self
     )
+    controller.loadViewIfNeeded()
     return controller
   }()
 

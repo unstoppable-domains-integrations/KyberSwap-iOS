@@ -5,10 +5,12 @@ import BigInt
 
 protocol KNBalanceTabViewControllerDelegate: class {
   func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectWalletListButton(in controller: KNBalanceTabViewController)
   func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController)
   func balanceTabDidSelectExchange(for tokenObject: TokenObject, in controller: KNBalanceTabViewController)
   func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectManageWallet(in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController)
 }
 
 class KNBalanceTabViewController: KNBaseViewController {
@@ -34,8 +36,10 @@ class KNBalanceTabViewController: KNBaseViewController {
   fileprivate var viewModel: KNBalanceTabViewModel
 
   lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
-    // TODO: List of wallet objects
-    let viewModel = KNBalanceTabHamburgerMenuViewModel(walletObjects: [self.viewModel.wallet], currentWallet: self.viewModel.wallet)
+    let viewModel = KNBalanceTabHamburgerMenuViewModel(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.viewModel.wallet
+    )
     let hamburgerVC = KNBalanceTabHamburgerMenuViewController(viewModel: viewModel)
     hamburgerVC.view.frame = self.view.bounds
     self.view.addSubview(hamburgerVC.view)
@@ -198,8 +202,10 @@ extension KNBalanceTabViewController {
     self.updateBalanceUI()
     self.updateFilterSortTokenButton()
     self.tokensBalanceCollectionView.reloadData()
-    // TODO: List of wallet objects
-    self.hamburgerMenu.update(walletObjects: [self.viewModel.wallet], currentWallet: self.viewModel.wallet)
+    self.hamburgerMenu.update(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.viewModel.wallet
+    )
   }
 
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
@@ -378,14 +384,14 @@ extension KNBalanceTabViewController: KNTokenBalanceCollectionViewCellDelegate {
 
 extension KNBalanceTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
-    //TODO: Implement it
+    self.delegate?.balanceTabDidSelectSettings(in: self)
   }
 
   func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    //TODO: Implement it
+    self.delegate?.balanceTabDidSelectManageWallet(in: self)
   }
 
-  func balanceTabHamburgerMenuDidSelect(walelt: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
-    //TODO: Implement it
+  func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.balanceTabDidSelectWalletObject(wallet, in: self)
   }
 }

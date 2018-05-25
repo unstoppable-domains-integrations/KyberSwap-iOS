@@ -6,6 +6,7 @@ import BigInt
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject)
   func balanceTabCoordinatorShouldOpenSend(for tokenObject: TokenObject)
+  func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
 }
 
 class KNBalanceTabCoordinator: Coordinator {
@@ -112,17 +113,24 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
   }
 
-  func balanceTabDidSelectWalletListButton(in controller: KNBalanceTabViewController) {
-    // TODO: Implement it
-    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
-  }
-
   func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
     self.delegate?.balanceTabCoordinatorShouldOpenSend(for: tokenObject)
   }
 
   func balanceTabDidSelectExchange(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
     self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: tokenObject)
+  }
+
+  func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController) {
+    self.delegate?.balanceTabCoordinatorDidSelect(walletObject: walletObject)
+  }
+
+  func balanceTabDidSelectManageWallet(in controller: KNBalanceTabViewController) {
+    //TODO: Implement it
+  }
+
+  func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController) {
+    //TODO: Implement it
   }
 }
 

@@ -3,7 +3,7 @@
 import UIKit
 
 protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
-  func balanceTabHamburgerMenuDidSelect(walelt: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController)
+  func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController)
   func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController)
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController)
 }
@@ -87,6 +87,14 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
+  // MARK: Update from coordinator
+  func updateCurrentWallet(_ currentWallet: KNWalletObject) {
+    self.update(
+      walletObjects: self.viewModel.wallets,
+      currentWallet: currentWallet
+    )
+  }
+
   func update(walletObjects: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: walletObjects, currentWallet: currentWallet)
     self.walletListTableViewHeightConstraint.constant = viewModel.tableViewHeight
@@ -141,7 +149,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
     let wallet = self.viewModel.wallet(at: indexPath.row)
     self.hideMenu(animated: true) {
       if wallet != self.viewModel.currentWallet {
-        self.delegate?.balanceTabHamburgerMenuDidSelect(walelt: wallet, sender: self)
+        self.delegate?.balanceTabHamburgerMenuDidSelect(wallet: wallet, sender: self)
       }
     }
   }

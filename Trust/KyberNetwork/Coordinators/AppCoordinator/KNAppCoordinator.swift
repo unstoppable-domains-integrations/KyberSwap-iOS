@@ -592,4 +592,9 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
     self.transferCoordinator?.appCoordinatorShouldOpenTransferForToken(tokenObject)
     self.tabbarController.selectedIndex = 1
   }
+
+  func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject) {
+    guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == walletObject.address.lowercased() }) else { return }
+    self.restartNewSession(wallet)
+  }
 }
