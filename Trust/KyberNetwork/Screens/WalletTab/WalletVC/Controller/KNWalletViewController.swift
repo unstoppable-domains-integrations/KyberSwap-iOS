@@ -160,7 +160,7 @@ class KNWalletViewController: KNBaseViewController {
           guard let bal = self.balances[token.contract], !bal.value.isZero else { return false }
           if let coinTicker = coinTickers.first(where: { $0.isData(for: token) }) {
             let usdRate = KNRate.rateUSD(from: coinTicker)
-            return usdRate.rate * bal.value / BigInt(EthereumUnit.ether.rawValue) <= BigInt(EthereumUnit.ether.rawValue)
+            return usdRate.rate * bal.value / BigInt(10).power(token.decimals) <= BigInt(EthereumUnit.ether.rawValue)
           }
           return true
         }

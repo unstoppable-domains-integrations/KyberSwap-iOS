@@ -28,7 +28,7 @@ class KNBalanceCoordinator {
       let tokens = self.session.tokenStorage.tokens
       for token in tokens {
         if let balance = otherTokensBalance[token.contract], !balance.value.isZero, let rate = KNRateCoordinator.shared.usdRate(for: token) {
-          value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
+          value += rate.rate * balance.value / BigInt(10).power(token.decimals)
         }
       }
       return value
@@ -45,7 +45,7 @@ class KNBalanceCoordinator {
 
       for tokenObj in tokenObjects {
         if let balance = otherTokensBalance[tokenObj.contract], !balance.value.isZero, let rate = KNRateCoordinator.shared.getRate(from: tokenObj, to: ethToken) {
-          value += rate.rate * balance.value / BigInt(EthereumUnit.ether.rawValue)
+          value += rate.rate * balance.value / BigInt(10).power(tokenObj.decimals)
         }
       }
       return value
@@ -144,6 +144,7 @@ class KNBalanceCoordinator {
             if self.session != nil {
               self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
             }
+            print("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
           case .failure(let error):
             print("---- Balance: Fetch token balance failed with error: \(error.description). ----")
           }

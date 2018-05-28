@@ -123,7 +123,11 @@ class KNBalanceTabViewModel: NSObject {
   }
 
   func balance(for token: TokenObject) -> Balance? {
-    return self.balances[token.contract]
+    if let balance = self.balances[token.contract] { return balance }
+    if let amount = token.value.shortBigInt(decimals: 0) {
+      return Balance(value: amount)
+    }
+    return nil
   }
 
   func iconName(for token: TokenObject) -> String? {

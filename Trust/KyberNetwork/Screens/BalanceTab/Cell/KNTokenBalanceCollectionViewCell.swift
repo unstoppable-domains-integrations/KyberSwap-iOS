@@ -27,7 +27,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   var displayBalance: String {
-    if let amount = balance?.value.shortString(units: .ether) {
+    if let amount = balance?.value.shortString(decimals: token.decimals) {
       return "\(amount) \(token.symbol)"
     }
     return ""
@@ -40,7 +40,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   var displayBalanceInUSD: String {
     if let amount = balance?.value, let coinTicker = coinTicker {
       let rate = KNRate.rateUSD(from: coinTicker)
-      return "$\((amount * rate.rate / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether, maxFractionDigits: 2))"
+      return "$\((amount * rate.rate / BigInt(10).power(self.token.decimals)).shortString(units: .ether, maxFractionDigits: 2))"
     }
     return ""
   }

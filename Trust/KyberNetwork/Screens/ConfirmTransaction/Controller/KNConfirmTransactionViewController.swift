@@ -94,7 +94,7 @@ class KNConfirmTransactionViewController: UIViewController {
       let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimals))".prefix(20)
       let usdValue: String = {
         let rate = KNRateCoordinator.shared.usdRate(for: fromToken)?.rate ?? BigInt(0)
-        return (rate * trans.value / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether)
+        return (rate * trans.value / BigInt(10).power(fromToken.decimals)).shortString(units: .ether)
       }()
       // Transfer To Address
       let address = trans.to?.description ?? ""

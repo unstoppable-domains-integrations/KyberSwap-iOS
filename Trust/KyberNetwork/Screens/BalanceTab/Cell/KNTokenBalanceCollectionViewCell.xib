@@ -19,6 +19,46 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxG-cA-rS2">
+                        <rect key="frame" x="0.0" y="0.0" width="319.5" height="90"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSO-YB-u9y">
+                                <rect key="frame" x="30" y="27" width="120" height="36"/>
+                                <color key="backgroundColor" red="0.36862745098039218" green="0.76078431372549016" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="pLE-pX-sQ5"/>
+                                    <constraint firstAttribute="height" constant="36" id="xVr-jy-v5t"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="EXCHANGE">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="exchangeButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="ux4-3T-0Sd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEU-cc-ahy">
+                                <rect key="frame" x="170" y="27" width="120" height="36"/>
+                                <color key="backgroundColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="SEND">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="jDP-CV-Tmt"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VEU-cc-ahy" firstAttribute="height" secondItem="lSO-YB-u9y" secondAttribute="height" id="BTh-I4-2Sv"/>
+                            <constraint firstItem="VEU-cc-ahy" firstAttribute="centerY" secondItem="lSO-YB-u9y" secondAttribute="centerY" id="Ixi-mf-t4M"/>
+                            <constraint firstItem="VEU-cc-ahy" firstAttribute="width" secondItem="lSO-YB-u9y" secondAttribute="width" id="P8X-TK-bT4"/>
+                            <constraint firstItem="lSO-YB-u9y" firstAttribute="centerX" secondItem="oxG-cA-rS2" secondAttribute="centerX" constant="-70" id="a6j-zl-U1p"/>
+                            <constraint firstItem="VEU-cc-ahy" firstAttribute="leading" secondItem="lSO-YB-u9y" secondAttribute="trailing" constant="20" id="bBF-yu-D0i"/>
+                            <constraint firstItem="lSO-YB-u9y" firstAttribute="centerY" secondItem="oxG-cA-rS2" secondAttribute="centerY" id="dXY-Nq-EhN"/>
+                        </constraints>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHp-KW-7Kw">
                         <rect key="frame" x="-0.5" y="0.0" width="320.5" height="90"/>
                         <subviews>
@@ -97,46 +137,6 @@
                             <constraint firstItem="JA5-DR-3Bv" firstAttribute="top" secondItem="fHp-KW-7Kw" secondAttribute="top" constant="20" id="jY5-9I-uzM"/>
                             <constraint firstItem="gLv-cb-bs4" firstAttribute="centerY" secondItem="JA5-DR-3Bv" secondAttribute="centerY" id="n8N-cI-4T1"/>
                             <constraint firstItem="jJU-v9-vta" firstAttribute="top" secondItem="LkM-5c-BYz" secondAttribute="bottom" constant="2.5" id="obo-fb-GbL"/>
-                        </constraints>
-                    </view>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxG-cA-rS2">
-                        <rect key="frame" x="0.0" y="0.0" width="319.5" height="90"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSO-YB-u9y">
-                                <rect key="frame" x="30" y="27" width="120" height="36"/>
-                                <color key="backgroundColor" red="0.36862745098039218" green="0.76078431372549016" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="pLE-pX-sQ5"/>
-                                    <constraint firstAttribute="height" constant="36" id="xVr-jy-v5t"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                <state key="normal" title="EXCHANGE">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="exchangeButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="ux4-3T-0Sd"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEU-cc-ahy">
-                                <rect key="frame" x="170" y="27" width="120" height="36"/>
-                                <color key="backgroundColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                <state key="normal" title="SEND">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="sendButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="jDP-CV-Tmt"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="VEU-cc-ahy" firstAttribute="height" secondItem="lSO-YB-u9y" secondAttribute="height" id="BTh-I4-2Sv"/>
-                            <constraint firstItem="VEU-cc-ahy" firstAttribute="centerY" secondItem="lSO-YB-u9y" secondAttribute="centerY" id="Ixi-mf-t4M"/>
-                            <constraint firstItem="VEU-cc-ahy" firstAttribute="width" secondItem="lSO-YB-u9y" secondAttribute="width" id="P8X-TK-bT4"/>
-                            <constraint firstItem="lSO-YB-u9y" firstAttribute="centerX" secondItem="oxG-cA-rS2" secondAttribute="centerX" constant="-70" id="a6j-zl-U1p"/>
-                            <constraint firstItem="VEU-cc-ahy" firstAttribute="leading" secondItem="lSO-YB-u9y" secondAttribute="trailing" constant="20" id="bBF-yu-D0i"/>
-                            <constraint firstItem="lSO-YB-u9y" firstAttribute="centerY" secondItem="oxG-cA-rS2" secondAttribute="centerY" id="dXY-Nq-EhN"/>
                         </constraints>
                     </view>
                 </subviews>

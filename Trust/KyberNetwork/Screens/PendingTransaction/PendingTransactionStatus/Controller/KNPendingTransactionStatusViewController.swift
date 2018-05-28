@@ -159,7 +159,7 @@ class KNPendingTransactionStatusViewController: KNBaseViewController {
     let amountString: String = {
       var string = "\(from.symbol) \(self.transaction.value)"
       if let rate = KNRateCoordinator.shared.usdRate(for: from) {
-        let usdValue = rate.rate * amount / BigInt(EthereumUnit.ether.rawValue)
+        let usdValue = rate.rate * amount / BigInt(10).power(from.decimals)
         string = "\(string) \n($\(usdValue.shortString(units: .ether)))"
       }
       return string
