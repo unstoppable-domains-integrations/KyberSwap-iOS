@@ -11,9 +11,9 @@ enum KNTokensDisplayType: String {
   case kyberNotListed = "Not Listed by Kyber DEX"
 }
 
-enum KNBalanceDisplayDataType {
-  case usd
-  case eth
+enum KNBalanceDisplayDataType: String {
+  case usd = "USD"
+  case eth = "ETH"
 }
 
 class KNBalanceTabViewModel: NSObject {
@@ -27,11 +27,11 @@ class KNBalanceTabViewModel: NSObject {
   // cointicker with key is name only (due to custom symbol name from KN supported token)
   private(set) var nameCoinTickers: [String: KNCoinTicker] = [:]
 
-  private(set) var tokensDisplayType: KNTokensDisplayType = .change24h
+  private(set) var tokensDisplayType: KNTokensDisplayType = KNAppTracker.getTokenListDisplayDataType()
   private(set) var displayedTokens: [TokenObject] = []
   private(set) var displayedCoinTickers: [KNCoinTicker?] = []
 
-  private(set) var balanceDisplayType: KNBalanceDisplayDataType = .usd
+  private(set) var balanceDisplayType: KNBalanceDisplayDataType = KNAppTracker.getBalanceDisplayDataType()
   private(set) var balances: [String: Balance] = [:]
   private(set) var totalETHBalance: BigInt = BigInt(0)
   private(set) var totalUSDBalance: BigInt = BigInt(0)
@@ -72,6 +72,7 @@ class KNBalanceTabViewModel: NSObject {
   // MARK: Balance data
   func updateBalanceDisplayType() {
     self.balanceDisplayType = self.balanceDisplayType == .usd ? .eth : .usd
+    KNAppTracker.updateBalanceDisplayDataType(self.balanceDisplayType)
   }
 
   var balanceDisplayText: String {
@@ -87,6 +88,7 @@ class KNBalanceTabViewModel: NSObject {
   func updateTokensDisplayType(_ type: String) -> Bool {
     if self.tokensDisplayType.rawValue == type { return false }
     self.tokensDisplayType = KNTokensDisplayType(rawValue: type) ?? .change24h
+    KNAppTracker.updateTokenListDisplayDataType(self.tokensDisplayType)
     self.createDisplayedData()
     return true
   }
