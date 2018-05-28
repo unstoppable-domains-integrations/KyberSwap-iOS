@@ -21,6 +21,7 @@ class KNPendingTransactionListCoordinator: Coordinator {
   lazy var pendingTxListVC: KNPendingTransactionListViewController = {
     let controller = KNPendingTransactionListViewController(delegate: self, pendingTransactions: self.storage.pendingObjects)
     controller.modalPresentationStyle = .overCurrentContext
+    controller.modalTransitionStyle = .crossDissolve
     return controller
   }()
 
@@ -33,7 +34,7 @@ class KNPendingTransactionListCoordinator: Coordinator {
   }
 
   func start() {
-    self.navigationController.topViewController?.present(self.pendingTxListVC, animated: false, completion: {
+    self.navigationController.topViewController?.present(self.pendingTxListVC, animated: true, completion: {
       self.pendingTxListVC.updatePendingTransactions(self.storage.pendingObjects)
     })
     self.timer?.invalidate()
@@ -45,7 +46,7 @@ class KNPendingTransactionListCoordinator: Coordinator {
   func stop(completion: @escaping () -> Void) {
     self.timer?.invalidate()
     self.timer = nil
-    self.navigationController.topViewController?.dismiss(animated: false, completion: completion)
+    self.navigationController.topViewController?.dismiss(animated: true, completion: completion)
   }
 }
 
