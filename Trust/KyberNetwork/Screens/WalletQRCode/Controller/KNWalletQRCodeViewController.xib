@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="addressLabel" destination="6US-bk-Sk8" id="3IM-nn-s6r"/>
+                <outlet property="copyWalletButton" destination="soD-bJ-naO" id="5ZJ-k4-TLi"/>
+                <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
+                <outlet property="shareButton" destination="JIX-CP-yTw" id="MFa-T3-VWJ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9wd-Gg-Jw3">
+                    <rect key="frame" x="40" y="80" width="295" height="295"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.25409881161971831" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="9wd-Gg-Jw3" secondAttribute="height" multiplier="1:1" id="QMN-E6-rvI"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua2-4B-g0W">
+                    <rect key="frame" x="85" y="40" width="205" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
+                    <rect key="frame" x="10" y="395" width="355" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
+                    <rect key="frame" x="40" y="585" width="131.5" height="42"/>
+                    <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="BRe-wW-oV6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <state key="normal" title="COPY WALLET">
+                        <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="copyWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="h0W-Mv-Cm6"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
+                    <rect key="frame" x="203.5" y="585" width="131.5" height="42"/>
+                    <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="SHARE">
+                        <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="JmG-TI-t25"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9wd-Gg-Jw3" secondAttribute="trailing" constant="40" id="2NF-n6-IWo"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="centerX" secondItem="9wd-Gg-Jw3" secondAttribute="centerX" id="4kr-OG-qRU"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="Eeo-DQ-7Nc"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="leading" secondItem="soD-bJ-naO" secondAttribute="trailing" constant="32" id="H16-tq-ng7"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="centerY" secondItem="soD-bJ-naO" secondAttribute="centerY" id="M0g-23-9y8"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="height" secondItem="soD-bJ-naO" secondAttribute="height" id="SRB-eM-8qB"/>
+                <constraint firstItem="Ua2-4B-g0W" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="TS4-3I-Nvk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="soD-bJ-naO" secondAttribute="bottom" constant="40" id="bZ6-Zb-aFm"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="gG8-g7-PB4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6US-bk-Sk8" secondAttribute="trailing" constant="10" id="hA0-hL-NBf"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="top" secondItem="Ua2-4B-g0W" secondAttribute="bottom" constant="20" id="l4a-mQ-1au"/>
+                <constraint firstItem="soD-bJ-naO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="lUU-ga-ji4"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="top" secondItem="9wd-Gg-Jw3" secondAttribute="bottom" constant="20" id="pyT-Hn-dZW"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="width" secondItem="soD-bJ-naO" secondAttribute="width" id="sdp-ir-Zws"/>
+                <constraint firstItem="Ua2-4B-g0W" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="xW2-F4-fOq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JIX-CP-yTw" secondAttribute="trailing" constant="40" id="z1c-k1-lqL"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

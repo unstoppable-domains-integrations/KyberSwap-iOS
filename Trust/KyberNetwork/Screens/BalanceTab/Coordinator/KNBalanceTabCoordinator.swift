@@ -27,6 +27,15 @@ class KNBalanceTabCoordinator: Coordinator {
     return controller
   }()
 
+  fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
+    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
+    let qrcodeCoordinator = KNWalletQRCodeCoordinator(
+      navigationController: self.navigationController,
+      walletObject: walletObject
+    )
+    return qrcodeCoordinator
+  }
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -100,8 +109,7 @@ extension KNBalanceTabCoordinator {
 
 extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController) {
-    // TODO: Implement it
-    self.rootViewController.showWarningTopBannerMessage(with: "TODO", message: "Unimplemented feature")
+    self.qrcodeCoordinator?.start()
   }
 
   func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {

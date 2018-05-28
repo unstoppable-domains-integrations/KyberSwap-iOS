@@ -65,7 +65,6 @@ class KNBalanceTabViewModel: NSObject {
   }
 
   var walletIconName: String {
-    // TODO: Currently don't have icon name yet
     return self.wallet.icon
   }
 
