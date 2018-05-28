@@ -59,18 +59,8 @@ class KNSession {
     self.transacionCoordinator?.stop()
     self.transacionCoordinator = nil
 
-    self.keystore.wallets.forEach { wallet in
-      // delete all storage for each wallet
-      let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
-      let realm = try! Realm(configuration: config)
-      let transactionStorage = TransactionsStorage(realm: realm)
-      transactionStorage.deleteAll()
-      let tokenStorage = KNTokenStorage(realm: realm)
-      tokenStorage.deleteAll()
-      _ = self.keystore.delete(wallet: wallet)
-      KNAppTracker.resetAppTrackerData(for: wallet.address)
-    }
-
+    self.keystore.wallets.forEach { self.removeWallet($0) }
+    KNAppTracker.resetAllAppTrackerData()
     self.keystore.recentlyUsedWallet = nil
   }
 
@@ -91,6 +81,22 @@ class KNSession {
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
+  }
+
+  // Remove a wallet, it should not be a current wallet
+  func removeWallet(_ wallet: Wallet) {
+    // delete all storage for each wallet
+    let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+    let realm = try! Realm(configuration: config)
+    let transactionStorage = TransactionsStorage(realm: realm)
+    transactionStorage.deleteAll()
+    let tokenStorage = KNTokenStorage(realm: realm)
+    tokenStorage.deleteAll()
+    _ = self.keystore.delete(wallet: wallet)
+    KNAppTracker.resetAppTrackerData(for: wallet.address)
+    if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
+      KNWalletStorage.shared.delete(wallets: [walletObject])
+    }
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {

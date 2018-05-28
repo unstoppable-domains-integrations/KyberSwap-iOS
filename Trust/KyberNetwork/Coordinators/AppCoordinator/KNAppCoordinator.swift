@@ -249,6 +249,26 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.tabbarController.selectedIndex = 2
     self.addObserveNotificationFromSession()
   }
+
+  // Remove a wallet
+  func removeWallet(_ wallet: Wallet) {
+    if self.keystore.wallets.count == 1 {
+      self.stopAllSessions()
+      return
+    }
+    // User remove current wallet, switch to another wallet first
+    if self.session.wallet == wallet {
+      guard let newWallet = self.keystore.wallets.first(where: { $0 != wallet }) else { return }
+      self.restartNewSession(newWallet)
+    }
+    self.session.removeWallet(wallet)
+    //TODO: Update UI for each tab
+    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.transferCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+  }
 }
 
 // MARK: Notification
@@ -579,6 +599,10 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet) {
     self.restartNewSession(wallet)
+  }
+
+  func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet) {
+    self.removeWallet(wallet)
   }
 }
 

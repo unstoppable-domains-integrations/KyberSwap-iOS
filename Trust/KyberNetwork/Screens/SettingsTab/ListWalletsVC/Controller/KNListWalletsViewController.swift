@@ -101,6 +101,17 @@ extension KNListWalletsViewController: UITableViewDataSource {
     return UIView()
   }
 
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      let wallet = self.listWallets[indexPath.row]
+      self.delegate?.listWalletsViewControllerDidSelectRemoveWallet(wallet)
+    }
+  }
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! KNListWalletsTableViewCell
     let wallet = self.listWallets[indexPath.row]

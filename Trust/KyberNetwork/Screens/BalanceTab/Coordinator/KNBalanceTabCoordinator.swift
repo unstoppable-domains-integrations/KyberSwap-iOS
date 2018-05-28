@@ -70,6 +70,7 @@ extension KNBalanceTabCoordinator {
     }()
     self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
   }
+
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
     self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
     self.appCoordinatorExchangeRateDidUpdate(

@@ -123,6 +123,9 @@ class KNAppTracker {
   // MARK: Reset app tracker
   static func resetAppTrackerData(for address: Address) {
     self.updateTransactionLoadState(.none, for: address)
+  }
+
+  static func resetAllAppTrackerData() {
     userDefaults.removeObject(forKey: kSupportedLoadingTimeKey)
     userDefaults.removeObject(forKey: kBalanceDisplayDataTypeKey)
     userDefaults.removeObject(forKey: kTokenListDisplayDataTypeKey)
