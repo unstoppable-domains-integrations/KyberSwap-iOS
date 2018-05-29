@@ -14,7 +14,6 @@ class KNWalletObject: Object {
   convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = true) {
     self.init()
     self.address = address
-    // TODO: Implement it
     self.name = name
     self.icon = "wallet_icon_\(arc4random() % 6)"
     self.date = Date()
@@ -24,7 +23,6 @@ class KNWalletObject: Object {
   convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = true) {
     self.init()
     self.address = address
-    // TODO: Implement it
     self.name = name
     self.icon = icon
     self.date = date

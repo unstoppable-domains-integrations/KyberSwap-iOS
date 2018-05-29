@@ -123,7 +123,6 @@ extension KNTransferTokenViewController {
 
   fileprivate func setupAddress() {
     self.toAddressTextLabel.text = "To Address".toBeLocalised()
-    //TODO (Mike): Remove default value
     self.addressTextField.text = ""
     self.addressTextField.delegate = self
   }
