@@ -84,4 +84,18 @@ extension UIView {
     UIGraphicsEndImageContext()
     return image
   }
+
+  func addShadow(
+    color: UIColor = UIColor(red: 12.0/255, green: 0, blue: 51.0/255, alpha: 0.1),
+    offset: CGSize = CGSize(width: 1, height: 2)
+    ) {
+    self.layer.shadowColor = color.cgColor
+    self.layer.shadowOffset = offset
+    self.layer.shadowOpacity = 0.16
+    self.layer.shadowRadius = 1
+    self.layer.masksToBounds = false
+    self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+    self.layer.shouldRasterize = true
+    self.layer.rasterizationScale = UIScreen.main.scale
+  }
 }
