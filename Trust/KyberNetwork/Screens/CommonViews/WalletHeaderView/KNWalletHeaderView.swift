@@ -25,7 +25,8 @@ class KNWalletHeaderView: XibLoaderView {
   func updateView(with wallet: KNWalletObject) {
     self.wallet = wallet
     self.walletIconImageView.image = UIImage(named: wallet.icon)
-    self.walletInfoLabel.text = "\(wallet.address)\n\(wallet.name)"
+    let address = "\(wallet.address.prefix(10))......\(wallet.address.suffix(10))"
+    self.walletInfoLabel.text = "\(address)\n\(wallet.name)"
   }
 
   @IBAction func scanQRCodePressed(_ sender: Any) {
