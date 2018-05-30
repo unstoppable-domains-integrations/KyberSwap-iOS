@@ -81,6 +81,13 @@ class KNSession {
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
+    self.transacionCoordinator = KNTransactionCoordinator(
+      transactionStorage: self.transactionStorage,
+      tokenStorage: self.tokenStorage,
+      externalProvider: self.externalProvider,
+      wallet: self.wallet
+    )
+    self.transacionCoordinator?.start()
   }
 
   // Remove a wallet, it should not be a current wallet
