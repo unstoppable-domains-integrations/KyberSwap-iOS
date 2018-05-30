@@ -17,7 +17,7 @@ class KNRate: NSObject {
       let rateString: String = dictionary["price_usd"] as? String ?? ""
       if let rateDouble = Double(rateString) {
         rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))
-        minRate = rate
+        minRate = rate * BigInt(97) / BigInt(100)
         if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: rate))") }
       } else {
         throw CastError(actualValue: String.self, expectedType: Double.self)
@@ -41,7 +41,8 @@ class KNRate: NSObject {
     self.source = source
     self.dest = dest
     self.rate = BigInt(rate * Double(EthereumUnit.ether.rawValue))
-    self.minRate = BigInt(rate * Double(EthereumUnit.ether.rawValue))
+    // 3% from rate
+    self.minRate = self.rate * BigInt(97) / BigInt(100)
   }
 }
 
