@@ -192,13 +192,13 @@ extension KNTransferTokenCoordinator: KNSelectTokenViewControllerDelegate {
 
 extension KNTransferTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
   func confirmTransactionDidCancel() {
-    self.navigationController.topViewController?.dismiss(animated: false, completion: {
+    self.navigationController.topViewController?.dismiss(animated: true, completion: {
       self.confirmTransactionViewController = nil
     })
   }
 
   func confirmTransactionDidConfirm(type: KNTransactionType) {
-    self.navigationController.topViewController?.dismiss(animated: false, completion: {
+    self.navigationController.topViewController?.dismiss(animated: true, completion: {
       self.confirmTransactionViewController = nil
       if case .transfer(let transaction) = type {
         self.didConfirmTransfer(transaction)

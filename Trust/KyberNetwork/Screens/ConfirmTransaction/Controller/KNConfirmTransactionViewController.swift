@@ -42,13 +42,9 @@ class KNConfirmTransactionViewController: UIViewController {
     self.createData()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-  }
-
   fileprivate func setupUI() {
 
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapToParentView(_:)))
     self.view.addGestureRecognizer(tapGesture)
 

@@ -30,6 +30,7 @@ class KNExternalProvider {
 
   func updateNewAccount(_ account: Account) {
     self.account = account
+    self.minTxCount = 0
   }
 
   // MARK: Balance

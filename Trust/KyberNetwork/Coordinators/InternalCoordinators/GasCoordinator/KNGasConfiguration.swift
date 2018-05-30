@@ -9,7 +9,7 @@ public struct KNGasConfiguration {
   static let transferETHGasLimitDefault = BigInt(21_000)
   static let transferETHBuyTokenSaleGasLimitDefault = BigInt(120_000)
 
-  static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
-  static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "2", units: UnitConfiguration.gasPriceUnit)!
-  static let gasPriceMax: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
+  static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
+  static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
+  static let gasPriceMax: BigInt = EtherNumberFormatter.full.number(from: "20", units: UnitConfiguration.gasPriceUnit)!
 }

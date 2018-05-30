@@ -54,138 +54,135 @@ extension KNTransactionCoordinator {
   // Prepare data before submitting exchange request
   // Data needed: gas limit, expected rate
   static func requestDataPrepareForExchangeTransaction(_ transaction: KNDraftExchangeTransaction, provider: KNExternalProvider, completion: @escaping (Result<KNDraftExchangeTransaction?, AnyError>) -> Void) {
-    DispatchQueue.global().async {
-      var error: AnyError?
-      let group = DispatchGroup()
+    var error: AnyError?
+    let group = DispatchGroup()
 
-      // Est Gas Used
-      var gasLimit = transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
-      group.enter()
-      provider.getEstimateGasLimit(for: transaction) { result in
-        switch result {
-        case .success(let gas): gasLimit = gas
+    // Est Gas Used
+    var gasLimit = transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    group.enter()
+    provider.getEstimateGasLimit(for: transaction) { result in
+      switch result {
+      case .success(let gas): gasLimit = gas
         // TODO (Mike): Est. Gas Limit is temp not working
-        //case .failure(let err): error = err
-        default: break
+      //case .failure(let err): error = err
+      default: break
+      }
+      group.leave()
+    }
+
+    // Expected Rate
+    var expectedRate = transaction.expectedRate
+    group.enter()
+    provider.getExpectedRate(
+      from: transaction.from,
+      to: transaction.to,
+      amount: transaction.amount) { result in
+        switch result {
+        case .success(let data):
+          if !data.0.isZero { expectedRate = data.0 }
+        case .failure(let err): error = err
         }
         group.leave()
-      }
+    }
 
-      // Expected Rate
-      var expectedRate = transaction.expectedRate
-      group.enter()
-      provider.getExpectedRate(
-        from: transaction.from,
-        to: transaction.to,
-        amount: transaction.amount) { result in
-          switch result {
-          case .success(let data): expectedRate = data.0
-          case .failure(let err): error = err
-          }
-          group.leave()
-      }
-
-      // Balance
-      var balance = BigInt(0)
-      group.enter()
-      if transaction.from.isETH {
-        provider.getETHBalance(completion: { result in
-          switch result {
-          case .success(let bal): balance = bal.value
-          case .failure(let err): error = err
-          }
-          group.leave()
-        })
-      } else {
-        provider.getTokenBalance(for: Address(string: transaction.from.contract)!, completion: { result in
-          switch result {
-          case .success(let bal): balance = bal
-          case .failure(let err): error = err
-          }
-          group.leave()
-        })
-      }
-
-      group.notify(queue: .main) {
-        if let err = error {
-          completion(.failure(err))
-          return
+    // Balance
+    var balance = BigInt(0)
+    group.enter()
+    if transaction.from.isETH {
+      provider.getETHBalance(completion: { result in
+        switch result {
+        case .success(let bal): balance = bal.value
+        case .failure(let err): error = err
         }
-        if balance < transaction.amount {
-          completion(.success(nil))
-          return
+        group.leave()
+      })
+    } else {
+      provider.getTokenBalance(for: Address(string: transaction.from.contract)!, completion: { result in
+        switch result {
+        case .success(let bal): balance = bal
+        case .failure(let err): error = err
         }
-        completion(.success(transaction.copy(expectedRate: expectedRate, gasLimit: gasLimit)))
+        group.leave()
+      })
+    }
+
+    group.notify(queue: .main) {
+      if let err = error {
+        completion(.failure(err))
+        return
       }
+      if balance < transaction.amount {
+        completion(.success(nil))
+        return
+      }
+      completion(.success(transaction.copy(expectedRate: expectedRate, gasLimit: gasLimit)))
     }
   }
 
   // Prepare data before submitting transfer request
   // Data needed: gas limit
   static func requestDataPrepareForTransferTransaction(_ transaction: UnconfirmedTransaction, provider: KNExternalProvider, completion: @escaping (Result<UnconfirmedTransaction?, AnyError>) -> Void) {
-    DispatchQueue.global().async {
-      var error: AnyError?
-      let group = DispatchGroup()
+    var error: AnyError?
+    let group = DispatchGroup()
 
-      let token: TokenObject = transaction.transferType.tokenObject()
+    let token: TokenObject = transaction.transferType.tokenObject()
 
-      // Est Gas Used
-      var gasLimit: BigInt = {
-        if let gas = transaction.gasLimit { return gas }
-        return token.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
-      }()
-      group.enter()
-      provider.getEstimateGasLimit(for: transaction) { result in
+    // Est Gas Used
+    var gasLimit: BigInt = {
+      if let gas = transaction.gasLimit { return gas }
+      return token.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+    }()
+    group.enter()
+    provider.getEstimateGasLimit(for: transaction) { result in
+      switch result {
+      case .success(let gas): gasLimit = gas
+        // TODO (Mike): Est. Gas Limit is temp not working
+      //case .failure(let err): error = err
+      default: break
+      }
+      group.leave()
+    }
+
+    // Balance
+    var balance = BigInt(0)
+    group.enter()
+    if token.isETH {
+      provider.getETHBalance(completion: { result in
         switch result {
-        case .success(let gas): gasLimit = gas
-          // TODO (Mike): Est. Gas Limit is temp not working
-        //case .failure(let err): error = err
-        default: break
+        case .success(let bal): balance = bal.value
+        case .failure(let err): error = err
         }
         group.leave()
-      }
-
-      // Balance
-      var balance = BigInt(0)
-      group.enter()
-      if token.isETH {
-        provider.getETHBalance(completion: { result in
-          switch result {
-          case .success(let bal): balance = bal.value
-          case .failure(let err): error = err
-          }
-          group.leave()
-        })
-      } else {
-        provider.getTokenBalance(for: Address(string: token.contract)!, completion: { result in
-          switch result {
-          case .success(let bal): balance = bal
-          case .failure(let err): error = err
-          }
-          group.leave()
-        })
-      }
-
-      group.notify(queue: .main) {
-        if let err = error {
-          completion(.failure(err))
-          return
+      })
+    } else {
+      provider.getTokenBalance(for: Address(string: token.contract)!, completion: { result in
+        switch result {
+        case .success(let bal): balance = bal
+        case .failure(let err): error = err
         }
-        if balance < transaction.value {
-          completion(.success(nil))
-          return
-        }
-        let newTransaction = UnconfirmedTransaction(
-          transferType: transaction.transferType,
-          value: transaction.value,
-          to: transaction.to,
-          data: transaction.data,
-          gasLimit: gasLimit,
-          gasPrice: transaction.gasPrice,
-          nonce: transaction.nonce
-        )
-        completion(.success(newTransaction))
+        group.leave()
+      })
+    }
+
+    group.notify(queue: .main) {
+      if let err = error {
+        completion(.failure(err))
+        return
       }
+      if balance < transaction.value {
+        completion(.success(nil))
+        return
+      }
+      let newTransaction = UnconfirmedTransaction(
+        transferType: transaction.transferType,
+        value: transaction.value,
+        to: transaction.to,
+        data: transaction.data,
+        gasLimit: gasLimit,
+        gasPrice: transaction.gasPrice,
+        nonce: transaction.nonce
+      )
+      completion(.success(newTransaction))
     }
   }
 }

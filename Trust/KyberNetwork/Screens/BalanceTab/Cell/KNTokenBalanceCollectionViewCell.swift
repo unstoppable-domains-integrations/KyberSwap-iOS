@@ -133,15 +133,7 @@ class KNTokenBalanceCollectionViewCell: UICollectionViewCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     self.contentView.rounded(color: .clear, width: 0, radius: 4.0)
-    self.layer.shadowColor = UIColor.black.cgColor
-    self.layer.shadowOffset = CGSize(width: 0, height: 2)
-    self.layer.shadowOpacity = 0.16
-    self.layer.shadowRadius = 1
-    self.layer.masksToBounds = false
-    self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-    self.layer.shouldRasterize = true
-    self.layer.rasterizationScale = UIScreen.main.scale
-    self.layer.cornerRadius = 4.0
+    self.addShadow()
   }
 
   func updateCell(with cellModel: KNTokenBalanceCollectionViewCellModel, isSelected: Bool) {

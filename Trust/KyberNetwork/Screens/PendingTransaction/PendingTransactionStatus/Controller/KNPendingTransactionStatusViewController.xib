@@ -130,7 +130,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDM-86-fEh">
                             <rect key="frame" x="197.5" y="472.5" width="157.5" height="46"/>
-                            <color key="backgroundColor" red="0.17342154930000001" green="0.50537891499999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="0.59784881161971826" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" title="More Details">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
@@ -191,7 +191,7 @@
                     </constraints>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.63191333660000004" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FEv-oP-ttp"/>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Ppe-AU-jGC"/>
