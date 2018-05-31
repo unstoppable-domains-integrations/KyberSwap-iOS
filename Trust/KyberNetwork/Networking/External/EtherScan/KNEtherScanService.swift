@@ -39,7 +39,7 @@ extension KNEtherScanService: TargetType {
 
   var headers: [String: String]? {
     return [
-      "content-type": "application/json"
+      "content-type": "application/json",
     ]
   }
 }

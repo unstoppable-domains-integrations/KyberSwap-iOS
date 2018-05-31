@@ -16,7 +16,11 @@ class KNExternalProvider {
   let networkAddress: Address!
   let reserveAddress: Address!
 
-  var minTxCount: Int = 0
+  var minTxCount: Int {
+    didSet {
+      KNAppTracker.updateTransactionNonce(self.minTxCount, address: self.account.address)
+    }
+  }
 
   init(web3: Web3Swift, keystore: Keystore, account: Account) {
     self.keystore = keystore
@@ -26,11 +30,12 @@ class KNExternalProvider {
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
     self.reserveAddress = Address(string: customRPC.reserveAddress)
+    self.minTxCount = KNAppTracker.transactionNonce(for: account.address)
   }
 
   func updateNewAccount(_ account: Account) {
     self.account = account
-    self.minTxCount = 0
+    self.minTxCount = KNAppTracker.transactionNonce(for: account.address)
   }
 
   // MARK: Balance
@@ -77,6 +82,7 @@ class KNExternalProvider {
     Session.send(request) { result in
       switch result {
       case .success(let count):
+         self.minTxCount = max(self.minTxCount, count)
         completion(.success(count))
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -88,8 +94,7 @@ class KNExternalProvider {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
-      case .success(let count):
-        self.minTxCount = max(self.minTxCount + 1, count)
+      case .success:
         self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
           guard let `self` = self else { return }
           switch dataResult {
@@ -118,12 +123,11 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch txCountResult {
       case .success(let count):
-        self.minTxCount = max(self.minTxCount + 1, count)
         self.requestDataForTokenExchange(exchange, completion: { [weak self] dataResult in
           guard let `self` = self else { return }
           switch dataResult {
           case .success(let data):
-            self.signTransactionData(from: exchange, nounce: self.minTxCount, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(from: exchange, nounce: count, data: data, completion: { [weak self] signResult in
               switch signResult {
               case .success(let signData):
                 self?.sendSignedTransactionData(signData, completion: completion)
@@ -213,14 +217,15 @@ class KNExternalProvider {
         self.getTransactionCount { [weak self] txCountResult in
           guard let `self` = self else { return }
           switch txCountResult {
-          case .success(let count):
-            self.minTxCount = max(self.minTxCount + 1, count)
+          case .success:
             self.signTransactionData(forApproving: exchangeTransaction.from, nouce: self.minTxCount, data: data, completion: { [weak self] signResult in
+              guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
-                self?.sendSignedTransactionData(signData, completion: { sendResult in
+                self.sendSignedTransactionData(signData, completion: { sendResult in
                   switch sendResult {
                   case .success:
+                    self.minTxCount += 1
                     completion(.success(true))
                   case .failure(let error):
                     completion(.failure(error))
