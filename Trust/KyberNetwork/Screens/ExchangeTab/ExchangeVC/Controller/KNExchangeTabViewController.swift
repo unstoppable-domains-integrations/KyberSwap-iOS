@@ -337,8 +337,6 @@ extension KNExchangeTabViewController {
       self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName), for: .normal)
     }
     self.balanceLabel.text = self.viewModel.balanceText
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
     // Temporary update rate using CMC data
     if let cmcRate = KNRateCoordinator.shared.getRate(from: self.viewModel.from, to: self.viewModel.to) {
       self.viewModel.updateExchangeRate(
@@ -349,6 +347,8 @@ extension KNExchangeTabViewController {
         slippageRate: cmcRate.minRate
       )
     }
+    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
     self.view.layoutIfNeeded()
   }
 

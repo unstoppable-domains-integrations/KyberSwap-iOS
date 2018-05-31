@@ -32,6 +32,8 @@ class KNSupportedTokenCoordinator {
   }
 
   fileprivate func fetchTrackerSupportedTokens() {
+    // Tracker is not supported for other environment
+    if KNEnvironment.default != .mainnetTest && KNEnvironment.default != .production { return }
     print("---- Supported Tokens: Start fetching data ----")
     provider.request(.getSupportedTokens()) { result in
       switch result {

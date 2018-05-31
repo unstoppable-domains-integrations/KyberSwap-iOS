@@ -12,7 +12,7 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   fileprivate(set) var session: KNSession
-  let tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
+  var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
 
   var coordinators: [Coordinator] = []
@@ -22,8 +22,8 @@ class KNExchangeTokenCoordinator: Coordinator {
   lazy var rootViewController: KNExchangeTabViewController = {
     let viewModel = KNExchangeTabViewModel(
       wallet: self.session.wallet,
-      from: tokens.first(where: { $0.isETH })!,
-      to: tokens.first(where: { $0.isKNC })!,
+      from: KNSupportedTokenStorage.shared.ethToken,
+      to: KNSupportedTokenStorage.shared.kncToken,
       supportedTokens: tokens
     )
     let controller = KNExchangeTabViewController(viewModel: viewModel)
@@ -105,7 +105,7 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
-    self.searchTokensViewController.updateListSupportedTokens(tokenObjects)
+    self.tokens = tokenObjects
   }
 }
 
@@ -120,8 +120,7 @@ extension KNExchangeTokenCoordinator {
         if res {
           self.sendExchangeTransaction(exchangeTransaction)
         } else {
-          self.navigationController.topViewController?.hideLoading()
-          self.showAlertRequestApprovalForExchange(exchangeTransaction)
+          self.sendApproveForExchangeTransaction(exchangeTransaction)
         }
       case .failure(let error):
         self.navigationController.topViewController?.hideLoading()
@@ -167,7 +166,6 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func sendApproveForExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    self.navigationController.topViewController?.displayLoading()
     self.session.externalProvider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
       switch result {
       case .success:
@@ -177,15 +175,6 @@ extension KNExchangeTokenCoordinator {
         self?.navigationController.topViewController?.displayError(error: error)
       }
     }
-  }
-
-  fileprivate func showAlertRequestApprovalForExchange(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    let alertController = UIAlertController(title: "", message: "We need your approval to exchange \(exchangeTransaction.from.symbol)", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Approve", style: .default, handler: { [weak self] _ in
-      self?.sendApproveForExchangeTransaction(exchangeTransaction)
-    }))
-    self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
   }
 }
 
@@ -230,6 +219,8 @@ extension KNExchangeTokenCoordinator: KNPendingTransactionListCoordinatorDelegat
 extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
   func exchangeTabViewControllerFromTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject) {
     self.isSelectingSourceToken = true
+    self.tokens = KNSupportedTokenStorage.shared.supportedTokens
+    self.searchTokensViewController.updateListSupportedTokens(self.tokens)
     self.navigationController.pushViewController(
       self.searchTokensViewController,
       animated: true
@@ -238,6 +229,8 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
 
   func exchangeTabViewControllerToTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject) {
     self.isSelectingSourceToken = false
+    self.tokens = KNSupportedTokenStorage.shared.supportedTokens
+    self.searchTokensViewController.updateListSupportedTokens(self.tokens)
     self.navigationController.pushViewController(
       self.searchTokensViewController,
       animated: true

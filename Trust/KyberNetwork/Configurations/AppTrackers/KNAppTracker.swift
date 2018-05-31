@@ -17,6 +17,7 @@ class KNAppTracker {
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
+  static let kTransactionNonceKey: String = "kTransactionNonceKey"
 
   static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
 
@@ -80,6 +81,19 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
+  static func transactionNonce(for address: Address) -> Int {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kTransactionNonceKey + sessionID
+    return userDefaults.object(forKey: key) as? Int ?? 0
+  }
+
+  static func updateTransactionNonce(_ nonce: Int, address: Address) {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kTransactionNonceKey + sessionID
+    userDefaults.set(nonce, forKey: key)
+    userDefaults.synchronize()
+  }
+
   // MARK: Supported Tokens
   static func updateSuccessfullyLoadSupportedTokens() {
     let time = Date().timeIntervalSince1970
@@ -123,6 +137,7 @@ class KNAppTracker {
   // MARK: Reset app tracker
   static func resetAppTrackerData(for address: Address) {
     self.updateTransactionLoadState(.none, for: address)
+    self.updateTransactionNonce(0, address: address)
   }
 
   static func resetAllAppTrackerData() {

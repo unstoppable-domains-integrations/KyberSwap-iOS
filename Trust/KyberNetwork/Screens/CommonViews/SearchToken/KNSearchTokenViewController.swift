@@ -10,7 +10,11 @@ protocol KNSearchTokenViewControllerDelegate: class {
 class KNSearchTokenViewModel {
 
   var supportedTokens: [TokenObject] = []
-  var searchedText: String = ""
+  var searchedText: String = "" {
+    didSet {
+      self.updateDisplayedTokens()
+    }
+  }
   var displayedTokens: [TokenObject] = []
 
   init(supportedTokens: [TokenObject]) {
@@ -25,10 +29,11 @@ class KNSearchTokenViewModel {
       return
     }
     self.displayedTokens = self.supportedTokens.filter({ ($0.symbol + " " + $0.name).lowercased().contains(self.searchedText.lowercased()) })
+    self.displayedTokens.sort(by: { return $0.symbol < $1.symbol })
   }
 
   func updateListSupportedTokens(_ tokens: [TokenObject]) {
-    self.supportedTokens = tokens
+    self.supportedTokens = tokens.sorted(by: { return $0.symbol < $1.symbol })
     self.updateDisplayedTokens()
   }
 }
@@ -57,11 +62,11 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.searchBar.text = ""
     self.viewModel.searchedText = ""
-    self.viewModel.updateDisplayedTokens()
+    self.tokensTableView.reloadData()
     self.searchBar.becomeFirstResponder()
   }
 
@@ -83,7 +88,6 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate func searchTextDidChange(_ newText: String) {
     self.viewModel.searchedText = newText
-    self.viewModel.updateDisplayedTokens()
     self.tokensTableView.reloadData()
   }
 
