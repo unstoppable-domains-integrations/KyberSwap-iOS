@@ -107,12 +107,26 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.tokens = tokenObjects
   }
+
+  func appCoordinatorPendingTransactionDidUpdate(transaction: Transaction) {
+    if transaction.state == .failed || transaction.state == .error {
+      self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(
+        .failed,
+        txHash: transaction.id
+      )
+    } else if transaction.state == .completed {
+      self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(
+        .success,
+        txHash: transaction.id
+      )
+    }
+  }
 }
 
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    self.navigationController.topViewController?.displayLoading()
+    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
       switch getAllowanceResult {
@@ -123,7 +137,7 @@ extension KNExchangeTokenCoordinator {
           self.sendApproveForExchangeTransaction(exchangeTransaction)
         }
       case .failure(let error):
-        self.navigationController.topViewController?.hideLoading()
+        self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
         self.rootViewController.displayError(error: error)
       }
     }
@@ -140,15 +154,15 @@ extension KNExchangeTokenCoordinator {
         guard let exchange = tx else {
           // Return nil when balance is too low compared to the amoun
           // Show error balance insufficient
-          self.navigationController.topViewController?.hideLoading()
+          self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
           self.navigationController.topViewController?.showInsufficientBalanceAlert()
           return
         }
         self.session.externalProvider.exchange(exchange: exchange) { [weak self] result in
           guard let `self` = self else { return }
-          self.navigationController.topViewController?.hideLoading()
           self.rootViewController.coordinatorExchangeTokenDidReturn(result: result)
           if case .success(let txHash) = result {
+            self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.mining, txHash: txHash)
             let transaction = exchange.toTransaction(
               hash: txHash,
               fromAddr: self.session.wallet.address,
@@ -159,7 +173,7 @@ extension KNExchangeTokenCoordinator {
           }
         }
       case .failure(let error):
-        self.navigationController.topViewController?.hideLoading()
+        self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
         self.navigationController.topViewController?.displayError(error: error)
       }
     }
@@ -171,7 +185,7 @@ extension KNExchangeTokenCoordinator {
       case .success:
         self?.sendExchangeTransaction(exchangeTransaction)
       case .failure(let error):
-        self?.navigationController.topViewController?.hideLoading()
+        self?.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
         self?.navigationController.topViewController?.displayError(error: error)
       }
     }

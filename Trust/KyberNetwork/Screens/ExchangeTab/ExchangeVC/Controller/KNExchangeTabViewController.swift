@@ -40,6 +40,8 @@ class KNExchangeTabViewController: KNBaseViewController {
   @IBOutlet weak var slippageRateDetailsView: KNDataDetailsView!
 
   @IBOutlet weak var exchangeButton: UIButton!
+  @IBOutlet weak var transactionStatusView: KNTransactionStatusView!
+  @IBOutlet weak var bottomTransactionStatusViewConstraint: NSLayoutConstraint!
 
   fileprivate var viewModel: KNExchangeTabViewModel
   weak var delegate: KNExchangeTabViewControllerDelegate?
@@ -110,6 +112,9 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    if !self.transactionStatusView.isHidden { self.transactionStatusView.updateViewDidAppear() }
+
+    // start update est rate
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate()
     self.estRateTimer = Timer.scheduledTimer(
@@ -118,6 +123,8 @@ class KNExchangeTabViewController: KNBaseViewController {
       block: { [weak self] _ in
       self?.updateEstimatedRate()
     })
+
+    // start update est gas limit
     self.estGasLimitTimer?.invalidate()
     self.updateEstimatedGasLimit()
     self.estGasLimitTimer = Timer.scheduledTimer(
@@ -165,9 +172,8 @@ class KNExchangeTabViewController: KNBaseViewController {
       radius: 4.0
     )
     self.amountContainerView.addShadow()
-    self.amountTextField.rounded(color: .lightGray, width: 0.5, radius: 4.0)
+    self.amountTextField.rounded(color: .lightGray, width: 1.0, radius: 4.0)
     self.amountTextField.delegate = self
-
     self.amountTextField.inputAccessoryView = self.toolBar
 
     self.equalButton.rounded(radius: self.equalButton.frame.height / 2.0)
@@ -182,6 +188,15 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupExchangeDataView() {
+    // setup status view
+    self.transactionStatusView.delegate = self
+    self.transactionStatusView.isHidden = true
+    self.transactionStatusView.rounded(color: .lightGray, width: 0.1, radius: 7.0)
+    self.transactionStatusView.addShadow(color: UIColor.black.withAlphaComponent(0.5))
+    self.transactionStatusView.updateView(with: .unknown, txHash: nil)
+    self.bottomTransactionStatusViewConstraint.constant = -21 - self.transactionStatusView.frame.height
+
+    // setup gas price details view
     self.gasPriceDetailsView.rounded(
       color: UIColor(hex: "f1f1f1"),
       width: 1,
@@ -189,6 +204,8 @@ class KNExchangeTabViewController: KNBaseViewController {
     )
     let tapGasPriceGesture = UITapGestureRecognizer(target: self, action: #selector(self.gasPriceDataDetailsViewTapped(_:)))
     self.gasPriceDetailsView.addGestureRecognizer(tapGasPriceGesture)
+
+    // setup slippage rate details view
     self.slippageRateDetailsView.rounded(
       color: UIColor(hex: "f1f1f1"),
       width: 1,
@@ -234,6 +251,7 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
+    // Check data
     guard self.viewModel.isAmountValid else {
       self.showWarningTopBannerMessage(with: "Invalid amount", message: "Please enter a valid amount to exchange")
       return
@@ -432,7 +450,31 @@ extension KNExchangeTabViewController {
 
   func coordinatorExchangeTokenDidReturn(result: Result<String, AnyError>) {
     if case .failure(let error) =  result {
+      self.transactionStatusDidPressClose()
       self.displayError(error: error)
+    }
+  }
+
+  func coordinatorExchangeTokenUserDidConfirmTransaction() {
+    // Reset exchange amount
+    self.viewModel.updateAmount("")
+    self.updateViewAmountDidChange()
+
+    self.transactionStatusView.updateView(with: .broadcasting, txHash: nil)
+    if !self.transactionStatusView.isHidden { return }
+
+    self.openTransactionStatus()
+  }
+
+  func coordinatorExchangeTokenTransactionStatusDidChange(_ status: KNTransactionStatus, txHash: String? = nil) {
+    self.transactionStatusView.updateView(with: status, txHash: txHash)
+    if status == .unknown && !self.transactionStatusView.isHidden {
+      self.transactionStatusDidPressClose()
+    } else {
+      self.transactionStatusView.updateView(with: status, txHash: txHash)
+      if (status == .success || status == .failed), self.transactionStatusView.isHidden {
+        self.openTransactionStatus()
+      }
     }
   }
 
@@ -471,6 +513,14 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
     return false
   }
 
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    textField.layer.borderColor = UIColor(hex: "31cb9e").cgColor
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    textField.layer.borderColor = UIColor.lightGray.cgColor
+  }
+
   fileprivate func updateViewAmountDidChange() {
     self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
     self.updateEstimatedRate()
@@ -488,6 +538,7 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
   }
 }
 
+// MARK: Hamburger Menu
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.exchangeTabViewControllerDidPressedSettings(sender: self)
@@ -499,5 +550,34 @@ extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDe
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.exchangeTabViewControllerDidPressedWallet(wallet, sender: self)
+  }
+}
+
+// MARK: Transactions tatus
+extension KNExchangeTabViewController: KNTransactionStatusViewDelegate {
+  func transactionStatusDidPressClose() {
+    self.closeTransactionStatus()
+  }
+
+  fileprivate func openTransactionStatus() {
+    UIView.animate(
+    withDuration: 0.5) {
+      self.transactionStatusView.isHidden = false
+      self.bottomTransactionStatusViewConstraint.constant = 21
+      self.view.layoutIfNeeded()
+    }
+  }
+
+  fileprivate func closeTransactionStatus() {
+    //swiftlint:disable multiple_closures_with_trailing_closure
+    //swiftlint:disable opening_brace
+    UIView.animate(
+      withDuration: 0.5,
+      animations: {
+        self.bottomTransactionStatusViewConstraint.constant = -21 - self.transactionStatusView.frame.height
+        self.view.layoutIfNeeded()
+    }){ _ in
+      self.transactionStatusView.isHidden = true
+    }
   }
 }
