@@ -14,8 +14,6 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate var currentWallet: Wallet!
   fileprivate var balanceCoordinator: KNBalanceCoordinator?
 
-  fileprivate var pendingTransactionStatusCoordinator: KNPendingTransactionStatusCoordinator?
-
   fileprivate var exchangeCoordinator: KNExchangeTokenCoordinator?
   fileprivate var transferCoordinator: KNTransferTokenCoordinator?
   fileprivate var balanceTabCoordinator: KNBalanceTabCoordinator!
@@ -469,17 +467,7 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     if let txHash = sender.object as? String,
       let transaction = self.session.transactionStorage.get(forPrimaryKey: txHash) {
-
-      if self.pendingTransactionStatusCoordinator == nil {
-        self.pendingTransactionStatusCoordinator = KNPendingTransactionStatusCoordinator(
-          navigationController: self.navigationController,
-          transaction: transaction,
-          delegate: self
-        )
-        self.pendingTransactionStatusCoordinator?.start()
-      } else {
-        self.pendingTransactionStatusCoordinator?.updateTransaction(transaction)
-      }
+      self.exchangeCoordinator?.appCoordinatorPendingTransactionDidUpdate(transaction: transaction)
       // Force load new token transactions to faster updating history view
       if transaction.state == .completed {
         self.session.transacionCoordinator?.forceFetchTokenTransactions()
@@ -573,12 +561,6 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
     if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
     self.restartNewSession(wallet)
-  }
-}
-
-extension KNAppCoordinator: KNPendingTransactionStatusCoordinatorDelegate {
-  func pendingTransactionStatusCoordinatorDidClose() {
-    self.pendingTransactionStatusCoordinator = nil
   }
 }
 
