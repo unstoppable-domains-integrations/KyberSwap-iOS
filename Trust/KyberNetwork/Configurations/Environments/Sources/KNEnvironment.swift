@@ -23,11 +23,7 @@ enum KNEnvironment: Int {
   }
 
   var chainID: Int {
-    guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: self.configFileName) else {
-      print("---> Error: Can not get json from file name: \(self.configFileName)")
-      return 0
-    }
-    return json["networkId"] as? Int ?? 0
+    return self.customRPC?.chainID ?? 0
   }
 
   var etherScanIOURLString: String {

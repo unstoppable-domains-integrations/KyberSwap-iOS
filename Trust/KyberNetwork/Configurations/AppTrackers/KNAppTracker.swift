@@ -55,7 +55,7 @@ class KNAppTracker {
     if let value = userDefaults.object(forKey: kExternalEnvironmentKey) as? Int, let env = KNEnvironment(rawValue: value) {
       return env
     }
-    return isDebug ? KNEnvironment.kovan : KNEnvironment.mainnetTest
+    return isDebug ? KNEnvironment.ropsten : KNEnvironment.mainnetTest
   }
 
   static func updateExternalEnvironment(_ env: KNEnvironment) {

@@ -17,7 +17,7 @@
     "ETH": {
       "name": "Ethereum",
       "symbol": "ETH",
-      "icon": "eth.png",
+      "icon": "eth",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
       "usd_id":"ethereum"
@@ -25,7 +25,7 @@
     "KNC": {
       "name": "KyberNetwork",
       "symbol": "KNC",
-      "icon": "knc.png",
+      "icon": "knc",
       "address": "0x8dc114d77e857558aefbe8e1a50b460ff9578f1a",
       "decimal": 18,
       "usd_id":"kyber-network"
@@ -33,7 +33,7 @@
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "icon": "omg.png",
+      "icon": "omg",
       "address": "0x7606bd550f467546212649a9c25623dfca88dcd7",
       "decimal": 18,
       "usd_id":"omisego"
@@ -41,7 +41,7 @@
     "EOS": {
       "name": "Eos",
       "symbol": "EOS",
-      "icon": "eos.png",
+      "icon": "eos",
       "address": "0x15fb2a9d7dadbb88f260f78dcbb574b3b76a8e06",
       "decimal": 18,
       "usd_id":"eos"
@@ -50,7 +50,7 @@
       "name":"Status",
       "address": "0x676f650000f420485b99ef0377a2e1c96eb3e821",
       "symbol": "SNT",
-      "icon": "snt.png",
+      "icon": "snt",
       "decimal": 18,
       "usd_id":"status"
     },
@@ -58,7 +58,7 @@
       "name":"Salt",
       "address": "0xcc112cd38362bf3c07d226768fd5869e65296083",
       "symbol": "SALT",
-      "icon": "salt.png",
+      "icon": "salt",
       "decimal": 8,
       "usd_id":"salt"
     }
