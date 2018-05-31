@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="searchBar" destination="kaA-Wq-k7I" id="H7c-g9-ZE9"/>
+                <outlet property="tokensTableView" destination="tvR-nt-YdR" id="YJa-ud-kug"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Kr-aI-vdA">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <subviews>
+                        <searchBar contentMode="redraw" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
+                            <rect key="frame" x="16" y="24" width="289" height="56"/>
+                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="barTintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-j2-iod">
+                            <rect key="frame" x="310" y="37" width="49" height="30"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.85882352941176465" green="0.88235294117647056" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="BCt-r4-ZgM"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="kaA-Wq-k7I" firstAttribute="leading" secondItem="0Kr-aI-vdA" secondAttribute="leading" constant="16" id="WBv-AM-FOB"/>
+                        <constraint firstItem="4Oo-j2-iod" firstAttribute="centerY" secondItem="kaA-Wq-k7I" secondAttribute="centerY" id="XEA-TZ-lC9"/>
+                        <constraint firstAttribute="trailing" secondItem="4Oo-j2-iod" secondAttribute="trailing" constant="16" id="ZF5-5M-D6a"/>
+                        <constraint firstItem="4Oo-j2-iod" firstAttribute="leading" secondItem="kaA-Wq-k7I" secondAttribute="trailing" constant="5" id="rff-Es-CnN"/>
+                        <constraint firstAttribute="height" constant="80" id="rxX-SB-Qth"/>
+                        <constraint firstAttribute="bottom" secondItem="kaA-Wq-k7I" secondAttribute="bottom" id="u4Q-tQ-9C4"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tvR-nt-YdR">
+                    <rect key="frame" x="0.0" y="80" width="375" height="587"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="0k0-TK-3IM"/>
+                <constraint firstItem="tvR-nt-YdR" firstAttribute="top" secondItem="0Kr-aI-vdA" secondAttribute="bottom" id="MfU-xg-I7A"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tvR-nt-YdR" secondAttribute="trailing" id="YOA-Hj-7Uk"/>
+                <constraint firstItem="0Kr-aI-vdA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ckz-SX-MkS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0Kr-aI-vdA" secondAttribute="trailing" id="fQ4-9a-Xgv"/>
+                <constraint firstItem="tvR-nt-YdR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qI4-SJ-Zgk"/>
+                <constraint firstItem="0Kr-aI-vdA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="uxZ-da-bkD"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="GAL-t5-EZt" appends="YES" id="P5W-aY-AFT"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="GAL-t5-EZt">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanAction:" destination="-1" id="JcP-rb-i9j"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+</document>

@@ -53,6 +53,10 @@
 		25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F5D20BE6B4E002CC53F /* KNSetGasPriceViewController.xib */; };
 		25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6120BE8973002CC53F /* KNSetSlippageRateViewController.swift */; };
 		25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6220BE8973002CC53F /* KNSetSlippageRateViewController.xib */; };
+		25696F6820BE9EB6002CC53F /* KNSearchTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6620BE9EB6002CC53F /* KNSearchTokenViewController.swift */; };
+		25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */; };
+		25696F6D20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */; };
+		25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */; };
 		256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */; };
 		256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */; };
 		257740C120579335003323EB /* UIView+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740C020579335003323EB /* UIView+Kyber.swift */; };
@@ -611,6 +615,10 @@
 		25696F5D20BE6B4E002CC53F /* KNSetGasPriceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSetGasPriceViewController.xib; sourceTree = "<group>"; };
 		25696F6120BE8973002CC53F /* KNSetSlippageRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSetSlippageRateViewController.swift; sourceTree = "<group>"; };
 		25696F6220BE8973002CC53F /* KNSetSlippageRateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSetSlippageRateViewController.xib; sourceTree = "<group>"; };
+		25696F6620BE9EB6002CC53F /* KNSearchTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSearchTokenViewController.swift; sourceTree = "<group>"; };
+		25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenViewController.xib; sourceTree = "<group>"; };
+		25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSearchTokenTableViewCell.swift; sourceTree = "<group>"; };
+		25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenTableViewCell.xib; sourceTree = "<group>"; };
 		256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabHamburgerMenuViewController.swift; sourceTree = "<group>"; };
 		256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBalanceTabHamburgerMenuViewController.xib; sourceTree = "<group>"; };
 		257740C020579335003323EB /* UIView+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Kyber.swift"; sourceTree = "<group>"; };
@@ -1385,6 +1393,7 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				25696F6520BE9EA0002CC53F /* SearchToken */,
 				25696F6020BE88E3002CC53F /* SetSlippageRate */,
 				25696F5B20BE6B33002CC53F /* SetGasPrice */,
 				25696F5320BD2B2A002CC53F /* DataDetailsView */,
@@ -1435,6 +1444,25 @@
 				25696F6220BE8973002CC53F /* KNSetSlippageRateViewController.xib */,
 			);
 			path = SetSlippageRate;
+			sourceTree = "<group>";
+		};
+		25696F6520BE9EA0002CC53F /* SearchToken */ = {
+			isa = PBXGroup;
+			children = (
+				25696F6A20BEAD7C002CC53F /* TableViewCell */,
+				25696F6620BE9EB6002CC53F /* KNSearchTokenViewController.swift */,
+				25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */,
+			);
+			path = SearchToken;
+			sourceTree = "<group>";
+		};
+		25696F6A20BEAD7C002CC53F /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */,
+				25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */,
+			);
+			path = TableViewCell;
 			sourceTree = "<group>";
 		};
 		256E61EA20B3C0650084CA3F /* HamburgerMenu */ = {
@@ -3903,6 +3931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				613D04891FDE15F8008DE72E /* COMODO ECC Domain Validation Secure Server CA 2.cer in Resources */,
+				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
 				25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */,
 				257A3791205BC1E300E86794 /* KNConfirmTransactionViewController.xib in Resources */,
@@ -3917,6 +3946,7 @@
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				291794FC1F95DE5F00539A30 /* index.html in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
+				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
 				25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */,
 				25696F5220BD2345002CC53F /* KNExchangeTabViewController.xib in Resources */,
@@ -4540,6 +4570,7 @@
 				2963B6AD1F981A96003063C1 /* TransactionAppearance.swift in Sources */,
 				25CC0ABC20591DFB0009D0D5 /* KNGasCoordinator.swift in Sources */,
 				29850D2B1F6B30FF00791A49 /* TransactionViewController.swift in Sources */,
+				25696F6D20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift in Sources */,
 				296AF9AB1F7380920058AF78 /* GetTransactionCountRequest.swift in Sources */,
 				294DFB9E1FE0CA59004CEB56 /* TransactionsViewModel.swift in Sources */,
 				25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */,
@@ -4629,6 +4660,7 @@
 				255F6F2020BBC49800EF808F /* KNWalletQRCodeViewModel.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
+				25696F6820BE9EB6002CC53F /* KNSearchTokenViewController.swift in Sources */,
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,
 				25C45AC720AC3EF600CDA1FF /* KNLandingPageCoordinator.swift in Sources */,
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
