@@ -93,9 +93,28 @@ extension UIView {
     self.layer.shadowOffset = offset
     self.layer.shadowOpacity = 0.16
     self.layer.shadowRadius = 1
-    self.layer.masksToBounds = false
+    self.layer.masksToBounds = true
     self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     self.layer.shouldRasterize = true
     self.layer.rasterizationScale = UIScreen.main.scale
+  }
+
+  func startRotating(duration: Double = 1) {
+    let kAnimationKey = "rotation"
+    if self.layer.animation(forKey: kAnimationKey) == nil {
+      let animate = CABasicAnimation(keyPath: "transform.rotation")
+      animate.duration = duration
+      animate.repeatCount = Float.infinity
+      animate.fromValue = 0.0
+      animate.toValue = Float.pi * 2.0
+      self.layer.add(animate, forKey: kAnimationKey)
+    }
+  }
+
+  func stopRotating() {
+    let kAnimationKey = "rotation"
+    if self.layer.animation(forKey: kAnimationKey) != nil {
+      self.layer.removeAnimation(forKey: kAnimationKey)
+    }
   }
 }
