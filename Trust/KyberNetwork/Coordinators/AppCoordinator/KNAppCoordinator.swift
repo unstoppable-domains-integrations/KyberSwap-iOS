@@ -568,6 +568,14 @@ extension KNAppCoordinator: KNSessionDelegate {
   }
 }
 
+extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
+    guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
+    if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
+    self.restartNewSession(wallet)
+  }
+}
+
 extension KNAppCoordinator: KNPendingTransactionStatusCoordinatorDelegate {
   func pendingTransactionStatusCoordinatorDidClose() {
     self.pendingTransactionStatusCoordinator = nil

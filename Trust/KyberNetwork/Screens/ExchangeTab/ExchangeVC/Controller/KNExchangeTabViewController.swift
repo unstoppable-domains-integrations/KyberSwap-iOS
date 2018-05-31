@@ -14,6 +14,9 @@ protocol KNExchangeTabViewControllerDelegate: class {
 
   func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt)
   func exchangeTabViewControllerDidPressedSlippageRate(slippageRate: Double)
+  func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController)
+  func exchangeTabViewControllerDidPressedManageWallet(sender: KNExchangeTabViewController)
+  func exchangeTabViewControllerDidPressedSettings(sender: KNExchangeTabViewController)
 }
 
 class KNExchangeTabViewController: KNBaseViewController {
@@ -366,6 +369,7 @@ extension KNExchangeTabViewController {
 extension KNExchangeTabViewController {
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
+    self.walletHeaderView.updateView(with: self.viewModel.walletObject)
     self.amountTextField.text = ""
     self.updateTokensView()
     self.updateExchangeData()
@@ -484,14 +488,16 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
   }
 }
 
-// TODO: Implement it, handling action for hamburger menu
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.exchangeTabViewControllerDidPressedSettings(sender: self)
   }
 
   func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.exchangeTabViewControllerDidPressedManageWallet(sender: self)
   }
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.exchangeTabViewControllerDidPressedWallet(wallet, sender: self)
   }
 }

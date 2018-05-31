@@ -2,14 +2,11 @@
 
 import UIKit
 import Lokalise
-import Branch
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
     var window: UIWindow?
     var coordinator: KNAppCoordinator!
-    //This is separate coordinator for the protection of the sensitive information.
-    let branchCoordinator = BranchCoordinator()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -21,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         } catch {
             print("EtherKeystore init issue.")
         }
-        branchCoordinator.didFinishLaunchingWithOptions(launchOptions: launchOptions)
         KNReachability.shared.startNetworkReachabilityObserver()
         return true
     }
@@ -33,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        //Lokalise.shared.checkForUpdates { _, _ in }
         coordinator.appDidBecomeActive()
         KNReachability.shared.startNetworkReachabilityObserver()
     }
@@ -58,19 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Branch.getInstance().handlePushNotification(userInfo)
     }
 
     // Respond to URI scheme links
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        let branchHandled = Branch.getInstance().application(application,
-                                                             open: url,
-                                                             sourceApplication: sourceApplication,
-                                                             annotation: annotation
-        )
-        if !branchHandled {
-            // If not handled by Branch, do other deep link routing for the Facebook SDK, Pinterest SDK, etc
-        }
 
         // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
         return true
@@ -78,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     // Respond to Universal Links
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        Branch.getInstance().continue(userActivity)
         return true
     }
 }
