@@ -467,7 +467,6 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     if let txHash = sender.object as? String,
       let transaction = self.session.transactionStorage.get(forPrimaryKey: txHash) {
-      self.exchangeCoordinator?.appCoordinatorPendingTransactionDidUpdate(transaction: transaction)
       // Force load new token transactions to faster updating history view
       if transaction.state == .completed {
         self.session.transacionCoordinator?.forceFetchTokenTransactions()

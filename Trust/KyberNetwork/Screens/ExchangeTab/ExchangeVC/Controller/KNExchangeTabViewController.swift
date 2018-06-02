@@ -1,5 +1,5 @@
 // Copyright SIX DAY LLC. All rights reserved.
-
+//swiftlint:disable file_length
 import UIKit
 import BigInt
 import Result
@@ -11,7 +11,6 @@ protocol KNExchangeTabViewControllerDelegate: class {
   func exchangeTabViewControllerShouldUpdateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt)
   func exchangeTabViewControllerShouldUpdateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
   func exchangeTabViewControllerDidPressedQRcode(sender: KNExchangeTabViewController)
-
   func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt)
   func exchangeTabViewControllerDidPressedSlippageRate(slippageRate: Double)
   func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController)
@@ -25,7 +24,6 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   @IBOutlet weak var fromTokenButton: UIButton!
   @IBOutlet weak var balanceLabel: UILabel!
-
   @IBOutlet weak var toTokenButton: UIButton!
   @IBOutlet weak var swapButton: UIButton!
 
@@ -38,7 +36,6 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   @IBOutlet weak var gasPriceDetailsView: KNDataDetailsView!
   @IBOutlet weak var slippageRateDetailsView: KNDataDetailsView!
-
   @IBOutlet weak var exchangeButton: UIButton!
   @IBOutlet weak var transactionStatusView: KNTransactionStatusView!
   @IBOutlet weak var bottomTransactionStatusViewConstraint: NSLayoutConstraint!
@@ -67,7 +64,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     let toolBar = UIToolbar()
     toolBar.barStyle = .default
     toolBar.isTranslucent = true
-    toolBar.barTintColor = UIColor(hex: "66adf1")
+    toolBar.barTintColor = UIColor(hex: "31cb9e")
     toolBar.tintColor = .white
     let exchangeAllBtn = UIBarButtonItem(
       title: "Exchange All",
@@ -158,9 +155,7 @@ class KNExchangeTabViewController: KNBaseViewController {
   fileprivate func setupTokensView() {
     self.fromTokenButton.rounded(radius: 4.0)
     self.fromTokenButton.addShadow()
-
     self.swapButton.rounded(radius: self.swapButton.frame.height / 2.0)
-
     self.toTokenButton.rounded(radius: 4.0)
     self.toTokenButton.addShadow()
 
@@ -175,12 +170,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.amountTextField.rounded(color: .lightGray, width: 1.0, radius: 4.0)
     self.amountTextField.delegate = self
     self.amountTextField.inputAccessoryView = self.toolBar
-
     self.equalButton.rounded(radius: self.equalButton.frame.height / 2.0)
-
-    self.amountReceivedLabel.rounded(radius: 4.0)
-    self.amountReceivedLabel.addShadow()
-
     self.amountReceivedLabel.rounded(radius: 4.0)
     self.amountReceivedLabel.addShadow()
 
@@ -191,7 +181,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     // setup status view
     self.transactionStatusView.delegate = self
     self.transactionStatusView.isHidden = true
-    self.transactionStatusView.rounded(color: .lightGray, width: 0.1, radius: 7.0)
+    self.transactionStatusView.rounded(color: .lightGray, width: 0.2, radius: 7.0)
     self.transactionStatusView.addShadow(color: UIColor.black.withAlphaComponent(0.5))
     self.transactionStatusView.updateView(with: .unknown, txHash: nil)
     self.bottomTransactionStatusViewConstraint.constant = -21 - self.transactionStatusView.frame.height
@@ -250,6 +240,13 @@ class KNExchangeTabViewController: KNBaseViewController {
     )
   }
 
+  /*
+    Exchange token pressed
+    - check amount valid (> 0 and <= balance)
+    - check rate is valie (not zero)
+    - (Temp) either from or to must be ETH
+    - send exchange tx to coordinator for preparing trade
+   */
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
     // Check data
     guard self.viewModel.isAmountValid else {
@@ -345,6 +342,11 @@ class KNExchangeTabViewController: KNBaseViewController {
 
 // MARK: Update UIs
 extension KNExchangeTabViewController {
+  /*
+    Update tokens view when either from or to tokens changed
+      - updatedFrom: true if from token is changed
+      - updatedTo: true if to token is changed
+   */
   func updateTokensView(updatedFrom: Bool = true, updatedTo: Bool = true) {
     if updatedFrom {
       self.fromTokenButton.setTitle(self.viewModel.fromTokenBtnTitle, for: .normal)
@@ -385,6 +387,9 @@ extension KNExchangeTabViewController {
 
 // MARK: Update from coordinator
 extension KNExchangeTabViewController {
+  /*
+   Update new session when current wallet is changed, update all UIs
+   */
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
     self.walletHeaderView.updateView(with: self.viewModel.walletObject)
@@ -404,6 +409,10 @@ extension KNExchangeTabViewController {
     self.view.layoutIfNeeded()
   }
 
+  /*
+    Update estimate rate, check if the from, to, amount are all the same as current value in the model
+    Update UIs according to new values
+   */
   func coordinatorDidUpdateEstimateRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
     self.viewModel.updateExchangeRate(
       for: from,
@@ -421,6 +430,10 @@ extension KNExchangeTabViewController {
     self.view.layoutIfNeeded()
   }
 
+  /*
+   Update estimate gas limit, check if the from, to, amount are all the same as current value in the model
+   Update UIs according to new values
+   */
   func coordinatorDidUpdateEstimateGasUsed(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     self.viewModel.updateEstimateGasLimit(
       for: from,
@@ -430,6 +443,12 @@ extension KNExchangeTabViewController {
     )
   }
 
+  /*
+   Update selected token
+   - token: New selected token
+   - isSource: true if selected token is from, otherwise it is to
+   Update UIs according to new values
+   */
   func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
@@ -448,15 +467,22 @@ extension KNExchangeTabViewController {
     )
   }
 
+  /*
+    Result from sending exchange token
+   */
   func coordinatorExchangeTokenDidReturn(result: Result<String, AnyError>) {
-    if case .failure(let error) =  result {
+    if case .failure(let error) = result {
       self.transactionStatusDidPressClose()
       self.displayError(error: error)
     }
   }
 
+  /*
+    Show transaction status after user confirmed transaction
+   */
   func coordinatorExchangeTokenUserDidConfirmTransaction() {
     // Reset exchange amount
+    self.amountTextField.text = ""
     self.viewModel.updateAmount("")
     self.updateViewAmountDidChange()
 
@@ -466,18 +492,23 @@ extension KNExchangeTabViewController {
     self.openTransactionStatus()
   }
 
+  /*
+    Update transaction status with new status, txHash to avoid updating wrong transation
+   */
   func coordinatorExchangeTokenTransactionStatusDidChange(_ status: KNTransactionStatus, txHash: String? = nil) {
     self.transactionStatusView.updateView(with: status, txHash: txHash)
-    if status == .unknown && !self.transactionStatusView.isHidden {
-      self.transactionStatusDidPressClose()
+    if status == .mining {
+      Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { [weak self] _ in
+        self?.transactionStatusDidPressClose()
+      })
     } else {
-      self.transactionStatusView.updateView(with: status, txHash: txHash)
-      if (status == .success || status == .failed), self.transactionStatusView.isHidden {
-        self.openTransactionStatus()
-      }
+      self.transactionStatusDidPressClose()
     }
   }
 
+  /*
+    - gasPrice: new gas price after user finished selected gas price from set gas price view
+   */
   func coordinatorExchangeTokenDidUpdateGasPrice(_ gasPrice: BigInt) {
     self.viewModel.updateGasPrice(gasPrice)
     self.gasPriceDetailsView.updateView(
@@ -486,6 +517,9 @@ extension KNExchangeTabViewController {
     self.view.layoutIfNeeded()
   }
 
+  /*
+   - percent: new slippage rate after user finished selected slippage rate from set slippage rate
+   */
   func coordinatorExchangeTokenDidUpdateSlippageRate(_ percent: Double) {
     self.viewModel.updateSlippagePercent(percent)
     self.slippageRateDetailsView.updateView(
@@ -495,6 +529,7 @@ extension KNExchangeTabViewController {
   }
 }
 
+// MARK: UITextFieldDelegate
 extension KNExchangeTabViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
@@ -528,6 +563,7 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
   }
 }
 
+// MARK: Wallet Header View Delegate
 extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
   func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
     self.delegate?.exchangeTabViewControllerDidPressedQRcode(sender: self)
@@ -538,7 +574,7 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
   }
 }
 
-// MARK: Hamburger Menu
+// MARK: Hamburger Menu Delegate
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.exchangeTabViewControllerDidPressedSettings(sender: self)
@@ -553,13 +589,14 @@ extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDe
   }
 }
 
-// MARK: Transactions tatus
+// MARK: Transaction Status Delegate
 extension KNExchangeTabViewController: KNTransactionStatusViewDelegate {
   func transactionStatusDidPressClose() {
     self.closeTransactionStatus()
   }
 
   fileprivate func openTransactionStatus() {
+    if !self.transactionStatusView.isHidden { return }
     UIView.animate(
     withDuration: 0.5) {
       self.transactionStatusView.isHidden = false
@@ -569,6 +606,7 @@ extension KNExchangeTabViewController: KNTransactionStatusViewDelegate {
   }
 
   fileprivate func closeTransactionStatus() {
+    if self.transactionStatusView.isHidden { return }
     //swiftlint:disable multiple_closures_with_trailing_closure
     //swiftlint:disable opening_brace
     UIView.animate(

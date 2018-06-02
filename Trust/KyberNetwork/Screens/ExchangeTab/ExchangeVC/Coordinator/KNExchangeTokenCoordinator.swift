@@ -107,20 +107,6 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.tokens = tokenObjects
   }
-
-  func appCoordinatorPendingTransactionDidUpdate(transaction: Transaction) {
-    if transaction.state == .failed || transaction.state == .error {
-      self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(
-        .failed,
-        txHash: transaction.id
-      )
-    } else if transaction.state == .completed {
-      self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(
-        .success,
-        txHash: transaction.id
-      )
-    }
-  }
 }
 
 // MARK: Network requests

@@ -30,12 +30,12 @@ class KNExternalProvider {
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
     self.reserveAddress = Address(string: customRPC.reserveAddress)
-    self.minTxCount = KNAppTracker.transactionNonce(for: account.address)
+    self.minTxCount = 0
   }
 
   func updateNewAccount(_ account: Account) {
     self.account = account
-    self.minTxCount = KNAppTracker.transactionNonce(for: account.address)
+    self.minTxCount = 0
   }
 
   // MARK: Balance
@@ -103,7 +103,6 @@ class KNExternalProvider {
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
-                self.minTxCount += 1
                 self.sendSignedTransactionData(signData, completion: completion)
               case .failure(let error):
                 completion(.failure(error))
@@ -132,7 +131,6 @@ class KNExternalProvider {
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
-                self.minTxCount += 1
                 self.sendSignedTransactionData(signData, completion: completion)
               case .failure(let error):
                 completion(.failure(error))
@@ -228,7 +226,6 @@ class KNExternalProvider {
                 self.sendSignedTransactionData(signData, completion: { sendResult in
                   switch sendResult {
                   case .success:
-                    self.minTxCount += 1
                     completion(.success(true))
                   case .failure(let error):
                     completion(.failure(error))
@@ -254,6 +251,7 @@ class KNExternalProvider {
     Session.send(request) { result in
       switch result {
       case .success(let transactionID):
+        self.minTxCount += 1
         completion(.success(transactionID))
       case .failure(let error):
         completion(.failure(AnyError(error)))

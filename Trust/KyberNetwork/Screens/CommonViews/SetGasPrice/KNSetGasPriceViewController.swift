@@ -60,7 +60,7 @@ struct KNSetGasPriceViewModel {
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium),
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "66adf1"),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "31cb9e"),
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let attributedString = NSMutableAttributedString()
@@ -101,7 +101,7 @@ class KNSetGasPriceViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.gasTypeButtons.forEach {
       $0.rounded(
-        color: UIColor(hex: "66adf1"),
+        color: UIColor(hex: "31cb9e"),
         width: 1,
         radius: $0.frame.height / 2.0
       )
@@ -122,7 +122,7 @@ class KNSetGasPriceViewController: KNBaseViewController {
       let isSelected = $0.tag == self.viewModel.selectedGasPriceID
       let color = isSelected ? UIColor.white : UIColor(hex: "141927")
       $0.setTitleColor(color, for: .normal)
-      $0.backgroundColor = isSelected ? UIColor(hex: "66adf1") : .clear
+      $0.backgroundColor = isSelected ? UIColor(hex: "31cb9e") : .clear
     })
     self.txFeeLabel.attributedText = self.viewModel.txFeeAttributedString
     self.view.layoutIfNeeded()

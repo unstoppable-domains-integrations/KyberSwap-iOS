@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPendingTransactionStatusViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="amountLabel" destination="eJQ-Kx-3cM" id="nYf-GI-UVH"/>
+                <outlet property="bottomPaddingTransactionStatusViewConstraint" destination="CZ3-bX-UTd" id="e5l-qh-5fr"/>
                 <outlet property="closeButton" destination="akf-1H-gN5" id="qHT-7o-KZB"/>
                 <outlet property="detailsTransactionTypeLabel" destination="sby-yA-IZa" id="TfX-cA-p6r"/>
                 <outlet property="estimateFeeTextLabel" destination="Le7-BY-vxT" id="03l-M1-rNq"/>
@@ -27,6 +28,7 @@
                 <outlet property="transactionHashTextLabel" destination="E4a-0m-71s" id="B1n-CJ-lEK"/>
                 <outlet property="transactionHashValueLabel" destination="2NM-gq-kQ9" id="nk8-6Q-xR8"/>
                 <outlet property="transactionStatusLabel" destination="cFr-5p-0Af" id="TiH-If-OLK"/>
+                <outlet property="transactionStatusView" destination="5o1-XR-bSB" id="Nay-pM-MoA"/>
                 <outlet property="transactionTimeTextLabel" destination="vRu-Wr-uK3" id="cjS-FV-HGG"/>
                 <outlet property="transactionTimeValueLabel" destination="0OE-JH-ApR" id="QRW-b9-WPb"/>
                 <outlet property="transactionTypeLabel" destination="yGB-qx-0LV" id="CKS-xe-JcD"/>
@@ -48,6 +50,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5o1-XR-bSB" customClass="KNTransactionStatusView" customModule="Trust" customModuleProvider="target">
+                    <rect key="frame" x="52" y="571" width="271" height="75"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="szO-SZ-yeJ"/>
+                    </constraints>
+                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Psx-yZ-xge">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
@@ -201,10 +210,13 @@
             </subviews>
             <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5o1-XR-bSB" secondAttribute="bottom" constant="21" id="CZ3-bX-UTd"/>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FEv-oP-ttp"/>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Ppe-AU-jGC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5o1-XR-bSB" secondAttribute="trailing" constant="52" id="R3I-PB-gl8"/>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Se5-6d-1h4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Psx-yZ-xge" secondAttribute="bottom" id="Z9o-JR-65C"/>
+                <constraint firstItem="5o1-XR-bSB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="52" id="n0j-4b-qlj"/>
                 <constraint firstItem="Psx-yZ-xge" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="o3Y-9q-Roi"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Psx-yZ-xge" secondAttribute="trailing" id="u8M-Mg-82z"/>
             </constraints>
