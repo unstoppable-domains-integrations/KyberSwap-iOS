@@ -48,6 +48,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     return coordinator
   }()
 
+  fileprivate var transactionStatusCoordinator: KNTransactionStatusCoordinator!
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,
@@ -465,12 +467,25 @@ extension KNAppCoordinator {
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
-    if let txHash = sender.object as? String,
-      let transaction = self.session.transactionStorage.get(forPrimaryKey: txHash) {
-      // Force load new token transactions to faster updating history view
-      if transaction.state == .completed {
-        self.session.transacionCoordinator?.forceFetchTokenTransactions()
+    let transaction: Transaction? = {
+      if let txHash = sender.object as? String {
+        return self.session.transactionStorage.get(forPrimaryKey: txHash)
       }
+      return nil
+    }()
+    let error: Error? = sender.object as? Error
+    if self.transactionStatusCoordinator == nil {
+      self.transactionStatusCoordinator = KNTransactionStatusCoordinator(
+        navigationController: self.navigationController,
+        transaction: transaction,
+        delegate: self
+      )
+      self.transactionStatusCoordinator.start()
+    }
+    self.transactionStatusCoordinator.updateTransaction(transaction, error: error)
+    // Force load new token transactions to faster updating history view
+    if let tran = transaction, tran.state == .completed {
+      self.session.transacionCoordinator?.forceFetchTokenTransactions()
     }
   }
 
@@ -525,12 +540,14 @@ extension KNAppCoordinator {
   }
 }
 
+// MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   func landingPageCoordinator(import wallet: Wallet) {
     self.startNewSession(with: wallet)
   }
 }
 
+// MARK: Wallet Importing Main Coordinator Delegate
 extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
   func walletImportingMainDidImport(wallet: Wallet) {
     let walletObject = KNWalletObject(address: wallet.address.description)
@@ -544,6 +561,7 @@ extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
   }
 }
 
+// MARK: Session Delegate
 extension KNAppCoordinator: KNSessionDelegate {
   func userDidClickExitSession() {
     let alertController = UIAlertController(title: "Exit".toBeLocalised(), message: "Do you want to exit and remove all wallets from the app?".toBeLocalised(), preferredStyle: .alert)
@@ -555,6 +573,7 @@ extension KNAppCoordinator: KNSessionDelegate {
   }
 }
 
+// MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
     guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
@@ -563,6 +582,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 }
 
+// MARK: Wallet Coordinator Delegate
 extension KNAppCoordinator: KNWalletCoordinatorDelegate {
   func walletCoordinatorDidClickExit() {
     self.userDidClickExitSession()
@@ -581,6 +601,7 @@ extension KNAppCoordinator: KNWalletCoordinatorDelegate {
   }
 }
 
+// MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidSelectExit() {
     self.userDidClickExitSession()
@@ -595,6 +616,7 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   }
 }
 
+// MARK: Balance Tab Coordinator Delegate
 extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject)
@@ -609,5 +631,12 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject) {
     guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == walletObject.address.lowercased() }) else { return }
     self.restartNewSession(wallet)
+  }
+}
+
+// MARK: Transaction Status Delegate
+extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
+  func transactionStatusCoordinatorDidClose() {
+    self.transactionStatusCoordinator = nil
   }
 }

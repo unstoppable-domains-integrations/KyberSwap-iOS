@@ -113,6 +113,7 @@ extension KNExchangeTokenCoordinator {
 extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
     self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
+    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
       switch getAllowanceResult {
@@ -123,44 +124,34 @@ extension KNExchangeTokenCoordinator {
           self.sendApproveForExchangeTransaction(exchangeTransaction)
         }
       case .failure(let error):
-        self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
-        self.rootViewController.displayError(error: error)
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
       }
     }
   }
 
-  fileprivate func sendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
+  fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
     // Lock all data for exchange transaction first
-    KNTransactionCoordinator.requestDataPrepareForExchangeTransaction(
-      exchangeTransaction,
-      provider: self.session.externalProvider) { [weak self] dataResult in
+    self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
       guard let `self` = self else { return }
-      switch dataResult {
-      case .success(let tx):
-        guard let exchange = tx else {
-          // Return nil when balance is too low compared to the amoun
-          // Show error balance insufficient
-          self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
-          self.navigationController.topViewController?.showInsufficientBalanceAlert()
-          return
-        }
-        self.session.externalProvider.exchange(exchange: exchange) { [weak self] result in
-          guard let `self` = self else { return }
-          self.rootViewController.coordinatorExchangeTokenDidReturn(result: result)
-          if case .success(let txHash) = result {
-            self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.mining, txHash: txHash)
-            let transaction = exchange.toTransaction(
-              hash: txHash,
-              fromAddr: self.session.wallet.address,
-              toAddr: self.session.externalProvider.networkAddress,
-              nounce: self.session.externalProvider.minTxCount
-            )
-            self.session.addNewPendingTransaction(transaction)
-          }
-        }
+      switch result {
+      case .success(let txHash):
+        let transaction = exchage.toTransaction(
+          hash: txHash,
+          fromAddr: self.session.wallet.address,
+          toAddr: self.session.externalProvider.networkAddress,
+          nounce: self.session.externalProvider.minTxCount
+        )
+        self.session.addNewPendingTransaction(transaction)
       case .failure(let error):
-        self.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
-        self.navigationController.topViewController?.displayError(error: error)
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
       }
     }
   }
@@ -171,8 +162,11 @@ extension KNExchangeTokenCoordinator {
       case .success:
         self?.sendExchangeTransaction(exchangeTransaction)
       case .failure(let error):
-        self?.rootViewController.coordinatorExchangeTokenTransactionStatusDidChange(.unknown)
-        self?.navigationController.topViewController?.displayError(error: error)
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
       }
     }
   }
@@ -275,14 +269,6 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
           rate: estRate,
           slippageRate: slippageRate
         )
-        if self?.confirmTransactionViewController != nil {
-          self?.confirmTransactionViewController.updateExpectedRateData(
-            source: from,
-            dest: to,
-            amount: amount,
-            expectedRate: estRate
-          )
-        }
     }
   }
 

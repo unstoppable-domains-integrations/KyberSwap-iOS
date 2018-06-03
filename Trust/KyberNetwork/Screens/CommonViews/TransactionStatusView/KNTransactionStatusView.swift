@@ -4,7 +4,8 @@ import UIKit
 
 enum KNTransactionStatus: String {
   case broadcasting = "Broadcasting"
-  case mining = "Mining"
+  case broadcastingError = "Error"
+  case pending = "Pending"
   case failed = "Failed"
   case success = "Success"
   case unknown = "Unknown"
@@ -13,7 +14,9 @@ enum KNTransactionStatus: String {
     switch self {
     case .broadcasting:
       return "Transaction being broadcast"
-    case .mining:
+    case .broadcastingError:
+      return "Can not create transaction"
+    case .pending:
       return "Transaction being mined"
     case .failed:
       return "Transaction failed"
@@ -26,7 +29,7 @@ enum KNTransactionStatus: String {
 
   var imageName: String {
     switch self {
-    case .broadcasting, .mining: return "loading_icon"
+    case .broadcasting, .pending: return "loading_icon"
     case .failed: return "fail"
     case .success: return "success"
     default: return ""
@@ -36,6 +39,7 @@ enum KNTransactionStatus: String {
 
 protocol KNTransactionStatusViewDelegate: class {
   func transactionStatusDidPressClose()
+  func transactionStatusDidPressView()
 }
 
 class KNTransactionStatusView: XibLoaderView {
@@ -63,22 +67,25 @@ class KNTransactionStatusView: XibLoaderView {
     self.loadingImageView.image = self.loadingImageView.image?.withRenderingMode(.alwaysTemplate)
     self.txStatusLabel.text = ""
     self.txStatusDetailsLabel.text = ""
+    self.isUserInteractionEnabled = true
     let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.viewDidSwipeDown(_:)))
     swipeDownGesture.direction = .down
-    self.isUserInteractionEnabled = true
     self.addGestureRecognizer(swipeDownGesture)
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewDidTap(_:)))
+    self.addGestureRecognizer(tapGesture)
   }
 
-  func updateView(with status: KNTransactionStatus, txHash: String?) {
+  func updateView(with status: KNTransactionStatus, txHash: String?, details: String? = nil) {
     if let oldTxHash = self.txHash, let newTxHash = txHash, oldTxHash != newTxHash { return }
     // after broadcasting, should be mining
-    if self.status == .broadcasting, status != .mining { return }
+//    if self.status == .broadcasting, status != .pending { return }
     if self.txHash != nil && txHash == nil { return }
+    self.status = status
     self.txHash = txHash
     self.txStatusLabel.text = status.rawValue
-    self.txStatusDetailsLabel.text = status.statusDetails
+    self.txStatusDetailsLabel.text = details ?? status.statusDetails
     self.loadingImageView.image = UIImage(named: status.imageName)?.withRenderingMode(.alwaysTemplate)
-    if status == .broadcasting || status == .mining {
+    if status == .broadcasting || status == .pending {
       self.isAnimating = true
       self.loadingImageView.startRotating()
     } else {
@@ -96,7 +103,11 @@ class KNTransactionStatusView: XibLoaderView {
     self.delegate?.transactionStatusDidPressClose()
   }
 
-  func updateViewDidAppear() {
+  @objc func viewDidTap(_ sender: Any) {
+    self.delegate?.transactionStatusDidPressView()
+  }
+
+  func updateViewWillAppear() {
     if self.isAnimating {
       self.loadingImageView.startRotating()
     } else {

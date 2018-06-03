@@ -102,20 +102,22 @@ class KNPasscodeViewController: KNBaseViewController {
     }
     context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Use touchID/faceID to secure your account".toBeLocalised()) { [weak self] (success, error) in
       guard let `self` = self else { return }
-      if success {
-        self.delegate?.passcodeViewControllerDidSuccessEvaluatePolicyWithBio()
-      } else {
-        guard let error = error else { return }
-        guard let message = self.errorMessageForLAErrorCode(error.code) else {
-          // User cancelled using bio
-          return
+      DispatchQueue.main.async {
+        if success {
+          self.delegate?.passcodeViewControllerDidSuccessEvaluatePolicyWithBio()
+        } else {
+          guard let error = error else { return }
+          guard let message = self.errorMessageForLAErrorCode(error.code) else {
+            // User cancelled using bio
+            return
+          }
+          let alert = UIAlertController(title: "Try Again".toBeLocalised(), message: message, preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
+            self.showBioAuthenticationIfNeeded()
+          }))
+          alert.addAction(UIAlertAction(title: "Enter passcode".toBeLocalised(), style: .default, handler: nil))
+          self.present(alert, animated: true, completion: nil)
         }
-        let alert = UIAlertController(title: "Try Again".toBeLocalised(), message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
-          self.showBioAuthenticationIfNeeded()
-        }))
-        alert.addAction(UIAlertAction(title: "Enter passcode".toBeLocalised(), style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
       }
     }
   }

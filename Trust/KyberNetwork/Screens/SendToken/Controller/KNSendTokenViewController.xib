@@ -14,14 +14,12 @@
             <connections>
                 <outlet property="addressTextField" destination="Soz-id-qlu" id="0SQ-Qg-pGx"/>
                 <outlet property="amountTextField" destination="U0Y-CG-pqO" id="T7Y-T3-I3S"/>
-                <outlet property="bottomTransactionStatusViewConstraint" destination="jWR-Tt-CR0" id="HC3-rJ-f4Z"/>
                 <outlet property="gasPriceDataDetailsView" destination="UFg-Mf-7ww" id="mOF-VY-Ae7"/>
                 <outlet property="navTitleLabel" destination="qdZ-45-bZl" id="En0-hU-QHR"/>
                 <outlet property="sendButton" destination="XRV-XK-3YZ" id="fsZ-V0-y21"/>
                 <outlet property="tokenBalanceLabel" destination="zhf-Qf-zFA" id="5M7-vM-1Xu"/>
                 <outlet property="tokenButton" destination="e0j-Uy-2jw" id="prH-CH-fzX"/>
                 <outlet property="tokenContainerView" destination="oRt-bT-lU6" id="nSQ-nz-12f"/>
-                <outlet property="transactionStatusView" destination="pd9-7j-okb" id="5ES-to-0L5"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -145,13 +143,6 @@
                         <action selector="sendButtonPressed:" destination="-1" eventType="touchUpInside" id="Osx-Ft-ODr"/>
                     </connections>
                 </button>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pd9-7j-okb" customClass="KNTransactionStatusView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="21" y="571" width="333" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="75" id="eOu-7T-75V"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -164,7 +155,6 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="S4b-5k-6U7" secondAttribute="trailing" id="C5N-dx-7U6"/>
                 <constraint firstItem="oRt-bT-lU6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="28" id="De7-W2-RzD"/>
                 <constraint firstItem="UFg-Mf-7ww" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="F9L-cw-Lo8"/>
-                <constraint firstItem="pd9-7j-okb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="Jux-X0-0Iu"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oRt-bT-lU6" secondAttribute="trailing" constant="28" id="LIO-2b-sxc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="XRV-XK-3YZ" secondAttribute="trailing" constant="52" id="Mie-Yv-2zJ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="XRV-XK-3YZ" secondAttribute="bottom" constant="32" id="PnW-hH-t44"/>
@@ -173,14 +163,12 @@
                 <constraint firstItem="zhf-Qf-zFA" firstAttribute="trailing" secondItem="oRt-bT-lU6" secondAttribute="trailing" id="YdK-Ns-v0W"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UFg-Mf-7ww" secondAttribute="trailing" id="czW-gN-EN4"/>
                 <constraint firstItem="S4b-5k-6U7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fHg-Xy-OG6"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="pd9-7j-okb" secondAttribute="bottom" constant="21" id="jWR-Tt-CR0"/>
                 <constraint firstItem="b6e-iC-Oke" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lW9-Ti-Ygg"/>
                 <constraint firstItem="S4b-5k-6U7" firstAttribute="top" secondItem="UFg-Mf-7ww" secondAttribute="bottom" id="lbj-K0-siB"/>
                 <constraint firstItem="CQa-79-1mu" firstAttribute="leading" secondItem="Soz-id-qlu" secondAttribute="trailing" constant="-36" id="qjv-yr-zar"/>
                 <constraint firstItem="XRV-XK-3YZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="52" id="rb7-Bg-58b"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Soz-id-qlu" secondAttribute="trailing" constant="25" id="s95-HN-kdE"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="b6e-iC-Oke" secondAttribute="trailing" id="t3q-ag-Ra6"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pd9-7j-okb" secondAttribute="trailing" constant="21" id="yVS-i1-anH"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>

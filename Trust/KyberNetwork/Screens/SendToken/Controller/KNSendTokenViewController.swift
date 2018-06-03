@@ -27,9 +27,6 @@ class KNSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
 
-  @IBOutlet weak var transactionStatusView: KNTransactionStatusView!
-  @IBOutlet weak var bottomTransactionStatusViewConstraint: NSLayoutConstraint!
-
   lazy var toolBar: UIToolbar = {
     let toolBar = UIToolbar()
     toolBar.barStyle = .default
@@ -79,7 +76,6 @@ class KNSendTokenViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if !self.transactionStatusView.isHidden { self.transactionStatusView.updateViewDidAppear() }
     self.estGasTimer?.invalidate()
     self.estGasTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
@@ -154,12 +150,6 @@ class KNSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupSendButton() {
     self.sendButton.rounded(radius: 7.0)
-    self.transactionStatusView.delegate = self
-    self.transactionStatusView.isHidden = true
-    self.transactionStatusView.rounded(color: .lightGray, width: 0.2, radius: 7.0)
-    self.transactionStatusView.addShadow(color: UIColor.black.withAlphaComponent(0.5))
-    self.transactionStatusView.updateView(with: .unknown, txHash: nil)
-    self.bottomTransactionStatusViewConstraint.constant = -21 - self.transactionStatusView.frame.height
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -281,7 +271,6 @@ extension KNSendTokenViewController {
    */
   func coordinatorSendTokenDidReturn(result: Result<String, AnyError>) {
     if case .failure(let error) = result {
-      self.transactionStatusDidPressClose()
       self.displayError(error: error)
     }
   }
@@ -296,24 +285,6 @@ extension KNSendTokenViewController {
     self.viewModel.updateAddress("")
     self.updateUIAddressQRCode()
     self.shouldUpdateEstimatedGasLimit(nil)
-    self.transactionStatusView.updateView(with: .broadcasting, txHash: nil)
-    if !self.transactionStatusView.isHidden { return }
-    self.openTransactionStatus()
-  }
-
-  /*
-    Update transaction status with new status, txHash to avoid updating wrong transation
-   - status: either mining or unknown, mining: display for 2 seconds then dismiss; unknown: dismiss
-   */
-  func coordinatorSendTokenTransactionDidChangeStatus(_ status: KNTransactionStatus, txHash: String? = nil) {
-    self.transactionStatusView.updateView(with: status, txHash: txHash)
-    if status == .mining {
-      Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] _ in
-        self?.closeTransactionStatus()
-      }
-    } else {
-      self.closeTransactionStatus()
-    }
   }
 
   func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
@@ -368,37 +339,6 @@ extension KNSendTokenViewController: QRCodeReaderDelegate {
     reader.dismiss(animated: true) {
       self.viewModel.updateAddress(result)
       self.updateUIAddressQRCode()
-    }
-  }
-}
-
-// MARK: Transaction Status Delegate
-extension KNSendTokenViewController: KNTransactionStatusViewDelegate {
-  func transactionStatusDidPressClose() {
-    self.closeTransactionStatus()
-  }
-
-  fileprivate func openTransactionStatus() {
-    if !self.transactionStatusView.isHidden { return }
-    UIView.animate(
-    withDuration: 0.5) {
-      self.transactionStatusView.isHidden = false
-      self.bottomTransactionStatusViewConstraint.constant = 21
-      self.view.layoutIfNeeded()
-    }
-  }
-
-  fileprivate func closeTransactionStatus() {
-    if self.transactionStatusView.isHidden { return }
-    //swiftlint:disable multiple_closures_with_trailing_closure
-    //swiftlint:disable opening_brace
-    UIView.animate(
-      withDuration: 0.5,
-      animations: {
-        self.bottomTransactionStatusViewConstraint.constant = -21 - self.transactionStatusView.frame.height
-        self.view.layoutIfNeeded()
-    }){ _ in
-      self.transactionStatusView.isHidden = true
     }
   }
 }

@@ -177,40 +177,25 @@ extension KNSendTokenViewCoordinator: KNSetGasPriceViewControllerDelegate {
 extension KNSendTokenViewCoordinator {
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
     self.rootViewController.coordinatorSendTokenUserDidConfirmTransaction()
-    KNTransactionCoordinator.requestDataPrepareForTransferTransaction(
-      transaction,
-      provider: self.session.externalProvider) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let newTx):
-          if let newTransaction = newTx {
-            self.session.externalProvider.transfer(transaction: newTransaction, completion: { [weak self] sendResult in
-              guard let `self` = self else { return }
-              self.navigationController.topViewController?.hideLoading()
-              switch sendResult {
-              case .success(let txHash):
-                let tx: Transaction = newTransaction.toTransaction(
-                  wallet: self.session.wallet,
-                  hash: txHash,
-                  nounce: self.session.externalProvider.minTxCount
-                )
-                self.session.addNewPendingTransaction(tx)
-                self.rootViewController.coordinatorSendTokenTransactionDidChangeStatus(
-                  .mining,
-                  txHash: txHash
-                )
-              case .failure:
-                self.rootViewController.coordinatorSendTokenDidReturn(result: sendResult)
-              }
-            })
-          } else {
-            self.rootViewController.coordinatorSendTokenTransactionDidChangeStatus(.unknown)
-            self.navigationController.topViewController?.showInsufficientBalanceAlert()
-          }
-        case .failure(let error):
-          self.rootViewController.coordinatorSendTokenTransactionDidChangeStatus(.unknown)
-          self.navigationController.displayError(error: error.error)
-        }
-    }
+    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
+    // send transaction request
+    self.session.externalProvider.transfer(transaction: transaction, completion: { [weak self] sendResult in
+      guard let `self` = self else { return }
+      switch sendResult {
+      case .success(let txHash):
+        let tx: Transaction = transaction.toTransaction(
+          wallet: self.session.wallet,
+          hash: txHash,
+          nounce: self.session.externalProvider.minTxCount
+        )
+        self.session.addNewPendingTransaction(tx)
+      case .failure(let error):
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
+      }
+    })
   }
 }
