@@ -7,7 +7,7 @@ class KNCoinTickerStorage {
 
   static let shared = KNCoinTickerStorage()
   lazy var realm: Realm = {
-    let config = RealmConfiguration.globalConfiguration(for: KNEnvironment.default.chainID)
+    let config = RealmConfiguration.globalConfiguration()
     return try! Realm(configuration: config)
   }()
 

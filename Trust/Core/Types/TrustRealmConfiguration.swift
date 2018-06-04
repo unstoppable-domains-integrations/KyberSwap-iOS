@@ -12,9 +12,9 @@ struct RealmConfiguration {
         return config
     }
 
-    static func globalConfiguration(for chainID: Int) -> Realm.Configuration {
+    static func globalConfiguration() -> Realm.Configuration {
       var config = Realm.Configuration()
-      config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
+      config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global.realm")
       return config
     }
 }

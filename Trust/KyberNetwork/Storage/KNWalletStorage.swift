@@ -10,7 +10,7 @@ class KNWalletStorage {
   private(set) var realm: Realm!
 
   init() {
-    let config = RealmConfiguration.globalConfiguration(for: KNEnvironment.default.chainID)
+    let config = RealmConfiguration.globalConfiguration()
     self.realm = try! Realm(configuration: config)
   }
 
