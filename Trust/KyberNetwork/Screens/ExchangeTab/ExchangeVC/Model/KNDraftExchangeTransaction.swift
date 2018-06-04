@@ -94,8 +94,8 @@ extension KNDraftExchangeTransaction {
       contract: nil,
       type: "exchange",
       value: expectedAmount,
-      symbol: nil,
-      name: nil,
+      symbol: self.from.symbol,
+      name: self.to.symbol,
       decimals: self.to.decimals
     )
     return Transaction(

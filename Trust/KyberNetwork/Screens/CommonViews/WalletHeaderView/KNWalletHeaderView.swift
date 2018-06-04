@@ -42,6 +42,8 @@ class KNWalletHeaderView: XibLoaderView {
   @IBOutlet weak var qrcodeButton: UIButton!
   @IBOutlet weak var walletListButton: UIButton!
 
+  @IBOutlet weak var pendingTxNotiView: UIView!
+
   weak var delegate: KNWalletHeaderViewDelegate?
   fileprivate var viewModel = KNWalletHeaderViewModel()
 
@@ -58,6 +60,8 @@ class KNWalletHeaderView: XibLoaderView {
   override func commonInit() {
     super.commonInit()
     self.walletInfoLabel.text = ""
+    self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
+    self.pendingTxNotiView.isHidden = true
     self.updateUI()
 
     NotificationCenter.default.addObserver(
@@ -89,6 +93,10 @@ class KNWalletHeaderView: XibLoaderView {
     self.walletIconImageView.image = UIImage(named: wallet.icon)
     let address = "\(wallet.address.prefix(10))......\(wallet.address.suffix(10))"
     self.walletInfoLabel.text = "\(address)\n\(wallet.name)"
+  }
+
+  func updateBadgeCounter(_ number: Int) {
+    self.pendingTxNotiView.isHidden = number == 0
   }
 
   @IBAction func scanQRCodePressed(_ sender: Any) {

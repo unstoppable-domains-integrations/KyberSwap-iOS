@@ -129,7 +129,7 @@ extension KNAppCoordinator {
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Notification) {
     if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
-    
+
     self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: balanceCoordinator.totalBalanceInUSD,
       totalBalanceInETH: balanceCoordinator.totalBalanceInETH
@@ -141,7 +141,7 @@ extension KNAppCoordinator {
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
-    
+
     self.exchangeCoordinator?.appCoordinatorUSDRateDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH
@@ -158,7 +158,7 @@ extension KNAppCoordinator {
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
     let ethBalance: Balance = balanceCoordinator.ethBalance
-    
+
     self.exchangeCoordinator?.appCoordinatorETHBalanceDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
@@ -177,7 +177,7 @@ extension KNAppCoordinator {
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
     let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
     let otherTokensBalance: [String: Balance] = balanceCoordinator.otherTokensBalance
-    
+
     self.exchangeCoordinator?.appCoordinatorTokenBalancesDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
@@ -212,6 +212,9 @@ extension KNAppCoordinator {
     if let tran = transaction, tran.state == .completed {
       self.session.transacionCoordinator?.forceFetchTokenTransactions()
     }
+    let transactions = self.session.transactionStorage.pendingObjects
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.balanceTabCoordinator.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
   @objc func tokenTransactionListDidUpdate(_ sender: Notification) {

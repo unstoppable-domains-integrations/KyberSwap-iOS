@@ -50,8 +50,8 @@ class KNPasscodeViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.updateUI()
     if self.viewType == .authenticate {
       if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {

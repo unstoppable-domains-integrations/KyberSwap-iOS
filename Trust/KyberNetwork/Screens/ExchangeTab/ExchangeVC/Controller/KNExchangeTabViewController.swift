@@ -494,6 +494,11 @@ extension KNExchangeTabViewController {
       subTitle: self.viewModel.slippageRateText
     )
   }
+
+  func coordinatorDidUpdatePendingTransactions(_ transactions: [Transaction]) {
+    self.hamburgerMenu.update(transactions: transactions)
+    self.walletHeaderView.updateBadgeCounter(transactions.count)
+  }
 }
 
 // MARK: UITextFieldDelegate

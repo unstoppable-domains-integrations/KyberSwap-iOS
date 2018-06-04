@@ -208,6 +208,11 @@ extension KNBalanceTabViewController {
     self.viewModel.coinTickersDidUpdate()
     self.tokensBalanceCollectionView.reloadData()
   }
+
+  func coordinatorUpdatePendingTransactions(_ transactions: [Transaction]) {
+    self.hamburgerMenu.update(transactions: transactions)
+    self.walletHeaderView.updateBadgeCounter(transactions.count)
+  }
 }
 
 // MARK: Update UIs

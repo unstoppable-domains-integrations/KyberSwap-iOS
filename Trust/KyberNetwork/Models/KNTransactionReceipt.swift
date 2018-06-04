@@ -77,8 +77,8 @@ extension KNTransactionReceipt {
         contract: nil,
         type: "exchange",
         value: valueString,
-        symbol: nil,
-        name: nil,
+        symbol: transaction.localizedOperations.first?.symbol,
+        name: transaction.localizedOperations.first?.name,
         decimals: decimals
       )
       return [localObject]

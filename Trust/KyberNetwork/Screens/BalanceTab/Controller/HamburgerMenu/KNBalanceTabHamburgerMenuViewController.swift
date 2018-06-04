@@ -10,39 +10,67 @@ protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
 }
 
 struct KNBalanceTabHamburgerMenuViewModel {
+
+  var pendingTransactions: [Transaction] = []
   var wallets: [KNWalletObject]
   var currentWallet: KNWalletObject
 
-  init(walletObjects: [KNWalletObject], currentWallet: KNWalletObject) {
+  init(
+    walletObjects: [KNWalletObject],
+    currentWallet: KNWalletObject,
+    transactions: [Transaction] = []) {
     self.wallets = walletObjects
     self.currentWallet = currentWallet
+    self.pendingTransactions = transactions
   }
 
   func wallet(at row: Int) -> KNWalletObject {
     return self.wallets[row]
   }
 
-  var numberRows: Int {
+  var numberWalletRows: Int {
     return self.wallets.count
   }
 
-  var rowHeight: CGFloat {
+  var walletCellRowHeight: CGFloat {
     return 46.0
   }
 
-  var tableViewHeight: CGFloat {
-    return self.rowHeight * CGFloat(self.numberRows)
+  var walletTableViewHeight: CGFloat {
+    return self.walletCellRowHeight * CGFloat(self.numberWalletRows)
   }
 
   mutating func update(wallets: [KNWalletObject], currentWallet: KNWalletObject) {
     self.wallets = wallets
     self.currentWallet = currentWallet
   }
+
+  func transaction(at row: Int) -> Transaction {
+    return self.pendingTransactions[row]
+  }
+
+  var numberTransactions: Int {
+    return min(self.pendingTransactions.count, 2)
+  }
+
+  var isTransactionTableHidden: Bool {
+    return self.numberTransactions == 0
+  }
+
+  mutating func update(transactions: [Transaction]) {
+    self.pendingTransactions = transactions
+  }
 }
 
 class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
-  fileprivate let cellID: String = "KNBalanceTabHamburgerMenuTableViewCellID"
+  fileprivate let kWalletTableViewCellID: String = "kKNBalanceTabHamburgerMenuTableViewCellID"
+  fileprivate let kPendingTableViewCellID: String = "kPendingTableViewCellID"
+
+  @IBOutlet weak var pendingTransactionContainerView: UIView!
+  @IBOutlet weak var noPendingTransactionLabel: UILabel!
+  @IBOutlet weak var pendingTableView: UITableView!
+  @IBOutlet weak var allTransactionButton: UIButton!
 
   @IBOutlet weak var hamburgerView: UIView!
   @IBOutlet weak var walletListTableView: UITableView!
@@ -80,11 +108,19 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     tapGesture.delegate = self
     self.view.addGestureRecognizer(tapGesture)
 
-    self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
-    self.walletListTableView.rowHeight = self.viewModel.rowHeight
+    self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
+    self.walletListTableView.rowHeight = self.viewModel.walletCellRowHeight
     self.walletListTableView.delegate = self
     self.walletListTableView.dataSource = self
-    self.walletListTableViewHeightConstraint.constant = viewModel.tableViewHeight
+    self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
+    self.walletListTableView.rounded(color: .lightGray, width: 1, radius: 0)
+
+    self.pendingTableView.register(UITableViewCell.self, forCellReuseIdentifier: kPendingTableViewCellID)
+    self.pendingTableView.rowHeight = 28
+    self.pendingTableView.delegate = self
+    self.pendingTableView.dataSource = self
+
+    self.update(transactions: self.viewModel.pendingTransactions)
 
     self.view.layoutIfNeeded()
   }
@@ -99,9 +135,17 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
   func update(walletObjects: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: walletObjects, currentWallet: currentWallet)
-    self.walletListTableViewHeightConstraint.constant = viewModel.tableViewHeight
+    self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
     self.walletListTableView.reloadData()
     self.view.layoutIfNeeded()
+  }
+
+  func update(transactions: [Transaction]) {
+    self.viewModel.update(transactions: transactions)
+    self.pendingTableView.isHidden = self.viewModel.isTransactionTableHidden
+    self.allTransactionButton.isHidden = self.viewModel.isTransactionTableHidden
+    self.noPendingTransactionLabel.isHidden = !self.viewModel.isTransactionTableHidden
+    if !self.pendingTableView.isHidden { self.pendingTableView.reloadData() }
   }
 
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {
@@ -155,6 +199,15 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBAction func settingsButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuDidSelectSettings(sender: self)
+    }
+  }
+
+  @IBAction func allTransactionButtonPressed(_ sender: Any) {
+    self.hideMenu(animated: true) {
+      let urlString = KNEnvironment.default.etherScanIOURLString + "address/" + self.viewModel.currentWallet.address
+      if let url = URL(string: urlString) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      }
     }
   }
 
@@ -219,10 +272,17 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    let wallet = self.viewModel.wallet(at: indexPath.row)
-    self.hideMenu(animated: true) {
-      if wallet != self.viewModel.currentWallet {
-        self.delegate?.balanceTabHamburgerMenuDidSelect(wallet: wallet, sender: self)
+    if tableView == self.walletListTableView {
+      let wallet = self.viewModel.wallet(at: indexPath.row)
+      self.hideMenu(animated: true) {
+        if wallet != self.viewModel.currentWallet {
+          self.delegate?.balanceTabHamburgerMenuDidSelect(wallet: wallet, sender: self)
+        }
+      }
+    } else {
+      let tx = self.viewModel.transaction(at: indexPath.row).id
+      if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "tx/\(tx)") {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
       }
     }
   }
@@ -234,7 +294,10 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.numberRows
+    if tableView == self.walletListTableView {
+      return self.viewModel.numberWalletRows
+    }
+    return self.viewModel.numberTransactions
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -242,17 +305,26 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-    let wallet = self.viewModel.wallet(at: indexPath.row)
-    cell.imageView?.image = UIImage(named: wallet.icon)
-    cell.textLabel?.text = wallet.name
-    if wallet == self.viewModel.currentWallet {
-      cell.backgroundColor = UIColor(hex: "edfbf6")
-      cell.accessoryType = .checkmark
-    } else {
-      cell.backgroundColor = .clear
-      cell.accessoryType = .none
+    if tableView == self.walletListTableView {
+      let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
+      let wallet = self.viewModel.wallet(at: indexPath.row)
+      cell.imageView?.image = UIImage(named: wallet.icon)
+      cell.textLabel?.text = wallet.name
+      if wallet == self.viewModel.currentWallet {
+        cell.backgroundColor = UIColor(hex: "edfbf6")
+        cell.accessoryType = .checkmark
+      } else {
+        cell.backgroundColor = .clear
+        cell.accessoryType = .none
+      }
+      return cell
     }
+    let cell = tableView.dequeueReusableCell(withIdentifier: kPendingTableViewCellID, for: indexPath)
+    cell.imageView?.image = UIImage(named: "loading_icon")
+    let transaction = self.viewModel.transaction(at: indexPath.row)
+    cell.imageView?.startRotating()
+    cell.textLabel?.text = transaction.shortDesc
+    cell.backgroundColor = UIColor.clear
     return cell
   }
 }

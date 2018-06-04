@@ -509,8 +509,8 @@ extension UnconfirmedTransaction {
       contract: nil,
       type: "transfer",
       value: self.value.fullString(decimals: token.decimals),
-      symbol: nil,
-      name: nil,
+      symbol: token.symbol,
+      name: token.name,
       decimals: token.decimals
     )
     return Transaction(

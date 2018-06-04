@@ -94,7 +94,7 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
   }
 
   func walletViewController(_ controller: KNWalletViewController, didClickWallet sender: Any) {
-    if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "/address/" + self.session.wallet.address.description) {
+    if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "address/" + self.session.wallet.address.description) {
       let controller = SFSafariViewController(url: url)
       self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
     }

@@ -116,6 +116,10 @@ extension KNBalanceTabCoordinator {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(self.session.tokenStorage.tokens)
   }
+
+  func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
+    self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
+  }
 }
 
 extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {

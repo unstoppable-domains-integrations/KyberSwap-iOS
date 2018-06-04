@@ -77,4 +77,12 @@ extension Transaction {
     var operation: LocalizedOperationObject? {
         return localizedOperations.first
     }
+
+    var shortDesc: String {
+      guard let object = self.localizedOperations.first else { return "" }
+      if object.type == "transfer" {
+        return "\(object.symbol ?? "") -> \(self.to.prefix(10))..."
+      }
+      return "\(object.symbol ?? "") -> \(object.name ?? "")"
+    }
 }

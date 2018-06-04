@@ -13,9 +13,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBalanceTabHamburgerMenuViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="addWalletButton" destination="Rco-Sw-vF2" id="Mga-8N-KFb"/>
+                <outlet property="allTransactionButton" destination="f9M-BC-Uae" id="iRL-OY-7pJ"/>
                 <outlet property="hamburgerMenuViewTrailingConstraint" destination="md2-TE-yB9" id="309-qb-7aO"/>
                 <outlet property="hamburgerView" destination="cBS-qe-UMl" id="8LU-Qd-IMM"/>
+                <outlet property="noPendingTransactionLabel" destination="o9i-tN-7SW" id="K01-s1-xnC"/>
                 <outlet property="panGestureRecognizer" destination="0Ip-B4-Knc" id="uUT-MX-DDw"/>
+                <outlet property="pendingTableView" destination="vuO-W4-4eH" id="tzz-TW-fL1"/>
+                <outlet property="pendingTransactionContainerView" destination="sad-Rt-dMF" id="syv-Sc-NbX"/>
                 <outlet property="sendTokenButton" destination="U4x-Dq-HfY" id="vcj-Np-vTh"/>
                 <outlet property="settingsButton" destination="fnT-P7-tl2" id="snZ-vi-axz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -31,16 +35,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBS-qe-UMl">
                     <rect key="frame" x="155" y="0.0" width="220" height="667"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cWZ-m5-3ET">
-                            <rect key="frame" x="0.0" y="40" width="220" height="240"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="240" id="Uyb-6Y-bW6"/>
-                            </constraints>
-                            <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnT-P7-tl2">
-                            <rect key="frame" x="0.0" y="322" width="220" height="42"/>
+                            <rect key="frame" x="0.0" y="402" width="220" height="42"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="AUy-vk-OOF"/>
@@ -56,7 +52,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rco-Sw-vF2">
-                            <rect key="frame" x="0.0" y="280" width="220" height="42"/>
+                            <rect key="frame" x="0.0" y="360" width="220" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="SiO-8D-gwn"/>
                             </constraints>
@@ -70,7 +66,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4x-Dq-HfY">
-                            <rect key="frame" x="0.0" y="365" width="220" height="42"/>
+                            <rect key="frame" x="0.0" y="445" width="220" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="Rz7-OR-B3M"/>
                             </constraints>
@@ -83,15 +79,69 @@
                                 <action selector="sendTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="zto-R2-0VL"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sad-Rt-dMF">
+                            <rect key="frame" x="0.0" y="40" width="220" height="80"/>
+                            <subviews>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vuO-W4-4eH">
+                                    <rect key="frame" x="0.0" y="0.0" width="220" height="56"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="56" id="7i3-ur-TF4"/>
+                                    </constraints>
+                                </tableView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No pending transaction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9i-tN-7SW">
+                                    <rect key="frame" x="16" y="31.5" width="188" height="17"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f9M-BC-Uae">
+                                    <rect key="frame" x="101" y="51" width="103" height="29"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title="All Transactions">
+                                        <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="allTransactionButtonPressed:" destination="-1" eventType="touchUpInside" id="JFg-CL-FmU"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="vuO-W4-4eH" secondAttribute="bottom" constant="24" id="1ck-33-VOM"/>
+                                <constraint firstItem="vuO-W4-4eH" firstAttribute="top" secondItem="sad-Rt-dMF" secondAttribute="top" id="3S2-0c-8kQ"/>
+                                <constraint firstItem="o9i-tN-7SW" firstAttribute="centerX" secondItem="sad-Rt-dMF" secondAttribute="centerX" id="DVA-Ts-xah"/>
+                                <constraint firstAttribute="trailing" secondItem="o9i-tN-7SW" secondAttribute="trailing" constant="16" id="IGM-TP-GMr"/>
+                                <constraint firstItem="vuO-W4-4eH" firstAttribute="leading" secondItem="sad-Rt-dMF" secondAttribute="leading" id="RF2-mB-yNZ"/>
+                                <constraint firstItem="o9i-tN-7SW" firstAttribute="centerY" secondItem="sad-Rt-dMF" secondAttribute="centerY" id="Tec-cE-gQx"/>
+                                <constraint firstAttribute="height" constant="80" id="ZaE-pv-OSJ"/>
+                                <constraint firstItem="o9i-tN-7SW" firstAttribute="leading" secondItem="sad-Rt-dMF" secondAttribute="leading" constant="16" id="rO5-hX-S4h"/>
+                                <constraint firstAttribute="bottom" secondItem="f9M-BC-Uae" secondAttribute="bottom" id="sTc-mk-QuK"/>
+                                <constraint firstAttribute="trailing" secondItem="f9M-BC-Uae" secondAttribute="trailing" constant="16" id="wbT-jh-AAb"/>
+                                <constraint firstAttribute="trailing" secondItem="vuO-W4-4eH" secondAttribute="trailing" id="zaQ-PE-8RQ"/>
+                            </constraints>
+                        </view>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cWZ-m5-3ET">
+                            <rect key="frame" x="0.0" y="120" width="220" height="240"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="240" id="Uyb-6Y-bW6"/>
+                            </constraints>
+                            <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
                     </subviews>
                     <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="220" id="1yZ-xR-0cC"/>
                         <constraint firstAttribute="trailing" secondItem="fnT-P7-tl2" secondAttribute="trailing" id="49q-f4-zNa"/>
-                        <constraint firstItem="cWZ-m5-3ET" firstAttribute="top" secondItem="cBS-qe-UMl" secondAttribute="top" constant="40" id="GO5-EB-gQf"/>
+                        <constraint firstAttribute="trailing" secondItem="sad-Rt-dMF" secondAttribute="trailing" id="84M-xR-d9w"/>
+                        <constraint firstItem="cWZ-m5-3ET" firstAttribute="top" secondItem="sad-Rt-dMF" secondAttribute="bottom" id="CB0-Ll-PD0"/>
+                        <constraint firstItem="sad-Rt-dMF" firstAttribute="top" secondItem="cBS-qe-UMl" secondAttribute="top" constant="40" id="KxQ-P0-8xY"/>
                         <constraint firstItem="Rco-Sw-vF2" firstAttribute="top" secondItem="cWZ-m5-3ET" secondAttribute="bottom" id="PED-kz-oId"/>
                         <constraint firstAttribute="trailing" secondItem="Rco-Sw-vF2" secondAttribute="trailing" id="X1o-iW-ddi"/>
                         <constraint firstItem="fnT-P7-tl2" firstAttribute="top" secondItem="Rco-Sw-vF2" secondAttribute="bottom" id="bAQ-3E-fxY"/>
+                        <constraint firstItem="sad-Rt-dMF" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="cCv-Gk-oeo"/>
                         <constraint firstAttribute="trailing" secondItem="U4x-Dq-HfY" secondAttribute="trailing" id="gJC-9U-7JG"/>
                         <constraint firstItem="fnT-P7-tl2" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="hhz-za-Wb1"/>
                         <constraint firstItem="Rco-Sw-vF2" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="mnS-ur-TlX"/>
@@ -113,6 +163,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="0Ip-B4-Knc" appends="YES" id="fyG-W6-iqr"/>
             </connections>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
         <panGestureRecognizer minimumNumberOfTouches="1" id="0Ip-B4-Knc">
             <connections>

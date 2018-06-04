@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="containerView" destination="iN0-l3-epB" id="zUP-AI-pEG"/>
                 <outlet property="debugButton" destination="0pa-Jt-4RB" id="4DP-Mp-rSh"/>
+                <outlet property="pendingTxNotiView" destination="NwP-Dr-Mup" id="moE-rk-ojt"/>
                 <outlet property="qrcodeButton" destination="lI8-jW-MUg" id="39o-Te-98z"/>
                 <outlet property="walletIconImageView" destination="sVX-1y-r9w" id="SLd-zo-Xrm"/>
                 <outlet property="walletInfoLabel" destination="1uM-HE-nOP" id="iRd-pa-yLH"/>
@@ -65,21 +66,32 @@
                         <action selector="debugButtonPressed:" destination="-1" eventType="touchUpInside" id="hej-7t-7gM"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NwP-Dr-Mup">
+                    <rect key="frame" x="350" y="58" width="10" height="10"/>
+                    <color key="backgroundColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="10" id="3Kj-DU-6y4"/>
+                        <constraint firstAttribute="height" constant="10" id="ZVb-dX-TUw"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="sVX-1y-r9w" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="8a8-Lw-2Zq"/>
                 <constraint firstItem="0pa-Jt-4RB" firstAttribute="centerY" secondItem="Gag-vd-BIX" secondAttribute="centerY" id="Dee-DN-gIK"/>
+                <constraint firstItem="NwP-Dr-Mup" firstAttribute="top" secondItem="Gag-vd-BIX" secondAttribute="bottom" constant="-5" id="Dyv-3C-QHM"/>
                 <constraint firstItem="1uM-HE-nOP" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="Ozh-Ui-S9y"/>
                 <constraint firstItem="lI8-jW-MUg" firstAttribute="leading" secondItem="1uM-HE-nOP" secondAttribute="trailing" constant="10" id="Vlu-LQ-neX"/>
                 <constraint firstItem="lI8-jW-MUg" firstAttribute="top" secondItem="1uM-HE-nOP" secondAttribute="top" constant="-2" id="Xt7-Yj-0y2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Gag-vd-BIX" secondAttribute="trailing" constant="20" id="ZZY-1v-Ma0"/>
+                <constraint firstItem="NwP-Dr-Mup" firstAttribute="trailing" secondItem="Gag-vd-BIX" secondAttribute="trailing" constant="5" id="bqy-fd-Mwf"/>
                 <constraint firstItem="sVX-1y-r9w" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="foB-Zl-qfU"/>
                 <constraint firstItem="Gag-vd-BIX" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="r6i-yJ-6J3"/>
                 <constraint firstItem="Gag-vd-BIX" firstAttribute="leading" secondItem="0pa-Jt-4RB" secondAttribute="trailing" constant="10" id="uUM-YP-VyA"/>
                 <constraint firstItem="1uM-HE-nOP" firstAttribute="leading" secondItem="sVX-1y-r9w" secondAttribute="trailing" constant="10" id="yUK-1J-q0c"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="33.5" y="82.5"/>
         </view>
     </objects>
     <resources>

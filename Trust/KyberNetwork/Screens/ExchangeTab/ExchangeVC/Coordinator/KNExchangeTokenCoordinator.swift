@@ -116,6 +116,10 @@ extension KNExchangeTokenCoordinator {
     self.tokens = tokenObjects
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
+
+  func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
+    self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
+  }
 }
 
 // MARK: Network requests
