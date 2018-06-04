@@ -76,10 +76,10 @@ class KNTransactionStatusView: XibLoaderView {
   }
 
   func updateView(with status: KNTransactionStatus, txHash: String?, details: String? = nil) {
-    if let oldTxHash = self.txHash, let newTxHash = txHash, oldTxHash != newTxHash { return }
+//    if let oldTxHash = self.txHash, let newTxHash = txHash, oldTxHash != newTxHash { return }
     // after broadcasting, should be mining
 //    if self.status == .broadcasting, status != .pending { return }
-    if self.txHash != nil && txHash == nil { return }
+//    if self.txHash != nil && txHash == nil { return }
     self.status = status
     self.txHash = txHash
     self.txStatusLabel.text = status.rawValue

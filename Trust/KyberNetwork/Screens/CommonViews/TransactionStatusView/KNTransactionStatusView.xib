@@ -45,13 +45,13 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcasting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuF-hc-5eB">
-                    <rect key="frame" x="91" y="36" width="103.5" height="19.5"/>
+                    <rect key="frame" x="91" y="32.5" width="103.5" height="19.5"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                     <color key="textColor" red="0.047058823529411764" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction being broadcast" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN5-jA-Jg2">
-                    <rect key="frame" x="91" y="57.5" width="268" height="17"/>
+                    <rect key="frame" x="91" y="54" width="268" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -71,10 +71,10 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="iN5-jA-Jg2" firstAttribute="top" secondItem="wuF-hc-5eB" secondAttribute="bottom" constant="2" id="9ky-gk-9NT"/>
-                <constraint firstItem="wuF-hc-5eB" firstAttribute="top" secondItem="gz9-61-0jd" secondAttribute="top" constant="16" id="A5b-xQ-zSE"/>
                 <constraint firstItem="Ahq-sb-TIs" firstAttribute="top" secondItem="gz9-61-0jd" secondAttribute="top" constant="8" id="Yi5-3n-eir"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iN5-jA-Jg2" secondAttribute="trailing" constant="16" id="bCc-De-Wkz"/>
                 <constraint firstItem="gz9-61-0jd" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ceR-r3-MES"/>
+                <constraint firstItem="iN5-jA-Jg2" firstAttribute="centerY" secondItem="gz9-61-0jd" secondAttribute="centerY" constant="5" id="dPh-6a-MbF"/>
                 <constraint firstItem="gz9-61-0jd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="gyk-Iu-gYy"/>
                 <constraint firstItem="iN5-jA-Jg2" firstAttribute="leading" secondItem="wuF-hc-5eB" secondAttribute="leading" id="ha5-TI-ksV"/>
                 <constraint firstItem="wuF-hc-5eB" firstAttribute="leading" secondItem="gz9-61-0jd" secondAttribute="trailing" constant="16" id="vFT-mn-Uxu"/>
