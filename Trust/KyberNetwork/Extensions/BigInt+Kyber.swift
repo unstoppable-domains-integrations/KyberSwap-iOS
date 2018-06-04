@@ -4,6 +4,20 @@ import BigInt
 
 extension BigInt {
 
+  func string(units: EthereumUnit, minFractionDigits: Int, maxFractionDigits: Int) -> String {
+    let formatter = EtherNumberFormatter.full
+    formatter.maximumFractionDigits = maxFractionDigits
+    formatter.minimumFractionDigits = minFractionDigits
+    return formatter.string(from: self, units: units)
+  }
+
+  func string(decimals: Int, minFractionDigits: Int, maxFractionDigits: Int) -> String {
+    let formatter = EtherNumberFormatter.full
+    formatter.maximumFractionDigits = maxFractionDigits
+    formatter.minimumFractionDigits = minFractionDigits
+    return formatter.string(from: self, decimals: decimals)
+  }
+
   func shortString(units: EthereumUnit, maxFractionDigits: Int = 5) -> String {
     let formatter = EtherNumberFormatter.short
     formatter.maximumFractionDigits = maxFractionDigits
