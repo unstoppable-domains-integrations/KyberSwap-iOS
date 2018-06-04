@@ -63,10 +63,22 @@
                         <action selector="termAndConditionButtonPressed:" destination="-1" eventType="touchUpInside" id="bFH-li-6Cc"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0di-8l-vR4">
+                    <rect key="frame" x="312" y="40" width="43" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Debug">
+                        <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="debugPressed:" destination="-1" eventType="touchUpInside" id="frG-ca-60L"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="0di-8l-vR4" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="0hv-pI-JRJ"/>
                 <constraint firstItem="hSF-ar-Svx" firstAttribute="leading" secondItem="7nN-NM-xeF" secondAttribute="leading" id="BZ9-w4-Dkc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0di-8l-vR4" secondAttribute="trailing" constant="20" id="RP4-xf-y34"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="crj-sf-UWc"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-40" id="ml0-6c-aBZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="y2C-Xx-uQV" secondAttribute="bottom" constant="30" id="uaY-j6-SmU"/>

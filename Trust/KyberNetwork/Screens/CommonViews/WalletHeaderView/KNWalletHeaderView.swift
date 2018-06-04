@@ -2,24 +2,86 @@
 
 import UIKit
 
-protocol KNWalletHeaderViewDelegate: class {
+@objc protocol KNWalletHeaderViewDelegate: class {
   func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView)
   func walletHeaderWalletListPressed(wallet: KNWalletObject, sender: KNWalletHeaderView)
+  @objc optional func walletHeaderDebugButtonPressed(sender: KNWalletHeaderView)
+}
+
+struct KNWalletHeaderViewModel {
+  var type = KNAppTracker.walletHeaderView()
+
+  init() {}
+
+  mutating func updateType() {
+    self.type = KNAppTracker.walletHeaderView()
+  }
+
+  var backgroundColor: UIColor {
+    return type == "white" ? UIColor.white : UIColor(hex: "31cb9e")
+  }
+
+  var tintColor: UIColor {
+    return type == "white" ? UIColor(hex: "141927") : UIColor.white
+  }
+
+  var barcodeIcon: String {
+    return type == "white" ? "barcode_black" : "barcode_white"
+  }
+
+  var walletListIcon: String {
+    return type == "white" ? "burger_menu_black" : "burger_menu"
+  }
 }
 
 class KNWalletHeaderView: XibLoaderView {
+  @IBOutlet var containerView: UIView!
   @IBOutlet weak var walletIconImageView: UIImageView!
   @IBOutlet weak var walletInfoLabel: UILabel!
+  @IBOutlet weak var debugButton: UIButton!
+  @IBOutlet weak var qrcodeButton: UIButton!
+  @IBOutlet weak var walletListButton: UIButton!
 
   weak var delegate: KNWalletHeaderViewDelegate?
+  fileprivate var viewModel = KNWalletHeaderViewModel()
 
   fileprivate var wallet: KNWalletObject?
 
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(rawValue: kWalletHeaderViewDidChangeTypeNotificationKey),
+      object: nil
+    )
+  }
+
   override func commonInit() {
     super.commonInit()
-    self.backgroundColor = UIColor(hex: "0FAAA2")
-    self.walletIconImageView.rounded(radius: self.walletIconImageView.frame.width / 2.0)
     self.walletInfoLabel.text = ""
+    self.updateUI()
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.walletHeaderViewTypeDidChange(_:)),
+      name: NSNotification.Name(rawValue: kWalletHeaderViewDidChangeTypeNotificationKey),
+      object: nil
+    )
+  }
+
+  fileprivate func updateUI() {
+    self.containerView.backgroundColor = self.viewModel.backgroundColor
+    self.walletIconImageView.rounded(
+      color: self.viewModel.tintColor,
+      width: 1,
+      radius: self.walletIconImageView.frame.width / 2.0
+    )
+    self.walletInfoLabel.textColor = self.viewModel.tintColor
+    // change tint color is not working properly
+    self.qrcodeButton.setImage(UIImage(named: self.viewModel.barcodeIcon), for: .normal)
+    self.walletListButton.setImage(UIImage(named: self.viewModel.walletListIcon), for: .normal)
+
+    self.debugButton.setTitleColor(self.viewModel.tintColor, for: .normal)
+    self.layoutIfNeeded()
   }
 
   func updateView(with wallet: KNWalletObject) {
@@ -37,5 +99,15 @@ class KNWalletHeaderView: XibLoaderView {
   @IBAction func walletListButtonPressed(_ sender: Any) {
     guard let wallet = self.wallet else { return }
     self.delegate?.walletHeaderWalletListPressed(wallet: wallet, sender: self)
+  }
+
+  @IBAction func debugButtonPressed(_ sender: Any) {
+    self.delegate?.walletHeaderDebugButtonPressed?(sender: self)
+  }
+
+  // MARK: For debugging only
+  @objc func walletHeaderViewTypeDidChange(_ sender: Notification) {
+    self.viewModel.updateType()
+    self.updateUI()
   }
 }

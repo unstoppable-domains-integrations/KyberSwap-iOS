@@ -54,10 +54,6 @@ class KNBalanceTabViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
@@ -330,6 +326,12 @@ extension KNBalanceTabViewController: UIPickerViewDataSource {
 }
 
 extension KNBalanceTabViewController: KNWalletHeaderViewDelegate {
+
+  func walletHeaderDebugButtonPressed(sender: KNWalletHeaderView) {
+    let debugVC = KNDebugMenuViewController()
+    self.present(debugVC, animated: true, completion: nil)
+  }
+
   func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
     self.delegate?.balanceTabDidSelectQRCodeButton(in: self)
   }

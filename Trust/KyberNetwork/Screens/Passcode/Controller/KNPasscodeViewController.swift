@@ -45,10 +45,6 @@ class KNPasscodeViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()

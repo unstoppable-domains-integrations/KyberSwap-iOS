@@ -23,6 +23,9 @@ let kExchangeUSDRateNotificationKey = "kExchangeUSDRateNotificationKey"
 
 let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotificationKey"
 
+// Setup
+let kWalletHeaderViewDidChangeTypeNotificationKey = "kWalletHeaderViewDidChangeTypeNotificationKey"
+
 class KNNotificationUtil {
 
   static func postNotification(for key: String, object: Any? = nil, userInfo: [AnyHashable: Any]? = nil) {

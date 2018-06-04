@@ -6,10 +6,6 @@ class KNSplashScreenViewController: UIViewController {
 
   @IBOutlet weak var splashLogoImageView: UIImageView!
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return UIStatusBarStyle.default
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.white

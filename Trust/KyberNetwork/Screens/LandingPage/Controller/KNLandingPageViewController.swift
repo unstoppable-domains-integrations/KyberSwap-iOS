@@ -12,10 +12,6 @@ class KNLandingPageViewController: KNBaseViewController {
 
   weak var delegate: KNLandingPageViewControllerDelegate?
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return UIStatusBarStyle.default
-  }
-
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
@@ -37,5 +33,10 @@ class KNLandingPageViewController: KNBaseViewController {
 
   @IBAction func termAndConditionButtonPressed(_ sender: Any) {
     self.delegate?.landingPageTermAndConditionPressed(sender: self)
+  }
+
+  @IBAction func debugPressed(_ sender: Any) {
+    let debugVC = KNDebugMenuViewController()
+    self.present(debugVC, animated: true, completion: nil)
   }
 }

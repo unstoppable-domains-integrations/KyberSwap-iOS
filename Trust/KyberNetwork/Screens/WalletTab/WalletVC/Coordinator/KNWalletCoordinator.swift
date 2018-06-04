@@ -7,7 +7,6 @@ import SafariServices
 protocol KNWalletCoordinatorDelegate: class {
   func walletCoordinatorDidClickExit()
   func walletCoordinatorDidClickExchange(token: TokenObject)
-  func walletCoordinatorDidClickTransfer(token: TokenObject)
   func walletCoordinatorDidClickReceive(token: TokenObject)
 }
 
@@ -105,12 +104,11 @@ extension KNWalletCoordinator: KNWalletViewControllerDelegate {
     self.delegate?.walletCoordinatorDidClickExchange(token: token)
   }
 
-  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: TokenObject) {
-    self.delegate?.walletCoordinatorDidClickTransfer(token: token)
-  }
-
   func walletViewController(_ controller: KNWalletViewController, didClickReceive token: TokenObject) {
     self.delegate?.walletCoordinatorDidClickReceive(token: token)
+  }
+
+  func walletViewController(_ controller: KNWalletViewController, didClickTransfer token: TokenObject) {
   }
 
   func walletViewController(_ controller: KNWalletViewController, didClickAddTokenManually sender: Any) {

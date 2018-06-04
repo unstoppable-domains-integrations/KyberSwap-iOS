@@ -18,10 +18,6 @@ class KNImportWalletViewController: KNBaseViewController {
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var pageControl: UIPageControl!
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()

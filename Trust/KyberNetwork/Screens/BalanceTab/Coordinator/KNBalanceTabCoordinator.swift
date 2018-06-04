@@ -5,7 +5,6 @@ import BigInt
 
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject)
-  func balanceTabCoordinatorShouldOpenSend(for tokenObject: TokenObject)
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
 }
 
