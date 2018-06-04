@@ -39,7 +39,6 @@ class KNBackUpWalletViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.iconImageView.image = UIImage(named: self.viewModel.iconName)

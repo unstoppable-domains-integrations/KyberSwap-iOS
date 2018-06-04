@@ -39,6 +39,7 @@ class KNDebugMenuViewController: KNBaseViewController {
 
   @IBAction func applyPressed(_ sender: Any) {
     if self.newEnvironment == self.environment && self.newWalletHeaderView == self.walletHeaderView {
+      self.dismiss(animated: true, completion: nil)
       return
     }
     let alertController = UIAlertController(title: "", message: "Applying changes environment could restart the app", preferredStyle: .alert)
@@ -47,8 +48,9 @@ class KNDebugMenuViewController: KNBaseViewController {
       KNAppTracker.updateExternalEnvironment(self.newEnvironment)
       KNAppTracker.updateWalletHeaderView(self.newWalletHeaderView)
       KNNotificationUtil.postNotification(for: kWalletHeaderViewDidChangeTypeNotificationKey)
-      if self.newEnvironment != self.environment { exit(0) }
-      else {
+      if self.newEnvironment != self.environment {
+        exit(0)
+      } else {
         self.dismiss(animated: true, completion: nil)
       }
     }))

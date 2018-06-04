@@ -14,7 +14,8 @@ class KNSearchTokenTableViewCell: UITableViewCell {
   }
 
   func updateCell(with token: TokenObject) {
-    self.imageView?.image = UIImage(named: token.icon)
+    //TODO: remove default value
+    self.imageView?.image = UIImage(named: token.icon) ?? UIImage(named: "accounts_active")
     self.textLabel?.text = token.symbol
     self.tokenNameLabel.text = token.name
     self.layoutIfNeeded()

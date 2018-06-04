@@ -6,6 +6,7 @@ import TrustKeystore
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
+  func exchangeTokenCoordinatorDidSelectAddWallet()
 }
 
 class KNExchangeTokenCoordinator: Coordinator {
@@ -17,7 +18,10 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   var coordinators: [Coordinator] = []
 
+  fileprivate var balances: [String: Balance] = [:]
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
+
+  fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 
   lazy var rootViewController: KNExchangeTabViewController = {
     let viewModel = KNExchangeTabViewModel(
@@ -87,12 +91,16 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
     self.rootViewController.coordinatorUpdateTokenBalance(otherTokensBalance)
+    otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
+    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
 
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
     if let eth = self.tokens.first(where: { $0.isETH }) {
+      self.balances[eth.contract] = ethBalance
       self.rootViewController.coordinatorUpdateTokenBalance([eth.contract: ethBalance])
     }
+    self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
   func appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
@@ -106,6 +114,7 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.tokens = tokenObjects
+    self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 }
 
@@ -325,8 +334,19 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     //TODO: Open settings
   }
 
-  func exchangeTabViewControllerDidPressedManageWallet(sender: KNExchangeTabViewController) {
-    //TODO: Open manage wallet
+  func exchangeTabViewControllerDidPressedSendToken(sender: KNExchangeTabViewController) {
+    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      balances: self.balances,
+      from: self.session.tokenStorage.ethToken
+    )
+    self.sendTokenCoordinator?.delegate = self
+    self.sendTokenCoordinator?.start()
+  }
+
+  func exchangeTabViewControllerDidPressedAddWallet(sender: KNExchangeTabViewController) {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddWallet()
   }
 
   func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController) {
@@ -360,6 +380,13 @@ extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
   }
 }
 
+// MARK: Send Token Coordinator Delegate
+extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidPressBack() {
+    self.navigationController.popViewController(animated: true)
+  }
+}
+
 // MARK: Set slippage rate
 extension KNExchangeTokenCoordinator: KNSetSlippageRateViewControllerDelegate {
   func setSlippageRateViewControllerDidReturn(slippageRate: Double?) {
@@ -367,5 +394,14 @@ extension KNExchangeTokenCoordinator: KNSetSlippageRateViewControllerDelegate {
       guard let rate = slippageRate else { return }
       self.rootViewController.coordinatorExchangeTokenDidUpdateSlippageRate(rate)
     }
+  }
+}
+
+// MARK: Add new wallet delegate
+extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
+  func addNewWalletCoordinator(add wallet: Wallet) {
+    let address = wallet.address.description
+    let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
   }
 }

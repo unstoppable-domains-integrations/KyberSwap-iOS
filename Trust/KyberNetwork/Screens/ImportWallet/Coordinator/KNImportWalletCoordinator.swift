@@ -4,6 +4,7 @@ import UIKit
 
 protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: Wallet)
+  func importWalletCoordinatorDidClose()
 }
 
 class KNImportWalletCoordinator: Coordinator {
@@ -33,7 +34,9 @@ class KNImportWalletCoordinator: Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true) {
+      self.delegate?.importWalletCoordinatorDidClose()
+    }
   }
 }
 
@@ -53,7 +56,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   }
 
   func importWalletViewControllerDidNext(sender: KNImportWalletViewController, seeds: [String]) {
-    let password = PasswordGenerator.generateRandom()
+    let password = "1234567890"//PasswordGenerator.generateRandom()
     let type = ImportType.mnemonic(words: seeds, password: password)
     self.importWallet(with: type)
   }

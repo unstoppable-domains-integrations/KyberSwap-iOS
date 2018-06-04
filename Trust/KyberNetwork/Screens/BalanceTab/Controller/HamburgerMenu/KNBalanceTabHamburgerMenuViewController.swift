@@ -4,7 +4,8 @@ import UIKit
 
 protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController)
-  func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController)
+  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController)
+  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController)
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController)
 }
 
@@ -47,7 +48,8 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var walletListTableView: UITableView!
   @IBOutlet weak var walletListTableViewHeightConstraint: NSLayoutConstraint!
 
-  @IBOutlet weak var manageWalletButton: UIButton!
+  @IBOutlet weak var addWalletButton: UIButton!
+  @IBOutlet weak var sendTokenButton: UIButton!
   @IBOutlet weak var settingsButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
@@ -77,9 +79,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backgroundViewTap(_:)))
     tapGesture.delegate = self
     self.view.addGestureRecognizer(tapGesture)
-
-    self.manageWalletButton.rounded(radius: 4.0)
-    self.settingsButton.rounded(radius: 4.0)
 
     self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
     self.walletListTableView.rowHeight = self.viewModel.rowHeight
@@ -141,12 +140,22 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     }
   }
 
-  @IBAction func manageWalletButtonPressed(_ sender: Any) {
-    self.delegate?.balanceTabHamburgerMenuDidSelectManageWallet(sender: self)
+  @IBAction func addWalletButtonPressed(_ sender: Any) {
+    self.hideMenu(animated: true) {
+      self.delegate?.balanceTabHamburgerMenuDidSelectAddWallet(sender: self)
+    }
+  }
+
+  @IBAction func sendTokenButtonPressed(_ sender: Any) {
+    self.hideMenu(animated: true) {
+      self.delegate?.balanceTabHamburgerMenuDidSelectSendToken(sender: self)
+    }
   }
 
   @IBAction func settingsButtonPressed(_ sender: Any) {
-    self.delegate?.balanceTabHamburgerMenuDidSelectSettings(sender: self)
+    self.hideMenu(animated: true) {
+      self.delegate?.balanceTabHamburgerMenuDidSelectSettings(sender: self)
+    }
   }
 
   func gestureScreenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -237,10 +246,11 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     let wallet = self.viewModel.wallet(at: indexPath.row)
     cell.imageView?.image = UIImage(named: wallet.icon)
     cell.textLabel?.text = wallet.name
-    cell.backgroundColor = .clear
     if wallet == self.viewModel.currentWallet {
+      cell.backgroundColor = UIColor(hex: "edfbf6")
       cell.accessoryType = .checkmark
     } else {
+      cell.backgroundColor = .clear
       cell.accessoryType = .none
     }
     return cell

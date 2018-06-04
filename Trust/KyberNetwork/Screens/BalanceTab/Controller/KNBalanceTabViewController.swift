@@ -5,11 +5,11 @@ import BigInt
 
 protocol KNBalanceTabViewControllerDelegate: class {
   func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController)
-//  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController)
   func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController)
   func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectManageWallet(in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectSendToken(in controller: KNBalanceTabViewController)
   func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectAddWallet(in controller: KNBalanceTabViewController)
 }
 
 class KNBalanceTabViewController: KNBaseViewController {
@@ -176,6 +176,7 @@ extension KNBalanceTabViewController {
     self.updateBalanceUI()
     self.updateFilterSortTokenButton()
     self.tokensBalanceCollectionView.reloadData()
+    self.walletHeaderView.updateView(with: viewModel.wallet)
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.wallet
@@ -342,17 +343,19 @@ extension KNBalanceTabViewController: KNWalletHeaderViewDelegate {
 }
 
 extension KNBalanceTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
+  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.balanceTabDidSelectAddWallet(in: self)
+  }
+
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.balanceTabDidSelectSettings(in: self)
   }
 
-  func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.balanceTabDidSelectManageWallet(in: self)
+  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.balanceTabDidSelectSendToken(in: self)
   }
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.balanceTabDidSelectWalletObject(wallet, in: self)
   }
 }
-
-

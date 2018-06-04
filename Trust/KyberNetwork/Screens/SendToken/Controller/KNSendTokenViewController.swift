@@ -119,7 +119,7 @@ class KNSendTokenViewController: KNBaseViewController {
     self.amountTextField.inputAccessoryView = self.toolBar
     self.amountTextField.becomeFirstResponder()
 
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName), for: .normal)
+    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
     self.tokenButton.setTitle(self.viewModel.displayToken, for: .normal)
 
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
@@ -223,7 +223,7 @@ extension KNSendTokenViewController {
   func updateUIFromTokenDidChange() {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName), for: .normal)
+    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
     self.tokenButton.setTitle(self.viewModel.displayToken, for: .normal)
     self.updateUIBalanceDidChange()
   }

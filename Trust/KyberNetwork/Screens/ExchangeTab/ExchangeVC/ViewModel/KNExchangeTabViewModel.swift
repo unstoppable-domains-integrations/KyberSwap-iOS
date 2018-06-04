@@ -5,6 +5,8 @@ import BigInt
 
 class KNExchangeTabViewModel {
 
+  let defaultTokenIconImg = UIImage(named: "accounts_active")
+
   var wallet: Wallet
   var walletObject: KNWalletObject
   var from: TokenObject

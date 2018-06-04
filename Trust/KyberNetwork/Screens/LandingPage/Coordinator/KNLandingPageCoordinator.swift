@@ -38,6 +38,16 @@ class KNLandingPageCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var createWalletCoordinator: KNCreateWalletCoordinator = {
+    let coordinator = KNCreateWalletCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore,
+      newWallet: self.newWallet
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+
   lazy var importWalletCoordinator: KNImportWalletCoordinator = {
     let coordinator = KNImportWalletCoordinator(
       navigationController: self.navigationController,
@@ -71,13 +81,25 @@ class KNLandingPageCoordinator: Coordinator {
       if KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == false {
         // Open back up wallet if it is created from app and not backed up yet
         self.newWallet = wallet
-        self.openBackUpWallet(wallet)
+        self.isCreate = true
+        self.createWalletCoordinator.updateNewWallet(wallet)
+        self.createWalletCoordinator.start()
       } else if KNPasscodeUtil.shared.currentPasscode() == nil {
         // In case user imported a wallet and kill the app during settings passcode
         self.newWallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first
         self.passcodeCoordinator.start()
       }
     }
+  }
+
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool) {
+    // add new wallet into database in case user exits app
+    let walletObject = KNWalletObject(address: wallet.address.description)
+    KNWalletStorage.shared.add(wallets: [walletObject])
+    self.newWallet = wallet
+    self.isCreate = isCreate
+    self.keystore.recentlyUsedWallet = wallet
+    self.openEnterWalletName(walletObject: walletObject)
   }
 
   // Enter wallet name (optional) for each imported/created wallet
@@ -93,62 +115,12 @@ class KNLandingPageCoordinator: Coordinator {
     }()
     self.navigationController.topViewController?.present(enterNameVC, animated: true, completion: nil)
   }
-
-  /**
-   Open back up wallet view for new wallet created from the app
-   Always using 12 words seeds to back up the wallet
-   */
-  fileprivate func openBackUpWallet(_ wallet: Wallet) {
-    let walletObject: KNWalletObject = {
-      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
-        return walletObject
-      }
-      return KNWalletObject(
-        address: wallet.address.description,
-        isBackedUp: false
-      )
-    }()
-
-    let account: Account! = {
-      if case .real(let acc) = wallet.type { return acc }
-      // Failed to get account from wallet, show enter name
-      self.openEnterWalletName(walletObject: walletObject)
-      fatalError("Wallet type is not real wallet")
-    }()
-
-    self.isCreate = true
-    self.newWallet = wallet
-    self.keystore.recentlyUsedWallet = wallet
-    KNWalletStorage.shared.add(wallets: [walletObject])
-
-    let seedResult = self.keystore.exportMnemonics(account: account)
-    if case .success(let mnemonics) = seedResult {
-      let seeds = mnemonics.split(separator: " ").map({ return String($0) })
-      let backUpVC: KNBackUpWalletViewController = {
-        let viewModel = KNBackUpWalletViewModel(seeds: seeds)
-        let controller = KNBackUpWalletViewController(viewModel: viewModel)
-        controller.delegate = self
-        return controller
-      }()
-      self.navigationController.pushViewController(backUpVC, animated: true)
-    } else {
-      // Failed to get seeds result, temporary open create name for wallet
-      self.openEnterWalletName(walletObject: walletObject)
-      fatalError("Can not get seeds from account")
-    }
-  }
 }
 
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landingPageCreateWalletPressed(sender: KNLandingPageViewController) {
-    let password = PasswordGenerator.generateRandom()
-    DispatchQueue.global(qos: .userInitiated).async {
-      let account = self.keystore.create12wordsAccount(with: password)
-      DispatchQueue.main.async {
-        let wallet = Wallet(type: WalletType.real(account))
-        self.openBackUpWallet(wallet)
-      }
-    }
+    self.createWalletCoordinator.updateNewWallet(nil)
+    self.createWalletCoordinator.start()
   }
 
   func landingPageImportWalletPressed(sender: KNLandingPageViewController) {
@@ -166,13 +138,10 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidImport(wallet: Wallet) {
-    // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description)
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.newWallet = wallet
-    self.isCreate = false
-    self.keystore.recentlyUsedWallet = wallet
-    self.openEnterWalletName(walletObject: walletObject)
+    self.addNewWallet(wallet, isCreate: false)
+  }
+
+  func importWalletCoordinatorDidClose() {
   }
 }
 
@@ -191,15 +160,10 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
   }
 }
 
-extension KNLandingPageCoordinator: KNBackUpWalletViewControllerDelegate {
-  func backupWalletViewControllerDidFinish() {
-    guard let wallet = self.newWallet else { return }
-    let walletObject = KNWalletObject(
-      address: wallet.address.description,
-      isBackedUp: true
-    )
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.openEnterWalletName(walletObject: walletObject)
+extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?) {
+    guard let wallet = wallet else { return }
+    self.addNewWallet(wallet, isCreate: true)
   }
 }
 

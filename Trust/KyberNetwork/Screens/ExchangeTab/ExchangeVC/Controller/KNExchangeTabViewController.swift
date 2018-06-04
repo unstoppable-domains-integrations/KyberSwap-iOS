@@ -1,5 +1,4 @@
 // Copyright SIX DAY LLC. All rights reserved.
-//swiftlint:disable file_length
 import UIKit
 import BigInt
 import Result
@@ -14,7 +13,8 @@ protocol KNExchangeTabViewControllerDelegate: class {
   func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt)
   func exchangeTabViewControllerDidPressedSlippageRate(slippageRate: Double)
   func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController)
-  func exchangeTabViewControllerDidPressedManageWallet(sender: KNExchangeTabViewController)
+  func exchangeTabViewControllerDidPressedSendToken(sender: KNExchangeTabViewController)
+  func exchangeTabViewControllerDidPressedAddWallet(sender: KNExchangeTabViewController)
   func exchangeTabViewControllerDidPressedSettings(sender: KNExchangeTabViewController)
 }
 
@@ -333,14 +333,15 @@ extension KNExchangeTabViewController {
       - updatedFrom: true if from token is changed
       - updatedTo: true if to token is changed
    */
+  // TODO: Remove default token icon image
   func updateTokensView(updatedFrom: Bool = true, updatedTo: Bool = true) {
     if updatedFrom {
       self.fromTokenButton.setTitle(self.viewModel.fromTokenBtnTitle, for: .normal)
-      self.fromTokenButton.setImage(UIImage(named: self.viewModel.fromTokenIconName), for: .normal)
+      self.fromTokenButton.setImage(UIImage(named: self.viewModel.fromTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
     }
     if updatedTo {
       self.toTokenButton.setTitle(self.viewModel.toTokenBtnTitle, for: .normal)
-      self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName), for: .normal)
+      self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
     }
     self.balanceLabel.text = self.viewModel.balanceText
     // Temporary update rate using CMC data
@@ -547,12 +548,16 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
 
 // MARK: Hamburger Menu Delegate
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
+  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.exchangeTabViewControllerDidPressedAddWallet(sender: self)
+  }
+
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.exchangeTabViewControllerDidPressedSettings(sender: self)
   }
 
-  func balanceTabHamburgerMenuDidSelectManageWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewControllerDidPressedManageWallet(sender: self)
+  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController) {
+    self.delegate?.exchangeTabViewControllerDidPressedSendToken(sender: self)
   }
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {

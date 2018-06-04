@@ -6,7 +6,6 @@ protocol KNListWalletsViewControllerDelegate: class {
   func listWalletsViewControllerDidClickBackButton()
   func listWalletsViewControllerDidSelectWallet(_ wallet: Wallet)
   func listWalletsViewControllerDidSelectRemoveWallet(_ wallet: Wallet)
-  func listWalletsViewControllerDidSelectAddWallet()
 }
 
 class KNListWalletsViewController: KNBaseViewController {
@@ -17,7 +16,6 @@ class KNListWalletsViewController: KNBaseViewController {
   fileprivate var listWallets: [Wallet] = []
   fileprivate var currentWallet: Wallet!
 
-  @IBOutlet weak var addWalletButton: UIButton!
   @IBOutlet weak var walletTableView: UITableView!
 
   @IBOutlet weak var heightConstraintForWalletTableView: NSLayoutConstraint!
@@ -42,7 +40,6 @@ class KNListWalletsViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.setupWalletTableView()
-    self.setupAddWallet()
   }
 
   fileprivate func setupNaivagationBar() {
@@ -61,10 +58,6 @@ class KNListWalletsViewController: KNBaseViewController {
     self.heightConstraintForWalletTableView.constant = 0
   }
 
-  fileprivate func setupAddWallet() {
-    self.addWalletButton.rounded(color: .clear, width: 0, radius: 5.0)
-  }
-
   func updateView(with wallets: [Wallet], currentWallet: Wallet) {
     self.listWallets = wallets
     self.currentWallet = currentWallet
@@ -75,10 +68,6 @@ class KNListWalletsViewController: KNBaseViewController {
 
   @objc func backButtonPressed(_ sender: Any) {
     self.delegate?.listWalletsViewControllerDidClickBackButton()
-  }
-
-  @IBAction func addWalletButtonPressed(_ sender: UIButton) {
-    self.delegate?.listWalletsViewControllerDidSelectAddWallet()
   }
 }
 

@@ -73,12 +73,6 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
     self.delegate?.listWalletsCoordinatorDidClickBack()
   }
 
-  func listWalletsViewControllerDidSelectAddWallet() {
-    //TODO: Add back button here
-    self.createWalletCoordinator.start()
-    self.navigationController.topViewController?.present(self.createWalletCoordinator.navigationController, animated: true, completion: nil)
-  }
-
   func listWalletsViewControllerDidSelectWallet(_ wallet: Wallet) {
     self.delegate?.listWalletsCoordinatorDidSelectWallet(wallet)
   }

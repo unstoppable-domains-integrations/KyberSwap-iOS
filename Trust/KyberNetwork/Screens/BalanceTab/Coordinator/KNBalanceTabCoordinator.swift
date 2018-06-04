@@ -6,6 +6,7 @@ import BigInt
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject)
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
+  func balancetabCoordinatorDidSelectAddWallet()
 }
 
 class KNBalanceTabCoordinator: Coordinator {
@@ -122,17 +123,7 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.qrcodeCoordinator?.start()
   }
 
-//  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {
-//    // TODO: Implement it
-//    let controller = NewTokenViewController(token: nil)
-//    controller.delegate = self
-//    let navController = UINavigationController(rootViewController: controller)
-//    navController.applyStyle()
-//    self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
-//  }
-
   func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
-    // TODO: Temp open send token view
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -147,12 +138,16 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.delegate?.balanceTabCoordinatorDidSelect(walletObject: walletObject)
   }
 
-  func balanceTabDidSelectManageWallet(in controller: KNBalanceTabViewController) {
-    //TODO: Implement it
+  func balanceTabDidSelectAddWallet(in controller: KNBalanceTabViewController) {
+    self.delegate?.balancetabCoordinatorDidSelectAddWallet()
+  }
+
+  func balanceTabDidSelectSendToken(in controller: KNBalanceTabViewController) {
+    self.balanceTabDidSelectToken(self.session.tokenStorage.ethToken, in: controller)
   }
 
   func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController) {
-    //TODO: Implement it
+    //TODO: Open settings view
   }
 }
 
