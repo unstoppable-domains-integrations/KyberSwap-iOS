@@ -5,9 +5,8 @@ import BigInt
 
 protocol KNBalanceTabViewControllerDelegate: class {
   func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectExchange(for tokenObject: TokenObject, in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController)
+//  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController)
+  func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController)
   func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController)
   func balanceTabDidSelectManageWallet(in controller: KNBalanceTabViewController)
   func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController)
@@ -15,16 +14,13 @@ protocol KNBalanceTabViewControllerDelegate: class {
 
 class KNBalanceTabViewController: KNBaseViewController {
 
-  @IBOutlet weak var balanceTopView: UIView!
-  @IBOutlet weak var walletIconImageView: UIImageView!
-  @IBOutlet weak var walletAddressLabel: UILabel!
-  @IBOutlet weak var walletNameLabel: UILabel!
-  @IBOutlet weak var walletListButton: UIButton!
+  @IBOutlet weak var walletHeaderView: KNWalletHeaderView!
+
+  @IBOutlet weak var topButtonContainerView: UIView!
   @IBOutlet weak var walletBalanceButton: UIButton!
 
   @IBOutlet weak var balanceButtonControlView: UIView!
   @IBOutlet weak var filterSortButton: UIButton!
-  @IBOutlet weak var addTokenButton: UIButton!
 
   @IBOutlet weak var tokensBalanceCollectionView: UICollectionView!
 
@@ -67,38 +63,28 @@ class KNBalanceTabViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    let colors: [UIColor] = [UIColor(hex: "20aba2"), UIColor(hex: "3bcaa0")]
-    self.balanceTopView.applyVerticalGradient(with: colors)
-  }
-
   fileprivate func setupUI() {
+    self.setupWalletHeaderView()
     self.setupBalanceTopView()
     self.setupBalanceButtonControlView()
     self.setupTokensBalanceCollectionView()
     self.setupHamburgerMenu()
   }
 
+  fileprivate func setupWalletHeaderView() {
+    self.walletHeaderView.delegate = self
+    self.walletHeaderView.updateView(with: self.viewModel.wallet)
+  }
+
   fileprivate func setupBalanceTopView() {
-    self.balanceTopView.alpha = 0.72
-
-    self.walletIconImageView.rounded(
-      color: .clear,
-      width: 0,
-      radius: self.walletIconImageView.frame.width / 2.0
-    )
-
     self.walletBalanceButton.semanticContentAttribute = .forceRightToLeft
     self.walletBalanceButton.setTitle("0 USD", for: .normal)
-
-    self.updateWalletUI()
   }
 
   fileprivate func setupBalanceButtonControlView() {
+    self.topButtonContainerView.rounded(color: UIColor(hex: "d2d5d4"), width: 1.0, radius: 0.0)
     self.filterSortButton.semanticContentAttribute = .forceRightToLeft
-    self.addTokenButton.semanticContentAttribute = .forceRightToLeft
-    self.addTokenButton.setTitle(self.viewModel.addTokenButtonTitle, for: .normal)
+    self.selectedFilterSortString = self.viewModel.tokensDisplayType.rawValue
 
     // MARK: Create picker view for selecting displaying data
     self.filterSortPickerView = {
@@ -155,30 +141,19 @@ class KNBalanceTabViewController: KNBaseViewController {
     self.hamburgerMenu.hideMenu(animated: false)
   }
 
-  @IBAction func qrcodeButtonPressed(_ sender: Any) {
-    self.delegate?.balanceTabDidSelectQRCodeButton(in: self)
-  }
-
-  @IBAction func walletListButtonPressed(_ sender: Any) {
-    self.hamburgerMenu.openMenu(animated: true)
-  }
-
   @IBAction func walletBalanceButtonPressed(_ sender: Any) {
     // Change display balance currency (ETH and USD)
     self.viewModel.updateBalanceDisplayType()
+    self.tokensBalanceCollectionView.reloadData()
     self.updateBalanceUI()
   }
 
   @IBAction func tokensDisplayTypeButtonPressed(_ sender: Any) {
-    self.selectedFilterSortString = self.viewModel.filterSortButtonTitle
+    self.selectedFilterSortString = self.viewModel.tokensDisplayType.rawValue
     self.fakeFilterSortTextField.becomeFirstResponder()
     if let index = self.viewModel.listPickerData.index(of: self.selectedFilterSortString) {
       self.filterSortPickerView.selectRow(index, inComponent: 0, animated: true)
     }
-  }
-
-  @IBAction func addTokenButtonPressed(_ sender: Any) {
-    self.delegate?.balanceTabDidSelectAddTokenButton(in: self)
   }
 
   @objc func displayDataTypePickerViewDonePressed(_ sender: Any?) {
@@ -202,7 +177,6 @@ class KNBalanceTabViewController: KNBaseViewController {
 extension KNBalanceTabViewController {
   func coordinatorUpdateSessionWithNewViewModel(_ viewModel: KNBalanceTabViewModel) {
     self.viewModel = viewModel
-    self.updateWalletUI()
     self.updateBalanceUI()
     self.updateFilterSortTokenButton()
     self.tokensBalanceCollectionView.reloadData()
@@ -241,13 +215,6 @@ extension KNBalanceTabViewController {
 
 // MARK: Update UIs
 extension KNBalanceTabViewController {
-  fileprivate func updateWalletUI() {
-    self.walletIconImageView.image = UIImage(named: self.viewModel.walletIconName)
-    self.walletAddressLabel.text = self.viewModel.walletAddressDisplayedText
-    self.walletNameLabel.text = self.viewModel.walletNameDisplayedText
-    self.view.layoutIfNeeded()
-  }
-
   fileprivate func updateBalanceUI() {
     UIView.transition(
       with: self.walletBalanceButton,
@@ -274,27 +241,13 @@ extension KNBalanceTabViewController {
 extension KNBalanceTabViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
-    guard let expandedIndex = self.viewModel.expandedTokenIndex() else {
-      // no expanded, expaned the selected row
-      self.viewModel.expandedToken = tokenObject.contract
-      collectionView.reloadItems(at: [indexPath])
-      return
-    }
-    if expandedIndex == indexPath.row {
-      // tap to expanded row, should reset this row to normal
-      self.viewModel.expandedToken = ""
-      collectionView.reloadItems(at: [indexPath])
-    } else {
-      self.viewModel.expandedToken = tokenObject.contract
-      let oldIndexPath = IndexPath(row: expandedIndex, section: 0)
-      collectionView.reloadItems(at: [oldIndexPath, indexPath])
-    }
+    self.delegate?.balanceTabDidSelectToken(tokenObject, in: self)
   }
 }
 
 extension KNBalanceTabViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 8
+    return 0
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -334,13 +287,13 @@ extension KNBalanceTabViewController: UICollectionViewDataSource {
       token: tokenObject,
       icon: icon,
       coinTicker: coinTicker,
-      balance: balance
+      balance: balance,
+      ethCoinTicker: self.viewModel.ethCoinTicker,
+      displayedType: self.viewModel.balanceDisplayType
     )
     cell.updateCell(
-      with: cellModel,
-      isSelected: self.viewModel.expandedToken == tokenObject.contract
+      with: cellModel
     )
-    cell.delegate = self
     return cell
   }
 }
@@ -376,13 +329,13 @@ extension KNBalanceTabViewController: UIPickerViewDataSource {
   }
 }
 
-extension KNBalanceTabViewController: KNTokenBalanceCollectionViewCellDelegate {
-  func tokenBalanceCollectionViewCellSendButtonPressed(for tokenObject: TokenObject) {
-    self.delegate?.balanceTabDidSelectSend(for: tokenObject, in: self)
+extension KNBalanceTabViewController: KNWalletHeaderViewDelegate {
+  func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
+    self.delegate?.balanceTabDidSelectQRCodeButton(in: self)
   }
 
-  func tokenBalanceCollectionViewCellExchangeButtonPressed(for tokenObject: TokenObject) {
-    self.delegate?.balanceTabDidSelectExchange(for: tokenObject, in: self)
+  func walletHeaderWalletListPressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
+    self.hamburgerMenu.openMenu(animated: true)
   }
 }
 
@@ -399,3 +352,5 @@ extension KNBalanceTabViewController: KNBalanceTabHamburgerMenuViewControllerDel
     self.delegate?.balanceTabDidSelectWalletObject(wallet, in: self)
   }
 }
+
+

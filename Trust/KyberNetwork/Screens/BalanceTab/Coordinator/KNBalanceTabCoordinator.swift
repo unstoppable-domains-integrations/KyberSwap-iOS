@@ -123,16 +123,17 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.qrcodeCoordinator?.start()
   }
 
-  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {
-    // TODO: Implement it
-    let controller = NewTokenViewController(token: nil)
-    controller.delegate = self
-    let navController = UINavigationController(rootViewController: controller)
-    navController.applyStyle()
-    self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
-  }
+//  func balanceTabDidSelectAddTokenButton(in controller: KNBalanceTabViewController) {
+//    // TODO: Implement it
+//    let controller = NewTokenViewController(token: nil)
+//    controller.delegate = self
+//    let navController = UINavigationController(rootViewController: controller)
+//    navController.applyStyle()
+//    self.navigationController.topViewController?.present(navController, animated: true, completion: nil)
+//  }
 
-  func balanceTabDidSelectSend(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
+  func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
+    // TODO: Temp open send token view
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -141,10 +142,6 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     )
     self.sendTokenCoordinator?.delegate = self
     self.sendTokenCoordinator?.start()
-  }
-
-  func balanceTabDidSelectExchange(for tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
-    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: tokenObject)
   }
 
   func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController) {

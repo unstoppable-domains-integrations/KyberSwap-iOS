@@ -3,50 +3,109 @@
 import UIKit
 import BigInt
 
-protocol KNTokenBalanceCollectionViewCellDelegate: class {
-  func tokenBalanceCollectionViewCellExchangeButtonPressed(for tokenObject: TokenObject)
-  func tokenBalanceCollectionViewCellSendButtonPressed(for tokenObject: TokenObject)
-}
-
 struct KNTokenBalanceCollectionViewCellModel {
+
+  fileprivate let highlighted: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "141927"),
+    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: .medium),
+  ]
+  fileprivate let normal: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
+    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: .medium),
+  ]
+
   let token: TokenObject
   let icon: String?
   let coinTicker: KNCoinTicker?
   let balance: Balance?
+  let ethCoinTicker: KNCoinTicker?
+
+  var displayedType: KNBalanceDisplayDataType = .eth
 
   init(
     token: TokenObject,
     icon: String?,
     coinTicker: KNCoinTicker?,
-    balance: Balance?
+    balance: Balance?,
+    ethCoinTicker: KNCoinTicker?,
+    displayedType: KNBalanceDisplayDataType
     ) {
     self.token = token
     self.icon = icon
     self.coinTicker = coinTicker
     self.balance = balance
+    self.ethCoinTicker = ethCoinTicker
+    self.displayedType = displayedType
   }
 
-  var displayBalance: String {
-    if let amount = balance?.value.shortString(decimals: token.decimals) {
-      return "\(amount) \(token.symbol)"
+  fileprivate var displayBalanceHoldingsText: String {
+    if let amount = balance?.value.string(decimals: token.decimals, minFractionDigits: 6, maxFractionDigits: 6) {
+      return "Bal \(amount.prefix(11))"
     }
-    return ""
+    return "Bal ---"
   }
 
-  var backgroundColorBalance: UIColor {
-    return balance == nil ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.white
-  }
-
-  var displayBalanceInUSD: String {
+  fileprivate var displayBalanceInUSD: String {
     if let amount = balance?.value, let coinTicker = coinTicker {
       let rate = KNRate.rateUSD(from: coinTicker)
-      return "$\((amount * rate.rate / BigInt(10).power(self.token.decimals)).shortString(units: .ether, maxFractionDigits: 2))"
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 2, maxFractionDigits: 2)
+      return "Val $\(value.prefix(11))"
     }
-    return ""
+    return "Val ---"
   }
 
-  var backgroundColorBalanceInUSD: UIColor {
-    return balance == nil || coinTicker == nil ? UIColor.lightGray.withAlphaComponent(0.25) : UIColor.white
+  fileprivate var displayBalanceInETH: String {
+    if let amount = balance?.value, let coinTicker = coinTicker, let ethCoinTicker = ethCoinTicker {
+      let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
+      let rate = KNRate(
+        source: self.token.symbol,
+        dest: "ETH",
+        rate: rateETH
+      )
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9)
+      return "Val \(value.prefix(11))"
+    }
+    return "Val ---"
+  }
+
+  var displayTokenPriceAttributedText: NSAttributedString {
+    let value: String = {
+      if self.displayedType == .eth {
+        return self.displayBalanceInETH
+      }
+      return self.displayBalanceInUSD
+    }()
+    let rate: BigInt? = {
+      if self.displayedType == .usd {
+        if let coinTicker = self.coinTicker {
+          return KNRate.rateUSD(from: coinTicker).rate
+        }
+        return nil
+      }
+      if let coinTicker = coinTicker, let ethCoinTicker = ethCoinTicker {
+        let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
+        let rate = KNRate(
+          source: self.token.symbol,
+          dest: "ETH",
+          rate: rateETH
+        )
+        return rate.rate
+      }
+      return nil
+    }()
+    let attributedString = NSMutableAttributedString()
+    let rateString = rate?.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9) ?? "-.--"
+    attributedString.append(NSAttributedString(string: "\(rateString.prefix(11))", attributes: highlighted))
+    attributedString.append(NSAttributedString(string: "\n\(value.prefix(11))", attributes: normal))
+    return attributedString
+  }
+
+  var tokenValueAttributedString: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    attributedString.append(NSAttributedString(string: "\(self.token.symbol) ", attributes: highlighted))
+    attributedString.append(NSAttributedString(string: self.displayedType == .eth ? "/ ETH" : "/ USD", attributes: normal))
+    attributedString.append(NSAttributedString(string: "\n\(self.displayBalanceHoldingsText)", attributes: normal))
+    return attributedString
   }
 
   var displayChange24h: String {
@@ -56,147 +115,45 @@ struct KNTokenBalanceCollectionViewCellModel {
     return ""
   }
 
-  var colorChange24h: UIColor {
-    if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
-      return String(percentageChange) == "-" ? UIColor(hex: "d0021b") : UIColor(hex: "5ec2ba")
-    }
-    return UIColor(hex: "5ec2ba")
-  }
-
   var backgroundColorChange24h: UIColor {
-    return coinTicker == nil || coinTicker?.percentChange24h.isEmpty == true ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.white
-  }
-
-  var displayPrice: String {
-    if let priceUSD = coinTicker?.priceUSD {
-      return "$\(priceUSD.displayUSD())"
+    if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
+      return String(percentageChange) == "-" ? UIColor(hex: "f89f50") : UIColor(hex: "00d3a7")
     }
-    return ""
-  }
-
-  var backgroundColorPrice: UIColor {
-    return coinTicker == nil ? UIColor.lightGray.withAlphaComponent(0.25) : UIColor.white
-  }
-
-  var displayKyberListed: String {
-    return self.token.isSupported ? "Kyber Listed".toBeLocalised() : ""
+    return UIColor(hex: "00d3a7")
   }
 }
 
 class KNTokenBalanceCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kTokenBalanceCollectionCellID"
-  static let cellHeight: CGFloat = 90
+  static let cellHeight: CGFloat = 56
 
   @IBOutlet weak var tokenDataContainerView: UIView!
-  @IBOutlet weak var tokenIconImageView: UIImageView!
-  @IBOutlet weak var tokenFakeIcon: UILabel!
-  @IBOutlet weak var tokenBalanceLabel: UILabel!
-  @IBOutlet weak var tokenBalanceInUSDLabel: UILabel!
+  @IBOutlet weak var tokenValueLabel: UILabel!
 
   @IBOutlet weak var tokenChange24hLabel: UILabel!
   @IBOutlet weak var tokenPriceLabel: UILabel!
-  @IBOutlet weak var kyberListedLabel: UILabel!
-
-  @IBOutlet weak var buttonContainerView: UIView!
-  @IBOutlet weak var exchangeButton: UIButton!
-  @IBOutlet weak var sendButton: UIButton!
 
   fileprivate var cellModel: KNTokenBalanceCollectionViewCellModel?
 
-  weak var delegate: KNTokenBalanceCollectionViewCellDelegate?
-
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.tokenDataContainerView.isHidden = true
-    self.buttonContainerView.isHidden = false
-    // Token data view
-    self.tokenBalanceLabel.text = ""
-    self.tokenBalanceInUSDLabel.text = ""
-
-    self.tokenChange24hLabel.text = ""
+    self.tokenValueLabel.text = ""
     self.tokenPriceLabel.text = ""
-    self.kyberListedLabel.text = ""
-
-    self.tokenFakeIcon.rounded(
-      color: .clear,
-      width: 0,
-      radius: 12.0
-    )
-    self.tokenFakeIcon.isHidden = true
-
-    // Button view
-    self.exchangeButton.rounded(color: .clear, width: 0, radius: 4.0)
-    self.sendButton.rounded(color: .clear, width: 0, radius: 4.0)
+    self.tokenChange24hLabel.text = ""
+    self.tokenChange24hLabel.rounded(radius: 2.0)
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    self.contentView.rounded(color: .clear, width: 0, radius: 4.0)
-    self.addShadow()
-  }
-
-  func updateCell(with cellModel: KNTokenBalanceCollectionViewCellModel, isSelected: Bool) {
+  func updateCell(with cellModel: KNTokenBalanceCollectionViewCellModel) {
     self.cellModel = cellModel
-    if let icon = cellModel.icon, let image = UIImage(named: icon) {
-      self.tokenIconImageView.image = image
-      self.tokenIconImageView.isHidden = false
-      self.tokenFakeIcon.isHidden = true
-    } else {
-      self.tokenIconImageView.isHidden = true
-      self.tokenFakeIcon.isHidden = false
-      self.tokenFakeIcon.text = String(cellModel.token.symbol.prefix(1))
-    }
 
-    self.tokenBalanceLabel.text = cellModel.displayBalance
-    self.tokenBalanceLabel.backgroundColor = cellModel.backgroundColorBalance
-
-    self.tokenBalanceInUSDLabel.text = cellModel.displayBalanceInUSD
-    self.tokenBalanceInUSDLabel.backgroundColor = cellModel.backgroundColorBalanceInUSD
+    self.tokenValueLabel.attributedText = cellModel.tokenValueAttributedString
 
     self.tokenChange24hLabel.text = cellModel.displayChange24h
-    self.tokenChange24hLabel.textColor = cellModel.colorChange24h
     self.tokenChange24hLabel.backgroundColor = cellModel.backgroundColorChange24h
 
-    self.tokenPriceLabel.text = cellModel.displayPrice
-    self.tokenPriceLabel.backgroundColor = cellModel.backgroundColorPrice
+    self.tokenPriceLabel.attributedText = cellModel.displayTokenPriceAttributedText
 
-    self.kyberListedLabel.text = cellModel.displayKyberListed
-    if isSelected {
-      // only flip if it is hidden
-      if self.buttonContainerView.isHidden {
-        UIView.animate(
-          withDuration: 0.5,
-          delay: 0,
-          options: .transitionFlipFromTop,
-          animations: { },
-          completion: { _ in
-          self.tokenDataContainerView.isHidden = true
-          self.buttonContainerView.isHidden = false
-        })
-      }
-    } else if self.tokenDataContainerView.isHidden {
-      // only flip back when it is hidden
-      UIView.animate(
-        withDuration: 0.5,
-        delay: 0,
-        options: .transitionFlipFromTop,
-        animations: { },
-        completion: { _ in
-          self.tokenDataContainerView.isHidden = false
-          self.buttonContainerView.isHidden = true
-      })
-    }
     self.layoutIfNeeded()
-  }
-
-  @IBAction func exchangeButtonPressed(_ sender: Any) {
-    guard let tokenObject = self.cellModel?.token else { return }
-    self.delegate?.tokenBalanceCollectionViewCellExchangeButtonPressed(for: tokenObject)
-  }
-
-  @IBAction func sendButtonPressed(_ sender: Any) {
-    guard let tokenObject = self.cellModel?.token else { return }
-    self.delegate?.tokenBalanceCollectionViewCellSendButtonPressed(for: tokenObject)
   }
 }

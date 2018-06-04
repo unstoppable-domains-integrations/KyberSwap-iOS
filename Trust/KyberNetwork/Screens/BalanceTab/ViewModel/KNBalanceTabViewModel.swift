@@ -6,9 +6,19 @@ import BigInt
 enum KNTokensDisplayType: String {
   case change24h = "24h Change"
   case balanceValue = "Balance Value"
-  case balanceHolding = "Balance Holding"
+  case balanceHolding = "Balance Holdings"
   case kyberListed = "Kyber Listed"
-  case kyberNotListed = "Not Listed by Kyber DEX"
+  case kyberNotListed = "Kyner Not Listed"
+
+  var buttonDisplayText: String {
+    switch self {
+    case .change24h: return "24 Chg%"
+    case .balanceValue: return "Value"
+    case .balanceHolding: return "Holdings"
+    case .kyberListed: return "Listed"
+    case .kyberNotListed: return "Not Listed"
+    }
+  }
 }
 
 enum KNBalanceDisplayDataType: String {
@@ -22,6 +32,8 @@ class KNBalanceTabViewModel: NSObject {
   private(set) var tokenObjects: [TokenObject] = []
   // cointicker with key is symbol + name
   private(set) var coinTickers: [String: KNCoinTicker] = [:]
+  // faster retrieve to update value/eth
+  private(set) var ethCoinTicker: KNCoinTicker?
   // cointicker with key is symbol only (due to inconsistent between KN and CMC
   private(set) var symbolCoinTickers: [String: KNCoinTicker] = [:]
   // cointicker with key is name only (due to custom symbol name from KN supported token)
@@ -48,6 +60,9 @@ class KNBalanceTabViewModel: NSObject {
     let coinTickers = KNCoinTickerStorage.shared.coinTickers
     coinTickers.forEach {
       let identifier = $0.symbol + " " + $0.name.replacingOccurrences(of: " ", with: "").lowercased()
+      if $0.symbol == "ETH" && $0.name.lowercased() == "ethereum" {
+        self.ethCoinTicker = $0
+      }
       self.coinTickers[identifier] = $0
       self.symbolCoinTickers[$0.symbol] = $0
       self.nameCoinTickers[$0.name.replacingOccurrences(of: " ", with: "").lowercased()] = $0
@@ -93,7 +108,7 @@ class KNBalanceTabViewModel: NSObject {
   }
 
   var filterSortButtonTitle: String {
-    return self.tokensDisplayType.rawValue
+    return self.tokensDisplayType.buttonDisplayText
   }
 
   var listPickerData: [String] = {
