@@ -16,6 +16,9 @@
                 <outlet property="amountTextField" destination="U0Y-CG-pqO" id="T7Y-T3-I3S"/>
                 <outlet property="gasPriceDataDetailsView" destination="UFg-Mf-7ww" id="mOF-VY-Ae7"/>
                 <outlet property="navTitleLabel" destination="qdZ-45-bZl" id="En0-hU-QHR"/>
+                <outlet property="recentContactLabel" destination="BoY-Ma-hbO" id="lw7-VF-pf1"/>
+                <outlet property="recentContactTableView" destination="BF1-8K-ya7" id="6oX-EF-5U1"/>
+                <outlet property="recentContactView" destination="S4b-5k-6U7" id="wRB-TS-dOR"/>
                 <outlet property="sendButton" destination="XRV-XK-3YZ" id="fsZ-V0-y21"/>
                 <outlet property="tokenBalanceLabel" destination="zhf-Qf-zFA" id="5M7-vM-1Xu"/>
                 <outlet property="tokenButton" destination="e0j-Uy-2jw" id="prH-CH-fzX"/>
@@ -108,9 +111,29 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S4b-5k-6U7">
                     <rect key="frame" x="0.0" y="273" width="375" height="160"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BF1-8K-ya7" customClass="KNContactTableView" customModule="Trust" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="34" width="375" height="126"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="126" id="HNp-2B-RAI"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Contact" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BoY-Ma-hbO">
+                            <rect key="frame" x="16" y="8" width="109" height="18"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="BF1-8K-ya7" firstAttribute="leading" secondItem="S4b-5k-6U7" secondAttribute="leading" id="C4r-4M-Lb6"/>
+                        <constraint firstItem="BoY-Ma-hbO" firstAttribute="top" secondItem="S4b-5k-6U7" secondAttribute="top" constant="8" id="OMX-RL-glx"/>
+                        <constraint firstItem="BoY-Ma-hbO" firstAttribute="leading" secondItem="S4b-5k-6U7" secondAttribute="leading" constant="16" id="V3y-UO-0QZ"/>
+                        <constraint firstAttribute="bottom" secondItem="BF1-8K-ya7" secondAttribute="bottom" id="grF-sK-NHo"/>
                         <constraint firstAttribute="height" constant="160" id="lIt-fN-tql"/>
+                        <constraint firstAttribute="trailing" secondItem="BF1-8K-ya7" secondAttribute="trailing" id="sSL-gf-Y4y"/>
                     </constraints>
                 </view>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter an address or scan its QR code" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Soz-id-qlu">

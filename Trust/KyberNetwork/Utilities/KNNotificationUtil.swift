@@ -26,6 +26,11 @@ let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotification
 // Setup
 let kWalletHeaderViewDidChangeTypeNotificationKey = "kWalletHeaderViewDidChangeTypeNotificationKey"
 
+// Gas Price
+let kGasPriceDidUpdateNotificationKey = "kGasPriceDidUpdateNotificationKey"
+
+let kUpdateListContactNotificationKey = "kUpdateListContactNotificationKey"
+
 class KNNotificationUtil {
 
   static func postNotification(for key: String, object: Any? = nil, userInfo: [AnyHashable: Any]? = nil) {

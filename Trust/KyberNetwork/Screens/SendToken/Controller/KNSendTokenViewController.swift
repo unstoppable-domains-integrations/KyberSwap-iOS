@@ -24,6 +24,11 @@ class KNSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var tokenBalanceLabel: UILabel!
 
   @IBOutlet weak var gasPriceDataDetailsView: KNDataDetailsView!
+
+  @IBOutlet weak var recentContactView: UIView!
+  @IBOutlet weak var recentContactLabel: UILabel!
+  @IBOutlet weak var recentContactTableView: KNContactTableView!
+
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
 
@@ -136,6 +141,10 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupRecentContact() {
+    self.recentContactView.isHidden = true
+    self.recentContactTableView.delegate = self
+    self.recentContactTableView.updateScrolling(isEnabled: false)
+    self.recentContactTableView.shouldUpdateContacts(nil)
   }
 
   fileprivate func setupAddressTextField() {
@@ -340,5 +349,17 @@ extension KNSendTokenViewController: QRCodeReaderDelegate {
       self.viewModel.updateAddress(result)
       self.updateUIAddressQRCode()
     }
+  }
+}
+
+extension KNSendTokenViewController: KNContactTableViewDelegate {
+  func contactTableView(_ sender: KNContactTableView, didUpdate height: CGFloat) {
+    self.recentContactView.isHidden = (height == 0)
+    self.view.layoutIfNeeded()
+  }
+
+  func contactTableView(_ sender: KNContactTableView, didSelect contact: KNContact) {
+    self.addressTextField.text = contact.address
+    KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 }
