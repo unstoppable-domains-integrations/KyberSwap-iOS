@@ -125,10 +125,10 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="57V-cV-6jv">
-                    <rect key="frame" x="0.0" y="430" width="375" height="237"/>
+                    <rect key="frame" x="0.0" y="431" width="375" height="236"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwF-Y0-NgB">
-                            <rect key="frame" x="52" y="163" width="271" height="42"/>
+                            <rect key="frame" x="52" y="162" width="271" height="42"/>
                             <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="kIC-N8-sTl"/>
@@ -149,7 +149,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPk-5N-ZUq" customClass="KNDataDetailsView" customModule="Trust" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="60" width="375" height="60"/>
+                            <rect key="frame" x="0.0" y="59" width="375" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="3XJ-6A-uDm"/>
@@ -166,7 +166,7 @@
                         <constraint firstItem="nwF-Y0-NgB" firstAttribute="leading" secondItem="57V-cV-6jv" secondAttribute="leading" constant="52" id="dOV-4v-Xr8"/>
                         <constraint firstAttribute="trailing" secondItem="nwF-Y0-NgB" secondAttribute="trailing" constant="52" id="dfc-GJ-zxJ"/>
                         <constraint firstAttribute="bottom" secondItem="nwF-Y0-NgB" secondAttribute="bottom" constant="32" id="gxN-Oe-FAj"/>
-                        <constraint firstItem="CPk-5N-ZUq" firstAttribute="top" secondItem="bOo-cu-w0N" secondAttribute="bottom" id="iAv-g7-7jW"/>
+                        <constraint firstItem="CPk-5N-ZUq" firstAttribute="top" secondItem="bOo-cu-w0N" secondAttribute="bottom" constant="-1" id="iAv-g7-7jW"/>
                         <constraint firstItem="bOo-cu-w0N" firstAttribute="top" secondItem="57V-cV-6jv" secondAttribute="top" id="zsz-PM-aSC"/>
                     </constraints>
                 </view>
