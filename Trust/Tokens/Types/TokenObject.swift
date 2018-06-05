@@ -55,7 +55,7 @@ class TokenObject: Object {
       self.init()
       self.name = trackerDict["name"] as? String ?? ""
       self.symbol = trackerDict["symbol"] as? String ?? ""
-      self.icon = (trackerDict["symbol"] as? String ?? "").lowercased()
+      self.icon = (trackerDict["iconID"] as? String ?? "").lowercased()
       self.contract = trackerDict["contractAddress"] as? String ?? ""
       self.decimals = trackerDict["decimals"] as? Int ?? 0
       self.isSupported = true
