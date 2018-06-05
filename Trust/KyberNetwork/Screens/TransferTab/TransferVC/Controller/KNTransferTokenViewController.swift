@@ -239,17 +239,7 @@ extension KNTransferTokenViewController {
   }
 
   @IBAction func gasPriceButtonPressed(_ sender: UIButton) {
-    let gasPrice: Double = {
-      if sender.tag == 1 { // Low
-        return KNGasCoordinator.shared.lowKNGas
-      }
-      if sender.tag == 2 { // Standard
-        return KNGasCoordinator.shared.standardKNGas
-      }
-      return KNGasCoordinator.shared.fastKNGas
-    }()
-    self.gasPriceTextField.text = "\(gasPrice)"
-    self.updateTransactionFee()
+    //TODO: Update gas price
   }
 
   @IBAction func advancedSwitchDidChange(_ sender: UISwitch) {

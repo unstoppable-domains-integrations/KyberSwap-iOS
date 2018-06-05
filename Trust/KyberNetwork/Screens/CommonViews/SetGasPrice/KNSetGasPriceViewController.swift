@@ -10,10 +10,10 @@ protocol KNSetGasPriceViewControllerDelegate: class {
 
 struct KNSetGasPriceViewModel {
 
-  fileprivate let gasPrices: [BigInt] = [
-    KNGasConfiguration.gasPriceMin,
-    KNGasConfiguration.gasPriceDefault,
-    KNGasConfiguration.gasPriceMax,
+  fileprivate var gasPrices: [BigInt] = [
+    KNGasCoordinator.shared.lowKNGas,
+    KNGasCoordinator.shared.standardKNGas,
+    KNGasCoordinator.shared.fastKNGas,
   ]
 
   var gasPrice: BigInt
@@ -68,6 +68,17 @@ struct KNSetGasPriceViewModel {
     attributedString.append(NSAttributedString(string: self.feeText, attributes: feeAttributes))
     return attributedString
   }
+
+  mutating func shouldUpdateGasPriceDidChange() {
+    self.gasPrices = [
+      KNGasCoordinator.shared.lowKNGas,
+      KNGasCoordinator.shared.standardKNGas,
+      KNGasCoordinator.shared.fastKNGas,
+    ]
+    if self.gasPrices.index(of: self.gasPrice) == nil {
+      self.gasPrice = self.gasPrices[2]
+    }
+  }
 }
 
 class KNSetGasPriceViewController: KNBaseViewController {
@@ -83,9 +94,24 @@ class KNSetGasPriceViewController: KNBaseViewController {
   weak var delegate: KNSetGasPriceViewControllerDelegate?
   fileprivate var viewModel: KNSetGasPriceViewModel
 
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(rawValue: kGasPriceDidUpdateNotificationKey),
+      object: nil
+    )
+  }
+
   init(viewModel: KNSetGasPriceViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNSetGasPriceViewController.className, bundle: nil)
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.shouldUpdateGasPrice(_:)),
+      name: NSNotification.Name(rawValue: kGasPriceDidUpdateNotificationKey),
+      object: nil
+    )
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -145,5 +171,10 @@ class KNSetGasPriceViewController: KNBaseViewController {
 
   @IBAction func screenEdgePanAction(_ sender: Any) {
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: nil)
+  }
+
+  @objc func shouldUpdateGasPrice(_ sender: Notification?) {
+    self.viewModel.shouldUpdateGasPriceDidChange()
+    self.updateUI()
   }
 }
