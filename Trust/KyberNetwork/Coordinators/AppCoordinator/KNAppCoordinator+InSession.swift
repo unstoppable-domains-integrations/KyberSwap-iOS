@@ -35,16 +35,16 @@ extension KNAppCoordinator {
     self.addCoordinator(self.balanceTabCoordinator)
     self.balanceTabCoordinator.start()
 
-    // History tab
-    self.historyCoordinator = {
-      let coordinator = KNHistoryCoordinator(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.historyCoordinator)
-    self.historyCoordinator.start()
+//    // History tab
+//    self.historyCoordinator = {
+//      let coordinator = KNHistoryCoordinator(
+//        session: self.session
+//      )
+//      coordinator.delegate = self
+//      return coordinator
+//    }()
+//    self.addCoordinator(self.historyCoordinator)
+//    self.historyCoordinator.start()
 
     // Settings tab
     self.settingsCoordinator = {
@@ -60,7 +60,7 @@ extension KNAppCoordinator {
     self.tabbarController.viewControllers = [
       self.exchangeCoordinator!.navigationController,
       self.balanceTabCoordinator.navigationController,
-      self.historyCoordinator.navigationController,
+//      self.historyCoordinator.navigationController,
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(hex: "5ec2ba")
@@ -82,16 +82,16 @@ extension KNAppCoordinator {
       tabBarItem.tag = 1
       return tabBarItem
     }()
-    self.historyCoordinator.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "History".toBeLocalised(),
-        image: UIImage(named: "history_tab_icon"),
-        selectedImage: UIImage(named: "history_tab_icon")
-      )
-      tabBarItem.tag = 2
-      return tabBarItem
-    }()
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 3)
+//    self.historyCoordinator.navigationController.tabBarItem = {
+//      let tabBarItem = UITabBarItem(
+//        title: "History".toBeLocalised(),
+//        image: UIImage(named: "history_tab_icon"),
+//        selectedImage: UIImage(named: "history_tab_icon")
+//      )
+//      tabBarItem.tag = 2
+//      return tabBarItem
+//    }()
+    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 2)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
@@ -128,8 +128,8 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()
     self.balanceTabCoordinator = nil
-    self.historyCoordinator.stop()
-    self.historyCoordinator = nil
+//    self.historyCoordinator.stop()
+//    self.historyCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
   }
@@ -143,7 +143,7 @@ extension KNAppCoordinator {
     // wallet tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+//    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 1
     self.addObserveNotificationFromSession()
@@ -164,7 +164,7 @@ extension KNAppCoordinator {
     //TODO: Update UI for each tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+//    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
   }
 

@@ -219,7 +219,7 @@ extension KNAppCoordinator {
 
   @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
-    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+//    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {
