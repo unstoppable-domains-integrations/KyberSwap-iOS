@@ -41,6 +41,7 @@ PODS:
   - SeedStackViewController (0.4.0)
   - SipHash (1.2.0)
   - StatefulViewController (3.0)
+  - SwiftChart (1.0.1)
   - SwiftLint (0.24.1)
   - SwiftMessages (4.1.0)
   - TrezorCrypto (0.0.4)
@@ -73,6 +74,7 @@ DEPENDENCIES:
   - SAMKeychain
   - SeedStackViewController
   - StatefulViewController
+  - SwiftChart
   - SwiftLint
   - SwiftMessages
   - TrustKeystore (~> 0.2.1)
@@ -133,12 +135,13 @@ SPEC CHECKSUMS:
   SeedStackViewController: 45e88ca1493a610e74d661d3feced7098f72dbd3
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
+  SwiftChart: ba767a678d568a5ee22d419e146a0582865e1aff
   SwiftLint: 2e4b89feed5909c42c3735bbd6745f4345c4b772
   SwiftMessages: 1bacc783c8f10bdfdc57c14860cae8a1f1fa6591
   TrezorCrypto: 7f87a2296cf13872b21565c29fd9f7882dd00803
   TrustKeystore: b9fc8e0d72de3e8f9c97f46802172d6f14a004aa
   TrustWeb3Provider: ac0bdf19b4c6c4d6ec0f03ddb85b83e32bda3a9a
 
-PODFILE CHECKSUM: 15e7e8b3c9edcf1bf44145c938cd418df2a26fbc
+PODFILE CHECKSUM: caba13b2e479cbe47bde7267d30ca87e3959ed50
 
 COCOAPODS: 1.4.0

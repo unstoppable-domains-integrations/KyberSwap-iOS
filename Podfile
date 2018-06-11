@@ -31,6 +31,7 @@ target 'Trust' do
   pod 'TrustWeb3Provider', :git=>'https://github.com/TrustWallet/trust-web3-provider', :branch=>'master'
   pod 'IQKeyboardManager'
   pod 'SwiftMessages'
+  pod 'SwiftChart'
 
   target 'TrustTests' do
     inherit! :search_paths
