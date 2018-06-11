@@ -3,10 +3,6 @@
 import UIKit
 import BigInt
 
-protocol KNSendTokenViewCoordinatorDelegate: class {
-  func sendTokenCoordinatorDidPressBack()
-}
-
 class KNSendTokenViewCoordinator: Coordinator {
 
   let navigationController: UINavigationController
@@ -14,8 +10,6 @@ class KNSendTokenViewCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
-
-  weak var delegate: KNSendTokenViewCoordinatorDelegate?
 
   lazy var rootViewController: KNSendTokenViewController = {
     let viewModel = KNSendTokenViewModel(

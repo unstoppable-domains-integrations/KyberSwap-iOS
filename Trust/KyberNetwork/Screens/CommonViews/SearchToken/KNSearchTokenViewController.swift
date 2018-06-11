@@ -96,8 +96,10 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.tokensTableView.reloadData()
   }
 
-  @IBAction func screenEdgePanAction(_ sender: Any) {
-    self.delegate?.searchTokenViewControllerDidCancel()
+  @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.searchTokenViewControllerDidCancel()
+    }
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

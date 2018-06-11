@@ -47,6 +47,7 @@ extension KyberNetworkService: TargetType {
 enum KNTrackerService {
   case getTrades(fromDate: Date?, toDate: Date?, address: String)
   case getSupportedTokens()
+  case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
 }
 
 extension KNTrackerService: TargetType {
@@ -67,6 +68,9 @@ extension KNTrackerService: TargetType {
       return URL(string: baseURLString + path)!
     case .getSupportedTokens:
       return URL(string: baseURLString + "/api/tokens/supported")!
+    case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
+      let url = "/chart/history?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
+      return URL(string: baseURLString + url)!
     }
   }
 

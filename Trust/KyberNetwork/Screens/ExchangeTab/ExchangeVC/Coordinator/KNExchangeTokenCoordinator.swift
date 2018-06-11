@@ -345,7 +345,6 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
       balances: self.balances,
       from: self.session.tokenStorage.ethToken
     )
-    self.sendTokenCoordinator?.delegate = self
     self.sendTokenCoordinator?.start()
   }
 
@@ -381,13 +380,6 @@ extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
       guard let gasPrice = gasPrice else { return }
       self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
     }
-  }
-}
-
-// MARK: Send Token Coordinator Delegate
-extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidPressBack() {
-    self.navigationController.popViewController(animated: true)
   }
 }
 

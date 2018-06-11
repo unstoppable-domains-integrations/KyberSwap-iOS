@@ -4,7 +4,7 @@ import UIKit
 import BigInt
 
 protocol KNBalanceTabCoordinatorDelegate: class {
-  func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject)
+  func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool)
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
   func balancetabCoordinatorDidSelectAddWallet()
 }
@@ -38,7 +38,7 @@ class KNBalanceTabCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
-  fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
+  fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -82,8 +82,9 @@ extension KNBalanceTabCoordinator {
       totalBalanceInETH: totalBalanceInETH
     )
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
-    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
+    self.tokenChartCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
+
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
     if let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH }) {
       self.rootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
@@ -93,7 +94,7 @@ extension KNBalanceTabCoordinator {
       totalBalanceInUSD: totalBalanceInUSD,
       totalBalanceInETH: totalBalanceInETH
     )
-    self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
+    self.tokenChartCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
 
   func appCoordinatorExchangeRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
@@ -105,7 +106,7 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
-    self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
   func appCoordinatorCoinTickerDidUpdate() {
@@ -114,7 +115,7 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorSupportedTokensDidUpdate(tokenObjects: [TokenObject]) {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
-    self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(self.session.tokenStorage.tokens)
+    self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(self.session.tokenStorage.tokens)
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
@@ -128,14 +129,14 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   }
 
   func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
-    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+    self.tokenChartCoordinator = KNTokenChartCoordinator(
       navigationController: self.navigationController,
       session: self.session,
       balances: self.balances,
-      from: tokenObject
+      token: tokenObject
     )
-    self.sendTokenCoordinator?.delegate = self
-    self.sendTokenCoordinator?.start()
+    self.tokenChartCoordinator?.delegate = self
+    self.tokenChartCoordinator?.start()
   }
 
   func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController) {
@@ -169,9 +170,13 @@ extension KNBalanceTabCoordinator: NewTokenViewControllerDelegate {
   }
 }
 
-// MARK: Send Token Coordinator Delegate
-extension KNBalanceTabCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidPressBack() {
-    self.navigationController.popViewController(animated: true)
+// MARK: Token Chart Coordinator Delegate
+extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
+  func tokenChartCoordinator(sell token: TokenObject) {
+    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
+  }
+
+  func tokenChartCoordinator(buy token: TokenObject) {
+    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
   }
 }

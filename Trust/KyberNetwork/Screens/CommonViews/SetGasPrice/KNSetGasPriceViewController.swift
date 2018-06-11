@@ -169,8 +169,10 @@ class KNSetGasPriceViewController: KNBaseViewController {
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
   }
 
-  @IBAction func screenEdgePanAction(_ sender: Any) {
-    self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: nil)
+  @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: nil)
+    }
   }
 
   @objc func shouldUpdateGasPrice(_ sender: Notification?) {

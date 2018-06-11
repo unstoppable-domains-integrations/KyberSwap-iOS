@@ -102,8 +102,10 @@ class KNSetSlippageRateViewController: KNBaseViewController {
     self.updateUI()
   }
 
-  @IBAction func screenEdgePanAction(_ sender: Any) {
-    self.delegate?.setSlippageRateViewControllerDidReturn(slippageRate: nil)
+  @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.setSlippageRateViewControllerDidReturn(slippageRate: nil)
+    }
   }
 }
 

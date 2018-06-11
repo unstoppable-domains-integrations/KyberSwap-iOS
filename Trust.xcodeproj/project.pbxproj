@@ -45,6 +45,10 @@
 		2561454620C648A700FB00CF /* KNContactStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2561454520C648A700FB00CF /* KNContactStorage.swift */; };
 		2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2561454A20C64B1900FB00CF /* KNContactTableView.swift */; };
 		2561454D20C64B2200FB00CF /* KNContactTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2561454C20C64B2200FB00CF /* KNContactTableView.xib */; };
+		2561455420C696C800FB00CF /* KNTokenChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2561455220C696C800FB00CF /* KNTokenChartViewController.swift */; };
+		2561455520C696C800FB00CF /* KNTokenChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2561455320C696C800FB00CF /* KNTokenChartViewController.xib */; };
+		2561455920C6AB5600FB00CF /* KNTokenChartCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2561455820C6AB5600FB00CF /* KNTokenChartCoordinator.swift */; };
+		2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2561455A20C795AF00FB00CF /* KNChartObject.swift */; };
 		25696F4920BD0F07002CC53F /* KNWalletHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F4820BD0F07002CC53F /* KNWalletHeaderView.xib */; };
 		25696F4B20BD0F52002CC53F /* KNWalletHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F4A20BD0F52002CC53F /* KNWalletHeaderView.swift */; };
 		25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F4D20BD162F002CC53F /* XibViewLoader.swift */; };
@@ -622,6 +626,10 @@
 		2561454520C648A700FB00CF /* KNContactStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactStorage.swift; sourceTree = "<group>"; };
 		2561454A20C64B1900FB00CF /* KNContactTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableView.swift; sourceTree = "<group>"; };
 		2561454C20C64B2200FB00CF /* KNContactTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNContactTableView.xib; sourceTree = "<group>"; };
+		2561455220C696C800FB00CF /* KNTokenChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTokenChartViewController.swift; sourceTree = "<group>"; };
+		2561455320C696C800FB00CF /* KNTokenChartViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTokenChartViewController.xib; sourceTree = "<group>"; };
+		2561455820C6AB5600FB00CF /* KNTokenChartCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTokenChartCoordinator.swift; sourceTree = "<group>"; };
+		2561455A20C795AF00FB00CF /* KNChartObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNChartObject.swift; sourceTree = "<group>"; };
 		25696F4820BD0F07002CC53F /* KNWalletHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletHeaderView.xib; sourceTree = "<group>"; };
 		25696F4A20BD0F52002CC53F /* KNWalletHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletHeaderView.swift; sourceTree = "<group>"; };
 		25696F4D20BD162F002CC53F /* XibViewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibViewLoader.swift; sourceTree = "<group>"; };
@@ -1247,6 +1255,7 @@
 				2502AC1A20947794007F23CD /* KNWalletObject.swift */,
 				25C9D7072096CDAC00FB121F /* KNCoinTicker.swift */,
 				2561454320C6442400FB00CF /* KNContact.swift */,
+				2561455A20C795AF00FB00CF /* KNChartObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1422,6 +1431,32 @@
 			path = ContactTableView;
 			sourceTree = "<group>";
 		};
+		2561455120C696AE00FB00CF /* TokenChart */ = {
+			isa = PBXGroup;
+			children = (
+				2561455720C6AB3C00FB00CF /* Coordinator */,
+				2561455620C6AB2F00FB00CF /* Controller */,
+			);
+			path = TokenChart;
+			sourceTree = "<group>";
+		};
+		2561455620C6AB2F00FB00CF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2561455320C696C800FB00CF /* KNTokenChartViewController.xib */,
+				2561455220C696C800FB00CF /* KNTokenChartViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2561455720C6AB3C00FB00CF /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				2561455820C6AB5600FB00CF /* KNTokenChartCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		25696F4620BD0ECD002CC53F /* WalletHeaderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1520,6 +1555,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				2561455120C696AE00FB00CF /* TokenChart */,
 				25D3259C20C06D51008BB235 /* SendToken */,
 				25931F0C20AEE6BF00BAC774 /* BackupWallet */,
 				25C45AC820AC470400CDA1FF /* ImportWallet */,
@@ -4047,6 +4083,7 @@
 				255DC60E20A94980002C2BBF /* KNBalanceTabViewController.xib in Resources */,
 				257A3789205BAB9B00E86794 /* KNSelectTokenTableViewCell.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
+				2561455520C696C800FB00CF /* KNTokenChartViewController.xib in Resources */,
 				25EBE93220B40CC000A57579 /* KNTestBackUpStatusViewController.xib in Resources */,
 				25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
@@ -4290,6 +4327,7 @@
 				"${BUILT_PRODUCTS_DIR}/SeedStackViewController/StackViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftChart/SwiftChart.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKeystore/TrustKeystore.framework",
@@ -4319,6 +4357,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StackViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StatefulViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftChart.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKeystore.framework",
@@ -4506,6 +4545,7 @@
 				25AC2485205FC3C200989EBA /* KNPendingTransactionListTableViewCell.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				771AA962200D5EC700D25403 /* PassphraseViewModel.swift in Sources */,
+				2561455920C6AB5600FB00CF /* KNTokenChartCoordinator.swift in Sources */,
 				257B84B32074E9E4003DD40E /* KNTransactionCollectionViewCell.swift in Sources */,
 				25CE6F7B20737B5E00A3A2F9 /* KNWalletViewController.swift in Sources */,
 				73C41C71201B46AD00243C6C /* LockEnterPasscodeViewModel.swift in Sources */,
@@ -4594,6 +4634,7 @@
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
 				771A8471202F067D00528D28 /* NetworksViewController.swift in Sources */,
 				613D048B1FDE162B008DE72E /* TrustProvider.swift in Sources */,
+				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
 				61C359E02002AA5A0097B04D /* TransactionSigning.swift in Sources */,
 				73ACEEF5201631A3003DD71D /* ProtectionCoordinator.swift in Sources */,
 				29C0FCE1200DA94A004A13CB /* SignMessageCoordinator.swift in Sources */,
@@ -4652,6 +4693,7 @@
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				29E6E06E1FE897EE0079265A /* BrowserViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
+				2561455420C696C800FB00CF /* KNTokenChartViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				25CC0A7A2057AEC30009D0D5 /* KNWalletImportingMainCoordinator.swift in Sources */,
 				615F105D1FCBF55E008A45AF /* OnboardingCollectionViewController.swift in Sources */,

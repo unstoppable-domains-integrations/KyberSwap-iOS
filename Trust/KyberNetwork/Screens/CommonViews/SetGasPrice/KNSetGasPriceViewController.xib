@@ -165,7 +165,7 @@
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="VLO-Uz-lQG">
             <rectEdge key="edges" left="YES"/>
             <connections>
-                <action selector="screenEdgePanAction:" destination="-1" id="rzg-KT-A8p"/>
+                <action selector="screenEdgePanAction:" destination="-1" id="rxr-JW-HeW"/>
             </connections>
         </screenEdgePanGestureRecognizer>
     </objects>

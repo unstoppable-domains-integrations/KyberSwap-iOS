@@ -127,6 +127,7 @@
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="BF1-8K-ya7" firstAttribute="leading" secondItem="S4b-5k-6U7" secondAttribute="leading" id="C4r-4M-Lb6"/>
                         <constraint firstItem="BoY-Ma-hbO" firstAttribute="top" secondItem="S4b-5k-6U7" secondAttribute="top" constant="8" id="OMX-RL-glx"/>
@@ -195,13 +196,13 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>
-                <outletCollection property="gestureRecognizers" destination="Isz-3B-HVn" appends="YES" id="BoV-FL-npZ"/>
+                <outletCollection property="gestureRecognizers" destination="Qx3-SD-EZT" appends="YES" id="jp7-M0-xJ7"/>
             </connections>
         </view>
-        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Isz-3B-HVn">
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Qx3-SD-EZT">
             <rectEdge key="edges" left="YES"/>
             <connections>
-                <action selector="screenEdgePanAction:" destination="-1" id="HUX-gp-S6j"/>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="z8F-NN-qWe"/>
             </connections>
         </screenEdgePanGestureRecognizer>
     </objects>

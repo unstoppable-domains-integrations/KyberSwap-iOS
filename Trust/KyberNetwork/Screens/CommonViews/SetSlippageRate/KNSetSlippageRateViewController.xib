@@ -101,7 +101,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="kSD-Ie-sjM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="52" id="0oI-mr-5JH"/>
@@ -133,7 +133,7 @@
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Mz5-Yn-Yvm">
             <rectEdge key="edges" left="YES"/>
             <connections>
-                <action selector="screenEdgePanAction:" destination="-1" id="3Ri-Nd-yCB"/>
+                <action selector="screenEdgePanAction:" destination="-1" id="BcB-9U-EQC"/>
             </connections>
         </screenEdgePanGestureRecognizer>
     </objects>

@@ -69,8 +69,8 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
 // MARK: Balance Tab Coordinator Delegate
 extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
-  func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject) {
-    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject)
+  func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool) {
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isReceived)
     self.tabbarController.selectedIndex = 0
   }
 

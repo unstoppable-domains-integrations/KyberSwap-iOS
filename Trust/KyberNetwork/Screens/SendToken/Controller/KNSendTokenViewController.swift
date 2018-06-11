@@ -196,8 +196,10 @@ class KNSendTokenViewController: KNBaseViewController {
     self.present(qrcodeReaderVC, animated: true, completion: nil)
   }
 
-  @IBAction func screenEdgePanAction(_ sender: Any) {
-    self.delegate?.sendTokenViewControllerDidPressBack(sender: self)
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.sendTokenViewControllerDidPressBack(sender: self)
+    }
   }
 
   @objc func gasPriceDetailsViewPressed(_ sender: Any) {

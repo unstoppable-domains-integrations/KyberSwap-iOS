@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTokenChartViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="changePercentLabel" destination="rzG-Y5-kWi" id="GRc-ED-gYx"/>
+                <outlet property="ethRateLabel" destination="Dys-e9-wzt" id="bG2-Qh-MIN"/>
+                <outlet property="leftPaddingForTouchPriceLabelConstraint" destination="8gr-HH-ARI" id="OhY-Xu-sVX"/>
+                <outlet property="navigationLabel" destination="aSm-QQ-Xz3" id="qhK-Wi-z8D"/>
+                <outlet property="priceChart" destination="knF-lf-3jZ" id="pxG-jj-BAH"/>
+                <outlet property="touchPriceLabel" destination="vds-sy-BKi" id="g0B-Cq-B4Y"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuW-OO-mGF">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSm-QQ-Xz3">
+                            <rect key="frame" x="141.5" y="46" width="92" height="24"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                            <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JH7-5H-Vln">
+                            <rect key="frame" x="16" y="46" width="24" height="24"/>
+                            <state key="normal" image="back_black_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="dvN-tZ-L3P"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="aSm-QQ-Xz3" secondAttribute="bottom" constant="10" id="B1P-Cw-GS6"/>
+                        <constraint firstAttribute="height" constant="80" id="O1W-Hf-XkT"/>
+                        <constraint firstItem="JH7-5H-Vln" firstAttribute="centerY" secondItem="aSm-QQ-Xz3" secondAttribute="centerY" id="Sbx-7n-LNO"/>
+                        <constraint firstItem="aSm-QQ-Xz3" firstAttribute="centerX" secondItem="RuW-OO-mGF" secondAttribute="centerX" id="WVi-mm-Kp9"/>
+                        <constraint firstItem="JH7-5H-Vln" firstAttribute="leading" secondItem="RuW-OO-mGF" secondAttribute="leading" constant="16" id="h1I-ux-QeD"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 0.0001231" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-e9-wzt">
+                    <rect key="frame" x="78" y="110" width="220.5" height="38.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                    <color key="textColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2.5% in 24h" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rzG-Y5-kWi">
+                    <rect key="frame" x="143" y="153.5" width="91.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                    <color key="textColor" red="0.19215686274509802" green="0.79607843137254897" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="K5L-bZ-T0r">
+                    <rect key="frame" x="40" y="595" width="295" height="33"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="LnG-vd-tQZ"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Buy"/>
+                        <segment title="Sell"/>
+                        <segment title="Send"/>
+                    </segments>
+                    <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <action selector="actionButtonDidPress:" destination="-1" eventType="valueChanged" id="iuk-uP-uOH"/>
+                    </connections>
+                </segmentedControl>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sFg-zd-7B3">
+                    <rect key="frame" x="30" y="537" width="315" height="29"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <segments>
+                        <segment title="24H"/>
+                        <segment title="7 Days"/>
+                        <segment title="Month"/>
+                        <segment title="Year"/>
+                        <segment title="All"/>
+                    </segments>
+                    <color key="tintColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <action selector="dataTypeDidChange:" destination="-1" eventType="valueChanged" id="czS-4Z-oTW"/>
+                    </connections>
+                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="knF-lf-3jZ" customClass="Chart" customModule="SwiftChart">
+                    <rect key="frame" x="0.0" y="211.5" width="375" height="280.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vds-sy-BKi">
+                    <rect key="frame" x="10" y="192" width="25.5" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RuW-OO-mGF" secondAttribute="trailing" id="6Bc-f3-yWq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="sFg-zd-7B3" secondAttribute="trailing" constant="30" id="8UO-9L-Tpt"/>
+                <constraint firstItem="vds-sy-BKi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="8gr-HH-ARI"/>
+                <constraint firstItem="K5L-bZ-T0r" firstAttribute="top" secondItem="sFg-zd-7B3" secondAttribute="bottom" constant="30" id="B76-uz-pFt"/>
+                <constraint firstItem="rzG-Y5-kWi" firstAttribute="top" secondItem="Dys-e9-wzt" secondAttribute="bottom" constant="5" id="B7q-Tb-0oZ"/>
+                <constraint firstItem="sFg-zd-7B3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="GVe-e9-Exw"/>
+                <constraint firstItem="RuW-OO-mGF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="K54-v1-WQd"/>
+                <constraint firstItem="Dys-e9-wzt" firstAttribute="top" secondItem="RuW-OO-mGF" secondAttribute="bottom" constant="30" id="N3U-Tc-LG6"/>
+                <constraint firstItem="knF-lf-3jZ" firstAttribute="top" secondItem="vds-sy-BKi" secondAttribute="bottom" constant="5" id="PWi-bn-TqG"/>
+                <constraint firstItem="knF-lf-3jZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TMu-RU-HAT"/>
+                <constraint firstItem="RuW-OO-mGF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TQB-Jj-BiN"/>
+                <constraint firstItem="knF-lf-3jZ" firstAttribute="top" secondItem="rzG-Y5-kWi" secondAttribute="bottom" constant="40" id="WcR-K0-uSa"/>
+                <constraint firstItem="sFg-zd-7B3" firstAttribute="top" secondItem="knF-lf-3jZ" secondAttribute="bottom" constant="45" id="Xgz-T5-ghV"/>
+                <constraint firstItem="rzG-Y5-kWi" firstAttribute="centerX" secondItem="Dys-e9-wzt" secondAttribute="centerX" id="aCl-Le-4Em"/>
+                <constraint firstItem="Dys-e9-wzt" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="g3G-lW-rxE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="knF-lf-3jZ" secondAttribute="trailing" id="llM-tB-YcY"/>
+                <constraint firstItem="K5L-bZ-T0r" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="nQg-FH-2hL"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="K5L-bZ-T0r" secondAttribute="trailing" constant="40" id="rxD-E5-S6Y"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="K5L-bZ-T0r" secondAttribute="bottom" constant="40" id="zQv-nA-RyX"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="1eh-jE-v5w" appends="YES" id="ucD-rp-dlJ"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="1eh-jE-v5w">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="Nld-MG-Mip"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="back_black_icon" width="24" height="24"/>
+    </resources>
+</document>
