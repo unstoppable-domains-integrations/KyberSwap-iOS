@@ -19,6 +19,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var historyCoordinator: KNHistoryCoordinator!
   internal var settingsCoordinator: KNSettingsCoordinator!
 
+  internal var kyberGOCoordinator: KGOHomePageCoordinator?
+
   internal var tabbarController: UITabBarController!
   internal var transactionStatusCoordinator: KNTransactionStatusCoordinator!
 

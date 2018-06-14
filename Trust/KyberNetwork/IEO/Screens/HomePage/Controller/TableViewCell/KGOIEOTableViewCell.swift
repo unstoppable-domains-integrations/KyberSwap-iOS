@@ -1,0 +1,133 @@
+// Copyright SIX DAY LLC. All rights reserved.
+
+import UIKit
+import Moya
+import Alamofire
+
+protocol KGOIEOTableViewCellDelegate: class {
+  func ieoTableViewCellBuyButtonPressed(for object: IEOObject, sender: KGOIEOTableViewCell)
+  func ieoTableViewCellShouldUpdateType(for object: IEOObject, sender: KGOIEOTableViewCell)
+}
+
+struct KGOIEOTableViewCellModel {
+  fileprivate let object: IEOObject
+
+  init(object: IEOObject) {
+    self.object = object
+  }
+
+  var displayedName: String { return object.name }
+  var displayedTime: String { return  previewTime() }
+  var iconURL: String { return object.icon }
+  var progress: Float { return object.progress }
+  var raisedAmountText: String { return object.raisedText }
+  var raisedAmountPercentText: String { return object.raisedPercent }
+
+  fileprivate func previewTime() -> String {
+    func displayDynamicTime(for time: TimeInterval) -> String {
+      let timeInt = Int(floor(time))
+      let timeDay: Int = 60 * 60 * 24
+      let timeHour: Int = 60 * 60
+      let timeMin: Int = 60
+      let day = timeInt / timeDay
+      let hour = (timeInt % timeDay) / timeHour
+      let min = (timeInt % timeHour) / timeMin
+      let sec = timeInt % timeMin
+      return "\(day)d \(hour)h \(min)m \(sec)s"
+    }
+    let staticDateFormatter: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "dd-MMM-yyyy HH:mm"
+      return formatter
+    }()
+    switch object.type {
+    case .past:
+      return "End at: \(staticDateFormatter.string(from: object.endDate))"
+    case .active:
+      return "End In: \(displayDynamicTime(for: object.endDate.timeIntervalSince(Date())))"
+    case .upcoming:
+      return "Start In: \(displayDynamicTime(for: object.startDate.timeIntervalSince(Date())))"
+    }
+  }
+}
+
+class KGOIEOTableViewCell: UITableViewCell {
+
+  @IBOutlet weak var tokenIconImageView: UIImageView!
+  @IBOutlet weak var nameLabel: UILabel!
+  @IBOutlet weak var timeLabel: UILabel!
+  @IBOutlet weak var progressView: UIProgressView!
+  @IBOutlet weak var raisedAmountLabel: UILabel!
+  @IBOutlet weak var raisedPercentLabel: UILabel!
+  @IBOutlet weak var buyButton: UIButton!
+
+  weak var delegate: KGOIEOTableViewCellDelegate?
+  fileprivate var model: KGOIEOTableViewCellModel?
+
+  fileprivate var countdownTimer: Timer?
+  fileprivate var stateTimer: Timer?
+
+  deinit {
+    self.countdownTimer?.invalidate()
+    self.stateTimer?.invalidate()
+  }
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.tokenIconImageView.image = nil
+    self.tokenIconImageView.rounded(
+      color: .lightGray,
+      width: 0.5,
+      radius: self.tokenIconImageView.frame.width / 2.0
+    )
+    self.tokenIconImageView.addShadow(color: .black, offset: CGSize(width: 0, height: 2))
+
+    self.nameLabel.text = ""
+    self.timeLabel.text = ""
+
+    self.progressView.progress = 0.0
+    self.progressView.transform = self.progressView.transform.scaledBy(x: 1, y: 4.0)
+
+    self.raisedAmountLabel.text = "0.0"
+    self.raisedPercentLabel.text = "0.00 %"
+
+    self.buyButton.rounded(radius: 4.0)
+  }
+
+  func updateView(with model: KGOIEOTableViewCellModel) {
+    self.model = model
+    self.tokenIconImageView.setImage(with: model.iconURL, placeholder: nil)
+    self.nameLabel.text = model.displayedName
+    self.timeLabel.text = model.displayedTime
+    self.progressView.progress = model.progress
+    self.raisedAmountLabel.text = model.raisedAmountText
+    self.raisedPercentLabel.text = model.raisedAmountPercentText
+
+    self.buyButton.setTitle("Buy", for: .normal)
+    self.buyButton.isHidden = model.object.type != .active
+
+    self.stateTimer?.invalidate()
+    self.countdownTimer?.invalidate()
+    if model.object.type == .past { return }
+    if model.object.type == .active {
+      self.stateTimer = Timer.scheduledTimer(withTimeInterval: model.object.endDate.timeIntervalSince(Date()), repeats: false, block: { [weak self] _ in
+        guard let `self` = self, let object = self.model?.object else { return }
+        self.delegate?.ieoTableViewCellShouldUpdateType(for: object, sender: self)
+      })
+    } else if model.object.type == .upcoming {
+      self.stateTimer = Timer.scheduledTimer(withTimeInterval: model.object.startDate.timeIntervalSince(Date()), repeats: false, block: { [weak self] _ in
+        guard let `self` = self, let object = self.model?.object else { return }
+        self.delegate?.ieoTableViewCellShouldUpdateType(for: object, sender: self)
+      })
+    }
+    self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+      self?.timeLabel.text = self?.model?.displayedTime
+    })
+  }
+
+  @IBAction func buyButtonPressed(_ sender: Any) {
+    if let object = self.model?.object {
+      self.delegate?.ieoTableViewCellBuyButtonPressed(for: object, sender: self)
+    }
+  }
+}

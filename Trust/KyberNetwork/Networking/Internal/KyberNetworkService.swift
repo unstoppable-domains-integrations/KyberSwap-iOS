@@ -98,3 +98,25 @@ extension KNTrackerService: TargetType {
     ]
   }
 }
+
+enum KyberGOService {
+  case listIEOs
+}
+
+extension KyberGOService: TargetType {
+  var baseURL: URL {
+    return URL(string: "https://kyber.mangcut.vn/api/ieos")!
+  }
+
+  var path: String { return "" }
+  var method: Moya.Method { return .get }
+  var task: Task { return .requestPlain }
+  var sampleData: Data { return Data() }
+  var headers: [String: String]? {
+    return [
+      "content-type": "application/json",
+      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
+  }
+}

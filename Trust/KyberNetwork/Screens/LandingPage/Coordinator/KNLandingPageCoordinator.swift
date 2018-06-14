@@ -77,6 +77,10 @@ class KNLandingPageCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
+    if self.keystore.wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
+      // In case user delete the app, wallets are removed but passcode is still save in keychain
+      KNPasscodeUtil.shared.deletePasscode()
+    }
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
       if KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == false {
         // Open back up wallet if it is created from app and not backed up yet

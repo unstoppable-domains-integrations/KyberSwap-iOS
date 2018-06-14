@@ -84,4 +84,9 @@ extension String {
     // TODO: For easier changing localised string later
     return self
   }
+
+  var jsonValue: Any? {
+    guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
+    return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+  }
 }

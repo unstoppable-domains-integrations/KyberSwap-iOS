@@ -74,7 +74,13 @@ class KNCoinTickerCoordinator {
         do {
           let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
           let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
-          KNCoinTickerStorage.shared.update(coinTickers: coinTickers)
+          var supportedTickers: [KNCoinTicker] = []
+          KNSupportedTokenStorage.shared.supportedTokens.forEach({ token in
+            if let coinTicker = coinTickers.first(where: { $0.isData(for: token) }) {
+              supportedTickers.append(coinTicker)
+            }
+          })
+          KNCoinTickerStorage.shared.update(coinTickers: supportedTickers)
           KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
           print("---- Coin Tickers: Successful limit: \(limit), currency: \(currency) ----")
           completion?(.success(coinTickers))

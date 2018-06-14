@@ -4,11 +4,15 @@ import Foundation
 
 extension Double {
   func displayUSD() -> String {
+    return self.display()
+  }
+
+  func display(minFractionDigits: Int = 0, maxFractionDigits: Int = 2, minIntegerDigits: Int = 1) -> String {
     let numberFormatter: NumberFormatter = {
       let formatter = NumberFormatter()
-      formatter.maximumFractionDigits = 2
-      formatter.minimumFractionDigits = 0
-      formatter.minimumIntegerDigits = 1
+      formatter.maximumFractionDigits = maxFractionDigits
+      formatter.minimumFractionDigits = minFractionDigits
+      formatter.minimumIntegerDigits = minIntegerDigits
       return formatter
     }()
     return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"

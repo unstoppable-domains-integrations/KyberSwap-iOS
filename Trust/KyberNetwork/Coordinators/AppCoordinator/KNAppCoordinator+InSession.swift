@@ -46,6 +46,12 @@ extension KNAppCoordinator {
 //    self.addCoordinator(self.historyCoordinator)
 //    self.historyCoordinator.start()
 
+    self.kyberGOCoordinator = {
+      return KGOHomePageCoordinator()
+    }()
+    self.addCoordinator(self.kyberGOCoordinator!)
+    self.kyberGOCoordinator?.start()
+
     // Settings tab
     self.settingsCoordinator = {
       let coordinator = KNSettingsCoordinator(
@@ -61,6 +67,7 @@ extension KNAppCoordinator {
       self.exchangeCoordinator!.navigationController,
       self.balanceTabCoordinator.navigationController,
 //      self.historyCoordinator.navigationController,
+      self.kyberGOCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(hex: "5ec2ba")
@@ -82,6 +89,15 @@ extension KNAppCoordinator {
       tabBarItem.tag = 1
       return tabBarItem
     }()
+    self.kyberGOCoordinator?.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "KyberGO".toBeLocalised(),
+        image: UIImage(named: "history_tab_icon"),
+        selectedImage: UIImage(named: "history_tab_icon")
+      )
+      tabBarItem.tag = 2
+      return tabBarItem
+    }()
 //    self.historyCoordinator.navigationController.tabBarItem = {
 //      let tabBarItem = UITabBarItem(
 //        title: "History".toBeLocalised(),
@@ -91,7 +107,7 @@ extension KNAppCoordinator {
 //      tabBarItem.tag = 2
 //      return tabBarItem
 //    }()
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 2)
+    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 3)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
