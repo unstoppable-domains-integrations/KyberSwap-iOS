@@ -13,17 +13,6 @@ extension KNAppCoordinator {
     self.balanceCoordinator?.resume()
 
     self.tabbarController = UITabBarController()
-    // Exchange Tab
-    self.exchangeCoordinator = {
-      let coordinator = KNExchangeTokenCoordinator(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.exchangeCoordinator!)
-    self.exchangeCoordinator?.start()
-
     // Balance Tab
     self.balanceTabCoordinator = {
       let coordinator = KNBalanceTabCoordinator(
@@ -34,6 +23,17 @@ extension KNAppCoordinator {
     }()
     self.addCoordinator(self.balanceTabCoordinator)
     self.balanceTabCoordinator.start()
+
+    // Exchange Tab
+    self.exchangeCoordinator = {
+      let coordinator = KNExchangeTokenCoordinator(
+        session: self.session
+      )
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.addCoordinator(self.exchangeCoordinator!)
+    self.exchangeCoordinator?.start()
 
 //    // History tab
 //    self.historyCoordinator = {
@@ -64,27 +64,27 @@ extension KNAppCoordinator {
     self.settingsCoordinator.start()
 
     self.tabbarController.viewControllers = [
-      self.exchangeCoordinator!.navigationController,
       self.balanceTabCoordinator.navigationController,
 //      self.historyCoordinator.navigationController,
+      self.exchangeCoordinator!.navigationController,
       self.kyberGOCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(hex: "5ec2ba")
-    self.exchangeCoordinator?.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "Exchange".toBeLocalised(),
-        image: UIImage(named: "exchange_tab_icon"),
-        selectedImage: UIImage(named: "exchange_tab_icon")
-      )
-      tabBarItem.tag = 0
-      return tabBarItem
-    }()
     self.balanceTabCoordinator.navigationController.tabBarItem = {
       let tabBarItem = UITabBarItem(
         title: "Balance".toBeLocalised(),
         image: UIImage(named: "balance_tab_icon"),
         selectedImage: UIImage(named: "balance_tab_icon")
+      )
+      tabBarItem.tag = 0
+      return tabBarItem
+    }()
+    self.exchangeCoordinator?.navigationController.tabBarItem = {
+      let tabBarItem = UITabBarItem(
+        title: "Exchange".toBeLocalised(),
+        image: UIImage(named: "exchange_tab_icon"),
+        selectedImage: UIImage(named: "exchange_tab_icon")
       )
       tabBarItem.tag = 1
       return tabBarItem
@@ -92,8 +92,8 @@ extension KNAppCoordinator {
     self.kyberGOCoordinator?.navigationController.tabBarItem = {
       let tabBarItem = UITabBarItem(
         title: "KyberGO".toBeLocalised(),
-        image: UIImage(named: "history_tab_icon"),
-        selectedImage: UIImage(named: "history_tab_icon")
+        image: UIImage(named: "kybergo_tab_icon"),
+        selectedImage: UIImage(named: "kybergo_tab_icon")
       )
       tabBarItem.tag = 2
       return tabBarItem

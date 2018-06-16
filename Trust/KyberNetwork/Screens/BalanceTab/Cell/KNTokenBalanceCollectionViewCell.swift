@@ -112,14 +112,21 @@ struct KNTokenBalanceCollectionViewCellModel {
     if let percentageChange = coinTicker?.percentChange24h, !percentageChange.isEmpty {
       return "\(percentageChange)%"
     }
-    return ""
+    return "- - - - - -"
+  }
+
+  var textColorChange24h: UIColor {
+    if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
+      return String(percentageChange) == "-" ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
+    }
+    return UIColor(hex: "5a5e67")
   }
 
   var backgroundColorChange24h: UIColor {
     if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
-      return String(percentageChange) == "-" ? UIColor(hex: "f89f50") : UIColor(hex: "00d3a7")
+      return String(percentageChange) == "-" ? UIColor(hex: "fef6ef") : UIColor(hex: "edfbf6")
     }
-    return UIColor(hex: "00d3a7")
+    return UIColor.white
   }
 }
 
@@ -150,6 +157,7 @@ class KNTokenBalanceCollectionViewCell: UICollectionViewCell {
     self.tokenValueLabel.attributedText = cellModel.tokenValueAttributedString
 
     self.tokenChange24hLabel.text = cellModel.displayChange24h
+    self.tokenChange24hLabel.textColor = cellModel.textColorChange24h
     self.tokenChange24hLabel.backgroundColor = cellModel.backgroundColorChange24h
 
     self.tokenPriceLabel.attributedText = cellModel.displayTokenPriceAttributedText
