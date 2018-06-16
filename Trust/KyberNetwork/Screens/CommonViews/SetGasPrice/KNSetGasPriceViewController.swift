@@ -2,6 +2,14 @@
 
 import UIKit
 import BigInt
+import MSCircularSlider
+
+enum KNSelectedGasPriceType: Int {
+  case fast = 0
+  case medium = 1
+  case slow = 2
+  case custom = 3
+}
 
 protocol KNSetGasPriceViewControllerDelegate: class {
   // gasPrice: nil if user pressed back, chosen value if user pressed done
@@ -10,10 +18,10 @@ protocol KNSetGasPriceViewControllerDelegate: class {
 
 struct KNSetGasPriceViewModel {
 
-  fileprivate var gasPrices: [BigInt] = [
-    KNGasCoordinator.shared.lowKNGas,
-    KNGasCoordinator.shared.standardKNGas,
-    KNGasCoordinator.shared.fastKNGas,
+  let gradientColors: [UIColor] = [
+    UIColor(hex: "fad961"),
+    UIColor(hex: "f9cb41"),
+    UIColor(hex: "f76b1c"),
   ]
 
   var gasPrice: BigInt
@@ -32,15 +40,7 @@ struct KNSetGasPriceViewModel {
     return self.gasPrice.shortString(
       units: .gwei,
       maxFractionDigits: 1
-    ) + "  Gwei"
-  }
-
-  var selectedGasPriceID: Int {
-    return self.gasPrices.index(of: self.gasPrice) ?? 2
-  }
-
-  mutating func updateGasPrice(selectedTag: Int) {
-    self.gasPrice = self.gasPrices[selectedTag]
+    )
   }
 
   var feeBigInt: BigInt {
@@ -56,40 +56,28 @@ struct KNSetGasPriceViewModel {
 
   var txFeeAttributedString: NSAttributedString {
     let textAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "141927"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "31cb9e"),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "0c3533"),
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "Transaction Fee ", attributes: textAttributes))
+    attributedString.append(NSAttributedString(string: "Transaction Fee  ", attributes: textAttributes))
     attributedString.append(NSAttributedString(string: self.feeText, attributes: feeAttributes))
     return attributedString
-  }
-
-  mutating func shouldUpdateGasPriceDidChange() {
-    self.gasPrices = [
-      KNGasCoordinator.shared.lowKNGas,
-      KNGasCoordinator.shared.standardKNGas,
-      KNGasCoordinator.shared.fastKNGas,
-    ]
-    if self.gasPrices.index(of: self.gasPrice) == nil {
-      self.gasPrice = self.gasPrices[2]
-    }
   }
 }
 
 class KNSetGasPriceViewController: KNBaseViewController {
 
   @IBOutlet weak var navTitleLabel: UILabel!
-  @IBOutlet weak var gasPriceLabel: UILabel!
-  @IBOutlet var gasTypeButtons: [UIButton]!
-  @IBOutlet weak var txFeeLabel: UILabel!
-  @IBOutlet weak var gasPriceExplainLabel: UILabel!
 
-  @IBOutlet weak var doneButton: UIButton!
+  @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var circleSlider: MSGradientCircularSlider!
+  @IBOutlet weak var gasPriceLabel: UILabel!
+  @IBOutlet weak var txFeeLabel: UILabel!
 
   weak var delegate: KNSetGasPriceViewControllerDelegate?
   fileprivate var viewModel: KNSetGasPriceViewModel
@@ -105,13 +93,6 @@ class KNSetGasPriceViewController: KNBaseViewController {
   init(viewModel: KNSetGasPriceViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNSetGasPriceViewController.className, bundle: nil)
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.shouldUpdateGasPrice(_:)),
-      name: NSNotification.Name(rawValue: kGasPriceDidUpdateNotificationKey),
-      object: nil
-    )
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -121,19 +102,28 @@ class KNSetGasPriceViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
-    self.updateUI()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.containerView.addShadow(
+      color: UIColor.black.withAlphaComponent(0.25),
+      offset: CGSize(width: 0, height: 7),
+      opacity: 0.32,
+      radius: 32
+    )
   }
 
   fileprivate func setupUI() {
-    self.gasTypeButtons.forEach {
-      $0.rounded(
-        color: UIColor(hex: "31cb9e"),
-        width: 1,
-        radius: $0.frame.height / 2.0
-      )
-      $0.setTitleColor(UIColor(hex: "141927"), for: .normal)
-    }
-    self.doneButton.rounded(radius: 7.0)
+    self.containerView.rounded(radius: 4.0)
+    self.navTitleLabel.text = self.viewModel.navTitleText
+
+    let currentValue: Double = Double(self.viewModel.gasPrice / BigInt(UnitConfiguration.gasPriceUnit.rawValue))
+    self.circleSlider.currentValue = currentValue
+    self.circularSlider(self.circleSlider, valueChangedTo: currentValue, fromUser: false)
+    self.circleSlider.delegate = self
+
+    self.updateUI()
   }
 
   func updateViewModel(_ viewModel: KNSetGasPriceViewModel) {
@@ -142,14 +132,14 @@ class KNSetGasPriceViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
-    self.navTitleLabel.text = self.viewModel.navTitleText
+    if self.viewModel.gasPrice == KNGasConfiguration.gasPriceMax {
+      // maximum gas price
+      self.circleSlider.gradientColors = [self.viewModel.gradientColors[2], self.viewModel.gradientColors[2], self.viewModel.gradientColors[2]]
+    } else {
+      self.circleSlider.gradientColors = self.viewModel.gradientColors
+    }
+    self.circleSlider.layoutIfNeeded()
     self.gasPriceLabel.text = self.viewModel.gasPriceText
-    self.gasTypeButtons.forEach({
-      let isSelected = $0.tag == self.viewModel.selectedGasPriceID
-      let color = isSelected ? UIColor.white : UIColor(hex: "141927")
-      $0.setTitleColor(color, for: .normal)
-      $0.backgroundColor = isSelected ? UIColor(hex: "31cb9e") : .clear
-    })
     self.txFeeLabel.attributedText = self.viewModel.txFeeAttributedString
     self.view.layoutIfNeeded()
   }
@@ -158,25 +148,26 @@ class KNSetGasPriceViewController: KNBaseViewController {
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: nil)
   }
 
-  @IBAction func gasPriceTypeButtonPressed(_ sender: UIButton) {
-    if self.viewModel.selectedGasPriceID != sender.tag {
-      self.viewModel.updateGasPrice(selectedTag: sender.tag)
-      self.updateUI()
-    }
-  }
-
-  @IBAction func doneButtonPressed(_ sender: Any) {
-    self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
-  }
-
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
       self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: nil)
     }
   }
 
-  @objc func shouldUpdateGasPrice(_ sender: Notification?) {
-    self.viewModel.shouldUpdateGasPriceDidChange()
+  @IBAction func doneButtonPressed(_ sender: Any) {
+    self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
+  }
+}
+
+extension KNSetGasPriceViewController: MSCircularSliderDelegate {
+  func circularSlider(_ slider: MSCircularSlider, startedTrackingWith value: Double) {
+  }
+
+  func circularSlider(_ slider: MSCircularSlider, endedTrackingWith value: Double) {
+  }
+
+  func circularSlider(_ slider: MSCircularSlider, valueChangedTo value: Double, fromUser: Bool) {
+    self.viewModel.gasPrice = BigInt(ceil(value)) * BigInt(EthereumUnit.gwei.rawValue)
     self.updateUI()
   }
 }

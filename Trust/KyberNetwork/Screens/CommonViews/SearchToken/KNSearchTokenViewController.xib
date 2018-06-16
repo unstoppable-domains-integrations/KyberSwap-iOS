@@ -27,8 +27,8 @@
                     <subviews>
                         <searchBar contentMode="redraw" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
                             <rect key="frame" x="16" y="24" width="289" height="56"/>
-                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <color key="barTintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="barTintColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-j2-iod">
@@ -42,7 +42,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.035294117647058823" green="0.15686274509803921" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="kaA-Wq-k7I" firstAttribute="leading" secondItem="0Kr-aI-vdA" secondAttribute="leading" constant="16" id="WBv-AM-FOB"/>
                         <constraint firstItem="4Oo-j2-iod" firstAttribute="centerY" secondItem="kaA-Wq-k7I" secondAttribute="centerY" id="XEA-TZ-lC9"/>

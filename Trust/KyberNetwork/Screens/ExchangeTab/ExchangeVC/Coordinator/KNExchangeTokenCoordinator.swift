@@ -312,17 +312,6 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     self.qrcodeCoordinator?.start()
   }
 
-  func exchangeTabViewControllerDidPressedSlippageRate(slippageRate: Double) {
-    let slippageRateVC: KNSetSlippageRateViewController = {
-      let viewModel = KNSetSlippageRateViewModel(slippageRate: slippageRate)
-      let controller = KNSetSlippageRateViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.navigationController.pushViewController(slippageRateVC, animated: true)
-  }
-
   func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
     let setGasPriceVC: KNSetGasPriceViewController = {
       let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
@@ -377,18 +366,7 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
 extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
-      guard let gasPrice = gasPrice else { return }
       self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
-    }
-  }
-}
-
-// MARK: Set slippage rate
-extension KNExchangeTokenCoordinator: KNSetSlippageRateViewControllerDelegate {
-  func setSlippageRateViewControllerDidReturn(slippageRate: Double?) {
-    self.navigationController.popViewController(animated: true) {
-      guard let rate = slippageRate else { return }
-      self.rootViewController.coordinatorExchangeTokenDidUpdateSlippageRate(rate)
     }
   }
 }

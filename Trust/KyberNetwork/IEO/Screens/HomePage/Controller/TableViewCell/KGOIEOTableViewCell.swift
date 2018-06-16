@@ -80,7 +80,7 @@ class KGOIEOTableViewCell: UITableViewCell {
       width: 0.5,
       radius: self.tokenIconImageView.frame.width / 2.0
     )
-    self.tokenIconImageView.addShadow(color: .black, offset: CGSize(width: 0, height: 2))
+//    self.tokenIconImageView.addShadow(color: .black, offset: CGSize(width: 0, height: 2))
 
     self.nameLabel.text = ""
     self.timeLabel.text = ""

@@ -16,6 +16,10 @@ class KNLandingPageViewController: KNBaseViewController {
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = .white

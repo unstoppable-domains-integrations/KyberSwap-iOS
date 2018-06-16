@@ -52,7 +52,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="rVx-8S-mug" firstAttribute="top" secondItem="b6e-iC-Oke" secondAttribute="top" constant="30" id="9wk-bh-dG8"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="DLY-SO-c20"/>

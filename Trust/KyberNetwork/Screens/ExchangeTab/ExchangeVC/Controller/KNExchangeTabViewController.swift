@@ -11,7 +11,6 @@ protocol KNExchangeTabViewControllerDelegate: class {
   func exchangeTabViewControllerShouldUpdateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
   func exchangeTabViewControllerDidPressedQRcode(sender: KNExchangeTabViewController)
   func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt)
-  func exchangeTabViewControllerDidPressedSlippageRate(slippageRate: Double)
   func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController)
   func exchangeTabViewControllerDidPressedSendToken(sender: KNExchangeTabViewController)
   func exchangeTabViewControllerDidPressedAddWallet(sender: KNExchangeTabViewController)
@@ -22,21 +21,22 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   @IBOutlet weak var walletHeaderView: KNWalletHeaderView!
 
+  @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
+
+  @IBOutlet weak var balanceTextLabel: UILabel! // "\(symbol) balance"
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var toTokenButton: UIButton!
   @IBOutlet weak var swapButton: UIButton!
 
+  @IBOutlet weak var fromAmountTextField: UITextField!
+  @IBOutlet weak var toAmountTextField: UITextField!
+
   @IBOutlet weak var exchangeRateLabel: UILabel!
 
-  @IBOutlet weak var equalButton: UIButton!
-  @IBOutlet weak var amountContainerView: UIView!
-  @IBOutlet weak var amountTextField: UITextField!
-  @IBOutlet weak var amountReceivedLabel: UILabel!
-
-  @IBOutlet weak var gasPriceDetailsView: KNDataDetailsView!
-  @IBOutlet weak var slippageRateDetailsView: KNDataDetailsView!
-  @IBOutlet weak var exchangeButton: UIButton!
+  @IBOutlet weak var gasPriceOptionButton: UIButton!
+  @IBOutlet weak var gasPriceSegmentedControl: KNCustomSegmentedControl!
+  @IBOutlet weak var gasTextLabel: UILabel!
 
   fileprivate var viewModel: KNExchangeTabViewModel
   weak var delegate: KNExchangeTabViewControllerDelegate?
@@ -58,33 +58,11 @@ class KNExchangeTabViewController: KNBaseViewController {
     return hamburgerVC
   }()
 
-  lazy var toolBar: UIToolbar = {
-    let toolBar = UIToolbar()
-    toolBar.barStyle = .default
-    toolBar.isTranslucent = true
-    toolBar.barTintColor = UIColor(hex: "31cb9e")
-    toolBar.tintColor = .white
-    let exchangeAllBtn = UIBarButtonItem(
-      title: "Exchange All",
-      style: .plain,
-      target: self,
-      action: #selector(self.keyboardExchangeAllButtonPressed(_:))
-    )
-    let spaceBtn = UIBarButtonItem(
-      barButtonSystemItem: .flexibleSpace,
-      target: nil,
-      action: nil
-    )
-    let doneBtn = UIBarButtonItem(
-      title: "Done",
-      style: .plain,
-      target: self,
-      action: #selector(self.keyboardDoneButtonPressed(_:))
-    )
-    toolBar.setItems([exchangeAllBtn, spaceBtn, doneBtn], animated: false)
-    toolBar.isUserInteractionEnabled = true
-    toolBar.sizeToFit()
-    return toolBar
+  lazy var toolBar: KNCustomToolbar = {
+    return KNCustomToolbar(
+      leftBtnTitle: "Exchange All",
+      rightBtnTitle: "Done",
+      delegate: self)
   }()
 
   init(viewModel: KNExchangeTabViewModel) {
@@ -99,6 +77,16 @@ class KNExchangeTabViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.dataContainerView.addShadow(
+      color: UIColor.black.withAlphaComponent(0.5),
+      offset: CGSize(width: 0, height: 7),
+      opacity: 0.32,
+      radius: 32
+    )
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -136,7 +124,6 @@ class KNExchangeTabViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.setupWalletHeaderView()
     self.setupTokensView()
-    self.setupExchangeDataView()
     self.setupHamburgerMenu()
   }
 
@@ -146,51 +133,32 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupTokensView() {
-    self.fromTokenButton.rounded(radius: 4.0)
-    self.fromTokenButton.addShadow()
+    self.fromTokenButton.titleLabel?.numberOfLines = 2
+    self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
+    self.toTokenButton.titleLabel?.numberOfLines = 2
+    self.toTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.swapButton.rounded(radius: self.swapButton.frame.height / 2.0)
-    self.toTokenButton.rounded(radius: 4.0)
-    self.toTokenButton.addShadow()
 
-    self.exchangeRateLabel.rounded(radius: 4.0)
-    self.exchangeRateLabel.addShadow()
+    self.fromAmountTextField.text = ""
+    self.fromAmountTextField.adjustsFontSizeToFitWidth = true
+    self.fromAmountTextField.inputAccessoryView = self.toolBar
+    self.fromAmountTextField.delegate = self
+    self.viewModel.updateAmount("", isSource: true)
+    self.balanceTextLabel.text = self.viewModel.balanceTextString
 
-    self.amountContainerView.rounded(
-      color: UIColor.black.withAlphaComponent(0.5),
-      radius: 4.0
-    )
-    self.amountContainerView.addShadow()
-    self.amountTextField.rounded(color: .lightGray, width: 1.0, radius: 4.0)
-    self.amountTextField.delegate = self
-    self.amountTextField.inputAccessoryView = self.toolBar
-    self.equalButton.rounded(radius: self.equalButton.frame.height / 2.0)
-    self.amountReceivedLabel.rounded(radius: 4.0)
-    self.amountReceivedLabel.addShadow()
+    self.toAmountTextField.text = ""
+    self.toAmountTextField.adjustsFontSizeToFitWidth = true
+    self.toAmountTextField.inputAccessoryView = self.toolBar
+    self.toAmountTextField.delegate = self
+    self.viewModel.updateAmount("", isSource: false)
+
+    self.gasPriceOptionButton.setImage(UIImage(named: "expand_icon"), for: .normal)
+    self.gasPriceSegmentedControl.selectedSegmentIndex = 0 // select fast option
+    self.gasPriceSegmentedControl.addTarget(self, action: #selector(self.gasPriceSegmentedControlDidTouch(_:)), for: .touchDown)
+    self.gasPriceSegmentedControl.isHidden = true
+    self.gasTextLabel.isHidden = true
 
     self.updateTokensView()
-  }
-
-  fileprivate func setupExchangeDataView() {
-
-    // setup gas price details view
-    self.gasPriceDetailsView.rounded(
-      color: UIColor(hex: "f1f1f1"),
-      width: 1,
-      radius: 0
-    )
-    let tapGasPriceGesture = UITapGestureRecognizer(target: self, action: #selector(self.gasPriceDataDetailsViewTapped(_:)))
-    self.gasPriceDetailsView.addGestureRecognizer(tapGasPriceGesture)
-
-    // setup slippage rate details view
-    self.slippageRateDetailsView.rounded(
-      color: UIColor(hex: "f1f1f1"),
-      width: 1,
-      radius: 0
-    )
-    let tapSlippageRateGesture = UITapGestureRecognizer(target: self, action: #selector(self.slippageRateDataDetailsViewTapped(_:)))
-    self.slippageRateDetailsView.addGestureRecognizer(tapSlippageRateGesture)
-    self.exchangeButton.rounded(radius: 6.0)
-    self.updateExchangeData()
   }
 
   fileprivate func setupHamburgerMenu() {
@@ -220,10 +188,35 @@ class KNExchangeTabViewController: KNBaseViewController {
       delay: 0,
       options: .transitionFlipFromTop,
       animations: {
-      self.amountTextField.text = ""
+      self.fromAmountTextField.text = ""
+      self.toAmountTextField.text = ""
+      self.viewModel.updateAmount("", isSource: true)
+      self.viewModel.updateAmount("", isSource: false)
       self.updateTokensView()
     }, completion: nil
     )
+  }
+
+  @IBAction func gasPriceButtonPressed(_ sender: Any) {
+    UIView.animate(withDuration: 0.3) {
+      self.gasPriceSegmentedControl.isHidden = !self.gasPriceSegmentedControl.isHidden
+      self.gasTextLabel.isHidden = !self.gasTextLabel.isHidden
+      self.gasPriceOptionButton.setImage(
+        UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+    }
+  }
+
+  @objc func gasPriceSegmentedControlDidTouch(_ sender: Any) {
+    let selectedId = self.gasPriceSegmentedControl.selectedSegmentIndex
+    if selectedId == 3 {
+      // custom gas price
+      self.delegate?.exchangeTabViewControllerDidPressedGasPrice(
+        gasPrice: self.viewModel.gasPrice,
+        estGasLimit: self.viewModel.estimateGasLimit
+      )
+    } else {
+      self.viewModel.updateSelectedGasPriceType(KNSelectedGasPriceType(rawValue: selectedId) ?? .fast)
+    }
   }
 
   /*
@@ -239,7 +232,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       self.showWarningTopBannerMessage(with: "Invalid amount", message: "Please enter a valid amount to exchange")
       return
     }
-    guard self.viewModel.isRateValid else {
+    guard let rate = self.viewModel.estRate, self.viewModel.isRateValid else {
       self.showWarningTopBannerMessage(with: "Invalid rate", message: "Please wait for estimated rate to exchange")
       return
     }
@@ -248,19 +241,21 @@ class KNExchangeTabViewController: KNBaseViewController {
       self.showWarningTopBannerMessage(with: "Invalid tokens", message: "Only can exchange between ETH and other tokens")
       return
     }
-    let slippageRate: BigInt? = {
-      guard let percent = self.viewModel.slippagePercentage, let estRate = self.viewModel.estRate else {
-        return self.viewModel.slippageRate
-      }
-      return estRate * BigInt(100.0 - percent) / BigInt(100)
+    let amount: BigInt = {
+      if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
+      let expectedExchange: BigInt = {
+        let amount = self.viewModel.amountTo.fullBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0)
+        return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
+      }()
+      return expectedExchange
     }()
     let exchange = KNDraftExchangeTransaction(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountBigInt,
+      amount: amount,
       maxDestAmount: BigInt(2).power(255),
-      expectedRate: self.viewModel.estRate ?? BigInt(0),
-      minRate: slippageRate,
+      expectedRate: rate,
+      minRate: self.viewModel.slippageRate,
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.estimateGasLimit
     )
@@ -274,45 +269,24 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.hamburgerMenu.gestureScreenEdgePanAction(sender)
   }
 
-  @objc func gasPriceDataDetailsViewTapped(_ sender: Any) {
-    self.delegate?.exchangeTabViewControllerDidPressedGasPrice(
-      gasPrice: self.viewModel.gasPrice,
-      estGasLimit: self.viewModel.estimateGasLimit
-    )
-  }
-
-  @objc func slippageRateDataDetailsViewTapped(_ sender: Any) {
-    let slippagePercent: Double? = {
-      if self.viewModel.slippagePercentage != nil { return self.viewModel.slippagePercentage }
-      if let rate = self.viewModel.estRate, let slippageRate = self.viewModel.slippageRate, !rate.isZero {
-        let percent = (rate - slippageRate) * BigInt(100) / rate
-        return Double(percent.shortString(decimals: 0))
-      }
-      return nil
-    }()
-    if let percent = slippagePercent {
-      self.delegate?.exchangeTabViewControllerDidPressedSlippageRate(
-        slippageRate: percent)
-    }
-  }
-
   @objc func keyboardExchangeAllButtonPressed(_ sender: Any) {
-    self.amountTextField.text = self.viewModel.balance?.amountFull ?? ""
-    self.amountTextField.resignFirstResponder()
-    self.viewModel.updateAmount(self.amountTextField.text ?? "")
+    self.fromAmountTextField.text = self.viewModel.balance?.amountFull ?? ""
+    self.viewModel.updateFocusingField(true)
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.updateTokensView()
     self.updateViewAmountDidChange()
+    self.view.endEditing(true)
   }
 
   @objc func keyboardDoneButtonPressed(_ sender: Any) {
-    self.amountTextField.resignFirstResponder()
+    self.view.endEditing(true)
   }
 
   fileprivate func updateEstimatedRate() {
     self.delegate?.exchangeTabViewControllerShouldUpdateEstimatedRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountBigInt
+      amount: self.viewModel.amountFromBigInt
     )
   }
 
@@ -320,7 +294,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.delegate?.exchangeTabViewControllerShouldUpdateEstimatedGasLimit(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountBigInt,
+      amount: self.viewModel.amountFromBigInt,
       gasPrice: self.viewModel.gasPrice
     )
   }
@@ -336,40 +310,25 @@ extension KNExchangeTabViewController {
   // TODO: Remove default token icon image
   func updateTokensView(updatedFrom: Bool = true, updatedTo: Bool = true) {
     if updatedFrom {
-      self.fromTokenButton.setTitle(self.viewModel.fromTokenBtnTitle, for: .normal)
+      self.fromTokenButton.setAttributedTitle(
+        self.viewModel.tokenButtonAttributedText(isSource: true),
+        for: .normal
+      )
       self.fromTokenButton.setImage(UIImage(named: self.viewModel.fromTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
+      self.balanceTextLabel.text = self.viewModel.balanceTextString
     }
     if updatedTo {
-      self.toTokenButton.setTitle(self.viewModel.toTokenBtnTitle, for: .normal)
+      self.toTokenButton.setAttributedTitle(
+        self.viewModel.tokenButtonAttributedText(isSource: false),
+        for: .normal
+      )
       self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
     }
     self.balanceLabel.text = self.viewModel.balanceText
-    // Temporary update rate using CMC data
-    if let cmcRate = KNRateCoordinator.shared.getRate(from: self.viewModel.from, to: self.viewModel.to) {
-      self.viewModel.updateExchangeRate(
-        for: self.viewModel.from,
-        to: self.viewModel.to,
-        amount: self.viewModel.amountBigInt,
-        rate: cmcRate.rate,
-        slippageRate: cmcRate.minRate
-      )
-    }
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
     self.view.layoutIfNeeded()
   }
 
-  func updateExchangeData() {
-    self.gasPriceDetailsView.updateView(
-      with: "Gas Price",
-      subTitle: self.viewModel.gasPriceText
-    )
-    self.slippageRateDetailsView.updateView(
-      with: "Slippage Rate",
-      subTitle: self.viewModel.slippageRateText
-    )
-    self.view.layoutIfNeeded()
-  }
 }
 
 // MARK: Update from coordinator
@@ -380,9 +339,11 @@ extension KNExchangeTabViewController {
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
     self.walletHeaderView.updateView(with: self.viewModel.walletObject)
-    self.amountTextField.text = ""
+    self.fromAmountTextField.text = ""
+    self.toAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
-    self.updateExchangeData()
     self.updateViewAmountDidChange()
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
@@ -409,11 +370,13 @@ extension KNExchangeTabViewController {
       slippageRate: slippageRate
     )
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
-    self.slippageRateDetailsView.updateView(
-      with: "Slippage Rate",
-      subTitle: self.viewModel.slippageRateText
-    )
+    if self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
+      self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
+    } else {
+      self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
+      self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+    }
     self.view.layoutIfNeeded()
   }
 
@@ -445,10 +408,15 @@ extension KNExchangeTabViewController {
       delay: 0,
       options: .transitionFlipFromTop,
       animations: {
-      if !isSource {
-        self.amountTextField.text = ""
-        self.updateViewAmountDidChange()
+      if self.viewModel.isFocusingFromAmount {
+        self.fromAmountTextField.text = self.viewModel.amountFrom
+        self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
+      } else {
+        self.toAmountTextField.text = self.viewModel.amountTo
+        self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       }
+      self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+      self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
       self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
     }, completion: nil
     )
@@ -468,31 +436,22 @@ extension KNExchangeTabViewController {
    */
   func coordinatorExchangeTokenUserDidConfirmTransaction() {
     // Reset exchange amount
-    self.amountTextField.text = ""
-    self.viewModel.updateAmount("")
-    self.updateViewAmountDidChange()
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
+    self.viewModel.updateFocusingField(true)
+    self.toAmountTextField.text = ""
+    self.fromAmountTextField.text = ""
   }
 
   /*
     - gasPrice: new gas price after user finished selected gas price from set gas price view
    */
-  func coordinatorExchangeTokenDidUpdateGasPrice(_ gasPrice: BigInt) {
-    self.viewModel.updateGasPrice(gasPrice)
-    self.gasPriceDetailsView.updateView(
-      with: "Gas Price",
-      subTitle: self.viewModel.gasPriceText)
+  func coordinatorExchangeTokenDidUpdateGasPrice(_ gasPrice: BigInt?) {
+    if let gasPrice = gasPrice {
+      self.viewModel.updateGasPrice(gasPrice)
+    }
+    self.gasPriceSegmentedControl.selectedSegmentIndex = self.viewModel.selectedGasPriceType.rawValue
     self.view.layoutIfNeeded()
-  }
-
-  /*
-   - percent: new slippage rate after user finished selected slippage rate from set slippage rate
-   */
-  func coordinatorExchangeTokenDidUpdateSlippageRate(_ percent: Double) {
-    self.viewModel.updateSlippagePercent(percent)
-    self.slippageRateDetailsView.updateView(
-      with: "Slippage Rate",
-      subTitle: self.viewModel.slippageRateText
-    )
   }
 
   func coordinatorDidUpdatePendingTransactions(_ transactions: [Transaction]) {
@@ -505,7 +464,8 @@ extension KNExchangeTabViewController {
 extension KNExchangeTabViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
-    self.viewModel.updateAmount("")
+    self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
+    self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
     self.updateViewAmountDidChange()
     return false
   }
@@ -514,22 +474,30 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     if text.isEmpty || Double(text) != nil {
       textField.text = text
-      self.viewModel.updateAmount(text)
+      self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
+      self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
       self.updateViewAmountDidChange()
     }
     return false
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    textField.layer.borderColor = UIColor(hex: "31cb9e").cgColor
+    self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
+    self.fromAmountTextField.textColor = UIColor(hex: "31CB9E")
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    textField.layer.borderColor = UIColor.lightGray.cgColor
+    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
   }
 
   fileprivate func updateViewAmountDidChange() {
-    self.amountReceivedLabel.text = self.viewModel.expectedReceivedAmountText
+    if self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
+      self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
+    } else {
+      self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
+      self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+    }
     self.updateEstimatedRate()
     self.updateEstimatedGasLimit()
   }
@@ -567,5 +535,16 @@ extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDe
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
     self.delegate?.exchangeTabViewControllerDidPressedWallet(wallet, sender: self)
+  }
+}
+
+// MARK: Toolbar delegate
+extension KNExchangeTabViewController: KNCustomToolbarDelegate {
+  func customToolbarLeftButtonPressed(_ toolbar: KNCustomToolbar) {
+    self.keyboardExchangeAllButtonPressed(toolbar)
+  }
+
+  func customToolbarRightButtonPressed(_ toolbar: KNCustomToolbar) {
+    self.keyboardDoneButtonPressed(toolbar)
   }
 }

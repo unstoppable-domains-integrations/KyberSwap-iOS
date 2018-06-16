@@ -18,11 +18,11 @@ struct KNWalletHeaderViewModel {
   }
 
   var backgroundColor: UIColor {
-    return type == "white" ? UIColor.white : UIColor(hex: "31cb9e")
+    return type == "white" ? UIColor.white : UIColor(hex: "09281f")
   }
 
   var tintColor: UIColor {
-    return type == "white" ? UIColor(hex: "141927") : UIColor.white
+    return type == "white" ? UIColor(hex: "09281f") : UIColor.white
   }
 
   var barcodeIcon: String {
@@ -31,6 +31,18 @@ struct KNWalletHeaderViewModel {
 
   var walletListIcon: String {
     return type == "white" ? "burger_menu_black" : "burger_menu"
+  }
+
+  var walletAddressAttributes: [NSAttributedStringKey: Any] {
+    return [NSAttributedStringKey.foregroundColor: self.type == "white" ? UIColor(hex: "09281f") : UIColor(hex: "c4c4c4"),
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium),
+    ]
+  }
+
+  var walletNameAttributes: [NSAttributedStringKey: Any] {
+    return [NSAttributedStringKey.foregroundColor: self.type == "white" ? UIColor(hex: "09281f") : UIColor.white,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium),
+    ]
   }
 }
 
@@ -91,8 +103,13 @@ class KNWalletHeaderView: XibLoaderView {
   func updateView(with wallet: KNWalletObject) {
     self.wallet = wallet
     self.walletIconImageView.image = UIImage(named: wallet.icon)
-    let address = "\(wallet.address.prefix(10))......\(wallet.address.suffix(10))"
-    self.walletInfoLabel.text = "\(address)\n\(wallet.name)"
+    let address = "\(wallet.address.prefix(7))......\(wallet.address.suffix(5))"
+    self.walletInfoLabel.attributedText = {
+      let attributedString = NSMutableAttributedString()
+      attributedString.append(NSAttributedString(string: address, attributes: self.viewModel.walletAddressAttributes))
+      attributedString.append(NSAttributedString(string: "\n\(wallet.name)", attributes: self.viewModel.walletNameAttributes))
+      return attributedString
+    }()
   }
 
   func updateBadgeCounter(_ number: Int) {

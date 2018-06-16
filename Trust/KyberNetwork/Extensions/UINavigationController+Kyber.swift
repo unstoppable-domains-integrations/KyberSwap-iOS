@@ -7,7 +7,7 @@ extension UINavigationController {
     navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
     navigationBar.isTranslucent = false
     navigationBar.shadowImage = UIImage()
-    navigationBar.barTintColor = UIColor(hex: "31CB9E")
+    navigationBar.barTintColor = UIColor(hex: "09281f")
     navigationBar.barStyle = UIBarStyle.black
     navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
   }
@@ -19,7 +19,7 @@ extension UINavigationController {
     CATransaction.commit()
   }
 
-  public func popViewController(animated: Bool, completion: (() -> ())?) {
+  public func popViewController(animated: Bool, completion: (() -> Void)?) {
     CATransaction.begin()
     CATransaction.setCompletionBlock(completion)
     popViewController(animated: animated)

@@ -32,6 +32,7 @@ target 'Trust' do
   pod 'IQKeyboardManager'
   pod 'SwiftMessages'
   pod 'SwiftChart'
+  pod 'MSCircularSlider'
 
   target 'TrustTests' do
     inherit! :search_paths

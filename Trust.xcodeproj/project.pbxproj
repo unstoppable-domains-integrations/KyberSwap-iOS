@@ -31,6 +31,8 @@
 		251ABCBF205790B10069687F /* KNJSONLoaderUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */; };
 		251ABCC2205792170069687F /* UIColor+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCC1205792170069687F /* UIColor+Kyber.swift */; };
 		2521D20F20942AEC00A69AD7 /* KNNewCustomTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2521D20E20942AEC00A69AD7 /* KNNewCustomTokenCoordinator.swift */; };
+		252B174B20D3A0CE005B282D /* KNCustomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B174A20D3A0CE005B282D /* KNCustomToolbar.swift */; };
+		252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B174D20D4319C005B282D /* KNCustomSegmentedControl.swift */; };
 		252DB13320D10D8500D10FF7 /* IEOProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13220D10D8500D10FF7 /* IEOProvider.swift */; };
 		252DB13620D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13520D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift */; };
 		252DB13820D12D0D00D10FF7 /* IEOGetRateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */; };
@@ -632,6 +634,8 @@
 		251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNJSONLoaderUtil.swift; sourceTree = "<group>"; };
 		251ABCC1205792170069687F /* UIColor+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Kyber.swift"; sourceTree = "<group>"; };
 		2521D20E20942AEC00A69AD7 /* KNNewCustomTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNewCustomTokenCoordinator.swift; sourceTree = "<group>"; };
+		252B174A20D3A0CE005B282D /* KNCustomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCustomToolbar.swift; sourceTree = "<group>"; };
+		252B174D20D4319C005B282D /* KNCustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCustomSegmentedControl.swift; sourceTree = "<group>"; };
 		252DB13220D10D8500D10FF7 /* IEOProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOProvider.swift; sourceTree = "<group>"; };
 		252DB13520D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEODistributedTokensWeiRequest.swift; sourceTree = "<group>"; };
 		252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOGetRateRequest.swift; sourceTree = "<group>"; };
@@ -1422,6 +1426,22 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		252B174920D3A0AC005B282D /* CustomToolBar */ = {
+			isa = PBXGroup;
+			children = (
+				252B174A20D3A0CE005B282D /* KNCustomToolbar.swift */,
+			);
+			path = CustomToolBar;
+			sourceTree = "<group>";
+		};
+		252B174C20D4317B005B282D /* SegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				252B174D20D4319C005B282D /* KNCustomSegmentedControl.swift */,
+			);
+			path = SegmentedControl;
+			sourceTree = "<group>";
+		};
 		252DB13120D10D7600D10FF7 /* IEO */ = {
 			isa = PBXGroup;
 			children = (
@@ -1589,6 +1609,8 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				252B174C20D4317B005B282D /* SegmentedControl */,
+				252B174920D3A0AC005B282D /* CustomToolBar */,
 				2561454820C64AEA00FB00CF /* ContactTableView */,
 				25BA01CC20BFEB2C00053863 /* TransactionStatusView */,
 				25696F6520BE9EA0002CC53F /* SearchToken */,
@@ -4534,6 +4556,7 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MSCircularSlider/MSCircularSlider.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/QRCodeReaderViewController/QRCodeReaderViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
@@ -4564,6 +4587,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSCircularSlider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReaderViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
@@ -4819,6 +4843,7 @@
 				29C80D4D1FB5202C0037B1E0 /* BalanceBaseViewModel.swift in Sources */,
 				2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */,
 				25CE6F8020737B9B00A3A2F9 /* KNWalletCoordinator.swift in Sources */,
+				252B174B20D3A0CE005B282D /* KNCustomToolbar.swift in Sources */,
 				29E14FD11F7F457D00185568 /* TransactionsStorage.swift in Sources */,
 				299B5E451FD22FB40051361C /* ConfigureTransactionViewModel.swift in Sources */,
 				25CC0A912057D7340009D0D5 /* KNBalanceCoordinator.swift in Sources */,
@@ -4929,6 +4954,7 @@
 				615F105D1FCBF55E008A45AF /* OnboardingCollectionViewController.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				296AF9A71F736EC70058AF78 /* RPCServers.swift in Sources */,
+				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
 				257B84AC2074D3B7003DD40E /* KNExchangeRateCollectionViewCell.swift in Sources */,
 				771A847A2032344D00528D28 /* PreferencesController.swift in Sources */,
 				25696F5E20BE6B4E002CC53F /* KNSetGasPriceViewController.swift in Sources */,

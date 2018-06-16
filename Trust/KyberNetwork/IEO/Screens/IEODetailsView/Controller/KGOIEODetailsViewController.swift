@@ -90,7 +90,10 @@ class KGOIEODetailsViewController: KNBaseViewController {
       width: 0.5,
       radius: self.iconImageView.frame.width / 2.0
     )
-    self.iconImageView.addShadow(color: .black, offset: CGSize(width: 0, height: 2))
+//    self.iconImageView.addShadow(
+//      color: UIColor.black.withAlphaComponent(0.5),
+//      offset: CGSize(width: 0, height: 2)
+//    )
     if let url = self.viewModel.iconURL {
       self.iconImageView.setImage(with: url, placeholder: nil)
     }

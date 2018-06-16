@@ -7,20 +7,27 @@ class KNExchangeTabViewModel {
 
   let defaultTokenIconImg = UIImage(named: "accounts_active")
 
-  var wallet: Wallet
-  var walletObject: KNWalletObject
-  var from: TokenObject
-  var to: TokenObject
-  var supportedTokens: [TokenObject] = []
+  fileprivate(set) var wallet: Wallet
+  fileprivate(set) var walletObject: KNWalletObject
+  fileprivate(set) var supportedTokens: [TokenObject] = []
 
-  var balances: [String: Balance] = [:]
-  var balance: Balance?
-  var amount: String = ""
-  var estRate: BigInt?
-  var slippageRate: BigInt?
-  var slippagePercentage: Double?
-  var gasPrice: BigInt = KNGasConfiguration.gasPriceMax
-  var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  fileprivate(set) var from: TokenObject
+  fileprivate(set) var to: TokenObject
+
+  fileprivate(set) var balances: [String: Balance] = [:]
+  fileprivate(set) var balance: Balance?
+
+  fileprivate(set) var amountFrom: String = ""
+  fileprivate(set) var amountTo: String = ""
+  fileprivate(set) var isFocusingFromAmount: Bool = true
+
+  fileprivate(set) var estRate: BigInt?
+  fileprivate(set) var slippageRate: BigInt?
+
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
+  fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
+
+  fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -35,16 +42,34 @@ class KNExchangeTabViewModel {
     self.supportedTokens = supportedTokens
   }
 
-  var amountBigInt: BigInt {
-    return self.amount.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+  // MARK: From Token
+  var amountFromBigInt: BigInt {
+    return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+  }
+
+  var fromTokenIconName: String {
+    return self.from.icon
   }
 
   var fromTokenBtnTitle: String {
     return self.from.symbol
   }
 
-  var fromTokenIconName: String {
-    return self.from.icon
+  // when user wants to fix received amount
+  var expectedExchangeAmountText: String {
+    guard let rate = self.estRate, !self.amountToBigInt.isZero else {
+      return ""
+    }
+    let expectedExchange: BigInt = {
+      let amount = self.amountTo.fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+      return amount * BigInt(10).power(self.from.decimals) / rate
+    }()
+    return expectedExchange.string(decimals: self.from.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+  }
+
+  // MARK: To Token
+  var amountToBigInt: BigInt {
+    return self.amountTo.fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
   }
 
   var toTokenBtnTitle: String {
@@ -55,62 +80,73 @@ class KNExchangeTabViewModel {
     return self.to.icon
   }
 
-  var balanceText: String {
-    let bal: BigInt = self.balance?.value ?? BigInt(0)
-    return "Balance: \(bal.shortString(decimals: self.from.decimals))"
-  }
-
-  var exchangeRateText: String {
-    let rateString: String = self.estRate?.shortString(decimals: self.to.decimals) ?? "---"
-    return "1 \(self.from.symbol) = \(rateString) \(self.to.symbol)"
+  var amountTextFieldColor: UIColor {
+    if self.amountFromBigInt > (self.balance?.value ?? BigInt(0)) || self.amountFromBigInt.isZero {
+      return UIColor.red
+    }
+    return UIColor(hex: "31CB9E")
   }
 
   var expectedReceivedAmountText: String {
-    guard let rate = self.estRate else {
-      return "--- \(self.to.symbol)"
+    guard let rate = self.estRate, !self.amountFromBigInt.isZero else {
+      return ""
     }
     let expectedAmount: BigInt = {
-      let amount = self.amount.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+      let amount = self.amountFromBigInt
       return rate * amount / BigInt(10).power(self.to.decimals)
     }()
-    return "\(expectedAmount.shortString(decimals: self.to.decimals)) \(self.to.symbol)"
+    return expectedAmount.string(decimals: self.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
   }
 
+  func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let symbolAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    ]
+    let nameAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    ]
+    let symbol = isSource ? self.from.symbol : self.to.symbol
+    let name = isSource ? self.from.name : self.to.name
+    attributedString.append(NSAttributedString(string: symbol, attributes: symbolAttributes))
+    attributedString.append(NSAttributedString(string: "\n\(name)", attributes: nameAttributes))
+    return attributedString
+  }
+
+  // MARK: Balance
+  var balanceText: String {
+    let bal: BigInt = self.balance?.value ?? BigInt(0)
+    return "\(bal.shortString(decimals: self.from.decimals))"
+  }
+
+  var balanceTextString: String {
+    return "\(self.from.symbol) Balance"
+  }
+
+  // MARK: Rate
+  var exchangeRateText: String {
+    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 2, maxFractionDigits: 9) ?? "---"
+    return "\(rateString)"
+  }
+
+  // MARK: Gas Price
   var gasPriceText: String {
     return "\(self.gasPrice.shortString(units: .gwei, maxFractionDigits: 1)) gwei"
-  }
-
-  var realSlippageRate: BigInt? {
-    let slippageRate: BigInt? = {
-      guard let percent = self.slippagePercentage, let estRate = self.estRate else {
-        return self.slippageRate
-      }
-      return estRate * BigInt(100.0 - percent) / BigInt(100)
-    }()
-    return slippageRate
-  }
-
-  var slippageRateText: String {
-    if let slippagePercent = self.slippagePercentage { return "\(slippagePercent) %" }
-    if let rate = self.estRate, let slippage = self.slippageRate, !rate.isZero {
-      let percentage = (rate - slippage) * BigInt(100) / rate
-      return "\(percentage.shortString(decimals: 0)) %"
-    }
-    return "-- %"
   }
 
   // MARK: Verify data
   // Amount should > 0 and <= balance
   var isAmountValid: Bool {
-    if self.amountBigInt <= BigInt(0) { return false }
-    if self.amountBigInt > self.balance?.value ?? BigInt(0) { return false }
+    if self.amountFromBigInt <= BigInt(0) { return false }
+    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return false }
     return true
   }
 
   // rate should not be nil and greater than zero
   var isRateValid: Bool {
-    if self.estRate == nil || self.realSlippageRate == nil { return false }
-    if self.estRate?.isZero == true || self.realSlippageRate?.isZero == true { return false }
+    if self.estRate == nil || self.estRate?.isZero == true { return false }
     return true
   }
 
@@ -119,17 +155,25 @@ class KNExchangeTabViewModel {
     self.wallet = wallet
     let address = wallet.address.description
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
-    self.amount = ""
+
+    self.amountFrom = ""
+    self.amountTo = ""
+    self.isFocusingFromAmount = true
+
     self.balances = [:]
     self.balance = nil
+
     self.estRate = nil
     self.slippageRate = nil
-    self.slippagePercentage = nil
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
   }
+
   func swapTokens() {
     swap(&self.from, &self.to)
-    self.amount = ""
+    self.amountFrom = ""
+    self.amountTo = ""
+    self.isFocusingFromAmount = true
+
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
@@ -142,15 +186,29 @@ class KNExchangeTabViewModel {
     } else {
       self.to = token
     }
-    if !isSource { self.amount = "" }
+    if self.isFocusingFromAmount && isSource {
+      // focusing on from amount, and from token is changed, reset amount
+      self.amountFrom = ""
+    } else if !self.isFocusingFromAmount && !isSource {
+      // focusing on to amount, and to token is changed, reset to amount
+      self.amountTo = ""
+    }
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
     self.balance = self.balances[self.from.contract]
   }
 
-  func updateAmount(_ amount: String) {
-    self.amount = amount
+  func updateFocusingField(_ isSource: Bool) {
+    self.isFocusingFromAmount = isSource
+  }
+
+  func updateAmount(_ amount: String, isSource: Bool) {
+    if isSource {
+      self.amountFrom = amount
+    } else {
+      self.amountTo = amount
+    }
   }
 
   func updateBalance(_ balances: [String: Balance]) {
@@ -162,23 +220,31 @@ class KNExchangeTabViewModel {
     }
   }
 
-  func updateGasPrice(_ gasPrice: BigInt) {
-    self.gasPrice = gasPrice
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    default: break
+    }
   }
 
-  func updateSlippagePercent(_ percent: Double) {
-    self.slippagePercentage = percent
+  // update when set gas price
+  func updateGasPrice(_ gasPrice: BigInt) {
+    self.gasPrice = gasPrice
+    self.selectedGasPriceType = .custom
   }
 
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
-    if from == self.from, to == self.to, amount == self.amountBigInt {
+    if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estRate = rate
       self.slippageRate = slippageRate
     }
   }
 
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    if from == self.from, to == self.to, amount == self.amountBigInt {
+    if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estimateGasLimit = gasLimit
     }
   }
