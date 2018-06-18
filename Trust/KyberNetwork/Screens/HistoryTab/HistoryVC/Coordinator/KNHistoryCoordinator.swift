@@ -76,7 +76,9 @@ class KNHistoryCoordinator: Coordinator {
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: Date(timeIntervalSince1970: Double($0.blockTimestamp))) }
       var uniqueDates = [String]()
-      dates.forEach { if !uniqueDates.contains($0) { uniqueDates.append($0) }}
+      dates.forEach({
+        if !uniqueDates.contains($0) { uniqueDates.append($0) }
+      })
       return uniqueDates
     }()
 
@@ -104,7 +106,9 @@ class KNHistoryCoordinator: Coordinator {
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
       var uniqueDates = [String]()
-      dates.forEach { if !uniqueDates.contains($0) { uniqueDates.append($0) }}
+      dates.forEach({
+        if !uniqueDates.contains($0) { uniqueDates.append($0) }
+      })
       return uniqueDates
     }()
 

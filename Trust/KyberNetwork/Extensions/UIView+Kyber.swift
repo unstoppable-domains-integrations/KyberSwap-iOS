@@ -6,8 +6,20 @@ extension UIView {
 
   func boundInside(_ superView: UIView) {
     self.translatesAutoresizingMaskIntoConstraints = false
-    superView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subview]-0-|", options: NSLayoutFormatOptions(), metrics:nil, views:["subview":self]))
-    superView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[subview]-0-|", options: NSLayoutFormatOptions(), metrics:nil, views:["subview":self]))
+    superView.addConstraints(NSLayoutConstraint.constraints(
+      withVisualFormat: "H:|-0-[subview]-0-|",
+      options: NSLayoutFormatOptions(),
+      metrics: nil,
+      views: ["subview": self]
+      )
+    )
+    superView.addConstraints(NSLayoutConstraint.constraints(
+      withVisualFormat: "V:|-0-[subview]-0-|",
+      options: NSLayoutFormatOptions(),
+      metrics: nil,
+      views: ["subview": self]
+      )
+    )
   }
 
   func rounded(color: UIColor = .clear, width: CGFloat = 0.0, radius: CGFloat) {

@@ -6,6 +6,7 @@ import TrustKeystore
 struct KNGetTokenAllowanceEndcode: Web3Request {
   typealias Response = String
 
+  //swiftlint:disable line_length
   static let abi = "{\"constant\":true,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"},{\"name\":\"_spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"name\":\"o_remaining\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}"
 
   let ownerAddress: Address
