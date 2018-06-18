@@ -5,7 +5,7 @@ import TrustKeystore
 
 struct IEOGetRateEncode: Web3Request {
   typealias Response = String
-
+  //swiftlint:disable line_length
   static let abi = "{\"constant\": true, \"inputs\": [], \"name\": \"getRate\", \"outputs\": [{ \"name\": \"rateNumerator\", \"type\": \"uint256\"}, {\"name\": \"rateDenominator\", \"type\": \"uint256\" }], \"payable\": false, \"stateMutability\": \"view\", \"type\": \"function\"}"
 
   var type: Web3RequestType {

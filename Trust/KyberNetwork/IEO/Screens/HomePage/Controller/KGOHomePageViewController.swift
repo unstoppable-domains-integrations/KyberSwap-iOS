@@ -73,9 +73,10 @@ class KGOHomePageViewController: KNBaseViewController {
   }
 
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {
-    let loginVC = IEOSignInWebViewViewController()
-    loginVC.loadViewIfNeeded()
-    self.navigationController?.pushViewController(loginVC, animated: true)
+    let signInVC = KGOSignInViewController()
+    signInVC.loadViewIfNeeded()
+    signInVC.delegate = self
+    self.present(signInVC, animated: true, completion: nil)
   }
 }
 
@@ -130,5 +131,15 @@ extension KGOHomePageViewController: KGOIEOTableViewCellDelegate {
   func ieoTableViewCellShouldUpdateType(for object: IEOObject, sender: KGOIEOTableViewCell) {
     self.viewModel.updateObjects(self.viewModel.ieoObjects)
     self.ieoTableView.reloadData()
+  }
+}
+
+extension KGOHomePageViewController: KGOSignInViewControllerDelegate {
+  func kgoSignInViewController(_ controller: KGOSignInViewController, sendEvent event: KGOSignInViewEvent) {
+    switch event {
+    case .dismiss:
+      self.dismiss(animated: true, completion: nil)
+    default: return
+    }
   }
 }
