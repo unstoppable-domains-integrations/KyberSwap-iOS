@@ -9,20 +9,6 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   }
 }
 
-// MARK: Wallet Importing Main Coordinator Delegate
-extension KNAppCoordinator: KNWalletImportingMainCoordinatorDelegate {
-  func walletImportingMainDidImport(wallet: Wallet) {
-    let walletObject = KNWalletObject(address: wallet.address.description)
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.navigationController.topViewController?.displayLoading(text: "", animated: true)
-    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-      guard let `self` = self else { return }
-      self.navigationController.topViewController?.hideLoading()
-      self.startNewSession(with: wallet)
-    }
-  }
-}
-
 // MARK: Session Delegate
 extension KNAppCoordinator: KNSessionDelegate {
   func userDidClickExitSession() {

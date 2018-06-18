@@ -22,12 +22,6 @@ class KNListWalletsCoordinator: Coordinator {
     return controller
   }()
 
-  lazy var createWalletCoordinator: KNWalletImportingMainCoordinator = {
-    let coordinator = KNWalletImportingMainCoordinator(keystore: self.session.keystore)
-    coordinator.delegate = self
-    return coordinator
-  }()
-
   init(
     navigationController: UINavigationController,
     session: KNSession,
@@ -84,14 +78,5 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
     }))
     self.navigationController.topViewController?.present(alert, animated: true, completion: nil)
-  }
-}
-
-extension KNListWalletsCoordinator: KNWalletImportingMainCoordinatorDelegate {
-  func walletImportingMainDidImport(wallet: Wallet) {
-    let walletObject = KNWalletObject(address: wallet.address.description)
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.rootViewController.updateView(with: self.session.keystore.wallets, currentWallet: self.session.wallet)
-    self.navigationController.topViewController?.dismiss(animated: true, completion: nil)
   }
 }

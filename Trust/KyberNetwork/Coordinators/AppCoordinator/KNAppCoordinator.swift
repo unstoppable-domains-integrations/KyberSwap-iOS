@@ -32,15 +32,6 @@ class KNAppCoordinator: NSObject, Coordinator {
     return KNPasscodeCoordinator(type: .authenticate)
   }()
 
-  lazy var walletImportingMainCoordinator: KNWalletImportingMainCoordinator = {
-    let coordinator = KNWalletImportingMainCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
-    )
-    coordinator.delegate = self
-    return coordinator
-  }()
-
   lazy var landingPageCoordinator: KNLandingPageCoordinator = {
     let coordinator = KNLandingPageCoordinator(
       navigationController: self.navigationController,
