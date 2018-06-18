@@ -6,12 +6,16 @@ import TrustKeystore
 import Result
 import QRCodeReaderViewController
 
+enum KNSendTokenViewEvent {
+  case back
+  case searchToken(selectedToken: TokenObject)
+  case estimateGas(transaction: UnconfirmedTransaction)
+  case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
+  case send(transaction: UnconfirmedTransaction)
+}
+
 protocol KNSendTokenViewControllerDelegate: class {
-  func sendTokenViewControllerDidPressToken(sender: KNSendTokenViewController, selectedToken: TokenObject)
-  func sendTokenViewControllerDidPressSend(sender: KNSendTokenViewController, transaction: UnconfirmedTransaction)
-  func sendTokenViewControllerUpdateEstimatedGasLimit(sender: KNSendTokenViewController, transaction: UnconfirmedTransaction)
-  func sendTokenViewControllerDidPressGasPrice(sender: KNSendTokenViewController, gasPrice: BigInt, estGasLimit: BigInt)
-  func sendTokenViewControllerDidPressBack(sender: KNSendTokenViewController)
+  func sendTokenViewController(_ controller: KNSendTokenViewController, run event: KNSendTokenViewEvent)
 }
 
 class KNSendTokenViewController: KNBaseViewController {
@@ -23,42 +27,23 @@ class KNSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var amountTextField: UITextField!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
 
-  @IBOutlet weak var gasPriceDataDetailsView: KNDataDetailsView!
-
   @IBOutlet weak var recentContactView: UIView!
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
 
+  @IBOutlet weak var gasPriceOptionButton: UIButton!
+  @IBOutlet weak var gasPriceSegmentedControl: UISegmentedControl!
+  @IBOutlet weak var gasPriceTextLabel: UILabel!
+
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
 
-  lazy var toolBar: UIToolbar = {
-    let toolBar = UIToolbar()
-    toolBar.barStyle = .default
-    toolBar.isTranslucent = true
-    toolBar.barTintColor = UIColor(hex: "31cb9e")
-    toolBar.tintColor = .white
-    let exchangeAllBtn = UIBarButtonItem(
-      title: "Send All",
-      style: .plain,
-      target: self,
-      action: #selector(self.keyboardSendAllButtonPressed(_:))
+  lazy var toolBar: KNCustomToolbar = {
+    return KNCustomToolbar(
+      leftBtnTitle: "Send All",
+      rightBtnTitle: "Done",
+      delegate: self
     )
-    let spaceBtn = UIBarButtonItem(
-      barButtonSystemItem: .flexibleSpace,
-      target: nil,
-      action: nil
-    )
-    let doneBtn = UIBarButtonItem(
-      title: "Done",
-      style: .plain,
-      target: self,
-      action: #selector(self.keyboardDoneButtonPressed(_:))
-    )
-    toolBar.setItems([exchangeAllBtn, spaceBtn, doneBtn], animated: false)
-    toolBar.isUserInteractionEnabled = true
-    toolBar.sizeToFit()
-    return toolBar
   }()
 
   weak var delegate: KNSendTokenViewControllerDelegate?
@@ -93,7 +78,7 @@ class KNSendTokenViewController: KNBaseViewController {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.estGasTimer?.invalidate()
-    self.view.endEditing(true)
+    self.amountTextField.resignFirstResponder()
   }
 
   fileprivate func setupUI() {
@@ -102,7 +87,6 @@ class KNSendTokenViewController: KNBaseViewController {
     self.setupGasPriceView()
     self.setupRecentContact()
     self.setupAddressTextField()
-    self.setupSendButton()
   }
 
   fileprivate func setupNavigationView() {
@@ -112,32 +96,30 @@ class KNSendTokenViewController: KNBaseViewController {
   fileprivate func setupTokenView() {
     self.tokenContainerView.rounded(radius: 7.0)
     self.tokenContainerView.addShadow()
+    self.tokenButton.titleLabel?.numberOfLines = 2
+    self.tokenButton.titleLabel?.lineBreakMode = .byWordWrapping
 
     self.amountTextField.text = nil
-    self.amountTextField.layer.borderColor = UIColor.lightGray.cgColor
+    self.amountTextField.adjustsFontSizeToFitWidth = true
     self.amountTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
     self.amountTextField.leftViewMode = .always
-    self.amountTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+    self.amountTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
     self.amountTextField.rightViewMode = .always
     self.amountTextField.delegate = self
-    self.amountTextField.rounded(color: .lightGray, width: 1.0, radius: 4.0)
     self.amountTextField.inputAccessoryView = self.toolBar
-    self.amountTextField.becomeFirstResponder()
 
     self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
-    self.tokenButton.setTitle(self.viewModel.displayToken, for: .normal)
+    self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
 
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
   }
 
   fileprivate func setupGasPriceView() {
-    self.gasPriceDataDetailsView.updateView(
-      with: "Gas Price",
-      subTitle: self.viewModel.displayGasPrice
-    )
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.gasPriceDetailsViewPressed(_:)))
-    self.gasPriceDataDetailsView.isUserInteractionEnabled = true
-    self.gasPriceDataDetailsView.addGestureRecognizer(tapGesture)
+    self.gasPriceOptionButton.setImage(UIImage(named: "expand_icon"), for: .normal)
+    self.gasPriceSegmentedControl.selectedSegmentIndex = 0 // select fast option
+    self.gasPriceSegmentedControl.addTarget(self, action: #selector(self.gasPriceSegmentedControlDidTouch(_:)), for: .touchDown)
+    self.gasPriceSegmentedControl.isHidden = true
+    self.gasPriceTextLabel.isHidden = true
   }
 
   fileprivate func setupRecentContact() {
@@ -157,19 +139,13 @@ class KNSendTokenViewController: KNBaseViewController {
     self.addressTextField.text = self.viewModel.displayAddress
   }
 
-  fileprivate func setupSendButton() {
-    self.sendButton.rounded(radius: 7.0)
-  }
-
   @IBAction func backButtonPressed(_ sender: Any) {
-    self.delegate?.sendTokenViewControllerDidPressBack(sender: self)
+    self.delegate?.sendTokenViewController(self, run: .back)
   }
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
-    self.delegate?.sendTokenViewControllerDidPressToken(
-      sender: self,
-      selectedToken: self.viewModel.from
-    )
+    self.amountTextField.resignFirstResponder()
+    self.delegate?.sendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
@@ -181,10 +157,7 @@ class KNSendTokenViewController: KNBaseViewController {
       self.showWarningTopBannerMessage(with: "Invalid Address", message: "Please enter a valid address to send")
       return
     }
-    self.delegate?.sendTokenViewControllerDidPressSend(
-      sender: self,
-      transaction: self.viewModel.unconfirmTransaction
-    )
+    self.delegate?.sendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
@@ -198,16 +171,32 @@ class KNSendTokenViewController: KNBaseViewController {
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      self.delegate?.sendTokenViewControllerDidPressBack(sender: self)
+      self.delegate?.sendTokenViewController(self, run: .back)
     }
   }
 
-  @objc func gasPriceDetailsViewPressed(_ sender: Any) {
-    self.delegate?.sendTokenViewControllerDidPressGasPrice(
-      sender: self,
-      gasPrice: self.viewModel.gasPrice,
-      estGasLimit: self.viewModel.gasLimit
-    )
+  @IBAction func gasPriceButtonPressed(_ sender: Any) {
+    UIView.animate(withDuration: 0.3) {
+      self.gasPriceSegmentedControl.isHidden = !self.gasPriceSegmentedControl.isHidden
+      self.gasPriceTextLabel.isHidden = !self.gasPriceTextLabel.isHidden
+      self.gasPriceOptionButton.setImage(
+        UIImage(named: self.gasPriceTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+    }
+  }
+
+  @objc func gasPriceSegmentedControlDidTouch(_ sender: Any) {
+    let selectedId = self.gasPriceSegmentedControl.selectedSegmentIndex
+    if selectedId == 3 {
+      self.amountTextField.resignFirstResponder()
+      // custom gas price
+      let event = KNSendTokenViewEvent.setGasPrice(
+        gasPrice: self.viewModel.gasPrice,
+        gasLimit: self.viewModel.gasLimit
+      )
+      self.delegate?.sendTokenViewController(self, run: event)
+    } else {
+      self.viewModel.updateSelectedGasPriceType(KNSelectedGasPriceType(rawValue: selectedId) ?? .fast)
+    }
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -222,10 +211,12 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
-    self.delegate?.sendTokenViewControllerUpdateEstimatedGasLimit(
-      sender: self,
-      transaction: self.viewModel.unconfirmTransaction
-    )
+    let event = KNSendTokenViewEvent.estimateGas(transaction: self.viewModel.unconfirmTransaction)
+    self.delegate?.sendTokenViewController(self, run: event)
+  }
+
+  func coordinatorUpdateGasPriceCached() {
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
   }
 }
 
@@ -235,20 +226,12 @@ extension KNSendTokenViewController {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
     self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
-    self.tokenButton.setTitle(self.viewModel.displayToken, for: .normal)
+    self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
     self.updateUIBalanceDidChange()
   }
 
   func updateUIBalanceDidChange() {
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
-    self.view.layoutIfNeeded()
-  }
-
-  func updateUIGasPriceDidChange() {
-    self.gasPriceDataDetailsView.updateView(
-      with: "Gas Price",
-      subTitle: self.viewModel.displayGasPrice
-    )
     self.view.layoutIfNeeded()
   }
 
@@ -272,9 +255,11 @@ extension KNSendTokenViewController {
     }
   }
 
-  func coordinatorUpdateGasPrice(_ gasPrice: BigInt) {
-    self.viewModel.updateGasPrice(gasPrice)
-    self.updateUIGasPriceDidChange()
+  func coordinatorUpdateGasPrice(_ gasPrice: BigInt?) {
+    if let gasPrice = gasPrice {
+      self.viewModel.updateGasPrice(gasPrice)
+    }
+    self.gasPriceSegmentedControl.selectedSegmentIndex = self.viewModel.selectedGasPriceType.rawValue
   }
 
   /*
@@ -300,6 +285,10 @@ extension KNSendTokenViewController {
 
   func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
     self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, amount: amount)
+  }
+
+  func coordinatorGasPriceCachedDidUpdate() {
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
   }
 }
 
@@ -329,15 +318,11 @@ extension KNSendTokenViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    if textField == self.amountTextField {
-      self.amountTextField.layer.borderColor = UIColor(hex: "31cb9e").cgColor
-    }
+    self.amountTextField.textColor = UIColor(hex: "31cb9e")
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    if textField == self.amountTextField {
-      self.amountTextField.layer.borderColor = UIColor.lightGray.cgColor
-    }
+    self.amountTextField.textColor = self.viewModel.amountTextColor
   }
 }
 
@@ -363,5 +348,15 @@ extension KNSendTokenViewController: KNContactTableViewDelegate {
   func contactTableView(_ sender: KNContactTableView, didSelect contact: KNContact) {
     self.addressTextField.text = contact.address
     KNContactStorage.shared.updateLastUsed(contact: contact)
+  }
+}
+
+extension KNSendTokenViewController: KNCustomToolbarDelegate {
+  func customToolbarLeftButtonPressed(_ toolbar: KNCustomToolbar) {
+    self.keyboardSendAllButtonPressed(toolbar)
+  }
+
+  func customToolbarRightButtonPressed(_ toolbar: KNCustomToolbar) {
+    self.keyboardDoneButtonPressed(toolbar)
   }
 }

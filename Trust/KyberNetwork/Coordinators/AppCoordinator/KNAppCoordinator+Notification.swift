@@ -251,5 +251,6 @@ extension KNAppCoordinator {
   @objc func gasPriceCachedDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
+    self.balanceTabCoordinator.appCoordinatorGasPriceCachedDidUpdate()
   }
 }

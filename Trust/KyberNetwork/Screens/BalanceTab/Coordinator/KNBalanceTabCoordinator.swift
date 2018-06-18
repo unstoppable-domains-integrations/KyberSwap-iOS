@@ -38,6 +38,7 @@ class KNBalanceTabCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
+  fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
 
   init(
@@ -83,6 +84,7 @@ extension KNBalanceTabCoordinator {
     )
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
     self.tokenChartCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
+    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
 
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
@@ -95,6 +97,7 @@ extension KNBalanceTabCoordinator {
       totalBalanceInETH: totalBalanceInETH
     )
     self.tokenChartCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
+    self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
   func appCoordinatorExchangeRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
@@ -107,6 +110,7 @@ extension KNBalanceTabCoordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
   func appCoordinatorCoinTickerDidUpdate() {
@@ -120,6 +124,11 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
     self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
+  }
+
+  func appCoordinatorGasPriceCachedDidUpdate() {
+    self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
+    self.tokenChartCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
 }
 
@@ -148,7 +157,13 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   }
 
   func balanceTabDidSelectSendToken(in controller: KNBalanceTabViewController) {
-    self.balanceTabDidSelectToken(self.session.tokenStorage.ethToken, in: controller)
+    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      balances: self.balances,
+      from: self.session.tokenStorage.ethToken
+    )
+    self.sendTokenCoordinator?.start()
   }
 
   func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController) {

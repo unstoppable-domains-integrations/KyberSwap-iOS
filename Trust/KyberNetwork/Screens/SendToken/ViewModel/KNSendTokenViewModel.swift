@@ -16,6 +16,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var balance: Balance?
 
   fileprivate(set) var amount: String = ""
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
   fileprivate(set) var gasPrice: BigInt = KNGasConfiguration.gasPriceMax
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
@@ -23,6 +24,10 @@ class KNSendTokenViewModel: NSObject {
 
   var amountBigInt: BigInt {
     return amount.shortBigInt(decimals: self.from.decimals) ?? BigInt(0)
+  }
+
+  var amountTextColor: UIColor {
+    return isAmountValid ? UIColor(hex: "31cb9e") : UIColor.red
   }
 
   var address: Address? {
@@ -39,13 +44,24 @@ class KNSendTokenViewModel: NSObject {
     return "Send \(self.from.symbol)" // "Send Token"
   }
 
-  var displayToken: String {
-    return self.from.symbol
+  var tokenButtonAttributedText: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let symbolAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      ]
+    let nameAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      ]
+    attributedString.append(NSAttributedString(string: self.from.symbol, attributes: symbolAttributes))
+    attributedString.append(NSAttributedString(string: "\n\(self.from.name)", attributes: nameAttributes))
+    return attributedString
   }
 
   var displayBalance: String {
-    guard let bal = self.balance else { return "Balance: -- \(self.from.symbol)" }
-    return "Balance: " + bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6) + " \(self.from.symbol)"
+    guard let bal = self.balance else { return "\(self.from.symbol) Balance: ---" }
+    return "\(self.from.symbol) Balance: " + bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6)
   }
 
   var tokenIconName: String { return self.from.icon }
@@ -109,6 +125,17 @@ class KNSendTokenViewModel: NSObject {
 
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
+    self.selectedGasPriceType = .custom
+  }
+
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    default: return
+    }
   }
 
   func updateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {

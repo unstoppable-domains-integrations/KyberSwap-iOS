@@ -73,15 +73,29 @@ extension KNSendTokenViewCoordinator {
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.searchTokensVC.updateListSupportedTokens(tokenObjects)
   }
+
+  func coordinatorGasPriceCachedDidUpdate() {
+    self.rootViewController.coordinatorUpdateGasPriceCached()
+  }
 }
 
 // MARK: Send Token View Controller Delegate
 extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
-  func sendTokenViewControllerDidPressBack(sender: KNSendTokenViewController) {
-    self.stop()
+  func sendTokenViewController(_ controller: KNSendTokenViewController, run event: KNSendTokenViewEvent) {
+    switch event {
+    case .back: self.stop()
+    case .setGasPrice(let gasPrice, let gasLimit):
+      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .estimateGas(let transaction):
+      self.estimateGasLimit(for: transaction)
+    case .searchToken(let selectedToken):
+      self.openSearchToken(selectedToken: selectedToken)
+    case .send(let transaction):
+      self.send(transaction: transaction)
+    }
   }
 
-  func sendTokenViewControllerDidPressGasPrice(sender: KNSendTokenViewController, gasPrice: BigInt, estGasLimit: BigInt) {
+  fileprivate func openSetGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
     let setGasPriceVC: KNSetGasPriceViewController = {
       let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
       let controller = KNSetGasPriceViewController(viewModel: viewModel)
@@ -92,7 +106,7 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
     self.navigationController.pushViewController(setGasPriceVC, animated: true)
   }
 
-  func sendTokenViewControllerUpdateEstimatedGasLimit(sender: KNSendTokenViewController, transaction: UnconfirmedTransaction) {
+  fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
     self.session.externalProvider.getEstimateGasLimit(
     for: transaction) { [weak self] result in
       if case .success(let gasLimit) = result {
@@ -105,12 +119,13 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
     }
   }
 
-  func sendTokenViewControllerDidPressToken(sender: KNSendTokenViewController, selectedToken: TokenObject) {
-    self.searchTokensVC.updateListSupportedTokens(KNSupportedTokenStorage.shared.supportedTokens)
+  fileprivate func openSearchToken(selectedToken: TokenObject) {
+    let tokens = KNSupportedTokenStorage.shared.supportedTokens
+    self.searchTokensVC.updateListSupportedTokens(tokens)
     self.navigationController.present(self.searchTokensVC, animated: true, completion: nil)
   }
 
-  func sendTokenViewControllerDidPressSend(sender: KNSendTokenViewController, transaction: UnconfirmedTransaction) {
+  fileprivate func send(transaction: UnconfirmedTransaction) {
     let transactionType = KNTransactionType.transfer(transaction)
     self.confirmTransactionViewController = KNConfirmTransactionViewController(
       delegate: self,
@@ -160,7 +175,7 @@ extension KNSendTokenViewCoordinator: KNConfirmTransactionViewControllerDelegate
 extension KNSendTokenViewCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
-      if let gasPrice = gasPrice { self.rootViewController.coordinatorUpdateGasPrice(gasPrice) }
+      self.rootViewController.coordinatorUpdateGasPrice(gasPrice)
     }
   }
 }

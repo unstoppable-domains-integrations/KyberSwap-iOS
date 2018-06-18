@@ -50,7 +50,7 @@ class KNContactTableView: XibLoaderView {
   }
 
   func updateView(with contacts: [KNContact]) {
-    self.contacts = Array(contacts.prefix(3))
+    self.contacts = Array(contacts.prefix(2))
     self.tableView.reloadData()
     self.delegate?.contactTableView(self, didUpdate: self.tableView.rowHeight * CGFloat(self.contacts.count))
   }

@@ -55,6 +55,10 @@ class KNTokenChartCoordinator: Coordinator {
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
+
+  func coordinatorGasPriceCachedDidUpdate() {
+    self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
+  }
 }
 
 extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {

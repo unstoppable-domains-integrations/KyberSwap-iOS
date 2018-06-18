@@ -32,18 +32,18 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSm-QQ-Xz3">
                             <rect key="frame" x="141.5" y="46" width="92" height="24"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
-                            <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JH7-5H-Vln">
                             <rect key="frame" x="16" y="46" width="24" height="24"/>
-                            <state key="normal" image="back_black_icon"/>
+                            <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="dvN-tZ-L3P"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="aSm-QQ-Xz3" secondAttribute="bottom" constant="10" id="B1P-Cw-GS6"/>
                         <constraint firstAttribute="height" constant="80" id="O1W-Hf-XkT"/>
@@ -142,6 +142,6 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="back_black_icon" width="24" height="24"/>
+        <image name="back_white_icon" width="24" height="24"/>
     </resources>
 </document>
