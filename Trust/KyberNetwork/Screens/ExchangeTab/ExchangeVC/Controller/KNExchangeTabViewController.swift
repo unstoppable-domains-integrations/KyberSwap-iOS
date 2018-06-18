@@ -285,6 +285,10 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
+  func coordinatorUpdateGasPriceCached() {
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
+  }
+
   fileprivate func updateEstimatedRate() {
     let event = KNExchangeTabViewEvent.estimateRate(
       from: self.viewModel.from,

@@ -82,14 +82,6 @@ class KNSetGasPriceViewController: KNBaseViewController {
   weak var delegate: KNSetGasPriceViewControllerDelegate?
   fileprivate var viewModel: KNSetGasPriceViewModel
 
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(rawValue: kGasPriceDidUpdateNotificationKey),
-      object: nil
-    )
-  }
-
   init(viewModel: KNSetGasPriceViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNSetGasPriceViewController.className, bundle: nil)
@@ -156,6 +148,9 @@ class KNSetGasPriceViewController: KNBaseViewController {
 
   @IBAction func doneButtonPressed(_ sender: Any) {
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
+  }
+
+  func coordinatorGasPriceCachedDidUpdate() {
   }
 }
 

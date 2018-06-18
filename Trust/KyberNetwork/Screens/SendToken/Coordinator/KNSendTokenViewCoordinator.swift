@@ -107,7 +107,7 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
 
   func sendTokenViewControllerDidPressToken(sender: KNSendTokenViewController, selectedToken: TokenObject) {
     self.searchTokensVC.updateListSupportedTokens(KNSupportedTokenStorage.shared.supportedTokens)
-    self.navigationController.pushViewController(self.searchTokensVC, animated: true)
+    self.navigationController.present(self.searchTokensVC, animated: true, completion: nil)
   }
 
   func sendTokenViewControllerDidPressSend(sender: KNSendTokenViewController, transaction: UnconfirmedTransaction) {
@@ -128,14 +128,12 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
 
 // MARK: Search Token Delegate
 extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
-  func searchTokenViewControllerDidCancel() {
-    self.navigationController.popViewController(animated: true)
-  }
-
-  func searchTokenViewControllerDidSelect(token: TokenObject) {
-    self.navigationController.popViewController(animated: true) {
-      let balance = self.balances[token.contract]
-      self.rootViewController.coordinatorDidUpdateSendToken(token, balance: balance)
+  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
+    self.searchTokensVC.dismiss(animated: true) {
+      if case .select(let token) = event {
+        let balance = self.balances[token.contract]
+        self.rootViewController.coordinatorDidUpdateSendToken(token, balance: balance)
+      }
     }
   }
 }

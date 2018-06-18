@@ -2,9 +2,13 @@
 
 import UIKit
 
+enum KNSearchTokenViewEvent {
+  case cancel
+  case select(token: TokenObject)
+}
+
 protocol KNSearchTokenViewControllerDelegate: class {
-  func searchTokenViewControllerDidCancel()
-  func searchTokenViewControllerDidSelect(token: TokenObject)
+  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent)
 }
 
 class KNSearchTokenViewModel {
@@ -108,7 +112,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    self.delegate?.searchTokenViewControllerDidCancel()
+    self.delegate?.searchTokenViewController(self, run: .cancel)
   }
 }
 
@@ -131,7 +135,7 @@ extension KNSearchTokenViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.row < self.viewModel.displayedTokens.count {
       let token = self.viewModel.displayedTokens[indexPath.row]
-      self.delegate?.searchTokenViewControllerDidSelect(token: token)
+      self.delegate?.searchTokenViewController(self, run: .select(token: token))
     }
   }
 }

@@ -72,6 +72,13 @@ extension KNAppCoordinator {
       name: supportedTokensName,
       object: nil
     )
+    let gasPriceName = Notification.Name(kGasPriceDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.gasPriceCachedDidUpdate(_:)),
+      name: gasPriceName,
+      object: nil
+    )
   }
 
   func removeObserveNotificationFromSession() {
@@ -122,6 +129,12 @@ extension KNAppCoordinator {
     NotificationCenter.default.removeObserver(
       self,
       name: supportedTokensName,
+      object: nil
+    )
+    let gasPriceName = Notification.Name(kGasPriceDidUpdateNotificationKey)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: gasPriceName,
       object: nil
     )
   }
@@ -233,5 +246,10 @@ extension KNAppCoordinator {
   @objc func coinTickerDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
     self.balanceTabCoordinator.appCoordinatorCoinTickerDidUpdate()
+  }
+
+  @objc func gasPriceCachedDidUpdate(_ sender: Notification) {
+    if self.session == nil { return }
+    self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
   }
 }

@@ -22,6 +22,7 @@ class KNExchangeTokenCoordinator: Coordinator {
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
+  fileprivate var setGasPriceVC: KNSetGasPriceViewController?
 
   lazy var rootViewController: KNExchangeTabViewController = {
     let viewModel = KNExchangeTabViewModel(
@@ -119,6 +120,11 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
     self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
+  }
+
+  func appCoordinatorGasPriceCachedDidUpdate() {
+    self.setGasPriceVC?.coordinatorGasPriceCachedDidUpdate()
+    self.rootViewController.coordinatorUpdateGasPriceCached()
   }
 }
 
@@ -332,6 +338,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
       controller.delegate = self
       return controller
     }()
+    self.setGasPriceVC = setGasPriceVC
     self.navigationController.pushViewController(setGasPriceVC, animated: true)
   }
 
@@ -360,16 +367,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
 
 // MARK: Search token
 extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
-  func searchTokenViewControllerDidCancel() {
-    self.searchTokensViewController.dismiss(animated: true, completion: nil)
-  }
-
-  func searchTokenViewControllerDidSelect(token: TokenObject) {
+  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
     self.searchTokensViewController.dismiss(animated: true) {
-      self.rootViewController.coordinatorUpdateSelectedToken(
-        token,
-        isSource: self.isSelectingSourceToken
-      )
+      if case .select(let token) = event {
+        self.rootViewController.coordinatorUpdateSelectedToken(
+          token,
+          isSource: self.isSelectingSourceToken
+        )
+      }
     }
   }
 }
@@ -378,6 +383,7 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
 extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
+      self.setGasPriceVC = nil
       self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
     }
   }
