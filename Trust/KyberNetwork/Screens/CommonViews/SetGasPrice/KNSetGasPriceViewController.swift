@@ -149,9 +149,6 @@ class KNSetGasPriceViewController: KNBaseViewController {
   @IBAction func doneButtonPressed(_ sender: Any) {
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
   }
-
-  func coordinatorGasPriceCachedDidUpdate() {
-  }
 }
 
 extension KNSetGasPriceViewController: MSCircularSliderDelegate {

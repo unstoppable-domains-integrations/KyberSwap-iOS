@@ -123,7 +123,6 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
-    self.setGasPriceVC?.coordinatorGasPriceCachedDidUpdate()
     self.rootViewController.coordinatorUpdateGasPriceCached()
   }
 }
