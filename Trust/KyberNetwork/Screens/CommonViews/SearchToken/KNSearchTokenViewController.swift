@@ -23,6 +23,8 @@ class KNSearchTokenViewModel {
     self.displayedTokens = self.supportedTokens
   }
 
+  var isNoMatchingTokenHidden: Bool { return !self.displayedTokens.isEmpty }
+
   func updateDisplayedTokens() {
     if self.searchedText == "" {
       self.displayedTokens = self.supportedTokens
@@ -44,6 +46,7 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var tokensTableView: UITableView!
+  @IBOutlet weak var noMatchingTokensLabel: UILabel!
 
   fileprivate var viewModel: KNSearchTokenViewModel
   weak var delegate: KNSearchTokenViewControllerDelegate?
@@ -57,6 +60,10 @@ class KNSearchTokenViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
@@ -65,13 +72,11 @@ class KNSearchTokenViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.searchBar.text = ""
-    self.viewModel.searchedText = ""
-    self.tokensTableView.reloadData()
-    self.searchBar.becomeFirstResponder()
+    self.searchTextDidChange("")
   }
 
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
     self.searchBar.resignFirstResponder()
   }
 
@@ -88,18 +93,18 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate func searchTextDidChange(_ newText: String) {
     self.viewModel.searchedText = newText
+    self.updateUIDisplayedDataDidChange()
+  }
+
+  fileprivate func updateUIDisplayedDataDidChange() {
+    self.noMatchingTokensLabel.isHidden = self.viewModel.isNoMatchingTokenHidden
+    self.tokensTableView.isHidden = !self.viewModel.isNoMatchingTokenHidden
     self.tokensTableView.reloadData()
   }
 
   func updateListSupportedTokens(_ tokens: [TokenObject]) {
     self.viewModel.updateListSupportedTokens(tokens)
-    self.tokensTableView.reloadData()
-  }
-
-  @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
-      self.delegate?.searchTokenViewControllerDidCancel()
-    }
+    self.updateUIDisplayedDataDidChange()
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

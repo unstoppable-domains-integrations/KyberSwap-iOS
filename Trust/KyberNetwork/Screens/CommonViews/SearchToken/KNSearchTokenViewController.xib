@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="noMatchingTokensLabel" destination="qBW-cK-YSw" id="uxE-eq-zY5"/>
                 <outlet property="searchBar" destination="kaA-Wq-k7I" id="H7c-g9-ZE9"/>
                 <outlet property="tokensTableView" destination="tvR-nt-YdR" id="YJa-ud-kug"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -25,7 +26,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Kr-aI-vdA">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
-                        <searchBar contentMode="redraw" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
+                        <searchBar contentMode="redraw" text="" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
                             <rect key="frame" x="16" y="24" width="289" height="56"/>
                             <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="barTintColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -56,28 +57,27 @@
                     <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matching tokens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBW-cK-YSw">
+                    <rect key="frame" x="110.5" y="124" width="153" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="0k0-TK-3IM"/>
                 <constraint firstItem="tvR-nt-YdR" firstAttribute="top" secondItem="0Kr-aI-vdA" secondAttribute="bottom" id="MfU-xg-I7A"/>
+                <constraint firstItem="qBW-cK-YSw" firstAttribute="centerX" secondItem="tvR-nt-YdR" secondAttribute="centerX" id="Utq-He-wuy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tvR-nt-YdR" secondAttribute="trailing" id="YOA-Hj-7Uk"/>
+                <constraint firstItem="qBW-cK-YSw" firstAttribute="top" secondItem="0Kr-aI-vdA" secondAttribute="bottom" constant="44" id="cBU-5P-1dR"/>
                 <constraint firstItem="0Kr-aI-vdA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ckz-SX-MkS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0Kr-aI-vdA" secondAttribute="trailing" id="fQ4-9a-Xgv"/>
                 <constraint firstItem="tvR-nt-YdR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qI4-SJ-Zgk"/>
                 <constraint firstItem="0Kr-aI-vdA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="uxZ-da-bkD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="GAL-t5-EZt" appends="YES" id="P5W-aY-AFT"/>
-            </connections>
         </view>
-        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="GAL-t5-EZt">
-            <rectEdge key="edges" left="YES"/>
-            <connections>
-                <action selector="screenEdgePanAction:" destination="-1" id="JcP-rb-i9j"/>
-            </connections>
-        </screenEdgePanGestureRecognizer>
     </objects>
 </document>

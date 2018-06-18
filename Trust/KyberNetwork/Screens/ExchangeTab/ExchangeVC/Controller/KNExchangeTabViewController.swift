@@ -3,18 +3,21 @@ import UIKit
 import BigInt
 import Result
 
+enum KNExchangeTabViewEvent {
+  case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
+  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt)
+  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
+  case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
+  case exchange(data: KNDraftExchangeTransaction)
+  case showQRCode
+  case selectWallet(wallet: KNWalletObject)
+  case selectSendToken
+  case selectAddWallet
+  case selectSettings
+}
+
 protocol KNExchangeTabViewControllerDelegate: class {
-  func exchangeTabViewControllerFromTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject)
-  func exchangeTabViewControllerToTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject)
-  func exchangeTabViewControllerExchangeButtonPressed(sender: KNExchangeTabViewController, data: KNDraftExchangeTransaction)
-  func exchangeTabViewControllerShouldUpdateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt)
-  func exchangeTabViewControllerShouldUpdateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
-  func exchangeTabViewControllerDidPressedQRcode(sender: KNExchangeTabViewController)
-  func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt)
-  func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController)
-  func exchangeTabViewControllerDidPressedSendToken(sender: KNExchangeTabViewController)
-  func exchangeTabViewControllerDidPressedAddWallet(sender: KNExchangeTabViewController)
-  func exchangeTabViewControllerDidPressedSettings(sender: KNExchangeTabViewController)
+  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNExchangeTabViewEvent)
 }
 
 class KNExchangeTabViewController: KNBaseViewController {
@@ -166,19 +169,21 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: UIButton) {
-    self.delegate?.exchangeTabViewControllerFromTokenPressed(
-      sender: self,
+    let event = KNExchangeTabViewEvent.searchToken(
       from: self.viewModel.from,
-      to: self.viewModel.to
+      to: self.viewModel.to,
+      isSource: true
     )
+    self.delegate?.exchangeTabViewController(self, run: event)
   }
 
   @IBAction func toTokenButtonPressed(_ sender: UIButton) {
-    self.delegate?.exchangeTabViewControllerToTokenPressed(
-      sender: self,
+    let event = KNExchangeTabViewEvent.searchToken(
       from: self.viewModel.from,
-      to: self.viewModel.to
+      to: self.viewModel.to,
+      isSource: false
     )
+    self.delegate?.exchangeTabViewController(self, run: event)
   }
 
   @IBAction func swapButtonPressed(_ sender: UIButton) {
@@ -210,10 +215,11 @@ class KNExchangeTabViewController: KNBaseViewController {
     let selectedId = self.gasPriceSegmentedControl.selectedSegmentIndex
     if selectedId == 3 {
       // custom gas price
-      self.delegate?.exchangeTabViewControllerDidPressedGasPrice(
+      let event = KNExchangeTabViewEvent.setGasPrice(
         gasPrice: self.viewModel.gasPrice,
-        estGasLimit: self.viewModel.estimateGasLimit
+        gasLimit: self.viewModel.estimateGasLimit
       )
+      self.delegate?.exchangeTabViewController(self, run: event)
     } else {
       self.viewModel.updateSelectedGasPriceType(KNSelectedGasPriceType(rawValue: selectedId) ?? .fast)
     }
@@ -259,10 +265,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.estimateGasLimit
     )
-    self.delegate?.exchangeTabViewControllerExchangeButtonPressed(
-      sender: self,
-      data: exchange
-    )
+    self.delegate?.exchangeTabViewController(self, run: .exchange(data: exchange))
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -283,20 +286,22 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func updateEstimatedRate() {
-    self.delegate?.exchangeTabViewControllerShouldUpdateEstimatedRate(
+    let event = KNExchangeTabViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
       amount: self.viewModel.amountFromBigInt
     )
+    self.delegate?.exchangeTabViewController(self, run: event)
   }
 
   fileprivate func updateEstimatedGasLimit() {
-    self.delegate?.exchangeTabViewControllerShouldUpdateEstimatedGasLimit(
+    let event = KNExchangeTabViewEvent.estimateGas(
       from: self.viewModel.from,
       to: self.viewModel.to,
       amount: self.viewModel.amountFromBigInt,
       gasPrice: self.viewModel.gasPrice
     )
+    self.delegate?.exchangeTabViewController(self, run: event)
   }
 }
 
@@ -511,7 +516,7 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
   }
 
   func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
-    self.delegate?.exchangeTabViewControllerDidPressedQRcode(sender: self)
+    self.delegate?.exchangeTabViewController(self, run: .showQRCode)
   }
 
   func walletHeaderWalletListPressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
@@ -522,19 +527,19 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
 // MARK: Hamburger Menu Delegate
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
   func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewControllerDidPressedAddWallet(sender: self)
+    self.delegate?.exchangeTabViewController(self, run: .selectAddWallet)
   }
 
   func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewControllerDidPressedSettings(sender: self)
+    self.delegate?.exchangeTabViewController(self, run: .selectSettings)
   }
 
   func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewControllerDidPressedSendToken(sender: self)
+    self.delegate?.exchangeTabViewController(self, run: .selectSendToken)
   }
 
   func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewControllerDidPressedWallet(wallet, sender: self)
+    self.delegate?.exchangeTabViewController(self, run: .selectWallet(wallet: wallet))
   }
 }
 

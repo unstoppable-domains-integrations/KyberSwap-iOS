@@ -224,27 +224,39 @@ extension KNExchangeTokenCoordinator: KNPendingTransactionListCoordinatorDelegat
 
 // MARK: Exchange tab (root view controller)
 extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
-  func exchangeTabViewControllerFromTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject) {
-    self.isSelectingSourceToken = true
-    self.tokens = KNSupportedTokenStorage.shared.supportedTokens
-    self.searchTokensViewController.updateListSupportedTokens(self.tokens)
-    self.navigationController.pushViewController(
-      self.searchTokensViewController,
-      animated: true
-    )
+  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNExchangeTabViewEvent) {
+    switch event {
+    case .searchToken(let from, let to, let isSource):
+      self.openSearchToken(from: from, to: to, isSource: isSource)
+    case .estimateRate(let from, let to, let amount):
+      self.updateEstimatedRate(from: from, to: to, amount: amount)
+    case .estimateGas(let from, let to, let amount, let gasPrice):
+      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+    case .showQRCode:
+      self.showWalletQRCode()
+    case .setGasPrice(let gasPrice, let gasLimit):
+      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .selectSettings:
+      self.openSettingsView()
+    case .selectSendToken:
+      self.openSendTokenView()
+    case .selectAddWallet:
+      self.openAddWalletView()
+    case .selectWallet(let wallet):
+      self.updateCurrentWallet(wallet)
+    case .exchange(let data):
+      self.exchangeButtonPressed(data: data)
+    }
   }
 
-  func exchangeTabViewControllerToTokenPressed(sender: KNExchangeTabViewController, from: TokenObject, to: TokenObject) {
-    self.isSelectingSourceToken = false
+  fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
+    self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController.updateListSupportedTokens(self.tokens)
-    self.navigationController.pushViewController(
-      self.searchTokensViewController,
-      animated: true
-    )
+    self.navigationController.present(self.searchTokensViewController, animated: true, completion: nil)
   }
 
-  func exchangeTabViewControllerExchangeButtonPressed(sender: KNExchangeTabViewController, data: KNDraftExchangeTransaction) {
+  fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
     let transactionType = KNTransactionType.exchange(data)
     self.confirmTransactionViewController = KNConfirmTransactionViewController(
       delegate: self,
@@ -259,7 +271,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     )
   }
 
-  func exchangeTabViewControllerShouldUpdateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {
+  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {
     self.session.externalProvider.getExpectedRate(
       from: from,
       to: to,
@@ -285,7 +297,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     }
   }
 
-  func exchangeTabViewControllerShouldUpdateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt) {
+  func updateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt) {
     let exchangeTx = KNDraftExchangeTransaction(
       from: from,
       to: to,
@@ -308,11 +320,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     }
   }
 
-  func exchangeTabViewControllerDidPressedQRcode(sender: KNExchangeTabViewController) {
+  fileprivate func showWalletQRCode() {
     self.qrcodeCoordinator?.start()
   }
 
-  func exchangeTabViewControllerDidPressedGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
+  fileprivate func openSetGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
     let setGasPriceVC: KNSetGasPriceViewController = {
       let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
       let controller = KNSetGasPriceViewController(viewModel: viewModel)
@@ -323,11 +335,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     self.navigationController.pushViewController(setGasPriceVC, animated: true)
   }
 
-  func exchangeTabViewControllerDidPressedSettings(sender: KNExchangeTabViewController) {
+  fileprivate func openSettingsView() {
     //TODO: Open settings
   }
 
-  func exchangeTabViewControllerDidPressedSendToken(sender: KNExchangeTabViewController) {
+  fileprivate func openSendTokenView() {
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -337,11 +349,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     self.sendTokenCoordinator?.start()
   }
 
-  func exchangeTabViewControllerDidPressedAddWallet(sender: KNExchangeTabViewController) {
+  fileprivate func openAddWalletView() {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddWallet()
   }
 
-  func exchangeTabViewControllerDidPressedWallet(_ wallet: KNWalletObject, sender: KNExchangeTabViewController) {
+  fileprivate func updateCurrentWallet(_ wallet: KNWalletObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wallet)
   }
 }
@@ -349,11 +361,11 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
 // MARK: Search token
 extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewControllerDidCancel() {
-    self.navigationController.popViewController(animated: true)
+    self.searchTokensViewController.dismiss(animated: true, completion: nil)
   }
 
   func searchTokenViewControllerDidSelect(token: TokenObject) {
-    self.navigationController.popViewController(animated: true) {
+    self.searchTokensViewController.dismiss(animated: true) {
       self.rootViewController.coordinatorUpdateSelectedToken(
         token,
         isSource: self.isSelectingSourceToken
