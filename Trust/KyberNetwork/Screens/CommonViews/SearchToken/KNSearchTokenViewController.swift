@@ -77,11 +77,14 @@ class KNSearchTokenViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     self.searchBar.text = ""
     self.searchTextDidChange("")
+    self.transitionCoordinator?.animate(alongsideTransition: { _ in
+      self.searchBar.becomeFirstResponder()
+    }, completion: nil)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    self.searchBar.resignFirstResponder()
+      self.searchBar.resignFirstResponder()
   }
 
   fileprivate func setupUI() {

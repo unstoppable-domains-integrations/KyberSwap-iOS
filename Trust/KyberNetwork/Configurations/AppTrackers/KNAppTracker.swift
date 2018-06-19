@@ -70,7 +70,7 @@ class KNAppTracker {
     if let value = userDefaults.object(forKey: kWalletHeaderViewKey) as? String {
       return value
     }
-    return "white"
+    return "green"
   }
 
   static func updateWalletHeaderView(_ string: String) {

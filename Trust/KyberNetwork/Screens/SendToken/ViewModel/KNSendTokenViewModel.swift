@@ -59,9 +59,13 @@ class KNSendTokenViewModel: NSObject {
     return attributedString
   }
 
+  var balanceText: String {
+    return "\(self.from.symbol) Balance"
+  }
+
   var displayBalance: String {
-    guard let bal = self.balance else { return "\(self.from.symbol) Balance: ---" }
-    return "\(self.from.symbol) Balance: " + bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6)
+    guard let bal = self.balance else { return "---" }
+    return bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6)
   }
 
   var tokenIconName: String { return self.from.icon }

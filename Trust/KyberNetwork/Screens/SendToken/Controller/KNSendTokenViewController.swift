@@ -25,11 +25,13 @@ class KNSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var tokenContainerView: UIView!
   @IBOutlet weak var tokenButton: UIButton!
   @IBOutlet weak var amountTextField: UITextField!
+  @IBOutlet weak var balanceTextLabel: UILabel!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
 
   @IBOutlet weak var recentContactView: UIView!
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
+  @IBOutlet weak var recentContactHeightConstraint: NSLayoutConstraint!
 
   @IBOutlet weak var gasPriceOptionButton: UIButton!
   @IBOutlet weak var gasPriceSegmentedControl: UISegmentedControl!
@@ -62,6 +64,16 @@ class KNSendTokenViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.tokenContainerView.addShadow(
+      color: UIColor.black.withAlphaComponent(0.5),
+      offset: CGSize(width: 0, height: 7),
+      opacity: 0.32,
+      radius: 32
+    )
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -111,6 +123,7 @@ class KNSendTokenViewController: KNBaseViewController {
     self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
 
+    self.balanceTextLabel.text = self.viewModel.balanceText
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
   }
 
@@ -232,6 +245,7 @@ extension KNSendTokenViewController {
 
   func updateUIBalanceDidChange() {
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
+    self.balanceTextLabel.text = self.viewModel.balanceText
     self.view.layoutIfNeeded()
   }
 
@@ -342,6 +356,7 @@ extension KNSendTokenViewController: QRCodeReaderDelegate {
 extension KNSendTokenViewController: KNContactTableViewDelegate {
   func contactTableView(_ sender: KNContactTableView, didUpdate height: CGFloat) {
     self.recentContactView.isHidden = (height == 0)
+    self.recentContactHeightConstraint.constant = height + 34.0
     self.view.layoutIfNeeded()
   }
 
