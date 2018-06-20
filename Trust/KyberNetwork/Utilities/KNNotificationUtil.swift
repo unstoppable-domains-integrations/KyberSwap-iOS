@@ -31,6 +31,10 @@ let kGasPriceDidUpdateNotificationKey = "kGasPriceDidUpdateNotificationKey"
 
 let kUpdateListContactNotificationKey = "kUpdateListContactNotificationKey"
 
+// IEO
+let kIEOUserDidUpdateNotificationKey = "kIEOUserDidUpdateNotificationKey"
+let kIEODidReceiveCallbackNotificationKey = "kIEODidReceiveCallbackNotificationKey"
+
 class KNNotificationUtil {
 
   static func postNotification(for key: String, object: Any? = nil, userInfo: [AnyHashable: Any]? = nil) {

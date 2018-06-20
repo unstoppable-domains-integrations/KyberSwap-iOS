@@ -44,6 +44,14 @@ class IEOObjectStorage {
     return object
   }
 
+  func update(object: IEOObject, from objc: IEOObject) -> IEOObject {
+    try! self.realm.write {
+      object.rate = objc.rate
+      object.raised = objc.raised
+    }
+    return object
+  }
+
   func getObject(primaryKey: Int) -> IEOObject? {
     return self.realm.object(ofType: IEOObject.self, forPrimaryKey: primaryKey)
   }
