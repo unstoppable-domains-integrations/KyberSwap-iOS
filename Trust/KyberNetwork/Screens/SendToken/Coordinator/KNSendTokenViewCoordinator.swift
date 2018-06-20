@@ -196,6 +196,7 @@ extension KNSendTokenViewCoordinator {
           nounce: self.session.externalProvider.minTxCount
         )
         self.session.addNewPendingTransaction(tx)
+        self.showAddContactNameIfNeeded(address: transaction.to?.description ?? "")
       case .failure(let error):
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -204,5 +205,27 @@ extension KNSendTokenViewCoordinator {
         )
       }
     })
+  }
+
+  fileprivate func showAddContactNameIfNeeded(address: String) {
+    guard KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) == nil else { return }
+    let saveContactVC = KNSaveContactViewController(address: address)
+    saveContactVC.delegate = self
+    saveContactVC.loadViewIfNeeded()
+    saveContactVC.modalTransitionStyle = .crossDissolve
+    saveContactVC.modalPresentationStyle = .overCurrentContext
+    self.navigationController.present(saveContactVC, animated: true, completion: nil)
+  }
+}
+
+extension KNSendTokenViewCoordinator: KNSaveContactViewControllerDelegate {
+  func saveContactViewController(_ controller: KNSaveContactViewController, run event: KNSaveContactViewEvent) {
+    self.navigationController.dismiss(animated: true) {
+      if case .save(let address, let name) = event {
+        let contact = KNContact(address: address, name: name)
+        KNContactStorage.shared.update(contacts: [contact])
+        KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
+      }
+    }
   }
 }

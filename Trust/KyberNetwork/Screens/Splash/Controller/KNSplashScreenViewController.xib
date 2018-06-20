@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kn_splash_logo" translatesAutoresizingMaskIntoConstraints="NO" id="CIL-wK-q9N">
-                    <rect key="frame" x="159.5" y="293.5" width="56" height="100"/>
+                    <rect key="frame" x="112.5" y="268.5" width="150" height="150"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -34,6 +34,6 @@
         </view>
     </objects>
     <resources>
-        <image name="kn_splash_logo" width="56" height="100"/>
+        <image name="kn_splash_logo" width="150" height="150"/>
     </resources>
 </document>

@@ -27,7 +27,7 @@ class KNContactTableView: XibLoaderView {
   override func commonInit() {
     super.commonInit()
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: kContactTableViewCellID)
-    self.tableView.rowHeight = 42
+    self.tableView.rowHeight = 44
     self.tableView.delegate = self
     self.tableView.dataSource = self
 
@@ -84,8 +84,8 @@ extension KNContactTableView: UITableViewDataSource {
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular),
     ]
     let addressAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: ""),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular),
     ]
     let attributedString: NSAttributedString = {
       let attributed: NSMutableAttributedString = NSMutableAttributedString()

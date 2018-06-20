@@ -81,7 +81,7 @@ class KNSendTokenViewModel: NSObject {
 
   var isAmountValid: Bool {
     let balanceVal = balance?.value ?? BigInt(0)
-    return amountBigInt >= 0 && amountBigInt <= balanceVal
+    return amountBigInt > 0 && amountBigInt <= balanceVal
   }
 
   var isAddressValid: Bool {

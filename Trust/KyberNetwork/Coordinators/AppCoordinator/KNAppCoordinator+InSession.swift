@@ -70,7 +70,7 @@ extension KNAppCoordinator {
       self.kyberGOCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
-    self.tabbarController.tabBar.tintColor = UIColor(hex: "5ec2ba")
+    self.tabbarController.tabBar.tintColor = UIColor(hex: "00d3a7")
     self.balanceTabCoordinator.navigationController.tabBarItem = {
       let tabBarItem = UITabBarItem(
         title: "Balance".toBeLocalised(),

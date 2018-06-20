@@ -32,6 +32,7 @@ class KNSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
   @IBOutlet weak var recentContactHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var recentContactTableViewHeightConstraint: NSLayoutConstraint!
 
   @IBOutlet weak var gasPriceOptionButton: UIButton!
   @IBOutlet weak var gasPriceSegmentedControl: UISegmentedControl!
@@ -212,6 +213,10 @@ class KNSendTokenViewController: KNBaseViewController {
     }
   }
 
+  @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
+    self.showWarningTopBannerMessage(with: "", message: "This feature will be available soon")
+  }
+
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
     self.amountTextField.text = self.viewModel.balance?.amountFull ?? ""
     self.amountTextField.resignFirstResponder()
@@ -360,6 +365,7 @@ extension KNSendTokenViewController: KNContactTableViewDelegate {
   func contactTableView(_ sender: KNContactTableView, didUpdate height: CGFloat) {
     self.recentContactView.isHidden = (height == 0)
     self.recentContactHeightConstraint.constant = height + 34.0
+    self.recentContactTableViewHeightConstraint.constant = height
     self.view.layoutIfNeeded()
   }
 

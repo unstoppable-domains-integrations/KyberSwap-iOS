@@ -22,6 +22,7 @@
                 <outlet property="recentContactHeightConstraint" destination="lIt-fN-tql" id="fwf-Ax-UQy"/>
                 <outlet property="recentContactLabel" destination="BoY-Ma-hbO" id="lw7-VF-pf1"/>
                 <outlet property="recentContactTableView" destination="BF1-8K-ya7" id="6oX-EF-5U1"/>
+                <outlet property="recentContactTableViewHeightConstraint" destination="HNp-2B-RAI" id="fNj-Rc-qT2"/>
                 <outlet property="recentContactView" destination="S4b-5k-6U7" id="wRB-TS-dOR"/>
                 <outlet property="sendButton" destination="XRV-XK-3YZ" id="fsZ-V0-y21"/>
                 <outlet property="tokenBalanceLabel" destination="zhf-Qf-zFA" id="5M7-vM-1Xu"/>
@@ -180,6 +181,9 @@
                                     <state key="normal" title="More">
                                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
+                                    <connections>
+                                        <action selector="recentContactMoreButtonPressed:" destination="-1" eventType="touchUpInside" id="BRA-KI-2Ll"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
