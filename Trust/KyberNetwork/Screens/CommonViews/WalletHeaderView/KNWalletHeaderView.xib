@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletHeaderView" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -35,15 +40,15 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uM-HE-nOP">
-                    <rect key="frame" x="58" y="31.5" width="234.5" height="41"/>
+                    <rect key="frame" x="58" y="31.5" width="251.5" height="41"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <string key="text">0xc90710F………196E3343D00
 </string>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lI8-jW-MUg">
-                    <rect key="frame" x="302.5" y="29.5" width="13" height="22"/>
+                    <rect key="frame" x="319.5" y="29.5" width="13" height="22"/>
                     <state key="normal" image="barcode_black"/>
                     <connections>
                         <action selector="scanQRCodePressed:" destination="-1" eventType="touchUpInside" id="8dG-Ms-wE7"/>
