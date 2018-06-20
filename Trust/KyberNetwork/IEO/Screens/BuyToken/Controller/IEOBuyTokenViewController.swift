@@ -37,7 +37,7 @@ class IEOBuyTokenViewModel {
 
   init(from: TokenObject = KNSupportedTokenStorage.shared.ethToken,
        to: IEOObject,
-       walletObject: KNWalletObject = KNWalletStorage.shared.wallets.last!
+       walletObject: KNWalletObject
     ) {
     self.walletObject = walletObject
     self.from = from
@@ -420,6 +420,10 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   @objc func keyboardDoneButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
+  }
+
+  @IBAction func screenEdgePanGestureAction(_ sender: Any) {
+    self.delegate?.ieoBuyTokenViewController(self, run: .close)
   }
 
   fileprivate func reloadDataFromNode() {

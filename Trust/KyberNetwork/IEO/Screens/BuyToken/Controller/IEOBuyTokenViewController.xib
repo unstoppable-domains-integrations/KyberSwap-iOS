@@ -239,6 +239,7 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7LX-sA-8cZ" secondAttribute="trailing" id="1N7-z5-E6f"/>
                 <constraint firstItem="lMo-4F-6ee" firstAttribute="leading" secondItem="yRN-2y-y45" secondAttribute="leading" id="1UZ-ev-08Q"/>
@@ -261,7 +262,16 @@
                 <constraint firstItem="7LX-sA-8cZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qNV-UG-DlY"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="64b-2T-d8Q" appends="YES" id="7GI-fD-5js"/>
+            </connections>
         </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="64b-2T-d8Q">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="ep6-GM-8Br"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
         <image name="accounts_active" width="20" height="20"/>
