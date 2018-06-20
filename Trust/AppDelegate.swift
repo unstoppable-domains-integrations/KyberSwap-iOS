@@ -4,6 +4,8 @@ import UIKit
 import Lokalise
 import Branch
 import Moya
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -31,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
           }
         }
         KNReachability.shared.startNetworkReachabilityObserver()
+        Fabric.with([Crashlytics.self])
         return true
     }
 

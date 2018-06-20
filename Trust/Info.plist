@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>branch_universal_link_domains</key>
-	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,11 +30,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>9</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>74d3fa8b5038a154c0c05555d27112a0d4a80d68</string>
+		<string>d18f567bc4750619445ba2db3a764e3a2a77b416</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -107,6 +105,8 @@
 	<string>kybermangcut.app.link</string>
 	<key>branch_key</key>
 	<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
+	<key>branch_universal_link_domains</key>
+	<string></string>
 	<key>com.apple.security.get-task-allow</key>
 	<true/>
 </dict>
