@@ -2,6 +2,8 @@
 
 import UIKit
 import Lokalise
+import Branch
+import Moya
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -17,6 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             coordinator.appDidFinishLaunch()
         } catch {
             print("EtherKeystore init issue.")
+        }
+        Branch.getInstance().setDebug()
+        Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
+          if let params = params, error == nil {
+            KNNotificationUtil.postNotification(
+              for: kIEODidReceiveCallbackNotificationKey,
+              object: params,
+              userInfo: nil
+            )
+          }
         }
         KNReachability.shared.startNetworkReachabilityObserver()
         return true
@@ -53,17 +65,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+      Branch.getInstance().handlePushNotification(userInfo)
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+      Branch.getInstance().application(app, open: url, options: options)
+      return true
     }
 
     // Respond to URI scheme links
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-
-        // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
         return true
     }
 
     // Respond to Universal Links
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+      Branch.getInstance().continue(userActivity)
         return true
     }
 }
