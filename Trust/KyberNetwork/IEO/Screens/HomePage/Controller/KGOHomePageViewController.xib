@@ -16,6 +16,7 @@
                 <outlet property="kyberGOLabel" destination="yRq-8f-kpd" id="vJs-8k-NE8"/>
                 <outlet property="topContainerView" destination="tkr-V6-cU9" id="F1a-Ls-v5B"/>
                 <outlet property="userAccountImageView" destination="d9w-Fi-Dbh" id="txY-w0-ODJ"/>
+                <outlet property="userStatusLabel" destination="mnD-0L-3d6" id="2am-DG-EtK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,18 +34,27 @@
                             <color key="textColor" red="0.96078431369999995" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d9w-Fi-Dbh">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account" translatesAutoresizingMaskIntoConstraints="NO" id="d9w-Fi-Dbh">
                             <rect key="frame" x="319" y="44" width="40" height="40"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.65501210387323938" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="6Zi-Tv-WBN"/>
                                 <constraint firstAttribute="height" constant="40" id="td8-Sb-ZNA"/>
                             </constraints>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnD-0L-3d6">
+                            <rect key="frame" x="298.5" y="74" width="60.5" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="mnD-0L-3d6" firstAttribute="top" secondItem="d9w-Fi-Dbh" secondAttribute="bottom" constant="-10" id="AkX-Xf-esq"/>
                         <constraint firstAttribute="height" constant="100" id="H9e-PB-E5p"/>
                         <constraint firstItem="d9w-Fi-Dbh" firstAttribute="centerY" secondItem="yRq-8f-kpd" secondAttribute="centerY" id="YR9-qi-Eef"/>
+                        <constraint firstItem="mnD-0L-3d6" firstAttribute="trailing" secondItem="d9w-Fi-Dbh" secondAttribute="trailing" id="fPe-8Z-A1X"/>
                         <constraint firstAttribute="bottom" secondItem="yRq-8f-kpd" secondAttribute="bottom" constant="16" id="kW6-RG-WPp"/>
                         <constraint firstAttribute="trailing" secondItem="d9w-Fi-Dbh" secondAttribute="trailing" constant="16" id="rFS-aZ-xns"/>
                         <constraint firstAttribute="bottom" secondItem="d9w-Fi-Dbh" secondAttribute="bottom" constant="16" id="yTO-ye-uic"/>
@@ -69,4 +79,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
+    <resources>
+        <image name="account" width="24" height="24"/>
+    </resources>
 </document>

@@ -4,8 +4,13 @@ import UIKit
 import BigInt
 import SafariServices
 
+enum IEOListViewEvent {
+  case dismiss
+  case buy(object: IEOObject)
+}
+
 protocol IEOListViewControllerDelegate: class {
-  func ieoListViewControllerDidDismiss()
+  func ieoListViewController(_ controller: IEOListViewController, run event: IEOListViewEvent)
 }
 
 class IEOListViewController: KNBaseViewController {
@@ -81,16 +86,13 @@ class IEOListViewController: KNBaseViewController {
   }
 
   @IBAction func closeButtonPressed(_ sender: Any) {
-    self.dismiss(animated: true, completion: {
-      self.delegate?.ieoListViewControllerDidDismiss()
-    })
+    self.delegate?.ieoListViewController(self, run: .dismiss)
   }
 }
 
 extension IEOListViewController: KGOIEODetailsViewControllerDelegate {
   func ieoDetailsViewControllerDidPressBuy(for object: IEOObject, sender: KGOIEODetailsViewController) {
-    //TODO: Implement it
-    print("Did press buy for object: \(object.tokenName)")
+    self.delegate?.ieoListViewController(self, run: .buy(object: object))
   }
 
   func ieoDetailsViewControllerDidPressWhitePaper(for object: IEOObject, sender: KGOIEODetailsViewController) {

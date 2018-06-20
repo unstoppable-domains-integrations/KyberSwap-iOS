@@ -3,8 +3,14 @@
 import UIKit
 import WebKit
 
+enum KGOHomePageViewEvent {
+  case select(object: IEOObject)
+  case selectAccount
+  case selectBuy(object: IEOObject)
+}
+
 protocol KGOHomePageViewControllerDelegate: class {
-  func kyberGOHomePageViewController(_ controller: KGOHomePageViewController, didSelect object: IEOObject)
+  func kyberGOHomePageViewController(_ controller: KGOHomePageViewController, run event: KGOHomePageViewEvent)
 }
 
 class KGOHomePageViewController: KNBaseViewController {
@@ -15,6 +21,7 @@ class KGOHomePageViewController: KNBaseViewController {
   @IBOutlet weak var topContainerView: UIView!
   @IBOutlet weak var kyberGOLabel: UILabel!
   @IBOutlet weak var userAccountImageView: UIImageView!
+  @IBOutlet weak var userStatusLabel: UILabel!
 
   @IBOutlet weak var ieoTableView: UITableView!
 
@@ -55,6 +62,7 @@ class KGOHomePageViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.accountImageViewDidTap(_:)))
     self.userAccountImageView.addGestureRecognizer(tapGesture)
     self.userAccountImageView.isUserInteractionEnabled = true
+    self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
   }
 
   func setupIEOTableView() {
@@ -72,21 +80,24 @@ class KGOHomePageViewController: KNBaseViewController {
     self.ieoTableView.reloadData()
   }
 
+  func coordinatorUserDidSignInSuccessfully() {
+    self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
+  }
+
+  func coordinatorDidSignOut() {
+    self.userStatusLabel.text = "Unknown"
+  }
+
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {
-    let signInVC = KGOSignInViewController()
-    signInVC.loadViewIfNeeded()
-    signInVC.delegate = self
-    self.present(signInVC, animated: true, completion: nil)
+    self.delegate?.kyberGOHomePageViewController(self, run: .selectAccount)
   }
 }
 
 extension KGOHomePageViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    self.delegate?.kyberGOHomePageViewController(
-      self,
-      didSelect: self.viewModel.object(for: indexPath.row, in: indexPath.section)
-    )
+    let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
+    self.delegate?.kyberGOHomePageViewController(self, run: .select(object: object))
   }
 }
 
@@ -125,21 +136,11 @@ extension KGOHomePageViewController: UITableViewDataSource {
 
 extension KGOHomePageViewController: KGOIEOTableViewCellDelegate {
   func ieoTableViewCellBuyButtonPressed(for object: IEOObject, sender: KGOIEOTableViewCell) {
-    //TODO:
+    self.delegate?.kyberGOHomePageViewController(self, run: .selectBuy(object: object))
   }
 
   func ieoTableViewCellShouldUpdateType(for object: IEOObject, sender: KGOIEOTableViewCell) {
     self.viewModel.updateObjects(self.viewModel.ieoObjects)
     self.ieoTableView.reloadData()
-  }
-}
-
-extension KGOHomePageViewController: KGOSignInViewControllerDelegate {
-  func kgoSignInViewController(_ controller: KGOSignInViewController, sendEvent event: KGOSignInViewEvent) {
-    switch event {
-    case .dismiss:
-      self.dismiss(animated: true, completion: nil)
-    default: return
-    }
   }
 }

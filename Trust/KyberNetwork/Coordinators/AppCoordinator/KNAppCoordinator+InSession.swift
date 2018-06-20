@@ -47,7 +47,7 @@ extension KNAppCoordinator {
 //    self.historyCoordinator.start()
 
     self.kyberGOCoordinator = {
-      return KGOHomePageCoordinator()
+      return KGOHomePageCoordinator(session: self.session)
     }()
     self.addCoordinator(self.kyberGOCoordinator!)
     self.kyberGOCoordinator?.start()
@@ -160,6 +160,7 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
 //    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.kyberGOCoordinator?.updateSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 1
     self.addObserveNotificationFromSession()
