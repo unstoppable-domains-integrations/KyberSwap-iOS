@@ -25,7 +25,7 @@ class IEOUser: Object {
     self.kycStatus = dict["kyc_status"] as? String ?? ""
     self.registeredAddress = List<String>()
     if let arr = dict["active_wallets"] as? [String] {
-      arr.forEach { self.registeredAddress.append($0) }
+      arr.forEach { self.registeredAddress.append($0.lowercased()) }
     }
   }
 

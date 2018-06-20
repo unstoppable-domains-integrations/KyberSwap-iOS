@@ -274,11 +274,19 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
   }
 
   fileprivate func openBuy(object: IEOObject) {
-    guard IEOUserStorage.shared.objects.first != nil else {
+    guard let user = IEOUserStorage.shared.user else {
       self.openSignInView()
       return
     }
-    let viewModel = IEOBuyTokenViewModel(to: object)
+    guard let wallet = KNWalletStorage.shared.wallets.first(where: { user.registeredAddress.contains($0.address.lowercased()) }) else {
+      self.navigationController.showWarningTopBannerMessage(
+        with: "",
+        message: "You need to add at least one registered address with KyberGO to buy token.",
+        time: 2.5
+      )
+      return
+    }
+    let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
     self.buyTokenVC = IEOBuyTokenViewController(viewModel: viewModel)
     self.buyTokenVC?.loadViewIfNeeded()
     self.buyTokenVC?.delegate = self
