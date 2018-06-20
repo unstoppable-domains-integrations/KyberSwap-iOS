@@ -75,14 +75,27 @@ class KNExternalProvider {
 
   // MARK: Transaction
   func getTransactionCount(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    KNExternalProvider.getTransactionCount(
+    for: self.account.address.description) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let count):
+        self.minTxCount = max(self.minTxCount, count)
+        completion(.success(count))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  static func getTransactionCount(for address: String, completion: @escaping (Result<Int, AnyError>) -> Void) {
     let request = EtherServiceRequest(batch: BatchFactory().create(GetTransactionCountRequest(
-      address: self.account.address.description,
+      address: address,
       state: "latest"
     )))
     Session.send(request) { result in
       switch result {
       case .success(let count):
-         self.minTxCount = max(self.minTxCount, count)
         completion(.success(count))
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -99,7 +112,7 @@ class KNExternalProvider {
           guard let `self` = self else { return }
           switch dataResult {
           case .success(let data):
-            self.signTransactionData(from: transaction, nounce: self.minTxCount, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(from: transaction, nonce: self.minTxCount, data: data, completion: { [weak self] signResult in
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
@@ -127,7 +140,7 @@ class KNExternalProvider {
           guard let `self` = self else { return }
           switch dataResult {
           case .success(let data):
-            self.signTransactionData(from: exchange, nounce: count, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(from: exchange, nonce: count, data: data, completion: { [weak self] signResult in
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
@@ -219,7 +232,7 @@ class KNExternalProvider {
           guard let `self` = self else { return }
           switch txCountResult {
           case .success:
-            self.signTransactionData(forApproving: exchangeTransaction.from, nouce: self.minTxCount, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(forApproving: exchangeTransaction.from, nonce: self.minTxCount, data: data, completion: { [weak self] signResult in
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
@@ -297,9 +310,9 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch result {
       case .success(let data):
-        self.estimateGasLimit(
-          from: self.account.address,
-          to: self.addressToSend(transferTransaction),
+        KNExternalProvider.estimateGasLimit(
+          from: self.account.address.description,
+          to: self.addressToSend(transferTransaction)?.description,
           gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
           value: self.valueToSend(transferTransaction),
           data: data,
@@ -323,9 +336,9 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch dataResult {
       case .success(let data):
-        self.estimateGasLimit(
-          from: self.account.address,
-          to: self.networkAddress,
+        KNExternalProvider.estimateGasLimit(
+          from: self.account.address.description,
+          to: self.networkAddress.description,
           gasPrice: exchangeTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
           value: value,
           data: data,
@@ -338,7 +351,7 @@ class KNExternalProvider {
     }
   }
 
-  fileprivate func estimateGasLimit(from: Address, to: Address?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  static func estimateGasLimit(from: String, to: String?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let request = KNEstimateGasLimitRequest(
       from: from,
       to: to,
@@ -366,13 +379,13 @@ class KNExternalProvider {
   }
 
   // MARK: Sign transaction
-  private func signTransactionData(from transaction: UnconfirmedTransaction, nounce: Int, data: Data?, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(from transaction: UnconfirmedTransaction, nonce: Int, data: Data?, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let defaultGasLimit: BigInt = transaction.transferType.isETHTransfer() ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
     let signTransaction: SignTransaction = SignTransaction(
       value: self.valueToSend(transaction),
       account: self.account,
       to: self.addressToSend(transaction),
-      nonce: nounce,
+      nonce: nonce,
       data: data ?? Data(),
       gasPrice: transaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
       gasLimit: transaction.gasLimit ?? defaultGasLimit,
@@ -381,12 +394,12 @@ class KNExternalProvider {
     self.signTransactionData(from: signTransaction, completion: completion)
   }
 
-  private func signTransactionData(from exchange: KNDraftExchangeTransaction, nounce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(from exchange: KNDraftExchangeTransaction, nonce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction: SignTransaction = SignTransaction(
       value: exchange.from.isETH ? exchange.amount : BigInt(0),
       account: self.account,
       to: self.networkAddress,
-      nonce: nounce,
+      nonce: nonce,
       data: data,
       gasPrice: exchange.gasPrice ?? KNGasConfiguration.gasPriceDefault,
       gasLimit: exchange.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault,
@@ -395,12 +408,12 @@ class KNExternalProvider {
     self.signTransactionData(from: signTransaction, completion: completion)
   }
 
-  private func signTransactionData(forApproving token: TokenObject, nouce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(forApproving token: TokenObject, nonce: Int, data: Data, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
       to: Address(string: token.contract),
-      nonce: nouce,
+      nonce: nonce,
       data: data,
       gasPrice: KNGasConfiguration.gasPriceDefault,
       gasLimit: KNGasConfiguration.exchangeTokensGasLimitDefault,

@@ -80,7 +80,6 @@ class KGOIEOTableViewCell: UITableViewCell {
       width: 0.5,
       radius: self.tokenIconImageView.frame.width / 2.0
     )
-//    self.tokenIconImageView.addShadow(color: .black, offset: CGSize(width: 0, height: 2))
 
     self.nameLabel.text = ""
     self.timeLabel.text = ""
@@ -123,6 +122,7 @@ class KGOIEOTableViewCell: UITableViewCell {
     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
       self?.timeLabel.text = self?.model?.displayedTime
     })
+    self.layoutIfNeeded()
   }
 
   @IBAction func buyButtonPressed(_ sender: Any) {
