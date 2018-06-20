@@ -363,6 +363,9 @@ extension KNExchangeTabViewController {
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.balanceLabel.text = self.viewModel.balanceText
+    if !self.fromAmountTextField.isEditing {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
     self.view.layoutIfNeeded()
   }
 

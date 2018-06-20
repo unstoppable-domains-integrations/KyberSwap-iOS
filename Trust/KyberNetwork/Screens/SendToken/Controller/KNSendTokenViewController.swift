@@ -246,6 +246,9 @@ extension KNSendTokenViewController {
   func updateUIBalanceDidChange() {
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
     self.balanceTextLabel.text = self.viewModel.balanceText
+    if !self.amountTextField.isEditing {
+      self.amountTextField.textColor = self.viewModel.amountTextColor
+    }
     self.view.layoutIfNeeded()
   }
 

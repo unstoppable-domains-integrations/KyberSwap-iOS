@@ -17,7 +17,7 @@ class KNSendTokenViewModel: NSObject {
 
   fileprivate(set) var amount: String = ""
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
-  fileprivate(set) var gasPrice: BigInt = KNGasConfiguration.gasPriceMax
+  fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
   fileprivate var addressString: String? = ""
@@ -70,13 +70,8 @@ class KNSendTokenViewModel: NSObject {
 
   var tokenIconName: String { return self.from.icon }
 
-  var displayGasPrice: String {
-    let val = self.gasPrice.shortString(units: UnitConfiguration.gasPriceUnit, maxFractionDigits: 1)
-    return "\(val) gwei"
-  }
-
   var placeHolderEnterAddress: String {
-    return "Enter an address or scan its QR code".toBeLocalised()
+    return "Enter address or scan QR code".toBeLocalised()
   }
 
   var displayAddress: String? {
