@@ -141,7 +141,7 @@ class IEOProvider {
    - contractAddress: Address of the IEO
    - userID: Current user ID
   */
-  func getContributorRemainingCap(contractAddress: String, userID: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  func getContributorRemainingCap(contractAddress: String, userID: Int, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let encodeRequest = IEOGetContridbutorRemainingCapEncode(userID: userID)
     self.web3Swift.request(request: encodeRequest) { [weak self] encodeResult in
       guard let _ = self else { return }

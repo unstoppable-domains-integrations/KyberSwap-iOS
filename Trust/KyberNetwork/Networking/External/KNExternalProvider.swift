@@ -7,6 +7,7 @@ import Result
 import TrustKeystore
 import JavaScriptKit
 
+//swiftlint:disable file_length
 class KNExternalProvider {
 
   let keystore: Keystore

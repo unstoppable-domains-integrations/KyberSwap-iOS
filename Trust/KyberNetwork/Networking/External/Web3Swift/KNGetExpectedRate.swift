@@ -15,7 +15,7 @@ struct KNGetExpectedRateEncode: Web3Request {
   let amount: BigInt
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(KNGetExpectedRateEncode.abi), [\"\(source.description)\", \"\(dest.description)\", \"\(amount.description)\"])"
+    let run = "web3.eth.abi.encodeFunctionCall(\(KNGetExpectedRateEncode.abi), [\"\(source.description)\", \"\(dest.description)\", \"\(amount.hexEncoded)\"])"
     return .script(command: run)
   }
 }

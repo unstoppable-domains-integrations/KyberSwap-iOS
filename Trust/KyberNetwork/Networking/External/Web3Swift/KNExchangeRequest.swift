@@ -14,7 +14,11 @@ struct KNExchangeRequestEncode: Web3Request {
   let address: Address
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.abi), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(address.description)\", \"\(exchange.maxDestAmount.description)\", \"\(exchange.minRate?.description ?? "0x0")\", \"0x0000000000000000000000000000000000000000\"])"
+    let minRate: BigInt = {
+      guard let minRate = exchange.minRate else { return BigInt(0) }
+      return minRate * BigInt(10).power(18 - exchange.to.decimals)
+    }()
+    let run = "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.abi), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(address.description)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"0x0000000000000000000000000000000000000000\"])"
     return .script(command: run)
   }
 }

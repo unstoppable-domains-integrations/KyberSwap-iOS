@@ -2,16 +2,17 @@
 
 import Foundation
 import TrustKeystore
+import BigInt
 
 struct IEOGetContridbutorRemainingCapEncode: Web3Request {
   typealias Response = String
   //swiftlint:disable line_length
   static let abi = "{\"constant\": true, \"inputs\": [{\"name\": \"userId\", \"type\": \"uint256\"}], \"name\": \"getContributorRemainingCap\", \"outputs\": [[{ \"name\": \"capWei\", \"type\":\"uint256\" }]], \"payable\": false, \"stateMutability\": \"view\", \"type\": \"function\"}"
 
-  let userID: String
+  let userID: Int
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(IEOGetContridbutorRemainingCapEncode.abi), [\"\(userID.hexEncoded)\"])"
+    let run = "web3.eth.abi.encodeFunctionCall(\(IEOGetContridbutorRemainingCapEncode.abi), [\"\(BigInt(userID).hexEncoded)\"])"
     return .script(command: run)
   }
 }
