@@ -4,24 +4,28 @@ import UIKit
 import Eureka
 import StoreKit
 
+enum KNSettingsViewEvent {
+  case exit
+  case close
+  case backUp
+  case clickWallets
+  case passcodeDidChange(isOn: Bool)
+}
+
 protocol KNSettingsViewControllerDelegate: class {
-  func settingsViewControllerDidClickExit()
-  func settingsViewControllerBackUpButtonPressed()
-  func settingsViewControllerWalletsButtonPressed()
-  func settingsViewControllerPasscodeDidChange(_ isOn: Bool)
+  func settingsViewController(_ controller: KNSettingsViewController, run event: KNSettingsViewEvent)
 }
 
 class KNSettingsViewController: FormViewController {
 
-  fileprivate weak var delegate: KNSettingsViewControllerDelegate?
+  weak var delegate: KNSettingsViewControllerDelegate?
   fileprivate var address: String
 
   fileprivate var passcodeRow: SwitchRow!
   fileprivate var walletsCell: ButtonRow!
 
-  init(address: String, delegate: KNSettingsViewControllerDelegate?) {
+  init(address: String) {
     self.address = address
-    self.delegate = delegate
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -42,7 +46,7 @@ class KNSettingsViewController: FormViewController {
     self.walletsCell = AppFormAppearance.button { button in
       button.cellStyle = .value1
     }.onCellSelection { [unowned self] _, _ in
-      self.delegate?.settingsViewControllerWalletsButtonPressed()
+      self.delegate?.settingsViewController(self, run: .clickWallets)
     }.cellUpdate { cell, _ in
       cell.textLabel?.textColor = .black
       cell.imageView?.image = UIImage(named: "settings_wallet")
@@ -54,7 +58,7 @@ class KNSettingsViewController: FormViewController {
     accountSection <<< AppFormAppearance.button { button in
       button.cellStyle = .value1
     }.onCellSelection { [unowned self] _, _ in
-      self.delegate?.settingsViewControllerBackUpButtonPressed()
+      self.delegate?.settingsViewController(self, run: .backUp)
     }.cellUpdate { cell, _ in
       cell.textLabel?.textColor = .black
       cell.imageView?.image = UIImage(named: "settings_export")
@@ -69,7 +73,7 @@ class KNSettingsViewController: FormViewController {
       $0.title = "TouchID/FaceID/Passcode".toBeLocalised()
       $0.value = KNPasscodeUtil.shared.currentPasscode() != nil
     }.onChange { [unowned self] row in
-      self.delegate?.settingsViewControllerPasscodeDidChange(row.value == true)
+      self.delegate?.settingsViewController(self, run: .passcodeDidChange(isOn: row.value == true))
     }.cellSetup { cell, _ in
       cell.imageView?.image = UIImage(named: "settings_lock")
     }
@@ -81,16 +85,23 @@ class KNSettingsViewController: FormViewController {
       $0.value = Bundle.main.fullVersion
       $0.disabled = true
     }
+
+    form +++ Section()
+    <<< ButtonRow {
+      $0.title = "Exit".toBeLocalised()
+    }.onCellSelection({ [unowned self] _, _ in
+      self.delegate?.settingsViewController(self, run: .exit)
+    })
   }
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = "History".toBeLocalised()
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
-    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+//    self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "close_white_icon"), style: .plain, target: self, action: #selector(self.closeButtonPressed(_:)))
+//    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
   }
 
-  @objc func exitButtonPressed(_ sender: Any) {
-    self.delegate?.settingsViewControllerDidClickExit()
+  @objc func closeButtonPressed(_ sender: Any) {
+    self.delegate?.settingsViewController(self, run: .close)
   }
 
   func userDidCancelCreatePasscode() {

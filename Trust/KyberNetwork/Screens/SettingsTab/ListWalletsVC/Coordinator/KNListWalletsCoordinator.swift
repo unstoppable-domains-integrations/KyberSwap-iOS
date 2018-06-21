@@ -17,8 +17,12 @@ class KNListWalletsCoordinator: Coordinator {
   weak var delegate: KNListWalletsCoordinatorDelegate?
 
   lazy var rootViewController: KNListWalletsViewController = {
-    let controller = KNListWalletsViewController(delegate: self)
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
+    let viewModel = KNListWalletsViewModel(listWallets: listWallets, curWallet: curWallet)
+    let controller = KNListWalletsViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
+    controller.delegate = self
     return controller
   }()
 
@@ -34,9 +38,11 @@ class KNListWalletsCoordinator: Coordinator {
 
   func start() {
     self.syncWalletData()
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
     self.rootViewController.updateView(
-      with: self.session.keystore.wallets,
-      currentWallet: self.session.wallet
+      with: listWallets,
+      currentWallet: curWallet
     )
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
@@ -48,9 +54,11 @@ class KNListWalletsCoordinator: Coordinator {
   func updateNewSession(_ session: KNSession) {
     self.session = session
     self.syncWalletData()
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
     self.rootViewController.updateView(
-      with: self.session.keystore.wallets,
-      currentWallet: self.session.wallet
+      with: listWallets,
+      currentWallet: curWallet
     )
   }
 
@@ -63,6 +71,23 @@ class KNListWalletsCoordinator: Coordinator {
 }
 
 extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
+  func listWalletsViewController(_ controller: KNListWalletsViewController, run event: KNListWalletsViewEvent) {
+    switch event {
+    case .close:
+      self.listWalletsViewControllerDidClickBackButton()
+    case .select(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.listWalletsViewControllerDidSelectWallet(wal)
+    case .remove(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.listWalletsViewControllerDidSelectRemoveWallet(wal)
+    }
+  }
+
   func listWalletsViewControllerDidClickBackButton() {
     self.delegate?.listWalletsCoordinatorDidClickBack()
   }

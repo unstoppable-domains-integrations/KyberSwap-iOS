@@ -18,10 +18,10 @@ class KNSettingsCoordinator: Coordinator {
 
   lazy var rootViewController: KNSettingsViewController = {
     let controller = KNSettingsViewController(
-      address: self.session.wallet.address.description,
-      delegate: self
+      address: self.session.wallet.address.description
     )
     controller.loadViewIfNeeded()
+    controller.delegate = self
     return controller
   }()
 
@@ -66,6 +66,21 @@ class KNSettingsCoordinator: Coordinator {
 }
 
 extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
+  func settingsViewController(_ controller: KNSettingsViewController, run event: KNSettingsViewEvent) {
+    switch event {
+    case .exit:
+      self.settingsViewControllerDidClickExit()
+    case .clickWallets:
+      self.settingsViewControllerWalletsButtonPressed()
+    case .passcodeDidChange(let isOn):
+      self.settingsViewControllerPasscodeDidChange(isOn)
+    case .backUp:
+      self.settingsViewControllerBackUpButtonPressed()
+    case .close:
+      self.navigationController.dismiss(animated: true, completion: nil)
+    }
+  }
+
   func settingsViewControllerDidClickExit() {
     self.delegate?.settingsCoordinatorUserDidSelectExit()
   }
