@@ -71,6 +71,17 @@
 	<string>Sending QR Code to your contacts</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SF-Pro-Text-Bold.otf</string>
+		<string>SF-Pro-Text-BoldItalic.otf</string>
+		<string>SF-Pro-Text-Heavy.otf</string>
+		<string>SF-Pro-Text-HeavyItalic.otf</string>
+		<string>SF-Pro-Text-Light.otf</string>
+		<string>SF-Pro-Text-LightItalic.otf</string>
+		<string>SF-Pro-Text-MediumItalic.otf</string>
+		<string>SF-Pro-Text-RegularItalic.otf</string>
+		<string>SF-Pro-Text-SemiboldItalic.otf</string>
+		<string>SF-Pro-Text-Semibold.otf</string>
+		<string>SF-Pro-Text-Regular.otf</string>
 		<string>SF-Pro-Text-Medium.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
