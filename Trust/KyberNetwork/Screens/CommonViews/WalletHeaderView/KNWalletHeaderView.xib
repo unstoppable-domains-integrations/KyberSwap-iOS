@@ -20,7 +20,6 @@
                 <outlet property="containerView" destination="iN0-l3-epB" id="zUP-AI-pEG"/>
                 <outlet property="debugButton" destination="0pa-Jt-4RB" id="4DP-Mp-rSh"/>
                 <outlet property="pendingTxNotiView" destination="NwP-Dr-Mup" id="moE-rk-ojt"/>
-                <outlet property="qrcodeButton" destination="lI8-jW-MUg" id="39o-Te-98z"/>
                 <outlet property="walletIconImageView" destination="sVX-1y-r9w" id="SLd-zo-Xrm"/>
                 <outlet property="walletInfoLabel" destination="1uM-HE-nOP" id="iRd-pa-yLH"/>
                 <outlet property="walletListButton" destination="Gag-vd-BIX" id="uhn-cJ-YyC"/>
@@ -32,37 +31,31 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wallet_icon_0" translatesAutoresizingMaskIntoConstraints="NO" id="sVX-1y-r9w">
-                    <rect key="frame" x="16" y="36" width="32" height="32"/>
+                    <rect key="frame" x="16" y="34" width="36" height="36"/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="32" id="MaI-aM-5h7"/>
-                        <constraint firstAttribute="height" constant="32" id="ZjX-CA-GZp"/>
+                        <constraint firstAttribute="width" constant="36" id="MaI-aM-5h7"/>
+                        <constraint firstAttribute="height" constant="36" id="ZjX-CA-GZp"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uM-HE-nOP">
-                    <rect key="frame" x="58" y="31.5" width="251.5" height="41"/>
+                    <rect key="frame" x="62" y="31.5" width="251.5" height="41"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <string key="text">0xc90710F………196E3343D00
 </string>
                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lI8-jW-MUg">
-                    <rect key="frame" x="319.5" y="29.5" width="13" height="22"/>
-                    <state key="normal" image="barcode_black"/>
-                    <connections>
-                        <action selector="scanQRCodePressed:" destination="-1" eventType="touchUpInside" id="8dG-Ms-wE7"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gag-vd-BIX">
-                    <rect key="frame" x="339" y="41" width="16" height="22"/>
-                    <state key="normal" image="burger_menu_black"/>
+                    <rect key="frame" x="340" y="41" width="21" height="22"/>
+                    <state key="normal" image="burger_menu"/>
                     <connections>
                         <action selector="walletListButtonPressed:" destination="-1" eventType="touchUpInside" id="8Px-1N-s7S"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pa-Jt-4RB">
-                    <rect key="frame" x="286" y="37.5" width="43" height="29"/>
+                    <rect key="frame" x="287" y="37.5" width="43" height="29"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="Debug">
                         <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -72,7 +65,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NwP-Dr-Mup">
-                    <rect key="frame" x="350" y="58" width="10" height="10"/>
+                    <rect key="frame" x="356" y="58" width="10" height="10"/>
                     <color key="backgroundColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="10" id="3Kj-DU-6y4"/>
@@ -80,18 +73,16 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="sVX-1y-r9w" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="8a8-Lw-2Zq"/>
+                <constraint firstItem="sVX-1y-r9w" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="14" id="8a8-Lw-2Zq"/>
                 <constraint firstItem="0pa-Jt-4RB" firstAttribute="centerY" secondItem="Gag-vd-BIX" secondAttribute="centerY" id="Dee-DN-gIK"/>
                 <constraint firstItem="NwP-Dr-Mup" firstAttribute="top" secondItem="Gag-vd-BIX" secondAttribute="bottom" constant="-5" id="Dyv-3C-QHM"/>
-                <constraint firstItem="1uM-HE-nOP" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="Ozh-Ui-S9y"/>
-                <constraint firstItem="lI8-jW-MUg" firstAttribute="leading" secondItem="1uM-HE-nOP" secondAttribute="trailing" constant="10" id="Vlu-LQ-neX"/>
-                <constraint firstItem="lI8-jW-MUg" firstAttribute="top" secondItem="1uM-HE-nOP" secondAttribute="top" constant="-2" id="Xt7-Yj-0y2"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Gag-vd-BIX" secondAttribute="trailing" constant="20" id="ZZY-1v-Ma0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Gag-vd-BIX" secondAttribute="trailing" constant="14" id="ZZY-1v-Ma0"/>
                 <constraint firstItem="NwP-Dr-Mup" firstAttribute="trailing" secondItem="Gag-vd-BIX" secondAttribute="trailing" constant="5" id="bqy-fd-Mwf"/>
+                <constraint firstItem="1uM-HE-nOP" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="cky-bv-FKe"/>
+                <constraint firstItem="Gag-vd-BIX" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="fm1-YO-FKd"/>
                 <constraint firstItem="sVX-1y-r9w" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="foB-Zl-qfU"/>
-                <constraint firstItem="Gag-vd-BIX" firstAttribute="centerY" secondItem="sVX-1y-r9w" secondAttribute="centerY" id="r6i-yJ-6J3"/>
                 <constraint firstItem="Gag-vd-BIX" firstAttribute="leading" secondItem="0pa-Jt-4RB" secondAttribute="trailing" constant="10" id="uUM-YP-VyA"/>
                 <constraint firstItem="1uM-HE-nOP" firstAttribute="leading" secondItem="sVX-1y-r9w" secondAttribute="trailing" constant="10" id="yUK-1J-q0c"/>
             </constraints>
@@ -100,8 +91,7 @@
         </view>
     </objects>
     <resources>
-        <image name="barcode_black" width="13" height="11"/>
-        <image name="burger_menu_black" width="16" height="16"/>
+        <image name="burger_menu" width="21" height="18"/>
         <image name="wallet_icon_0" width="16" height="20"/>
     </resources>
 </document>

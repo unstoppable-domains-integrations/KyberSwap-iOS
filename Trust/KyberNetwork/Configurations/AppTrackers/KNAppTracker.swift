@@ -15,7 +15,6 @@ class KNAppTracker {
   static let kInternalCacheEndpointKey: String = "kInternalCacheEndpointKey"
   static let kInternalTrackerEndpointKey: String = "kInternalTrackerEndpointKey"
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
-  static let kWalletHeaderViewKey: String = "kWalletHeaderViewKey"
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
   static let kTransactionNonceKey: String = "kTransactionNonceKey"
@@ -62,19 +61,6 @@ class KNAppTracker {
 
   static func updateExternalEnvironment(_ env: KNEnvironment) {
     userDefaults.set(env.rawValue, forKey: kExternalEnvironmentKey)
-    userDefaults.synchronize()
-  }
-
-  // MARK: Wallet header view
-  static func walletHeaderView() -> String {
-    if let value = userDefaults.object(forKey: kWalletHeaderViewKey) as? String {
-      return value
-    }
-    return "green"
-  }
-
-  static func updateWalletHeaderView(_ string: String) {
-    userDefaults.set(string, forKey: kWalletHeaderViewKey)
     userDefaults.synchronize()
   }
 

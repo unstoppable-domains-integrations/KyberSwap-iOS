@@ -9,39 +9,33 @@ import UIKit
 }
 
 struct KNWalletHeaderViewModel {
-  var type = KNAppTracker.walletHeaderView()
-
   init() {}
 
-  mutating func updateType() {
-    self.type = KNAppTracker.walletHeaderView()
-  }
-
   var backgroundColor: UIColor {
-    return type == "white" ? UIColor.white : UIColor(hex: "09281f")
+    return UIColor(hex: "09281f")
   }
 
   var tintColor: UIColor {
-    return type == "white" ? UIColor(hex: "09281f") : UIColor.white
+    return UIColor.white
   }
 
   var barcodeIcon: String {
-    return type == "white" ? "barcode_black" : "barcode_white"
+    return "barcode_white"
   }
 
   var walletListIcon: String {
-    return type == "white" ? "burger_menu_black" : "burger_menu"
+    return"burger_menu"
   }
 
   var walletAddressAttributes: [NSAttributedStringKey: Any] {
-    return [NSAttributedStringKey.foregroundColor: self.type == "white" ? UIColor(hex: "09281f") : UIColor(hex: "c4c4c4"),
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium),
+    return [NSAttributedStringKey.foregroundColor: UIColor(hex: "c4c4c4"),
+            NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
     ]
   }
 
   var walletNameAttributes: [NSAttributedStringKey: Any] {
-    return [NSAttributedStringKey.foregroundColor: self.type == "white" ? UIColor(hex: "09281f") : UIColor.white,
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium),
+    return [NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
     ]
   }
 }
@@ -51,7 +45,6 @@ class KNWalletHeaderView: XibLoaderView {
   @IBOutlet weak var walletIconImageView: UIImageView!
   @IBOutlet weak var walletInfoLabel: UILabel!
   @IBOutlet weak var debugButton: UIButton!
-  @IBOutlet weak var qrcodeButton: UIButton!
   @IBOutlet weak var walletListButton: UIButton!
 
   @IBOutlet weak var pendingTxNotiView: UIView!
@@ -61,27 +54,12 @@ class KNWalletHeaderView: XibLoaderView {
 
   fileprivate var wallet: KNWalletObject?
 
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(rawValue: kWalletHeaderViewDidChangeTypeNotificationKey),
-      object: nil
-    )
-  }
-
   override func commonInit() {
     super.commonInit()
     self.walletInfoLabel.text = ""
     self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
     self.pendingTxNotiView.isHidden = true
     self.updateUI()
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.walletHeaderViewTypeDidChange(_:)),
-      name: NSNotification.Name(rawValue: kWalletHeaderViewDidChangeTypeNotificationKey),
-      object: nil
-    )
   }
 
   fileprivate func updateUI() {
@@ -93,7 +71,6 @@ class KNWalletHeaderView: XibLoaderView {
     )
     self.walletInfoLabel.textColor = self.viewModel.tintColor
     // change tint color is not working properly
-    self.qrcodeButton.setImage(UIImage(named: self.viewModel.barcodeIcon), for: .normal)
     self.walletListButton.setImage(UIImage(named: self.viewModel.walletListIcon), for: .normal)
 
     self.debugButton.setTitleColor(self.viewModel.tintColor, for: .normal)
@@ -116,11 +93,6 @@ class KNWalletHeaderView: XibLoaderView {
     self.pendingTxNotiView.isHidden = number == 0
   }
 
-  @IBAction func scanQRCodePressed(_ sender: Any) {
-    guard let wallet = self.wallet else { return }
-    self.delegate?.walletHeaderScanQRCodePressed(wallet: wallet, sender: self)
-  }
-
   @IBAction func walletListButtonPressed(_ sender: Any) {
     guard let wallet = self.wallet else { return }
     self.delegate?.walletHeaderWalletListPressed(wallet: wallet, sender: self)
@@ -128,11 +100,5 @@ class KNWalletHeaderView: XibLoaderView {
 
   @IBAction func debugButtonPressed(_ sender: Any) {
     self.delegate?.walletHeaderDebugButtonPressed?(sender: self)
-  }
-
-  // MARK: For debugging only
-  @objc func walletHeaderViewTypeDidChange(_ sender: Notification) {
-    self.viewModel.updateType()
-    self.updateUI()
   }
 }
