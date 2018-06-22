@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTokenChartViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -30,13 +38,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSm-QQ-Xz3">
-                            <rect key="frame" x="141.5" y="46" width="92" height="24"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                            <rect key="frame" x="139" y="46" width="98" height="24"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JH7-5H-Vln">
-                            <rect key="frame" x="16" y="46" width="24" height="24"/>
+                            <rect key="frame" x="16" y="46.5" width="24" height="24"/>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="dvN-tZ-L3P"/>
@@ -53,14 +61,14 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 0.0001231" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-e9-wzt">
-                    <rect key="frame" x="78" y="110" width="220.5" height="38.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                    <rect key="frame" x="73" y="110" width="229" height="38.5"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="32"/>
                     <color key="textColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2.5% in 24h" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rzG-Y5-kWi">
-                    <rect key="frame" x="143" y="153.5" width="91.5" height="18"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                    <rect key="frame" x="138" y="153.5" width="99" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.19215686274509802" green="0.79607843137254897" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -96,12 +104,12 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="knF-lf-3jZ" customClass="Chart" customModule="SwiftChart">
-                    <rect key="frame" x="0.0" y="211.5" width="375" height="280.5"/>
+                    <rect key="frame" x="0.0" y="213.5" width="375" height="278.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vds-sy-BKi">
-                    <rect key="frame" x="10" y="192" width="25.5" height="14.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <rect key="frame" x="10" y="194" width="25.5" height="14.5"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>

@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Bold.otf">
+            <string>SFProText-Bold</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTransactionStatusView" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -45,14 +53,14 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcasting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuF-hc-5eB">
-                    <rect key="frame" x="91" y="32.5" width="103.5" height="19.5"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <rect key="frame" x="91" y="32.5" width="107.5" height="19.5"/>
+                    <fontDescription key="fontDescription" name="SFProText-Bold" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.047058823529411764" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction being broadcast" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN5-jA-Jg2">
                     <rect key="frame" x="91" y="54" width="268" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                     <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>

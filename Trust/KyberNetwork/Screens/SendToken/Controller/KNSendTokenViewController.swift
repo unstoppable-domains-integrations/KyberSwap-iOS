@@ -70,10 +70,10 @@ class KNSendTokenViewController: KNBaseViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.tokenContainerView.addShadow(
-      color: UIColor.black.withAlphaComponent(0.5),
-      offset: CGSize(width: 0, height: 7),
-      opacity: 0.32,
-      radius: 32
+      color: UIColor.black,
+      offset: CGSize(width: 0, height: 8),
+      opacity: 0.11,
+      radius: 14
     )
   }
 

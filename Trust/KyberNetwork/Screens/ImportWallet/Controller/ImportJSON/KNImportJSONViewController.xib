@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportJSONViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -26,34 +34,28 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Import your JSON file" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkp-PO-VWf">
-                    <rect key="frame" x="35" y="55" width="189" height="20"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="35" y="55" width="198.5" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-NW-6Ru">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-NW-6Ru">
                     <rect key="frame" x="35" y="85" width="305" height="48"/>
                     <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="3pq-40-kHc"/>
                     </constraints>
-                    <state key="normal">
-                        <attributedString key="attributedTitle">
-                            <fragment content="Import from Files/Dropbox/etc">
-                                <attributes>
-                                    <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <font key="NSFont" size="16" name=".AppleSystemUIFont"/>
-                                </attributes>
-                            </fragment>
-                        </attributedString>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
+                    <state key="normal" title="Import from Files/Dropbox/etc">
+                        <color key="titleColor" red="0.41568627450000001" green="0.43137254899999999" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="importJSONButtonPressed:" destination="-1" eventType="touchUpInside" id="LeI-gO-ebg"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. Enter Password to Decrypt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAC-IV-eEM">
-                    <rect key="frame" x="35" y="163" width="232.5" height="20"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="35" y="163" width="243.5" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -64,7 +66,7 @@
                         <constraint firstAttribute="height" constant="48" id="zhE-NE-AZW"/>
                     </constraints>
                     <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                     <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bU-jo-KwQ">
@@ -73,7 +75,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Orv-wj-DvP"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <state key="normal" title="NEXT">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>

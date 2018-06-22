@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBalanceTabHamburgerMenuViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -42,7 +50,7 @@
                                 <constraint firstAttribute="height" constant="42" id="AUy-vk-OOF"/>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="hCP-ZP-HBH"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Settings">
                                 <color key="titleColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -56,7 +64,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="SiO-8D-gwn"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Add Wallet">
                                 <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -70,7 +78,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="Rz7-OR-B3M"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Send Tokens">
                                 <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -92,13 +100,13 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No pending transaction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9i-tN-7SW">
                                     <rect key="frame" x="16" y="31.5" width="188" height="17"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f9M-BC-Uae">
-                                    <rect key="frame" x="101" y="51" width="103" height="29"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <rect key="frame" x="96" y="51" width="108" height="29"/>
+                                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="14"/>
                                     <state key="normal" title="All Transactions">
                                         <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>

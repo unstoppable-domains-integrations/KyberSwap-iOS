@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBalanceTabViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -27,18 +32,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-Ah-tJJ">
-                    <rect key="frame" x="0.0" y="80" width="375" height="46"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="46"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAU-tE-kcd">
-                            <rect key="frame" x="279" y="18" width="80" height="15"/>
+                            <rect key="frame" x="279" y="18.5" width="80" height="15"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="80" id="utr-J6-vpd"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="12"/>
                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <inset key="titleEdgeInsets" minX="-5" minY="0.0" maxX="5" maxY="6"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="6"/>
-                            <state key="normal" title="24h Change" image="arrow_down_grey">
+                            <state key="normal" title="24h Chg" image="arrow_down_grey">
                                 <color key="titleColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -46,14 +51,14 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2IH-nc-ozc">
-                            <rect key="frame" x="16" y="13.5" width="81.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <rect key="frame" x="16" y="13.5" width="85" height="20"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dt-fm-BpO">
-                            <rect key="frame" x="140" y="13" width="94" height="20"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <rect key="frame" x="140" y="13.5" width="97" height="20"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <inset key="titleEdgeInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
                             <state key="normal" title="4000 USD" image="balance_switch_white">
@@ -76,7 +81,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="LdO-l1-yNe">
-                    <rect key="frame" x="0.0" y="126" width="375" height="541"/>
+                    <rect key="frame" x="0.0" y="130" width="375" height="537"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TQ0-dI-pRS">
                         <size key="itemSize" width="50" height="50"/>
@@ -86,10 +91,10 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e9X-vG-14u" customClass="KNWalletHeaderView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="80" id="l0D-MH-5qd"/>
+                        <constraint firstAttribute="height" constant="84" id="l0D-MH-5qd"/>
                     </constraints>
                 </view>
             </subviews>

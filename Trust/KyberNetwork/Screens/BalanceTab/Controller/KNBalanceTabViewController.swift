@@ -322,7 +322,7 @@ extension KNBalanceTabViewController: UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
     let attributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "505352"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
     ]
     return NSAttributedString(
       string: self.viewModel.listPickerData[row],

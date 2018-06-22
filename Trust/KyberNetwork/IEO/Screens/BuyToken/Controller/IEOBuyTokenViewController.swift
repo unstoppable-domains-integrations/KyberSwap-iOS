@@ -96,7 +96,7 @@ class IEOBuyTokenViewModel {
     }
     let expectedAmount: BigInt = {
       let amount = self.amountFromBigInt
-      return rate * amount / BigInt(10).power(self.to.tokenDecimals)
+      return rate * amount / BigInt(10).power(self.from.decimals)
     }()
     return expectedAmount.string(decimals: self.to.tokenDecimals, minFractionDigits: 1, maxFractionDigits: 4)
   }
@@ -154,7 +154,7 @@ class IEOBuyTokenViewModel {
   }
 
   var walletButtonTitle: String {
-    return "\(self.walletObject.address.prefix(7))....\(self.walletObject.address.suffix(5))"
+    return "\(self.walletObject.name) - \(self.walletObject.address.prefix(7))....\(self.walletObject.address.suffix(5))"
   }
 
   var transaction: IEODraftTransaction {

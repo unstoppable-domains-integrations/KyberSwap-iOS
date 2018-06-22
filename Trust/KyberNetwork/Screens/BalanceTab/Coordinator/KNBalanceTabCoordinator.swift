@@ -167,7 +167,7 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   }
 
   func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController) {
-    //TODO: Open settings view
+    //TODO: Implement it
   }
 }
 
@@ -188,10 +188,10 @@ extension KNBalanceTabCoordinator: NewTokenViewControllerDelegate {
 // MARK: Token Chart Coordinator Delegate
 extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
   func tokenChartCoordinator(sell token: TokenObject) {
-    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
+    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
   }
 
   func tokenChartCoordinator(buy token: TokenObject) {
-    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
+    self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
   }
 }

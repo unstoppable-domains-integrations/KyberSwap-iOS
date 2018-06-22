@@ -21,7 +21,7 @@ extension KNDraftExchangeTransaction {
   }
 
   var expectedReceive: BigInt {
-    return amount * expectedRate / BigInt(10).power(to.decimals)
+    return amount * expectedRate / BigInt(10).power(from.decimals)
   }
 
   func displayExpectedReceive(short: Bool = true) -> String {

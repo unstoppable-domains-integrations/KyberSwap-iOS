@@ -10,8 +10,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="TimesNewRoman.ttf">
-            <string>TimesNewRomanPSMT</string>
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
         </array>
     </customFonts>
     <objects>
@@ -30,29 +36,29 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmj-gE-HGl">
-                    <rect key="frame" x="40" y="190" width="295" height="187.5"/>
+                    <rect key="frame" x="40" y="190" width="295" height="188"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set name for your wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alH-hX-brR">
-                            <rect key="frame" x="20" y="20" width="175.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="20" y="20" width="191" height="20"/>
+                            <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="axs-3g-4Sb">
-                            <rect key="frame" x="20" y="49.5" width="255" height="40"/>
+                            <rect key="frame" x="20" y="50" width="255" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="pEx-7h-mXZ"/>
                             </constraints>
                             <nil key="textColor"/>
-                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartQuotesType="no"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mIc-SB-Cpg">
-                            <rect key="frame" x="20" y="121.5" width="255" height="46"/>
+                            <rect key="frame" x="20" y="122" width="255" height="46"/>
                             <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="SqR-b4-FBN"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <state key="normal" title="NEXT">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>

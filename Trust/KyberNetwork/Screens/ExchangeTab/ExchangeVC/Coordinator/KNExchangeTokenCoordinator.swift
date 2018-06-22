@@ -293,6 +293,8 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
           estRate = cmcRate.rate
           slippageRate = cmcRate.minRate
         }
+        estRate /= BigInt(10).power(18 - to.decimals)
+        slippageRate /= BigInt(10).power(18 - to.decimals)
         self?.rootViewController.coordinatorDidUpdateEstimateRate(
           from: from,
           to: to,

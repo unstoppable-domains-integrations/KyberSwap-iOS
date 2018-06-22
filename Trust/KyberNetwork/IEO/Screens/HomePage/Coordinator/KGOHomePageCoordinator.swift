@@ -92,14 +92,16 @@ class KGOHomePageCoordinator: Coordinator {
       self.navigationController.displayLoading()
       isLoadingShown = true
     }
-    self.reloadListKGO {
-      if isLoadingShown {
-        self.navigationController.hideLoading()
+    self.reloadListKGO { [weak self] result in
+      guard let `self` = self else { return }
+      if isLoadingShown { self.navigationController.hideLoading() }
+      if case .failure(let error) = result {
+        self.navigationController.displayError(error: error)
       }
     }
   }
 
-  fileprivate func reloadListKGO(completion: (() -> Void)? = nil) {
+  fileprivate func reloadListKGO(completion: ((Result<Bool, AnyError>) -> Void)? = nil) {
     DispatchQueue.global().async {
       let provider = MoyaProvider<KyberGOService>()
       provider.request(.listIEOs, completion: { [weak self] result in
@@ -119,11 +121,13 @@ class KGOHomePageCoordinator: Coordinator {
                 IEOObjectStorage.shared.update(objects: objects)
                 self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
               }
+              completion?(.success(true))
             } catch {
+              completion?(.success(false))
               print("Error to map result")
             }
-            completion?()
-          case .failure:
+          case .failure(let error):
+            completion?(.failure(AnyError(error)))
             print("Failed to load list IEOs")
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() +  5.0, execute: {
               self?.reloadListKGO()
@@ -221,7 +225,7 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       controller.modalTransitionStyle = .crossDissolve
       return controller
     }()
-    self.navigationController.present(self.ieoListViewController!, animated: true, completion: nil)
+    self.navigationController.pushViewController(self.ieoListViewController!, animated: true)
   }
 
   fileprivate func openSignInView() {
@@ -293,7 +297,7 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     self.navigationController.pushViewController(self.buyTokenVC!, animated: true)
   }
 
-  fileprivate func getContributorRemainingCap(userID: String, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  fileprivate func getContributorRemainingCap(userID: Int, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     IEOProvider.shared.getContributorRemainingCap(
       contractAddress: contract,
       userID: userID,
@@ -328,9 +332,7 @@ extension KGOHomePageCoordinator: IEOListViewControllerDelegate {
   func ieoListViewController(_ controller: IEOListViewController, run event: IEOListViewEvent) {
     switch event {
     case .dismiss:
-      self.ieoListViewController?.dismiss(animated: true, completion: {
-        self.ieoListViewController = nil
-      })
+      self.navigationController.popViewController(animated: true)
     case .buy(let object):
       self.openBuy(object: object)
     }

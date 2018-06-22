@@ -37,10 +37,10 @@ class KNRate: NSObject {
     }
   }
 
-  init(source: String, dest: String, rate: Double) {
+  init(source: String, dest: String, rate: Double, decimals: Int) {
     self.source = source
     self.dest = dest
-    self.rate = BigInt(rate * Double(EthereumUnit.ether.rawValue))
+    self.rate = BigInt(rate * pow(10.0, Double(decimals)))
     // 3% from rate
     self.minRate = self.rate * BigInt(97) / BigInt(100)
   }
@@ -51,7 +51,8 @@ extension KNRate {
     return KNRate(
       source: coinTicker.symbol,
       dest: "USD",
-      rate: coinTicker.priceUSD
+      rate: coinTicker.priceUSD,
+      decimals: 18
     )
   }
 
@@ -64,7 +65,8 @@ extension KNRate {
       return KNRate(
         source: token.symbol,
         dest: toToken.symbol,
-        rate: rate
+        rate: rate,
+        decimals: toToken.decimals
       )
     }
     return nil
@@ -76,7 +78,8 @@ extension KNRate {
       return KNRate(
         source: coinTicker.symbol,
         dest: ethCoinTicker.symbol,
-        rate: rateETH
+        rate: rateETH,
+        decimals: 18
       )
     }
     return nil

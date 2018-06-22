@@ -7,11 +7,11 @@ struct KNTokenBalanceCollectionViewCellModel {
 
   fileprivate let highlighted: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor(hex: "141927"),
-    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: .medium),
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
   ]
   fileprivate let normal: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
-    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: .medium),
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 12)!,
   ]
 
   let token: TokenObject
@@ -60,7 +60,8 @@ struct KNTokenBalanceCollectionViewCellModel {
       let rate = KNRate(
         source: self.token.symbol,
         dest: "ETH",
-        rate: rateETH
+        rate: rateETH,
+        decimals: 18
       )
       let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9)
       return "Val \(value.prefix(11))"
@@ -87,7 +88,8 @@ struct KNTokenBalanceCollectionViewCellModel {
         let rate = KNRate(
           source: self.token.symbol,
           dest: "ETH",
-          rate: rateETH
+          rate: rateETH,
+          decimals: 18
         )
         return rate.rate
       }

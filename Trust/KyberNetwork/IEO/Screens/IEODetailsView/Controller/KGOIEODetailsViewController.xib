@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KGOIEODetailsViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -69,13 +77,13 @@
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trust Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wde-bZ-H7r">
                             <rect key="frame" x="20" y="270" width="334" height="24"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Content" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0i-Na-0VQ">
                             <rect key="frame" x="20" y="299" width="334" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -86,7 +94,7 @@
                                 <constraint firstAttribute="height" constant="44" id="8nD-j4-Ijg"/>
                                 <constraint firstAttribute="width" constant="70" id="jb3-25-AhU"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="15"/>
                             <color key="textColor" red="0.2627450980392157" green="0.2627450980392157" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -104,7 +112,7 @@
                                 <constraint firstAttribute="height" constant="44" id="WrW-pP-n5R"/>
                                 <constraint firstAttribute="width" constant="60" id="mfz-Zz-AWa"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -115,7 +123,7 @@
                                 <constraint firstAttribute="width" constant="60" id="5Kh-CI-PoZ"/>
                                 <constraint firstAttribute="height" constant="44" id="ye2-go-HXj"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -126,7 +134,7 @@
                                 <constraint firstAttribute="width" constant="60" id="bPS-yi-HMj"/>
                                 <constraint firstAttribute="height" constant="44" id="fwR-mK-SPQ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -137,7 +145,7 @@
                                 <constraint firstAttribute="height" constant="44" id="gH9-U0-y2c"/>
                                 <constraint firstAttribute="width" constant="60" id="kun-OA-ma6"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -153,13 +161,13 @@
                         </progressView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJi-qp-zNX">
                             <rect key="frame" x="20" y="412" width="18" height="14.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <color key="textColor" red="0.82352941180000006" green="0.83529411760000005" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0 %" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhp-0W-Gj1">
-                            <rect key="frame" x="323" y="412" width="31" height="14.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <rect key="frame" x="322.5" y="412" width="31.5" height="14.5"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <color key="textColor" red="0.82352941180000006" green="0.83529411760000005" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -170,7 +178,7 @@
                                 <constraint firstAttribute="width" constant="200" id="Ca6-YE-zJX"/>
                                 <constraint firstAttribute="height" constant="60" id="syb-Hs-Xcn"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="18"/>
                             <state key="normal" title="Buy Tokens">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
@@ -187,13 +195,13 @@
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LKX-wZ-CCb">
                             <rect key="frame" x="16" y="612" width="342" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNS-8d-E0g">
                             <rect key="frame" x="289" y="637" width="69" height="27"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
                             <state key="normal" title="White Paper">
                                 <color key="titleColor" red="0.67843137254901964" green="0.71372549019607845" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -202,8 +210,8 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 ETH = 4000 TST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpX-Lg-jbf">
-                            <rect key="frame" x="104" y="444" width="166.5" height="24"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                            <rect key="frame" x="99.5" y="444" width="176" height="24"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>

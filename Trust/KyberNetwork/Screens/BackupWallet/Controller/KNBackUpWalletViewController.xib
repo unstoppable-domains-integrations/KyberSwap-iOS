@@ -9,6 +9,17 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBackUpWalletViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -37,8 +48,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Your Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9Q-P1-pUP">
-                            <rect key="frame" x="96" y="117.5" width="183.5" height="26.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <rect key="frame" x="88" y="117.5" width="200.5" height="26.5"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="22"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -56,44 +67,44 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paper Only" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjI-kU-ibR">
-                    <rect key="frame" x="144" y="180" width="87.5" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="142.5" y="180" width="91.5" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4M-eJ-doh">
-                    <rect key="frame" x="40" y="212.5" width="295" height="142.5"/>
+                    <rect key="frame" x="40" y="212" width="295" height="142.5"/>
                     <string key="text">We will give you a list of 12 random words. Please write them down on paper and keep safe.
 
 This paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write down the words from 1-4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZyO-Zr-cRC">
-                    <rect key="frame" x="64.5" y="380" width="247" height="20.5"/>
+                    <rect key="frame" x="64.5" y="379.5" width="247" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. chimney" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfr-Pf-WLO">
-                    <rect key="frame" x="80" y="410.5" width="85" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="80" y="410" width="83.5" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. peacock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4K-Cp-0tn">
-                    <rect key="frame" x="80" y="436" width="87.5" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="80" y="435" width="86" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. fire" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gxk-M0-lif">
-                    <rect key="frame" x="80" y="461.5" width="46.5" height="20.5"/>
+                    <rect key="frame" x="80" y="460" width="46.5" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <color key="textColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. tiger" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bq-7j-6SD">
-                    <rect key="frame" x="80" y="487" width="57" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <rect key="frame" x="80" y="485.5" width="56.5" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -103,6 +114,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="alC-CA-biv"/>
                     </constraints>
+                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                     <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
                     <inset key="titleEdgeInsets" minX="-12" minY="0.0" maxX="12" maxY="0.0"/>
                     <state key="normal" title="I wrote down the words from 1 to 4" image="back_up_marker_icon">
@@ -113,32 +125,32 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     </connections>
                 </button>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="word #12" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="JWS-hb-jfT">
-                    <rect key="frame" x="35" y="375" width="305" height="44"/>
+                    <rect key="frame" x="35" y="374.5" width="305" height="44"/>
                     <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="MtF-tk-DaR"/>
                     </constraints>
                     <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="word #12" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aiG-8k-JAO">
-                    <rect key="frame" x="35" y="444" width="305" height="44"/>
+                    <rect key="frame" x="35" y="443.5" width="305" height="44"/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="zU3-ca-cfr"/>
                     </constraints>
                     <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeI-Ev-WnN">
-                    <rect key="frame" x="35" y="513" width="305" height="44"/>
+                    <rect key="frame" x="35" y="512.5" width="305" height="44"/>
                     <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="7if-Up-o9h"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                     <state key="normal" title="COMPLETE">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>

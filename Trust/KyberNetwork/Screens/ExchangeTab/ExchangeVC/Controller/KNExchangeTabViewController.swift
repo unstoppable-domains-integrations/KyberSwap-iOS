@@ -85,10 +85,10 @@ class KNExchangeTabViewController: KNBaseViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.dataContainerView.addShadow(
-      color: UIColor.black.withAlphaComponent(0.5),
-      offset: CGSize(width: 0, height: 7),
-      opacity: 0.32,
-      radius: 32
+      color: UIColor.black,
+      offset: CGSize(width: 0, height: 8),
+      opacity: 0.11,
+      radius: 14
     )
   }
 
@@ -136,11 +136,12 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupTokensView() {
+    self.dataContainerView.rounded(color: UIColor(hex: "979797").withAlphaComponent(0.15), width: 1, radius: 4.0)
     self.fromTokenButton.titleLabel?.numberOfLines = 2
     self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.toTokenButton.titleLabel?.numberOfLines = 2
     self.toTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
-    self.swapButton.rounded(radius: self.swapButton.frame.height / 2.0)
+    self.toTokenButton.semanticContentAttribute = .forceRightToLeft
 
     self.fromAmountTextField.text = ""
     self.fromAmountTextField.adjustsFontSizeToFitWidth = true
@@ -393,8 +394,7 @@ extension KNExchangeTabViewController {
   }
 
   /*
-   Update estimate gas limit, check if the from, to, amount are all the same as current value in the model
-   Update UIs according to new values
+   Update estimate gas limit, check if the from, to, amount are all the same as current value in the model    Update UIs according to new values
    */
   func coordinatorDidUpdateEstimateGasUsed(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     self.viewModel.updateEstimateGasLimit(
@@ -414,11 +414,29 @@ extension KNExchangeTabViewController {
   func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
+    let oldToken: TokenObject = {
+      return isSource ? self.viewModel.from : self.viewModel.to
+    }()
     self.viewModel.updateSelectedToken(token, isSource: isSource)
+    var updatedFrom: Bool = isSource
+    var updatedTo: Bool = !isSource
+    if self.viewModel.from.isETH && self.viewModel.to.isETH {
+      /* both tokens are ETH, should change one of them to another token
+       here we just simply swap 2 tokens
+      */
+      self.viewModel.updateSelectedToken(oldToken, isSource: !isSource)
+      updatedFrom = true
+      updatedTo = true
+    } else if !self.viewModel.from.isETH && !self.viewModel.to.isETH {
+      // both tokens are not ETH, change one to ETH
+      self.viewModel.updateSelectedToken(self.viewModel.eth, isSource: !isSource)
+      updatedFrom = true
+      updatedTo = true
+    }
     UIView.animate(
       withDuration: 0.3,
       delay: 0,
-      options: .transitionFlipFromTop,
+      options: .transitionFlipFromBottom,
       animations: {
       if self.viewModel.isFocusingFromAmount {
         self.fromAmountTextField.text = self.viewModel.amountFrom
@@ -429,7 +447,7 @@ extension KNExchangeTabViewController {
       }
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
-      self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
+      self.updateTokensView(updatedFrom: updatedFrom, updatedTo: updatedTo)
     }, completion: nil
     )
   }

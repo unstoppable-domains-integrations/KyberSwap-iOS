@@ -47,13 +47,13 @@ class KNSendTokenViewModel: NSObject {
   var tokenButtonAttributedText: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
-      ]
+    ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
-      ]
+    ]
     attributedString.append(NSAttributedString(string: self.from.symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: "\n\(self.from.name)", attributes: nameAttributes))
     return attributedString

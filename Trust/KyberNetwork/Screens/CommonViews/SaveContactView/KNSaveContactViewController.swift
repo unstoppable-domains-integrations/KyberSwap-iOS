@@ -33,6 +33,7 @@ class KNSaveContactViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    self.contactNameTextField.layer.borderColor = UIColor(hex: "8e8e93").cgColor
     self.containerView.rounded(radius: 4.0)
   }
 

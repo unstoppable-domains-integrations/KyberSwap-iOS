@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -27,16 +35,17 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
                         <searchBar contentMode="redraw" text="" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
-                            <rect key="frame" x="16" y="24" width="289" height="56"/>
+                            <rect key="frame" x="16" y="24" width="291" height="56"/>
                             <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.72156862745098038" green="0.72941176470588232" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="barTintColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-j2-iod">
-                            <rect key="frame" x="310" y="37" width="49" height="30"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <rect key="frame" x="312" y="37.5" width="47" height="29"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="14"/>
                             <state key="normal" title="Cancel">
-                                <color key="titleColor" red="0.85882352941176465" green="0.88235294117647056" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="BCt-r4-ZgM"/>
@@ -58,8 +67,8 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matching tokens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBW-cK-YSw">
-                    <rect key="frame" x="110.5" y="124" width="153" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="107" y="124" width="160" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>

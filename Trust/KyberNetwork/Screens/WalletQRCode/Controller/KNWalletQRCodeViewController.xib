@@ -10,6 +10,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -33,24 +41,24 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua2-4B-g0W">
-                    <rect key="frame" x="85" y="40" width="205" height="20"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <rect key="frame" x="77" y="40" width="222" height="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
                     <rect key="frame" x="10" y="395" width="355" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                     <color key="textColor" red="0.047058823530000002" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
                     <rect key="frame" x="40" y="585" width="131.5" height="42"/>
-                    <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="BRe-wW-oV6"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="15"/>
                     <state key="normal" title="COPY WALLET">
                         <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
@@ -61,6 +69,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
                     <rect key="frame" x="203.5" y="585" width="131.5" height="42"/>
                     <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="15"/>
                     <state key="normal" title="SHARE">
                         <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>

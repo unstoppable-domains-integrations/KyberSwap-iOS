@@ -38,15 +38,13 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
 
   func start() {
     if KNPasscodeUtil.shared.currentPasscode() == nil && self.type == .authenticate { return }
-    DispatchQueue.main.async {
-      self.passcodeViewController.resetUI()
-      if self.type == .authenticate {
-        self.window.makeKeyAndVisible()
-        self.window.isHidden = false
-        self.passcodeViewController.showBioAuthenticationIfNeeded()
-      } else {
-        self.navigationController.pushViewController(self.passcodeViewController, animated: true)
-      }
+    self.passcodeViewController.resetUI()
+    if self.type == .authenticate {
+      self.window.makeKeyAndVisible()
+      self.window.isHidden = false
+      self.passcodeViewController.showBioAuthenticationIfNeeded()
+    } else {
+      self.navigationController.pushViewController(self.passcodeViewController, animated: true)
     }
   }
 

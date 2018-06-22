@@ -9,6 +9,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPasscodeViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -46,7 +54,7 @@
                         <constraint firstAttribute="width" constant="60" id="69b-ql-DBr"/>
                         <constraint firstAttribute="height" constant="60" id="wxH-07-LNG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="5">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -60,7 +68,7 @@
                         <constraint firstAttribute="width" constant="60" id="nKo-l0-fRh"/>
                         <constraint firstAttribute="height" constant="60" id="sK5-g8-fCB"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="4">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -74,7 +82,7 @@
                         <constraint firstAttribute="height" constant="60" id="cat-9F-2rJ"/>
                         <constraint firstAttribute="width" constant="60" id="tE4-O1-vxq"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="6">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -88,7 +96,7 @@
                         <constraint firstAttribute="width" constant="60" id="bo9-8W-80D"/>
                         <constraint firstAttribute="height" constant="60" id="owj-TI-wRb"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="2">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -102,7 +110,7 @@
                         <constraint firstAttribute="width" constant="60" id="IIP-8Z-anm"/>
                         <constraint firstAttribute="height" constant="60" id="c6D-q2-n5H"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="1">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -116,7 +124,7 @@
                         <constraint firstAttribute="width" constant="60" id="RB8-d2-2Z3"/>
                         <constraint firstAttribute="height" constant="60" id="wUV-gg-fsS"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="3">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -130,7 +138,7 @@
                         <constraint firstAttribute="height" constant="60" id="FXI-8e-oF4"/>
                         <constraint firstAttribute="width" constant="60" id="vwo-5y-RwD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="8">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -144,7 +152,7 @@
                         <constraint firstAttribute="height" constant="60" id="NDn-9M-lJR"/>
                         <constraint firstAttribute="width" constant="60" id="cJ8-Cx-1tX"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="7">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -158,7 +166,7 @@
                         <constraint firstAttribute="width" constant="60" id="3jt-Tz-6J7"/>
                         <constraint firstAttribute="height" constant="60" id="vTe-hH-ezK"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="9">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -172,7 +180,7 @@
                         <constraint firstAttribute="width" constant="60" id="A5G-Ak-gNZ"/>
                         <constraint firstAttribute="height" constant="60" id="hKq-XA-DXa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="33"/>
                     <state key="normal" title="0">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -181,11 +189,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-rp-M12">
-                    <rect key="frame" x="285" y="604" width="60" height="33"/>
+                    <rect key="frame" x="285" y="605" width="60" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="gQ1-6Y-nYz"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                     <state key="normal" title="Cancel">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -195,13 +203,13 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="17d-uX-RC2">
                     <rect key="frame" x="20" y="60" width="335" height="26.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="22"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Too many attempts, please try again in 60 second(s)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vV-ba-j6R">
                     <rect key="frame" x="40" y="96.5" width="295" height="33.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>

@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNLandingPageViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -30,7 +35,7 @@
                         <constraint firstAttribute="height" constant="60" id="6mu-2u-eOF"/>
                         <constraint firstAttribute="width" constant="240" id="dQZ-63-8PA"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="20"/>
                     <state key="normal" title="Create Wallet">
                         <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
@@ -45,7 +50,7 @@
                         <constraint firstAttribute="height" constant="60" id="DjG-tf-vi0"/>
                         <constraint firstAttribute="width" constant="240" id="SwM-oq-fCi"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="20"/>
                     <state key="normal" title="Import Wallet">
                         <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
@@ -54,8 +59,8 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2C-Xx-uQV">
-                    <rect key="frame" x="112.5" y="605" width="150" height="32"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <rect key="frame" x="106" y="605" width="163" height="32"/>
+                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
                     <state key="normal" title="Term and Conditions">
                         <color key="titleColor" red="0.12549019610000001" green="0.78823529410000004" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>

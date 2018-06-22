@@ -9,6 +9,17 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSendTokenViewController" customModule="Trust" customModuleProvider="target">
             <connections>
@@ -40,8 +51,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Token" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdZ-45-bZl">
-                            <rect key="frame" x="141" y="41" width="93" height="21"/>
-                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <rect key="frame" x="135" y="38" width="105.5" height="24"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -86,7 +97,7 @@
                                 <constraint firstAttribute="height" constant="42" id="htd-8I-uT9"/>
                             </constraints>
                             <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CQa-79-1mu">
@@ -114,15 +125,15 @@
                                     <rect key="frame" x="0.0" y="118" width="355" height="82"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.123123" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhf-Qf-zFA">
-                                            <rect key="frame" x="24" y="41" width="97.5" height="29"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
+                                            <rect key="frame" x="24" y="40" width="92" height="26"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                             <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXh-W2-GZi">
-                                            <rect key="frame" x="24" y="16" width="97.5" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.058823529411764705" green="0.66666666666666663" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <rect key="frame" x="24" y="16" width="99" height="20"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                            <color key="textColor" red="0.41568627450980389" green="0.43137254901960786" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -170,14 +181,14 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Contact" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BoY-Ma-hbO">
-                                    <rect key="frame" x="12" y="8" width="109" height="18"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                    <rect key="frame" x="12" y="8" width="105.5" height="18"/>
+                                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="15"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WCk-gE-ASN">
-                                    <rect key="frame" x="327" y="2" width="36" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                    <rect key="frame" x="328" y="2" width="35" height="30"/>
+                                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="15"/>
                                     <state key="normal" title="More">
                                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
@@ -221,8 +232,8 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCT-wV-35H">
-                            <rect key="frame" x="10" y="236.5" width="28.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="10" y="237" width="29" height="19"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                             <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>

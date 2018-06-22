@@ -6,6 +6,8 @@ import BigInt
 class KNExchangeTabViewModel {
 
   let defaultTokenIconImg = UIImage(named: "accounts_active")
+  let eth = KNSupportedTokenStorage.shared.ethToken
+  let knc = KNSupportedTokenStorage.shared.kncToken
 
   fileprivate(set) var wallet: Wallet
   fileprivate(set) var walletObject: KNWalletObject
@@ -93,7 +95,7 @@ class KNExchangeTabViewModel {
     }
     let expectedAmount: BigInt = {
       let amount = self.amountFromBigInt
-      return rate * amount / BigInt(10).power(self.to.decimals)
+      return rate * amount / BigInt(10).power(self.from.decimals)
     }()
     return expectedAmount.string(decimals: self.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
   }
@@ -101,11 +103,11 @@ class KNExchangeTabViewModel {
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
     ]
     let symbol = isSource ? self.from.symbol : self.to.symbol
