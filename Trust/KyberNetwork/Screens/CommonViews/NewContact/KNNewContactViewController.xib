@@ -44,13 +44,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Rs-OX-FDh">
-                            <rect key="frame" x="127.5" y="44" width="120.5" height="24"/>
+                            <rect key="frame" x="131" y="44" width="113.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoQ-1Q-KRG">
-                            <rect key="frame" x="320" y="39.5" width="39" height="33"/>
+                            <rect key="frame" x="321" y="40" width="38" height="32"/>
                             <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                             <state key="normal" title="Save">
                                 <color key="titleColor" white="0.8570033482142857" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -104,7 +104,11 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-cw-bBf">
-                    <rect key="frame" x="161.5" y="336" width="52" height="33"/>
+                    <rect key="frame" x="127.5" y="336" width="120" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="9ay-kX-CaJ"/>
+                        <constraint firstAttribute="height" constant="46" id="NJV-L2-9k2"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <state key="normal" title="Delete">
                         <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -149,6 +153,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="yzT-11-OUD" appends="YES" id="i2l-sY-Lua"/>
             </connections>
+            <point key="canvasLocation" x="52" y="88"/>
         </view>
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="yzT-11-OUD">
             <rectEdge key="edges" left="YES"/>

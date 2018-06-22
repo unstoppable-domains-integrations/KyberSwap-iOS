@@ -434,7 +434,7 @@ extension KNExchangeTabViewController {
       updatedTo = true
     }
     UIView.animate(
-      withDuration: 0.3,
+      withDuration: 0.15,
       delay: 0,
       options: .transitionFlipFromBottom,
       animations: {

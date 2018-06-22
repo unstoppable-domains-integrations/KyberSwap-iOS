@@ -73,7 +73,7 @@
                                         <action selector="fromTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="Qcu-Py-Yup"/>
                                     </connections>
                                 </button>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0000" placeholder="0.00" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nOL-6d-Vmv">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nOL-6d-Vmv">
                                     <rect key="frame" x="20" y="135" width="150" height="32"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
@@ -119,7 +119,7 @@
                                         <action selector="toTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="3lr-OT-EQZ"/>
                                     </connections>
                                 </button>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0000" placeholder="0.00" textAlignment="right" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OEO-Vi-nYY">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" textAlignment="right" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OEO-Vi-nYY">
                                     <rect key="frame" x="5" y="135" width="150" height="32"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
@@ -277,10 +277,10 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="eth" width="23" height="23"/>
+        <image name="eth" width="36" height="36"/>
         <image name="exchange_icon" width="76" height="76"/>
         <image name="expand_icon" width="19" height="19"/>
-        <image name="knc" width="23" height="23"/>
+        <image name="knc" width="36" height="36"/>
         <image name="more_option_gas_icon" width="19" height="4"/>
         <image name="swap_icon" width="52" height="52"/>
     </resources>

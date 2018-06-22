@@ -123,8 +123,10 @@ class KNNewContactViewController: KNBaseViewController {
     self.present(qrcodeVC, animated: true, completion: nil)
   }
 
-  @IBAction func screenEdgePanAction(_ sender: Any) {
-    self.delegate?.newContactViewController(self, run: .dismiss)
+  @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.newContactViewController(self, run: .dismiss)
+    }
   }
 }
 

@@ -52,16 +52,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6e-iC-Oke">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Token" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdZ-45-bZl">
-                            <rect key="frame" x="135.5" y="38" width="105.5" height="24"/>
+                            <rect key="frame" x="135" y="44" width="105.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rVx-8S-mug">
-                            <rect key="frame" x="16" y="30" width="24" height="24"/>
+                            <rect key="frame" x="16" y="44" width="24" height="24"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="back_white_icon">
@@ -74,16 +74,15 @@
                     </subviews>
                     <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="rVx-8S-mug" firstAttribute="top" secondItem="b6e-iC-Oke" secondAttribute="top" constant="30" id="9wk-bh-dG8"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="DLY-SO-c20"/>
+                        <constraint firstItem="rVx-8S-mug" firstAttribute="centerY" secondItem="qdZ-45-bZl" secondAttribute="centerY" id="AfU-9a-eGT"/>
                         <constraint firstItem="qdZ-45-bZl" firstAttribute="centerX" secondItem="b6e-iC-Oke" secondAttribute="centerX" id="M6t-Xe-ZEU"/>
-                        <constraint firstAttribute="height" constant="80" id="Q4F-Rq-wjO"/>
-                        <constraint firstAttribute="bottom" secondItem="qdZ-45-bZl" secondAttribute="bottom" constant="18" id="sxA-0W-1NT"/>
+                        <constraint firstAttribute="height" constant="84" id="Q4F-Rq-wjO"/>
+                        <constraint firstAttribute="bottom" secondItem="qdZ-45-bZl" secondAttribute="bottom" constant="16" id="sxA-0W-1NT"/>
                         <constraint firstItem="rVx-8S-mug" firstAttribute="leading" secondItem="b6e-iC-Oke" secondAttribute="leading" constant="16" id="uso-1F-bPf"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gbh-Wa-tXH">
-                    <rect key="frame" x="0.0" y="80" width="375" height="587"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                     <subviews>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PeY-6L-H7U" customClass="KNCustomSegmentedControl" customModule="Trust" customModuleProvider="target">
                             <rect key="frame" x="10" y="261" width="355" height="29"/>
@@ -150,7 +149,7 @@
                                         <constraint firstItem="zhf-Qf-zFA" firstAttribute="top" secondItem="uXh-W2-GZi" secondAttribute="bottom" constant="4" id="mSY-Fc-wCa"/>
                                     </constraints>
                                 </view>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" placeholder="0.00" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="U0Y-CG-pqO">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="U0Y-CG-pqO">
                                     <rect key="frame" x="183.5" y="12" width="151.5" height="106"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

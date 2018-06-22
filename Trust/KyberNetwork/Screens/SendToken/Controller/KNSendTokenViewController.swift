@@ -117,12 +117,15 @@ class KNSendTokenViewController: KNBaseViewController {
 
     self.amountTextField.text = nil
     self.amountTextField.adjustsFontSizeToFitWidth = true
-    self.amountTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    self.amountTextField.leftViewMode = .always
-    self.amountTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-    self.amountTextField.rightViewMode = .always
     self.amountTextField.delegate = self
     self.amountTextField.inputAccessoryView = self.toolBar
+    self.amountTextField.underlined(
+      lineHeight: 0.25,
+      color: UIColor(hex: "e8ebed"),
+      isAlignLeft: true,
+      width: 100.0,
+      bottom: -20.0
+    )
 
     self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)

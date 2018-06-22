@@ -131,4 +131,25 @@ extension UIView {
       self.layer.removeAnimation(forKey: kAnimationKey)
     }
   }
+
+  func underlined(
+    lineHeight: CGFloat,
+    color: UIColor,
+    isAlignLeft: Bool,
+    width: CGFloat,
+    bottom: CGFloat = 20.0
+    ) {
+    let border = CALayer()
+    border.borderColor = color.cgColor
+    let x: CGFloat = isAlignLeft ? 0.0 : self.frame.size.width - width
+    border.frame = CGRect(
+      x: x,
+      y: self.frame.size.height + bottom - lineHeight,
+      width: width,
+      height: lineHeight
+    )
+    border.borderWidth = lineHeight
+    self.layer.addSublayer(border)
+    self.layer.masksToBounds = true
+  }
 }
