@@ -30,6 +30,14 @@ class KNSendTokenViewCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var addContactVC: KNNewContactViewController = {
+    let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
+    let controller = KNNewContactViewController(viewModel: viewModel)
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    return controller
+  }()
+
   fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
 
   init(
@@ -92,6 +100,8 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
       self.openSearchToken(selectedToken: selectedToken)
     case .send(let transaction):
       self.send(transaction: transaction)
+    case .addContact(let address):
+      self.openNewContact(address: address)
     }
   }
 
@@ -138,6 +148,12 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
       animated: false,
       completion: nil
     )
+  }
+
+  fileprivate func openNewContact(address: String) {
+    let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address)
+    self.addContactVC.updateView(viewModel: viewModel)
+    self.navigationController.pushViewController(self.addContactVC, animated: true)
   }
 }
 
@@ -196,7 +212,6 @@ extension KNSendTokenViewCoordinator {
           nounce: self.session.externalProvider.minTxCount
         )
         self.session.addNewPendingTransaction(tx)
-        self.showAddContactNameIfNeeded(address: transaction.to?.description ?? "")
       case .failure(let error):
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -205,16 +220,6 @@ extension KNSendTokenViewCoordinator {
         )
       }
     })
-  }
-
-  fileprivate func showAddContactNameIfNeeded(address: String) {
-    guard KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) == nil else { return }
-    let saveContactVC = KNSaveContactViewController(address: address)
-    saveContactVC.delegate = self
-    saveContactVC.loadViewIfNeeded()
-    saveContactVC.modalTransitionStyle = .crossDissolve
-    saveContactVC.modalPresentationStyle = .overCurrentContext
-    self.navigationController.present(saveContactVC, animated: true, completion: nil)
   }
 }
 
@@ -226,6 +231,15 @@ extension KNSendTokenViewCoordinator: KNSaveContactViewControllerDelegate {
         KNContactStorage.shared.update(contacts: [contact])
         KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
       }
+    }
+  }
+}
+
+extension KNSendTokenViewCoordinator: KNNewContactViewControllerDelegate {
+  func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
+    switch event {
+    case .dismiss:
+      self.navigationController.popViewController(animated: true)
     }
   }
 }

@@ -12,6 +12,7 @@ enum KNSendTokenViewEvent {
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case send(transaction: UnconfirmedTransaction)
+  case addContact(address: String)
 }
 
 protocol KNSendTokenViewControllerDelegate: class {
@@ -40,6 +41,8 @@ class KNSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
+
+  @IBOutlet weak var newContactButton: UIButton!
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -151,6 +154,7 @@ class KNSendTokenViewController: KNBaseViewController {
     self.addressTextField.rightViewMode = .always
     self.addressTextField.delegate = self
     self.addressTextField.text = self.viewModel.displayAddress
+    self.newContactButton.setTitle("Add Contact".toBeLocalised(), for: .normal)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -217,6 +221,10 @@ class KNSendTokenViewController: KNBaseViewController {
     self.showWarningTopBannerMessage(with: "", message: "This feature will be available soon")
   }
 
+  @IBAction func newContactButtonPressed(_ sender: Any) {
+    self.delegate?.sendTokenViewController(self, run: .addContact(address: self.addressTextField.text ?? ""))
+  }
+
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
     self.amountTextField.text = self.viewModel.balance?.amountFull ?? ""
     self.amountTextField.resignFirstResponder()
@@ -259,6 +267,7 @@ extension KNSendTokenViewController {
 
   func updateUIAddressQRCode() {
     self.addressTextField.text = self.viewModel.displayAddress
+    self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
     self.view.layoutIfNeeded()
   }
 }
@@ -300,8 +309,6 @@ extension KNSendTokenViewController {
     // Reset exchange amount
     self.amountTextField.text = ""
     self.viewModel.updateAmount("")
-    self.viewModel.updateAddress("")
-    self.updateUIAddressQRCode()
     self.shouldUpdateEstimatedGasLimit(nil)
   }
 
@@ -322,6 +329,7 @@ extension KNSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAmount("")
     } else {
       self.viewModel.updateAddress("")
+      self.updateUIAddressQRCode()
     }
     self.shouldUpdateEstimatedGasLimit(nil)
     return false
@@ -334,6 +342,7 @@ extension KNSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAmount(text)
     } else {
       self.viewModel.updateAddress(text)
+      self.updateUIAddressQRCode()
     }
     self.shouldUpdateEstimatedGasLimit(nil)
     return false
@@ -370,7 +379,8 @@ extension KNSendTokenViewController: KNContactTableViewDelegate {
   }
 
   func contactTableView(_ sender: KNContactTableView, didSelect contact: KNContact) {
-    self.addressTextField.text = contact.address
+    self.viewModel.updateAddress(contact.address)
+    self.updateUIAddressQRCode()
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 }

@@ -79,6 +79,13 @@ class KNSendTokenViewModel: NSObject {
     return self.addressString
   }
 
+  var newContactTitle: String {
+    if KNContactStorage.shared.get(forPrimaryKey: (self.addressString ?? "").lowercased()) != nil {
+      return "Edit Contact".toBeLocalised()
+    }
+    return "Add Contact".toBeLocalised()
+  }
+
   var isAmountValid: Bool {
     let balanceVal = balance?.value ?? BigInt(0)
     return amountBigInt > 0 && amountBigInt <= balanceVal

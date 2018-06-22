@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNNewContactViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="addressTextField" destination="s16-ZQ-yPb" id="C46-iz-CEA"/>
+                <outlet property="deleteButton" destination="sgh-cw-bBf" id="RQE-hw-ZYa"/>
+                <outlet property="nameTextField" destination="0ca-fd-JG1" id="3lL-Rk-yNb"/>
+                <outlet property="saveButton" destination="xoQ-1Q-KRG" id="uSP-df-hu3"/>
+                <outlet property="titleLabel" destination="3Rs-OX-FDh" id="cOs-Ro-FoH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BZJ-op-odJ">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtu-F5-xff">
+                            <rect key="frame" x="16" y="44" width="24" height="24"/>
+                            <state key="normal" image="back_white_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="n6U-gd-s8C"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Rs-OX-FDh">
+                            <rect key="frame" x="127.5" y="44" width="120.5" height="24"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoQ-1Q-KRG">
+                            <rect key="frame" x="320" y="39.5" width="39" height="33"/>
+                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
+                            <state key="normal" title="Save">
+                                <color key="titleColor" white="0.8570033482142857" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="JvY-z2-7xo"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="xoQ-1Q-KRG" secondAttribute="trailing" constant="16" id="1Ka-CH-kWh"/>
+                        <constraint firstItem="jtu-F5-xff" firstAttribute="centerY" secondItem="3Rs-OX-FDh" secondAttribute="centerY" id="6jd-vX-mqi"/>
+                        <constraint firstItem="3Rs-OX-FDh" firstAttribute="centerX" secondItem="BZJ-op-odJ" secondAttribute="centerX" id="NAV-wd-T27"/>
+                        <constraint firstItem="jtu-F5-xff" firstAttribute="leading" secondItem="BZJ-op-odJ" secondAttribute="leading" constant="16" id="NRw-h1-c9h"/>
+                        <constraint firstAttribute="bottom" secondItem="3Rs-OX-FDh" secondAttribute="bottom" constant="16" id="VYD-K1-iJm"/>
+                        <constraint firstItem="xoQ-1Q-KRG" firstAttribute="centerY" secondItem="3Rs-OX-FDh" secondAttribute="centerY" id="mYQ-4w-P4c"/>
+                        <constraint firstAttribute="height" constant="84" id="wi6-zz-A3t"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-fd-JG1">
+                    <rect key="frame" x="20" y="144" width="335" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="lyy-65-r1L"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GH5-LD-QK8">
+                    <rect key="frame" x="20" y="193" width="335" height="1"/>
+                    <color key="backgroundColor" white="0.85700334820000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="d6S-vv-ORI"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s16-ZQ-yPb">
+                    <rect key="frame" x="20" y="226" width="303" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Tmm-nE-GuY"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4SF-HT-RtA">
+                    <rect key="frame" x="20" y="275" width="335" height="1"/>
+                    <color key="backgroundColor" white="0.85700334820000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="roz-Rl-63G"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-cw-bBf">
+                    <rect key="frame" x="161.5" y="336" width="52" height="33"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
+                    <state key="normal" title="Delete">
+                        <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="dlX-us-x8m"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vl5-9Y-Ubp">
+                    <rect key="frame" x="332" y="236.5" width="23" height="23"/>
+                    <state key="normal" image="qr_code_icon"/>
+                    <connections>
+                        <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="NWW-Zt-WpF"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="20" id="1AV-OW-TCO"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BZJ-op-odJ" secondAttribute="trailing" id="5o8-sW-WiB"/>
+                <constraint firstItem="GH5-LD-QK8" firstAttribute="top" secondItem="0ca-fd-JG1" secondAttribute="bottom" constant="5" id="BZD-Cv-j8r"/>
+                <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="D88-EM-4l3"/>
+                <constraint firstItem="GH5-LD-QK8" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="F6h-np-jp8"/>
+                <constraint firstItem="GH5-LD-QK8" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="Hn5-fV-8hs"/>
+                <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="60" id="MFq-QG-LQg"/>
+                <constraint firstItem="sgh-cw-bBf" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="REk-0p-6am"/>
+                <constraint firstItem="0ca-fd-JG1" firstAttribute="top" secondItem="BZJ-op-odJ" secondAttribute="bottom" constant="60" id="Rfh-03-fTj"/>
+                <constraint firstItem="0ca-fd-JG1" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Rmf-BA-2Vl"/>
+                <constraint firstItem="vl5-9Y-Ubp" firstAttribute="centerY" secondItem="s16-ZQ-yPb" secondAttribute="centerY" id="UY4-4g-YpT"/>
+                <constraint firstItem="s16-ZQ-yPb" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="X3n-OL-hvK"/>
+                <constraint firstItem="BZJ-op-odJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Yki-ah-Wjj"/>
+                <constraint firstItem="s16-ZQ-yPb" firstAttribute="top" secondItem="GH5-LD-QK8" secondAttribute="bottom" constant="32" id="dWt-kU-9kL"/>
+                <constraint firstItem="s16-ZQ-yPb" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="-32" id="iO8-UA-pAj"/>
+                <constraint firstItem="4SF-HT-RtA" firstAttribute="leading" secondItem="s16-ZQ-yPb" secondAttribute="leading" id="lv7-1K-wY4"/>
+                <constraint firstItem="4SF-HT-RtA" firstAttribute="trailing" secondItem="s16-ZQ-yPb" secondAttribute="trailing" constant="32" id="rAp-TZ-1iv"/>
+                <constraint firstItem="vl5-9Y-Ubp" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="vzu-Wm-myP"/>
+                <constraint firstItem="0ca-fd-JG1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="xj1-lX-Y25"/>
+                <constraint firstItem="4SF-HT-RtA" firstAttribute="top" secondItem="s16-ZQ-yPb" secondAttribute="bottom" constant="5" id="yFB-If-riZ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="yzT-11-OUD" appends="YES" id="i2l-sY-Lua"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="yzT-11-OUD">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanAction:" destination="-1" id="2EJ-Wz-o2K"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="24" height="24"/>
+        <image name="qr_code_icon" width="23" height="23"/>
+    </resources>
+</document>
