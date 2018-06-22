@@ -446,6 +446,7 @@ extension KNTransactionCoordinator {
               NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)")
               self.transactionStorage.delete([transaction])
             case .resultObjectParseError:
+              // transaction seems to be removed
               if transaction.date.addingTimeInterval(60) < Date() {
                 self.updateTransactionStateIfNeeded(transaction, state: .failed)
               }
@@ -453,10 +454,10 @@ extension KNTransactionCoordinator {
             }
           }
         } else {
-          // Success
-          if transaction.date.addingTimeInterval(60) < Date() {
-            self.updateTransactionStateIfNeeded(transaction, state: .completed)
-          }
+          // Success to get transaction by hash, but not have status yet
+//          if transaction.date.addingTimeInterval(60) < Date() {
+//            self.updateTransactionStateIfNeeded(transaction, state: .completed)
+//          }
         }
       })
     }
