@@ -186,7 +186,6 @@
 		25A2940520CE8851008C6759 /* KGOHomePageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25A2940320CE8851008C6759 /* KGOHomePageViewController.xib */; };
 		25A2940920CE8DCD008C6759 /* KGOIEOTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A2940720CE8DCD008C6759 /* KGOIEOTableViewCell.swift */; };
 		25A2940A20CE8DCD008C6759 /* KGOIEOTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25A2940820CE8DCD008C6759 /* KGOIEOTableViewCell.xib */; };
-		25A2940D20CE9DD9008C6759 /* ieoobjects.json in Resources */ = {isa = PBXBuildFile; fileRef = 25A2940C20CE9DD9008C6759 /* ieoobjects.json */; };
 		25A2941020CE9FA7008C6759 /* IEOObjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A2940F20CE9FA7008C6759 /* IEOObjectStorage.swift */; };
 		25A2941220CEA07D008C6759 /* KGOHomePageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A2941120CEA07D008C6759 /* KGOHomePageCoordinator.swift */; };
 		25A4F032209461DF00AA5FA0 /* KNNewCustomTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A4F030209461DF00AA5FA0 /* KNNewCustomTokenViewController.swift */; };
@@ -831,7 +830,6 @@
 		25A2940320CE8851008C6759 /* KGOHomePageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KGOHomePageViewController.xib; sourceTree = "<group>"; };
 		25A2940720CE8DCD008C6759 /* KGOIEOTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KGOIEOTableViewCell.swift; sourceTree = "<group>"; };
 		25A2940820CE8DCD008C6759 /* KGOIEOTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KGOIEOTableViewCell.xib; sourceTree = "<group>"; };
-		25A2940C20CE9DD9008C6759 /* ieoobjects.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ieoobjects.json; sourceTree = "<group>"; };
 		25A2940F20CE9FA7008C6759 /* IEOObjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOObjectStorage.swift; sourceTree = "<group>"; };
 		25A2941120CEA07D008C6759 /* KGOHomePageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KGOHomePageCoordinator.swift; sourceTree = "<group>"; };
 		25A4F030209461DF00AA5FA0 /* KNNewCustomTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNewCustomTokenViewController.swift; sourceTree = "<group>"; };
@@ -2147,7 +2145,6 @@
 			isa = PBXGroup;
 			children = (
 				25A2940E20CE9F8F008C6759 /* Storage */,
-				25A2940B20CE9DBA008C6759 /* TestData */,
 				25A293FC20CE7B0F008C6759 /* Models */,
 				25A293FB20CE7B06008C6759 /* Screens */,
 			);
@@ -2220,14 +2217,6 @@
 				25A2940820CE8DCD008C6759 /* KGOIEOTableViewCell.xib */,
 			);
 			path = TableViewCell;
-			sourceTree = "<group>";
-		};
-		25A2940B20CE9DBA008C6759 /* TestData */ = {
-			isa = PBXGroup;
-			children = (
-				25A2940C20CE9DD9008C6759 /* ieoobjects.json */,
-			);
-			path = TestData;
 			sourceTree = "<group>";
 		};
 		25A2940E20CE9F8F008C6759 /* Storage */ = {
@@ -4365,7 +4354,6 @@
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
 				25929C9320DA5CC10045CFA3 /* SFCompactText-Medium.otf in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
-				25A2940D20CE9DD9008C6759 /* ieoobjects.json in Resources */,
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
 				2561455520C696C800FB00CF /* KNTokenChartViewController.xib in Resources */,
 				25EBE93220B40CC000A57579 /* KNTestBackUpStatusViewController.xib in Resources */,
