@@ -53,7 +53,10 @@ class KNBalanceCoordinator {
     return balanceValue
   }
 
-  deinit { self.session = nil }
+  deinit {
+    self.exit()
+    self.session = nil
+  }
 
   init(session: KNSession) {
     self.session = session

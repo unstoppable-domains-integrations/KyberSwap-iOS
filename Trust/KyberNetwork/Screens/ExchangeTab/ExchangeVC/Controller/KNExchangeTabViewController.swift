@@ -189,18 +189,11 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   @IBAction func swapButtonPressed(_ sender: UIButton) {
     self.viewModel.swapTokens()
-    UIView.animate(
-      withDuration: 0.3,
-      delay: 0,
-      options: .transitionFlipFromTop,
-      animations: {
-      self.fromAmountTextField.text = ""
-      self.toAmountTextField.text = ""
-      self.viewModel.updateAmount("", isSource: true)
-      self.viewModel.updateAmount("", isSource: false)
-      self.updateTokensView()
-    }, completion: nil
-    )
+    self.fromAmountTextField.text = ""
+    self.toAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
+    self.updateTokensView()
   }
 
   @IBAction func gasPriceButtonPressed(_ sender: Any) {
@@ -433,23 +426,17 @@ extension KNExchangeTabViewController {
       updatedFrom = true
       updatedTo = true
     }
-    UIView.animate(
-      withDuration: 0.15,
-      delay: 0,
-      options: .transitionFlipFromBottom,
-      animations: {
-      if self.viewModel.isFocusingFromAmount {
-        self.fromAmountTextField.text = self.viewModel.amountFrom
-        self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
-      } else {
-        self.toAmountTextField.text = self.viewModel.amountTo
-        self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
-      }
-      self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
-      self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
-      self.updateTokensView(updatedFrom: updatedFrom, updatedTo: updatedTo)
-    }, completion: nil
-    )
+
+    if self.viewModel.isFocusingFromAmount {
+      self.fromAmountTextField.text = self.viewModel.amountFrom
+      self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
+    } else {
+      self.toAmountTextField.text = self.viewModel.amountTo
+      self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
+    }
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+    self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
+    self.updateTokensView(updatedFrom: updatedFrom, updatedTo: updatedTo)
   }
 
   /*
