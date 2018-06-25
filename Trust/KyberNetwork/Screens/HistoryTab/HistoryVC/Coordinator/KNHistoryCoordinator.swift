@@ -15,30 +15,29 @@ class KNHistoryCoordinator: Coordinator {
 
   var coordinators: [Coordinator] = []
 
-  weak var delegate: KNSessionDelegate?
-
   lazy var rootViewController: KNHistoryViewController = {
-    let controller = KNHistoryViewController(delegate: self)
+    let controller = KNHistoryViewController()
     controller.loadViewIfNeeded()
+    controller.delegate = self
     return controller
   }()
 
   init(
-    navigationController: UINavigationController = UINavigationController(),
+    navigationController: UINavigationController,
     session: KNSession
     ) {
     self.navigationController = navigationController
-    self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
 
   func start() {
-    self.navigationController.viewControllers = [self.rootViewController]
-    if !self.session.transactionStorage.historyTransactions.isEmpty {
-      self.historyTransactionsDidUpdate(nil)
+    self.navigationController.pushViewController(self.rootViewController, animated: true) {
+      if !self.session.transactionStorage.historyTransactions.isEmpty {
+        self.historyTransactionsDidUpdate(nil)
+      }
+      self.appCoordinatorTokensTransactionsDidUpdate()
+      self.addObserveNotification()
     }
-    self.appCoordinatorTokensTransactionsDidUpdate()
-    self.addObserveNotification()
   }
 
   fileprivate func addObserveNotification() {
@@ -53,6 +52,7 @@ class KNHistoryCoordinator: Coordinator {
 
   func stop() {
     self.removeObserveNotification()
+    self.navigationController.popViewController(animated: true)
   }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
@@ -130,22 +130,21 @@ class KNHistoryCoordinator: Coordinator {
 }
 
 extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
-  func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction) {
-    if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(transaction.id)") {
-      let controller = SFSafariViewController(url: url)
-      self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
+  func historyViewController(_ controller: KNHistoryViewController, run event: KNHistoryViewEvent) {
+    switch event {
+    case .selectTokenTransaction(let transaction):
+      self.openEtherScanForTransaction(with: transaction.id)
+    case .selectHistoryTransaction(let transaction):
+      self.openEtherScanForTransaction(with: transaction.id)
+    case .dismiss:
+      self.stop()
     }
   }
 
-  func historyViewControllerDidSelectTokenTransaction(_ transaction: KNTokenTransaction) {
-    if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(transaction.id)") {
+  fileprivate func openEtherScanForTransaction(with hash: String) {
+    if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
       let controller = SFSafariViewController(url: url)
       self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
     }
-  }
-
-  func historyViewControllerDidClickExit() {
-    self.stop()
-    self.delegate?.userDidClickExitSession()
   }
 }

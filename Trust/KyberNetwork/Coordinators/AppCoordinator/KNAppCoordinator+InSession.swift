@@ -35,17 +35,6 @@ extension KNAppCoordinator {
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
 
-    // History tab
-    self.historyCoordinator = {
-      let coordinator = KNHistoryCoordinator(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.historyCoordinator)
-    self.historyCoordinator.start()
-
     self.kyberGOCoordinator = {
       return KGOHomePageCoordinator(session: self.session)
     }()
@@ -67,7 +56,6 @@ extension KNAppCoordinator {
       self.balanceTabCoordinator.navigationController,
       self.exchangeCoordinator!.navigationController,
       self.kyberGOCoordinator!.navigationController,
-      self.historyCoordinator.navigationController,
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(hex: "00d3a7")
@@ -98,16 +86,7 @@ extension KNAppCoordinator {
       tabBarItem.tag = 2
       return tabBarItem
     }()
-    self.historyCoordinator.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "History".toBeLocalised(),
-        image: UIImage(named: "history_tab_icon"),
-        selectedImage: UIImage(named: "history_tab_icon")
-      )
-      tabBarItem.tag = 3
-      return tabBarItem
-    }()
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 4)
+    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 3)
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)
@@ -144,8 +123,6 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()
     self.balanceTabCoordinator = nil
-    self.historyCoordinator.stop()
-    self.historyCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
   }
@@ -159,7 +136,6 @@ extension KNAppCoordinator {
     // wallet tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.kyberGOCoordinator?.updateSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 1
@@ -181,7 +157,6 @@ extension KNAppCoordinator {
     //TODO: Update UI for each tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
   }
 

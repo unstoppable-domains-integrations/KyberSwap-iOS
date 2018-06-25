@@ -10,14 +10,11 @@ enum KNExchangeTabViewEvent {
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case exchange(data: KNDraftExchangeTransaction)
   case showQRCode
-  case selectWallet(wallet: KNWalletObject)
-  case selectSendToken
-  case selectAddWallet
-  case selectSettings
 }
 
 protocol KNExchangeTabViewControllerDelegate: class {
   func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNExchangeTabViewEvent)
+  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent)
 }
 
 class KNExchangeTabViewController: KNBaseViewController {
@@ -552,20 +549,8 @@ extension KNExchangeTabViewController: KNWalletHeaderViewDelegate {
 
 // MARK: Hamburger Menu Delegate
 extension KNExchangeTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
-  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewController(self, run: .selectAddWallet)
-  }
-
-  func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewController(self, run: .selectSettings)
-  }
-
-  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewController(self, run: .selectSendToken)
-  }
-
-  func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.exchangeTabViewController(self, run: .selectWallet(wallet: wallet))
+  func balanceTabHamburgerMenuViewController(_ controller: KNBalanceTabHamburgerMenuViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
+    self.delegate?.exchangeTabViewController(self, run: event)
   }
 }
 

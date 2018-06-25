@@ -232,7 +232,7 @@ extension KNAppCoordinator {
 
   @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
-//    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Notification) {

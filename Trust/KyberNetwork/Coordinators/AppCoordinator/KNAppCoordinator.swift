@@ -17,7 +17,6 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
   internal var balanceTabCoordinator: KNBalanceTabCoordinator!
-  internal var historyCoordinator: KNHistoryCoordinator!
   internal var settingsCoordinator: KNSettingsCoordinator!
 
   internal var kyberGOCoordinator: KGOHomePageCoordinator?

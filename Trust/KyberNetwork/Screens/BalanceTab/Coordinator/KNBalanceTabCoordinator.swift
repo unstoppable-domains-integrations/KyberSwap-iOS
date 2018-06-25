@@ -38,6 +38,13 @@ class KNBalanceTabCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
+  lazy var historyCoordinator: KNHistoryCoordinator = {
+    let coordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session)
+    return coordinator
+  }()
+
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
 
@@ -130,14 +137,39 @@ extension KNBalanceTabCoordinator {
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
     self.tokenChartCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
+
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator.appCoordinatorTokensTransactionsDidUpdate()
+  }
 }
 
 extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
-  func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController) {
-    self.qrcodeCoordinator?.start()
+
+  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabViewEvent) {
+    switch event {
+    case .selectQRCode:
+      self.qrcodeCoordinator?.start()
+    case .select(let token):
+      self.openTokenChartView(for: token)
+    }
   }
 
-  func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController) {
+  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
+    switch event {
+    case .select(let wallet):
+      self.hamburgerMenu(select: wallet)
+    case .selectAddWallet:
+      self.hamburgerMenuSelectAddWallet()
+    case .selectSendToken:
+      self.openSendTokenView()
+    case .selectSettings:
+      self.openSettingsView()
+    case .selectAllTransactions:
+      self.openHistoryTransactionView()
+    }
+  }
+
+  fileprivate func openTokenChartView(for tokenObject: TokenObject) {
     self.tokenChartCoordinator = KNTokenChartCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -148,15 +180,15 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.tokenChartCoordinator?.start()
   }
 
-  func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController) {
+  func hamburgerMenu(select walletObject: KNWalletObject) {
     self.delegate?.balanceTabCoordinatorDidSelect(walletObject: walletObject)
   }
 
-  func balanceTabDidSelectAddWallet(in controller: KNBalanceTabViewController) {
+  func hamburgerMenuSelectAddWallet() {
     self.delegate?.balancetabCoordinatorDidSelectAddWallet()
   }
 
-  func balanceTabDidSelectSendToken(in controller: KNBalanceTabViewController) {
+  func openSendTokenView() {
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -166,8 +198,13 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.sendTokenCoordinator?.start()
   }
 
-  func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController) {
+  func openSettingsView() {
     //TODO: Implement it
+  }
+
+  func openHistoryTransactionView() {
+    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator.start()
   }
 }
 

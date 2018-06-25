@@ -46,6 +46,13 @@ class KNExchangeTokenCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
+  lazy var historyCoordinator: KNHistoryCoordinator = {
+    let coordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session)
+    return coordinator
+  }()
+
   lazy var searchTokensViewController: KNSearchTokenViewController = {
     let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
     let controller = KNSearchTokenViewController(viewModel: viewModel)
@@ -125,6 +132,10 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorGasPriceCachedDidUpdate() {
     self.rootViewController.coordinatorUpdateGasPriceCached()
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
+  }
+
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator.appCoordinatorTokensTransactionsDidUpdate()
   }
 }
 
@@ -242,16 +253,24 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .exchange(let data):
+      self.exchangeButtonPressed(data: data)
+    }
+  }
+
+  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
+    switch event {
     case .selectSettings:
       self.openSettingsView()
     case .selectSendToken:
       self.openSendTokenView()
     case .selectAddWallet:
       self.openAddWalletView()
-    case .selectWallet(let wallet):
+    case .select(let wallet):
       self.updateCurrentWallet(wallet)
-    case .exchange(let data):
-      self.exchangeButtonPressed(data: data)
+    case .selectAllTransactions:
+      self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator.start()
     }
   }
 
@@ -399,3 +418,5 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
   }
 }
+
+// MARK: History transaction

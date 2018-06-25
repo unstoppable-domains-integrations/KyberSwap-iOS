@@ -2,11 +2,16 @@
 
 import UIKit
 
+enum KNBalanceTabHamburgerMenuViewEvent {
+  case select(wallet: KNWalletObject)
+  case selectAddWallet
+  case selectSendToken
+  case selectSettings
+  case selectAllTransactions
+}
+
 protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
-  func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController)
-  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController)
-  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController)
-  func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController)
+  func balanceTabHamburgerMenuViewController(_ controller: KNBalanceTabHamburgerMenuViewController, run event: KNBalanceTabHamburgerMenuViewEvent)
 }
 
 struct KNBalanceTabHamburgerMenuViewModel {
@@ -142,7 +147,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   func update(transactions: [Transaction]) {
     self.viewModel.update(transactions: transactions)
     self.pendingTableView.isHidden = self.viewModel.isTransactionTableHidden
-    self.allTransactionButton.isHidden = self.viewModel.isTransactionTableHidden
     self.noPendingTransactionLabel.isHidden = !self.viewModel.isTransactionTableHidden
     if !self.pendingTableView.isHidden { self.pendingTableView.reloadData() }
   }
@@ -185,28 +189,25 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
   @IBAction func addWalletButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
-      self.delegate?.balanceTabHamburgerMenuDidSelectAddWallet(sender: self)
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAddWallet)
     }
   }
 
   @IBAction func sendTokenButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
-      self.delegate?.balanceTabHamburgerMenuDidSelectSendToken(sender: self)
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSendToken)
     }
   }
 
   @IBAction func settingsButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
-      self.delegate?.balanceTabHamburgerMenuDidSelectSettings(sender: self)
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSettings)
     }
   }
 
   @IBAction func allTransactionButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
-      let urlString = KNEnvironment.default.etherScanIOURLString + "address/" + self.viewModel.currentWallet.address
-      if let url = URL(string: urlString) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-      }
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAllTransactions)
     }
   }
 
@@ -275,7 +276,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
       let wallet = self.viewModel.wallet(at: indexPath.row)
       self.hideMenu(animated: true) {
         if wallet != self.viewModel.currentWallet {
-          self.delegate?.balanceTabHamburgerMenuDidSelect(wallet: wallet, sender: self)
+          self.delegate?.balanceTabHamburgerMenuViewController(self, run: .select(wallet: wallet))
         }
       }
     } else {

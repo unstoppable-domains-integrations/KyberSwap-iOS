@@ -3,13 +3,14 @@
 import UIKit
 import BigInt
 
+enum KNBalanceTabViewEvent {
+  case selectQRCode
+  case select(token: TokenObject)
+}
+
 protocol KNBalanceTabViewControllerDelegate: class {
-  func balanceTabDidSelectQRCodeButton(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectToken(_ tokenObject: TokenObject, in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectWalletObject(_ walletObject: KNWalletObject, in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectSendToken(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectSettings(in controller: KNBalanceTabViewController)
-  func balanceTabDidSelectAddWallet(in controller: KNBalanceTabViewController)
+  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabViewEvent)
+  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent)
 }
 
 class KNBalanceTabViewController: KNBaseViewController {
@@ -243,7 +244,7 @@ extension KNBalanceTabViewController {
 extension KNBalanceTabViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
-    self.delegate?.balanceTabDidSelectToken(tokenObject, in: self)
+    self.delegate?.balanceTabViewController(self, run: .select(token: tokenObject))
   }
 }
 
@@ -332,14 +333,13 @@ extension KNBalanceTabViewController: UIPickerViewDataSource {
 }
 
 extension KNBalanceTabViewController: KNWalletHeaderViewDelegate {
-
   func walletHeaderDebugButtonPressed(sender: KNWalletHeaderView) {
     let debugVC = KNDebugMenuViewController()
     self.present(debugVC, animated: true, completion: nil)
   }
 
   func walletHeaderScanQRCodePressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
-    self.delegate?.balanceTabDidSelectQRCodeButton(in: self)
+    self.delegate?.balanceTabViewController(self, run: .selectQRCode)
   }
 
   func walletHeaderWalletListPressed(wallet: KNWalletObject, sender: KNWalletHeaderView) {
@@ -348,19 +348,7 @@ extension KNBalanceTabViewController: KNWalletHeaderViewDelegate {
 }
 
 extension KNBalanceTabViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
-  func balanceTabHamburgerMenuDidSelectAddWallet(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.balanceTabDidSelectAddWallet(in: self)
-  }
-
-  func balanceTabHamburgerMenuDidSelectSettings(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.balanceTabDidSelectSettings(in: self)
-  }
-
-  func balanceTabHamburgerMenuDidSelectSendToken(sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.balanceTabDidSelectSendToken(in: self)
-  }
-
-  func balanceTabHamburgerMenuDidSelect(wallet: KNWalletObject, sender: KNBalanceTabHamburgerMenuViewController) {
-    self.delegate?.balanceTabDidSelectWalletObject(wallet, in: self)
+  func balanceTabHamburgerMenuViewController(_ controller: KNBalanceTabHamburgerMenuViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
+    self.delegate?.balanceTabViewController(self, run: event)
   }
 }

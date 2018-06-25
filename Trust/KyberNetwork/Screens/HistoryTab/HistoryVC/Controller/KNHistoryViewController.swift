@@ -2,15 +2,19 @@
 
 import UIKit
 
+enum KNHistoryViewEvent {
+  case selectHistoryTransaction(transaction: KNHistoryTransaction)
+  case selectTokenTransaction(transaction: KNTokenTransaction)
+  case dismiss
+}
+
 protocol KNHistoryViewControllerDelegate: class {
-  func historyViewControllerDidSelectTransaction(_ transaction: KNHistoryTransaction)
-  func historyViewControllerDidSelectTokenTransaction(_ transaction: KNTokenTransaction)
-  func historyViewControllerDidClickExit()
+  func historyViewController(_ controller: KNHistoryViewController, run event: KNHistoryViewEvent)
 }
 
 class KNHistoryViewController: KNBaseViewController {
 
-  fileprivate weak var delegate: KNHistoryViewControllerDelegate?
+  weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate let tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
 
   fileprivate var trackerData: [String: [KNHistoryTransaction]] = [:]
@@ -27,15 +31,6 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate var hasUpdatedData: Bool = false
   fileprivate var isShowingLoading: Bool = false
-
-  init(delegate: KNHistoryViewControllerDelegate?) {
-    self.delegate = delegate
-    super.init(nibName: KNHistoryViewController.className, bundle: nil)
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -57,8 +52,6 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = "History".toBeLocalised()
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(self.exitButtonPressed(_:)))
-    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
   }
 
   fileprivate func setupCollectionView() {
@@ -87,12 +80,18 @@ class KNHistoryViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  @objc func exitButtonPressed(_ sender: Any) {
-    self.delegate?.historyViewControllerDidClickExit()
+  @IBAction func backButtonPressed(_ sender: Any) {
+    self.delegate?.historyViewController(self, run: .dismiss)
   }
 
   @IBAction func segmentedControlValueDidChange(_ sender: UISegmentedControl) {
     self.updateUIWhenDataDidChange()
+  }
+
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.historyViewController(self, run: .dismiss)
+    }
   }
 }
 
@@ -126,10 +125,10 @@ extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if self.segmentedControl.selectedSegmentIndex == 0 {
       guard let transactions = self.trackerData[self.trackerHeaders[indexPath.section]] else { return }
-      self.delegate?.historyViewControllerDidSelectTransaction(transactions[indexPath.row])
+      self.delegate?.historyViewController(self, run: .selectHistoryTransaction(transaction: transactions[indexPath.row]))
     } else {
       guard let transactions = self.tokensTxData[self.tokensTxHeaders[indexPath.section]] else { return }
-      self.delegate?.historyViewControllerDidSelectTokenTransaction(transactions[indexPath.row])
+      self.delegate?.historyViewController(self, run: .selectTokenTransaction(transaction: transactions[indexPath.row]))
     }
   }
 }
