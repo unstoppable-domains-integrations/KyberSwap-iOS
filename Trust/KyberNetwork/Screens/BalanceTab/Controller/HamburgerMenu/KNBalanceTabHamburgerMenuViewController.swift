@@ -113,7 +113,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.walletListTableView.delegate = self
     self.walletListTableView.dataSource = self
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
-    self.walletListTableView.rounded(color: .lightGray, width: 1, radius: 0)
 
     self.pendingTableView.register(UITableViewCell.self, forCellReuseIdentifier: kPendingTableViewCellID)
     self.pendingTableView.rowHeight = 28

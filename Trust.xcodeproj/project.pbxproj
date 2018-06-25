@@ -5402,7 +5402,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = manhlx.kyber.network;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a4a62d8-c80a-426c-91c5-03d46abe29f3";
+				PROVISIONING_PROFILE = "326fb4ec-e759-4f9e-a37c-0d28a0186ccb";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution Adhoc Kyber Network";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
