@@ -141,6 +141,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.viewModel.update(wallets: walletObjects, currentWallet: currentWallet)
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
     self.walletListTableView.reloadData()
+    self.pendingTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
@@ -162,6 +163,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.screenEdgePanRecognizer?.isEnabled = false
       self.panGestureRecognizer.isEnabled = true
       self.walletListTableView.reloadData()
+      self.pendingTableView.reloadData()
       completion?()
     })
   }

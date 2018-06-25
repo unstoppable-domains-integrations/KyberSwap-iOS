@@ -7,6 +7,11 @@ import RealmSwift
 enum KNTransactionType {
   case transfer(UnconfirmedTransaction)
   case exchange(KNDraftExchangeTransaction)
+
+  var isTransfer: Bool {
+    if case .transfer = self { return true }
+    return false
+  }
 }
 
 class KNTransaction: Object {

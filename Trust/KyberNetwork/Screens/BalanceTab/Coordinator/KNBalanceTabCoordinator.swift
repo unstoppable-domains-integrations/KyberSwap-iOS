@@ -81,6 +81,7 @@ extension KNBalanceTabCoordinator {
       return viewModel
     }()
     self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
+    self.rootViewController.coordinatorUpdatePendingTransactions(self.session.transactionStorage.pendingObjects)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {

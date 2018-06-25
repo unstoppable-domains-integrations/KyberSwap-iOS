@@ -136,11 +136,14 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
   }
 
   fileprivate func send(transaction: UnconfirmedTransaction) {
-    let transactionType = KNTransactionType.transfer(transaction)
-    self.confirmTransactionViewController = KNConfirmTransactionViewController(
-      delegate: self,
-      type: transactionType
-    )
+    self.confirmTransactionViewController = {
+      let transactionType = KNTransactionType.transfer(transaction)
+      let viewModel = KNConfirmTransactionViewModel(type: transactionType)
+      let controller = KNConfirmTransactionViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      return controller
+    }()
     self.confirmTransactionViewController.modalPresentationStyle = .overCurrentContext
     self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(
@@ -171,19 +174,20 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 
 // MARK: Confirm Transaction Delegate
 extension KNSendTokenViewCoordinator: KNConfirmTransactionViewControllerDelegate {
-  func confirmTransactionDidCancel() {
-    self.navigationController.topViewController?.dismiss(animated: true, completion: {
-      self.confirmTransactionViewController = nil
-    })
-  }
-
-  func confirmTransactionDidConfirm(type: KNTransactionType) {
-    self.navigationController.topViewController?.dismiss(animated: true, completion: {
-      self.confirmTransactionViewController = nil
-      if case .transfer(let transaction) = type {
-        self.didConfirmTransfer(transaction)
-      }
-    })
+  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
+    switch event {
+    case .cancel:
+      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+        self.confirmTransactionViewController = nil
+      })
+    case .confirm(let type):
+      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+        self.confirmTransactionViewController = nil
+        if case .transfer(let transaction) = type {
+          self.didConfirmTransfer(transaction)
+        }
+      })
+    }
   }
 }
 

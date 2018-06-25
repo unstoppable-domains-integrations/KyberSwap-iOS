@@ -3,28 +3,137 @@
 import UIKit
 import BigInt
 
+enum KNConfirmTransactionViewEvent {
+  case cancel
+  case confirm(type: KNTransactionType)
+}
+
 protocol KNConfirmTransactionViewControllerDelegate: class {
-  func confirmTransactionDidConfirm(type: KNTransactionType)
-  func confirmTransactionDidCancel()
+  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent)
+}
+
+struct KNConfirmTransactionViewModel {
+  let type: KNTransactionType
+  init(type: KNTransactionType) {
+    self.type = type
+  }
+
+  var leftButtonTitle: String {
+    return type.isTransfer ? "SEND".toBeLocalised() : "SWAP".toBeLocalised()
+  }
+
+  var leftButtonIcon: String {
+    return type.isTransfer ? "" : "kyber_icon_black"
+  }
+
+  var rightButtonTitle: String { return "Cancel".toBeLocalised() }
+
+  var transactionDataTopPadding: CGFloat { return type.isTransfer ? 38.0 : 56.0 }
+  var leftAmountLabelText: String {
+    switch type {
+    case .transfer(let tx):
+      let token = tx.transferType.tokenObject()
+      return tx.value.string(decimals: token.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(token.symbol)"
+    case .exchange(let trans):
+      return trans.amount.string(decimals: trans.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(trans.from.symbol)"
+    }
+  }
+
+  var rightLabelAttributedText: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let highlightedAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 20)!,
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "000000"),
+    ]
+    let normalAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    ]
+    switch type {
+    case .transfer(let tx):
+      let address = tx.to?.description.lowercased() ?? ""
+      let displayedAddress = "\(address.prefix(7))..\(address.suffix(5))"
+      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+        attributedString.append(NSAttributedString(string: contact.name, attributes: highlightedAttributes))
+        attributedString.append(NSAttributedString(string: "\n\(displayedAddress)", attributes: normalAttributes))
+      } else {
+        attributedString.append(NSAttributedString(string: displayedAddress, attributes: highlightedAttributes))
+      }
+    case .exchange(let trans):
+      let receivedAmount = "\(trans.expectedReceive.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)) \(trans.to.symbol)"
+      attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
+    }
+    return attributedString
+  }
+
+  var estimatedRateTopPadding: CGFloat { return type.isTransfer ? 40.0 : 30 }
+  var heightForEstimatedRate: CGFloat { return type.isTransfer ? 0.0 : 52.0 }
+  var isEstimatedRateHidden: Bool { return type.isTransfer }
+  var displayEstimatedRate: String {
+    if case .exchange(let trans) = type {
+      let rateString = trans.expectedRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+      return "1 \(trans.from.symbol) = \(rateString) \(trans.to.symbol)"
+    }
+    return ""
+  }
+  var heightForSlippageRate: CGFloat { return type.isTransfer ? 0.0 : 52.0 }
+  var isSlippageRateHidden: Bool { return type.isTransfer }
+  var slippageRateString: String {
+    if case .exchange(let trans) = type, let minRate = trans.minRate {
+      let percentage = ((trans.expectedRate - minRate) * BigInt(100) / trans.expectedRate)
+      return percentage.string(decimals: 0, minFractionDigits: 2, maxFractionDigits: 2) + " %"
+    }
+    return ""
+  }
+
+  var feeString: String {
+    switch type {
+    case .transfer(let tx):
+      let gasPrice = tx.gasPrice ?? KNGasConfiguration.gasPriceDefault
+      let gasLimit: BigInt = {
+        if let limit = tx.gasLimit { return limit }
+        return tx.transferType.tokenObject().isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+      }()
+      let fee = gasPrice * gasLimit
+      return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
+    case .exchange(let trans):
+      let fee = (trans.gasPrice ?? BigInt(0)) * (trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
+      return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
+    }
+  }
 }
 
 class KNConfirmTransactionViewController: UIViewController {
 
   fileprivate let confirmTransactionCellID = "confirmTransactionCellID"
-  fileprivate var transactionType: KNTransactionType
+  fileprivate var viewModel: KNConfirmTransactionViewModel
 
   @IBOutlet weak var containerView: UIView!
-  @IBOutlet weak var contentTableView: UITableView!
+  @IBOutlet weak var leftButton: UIButton!
+  @IBOutlet weak var rightButton: UIButton!
+
+  @IBOutlet weak var transactionDataTopPaddingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var leftAmountLabel: UILabel!
+  @IBOutlet weak var rightDataLabel: UILabel!
+
+  @IBOutlet weak var estimatedRateTopPaddingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var estRateContainerView: UIView!
+  @IBOutlet weak var estRateLabel: UILabel!
+  @IBOutlet weak var estRateHeightConstraint: NSLayoutConstraint!
+
+  @IBOutlet weak var slippageRateLabel: UILabel!
+  @IBOutlet weak var slippageRateHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var slippageRateContainerView: UIView!
+
+  @IBOutlet weak var networkFeeLabel: UILabel!
   @IBOutlet weak var confirmButton: UIButton!
-  @IBOutlet weak var cancelButton: UIButton!
 
   fileprivate var data: [(String, String)] = []
 
-  fileprivate weak var delegate: KNConfirmTransactionViewControllerDelegate?
+  weak var delegate: KNConfirmTransactionViewControllerDelegate?
 
-  init(delegate: KNConfirmTransactionViewControllerDelegate?, type: KNTransactionType) {
-    self.delegate = delegate
-    self.transactionType = type
+  init(viewModel: KNConfirmTransactionViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: KNConfirmTransactionViewController.className, bundle: nil)
   }
 
@@ -37,135 +146,59 @@ class KNConfirmTransactionViewController: UIViewController {
     self.setupUI()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.createData()
-  }
-
   fileprivate func setupUI() {
-
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapToParentView(_:)))
     self.view.addGestureRecognizer(tapGesture)
 
-    self.containerView.rounded(color: .clear, width: 0, radius: 10.0)
-    self.containerView.backgroundColor = UIColor.white
-
-    self.confirmButton.setTitle("Confirm".uppercased().toBeLocalised(), for: .normal)
-    self.confirmButton.rounded(color: .clear, width: 0, radius: 5.0)
-    self.cancelButton.setTitle("Cancel".uppercased().toBeLocalised(), for: .normal)
-    self.cancelButton.rounded(color: .clear, width: 0, radius: 5.0)
-
-    let nib = UINib(nibName: KNTransactionDetailsTableViewCell.className, bundle: nil)
-    self.contentTableView.register(nib, forCellReuseIdentifier: confirmTransactionCellID)
-    self.contentTableView.rowHeight = 60
-    self.contentTableView.dataSource = self
-    self.contentTableView.delegate = self
+    self.confirmButton.rounded(
+      color: UIColor(hex: "31CB9E"),
+      width: 1,
+      radius: self.confirmButton.frame.height / 2.0
+    )
+    self.updateUI()
   }
 
-  fileprivate func createData() {
-    switch self.transactionType {
-    case .exchange(let trans):
-      // Amount Exchange & its USD Value
-      let amountSpent = "\(trans.from.symbol)\(trans.displayAmount(short: false))".prefix(20)
-      let usdValue = trans.usdValueStringForFromToken.prefix(16)
-      // Amount received & Expected Rate
-      let expectedReceive = "\(trans.to.symbol)\(trans.displayExpectedReceive(short: false))".prefix(20)
-      let rate = "\(trans.from.symbol)/\(trans.to.symbol): \(trans.displayExpectedRate(short: false))".prefix(20)
-      // Min Rate
-      let minRate = trans.displayMinRate(short: false)?.prefix(20) ?? "--"
-      // Est Fee & its USD Value
-      let feeString = trans.displayFeeString(short: false).prefix(16)
-      let usdFeeString = trans.usdValueStringForFee.prefix(16)
+  fileprivate func updateUI() {
+    self.leftButton.setTitle(self.viewModel.leftButtonTitle, for: .normal)
+    self.leftButton.setImage(UIImage(named: self.viewModel.leftButtonIcon), for: .normal)
+    self.rightButton.setTitle(self.viewModel.rightButtonTitle, for: .normal)
 
-      self.data = [
-        ("Amount Sent", "\(amountSpent)\n($\(usdValue))"),
-        ("Expected Receive", "\(expectedReceive)\n\(rate)"),
-        ("Min Rate", "\(trans.to.symbol)\(minRate)"),
-        ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
-      ]
-    case .transfer(let trans):
-      let fromToken: TokenObject = trans.transferType.tokenObject()
-      // Amount Transfer & its USD Value
-      let amountSent = "\(fromToken.symbol)\(trans.value.fullString(decimals: fromToken.decimals))".prefix(20)
-      let usdValue: String = {
-        let rate = KNRateCoordinator.shared.usdRate(for: fromToken)?.rate ?? BigInt(0)
-        return (rate * trans.value / BigInt(10).power(fromToken.decimals)).shortString(units: .ether)
-      }()
-      // Transfer To Address
-      let address = trans.to?.description ?? ""
+    self.transactionDataTopPaddingConstraint.constant = self.viewModel.transactionDataTopPadding
+    self.leftAmountLabel.text = self.viewModel.leftAmountLabelText
+    self.rightDataLabel.attributedText = self.viewModel.rightLabelAttributedText
 
-      // Gas Price
-      let gasPriceString = (trans.gasPrice ?? KNGasConfiguration.gasPriceDefault).fullString(units: UnitConfiguration.gasPriceUnit).prefix(20)
-      // Est Fee & its USD Value
-      let (feeString, usdFeeString): (Substring, String) = {
-        let gasPrice = trans.gasPrice ?? KNGasConfiguration.gasPriceDefault
-        let gasLimit: BigInt = {
-          if let limit = trans.gasLimit { return limit }
-          return fromToken.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
-        }()
-        let fee = gasPrice * gasLimit
-        let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH })!
-        let rate = KNRateCoordinator.shared.usdRate(for: ethToken)?.rate ?? BigInt(0)
-        return (fee.fullString(units: .ether).prefix(16), (rate * fee / BigInt(EthereumUnit.ether.rawValue)).shortString(units: .ether))
-      }()
+    self.estimatedRateTopPaddingConstraint.constant = self.viewModel.estimatedRateTopPadding
+    self.estRateLabel.text = self.viewModel.displayEstimatedRate
+    self.estRateHeightConstraint.constant = self.viewModel.heightForEstimatedRate
+    self.estRateContainerView.isHidden = self.viewModel.isEstimatedRateHidden
 
-      self.data = [
-        ("Amount Sent", "\(amountSent)\n($\(usdValue))"),
-        ("Transfer To", "\(address)"),
-        ("Gas Price", "\(gasPriceString)"),
-        ("Est. Fee", "ETH\(feeString)\n($\(usdFeeString))"),
-      ]
-    }
-    self.contentTableView.reloadData()
+    self.slippageRateLabel.text = self.viewModel.slippageRateString
+    self.slippageRateHeightConstraint.constant = self.viewModel.heightForSlippageRate
+    self.slippageRateContainerView.isHidden = self.viewModel.isSlippageRateHidden
+
+    self.networkFeeLabel.text = self.viewModel.feeString
+    self.view.layoutIfNeeded()
   }
 
-  func updateExpectedRateData(source: TokenObject, dest: TokenObject, amount: BigInt, expectedRate: BigInt) {
-    if case .exchange(let transaction) = self.transactionType {
-      if transaction.from == source && transaction.to == dest && transaction.amount == amount {
-        let newTransaction = transaction.copy(expectedRate: expectedRate)
-        self.transactionType = .exchange(newTransaction)
-        self.createData()
-      }
-    }
+  func update(viewModel: KNConfirmTransactionViewModel) {
+    self.viewModel = viewModel
+    self.updateUI()
   }
 
   @objc func didTapToParentView(_ sender: UITapGestureRecognizer) {
     let touchPoint = sender.location(in: self.view)
     if touchPoint.x < self.containerView.frame.minX || touchPoint.x > self.containerView.frame.maxX ||
       touchPoint.y < self.containerView.frame.minY || touchPoint.y > self.containerView.frame.maxY {
-      self.delegate?.confirmTransactionDidCancel()
+      self.delegate?.confirmTransactionViewController(self, run: .cancel)
     }
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    self.delegate?.confirmTransactionDidCancel()
+    self.delegate?.confirmTransactionViewController(self, run: .cancel)
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    self.delegate?.confirmTransactionDidConfirm(type: self.transactionType)
-  }
-}
-
-extension KNConfirmTransactionViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return UIView()
-  }
-}
-
-extension KNConfirmTransactionViewController: UITableViewDataSource {
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.data.count
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: confirmTransactionCellID, for: indexPath) as! KNTransactionDetailsTableViewCell
-    let (field, value) = self.data[indexPath.row]
-    cell.updateCell(text: field, details: value)
-    return cell
+    self.delegate?.confirmTransactionViewController(self, run: .confirm(type: self.viewModel.type))
   }
 }

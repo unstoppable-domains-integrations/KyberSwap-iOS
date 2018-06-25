@@ -94,6 +94,7 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.rootViewController.coordinatorDidUpdatePendingTransactions(self.session.transactionStorage.pendingObjects)
     self.navigationController.popToRootViewController(animated: false)
   }
 
@@ -204,19 +205,20 @@ extension KNExchangeTokenCoordinator {
 
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
-  func confirmTransactionDidCancel() {
-    self.navigationController.topViewController?.dismiss(animated: false, completion: {
-      self.confirmTransactionViewController = nil
-    })
-  }
-
-  func confirmTransactionDidConfirm(type: KNTransactionType) {
-    self.navigationController.topViewController?.dismiss(animated: false, completion: {
-      self.confirmTransactionViewController = nil
-      if case .exchange(let exchangeTransaction) = type {
-        self.didConfirmSendExchangeTransaction(exchangeTransaction)
-      }
-    })
+  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
+    switch event {
+    case .cancel:
+      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+        self.confirmTransactionViewController = nil
+      })
+    case .confirm(let type):
+      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+        self.confirmTransactionViewController = nil
+        if case .exchange(let exchangeTransaction) = type {
+          self.didConfirmSendExchangeTransaction(exchangeTransaction)
+        }
+      })
+    }
   }
 }
 
@@ -282,11 +284,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
   }
 
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
-    let transactionType = KNTransactionType.exchange(data)
-    self.confirmTransactionViewController = KNConfirmTransactionViewController(
-      delegate: self,
-      type: transactionType
-    )
+    self.confirmTransactionViewController = {
+      let transactionType = KNTransactionType.exchange(data)
+      let viewModel = KNConfirmTransactionViewModel(type: transactionType)
+      let controller = KNConfirmTransactionViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      return controller
+    }()
     self.confirmTransactionViewController.modalPresentationStyle = .overCurrentContext
     self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(
