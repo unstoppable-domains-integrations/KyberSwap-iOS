@@ -124,7 +124,7 @@ class KNSendTokenViewController: KNBaseViewController {
       color: UIColor(hex: "e8ebed"),
       isAlignLeft: true,
       width: 100.0,
-      bottom: -20.0
+      bottom: -35
     )
 
     self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
