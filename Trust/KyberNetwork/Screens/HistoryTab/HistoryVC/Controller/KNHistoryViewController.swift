@@ -84,6 +84,7 @@ class KNHistoryViewController: KNBaseViewController {
       self.transactionCollectionView.isHidden = false
     }
     self.transactionCollectionView.reloadData()
+    self.view.layoutIfNeeded()
   }
 
   @objc func exitButtonPressed(_ sender: Any) {
