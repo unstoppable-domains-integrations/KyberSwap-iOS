@@ -28,7 +28,7 @@ class KNHistoryCoordinator: Coordinator {
     session: KNSession
     ) {
     self.navigationController = navigationController
-    self.navigationController.applyStyle()
+    self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
 

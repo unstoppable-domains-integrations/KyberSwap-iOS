@@ -10,8 +10,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="TimesNewRomanBold.ttf">
-            <string>TimesNewRomanPS-BoldMT</string>
+        <array key="SF-Pro-Text-Bold.otf">
+            <string>SFProText-Bold</string>
         </array>
     </customFonts>
     <objects>
@@ -22,9 +22,9 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="04 Apr 2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EZg-75-sKX">
-                    <rect key="frame" x="10" y="0.0" width="300" height="32"/>
+                    <rect key="frame" x="4" y="0.0" width="306" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="SFProText-Bold" family="SF Pro Text" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -34,7 +34,7 @@
                 <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="EZg-75-sKX" secondAttribute="bottom" id="7Tt-wO-EVr"/>
                 <constraint firstItem="EZg-75-sKX" firstAttribute="top" secondItem="VXr-Tz-HHm" secondAttribute="top" id="QC9-5a-485"/>
                 <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="EZg-75-sKX" secondAttribute="trailing" constant="10" id="Wa2-KC-YCj"/>
-                <constraint firstItem="EZg-75-sKX" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="10" id="xJJ-3g-Pwj"/>
+                <constraint firstItem="EZg-75-sKX" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="4" id="xJJ-3g-Pwj"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <connections>
