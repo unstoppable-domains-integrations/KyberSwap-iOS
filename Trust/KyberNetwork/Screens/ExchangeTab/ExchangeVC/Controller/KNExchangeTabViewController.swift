@@ -147,6 +147,13 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.fromAmountTextField.adjustsFontSizeToFitWidth = true
     self.fromAmountTextField.inputAccessoryView = self.toolBar
     self.fromAmountTextField.delegate = self
+    self.fromAmountTextField.underlined(
+      lineHeight: 0.25,
+      color: UIColor(hex: "e8ebed"),
+      isAlignLeft: true,
+      width: 100,
+      bottom: 0
+    )
     self.viewModel.updateAmount("", isSource: true)
     self.balanceTextLabel.text = self.viewModel.balanceTextString
 
@@ -154,6 +161,13 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.toAmountTextField.adjustsFontSizeToFitWidth = true
     self.toAmountTextField.inputAccessoryView = self.toolBar
     self.toAmountTextField.delegate = self
+    self.toAmountTextField.underlined(
+      lineHeight: 0.25,
+      color: UIColor(hex: "e8ebed"),
+      isAlignLeft: false,
+      width: 100,
+      bottom: 0
+    )
     self.viewModel.updateAmount("", isSource: false)
 
     self.gasPriceOptionButton.setImage(UIImage(named: "expand_icon"), for: .normal)
