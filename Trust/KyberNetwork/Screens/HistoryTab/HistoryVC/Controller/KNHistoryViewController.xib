@@ -74,8 +74,8 @@
                         <constraint firstAttribute="height" constant="46" id="iWK-xZ-DrK"/>
                     </constraints>
                     <segments>
-                        <segment title="Kyber.Network"/>
-                        <segment title="Token Transactions"/>
+                        <segment title="Tracker API"/>
+                        <segment title="Etherscan API"/>
                     </segments>
                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>

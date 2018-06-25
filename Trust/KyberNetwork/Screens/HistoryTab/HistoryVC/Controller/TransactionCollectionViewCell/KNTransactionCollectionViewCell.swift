@@ -9,7 +9,7 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
     let format = DateFormatter()
-    format.dateFormat = "dd MMM yyyy, HH:mm"
+    format.dateFormat = "HH:mm"
     return format
   }()
 
@@ -59,7 +59,7 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     self.txIconImageView.image = {
       return isSent ? UIImage(named: "transaction_sent") : UIImage(named: "transaction_received")
     }()
-    self.txDetailsLabel.text = "\(transaction.to)"
+    self.txDetailsLabel.text = "\(transaction.to.prefix(10))....\(transaction.to.suffix(10))"
     let amountString: String = {
       let number = EtherNumberFormatter.short.number(from: transaction.value, decimals: 0)
       let amount: String = number?.shortString(decimals: Int(transaction.tokenDecimal) ?? 0) ?? "0.0"
