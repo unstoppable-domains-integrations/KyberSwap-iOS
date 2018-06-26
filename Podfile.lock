@@ -82,6 +82,39 @@ DEPENDENCIES:
   - TrustKeystore (~> 0.2.1)
   - TrustWeb3Provider (from `https://github.com/TrustWallet/trust-web3-provider`, branch `master`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - APIKit
+    - BigInt
+    - Branch
+    - Crashlytics
+    - Eureka
+    - Fabric
+    - IQKeyboardManager
+    - JavaScriptKit
+    - KeychainSwift
+    - Kingfisher
+    - Lokalise
+    - MBProgressHUD
+    - Moya
+    - MSCircularSlider
+    - R.swift
+    - R.swift.Library
+    - Realm
+    - RealmSwift
+    - Result
+    - SAMKeychain
+    - secp256k1_ios
+    - SeedStackViewController
+    - SipHash
+    - StatefulViewController
+    - SwiftChart
+    - SwiftLint
+    - SwiftMessages
+    - TrezorCrypto
+    - TrustKeystore
+
 EXTERNAL SOURCES:
   CryptoSwift:
     :branch: master
@@ -147,4 +180,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f9be9100dbd15e742798d0ad40544ea066e2feb4
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

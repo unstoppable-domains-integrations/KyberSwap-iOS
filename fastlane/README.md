@@ -16,6 +16,16 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## iOS
+### ios tests
+```
+fastlane ios tests
+```
+
+### ios beta
+```
+fastlane ios beta
+```
+TestFlight deployment to itunes connect
 ### ios release
 ```
 fastlane ios release
@@ -39,11 +49,6 @@ fastlane ios update_lokalise
 ### ios update_itunes
 ```
 fastlane ios update_itunes
-```
-
-### ios tests
-```
-fastlane ios tests
 ```
 
 

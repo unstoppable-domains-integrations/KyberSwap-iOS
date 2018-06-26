@@ -19,13 +19,34 @@ platform :ios do
   before_all do
   end
 
-  def run_localizer
-    sh "cd .. && sh scripts/localizer.sh Trust " << ENV['LOKALISE_API_TOKEN']
+  lane :tests do
+    cocoapods(use_bundle_exec: false)
+    run_tests(workspace: "Trust.xcworkspace",
+              devices: ["iPhone 6s", "iPhone 6s Plust"],
+              scheme: "TrustTests",
+              clean: false)
   end
 
   def screenshots
     snapshot
     frameit(white: true)
+  end
+
+  desc "TestFlight deployment to itunes connect"
+  lane :beta do
+    ensure_git_branch(branch: "wallet_1.0_dev")
+    ensure_git_status_clean
+    git_pull
+    increment_build_number()
+    git_add
+    version_number = get_version_number(workspace: "Trust.xcworkspace")
+    build_number = get_build_number(workspace: "Trust.xcworkspace")
+    git_commit(message: "Increase build number to " + build_number + " version " + version_number)
+    push_to_git_remote
+    cocoapods(use_bundle_exec: false)
+    sync_code_signing(type: "appstore")
+    build_app(scheme: "Trust")
+    upload_to_testflight
   end
 
   desc "Deploy a new version to the App Store"
@@ -68,15 +89,6 @@ platform :ios do
       project_identifier: ENV['LOKALISE_STORE_PROJECT_ID'],
       action: "update_itunes"
    )
-  end
-
-  lane :tests do 
-    cocoapods(use_bundle_exec: false)
-    run_tests(
-      workspace: "Trust.xcworkspace",
-      scheme: "TrustTests",
-      clean: false
-    )
   end
 
   # You can define as many lanes as you want
