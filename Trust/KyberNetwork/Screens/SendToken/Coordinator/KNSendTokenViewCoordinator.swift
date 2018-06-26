@@ -144,9 +144,9 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
       controller.delegate = self
       return controller
     }()
-    self.confirmTransactionViewController.modalPresentationStyle = .overCurrentContext
+    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
     self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
-    self.navigationController.topViewController?.present(
+    self.navigationController.present(
       self.confirmTransactionViewController,
       animated: false,
       completion: nil
@@ -177,11 +177,11 @@ extension KNSendTokenViewCoordinator: KNConfirmTransactionViewControllerDelegate
   func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
     switch event {
     case .cancel:
-      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+      self.navigationController.dismiss(animated: true, completion: {
         self.confirmTransactionViewController = nil
       })
     case .confirm(let type):
-      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+      self.navigationController.dismiss(animated: true, completion: {
         self.confirmTransactionViewController = nil
         if case .transfer(let transaction) = type {
           self.didConfirmTransfer(transaction)

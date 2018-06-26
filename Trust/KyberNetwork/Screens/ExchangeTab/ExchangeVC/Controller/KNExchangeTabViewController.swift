@@ -321,7 +321,6 @@ extension KNExchangeTabViewController {
       - updatedFrom: true if from token is changed
       - updatedTo: true if to token is changed
    */
-  // TODO: Remove default token icon image
   func updateTokensView(updatedFrom: Bool = true, updatedTo: Bool = true) {
     if updatedFrom {
       self.fromTokenButton.setAttributedTitle(

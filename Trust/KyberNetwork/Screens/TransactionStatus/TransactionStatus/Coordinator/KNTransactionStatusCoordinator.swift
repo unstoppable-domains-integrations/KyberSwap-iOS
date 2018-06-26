@@ -32,6 +32,7 @@ class KNTransactionStatusCoordinator: Coordinator {
       delegate: self,
       transaction: self.transaction
     )
+    self.rootViewController?.loadViewIfNeeded()
     self.rootViewController?.modalPresentationStyle = .overCurrentContext
     self.rootViewController?.modalTransitionStyle = .crossDissolve
     self.navigationController.present(self.rootViewController!, animated: true, completion: nil)

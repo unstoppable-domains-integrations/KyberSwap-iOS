@@ -94,7 +94,9 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(self.session.transactionStorage.pendingObjects)
+    let pendingTrans = self.session.transactionStorage.pendingObjects
+    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
+    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     self.navigationController.popToRootViewController(animated: false)
   }
 
@@ -129,6 +131,7 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
     self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
+    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
@@ -209,11 +212,11 @@ extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate
   func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
     switch event {
     case .cancel:
-      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+      self.navigationController.dismiss(animated: true, completion: {
         self.confirmTransactionViewController = nil
       })
     case .confirm(let type):
-      self.navigationController.topViewController?.dismiss(animated: true, completion: {
+      self.navigationController.dismiss(animated: true, completion: {
         self.confirmTransactionViewController = nil
         if case .exchange(let exchangeTransaction) = type {
           self.didConfirmSendExchangeTransaction(exchangeTransaction)
@@ -293,9 +296,9 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
       controller.delegate = self
       return controller
     }()
-    self.confirmTransactionViewController.modalPresentationStyle = .overCurrentContext
+    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
     self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
-    self.navigationController.topViewController?.present(
+    self.navigationController.present(
       self.confirmTransactionViewController,
       animated: true,
       completion: nil

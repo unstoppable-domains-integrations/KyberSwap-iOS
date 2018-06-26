@@ -41,13 +41,35 @@ class KNTransactionCollectionViewCell: UICollectionViewCell {
     }
     let fromAmount: String = EtherNumberFormatter.short.number(from: transaction.makerTokenAmount, decimals: 0)?.shortString(decimals: from.decimals) ?? "0.00"
     let toAmount: String = EtherNumberFormatter.short.number(from: transaction.takerTokenAmount, decimals: 0)?.shortString(decimals: to.decimals) ?? "0.00"
-    self.txDetailsLabel.text = "From \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
+    self.txDetailsLabel.text = "Convert \(fromAmount) \(transaction.makerTokenSymbol) to \(toAmount) \(transaction.takerTokenSymbol)"
 
     let amountSign = transaction.makerAddress == ownerAddress ? "-" : "+"
     let amountColor = transaction.makerAddress == ownerAddress ? UIColor.Kyber.red : UIColor.Kyber.green
 
     self.txAmountLabel.text = "\(amountSign)\(fromAmount) \(transaction.makerTokenSymbol)"
     self.txAmountLabel.textColor = amountColor
+  }
+
+  func updateCell(with pending: Transaction, tokens: [TokenObject], ownerAddress: String) {
+    self.txDateLabel.text = self.dateFormatter.string(from: pending.date)
+    guard let localObject = pending.localizedOperations.first else { return }
+    if localObject.type == "exchange" {
+      // trade/exchange transaction
+      self.txTypeLabel.text = "Exchange"
+      self.txIconImageView.image = UIImage(named: "exchange")
+      let fromAmount: String = String(pending.value.prefix(8))
+      let toAmount: String = String(localObject.value.prefix(8))
+      self.txDetailsLabel.text = "Convert \(fromAmount) \(localObject.symbol ?? "") to \(toAmount) \(localObject.name ?? "")"
+      self.txAmountLabel.text = "+ \(localObject.value.prefix(8)) \(localObject.name ?? "")"
+      self.txAmountLabel.textColor = UIColor.Kyber.green
+    } else {
+      // normal transfer transaction
+      self.txTypeLabel.text = "Send"
+      self.txIconImageView.image = UIImage(named: "transaction_sent")
+      self.txDetailsLabel.text = pending.to
+      self.txAmountLabel.text = "- \(pending.value.prefix(8)) \(localObject.symbol ?? "")"
+      self.txAmountLabel.textColor = UIColor.Kyber.red
+    }
   }
 
   func updateCell(with transaction: KNTokenTransaction, ownerAddress: String) {

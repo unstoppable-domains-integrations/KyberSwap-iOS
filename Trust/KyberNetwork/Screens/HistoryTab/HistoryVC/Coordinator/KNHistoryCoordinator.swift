@@ -16,7 +16,14 @@ class KNHistoryCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
 
   lazy var rootViewController: KNHistoryViewController = {
-    let controller = KNHistoryViewController()
+    let viewModel = KNHistoryViewModel(
+      tokensTxData: [:],
+      tokensTxHeaders: [],
+      pendingTxData: [:],
+      pendingTxHeaders: [],
+      ownerAddress: self.session.wallet.address.description
+    )
+    let controller = KNHistoryViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
     return controller
@@ -31,13 +38,14 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true) {
-      if !self.session.transactionStorage.historyTransactions.isEmpty {
-        self.historyTransactionsDidUpdate(nil)
-      }
-      self.appCoordinatorTokensTransactionsDidUpdate()
-      self.addObserveNotification()
+    if !self.session.transactionStorage.historyTransactions.isEmpty {
+      self.historyTransactionsDidUpdate(nil)
     }
+    self.appCoordinatorTokensTransactionsDidUpdate()
+    let pendingTrans = self.session.transactionStorage.pendingObjects
+    self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+    self.navigationController.pushViewController(self.rootViewController, animated: true)
+    self.addObserveNotification()
   }
 
   fileprivate func addObserveNotification() {
@@ -127,6 +135,33 @@ class KNHistoryCoordinator: Coordinator {
       ownerAddress: self.session.wallet.address.description
     )
   }
+
+  func appCoordinatorPendingTransactionDidUpdate(_ transactions: [Transaction]) {
+    let dates: [String] = {
+      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+      var uniqueDates = [String]()
+      dates.forEach({
+        if !uniqueDates.contains($0) { uniqueDates.append($0) }
+      })
+      return uniqueDates
+    }()
+
+    let sectionData: [String: [Transaction]] = {
+      var data: [String: [Transaction]] = [:]
+      transactions.forEach { tx in
+        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+        trans.append(tx)
+        data[self.dateFormatter.string(from: tx.date)] = trans
+      }
+      return data
+    }()
+
+    self.rootViewController.coordinatorUpdatePendingTransaction(
+      data: sectionData,
+      dates: dates,
+      ownerAddress: self.session.wallet.address.description
+    )
+  }
 }
 
 extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
@@ -134,7 +169,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     switch event {
     case .selectTokenTransaction(let transaction):
       self.openEtherScanForTransaction(with: transaction.id)
-    case .selectHistoryTransaction(let transaction):
+    case .selectPendingTransaction(let transaction):
       self.openEtherScanForTransaction(with: transaction.id)
     case .dismiss:
       self.stop()
@@ -144,7 +179,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   fileprivate func openEtherScanForTransaction(with hash: String) {
     if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
       let controller = SFSafariViewController(url: url)
-      self.navigationController.topViewController?.present(controller, animated: true, completion: nil)
+      self.rootViewController.present(controller, animated: true, completion: nil)
     }
   }
 }

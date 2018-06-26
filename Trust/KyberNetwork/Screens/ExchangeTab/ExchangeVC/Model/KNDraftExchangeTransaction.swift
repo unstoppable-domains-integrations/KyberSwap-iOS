@@ -86,7 +86,7 @@ extension KNDraftExchangeTransaction {
   func toTransaction(hash: String, fromAddr: Address, toAddr: Address, nounce: Int) -> Transaction {
     // temporary: local object contains from and to tokens + expected rate
     let expectedAmount: String = {
-      return (self.amount * self.expectedRate / BigInt(10).power(self.to.decimals)).fullString(decimals: self.to.decimals)
+      return self.expectedReceive.fullString(decimals: self.to.decimals)
     }()
     let localObject = LocalizedOperationObject(
       from: self.from.contract,

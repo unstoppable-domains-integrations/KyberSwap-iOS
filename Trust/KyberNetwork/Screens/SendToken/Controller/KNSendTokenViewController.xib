@@ -285,10 +285,10 @@
             <constraints>
                 <constraint firstItem="gbh-Wa-tXH" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="5sj-A0-eLg"/>
                 <constraint firstItem="b6e-iC-Oke" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="7Bh-YW-VS5"/>
+                <constraint firstItem="b6e-iC-Oke" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="DHv-Ni-n2c"/>
                 <constraint firstItem="gbh-Wa-tXH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wog-dx-8Vy"/>
                 <constraint firstItem="gbh-Wa-tXH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bGZ-xC-wsj"/>
                 <constraint firstItem="gbh-Wa-tXH" firstAttribute="top" secondItem="b6e-iC-Oke" secondAttribute="bottom" id="hgg-K7-RXr"/>
-                <constraint firstItem="b6e-iC-Oke" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lW9-Ti-Ygg"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="b6e-iC-Oke" secondAttribute="trailing" id="t3q-ag-Ra6"/>
                 <constraint firstAttribute="trailing" secondItem="gbh-Wa-tXH" secondAttribute="trailing" id="uKB-QF-bee"/>
             </constraints>

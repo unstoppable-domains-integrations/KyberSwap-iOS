@@ -133,7 +133,6 @@ extension KNAppCoordinator {
     self.balanceCoordinator?.pause()
     self.session.switchSession(wallet)
     self.balanceCoordinator?.restartNewSession(self.session)
-    // wallet tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.kyberGOCoordinator?.updateSession(self.session)
@@ -154,7 +153,6 @@ extension KNAppCoordinator {
       self.restartNewSession(newWallet)
     }
     self.session.removeWallet(wallet)
-    //TODO: Update UI for each tab
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)

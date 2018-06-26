@@ -82,6 +82,7 @@ extension KNBalanceTabCoordinator {
     }()
     self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     self.rootViewController.coordinatorUpdatePendingTransactions(self.session.transactionStorage.pendingObjects)
+    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(self.session.transactionStorage.pendingObjects)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -132,6 +133,7 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
     self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
+    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {

@@ -60,7 +60,7 @@ platform :ios do
           "manhlx.kyber.network" => "iOS Distribution Adhoc Kyber Network"
         }
       }
-    })
+    )
     upload_to_testflight
   end
 
