@@ -22,7 +22,7 @@ platform :ios do
   lane :tests do
     cocoapods(use_bundle_exec: false)
     run_tests(workspace: "Trust.xcworkspace",
-              devices: ["iPhone 6s", "iPhone 6s Plust"],
+              devices: ["iPhone 6s", "iPhone 6s Plus"],
               scheme: "TrustTests",
               clean: false)
   end
@@ -35,6 +35,7 @@ platform :ios do
   desc "TestFlight deployment to itunes connect"
   lane :beta do
     ensure_git_branch(branch: "wallet_1.0_dev")
+    reset_git_repo(force: true)
     ensure_git_status_clean
     git_pull
     increment_build_number()
@@ -49,8 +50,17 @@ platform :ios do
       tags: false
     )
     cocoapods(use_bundle_exec: false)
-    build_app(scheme: "Trust", export_method: "ad-hoc")
-    reset_git_repo(force: true)
+    build_app(
+      scheme: "Trust",
+      export_method: "ad-hoc",
+      export_options: {
+        iCloudContainerEnvironment: "Production",
+        teamID: "HMT2AL7Q6Y",
+        provisioningProfiles: {
+          "manhlx.kyber.network" => "iOS Distribution Adhoc Kyber Network"
+        }
+      }
+    )
     upload_to_testflight
   end
 
