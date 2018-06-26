@@ -8,6 +8,7 @@ KNSecret.swift
 ## Build generated
 build/
 DerivedData/
+xcshareddata/
 
 ## Ignore when build
 .DS_Store
