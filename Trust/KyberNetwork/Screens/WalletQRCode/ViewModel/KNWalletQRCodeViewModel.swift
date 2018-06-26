@@ -10,7 +10,7 @@ struct KNWalletQRCodeViewModel {
   }
 
   var address: String {
-    return self.wallet.address
+    return String(self.wallet.address.prefix(8)) + "......" + String(self.wallet.address.suffix(8))
   }
 
   var shareText: String {

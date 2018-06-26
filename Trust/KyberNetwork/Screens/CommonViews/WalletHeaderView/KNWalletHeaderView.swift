@@ -73,6 +73,11 @@ class KNWalletHeaderView: XibLoaderView {
     // change tint color is not working properly
     self.walletListButton.setImage(UIImage(named: self.viewModel.walletListIcon), for: .normal)
 
+    // Allow tap to open QR code view
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shouldOpenQRCode(_:)))
+    self.containerView.addGestureRecognizer(tapGesture)
+    self.containerView.isUserInteractionEnabled = true
+
     self.debugButton.setTitleColor(self.viewModel.tintColor, for: .normal)
     self.layoutIfNeeded()
   }
@@ -96,6 +101,11 @@ class KNWalletHeaderView: XibLoaderView {
   @IBAction func walletListButtonPressed(_ sender: Any) {
     guard let wallet = self.wallet else { return }
     self.delegate?.walletHeaderWalletListPressed(wallet: wallet, sender: self)
+  }
+
+  @objc func shouldOpenQRCode(_ sender: Any?) {
+    guard let wallet = self.wallet else { return }
+    self.delegate?.walletHeaderScanQRCodePressed(wallet: wallet, sender: self)
   }
 
   @IBAction func debugButtonPressed(_ sender: Any) {
