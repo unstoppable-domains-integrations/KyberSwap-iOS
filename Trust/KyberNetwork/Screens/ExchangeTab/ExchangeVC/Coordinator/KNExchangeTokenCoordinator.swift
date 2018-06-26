@@ -117,8 +117,9 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
+    self.navigationController.popToRootViewController(animated: true)
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
-    self.rootViewController.tabBarController?.selectedIndex = 0
+    self.rootViewController.tabBarController?.selectedIndex = 1
   }
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
