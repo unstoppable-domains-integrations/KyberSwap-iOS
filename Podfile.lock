@@ -10,7 +10,7 @@ PODS:
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - CryptoSwift (0.8.0)
-  - Eureka (4.0.1)
+  - Eureka (4.1.1)
   - Fabric (1.7.2)
   - IQKeyboardManager (5.0.7)
   - JavaScriptKit (1.0.0):
@@ -59,7 +59,7 @@ DEPENDENCIES:
   - Branch
   - Crashlytics
   - CryptoSwift (from `https://github.com/krzyzanowskim/CryptoSwift`, branch `master`)
-  - Eureka (~> 4.0.1)
+  - Eureka (~> 4.1.1)
   - Fabric
   - IQKeyboardManager
   - JavaScriptKit
@@ -149,7 +149,7 @@ SPEC CHECKSUMS:
   Branch: 4f0482418d99e77d15b0e6065ef216c10e24797b
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   CryptoSwift: 475ae2a25439f52412686d68b854c0ca724c8dfd
-  Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
+  Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
   JavaScriptKit: 9ff565209e6efe21bcb9c6d6ca3e863a67a8ecf7
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   TrustKeystore: b9fc8e0d72de3e8f9c97f46802172d6f14a004aa
   TrustWeb3Provider: ac0bdf19b4c6c4d6ec0f03ddb85b83e32bda3a9a
 
-PODFILE CHECKSUM: f9be9100dbd15e742798d0ad40544ea066e2feb4
+PODFILE CHECKSUM: c44cea2059213ae64a9b314edc28706d07974a16
 
 COCOAPODS: 1.5.3

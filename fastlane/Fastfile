@@ -39,13 +39,18 @@ platform :ios do
     git_pull
     increment_build_number()
     git_add
-    version_number = get_version_number(workspace: "Trust.xcworkspace")
-    build_number = get_build_number(workspace: "Trust.xcworkspace")
-    git_commit(message: "Increase build number to " + build_number + " version " + version_number)
-    push_to_git_remote
+    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
+    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "wallet_1.0_dev",
+      remote_branch: "wallet_1.0_dev",
+      tags: false
+    )
     cocoapods(use_bundle_exec: false)
-    sync_code_signing(type: "appstore")
-    build_app(scheme: "Trust")
+    build_app(scheme: "Trust", export_method: "ad-hoc")
+    reset_git_repo(force: true)
     upload_to_testflight
   end
 
