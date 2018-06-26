@@ -114,6 +114,16 @@ class KNHistoryViewModel {
     }
     return nil
   }
+
+  var normalAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 17)!,
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "d8d8d8"),
+  ]
+
+  var selectedAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 17)!,
+    NSAttributedStringKey.foregroundColor: UIColor.white,
+  ]
 }
 
 class KNHistoryViewController: KNBaseViewController {
@@ -163,6 +173,9 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func setupCollectionView() {
     self.segmentedControl.rounded(color: .clear, width: 0, radius: 5.0)
+    self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
+    self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
+
     let nib = UINib(nibName: KNTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNTransactionCollectionViewCell.cellID)
     let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
