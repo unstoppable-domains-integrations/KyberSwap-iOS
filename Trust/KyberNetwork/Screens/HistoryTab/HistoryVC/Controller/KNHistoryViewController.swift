@@ -159,6 +159,7 @@ class KNHistoryViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.updateIsShowingPending(true)
+    self.segmentedControl.selectedSegmentIndex = 0
     self.updateUIWhenDataDidChange()
   }
 
