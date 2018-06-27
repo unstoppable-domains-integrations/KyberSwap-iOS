@@ -159,6 +159,10 @@ extension KNAppCoordinator {
   }
 
   func addNewWallet() {
+    if self.session.keystore.wallets.count == 3 {
+      self.navigationController.showWarningTopBannerMessage(with: "", message: "You can only add at most 3 wallets", time: 2.5)
+      return
+    }
     let addWalletCoordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
     addWalletCoordinator.delegate = self
     self.navigationController.present(
