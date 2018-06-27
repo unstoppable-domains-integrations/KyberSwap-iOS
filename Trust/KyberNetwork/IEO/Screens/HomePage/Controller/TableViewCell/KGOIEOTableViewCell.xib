@@ -87,6 +87,16 @@
                             <action selector="buyButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="rcy-Vw-1Pc"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% bonus" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XnM-bN-7Kh">
+                        <rect key="frame" x="5" y="5" width="80.5" height="22"/>
+                        <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="WLv-bo-T6Q"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="shp-PF-dVq" firstAttribute="top" secondItem="Y7p-sz-9VT" secondAttribute="bottom" constant="5" id="2TV-bQ-duo"/>
@@ -100,18 +110,21 @@
                     <constraint firstItem="shp-PF-dVq" firstAttribute="leading" secondItem="Kdy-7y-kUr" secondAttribute="trailing" constant="15.5" id="Wk4-yH-VsL"/>
                     <constraint firstAttribute="trailing" secondItem="rL9-uY-PLH" secondAttribute="trailing" constant="16" id="XrH-Uf-sIn"/>
                     <constraint firstItem="i81-tP-e2t" firstAttribute="centerY" secondItem="Kdy-7y-kUr" secondAttribute="centerY" id="Yz1-A1-UH0"/>
+                    <constraint firstItem="XnM-bN-7Kh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="cwL-ue-Dlw"/>
                     <constraint firstItem="Kdy-7y-kUr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="hmM-eH-AHf"/>
                     <constraint firstItem="shp-PF-dVq" firstAttribute="bottom" secondItem="Kdy-7y-kUr" secondAttribute="bottom" id="jmw-h1-pLy"/>
                     <constraint firstAttribute="bottom" secondItem="Kdy-7y-kUr" secondAttribute="bottom" constant="16" id="lyj-G6-orD"/>
                     <constraint firstItem="i81-tP-e2t" firstAttribute="leading" secondItem="lXC-wQ-lba" secondAttribute="leading" id="oPj-21-Na1"/>
                     <constraint firstItem="rL9-uY-PLH" firstAttribute="leading" secondItem="lXC-wQ-lba" secondAttribute="trailing" constant="16" id="wkm-aC-YCp"/>
                     <constraint firstItem="rL9-uY-PLH" firstAttribute="top" secondItem="lXC-wQ-lba" secondAttribute="top" id="xqE-1o-e0Y"/>
+                    <constraint firstItem="XnM-bN-7Kh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="z9O-M0-w1a"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="buyButton" destination="rL9-uY-PLH" id="QLo-Ww-kSb"/>
+                <outlet property="ieoHighlightLabel" destination="XnM-bN-7Kh" id="icD-G5-EK1"/>
                 <outlet property="nameLabel" destination="lXC-wQ-lba" id="QmL-Uh-LKj"/>
                 <outlet property="progressView" destination="Y7p-sz-9VT" id="NLP-TE-aYE"/>
                 <outlet property="raisedAmountLabel" destination="shp-PF-dVq" id="0Nn-4w-daR"/>

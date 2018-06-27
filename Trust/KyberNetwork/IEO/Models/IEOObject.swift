@@ -127,6 +127,24 @@ extension IEOObject {
     return Float(raised / cap)
   }
 
+  var isSoldOut: Bool { return self.progress >= 0.9999 }
+  var getAmountBonus: String? {
+    let bonusDateFormatter: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy-MM-dd'T'hh:mm"
+      return formatter
+    }()
+    for id in 0..<self.bonusInfoFields.count {
+      // field is bonus amount, value is end date
+      let field = self.bonusInfoFields[id]
+      let value = self.bonusInfoValues[id]
+      if let date = bonusDateFormatter.date(from: value) {
+        if date.timeIntervalSince(Date()) > 0 { return field }
+      }
+    }
+    return nil
+  }
+
   var raisedText: String {
     return (BigInt(raised) * BigInt(10).power(tokenDecimals)).string(
       decimals: self.tokenDecimals,

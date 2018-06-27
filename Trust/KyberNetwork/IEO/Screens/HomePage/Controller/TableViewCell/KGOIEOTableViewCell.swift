@@ -10,10 +10,32 @@ protocol KGOIEOTableViewCellDelegate: class {
 }
 
 struct KGOIEOTableViewCellModel {
+  let bonusDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-ddThh:mm"
+    return formatter
+  }()
+
   fileprivate let object: IEOObject
 
   init(object: IEOObject) {
     self.object = object
+  }
+
+  var highlightText: String? {
+    // check sold out
+    if self.object.isSoldOut { return " Sold Out ".toBeLocalised() }
+    // check bonus
+    if let bonus = self.object.getAmountBonus { return " Bonus \(bonus)% " }
+    return nil
+  }
+
+  var highlightTextBackgroundColor: UIColor {
+    // check sold out
+    if self.object.isSoldOut { return UIColor(hex: "f89f50") }
+    // check bonus
+    if self.object.getAmountBonus != nil { return UIColor(hex: "31cb9e") }
+    return UIColor.white
   }
 
   var displayedName: String { return object.name }
@@ -53,6 +75,8 @@ struct KGOIEOTableViewCellModel {
 
 class KGOIEOTableViewCell: UITableViewCell {
 
+  @IBOutlet weak var ieoHighlightLabel: UILabel!
+
   @IBOutlet weak var tokenIconImageView: UIImageView!
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
@@ -90,12 +114,16 @@ class KGOIEOTableViewCell: UITableViewCell {
     self.raisedAmountLabel.text = "0.0"
     self.raisedPercentLabel.text = "0.00 %"
 
+    self.ieoHighlightLabel.rounded(color: UIColor.white, width: 1.0, radius: 4.0)
+    self.ieoHighlightLabel.text = ""
     self.buyButton.rounded(radius: 4.0)
   }
 
   func updateView(with model: KGOIEOTableViewCellModel) {
     self.model = model
     self.tokenIconImageView.setImage(with: model.iconURL, placeholder: nil)
+    self.ieoHighlightLabel.text = model.highlightText
+    self.ieoHighlightLabel.backgroundColor = model.highlightTextBackgroundColor
     self.nameLabel.text = model.displayedName
     self.timeLabel.text = model.displayedTime
     self.progressView.progress = model.progress
@@ -121,6 +149,8 @@ class KGOIEOTableViewCell: UITableViewCell {
     }
     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
       self?.timeLabel.text = self?.model?.displayedTime
+      self?.ieoHighlightLabel.text = self?.model?.highlightText
+      self?.ieoHighlightLabel.backgroundColor = self?.model?.highlightTextBackgroundColor
     })
     self.layoutIfNeeded()
   }

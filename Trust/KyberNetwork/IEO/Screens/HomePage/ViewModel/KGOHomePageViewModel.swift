@@ -17,8 +17,8 @@ class KGOHomePageViewModel {
   func updateObjects(_ objects: [IEOObject]) {
     self.ieoObjects = objects
     self.pastObjects = objects.filter({ $0.type == .past })
-    self.activeObjects = objects.filter({ $0.type == .active })
-    self.upcomingObjects = objects.filter({ $0.type == .upcoming })
+    self.activeObjects = objects.filter({ $0.type == .active }).sorted(by: { return $0.endDate < $1.endDate })
+    self.upcomingObjects = objects.filter({ $0.type == .upcoming }).sorted(by: { return $0.startDate < $1.startDate })
     self.dataSet = []
     self.titles = []
     if !self.activeObjects.isEmpty {

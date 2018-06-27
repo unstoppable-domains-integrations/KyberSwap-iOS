@@ -95,7 +95,7 @@ class KGOHomePageViewController: KNBaseViewController {
 
 extension KGOHomePageViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: false)
     let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
     self.delegate?.kyberGOHomePageViewController(self, run: .select(object: object))
   }
