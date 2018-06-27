@@ -23,15 +23,15 @@ class KGOHomePageViewModel {
     self.titles = []
     if !self.activeObjects.isEmpty {
       self.dataSet.append(self.activeObjects)
-      self.titles.append("Active KGO")
+      self.titles.append("Active Token Sales")
     }
     if !self.upcomingObjects.isEmpty {
       self.dataSet.append(self.upcomingObjects)
-      self.titles.append("Upcoming KGO")
+      self.titles.append("Upcoming Token Sales")
     }
     if !self.pastObjects.isEmpty {
       self.dataSet.append(self.pastObjects)
-      self.titles.append("Past KGO")
+      self.titles.append("Past Token Sales")
     }
   }
 

@@ -24,6 +24,7 @@ struct KGOIEOTableViewCellModel {
 
   var highlightText: String? {
     // check sold out
+    if self.object.type != .active { return "" }
     if self.object.isSoldOut { return " Sold Out ".toBeLocalised() }
     // check bonus
     if let bonus = self.object.getAmountBonus { return " Bonus \(bonus)% " }

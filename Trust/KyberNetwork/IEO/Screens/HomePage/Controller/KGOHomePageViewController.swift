@@ -56,7 +56,7 @@ class KGOHomePageViewController: KNBaseViewController {
   }
 
   fileprivate func setupTopView() {
-    self.kyberGOLabel.text = "Kyber GO"
+    self.kyberGOLabel.text = "KyberGO"
     self.userAccountImageView.rounded(radius: self.userAccountImageView.frame.width / 2.0)
     self.userAccountImageView.backgroundColor = UIColor(hex: "f5f5f5")
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.accountImageViewDidTap(_:)))

@@ -422,8 +422,8 @@ class IEOBuyTokenViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
-  @IBAction func screenEdgePanGestureAction(_ sender: Any) {
-    self.delegate?.ieoBuyTokenViewController(self, run: .close)
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended { self.delegate?.ieoBuyTokenViewController(self, run: .close) }
   }
 
   fileprivate func reloadDataFromNode() {

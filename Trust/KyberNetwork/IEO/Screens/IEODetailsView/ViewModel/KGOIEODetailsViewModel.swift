@@ -58,14 +58,44 @@ class KGOIEODetailsViewModel {
     return "1 ETH = \(string) \(object.tokenSymbol)"
   }
 
+  var buyTokenButtonEnabled: Bool {
+    return self.object.type == .active && !self.object.isSoldOut
+  }
+
   var buyTokenButtonTitle: String {
-    if self.object.progress == 1 { return "Solve Out" }
+    if self.object.type == .past { return "Ended" }
+    if self.object.type == .upcoming { return "Coming Soon" }
+    if self.object.isSoldOut { return "Solve Out" }
+    if let bonusAmount = self.object.getAmountBonus {
+      return "Buy Tokens\n +\(bonusAmount)%"
+    }
     return "Buy Tokens"
   }
 
   var buyTokenButtonBackgroundColor: UIColor {
-    if self.object.progress == 1 { return UIColor(hex: "F89F50") }
+    if self.object.type == .past { return UIColor(hex: "adb6ba") }
+    if self.object.type == .upcoming { return UIColor(hex: "fad961") }
+    if self.object.isSoldOut { return UIColor(hex: "F89F50") }
     return UIColor(hex: "31CB9E")
+  }
+
+  var isBonusEndDateHidden: Bool { return self.object.getAmountBonus == nil }
+  var bonusEndText: String {
+    func displayDynamicTime(for time: TimeInterval) -> String {
+      let timeInt = Int(floor(time))
+      let timeDay: Int = 60 * 60 * 24
+      let timeHour: Int = 60 * 60
+      let timeMin: Int = 60
+      let day = timeInt / timeDay
+      let hour = (timeInt % timeDay) / timeHour
+      let min = (timeInt % timeHour) / timeMin
+      let sec = timeInt % timeMin
+      return "\(day)d \(hour)h \(min)m \(sec)s"
+    }
+    if let date = self.object.getCurrentBonus.0, date.timeIntervalSince(Date()) > 0 {
+      return "Bonus End In: \(displayDynamicTime(for: date.timeIntervalSince(Date())))"
+    }
+    return ""
   }
 
   var displayedDayAttributedString: NSAttributedString {

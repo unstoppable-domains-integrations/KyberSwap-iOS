@@ -208,9 +208,9 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
         let listObjects = IEOObjectStorage.shared.objects.filter { return $0.type == selectedObject.type }
         let title: String = {
           switch selectedObject.type {
-          case .past: return "Past KGO"
-          case .active: return "Active KGO"
-          case .upcoming: return "Upcoming KGO"
+          case .past: return "Past Token Sales"
+          case .active: return "Active Token Sales"
+          case .upcoming: return "Upcoming Token Sales"
           }
         }()
         return IEOListViewModel(

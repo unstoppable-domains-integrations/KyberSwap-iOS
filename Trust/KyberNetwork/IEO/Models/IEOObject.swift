@@ -128,7 +128,7 @@ extension IEOObject {
   }
 
   var isSoldOut: Bool { return self.progress >= 0.9999 }
-  var getAmountBonus: String? {
+  var getCurrentBonus: (Date?, String?) {
     let bonusDateFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd'T'hh:mm"
@@ -139,10 +139,14 @@ extension IEOObject {
       let field = self.bonusInfoFields[id]
       let value = self.bonusInfoValues[id]
       if let date = bonusDateFormatter.date(from: value) {
-        if date.timeIntervalSince(Date()) > 0 { return field }
+        return (date, field)
       }
     }
-    return nil
+    return (nil, nil)
+  }
+
+  var getAmountBonus: String? {
+    return self.getCurrentBonus.1
   }
 
   var raisedText: String {

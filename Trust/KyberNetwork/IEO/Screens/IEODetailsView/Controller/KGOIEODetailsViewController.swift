@@ -31,6 +31,8 @@ class KGOIEODetailsViewController: KNBaseViewController {
 
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var buyTokenButton: UIButton!
+  @IBOutlet weak var bonusEndDateLabel: UILabel!
+
   @IBOutlet weak var descriptionLabel: UILabel!
   @IBOutlet weak var whitePaperButton: UIButton!
 
@@ -90,10 +92,6 @@ class KGOIEODetailsViewController: KNBaseViewController {
       width: 0.5,
       radius: self.iconImageView.frame.width / 2.0
     )
-//    self.iconImageView.addShadow(
-//      color: UIColor.black.withAlphaComponent(0.5),
-//      offset: CGSize(width: 0, height: 2)
-//    )
     if let url = self.viewModel.iconURL {
       self.iconImageView.setImage(with: url, placeholder: nil)
     }
@@ -107,12 +105,15 @@ class KGOIEODetailsViewController: KNBaseViewController {
     self.progressView.transform = self.progressView.transform.scaledBy(x: 1, y: 5.0)
     self.progressView.rounded(radius: 2.5)
     self.buyTokenButton.rounded(radius: 4.0)
-
-    self.updateDisplayRateAndBonus()
-    self.updateProgess()
+    self.buyTokenButton.titleLabel?.numberOfLines = 2
+    self.buyTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
+    self.buyTokenButton.titleLabel?.textAlignment = .center
 
     self.descriptionLabel.text = self.viewModel.displayedDesc
     self.whitePaperButton.setAttributedTitle(self.viewModel.whitePaperAttributedText, for: .normal)
+
+    self.updateDisplayRateAndBonus()
+    self.updateProgess()
   }
 
   fileprivate func updateDisplayTime() {
@@ -121,6 +122,7 @@ class KGOIEODetailsViewController: KNBaseViewController {
     self.hoursLabel.attributedText = self.viewModel.displayedHourAttributedString
     self.minutesLabel.attributedText = self.viewModel.displayedMinuteAttributedString
     self.secondsLabel.attributedText = self.viewModel.displayedSecondAttributedString
+    self.updateProgess()
   }
 
   fileprivate func updateDisplayRateAndBonus() {
@@ -133,8 +135,15 @@ class KGOIEODetailsViewController: KNBaseViewController {
     self.raisedAmountLabel.text = self.viewModel.displayedRaisedAmount
     self.raisedPercentLabel.text = self.viewModel.displayedRaisedPercent
 
+    self.buyTokenButton.isEnabled = self.viewModel.buyTokenButtonEnabled
     self.buyTokenButton.setTitle(self.viewModel.buyTokenButtonTitle, for: .normal)
     self.buyTokenButton.backgroundColor = self.viewModel.buyTokenButtonBackgroundColor
+
+    self.bonusEndDateLabel.isHidden = self.viewModel.isBonusEndDateHidden
+    if !self.bonusEndDateLabel.isHidden {
+      self.bonusEndDateLabel.text = self.viewModel.bonusEndText
+    }
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func buyTokenButtonPressed(_ sender: Any) {
