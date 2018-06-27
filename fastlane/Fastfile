@@ -52,12 +52,12 @@ platform :ios do
     cocoapods(use_bundle_exec: false)
     build_app(
       scheme: "Trust",
-      export_method: "ad-hoc",
+      export_method: "app-store",
       export_options: {
         iCloudContainerEnvironment: "Production",
         teamID: "HMT2AL7Q6Y",
         provisioningProfiles: {
-          "manhlx.kyber.network" => "iOS Distribution Adhoc Kyber Network"
+          "manhlx.kyber.network" => "iOS Distribution AppStore Kyber Network"
         }
       }
     )
