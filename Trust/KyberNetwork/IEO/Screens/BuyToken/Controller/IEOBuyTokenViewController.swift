@@ -179,9 +179,6 @@ class IEOBuyTokenViewModel {
 
     self.balances = [:]
     self.balance = nil
-
-    self.estRate = nil
-    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
   }
 
   func updateSelectedToken(_ token: TokenObject) {
@@ -325,13 +322,15 @@ class IEOBuyTokenViewController: KNBaseViewController {
     self.receivedAmountTextField.delegate = self
     self.buyAmountTextField.delegate = self
 
-    self.fromTokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText(isSource: true), for: .normal)
-    self.toIEOButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText(isSource: false), for: .normal)
-
-    self.balanceTextLabel.text = self.viewModel.balanceTextString
-    self.tokenBalanceLabel.text = self.viewModel.balanceText
-
-    self.rateLabel.text = self.viewModel.exchangeRateText
+    self.fromTokenButton.setAttributedTitle(
+      self.viewModel.tokenButtonAttributedText(isSource: true),
+      for: .normal
+    )
+    self.toIEOButton.setAttributedTitle(
+      self.viewModel.tokenButtonAttributedText(isSource: false),
+      for: .normal
+    )
+    self.updateBalanceAndRate()
   }
 
   fileprivate func setupGasPriceView() {
@@ -343,6 +342,13 @@ class IEOBuyTokenViewController: KNBaseViewController {
   fileprivate func setupSelectWallet() {
     self.selectWalletButton.rounded(radius: 4)
     self.selectWalletButton.setTitle(self.viewModel.walletButtonTitle, for: .normal)
+  }
+
+  fileprivate func updateBalanceAndRate() {
+    self.balanceTextLabel.text = self.viewModel.balanceTextString
+    self.tokenBalanceLabel.text = self.viewModel.balanceText
+
+    self.rateLabel.text = self.viewModel.exchangeRateText
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -369,7 +375,36 @@ class IEOBuyTokenViewController: KNBaseViewController {
   }
 
   @IBAction func selectWalletButtonPressed(_ sender: Any) {
-    self.showWarningTopBannerMessage(with: "", message: "Unsupported feature")
+    guard let user = IEOUserStorage.shared.user else { return }
+    let wallets = KNWalletStorage.shared.wallets.filter {
+      return user.registeredAddress.contains($0.address.lowercased())
+    }
+    if wallets.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: "",
+        message: "You need to add at least one registered address with KyberGO to buy token.",
+        time: 2.5
+      )
+      return
+    }
+    let wallet: KNWalletObject = {
+      if let id = wallets.index(of: self.viewModel.walletObject) {
+        return wallets[(id + 1) % wallets.count]
+      }
+      return wallets[0]
+    }()
+    if wallet == self.viewModel.walletObject {
+      self.showWarningTopBannerMessage(
+        with: "",
+        message: "To user another address, you'll need to import it first",
+        time: 2.5
+      )
+      return
+    }
+    self.viewModel.updateWallet(wallet)
+    self.selectWalletButton.setTitle(self.viewModel.walletButtonTitle, for: .normal)
+    self.updateBalanceAndRate()
+    self.reloadDataFromNode()
   }
 
   @objc func gasPriceSegmentedControlDidTouch(_ sender: Any) {

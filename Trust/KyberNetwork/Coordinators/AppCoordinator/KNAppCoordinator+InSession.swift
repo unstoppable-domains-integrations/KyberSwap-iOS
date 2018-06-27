@@ -70,7 +70,7 @@ extension KNAppCoordinator {
     }()
     self.exchangeCoordinator?.navigationController.tabBarItem = {
       let tabBarItem = UITabBarItem(
-        title: "Exchange".toBeLocalised(),
+        title: "KyberSwap".toBeLocalised(),
         image: UIImage(named: "exchange_tab_icon"),
         selectedImage: UIImage(named: "exchange_tab_icon")
       )
