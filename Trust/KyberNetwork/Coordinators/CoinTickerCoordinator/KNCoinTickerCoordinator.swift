@@ -66,30 +66,34 @@ class KNCoinTickerCoordinator {
 
   fileprivate  func fetchCoinTickers(limit: Int = 0, currency: String = "USD", completion: ((Result<[KNCoinTicker], AnyError>) -> Void)?) {
     print("---- Coin Tickers: Fetching limit: \(limit), currency: \(currency) ----")
-    self.provider.request(.loadCoinTickers(limit: limit, currency: currency)) { [weak self] result in
-      guard let `self` = self else { return }
-      if self.isLoadingAllCoinTickers == false { return }
-      switch result {
-      case .success(let resp):
-        do {
-          let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
-          let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
-          var supportedTickers: [KNCoinTicker] = []
-          KNSupportedTokenStorage.shared.supportedTokens.forEach({ token in
-            if let coinTicker = coinTickers.first(where: { $0.isData(for: token) }) {
-              supportedTickers.append(coinTicker)
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.loadCoinTickers(limit: limit, currency: currency)) { [weak self] result in
+        DispatchQueue.main.async {
+          guard let `self` = self else { return }
+          if self.isLoadingAllCoinTickers == false { return }
+          switch result {
+          case .success(let resp):
+            do {
+              let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
+              let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
+              var supportedTickers: [KNCoinTicker] = []
+              KNSupportedTokenStorage.shared.supportedTokens.forEach({ token in
+                if let coinTicker = coinTickers.first(where: { $0.isData(for: token) }) {
+                  supportedTickers.append(coinTicker)
+                }
+              })
+              KNCoinTickerStorage.shared.update(coinTickers: supportedTickers)
+              KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
+              print("---- Coin Tickers: Successful limit: \(limit), currency: \(currency) ----")
+              completion?(.success(coinTickers))
+            } catch let error {
+              completion?(.failure(AnyError(error)))
             }
-          })
-          KNCoinTickerStorage.shared.update(coinTickers: supportedTickers)
-          KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
-          print("---- Coin Tickers: Successful limit: \(limit), currency: \(currency) ----")
-          completion?(.success(coinTickers))
-        } catch let error {
-          completion?(.failure(AnyError(error)))
+          case .failure(let error):
+            print("---- Coin Tickers: Fetch error: \(error.prettyError) ----")
+            completion?(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        print("---- Coin Tickers: Fetch error: \(error.prettyError) ----")
-        completion?(.failure(AnyError(error)))
       }
     }
   }

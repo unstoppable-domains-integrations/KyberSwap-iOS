@@ -98,7 +98,7 @@
                                     </constraints>
                                 </tableView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No pending transaction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9i-tN-7SW">
-                                    <rect key="frame" x="16" y="31.5" width="188" height="17"/>
+                                    <rect key="frame" x="16" y="16.5" width="188" height="17"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                                     <nil key="textColor"/>
@@ -122,7 +122,7 @@
                                 <constraint firstItem="o9i-tN-7SW" firstAttribute="centerX" secondItem="sad-Rt-dMF" secondAttribute="centerX" id="DVA-Ts-xah"/>
                                 <constraint firstAttribute="trailing" secondItem="o9i-tN-7SW" secondAttribute="trailing" constant="16" id="IGM-TP-GMr"/>
                                 <constraint firstItem="vuO-W4-4eH" firstAttribute="leading" secondItem="sad-Rt-dMF" secondAttribute="leading" id="RF2-mB-yNZ"/>
-                                <constraint firstItem="o9i-tN-7SW" firstAttribute="centerY" secondItem="sad-Rt-dMF" secondAttribute="centerY" id="Tec-cE-gQx"/>
+                                <constraint firstItem="o9i-tN-7SW" firstAttribute="centerY" secondItem="sad-Rt-dMF" secondAttribute="centerY" constant="-15" id="Tec-cE-gQx"/>
                                 <constraint firstAttribute="height" constant="80" id="ZaE-pv-OSJ"/>
                                 <constraint firstItem="o9i-tN-7SW" firstAttribute="leading" secondItem="sad-Rt-dMF" secondAttribute="leading" constant="16" id="rO5-hX-S4h"/>
                                 <constraint firstAttribute="bottom" secondItem="f9M-BC-Uae" secondAttribute="bottom" id="sTc-mk-QuK"/>

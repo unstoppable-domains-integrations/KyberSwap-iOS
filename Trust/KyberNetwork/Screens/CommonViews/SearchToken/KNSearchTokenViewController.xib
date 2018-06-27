@@ -39,7 +39,7 @@
                             <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="tintColor" red="0.72156862745098038" green="0.72941176470588232" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="barTintColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" keyboardType="webSearch" returnKeyType="done" textContentType="name"/>
                         </searchBar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-j2-iod">
                             <rect key="frame" x="312" y="37.5" width="47" height="29"/>

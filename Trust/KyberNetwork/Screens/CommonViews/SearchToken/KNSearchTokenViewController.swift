@@ -90,7 +90,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.searchBar.isTranslucent = true
     self.searchBar.delegate = self
-    searchBar.backgroundImage = UIImage()
+    self.searchBar.backgroundImage = UIImage()
     let nib = UINib(nibName: KNSearchTokenTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kSearchTokenTableViewCellID)
     self.tokensTableView.rowHeight = 46
@@ -130,6 +130,10 @@ extension KNSearchTokenViewController: UISearchBarDelegate {
     searchBar.text = text
     self.searchTextDidChange(text)
     return false
+  }
+
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    self.searchBar.resignFirstResponder()
   }
 }
 

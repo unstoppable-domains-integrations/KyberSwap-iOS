@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import SafariServices
 
 enum KNBalanceTabHamburgerMenuViewEvent {
   case select(wallet: KNWalletObject)
@@ -50,7 +51,8 @@ struct KNBalanceTabHamburgerMenuViewModel {
     self.currentWallet = currentWallet
   }
 
-  func transaction(at row: Int) -> Transaction {
+  func transaction(at row: Int) -> Transaction? {
+    if row >= self.pendingTransactions.count { return nil }
     return self.pendingTransactions[row]
   }
 
@@ -282,9 +284,12 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
         }
       }
     } else {
-      let tx = self.viewModel.transaction(at: indexPath.row).id
+      let tx = self.viewModel.transaction(at: indexPath.row)?.id ?? ""
       if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "tx/\(tx)") {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        self.hideMenu(animated: true) {
+          let safariVC = SFSafariViewController(url: url)
+          self.present(safariVC, animated: true, completion: nil)
+        }
       }
     }
   }
@@ -325,7 +330,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     cell.imageView?.image = UIImage(named: "loading_icon")
     let transaction = self.viewModel.transaction(at: indexPath.row)
     cell.imageView?.startRotating()
-    cell.textLabel?.text = transaction.shortDesc
+    cell.textLabel?.text = transaction?.shortDesc
     cell.backgroundColor = UIColor.clear
     return cell
   }
@@ -334,6 +339,6 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
 // to be able select table view cell
 extension KNBalanceTabHamburgerMenuViewController: UIGestureRecognizerDelegate {
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    return !(touch.view?.isDescendant(of: self.walletListTableView) == true)
+    return !(touch.view?.isDescendant(of: self.walletListTableView) == true || touch.view?.isDescendant(of: self.pendingTableView) == true)
   }
 }

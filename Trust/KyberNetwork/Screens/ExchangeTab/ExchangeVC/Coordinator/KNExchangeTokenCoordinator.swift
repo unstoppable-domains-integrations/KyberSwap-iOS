@@ -210,19 +210,17 @@ extension KNExchangeTokenCoordinator {
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
   func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
-    switch event {
-    case .cancel:
-      self.navigationController.dismiss(animated: true, completion: {
+    self.navigationController.dismiss(animated: true, completion: {
+      switch event {
+      case .cancel:
         self.confirmTransactionViewController = nil
-      })
-    case .confirm(let type):
-      self.navigationController.dismiss(animated: true, completion: {
+      case .confirm(let type):
         self.confirmTransactionViewController = nil
         if case .exchange(let exchangeTransaction) = type {
           self.didConfirmSendExchangeTransaction(exchangeTransaction)
         }
-      })
-    }
+      }
+    })
   }
 }
 

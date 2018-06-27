@@ -75,8 +75,8 @@ class KNWalletHeaderView: XibLoaderView {
 
     // Allow tap to open QR code view
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shouldOpenQRCode(_:)))
-    self.containerView.addGestureRecognizer(tapGesture)
-    self.containerView.isUserInteractionEnabled = true
+    self.walletInfoLabel.addGestureRecognizer(tapGesture)
+    self.walletInfoLabel.isUserInteractionEnabled = true
 
     self.debugButton.setTitleColor(self.viewModel.tintColor, for: .normal)
     self.layoutIfNeeded()

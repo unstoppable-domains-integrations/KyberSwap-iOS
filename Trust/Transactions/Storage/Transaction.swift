@@ -86,3 +86,20 @@ extension Transaction {
       return "\(object.symbol ?? "") -> \(object.name ?? "")"
     }
 }
+
+extension Transaction {
+  func getTokenObject() -> TokenObject? {
+    guard let localObject = self.localizedOperations.first, localObject.type == "transfer" else {
+      return nil
+    }
+    return TokenObject(
+      contract: localObject.contract ?? "",
+      name: localObject.name ?? "",
+      symbol: localObject.symbol ?? "",
+      decimals: localObject.decimals,
+      value: "0",
+      isCustom: false,
+      isDisabled: false
+    )
+  }
+}

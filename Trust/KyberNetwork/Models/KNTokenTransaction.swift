@@ -76,3 +76,37 @@ extension KNTokenTransaction {
     )
   }
 }
+
+extension KNTokenTransaction {
+  func toTransaction() -> Transaction {
+    let amountString: String = {
+      let number = EtherNumberFormatter.short.number(from: self.value, decimals: 0)
+      let amount: String = number?.shortString(decimals: Int(self.tokenDecimal) ?? 0) ?? "0.0"
+      return amount
+    }()
+    let localObject = LocalizedOperationObject(
+      from: from,
+      to: to,
+      contract: contractAddress,
+      type: "transfer",
+      value: amountString,
+      symbol: tokenSymbol,
+      name: tokenName,
+      decimals: Int(tokenDecimal) ?? 0
+    )
+    return Transaction(
+      id: id,
+      blockNumber: blockNumber,
+      from: from,
+      to: to,
+      value: amountString,
+      gas: gas,
+      gasPrice: gasPrice,
+      gasUsed: gasUsed,
+      nonce: nonce,
+      date: date,
+      localizedOperations: [localObject],
+      state: .completed
+    )
+  }
+}

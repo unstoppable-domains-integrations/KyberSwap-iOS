@@ -3,8 +3,7 @@
 import UIKit
 
 enum KNHistoryViewEvent {
-  case selectPendingTransaction(transaction: Transaction)
-  case selectTokenTransaction(transaction: KNTokenTransaction)
+  case selectTransaction(transaction: Transaction)
   case dismiss
 }
 
@@ -15,8 +14,8 @@ protocol KNHistoryViewControllerDelegate: class {
 class KNHistoryViewModel {
   fileprivate(set) var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
 
-  fileprivate(set) var tokensTxData: [String: [KNTokenTransaction]] = [:]
-  fileprivate(set) var tokensTxHeaders: [String] = []
+  fileprivate(set) var completedTxData: [String: [Transaction]] = [:]
+  fileprivate(set) var completedTxHeaders: [String] = []
 
   fileprivate(set) var pendingTxData: [String: [Transaction]] = [:]
   fileprivate(set) var pendingTxHeaders: [String] = []
@@ -27,15 +26,15 @@ class KNHistoryViewModel {
 
   init(
     tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens,
-    tokensTxData: [String: [KNTokenTransaction]],
-    tokensTxHeaders: [String],
+    completedTxData: [String: [Transaction]],
+    completedTxHeaders: [String],
     pendingTxData: [String: [Transaction]],
     pendingTxHeaders: [String],
     ownerAddress: String
     ) {
     self.tokens = tokens
-    self.tokensTxData = tokensTxData
-    self.tokensTxHeaders = tokensTxHeaders
+    self.completedTxData = completedTxData
+    self.completedTxHeaders = completedTxHeaders
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
     self.ownerAddress = ownerAddress
@@ -55,9 +54,9 @@ class KNHistoryViewModel {
     self.pendingTxHeaders = pendingTxHeaders
   }
 
-  func update(tokenTxData: [String: [KNTokenTransaction]], tokenTxHeaders: [String]) {
-    self.tokensTxData = tokenTxData
-    self.tokensTxHeaders = tokenTxHeaders
+  func update(completedTxData: [String: [Transaction]], completedTxHeaders: [String]) {
+    self.completedTxData = completedTxData
+    self.completedTxHeaders = completedTxHeaders
   }
 
   func updateOwnerAddress(_ ownerAddress: String) {
@@ -83,25 +82,25 @@ class KNHistoryViewModel {
 
   var numberSections: Int {
     if self.isShowingPending { return self.pendingTxHeaders.count }
-    return self.tokensTxHeaders.count
+    return self.completedTxHeaders.count
   }
 
   func header(for section: Int) -> String {
     let header: String = {
       if self.isShowingPending { return self.pendingTxHeaders[section] }
-      return self.tokensTxHeaders[section]
+      return self.completedTxHeaders[section]
     }()
     return header
   }
 
   func numberRows(for section: Int) -> Int {
     let header = self.header(for: section)
-    return (self.isShowingPending ? self.pendingTxData[header]?.count : self.tokensTxData[header]?.count) ?? 0
+    return (self.isShowingPending ? self.pendingTxData[header]?.count : self.completedTxData[header]?.count) ?? 0
   }
 
-  func tokenTransaction(for row: Int, at section: Int) -> KNTokenTransaction? {
+  func completedTransaction(for row: Int, at section: Int) -> Transaction? {
     let header = self.header(for: section)
-    if let trans = self.tokensTxData[header], trans.count >= row {
+    if let trans = self.completedTxData[header], trans.count >= row {
       return trans[row]
     }
     return nil
@@ -177,8 +176,8 @@ class KNHistoryViewController: KNBaseViewController {
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
 
-    let nib = UINib(nibName: KNTransactionCollectionViewCell.className, bundle: nil)
-    self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNTransactionCollectionViewCell.cellID)
+    let nib = UINib(nibName: KNHistoryTransactionCollectionViewCell.className, bundle: nil)
+    self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID)
     let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
     self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
@@ -214,20 +213,12 @@ class KNHistoryViewController: KNBaseViewController {
 }
 
 extension KNHistoryViewController {
-  func coordinatorUpdateHistoryTransactions(
-    data: [String: [KNHistoryTransaction]],
+  func coordinatorUpdateCompletedTransactions(
+    data: [String: [Transaction]],
     dates: [String],
     ownerAddress: String
     ) {
-    self.updateUIWhenDataDidChange()
-  }
-
-  func coordinatorUpdateTokenTransactions(
-    data: [String: [KNTokenTransaction]],
-    dates: [String],
-    ownerAddress: String
-    ) {
-    self.viewModel.update(tokenTxData: data, tokenTxHeaders: dates)
+    self.viewModel.update(completedTxData: data, completedTxHeaders: dates)
     self.viewModel.updateOwnerAddress(ownerAddress)
     self.updateUIWhenDataDidChange()
   }
@@ -246,10 +237,10 @@ extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if self.segmentedControl.selectedSegmentIndex == 0 {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
-      self.delegate?.historyViewController(self, run: .selectPendingTransaction(transaction: transaction))
+      self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
     } else {
-      guard let transaction = self.viewModel.tokenTransaction(for: indexPath.row, at: indexPath.section) else { return }
-      self.delegate?.historyViewController(self, run: .selectTokenTransaction(transaction: transaction))
+      guard let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return }
+      self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
     }
   }
 }
@@ -264,10 +255,10 @@ extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(
-      width: collectionView.frame.width,
-      height: KNTransactionCollectionViewCell.cellHeight
-    )
+      return CGSize(
+        width: collectionView.frame.width,
+        height: KNHistoryTransactionCollectionViewCell.height
+      )
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -288,13 +279,22 @@ extension KNHistoryViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNTransactionCollectionViewCell.cellID, for: indexPath) as! KNTransactionCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID, for: indexPath) as! KNHistoryTransactionCollectionViewCell
+    cell.delegate = self
     if self.viewModel.isShowingPending {
       guard let tx = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
-      cell.updateCell(with: tx, tokens: self.viewModel.tokens, ownerAddress: self.viewModel.ownerAddress)
+      let model = KNHistoryTransactionCollectionViewModel(
+        transaction: tx,
+        ownerAddress: self.viewModel.ownerAddress
+      )
+      cell.updateCell(with: model)
     } else {
-      guard let tx = self.viewModel.tokenTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
-      cell.updateCell(with: tx, ownerAddress: self.viewModel.ownerAddress)
+      guard let tx = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
+      let model = KNHistoryTransactionCollectionViewModel(
+        transaction: tx,
+        ownerAddress: self.viewModel.ownerAddress
+      )
+      cell.updateCell(with: model)
     }
     return cell
   }
@@ -309,5 +309,11 @@ extension KNHistoryViewController: UICollectionViewDataSource {
       assertionFailure("Unhandling")
       return UICollectionReusableView()
     }
+  }
+}
+
+extension KNHistoryViewController: KNHistoryTransactionCollectionViewCellDelegate {
+  func historyTransactionCollectionViewCell(_ cell: KNHistoryTransactionCollectionViewCell, openDetails transaction: Transaction) {
+    self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
   }
 }

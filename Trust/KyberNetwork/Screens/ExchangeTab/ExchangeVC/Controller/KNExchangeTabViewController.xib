@@ -74,17 +74,17 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nOL-6d-Vmv">
-                                    <rect key="frame" x="20" y="135" width="150" height="32"/>
+                                    <rect key="frame" x="20" y="130" width="150" height="44"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="HSa-Ah-58b"/>
+                                        <constraint firstAttribute="height" constant="44" id="HSa-Ah-58b"/>
                                     </constraints>
                                     <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="36"/>
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SELL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9E-SI-dRV">
-                                    <rect key="frame" x="24" y="102" width="41" height="20"/>
+                                    <rect key="frame" x="24" y="98" width="41" height="20"/>
                                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="17"/>
                                     <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -95,9 +95,9 @@
                                 <constraint firstItem="nOL-6d-Vmv" firstAttribute="leading" secondItem="ci7-xe-nav" secondAttribute="leading" id="24I-qq-W0d"/>
                                 <constraint firstItem="ci7-xe-nav" firstAttribute="leading" secondItem="ZD0-Qu-rXo" secondAttribute="leading" constant="20" id="2S4-m8-z3G"/>
                                 <constraint firstItem="ci7-xe-nav" firstAttribute="top" secondItem="ZD0-Qu-rXo" secondAttribute="top" constant="30" id="55O-ef-jUZ"/>
-                                <constraint firstItem="nOL-6d-Vmv" firstAttribute="top" secondItem="j9E-SI-dRV" secondAttribute="bottom" constant="13" id="9dk-Ka-kNE"/>
+                                <constraint firstItem="nOL-6d-Vmv" firstAttribute="top" secondItem="j9E-SI-dRV" secondAttribute="bottom" constant="12" id="9dk-Ka-kNE"/>
                                 <constraint firstAttribute="trailing" secondItem="ci7-xe-nav" secondAttribute="trailing" constant="16" id="A7K-WQ-eMv"/>
-                                <constraint firstItem="nOL-6d-Vmv" firstAttribute="top" secondItem="ci7-xe-nav" secondAttribute="bottom" constant="65" id="MwL-y1-NFK"/>
+                                <constraint firstItem="nOL-6d-Vmv" firstAttribute="top" secondItem="ci7-xe-nav" secondAttribute="bottom" constant="60" id="MwL-y1-NFK"/>
                                 <constraint firstItem="j9E-SI-dRV" firstAttribute="leading" secondItem="nOL-6d-Vmv" secondAttribute="leading" constant="4" id="aM5-wu-peH"/>
                                 <constraint firstAttribute="trailing" secondItem="nOL-6d-Vmv" secondAttribute="trailing" constant="5" id="ewQ-oH-ahG"/>
                                 <constraint firstAttribute="height" constant="200" id="fUL-7g-XMd"/>
@@ -120,7 +120,7 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" textAlignment="right" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OEO-Vi-nYY">
-                                    <rect key="frame" x="5" y="135" width="150" height="32"/>
+                                    <rect key="frame" x="5" y="136" width="150" height="32"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="32" id="CpX-VY-RSf"/>
@@ -130,7 +130,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GET" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aWh-Bu-noT">
-                                    <rect key="frame" x="117" y="102" width="34" height="20"/>
+                                    <rect key="frame" x="117" y="98" width="34" height="20"/>
                                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="17"/>
                                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>

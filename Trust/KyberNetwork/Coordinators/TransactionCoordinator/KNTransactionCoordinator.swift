@@ -328,7 +328,7 @@ extension KNTransactionCoordinator {
     startBlock: Int,
     page: Int,
     sort: String,
-    completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?
+    completion: ((Result<[Transaction], AnyError>) -> Void)?
     ) {
     print("---- ERC20 Token Transactions: Fetching ----")
     let provider = MoyaProvider<KNEtherScanService>()
@@ -345,7 +345,7 @@ extension KNTransactionCoordinator {
         do {
           let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
-          let transactions = data.map({ return KNTokenTransaction(dictionary: $0) })
+          let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() })
           self.updateListTokenTransactions(transactions)
           print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
           completion?(.success(transactions))
@@ -360,7 +360,7 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func initialFetchERC20TokenTransactions(forAddress address: Address, page: Int = 1, completion: ((Result<[KNTokenTransaction], AnyError>) -> Void)?) {
+  func initialFetchERC20TokenTransactions(forAddress address: Address, page: Int = 1, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
     self.fetchListERC20TokenTransactions(
       forAddress: address.description,
       startBlock: 1,
@@ -396,12 +396,14 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func updateListTokenTransactions(_ transactions: [KNTokenTransaction]) {
-    self.transactionStorage.add(transactions: transactions)
+  func updateListTokenTransactions(_ transactions: [Transaction]) {
+    self.transactionStorage.add(transactions)
     KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
     var tokenObjects: [TokenObject] = []
+    let savedTokens: [TokenObject] = self.tokenStorage.tokens
     transactions.forEach { tx in
-      if let token = tx.getToken(), !tokenObjects.contains(token), !self.tokenStorage.tokens.contains(token) { tokenObjects.append(token) }
+      if let token = tx.getTokenObject(), !tokenObjects.contains(token),
+        !savedTokens.contains(token) { tokenObjects.append(token) }
     }
     if !tokenObjects.isEmpty {
       self.tokenStorage.add(tokens: tokenObjects)
