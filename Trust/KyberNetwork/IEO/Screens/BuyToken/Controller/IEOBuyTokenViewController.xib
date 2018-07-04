@@ -215,16 +215,16 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7LX-sA-8cZ">
-                    <rect key="frame" x="0.0" y="-20" width="375" height="100"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buy Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0YB-r6-LZL">
-                            <rect key="frame" x="141.5" y="61" width="93.5" height="24"/>
+                            <rect key="frame" x="141.5" y="45" width="93.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MzP-RC-nm3">
-                            <rect key="frame" x="16" y="61.5" width="24" height="24"/>
+                            <rect key="frame" x="16" y="45.5" width="24" height="24"/>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="C5C-5l-Inb"/>
@@ -236,7 +236,7 @@
                         <constraint firstAttribute="bottom" secondItem="0YB-r6-LZL" secondAttribute="bottom" constant="15" id="Amw-lu-Ddw"/>
                         <constraint firstItem="0YB-r6-LZL" firstAttribute="centerX" secondItem="7LX-sA-8cZ" secondAttribute="centerX" id="Jvk-k9-lJX"/>
                         <constraint firstItem="MzP-RC-nm3" firstAttribute="leading" secondItem="7LX-sA-8cZ" secondAttribute="leading" constant="16" id="Scl-Qq-L62"/>
-                        <constraint firstAttribute="height" constant="100" id="lx1-pd-5Fu"/>
+                        <constraint firstAttribute="height" constant="84" id="lx1-pd-5Fu"/>
                         <constraint firstItem="MzP-RC-nm3" firstAttribute="centerY" secondItem="0YB-r6-LZL" secondAttribute="centerY" id="mti-ne-eIW"/>
                     </constraints>
                 </view>
@@ -269,7 +269,7 @@
                 <constraint firstItem="yRN-2y-y45" firstAttribute="top" secondItem="ApP-8e-pv3" secondAttribute="bottom" constant="5" id="hMM-90-vzU"/>
                 <constraint firstItem="H35-k5-xYH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="j0Y-NP-ADw"/>
                 <constraint firstItem="yRN-2y-y45" firstAttribute="top" secondItem="lMo-4F-6ee" secondAttribute="bottom" constant="4" id="jz9-aX-Q7l"/>
-                <constraint firstItem="7LX-sA-8cZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-20" id="lND-6H-t68"/>
+                <constraint firstItem="7LX-sA-8cZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="lND-6H-t68"/>
                 <constraint firstItem="7LX-sA-8cZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qNV-UG-DlY"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -287,7 +287,7 @@
     <resources>
         <image name="accounts_active" width="20" height="20"/>
         <image name="back_white_icon" width="24" height="24"/>
-        <image name="eth" width="23" height="23"/>
+        <image name="eth" width="36" height="36"/>
         <image name="exchange_icon" width="76" height="76"/>
         <image name="expand_icon" width="19" height="19"/>
         <image name="more_option_gas_icon" width="19" height="4"/>

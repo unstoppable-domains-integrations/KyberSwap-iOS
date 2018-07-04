@@ -164,7 +164,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 <constraint firstItem="n4M-eJ-doh" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="0eN-rX-Znr"/>
                 <constraint firstItem="0bq-7j-6SD" firstAttribute="top" secondItem="gxk-M0-lif" secondAttribute="bottom" constant="5" id="4Zk-Lj-CiH"/>
                 <constraint firstItem="gxk-M0-lif" firstAttribute="leading" secondItem="E4K-Cp-0tn" secondAttribute="leading" id="5qb-wd-QnI"/>
-                <constraint firstItem="EFQ-zS-3p3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="7OF-nA-dZT"/>
+                <constraint firstItem="EFQ-zS-3p3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7OF-nA-dZT"/>
                 <constraint firstItem="jjI-kU-ibR" firstAttribute="top" secondItem="EFQ-zS-3p3" secondAttribute="bottom" constant="20" id="7cp-jE-enR"/>
                 <constraint firstItem="ZyO-Zr-cRC" firstAttribute="top" secondItem="n4M-eJ-doh" secondAttribute="bottom" constant="25" id="Bkn-iq-LH5"/>
                 <constraint firstItem="PeI-Ev-WnN" firstAttribute="leading" secondItem="aiG-8k-JAO" secondAttribute="leading" id="Br1-bP-MuH"/>

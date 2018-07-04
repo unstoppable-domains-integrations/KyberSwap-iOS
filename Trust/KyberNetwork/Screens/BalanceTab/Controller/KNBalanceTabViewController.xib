@@ -32,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-Ah-tJJ">
-                    <rect key="frame" x="0.0" y="84" width="375" height="46"/>
+                    <rect key="frame" x="0.0" y="90" width="375" height="46"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAU-tE-kcd">
                             <rect key="frame" x="279" y="18.5" width="80" height="15"/>
@@ -81,7 +81,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="LdO-l1-yNe">
-                    <rect key="frame" x="0.0" y="130" width="375" height="537"/>
+                    <rect key="frame" x="0.0" y="136" width="375" height="531"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TQ0-dI-pRS">
                         <size key="itemSize" width="50" height="50"/>
@@ -91,10 +91,10 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e9X-vG-14u" customClass="KNWalletHeaderView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="84" id="l0D-MH-5qd"/>
+                        <constraint firstAttribute="height" constant="90" id="l0D-MH-5qd"/>
                     </constraints>
                 </view>
             </subviews>

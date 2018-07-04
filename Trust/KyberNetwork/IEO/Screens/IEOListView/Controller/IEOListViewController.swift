@@ -15,6 +15,7 @@ protocol IEOListViewControllerDelegate: class {
 
 class IEOListViewController: KNBaseViewController {
 
+  fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var scrollView: UIScrollView!
 
@@ -37,13 +38,26 @@ class IEOListViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
   }
 
   fileprivate func setupUI() {
     self.titleLabel.text = self.viewModel.title
-    let width: CGFloat = self.scrollView.frame.width - 30.0
-    let height: CGFloat = self.scrollView.frame.height
+    let width: CGFloat = self.view.frame.width - 30.0
+    let height: CGFloat = self.view.frame.height - self.scrollView.frame.minY
+    self.scrollView.frame = CGRect(
+      x: 0,
+      y: self.scrollView.frame.minY,
+      width: self.view.frame.width,
+      height: height
+    )
     var padding: CGFloat = 15.0
     self.controllers = []
     for object in self.viewModel.objects {

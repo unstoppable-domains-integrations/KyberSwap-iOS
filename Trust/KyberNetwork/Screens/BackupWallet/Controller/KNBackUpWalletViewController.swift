@@ -30,6 +30,8 @@ class KNBackUpWalletViewController: KNBaseViewController {
     return self.firstWordTextField.text?.isEmpty == false && self.secondWordTextField.text?.isEmpty == false
   }
 
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
   init(viewModel: KNBackUpWalletViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNBackUpWalletViewController.className, bundle: nil)

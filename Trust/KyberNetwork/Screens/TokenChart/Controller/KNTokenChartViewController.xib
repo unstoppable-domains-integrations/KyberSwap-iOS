@@ -38,7 +38,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSm-QQ-Xz3">
-                            <rect key="frame" x="138.5" y="46" width="98" height="24"/>
+                            <rect key="frame" x="139" y="46" width="98" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -61,7 +61,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 0.0001231" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-e9-wzt">
-                    <rect key="frame" x="73.5" y="110" width="229" height="38.5"/>
+                    <rect key="frame" x="73" y="110" width="229" height="38.5"/>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="32"/>
                     <color key="textColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -123,7 +123,7 @@
                 <constraint firstItem="K5L-bZ-T0r" firstAttribute="top" secondItem="sFg-zd-7B3" secondAttribute="bottom" constant="30" id="B76-uz-pFt"/>
                 <constraint firstItem="rzG-Y5-kWi" firstAttribute="top" secondItem="Dys-e9-wzt" secondAttribute="bottom" constant="5" id="B7q-Tb-0oZ"/>
                 <constraint firstItem="sFg-zd-7B3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="GVe-e9-Exw"/>
-                <constraint firstItem="RuW-OO-mGF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="K54-v1-WQd"/>
+                <constraint firstItem="RuW-OO-mGF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="K54-v1-WQd"/>
                 <constraint firstItem="Dys-e9-wzt" firstAttribute="top" secondItem="RuW-OO-mGF" secondAttribute="bottom" constant="30" id="N3U-Tc-LG6"/>
                 <constraint firstItem="knF-lf-3jZ" firstAttribute="top" secondItem="vds-sy-BKi" secondAttribute="bottom" constant="5" id="PWi-bn-TqG"/>
                 <constraint firstItem="knF-lf-3jZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TMu-RU-HAT"/>

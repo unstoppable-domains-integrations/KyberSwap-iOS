@@ -35,13 +35,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active KGO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gQg-4Q-rZe">
-                    <rect key="frame" x="134" y="36.5" width="109" height="24"/>
+                    <rect key="frame" x="133" y="36.5" width="109" height="24"/>
                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tD8-aH-3GZ">
-                    <rect key="frame" x="0.0" y="80.5" width="375" height="586.5"/>
+                    <rect key="frame" x="0.0" y="80.5" width="375" height="571.5"/>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -51,7 +51,7 @@
                 <constraint firstItem="gQg-4Q-rZe" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="MBh-Il-wg8"/>
                 <constraint firstItem="IrB-Pa-KSK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Mi2-wb-V9H"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tD8-aH-3GZ" secondAttribute="trailing" id="WSY-qq-8C3"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="tD8-aH-3GZ" secondAttribute="bottom" id="ftQ-l9-Gay"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="tD8-aH-3GZ" secondAttribute="bottom" constant="15" id="ftQ-l9-Gay"/>
                 <constraint firstItem="tD8-aH-3GZ" firstAttribute="top" secondItem="gQg-4Q-rZe" secondAttribute="bottom" constant="20" id="xxg-2z-ZFU"/>
                 <constraint firstItem="gQg-4Q-rZe" firstAttribute="centerY" secondItem="IrB-Pa-KSK" secondAttribute="centerY" id="zcM-KN-ube"/>
             </constraints>

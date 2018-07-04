@@ -28,7 +28,7 @@ struct KNSetGasPriceViewModel {
   let estGasLimit: BigInt
 
   init(gasPrice: BigInt, estGasLimit: BigInt) {
-    self.gasPrice = gasPrice
+    self.gasPrice = min(gasPrice, KNGasConfiguration.gasPriceMax)
     self.estGasLimit = estGasLimit
   }
 

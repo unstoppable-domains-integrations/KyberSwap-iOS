@@ -65,7 +65,7 @@ class KGOIEODetailsViewModel {
   var buyTokenButtonTitle: String {
     if self.object.type == .past { return "Ended" }
     if self.object.type == .upcoming { return "Coming Soon" }
-    if self.object.isSoldOut { return "Solve Out" }
+    if self.object.isSoldOut { return "Sold Out" }
     if let bonusAmount = self.object.getAmountBonus {
       return "Buy Tokens\n +\(bonusAmount)%"
     }

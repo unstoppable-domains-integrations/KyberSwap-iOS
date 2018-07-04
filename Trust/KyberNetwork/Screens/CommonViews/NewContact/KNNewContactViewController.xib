@@ -44,13 +44,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Rs-OX-FDh">
-                            <rect key="frame" x="131" y="44" width="113.5" height="24"/>
+                            <rect key="frame" x="127.5" y="44" width="120.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoQ-1Q-KRG">
-                            <rect key="frame" x="321" y="40" width="38" height="32"/>
+                            <rect key="frame" x="320" y="39.5" width="39" height="33"/>
                             <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                             <state key="normal" title="Save">
                                 <color key="titleColor" white="0.8570033482142857" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -131,7 +131,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="20" id="1AV-OW-TCO"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BZJ-op-odJ" secondAttribute="trailing" id="5o8-sW-WiB"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="top" secondItem="0ca-fd-JG1" secondAttribute="bottom" constant="5" id="BZD-Cv-j8r"/>
-                <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="D88-EM-4l3"/>
+                <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D88-EM-4l3"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="F6h-np-jp8"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="Hn5-fV-8hs"/>
                 <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="60" id="MFq-QG-LQg"/>

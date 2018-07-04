@@ -57,14 +57,14 @@ class KNListWalletsViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.setupNaivagationBar()
+    self.setupNavigationBar()
   }
 
   fileprivate func setupUI() {
     self.setupWalletTableView()
   }
 
-  fileprivate func setupNaivagationBar() {
+  fileprivate func setupNavigationBar() {
     self.navigationItem.title = "Wallets"
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_white_icon"), style: .plain, target: self, action: #selector(self.backButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = .white

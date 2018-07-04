@@ -15,6 +15,7 @@ protocol KNBalanceTabViewControllerDelegate: class {
 
 class KNBalanceTabViewController: KNBaseViewController {
 
+  fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var walletHeaderView: KNWalletHeaderView!
 
   @IBOutlet weak var topButtonContainerView: UIView!
@@ -39,6 +40,7 @@ class KNBalanceTabViewController: KNBaseViewController {
     )
     let hamburgerVC = KNBalanceTabHamburgerMenuViewController(viewModel: viewModel)
     hamburgerVC.view.frame = self.view.bounds
+    hamburgerVC.view.isHidden = true
     self.view.addSubview(hamburgerVC.view)
     self.addChildViewController(hamburgerVC)
     hamburgerVC.didMove(toParentViewController: self)
@@ -57,7 +59,14 @@ class KNBalanceTabViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
   }
 
   fileprivate func setupUI() {

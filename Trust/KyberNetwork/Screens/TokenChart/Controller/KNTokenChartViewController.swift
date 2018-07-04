@@ -75,7 +75,7 @@ class KNTokenChartViewModel {
   }
 
   var navigationTitle: String {
-    return "\(self.token.symbol) Price"
+    return "(WIP) \(self.token.symbol) Price"
   }
 
   var rateAttributedString: NSAttributedString {

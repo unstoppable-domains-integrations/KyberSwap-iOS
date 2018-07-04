@@ -13,14 +13,24 @@ class KNImportWalletViewController: KNBaseViewController {
 
   weak var delegate: KNImportWalletViewControllerDelegate?
 
+  fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var buttonsTabBar: UITabBar!
   @IBOutlet var bottomIndicatorViews: [UIView]!
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var pageControl: UIPageControl!
 
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
   }
 
   fileprivate func setupUI() {
@@ -71,8 +81,14 @@ class KNImportWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupScrollView() {
-    let width: CGFloat = self.scrollView.frame.width
-    let height: CGFloat = self.scrollView.frame.height
+    let width: CGFloat = self.view.frame.width
+    let height: CGFloat = self.view.frame.height - self.scrollView.frame.minY
+    self.scrollView.frame = CGRect(
+      x: 0,
+      y: self.scrollView.frame.minY,
+      width: width,
+      height: height
+    )
 
     let importJSONVC: KNImportJSONViewController = {
       let controller = KNImportJSONViewController()

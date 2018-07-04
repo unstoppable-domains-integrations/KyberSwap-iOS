@@ -45,14 +45,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0zu-fz-5kO" customClass="KNWalletHeaderView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="84" id="Cbw-PT-N3R"/>
+                        <constraint firstAttribute="height" constant="90" id="Cbw-PT-N3R"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EtV-H5-cpr">
-                    <rect key="frame" x="12" y="129" width="351" height="280"/>
+                    <rect key="frame" x="12" y="135" width="351" height="280"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZD0-Qu-rXo">
                             <rect key="frame" x="0.0" y="0.0" width="175" height="200"/>
@@ -217,7 +217,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qny-7q-d8L">
-                    <rect key="frame" x="317" y="419" width="46" height="46"/>
+                    <rect key="frame" x="317" y="425" width="46" height="46"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="Ncs-7f-rEj"/>
                         <constraint firstAttribute="width" constant="46" id="hZ3-VL-spH"/>
@@ -228,7 +228,7 @@
                     </connections>
                 </button>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FQo-y0-5GO" customClass="KNCustomSegmentedControl" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="12" y="470" width="351" height="29"/>
+                    <rect key="frame" x="12" y="476" width="351" height="29"/>
                     <segments>
                         <segment title="Fast"/>
                         <segment title="Medium"/>
@@ -238,7 +238,7 @@
                     <color key="tintColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </segmentedControl>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXi-i1-8s8">
-                    <rect key="frame" x="12" y="445" width="31" height="20"/>
+                    <rect key="frame" x="12" y="451" width="31" height="20"/>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -260,7 +260,7 @@
                 <constraint firstItem="0zu-fz-5kO" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="XkP-im-GoV"/>
                 <constraint firstItem="moe-Gz-pqI" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="YfV-eH-owT"/>
                 <constraint firstItem="0zu-fz-5kO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="aXJ-EE-efk"/>
-                <constraint firstItem="0zu-fz-5kO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="jin-Nn-D4h"/>
+                <constraint firstItem="0zu-fz-5kO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jin-Nn-D4h"/>
                 <constraint firstItem="hXi-i1-8s8" firstAttribute="leading" secondItem="FQo-y0-5GO" secondAttribute="leading" id="zwu-zb-YEt"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

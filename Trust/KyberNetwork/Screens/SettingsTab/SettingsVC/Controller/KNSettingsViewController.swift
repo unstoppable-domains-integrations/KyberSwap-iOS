@@ -95,7 +95,7 @@ class KNSettingsViewController: FormViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    self.navigationItem.title = "History".toBeLocalised()
+    self.navigationItem.title = "Settings".toBeLocalised()
 //    self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "close_white_icon"), style: .plain, target: self, action: #selector(self.closeButtonPressed(_:)))
 //    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
   }

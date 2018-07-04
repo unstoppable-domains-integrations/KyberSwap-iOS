@@ -179,8 +179,8 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
 
   func kyberGOHomePageViewController(_ controller: KGOHomePageViewController, run event: KGOHomePageViewEvent) {
     switch event {
-    case .select(let object):
-      self.openListIEOView(selectedObject: object)
+    case .select(let object, let listObjects):
+      self.openListIEOView(selectedObject: object, listObjects: listObjects)
     case .selectAccount:
       self.userSelectedAccount()
     case .selectBuy(let object):
@@ -202,10 +202,9 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
-  fileprivate func openListIEOView(selectedObject: IEOObject) {
+  fileprivate func openListIEOView(selectedObject: IEOObject, listObjects: [IEOObject]) {
     self.ieoListViewController = {
       let viewModel: IEOListViewModel = {
-        let listObjects = IEOObjectStorage.shared.objects.filter { return $0.type == selectedObject.type }
         let title: String = {
           switch selectedObject.type {
           case .past: return "Past Token Sales"
@@ -278,18 +277,13 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
   }
 
   fileprivate func openBuy(object: IEOObject) {
-    guard let user = IEOUserStorage.shared.user else {
+    guard IEOUserStorage.shared.user != nil else {
       self.openSignInView()
       return
     }
-    guard let wallet = KNWalletStorage.shared.wallets.first(where: { user.registeredAddress.contains($0.address.lowercased()) }) else {
-      self.navigationController.showWarningTopBannerMessage(
-        with: "",
-        message: "You need to add at least one registered address with KyberGO to buy token.",
-        time: 2.5
-      )
-      return
-    }
+    guard let wallet = KNWalletStorage.shared.wallets.first(where: {
+      $0.address.lowercased() == self.session.wallet.address.description.lowercased()
+    }) else { return }
     let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
     self.buyTokenVC = IEOBuyTokenViewController(viewModel: viewModel)
     self.buyTokenVC?.loadViewIfNeeded()

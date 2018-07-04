@@ -4,7 +4,7 @@ import UIKit
 import WebKit
 
 enum KGOHomePageViewEvent {
-  case select(object: IEOObject)
+  case select(object: IEOObject, listObjects: [IEOObject])
   case selectAccount
   case selectBuy(object: IEOObject)
 }
@@ -18,6 +18,7 @@ class KGOHomePageViewController: KNBaseViewController {
   fileprivate var kIEOTableViewCellID: String = "kIEOTableViewCellID"
   fileprivate var kIEOTableViewHeaderID: String = "kIEOTableViewHeaderID"
 
+  fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var topContainerView: UIView!
   @IBOutlet weak var kyberGOLabel: UILabel!
   @IBOutlet weak var userAccountImageView: UIImageView!
@@ -39,11 +40,14 @@ class KGOHomePageViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
   }
 
   override func viewDidDisappear(_ animated: Bool) {
@@ -97,7 +101,14 @@ extension KGOHomePageViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: false)
     let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
-    self.delegate?.kyberGOHomePageViewController(self, run: .select(object: object))
+    let listObjects: [IEOObject] = {
+      switch object.type {
+      case .active: return self.viewModel.activeObjects
+      case .upcoming: return self.viewModel.upcomingObjects
+      case .past: return self.viewModel.pastObjects
+      }
+    }()
+    self.delegate?.kyberGOHomePageViewController(self, run: .select(object: object, listObjects: listObjects))
   }
 }
 
