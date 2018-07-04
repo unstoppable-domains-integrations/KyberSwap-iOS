@@ -37,18 +37,6 @@ platform :ios do
     ensure_git_branch(branch: "wallet_1.0_dev")
     reset_git_repo(force: true)
     ensure_git_status_clean
-    git_pull
-    increment_build_number()
-    git_add
-    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
-    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
-    push_to_git_remote(
-      remote: "origin",
-      local_branch: "wallet_1.0_dev",
-      remote_branch: "wallet_1.0_dev",
-      tags: false
-    )
     cocoapods(use_bundle_exec: false)
     build_app(
       scheme: "Trust",
@@ -66,6 +54,17 @@ platform :ios do
 	skip_waiting_for_build_processing: true,
     )
     notification(subtitle: "Uploaded Successfully!", message: build_number + " has been uploaded successfully to TestFlight. Waiting for processing.")
+    increment_build_number()
+    git_add
+    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
+    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "wallet_1.0_dev",
+      remote_branch: "wallet_1.0_dev",
+      tags: false
+    )
   end
 
   desc "Deploy a new version to the App Store"
