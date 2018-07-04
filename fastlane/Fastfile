@@ -35,7 +35,6 @@ platform :ios do
   desc "TestFlight deployment to itunes connect"
   lane :beta do
     ensure_git_branch(branch: "wallet_1.0_dev")
-    reset_git_repo(force: true)
     ensure_git_status_clean
     cocoapods(use_bundle_exec: false)
     build_app(
