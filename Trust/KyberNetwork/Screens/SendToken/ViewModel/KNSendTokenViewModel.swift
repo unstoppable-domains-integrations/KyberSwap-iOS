@@ -20,7 +20,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
-  fileprivate var addressString: String? = ""
+  fileprivate(set) var addressString: String = ""
 
   var amountBigInt: BigInt {
     return amount.shortBigInt(decimals: self.from.decimals) ?? BigInt(0)
@@ -31,8 +31,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var address: Address? {
-    guard let addr = self.addressString else { return nil }
-    return Address(string: addr)
+    return Address(string: self.addressString)
   }
 
   init(from: TokenObject, balance: Balance?) {
@@ -75,12 +74,16 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayAddress: String? {
-    //TODO: display address or contact name
-    return self.addressString
+    if self.address == nil { return self.addressString }
+    let displayedString = "\(self.addressString.prefix(8))....\(self.addressString.suffix(6))"
+    if let contact = KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) {
+      return "\(contact.name) - \(displayedString)"
+    }
+    return displayedString
   }
 
   var newContactTitle: String {
-    if KNContactStorage.shared.get(forPrimaryKey: (self.addressString ?? "").lowercased()) != nil {
+    if KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) != nil {
       return "Edit Contact".toBeLocalised()
     }
     return "Add Contact".toBeLocalised()

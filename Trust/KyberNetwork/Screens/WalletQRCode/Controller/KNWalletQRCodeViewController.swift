@@ -40,7 +40,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupWalletData() {
-    self.addressLabel.text = self.viewModel.address
+    self.addressLabel.text = self.viewModel.displayedAddress
     let text = self.viewModel.address
     DispatchQueue.global(qos: .background).async {
       let image = UIImage.generateQRCode(from: text)

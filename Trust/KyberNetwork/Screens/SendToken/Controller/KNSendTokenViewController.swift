@@ -80,6 +80,11 @@ class KNSendTokenViewController: KNBaseViewController {
     )
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.updateUIAddressQRCode()
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.estGasTimer?.invalidate()
@@ -225,7 +230,7 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
-    self.delegate?.sendTokenViewController(self, run: .addContact(address: self.addressTextField.text ?? ""))
+    self.delegate?.sendTokenViewController(self, run: .addContact(address: self.viewModel.addressString))
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -345,7 +350,6 @@ extension KNSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAmount(text)
     } else {
       self.viewModel.updateAddress(text)
-      self.updateUIAddressQRCode()
     }
     self.shouldUpdateEstimatedGasLimit(nil)
     return false
@@ -353,10 +357,16 @@ extension KNSendTokenViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.amountTextField.textColor = UIColor(hex: "31cb9e")
+    if textField == self.addressTextField {
+      self.addressTextField.text = self.viewModel.addressString
+    }
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.amountTextField.textColor = self.viewModel.amountTextColor
+    if textField == self.addressTextField {
+      self.updateUIAddressQRCode()
+    }
   }
 }
 
