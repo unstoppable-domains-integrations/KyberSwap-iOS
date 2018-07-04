@@ -49,6 +49,7 @@ enum KNTrackerService {
   case getTrades(fromDate: Date?, toDate: Date?, address: String)
   case getSupportedTokens()
   case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
+  case getRates()
 }
 
 extension KNTrackerService: TargetType {
@@ -72,6 +73,8 @@ extension KNTrackerService: TargetType {
     case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
       let url = "/chart/history?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!
+    case .getRates:
+      return URL(string: baseURLString + "/api/tokens/rates")!
     }
   }
 

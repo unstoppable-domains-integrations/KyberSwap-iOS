@@ -38,7 +38,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSm-QQ-Xz3">
-                            <rect key="frame" x="139" y="46" width="98" height="24"/>
+                            <rect key="frame" x="138.5" y="46" width="98" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -53,15 +53,15 @@
                     </subviews>
                     <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="aSm-QQ-Xz3" secondAttribute="bottom" constant="10" id="B1P-Cw-GS6"/>
-                        <constraint firstAttribute="height" constant="80" id="O1W-Hf-XkT"/>
+                        <constraint firstAttribute="bottom" secondItem="aSm-QQ-Xz3" secondAttribute="bottom" constant="16" id="B1P-Cw-GS6"/>
+                        <constraint firstAttribute="height" constant="84" id="O1W-Hf-XkT"/>
                         <constraint firstItem="JH7-5H-Vln" firstAttribute="centerY" secondItem="aSm-QQ-Xz3" secondAttribute="centerY" id="Sbx-7n-LNO"/>
                         <constraint firstItem="aSm-QQ-Xz3" firstAttribute="centerX" secondItem="RuW-OO-mGF" secondAttribute="centerX" id="WVi-mm-Kp9"/>
                         <constraint firstItem="JH7-5H-Vln" firstAttribute="leading" secondItem="RuW-OO-mGF" secondAttribute="leading" constant="16" id="h1I-ux-QeD"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH 0.0001231" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-e9-wzt">
-                    <rect key="frame" x="73" y="110" width="229" height="38.5"/>
+                    <rect key="frame" x="73.5" y="110" width="229" height="38.5"/>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="32"/>
                     <color key="textColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>

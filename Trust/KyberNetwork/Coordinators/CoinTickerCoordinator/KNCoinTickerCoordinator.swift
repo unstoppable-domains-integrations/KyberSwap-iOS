@@ -54,7 +54,7 @@ class KNCoinTickerCoordinator {
 
   // inital fetch until it is success for the first time
   fileprivate func initialFetchAllCoinTickers() {
-    self.fetchCoinTickers(limit: 500) { [weak self] result in
+    self.fetchCoinTickers(limit: 1000) { [weak self] result in
       if case .failure = result {
         let timeOut = DispatchTime.now() + KNLoadingInterval.defaultLoadingInterval
         DispatchQueue.main.asyncAfter(deadline: timeOut, execute: {

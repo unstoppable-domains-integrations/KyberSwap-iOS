@@ -376,9 +376,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   @IBAction func selectWalletButtonPressed(_ sender: Any) {
     guard let user = IEOUserStorage.shared.user else { return }
-    let wallets = KNWalletStorage.shared.wallets.filter {
-      return user.registeredAddress.contains($0.address.lowercased())
-    }
+    let wallets = KNWalletStorage.shared.wallets
     if wallets.isEmpty {
       self.showWarningTopBannerMessage(
         with: "",

@@ -67,6 +67,7 @@ protocol KNTokenChartViewControllerDelegate: class {
 class KNTokenChartViewModel {
   let token: TokenObject
   var type: KNTokenChartType = .day
+  var rates: [String: Double] = [:]
   var data: [KNChartObject] = []
 
   init(token: TokenObject) {
@@ -80,7 +81,7 @@ class KNTokenChartViewModel {
 
   var rateAttributedString: NSAttributedString {
     let rateString: String = {
-      if let double = self.data.first?.close {
+      if let double = self.rates[self.token.symbol] {
         let rate = BigInt(double * Double(EthereumUnit.ether.rawValue))
         return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(10))
       }
@@ -114,6 +115,14 @@ class KNTokenChartViewModel {
     if self.token.symbol == symbol && self.type.resolution == resolution {
       self.data.append(contentsOf: objects)
       self.data = self.data.sorted(by: { $0.time < $1.time })
+    }
+  }
+
+  func updateRates(_ data: JSONDictionary) {
+    for (key, value) in data {
+      if let json = value as? JSONDictionary, let rate = json["r"] as? Double {
+        self.rates[key] = rate
+      }
     }
   }
 
@@ -181,6 +190,31 @@ class KNTokenChartViewModel {
       }
     }
   }
+
+  func fetchEstimatedETHRates(completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if token.isETH {
+      self.rates[token.contract] = 1.0
+      return
+    }
+    let provider = MoyaProvider<KNTrackerService>()
+    provider.request(.getRates()) { result in
+      switch result {
+      case .success(let response):
+        do {
+          if let data = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
+            self.updateRates(data)
+            completion(.success(true))
+          } else {
+            completion(.success(false))
+          }
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }
 
 class KNTokenChartViewController: KNBaseViewController {
@@ -194,6 +228,7 @@ class KNTokenChartViewController: KNBaseViewController {
   fileprivate var viewModel: KNTokenChartViewModel
 
   fileprivate var timer: Timer?
+  fileprivate var rateTimer: Timer?
   @IBOutlet weak var touchPriceLabel: UILabel!
   @IBOutlet weak var leftPaddingForTouchPriceLabelConstraint: NSLayoutConstraint!
 
@@ -228,7 +263,7 @@ class KNTokenChartViewController: KNBaseViewController {
     self.changePercentLabel.isHidden = true
     self.touchPriceLabel.isHidden = true
 
-//    self.priceChart.delegate = self
+    self.priceChart.delegate = self
     self.reloadViewDataDidUpdate()
   }
 
@@ -249,6 +284,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
   @IBAction func dataTypeDidChange(_ sender: UISegmentedControl) {
     let type = KNTokenChartType(rawValue: sender.selectedSegmentIndex) ?? .day
+    self.touchPriceLabel.isHidden = true
     self.viewModel.updateType(type)
     self.reloadViewDataDidUpdate()
     self.startTimer()
@@ -285,10 +321,26 @@ class KNTokenChartViewController: KNBaseViewController {
         guard let `self` = self else { return }
         self.shouldUpdateData(for: self.viewModel.type, token: self.viewModel.token)
     })
+    self.rateTimer?.invalidate()
+    self.shouldUpdateEstimatedRate()
+    self.rateTimer = Timer.scheduledTimer(
+      withTimeInterval: 10.0,
+      repeats: true, block: { [weak self] _ in
+        self?.shouldUpdateEstimatedRate()
+    })
   }
 
   fileprivate func stopTimer() {
     self.timer?.invalidate()
+    self.rateTimer?.invalidate()
+  }
+
+  fileprivate func shouldUpdateEstimatedRate() {
+    self.viewModel.fetchEstimatedETHRates(completion: { result in
+      if case .success(let isUpdated) = result, isUpdated {
+        self.reloadViewDataDidUpdate()
+      }
+    })
   }
 
   fileprivate func reloadViewDataDidUpdate() {
@@ -307,13 +359,13 @@ extension KNTokenChartViewController: ChartDelegate {
   }
 
   func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
-//    for (seriesId, dataId) in indexes.enumerated() {
-//      if let id = dataId, let value = chart.valueForSeries(seriesId, atIndex: id) {
-//        self.touchPriceLabel.text = String("\(value)".prefix(10))
-//        self.touchPriceLabel.isHidden = false
-//        self.leftPaddingForTouchPriceLabelConstraint.constant = left
-//        self.view.layoutIfNeeded()
-//      }
-//    }
+    for (seriesId, dataId) in indexes.enumerated() {
+      if let id = dataId, let value = chart.valueForSeries(seriesId, atIndex: id) {
+        self.touchPriceLabel.text = String("\(value)".prefix(10))
+        self.touchPriceLabel.isHidden = false
+        self.leftPaddingForTouchPriceLabelConstraint.constant = left
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 }
