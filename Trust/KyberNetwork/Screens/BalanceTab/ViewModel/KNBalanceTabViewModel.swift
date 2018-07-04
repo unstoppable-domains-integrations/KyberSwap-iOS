@@ -214,8 +214,8 @@ class KNBalanceTabViewModel: NSObject {
     let name1 = right.name.replacingOccurrences(of: " ", with: "").lowercased()
     let id0 = left.symbol + " " + name0
     let id1 = right.symbol + " " + name1
-    guard let balance0 = self.balances[left.contract] else { return false }
-    guard let balance1 = self.balances[right.contract] else { return true }
+    guard let balance0 = self.balance(for: left) else { return false }
+    guard let balance1 = self.balance(for: right) else { return true }
     // sort by balance holdings (number of coins)
     if self.tokensDisplayType == .balanceHolding {
       return balance0.value > balance1.value
