@@ -32,17 +32,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Kr-aI-vdA">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                     <subviews>
                         <searchBar contentMode="redraw" text="" placeholder="Search for tokens" translatesAutoresizingMaskIntoConstraints="NO" id="kaA-Wq-k7I">
-                            <rect key="frame" x="16" y="24" width="291" height="56"/>
+                            <rect key="frame" x="16" y="34" width="291" height="56"/>
                             <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="tintColor" red="0.72156862745098038" green="0.72941176470588232" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="barTintColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" keyboardType="webSearch" returnKeyType="done" textContentType="name"/>
                         </searchBar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-j2-iod">
-                            <rect key="frame" x="312" y="37.5" width="47" height="29"/>
+                            <rect key="frame" x="312" y="47.5" width="47" height="29"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="14"/>
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -58,16 +58,16 @@
                         <constraint firstItem="4Oo-j2-iod" firstAttribute="centerY" secondItem="kaA-Wq-k7I" secondAttribute="centerY" id="XEA-TZ-lC9"/>
                         <constraint firstAttribute="trailing" secondItem="4Oo-j2-iod" secondAttribute="trailing" constant="16" id="ZF5-5M-D6a"/>
                         <constraint firstItem="4Oo-j2-iod" firstAttribute="leading" secondItem="kaA-Wq-k7I" secondAttribute="trailing" constant="5" id="rff-Es-CnN"/>
-                        <constraint firstAttribute="height" constant="80" id="rxX-SB-Qth"/>
+                        <constraint firstAttribute="height" constant="90" id="rxX-SB-Qth"/>
                         <constraint firstAttribute="bottom" secondItem="kaA-Wq-k7I" secondAttribute="bottom" id="u4Q-tQ-9C4"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tvR-nt-YdR">
-                    <rect key="frame" x="0.0" y="80" width="375" height="587"/>
+                    <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matching tokens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBW-cK-YSw">
-                    <rect key="frame" x="107" y="124" width="160" height="20"/>
+                    <rect key="frame" x="107" y="134" width="160" height="20"/>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
