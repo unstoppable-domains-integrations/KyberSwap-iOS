@@ -15,7 +15,7 @@ protocol IEOBuyTokenViewControllerDelegate: class {
   func ieoBuyTokenViewController(_ controller: IEOBuyTokenViewController, run event: IEOBuyTokenViewEvent)
 }
 
-class IEOBuyTokenViewModel {
+struct IEOBuyTokenViewModel {
   fileprivate(set) var walletObject: KNWalletObject
 
   fileprivate(set) var from: TokenObject
@@ -170,7 +170,7 @@ class IEOBuyTokenViewModel {
   }
 
   // MARK: Update data
-  func updateWallet(_ walletObject: KNWalletObject) {
+  mutating func updateWallet(_ walletObject: KNWalletObject) {
     self.walletObject = walletObject
 
     self.amountFrom = ""
@@ -181,7 +181,7 @@ class IEOBuyTokenViewModel {
     self.balance = nil
   }
 
-  func updateSelectedToken(_ token: TokenObject) {
+  mutating func updateSelectedToken(_ token: TokenObject) {
     self.amountFrom = ""
     self.amountTo = ""
     self.estRate = nil
@@ -189,11 +189,11 @@ class IEOBuyTokenViewModel {
     self.balance = self.balances[self.from.contract]
   }
 
-  func updateFocusingField(_ isSource: Bool) {
+  mutating func updateFocusingField(_ isSource: Bool) {
     self.isFocusingFromAmount = isSource
   }
 
-  func updateAmount(_ amount: String, isSource: Bool) {
+  mutating func updateAmount(_ amount: String, isSource: Bool) {
     if isSource {
       self.amountFrom = amount
     } else {
@@ -201,7 +201,7 @@ class IEOBuyTokenViewModel {
     }
   }
 
-  func updateBalance(_ balances: [String: Balance]) {
+  mutating func updateBalance(_ balances: [String: Balance]) {
     balances.forEach { (key, value) in
       self.balances[key] = value
     }
@@ -210,19 +210,19 @@ class IEOBuyTokenViewModel {
     }
   }
 
-  func updateBalance(_ balance: Balance) {
+  mutating func updateBalance(_ balance: Balance) {
     self.balance = balance
   }
 
-  func updateEstimatedRate(_ rate: BigInt) {
+  mutating func updateEstimatedRate(_ rate: BigInt) {
     self.estRate = rate
   }
 
-  func updateEstimateGasLimit(_ gasLimit: BigInt) {
+  mutating func updateEstimateGasLimit(_ gasLimit: BigInt) {
     self.estimateGasLimit = gasLimit
   }
 
-  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+  mutating func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
     self.selectedGasPriceType = type
     switch type {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
@@ -233,7 +233,7 @@ class IEOBuyTokenViewModel {
   }
 
   // update when set gas price
-  func updateGasPrice(_ gasPrice: BigInt) {
+  mutating func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
     self.selectedGasPriceType = .custom
   }
@@ -375,7 +375,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
   }
 
   @IBAction func selectWalletButtonPressed(_ sender: Any) {
-    guard let user = IEOUserStorage.shared.user else { return }
+    guard let _ = IEOUserStorage.shared.user else { return }
     let wallets = KNWalletStorage.shared.wallets
     if wallets.isEmpty {
       self.showWarningTopBannerMessage(

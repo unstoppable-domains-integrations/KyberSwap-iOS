@@ -120,11 +120,8 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" textAlignment="right" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OEO-Vi-nYY">
-                                    <rect key="frame" x="5" y="136" width="150" height="32"/>
+                                    <rect key="frame" x="5" y="130" width="150" height="44"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="CpX-VY-RSf"/>
-                                    </constraints>
                                     <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="36"/>
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -156,13 +153,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eth Balance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WpH-TC-Puh">
-                            <rect key="frame" x="20" y="216" width="91.5" height="20"/>
+                            <rect key="frame" x="20" y="216" width="95" height="20"/>
                             <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                             <color key="textColor" red="0.41568627450980389" green="0.43137254901960786" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8bS-9o-qlK">
-                            <rect key="frame" x="295.5" y="216" width="35.5" height="20"/>
+                            <rect key="frame" x="294.5" y="216" width="36.5" height="20"/>
                             <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -196,6 +193,7 @@
                         <constraint firstItem="ZD0-Qu-rXo" firstAttribute="top" secondItem="EtV-H5-cpr" secondAttribute="top" id="VBp-2P-Rkp"/>
                         <constraint firstItem="iZe-39-jR3" firstAttribute="width" secondItem="W8o-IH-bKs" secondAttribute="width" id="WwH-RJ-fJr"/>
                         <constraint firstAttribute="height" constant="280" id="YVO-Mp-JzP"/>
+                        <constraint firstItem="OEO-Vi-nYY" firstAttribute="height" secondItem="nOL-6d-Vmv" secondAttribute="height" id="avk-yB-4yW"/>
                         <constraint firstItem="WpH-TC-Puh" firstAttribute="leading" secondItem="EtV-H5-cpr" secondAttribute="leading" constant="20" id="dHl-L2-9Yv"/>
                         <constraint firstItem="iZe-39-jR3" firstAttribute="trailing" secondItem="8bS-9o-qlK" secondAttribute="trailing" id="gvH-7r-Aik"/>
                         <constraint firstItem="e94-qG-aVK" firstAttribute="height" secondItem="ci7-xe-nav" secondAttribute="height" id="hHT-wC-npc"/>

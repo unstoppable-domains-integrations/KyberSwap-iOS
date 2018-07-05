@@ -87,10 +87,11 @@ extension KNContactTableView: UITableViewDataSource {
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular),
     ]
+    let address = "\(contact.address.prefix(12))...\(contact.address.suffix(10))"
     let attributedString: NSAttributedString = {
       let attributed: NSMutableAttributedString = NSMutableAttributedString()
       attributed.append(NSAttributedString(string: contact.name, attributes: nameAttributes))
-      attributed.append(NSAttributedString(string: " - \(contact.address)", attributes: addressAttributes))
+      attributed.append(NSAttributedString(string: " - \(address)", attributes: addressAttributes))
       return attributed
     }()
     cell.textLabel?.attributedText = attributedString
