@@ -1414,7 +1414,6 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				25A293F620CE7AD4008C6759 /* IEO */,
 				255C40EC2092DB6200475871 /* Storage */,
 				257740C82057948F003323EB /* Coordinators */,
 				257740C2205793C6003323EB /* Screens */,
@@ -1616,15 +1615,13 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
-		255DC60A20A9495F002C2BBF /* BalanceTab */ = {
+		255DC60A20A9495F002C2BBF /* Balance */ = {
 			isa = PBXGroup;
 			children = (
-				25A6AEBF20A9813D00DCDA88 /* Cell */,
-				25A6AEBA20A96CDE00DCDA88 /* Coordinator */,
-				25A6AEB720A95D5800DCDA88 /* ViewModel */,
-				255DC60F20A949AD002C2BBF /* Controller */,
+				2561455120C696AE00FB00CF /* TokenChartVC */,
+				25682B6B20EE02D7009738C4 /* BalanceVC */,
 			);
-			path = BalanceTab;
+			path = Balance;
 			sourceTree = "<group>";
 		};
 		255DC60F20A949AD002C2BBF /* Controller */ = {
@@ -1637,14 +1634,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		255F6F1B20BBC3A900EF808F /* WalletQRCode */ = {
+		255F6F1B20BBC3A900EF808F /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
 				255F6F1E20BBC47C00EF808F /* ViewModel */,
 				255F6F1D20BBC47600EF808F /* Coordinator */,
 				255F6F1C20BBC46600EF808F /* Controller */,
 			);
-			path = WalletQRCode;
+			path = QRCode;
 			sourceTree = "<group>";
 		};
 		255F6F1C20BBC46600EF808F /* Controller */ = {
@@ -1681,13 +1678,13 @@
 			path = ContactTableView;
 			sourceTree = "<group>";
 		};
-		2561455120C696AE00FB00CF /* TokenChart */ = {
+		2561455120C696AE00FB00CF /* TokenChartVC */ = {
 			isa = PBXGroup;
 			children = (
 				2561455720C6AB3C00FB00CF /* Coordinator */,
 				2561455620C6AB2F00FB00CF /* Controller */,
 			);
-			path = TokenChart;
+			path = TokenChartVC;
 			sourceTree = "<group>";
 		};
 		2561455620C6AB2F00FB00CF /* Controller */ = {
@@ -1707,30 +1704,94 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		25696F4620BD0ECD002CC53F /* WalletHeaderView */ = {
+		25682B6B20EE02D7009738C4 /* BalanceVC */ = {
+			isa = PBXGroup;
+			children = (
+				25A6AEBF20A9813D00DCDA88 /* Cell */,
+				25A6AEBA20A96CDE00DCDA88 /* Coordinator */,
+				25A6AEB720A95D5800DCDA88 /* ViewModel */,
+				255DC60F20A949AD002C2BBF /* Controller */,
+			);
+			path = BalanceVC;
+			sourceTree = "<group>";
+		};
+		25682B6C20EE0315009738C4 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				25696F4620BD0ECD002CC53F /* HeaderView */,
+				25C45ABF20AC3D7400CDA1FF /* LandingPage */,
+				255F6F1B20BBC3A900EF808F /* QRCode */,
+				25C45AC820AC470400CDA1FF /* Import */,
+				25931F0C20AEE6BF00BAC774 /* Backup */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		25682B6D20EE0365009738C4 /* Tabbars */ = {
+			isa = PBXGroup;
+			children = (
+				255DC60A20A9495F002C2BBF /* Balance */,
+				25CC0A9A2057E2680009D0D5 /* KyberSwap */,
+				25A293F620CE7AD4008C6759 /* KyberGO */,
+				257C9FCB2078FB2000EE0128 /* Settings */,
+			);
+			path = Tabbars;
+			sourceTree = "<group>";
+		};
+		25682B6E20EE0421009738C4 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				25BE32972090967100D760FB /* History */,
+				25D3259C20C06D51008BB235 /* Send */,
+				257A378A205BBF5700E86794 /* ConfirmView */,
+				25BA01CC20BFEB2C00053863 /* StatusView */,
+				25696F6020BE88E3002CC53F /* SetSlippageRate */,
+				25696F5B20BE6B33002CC53F /* SetGasPrice */,
+				25DBB57F205FB9080020F19D /* Status */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		25682B6F20EE04CB009738C4 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				255709BC20DCB4F500B5BC9E /* NewContact */,
+				250343FC20DA37D000528810 /* SaveContactView */,
+				2561454820C64AEA00FB00CF /* ContactTableView */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
+		25682B7020EE051F009738C4 /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				2521D20C20942ACE00A69AD7 /* NewCustomToken */,
+				25696F6520BE9EA0002CC53F /* SearchToken */,
+			);
+			path = Token;
+			sourceTree = "<group>";
+		};
+		25696F4620BD0ECD002CC53F /* HeaderView */ = {
 			isa = PBXGroup;
 			children = (
 				25696F4820BD0F07002CC53F /* KNWalletHeaderView.xib */,
 				25696F4A20BD0F52002CC53F /* KNWalletHeaderView.swift */,
 			);
-			path = WalletHeaderView;
+			path = HeaderView;
 			sourceTree = "<group>";
 		};
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
-				255709BC20DCB4F500B5BC9E /* NewContact */,
-				250343FC20DA37D000528810 /* SaveContactView */,
+				25682B6F20EE04CB009738C4 /* Contact */,
+				25682B7020EE051F009738C4 /* Token */,
+				25696F5320BD2B2A002CC53F /* DataDetailsView */,
+				257A3792205BC26500E86794 /* BaseController */,
+				257C9FC62078F68E00EE0128 /* CreatePassword */,
+				257B84A22074C29B003DD40E /* DebugMenu */,
 				252B174C20D4317B005B282D /* SegmentedControl */,
 				252B174920D3A0AC005B282D /* CustomToolBar */,
-				2561454820C64AEA00FB00CF /* ContactTableView */,
-				25BA01CC20BFEB2C00053863 /* TransactionStatusView */,
-				25696F6520BE9EA0002CC53F /* SearchToken */,
-				25696F6020BE88E3002CC53F /* SetSlippageRate */,
-				25696F5B20BE6B33002CC53F /* SetGasPrice */,
-				25696F5320BD2B2A002CC53F /* DataDetailsView */,
 				25696F4C20BD1622002CC53F /* XibViewLoader */,
-				25696F4620BD0ECD002CC53F /* WalletHeaderView */,
 			);
 			path = CommonViews;
 			sourceTree = "<group>";
@@ -1809,23 +1870,10 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				2561455120C696AE00FB00CF /* TokenChart */,
-				25D3259C20C06D51008BB235 /* SendToken */,
-				25931F0C20AEE6BF00BAC774 /* BackupWallet */,
-				25C45AC820AC470400CDA1FF /* ImportWallet */,
-				25C45ABF20AC3D7400CDA1FF /* LandingPage */,
-				255DC60A20A9495F002C2BBF /* BalanceTab */,
-				257C9FCB2078FB2000EE0128 /* SettingsTab */,
-				25CE6F8A2073E02500A3A2F9 /* HistoryTab */,
-				25CC0A9A2057E2680009D0D5 /* ExchangeTab */,
-				255F6F1B20BBC3A900EF808F /* WalletQRCode */,
-				2521D20C20942ACE00A69AD7 /* NewCustomToken */,
 				25E9E1F3208F036F00A9090D /* Passcode */,
-				257C9FC62078F68E00EE0128 /* CreatePassword */,
-				257B84A22074C29B003DD40E /* DebugMenu */,
-				25DBB57F205FB9080020F19D /* TransactionStatus */,
-				257A378A205BBF5700E86794 /* ConfirmTransaction */,
-				257A3792205BC26500E86794 /* BaseController */,
+				25682B6D20EE0365009738C4 /* Tabbars */,
+				25682B6C20EE0315009738C4 /* Wallet */,
+				25682B6E20EE0421009738C4 /* Transaction */,
 				257740C32057943B003323EB /* Splash */,
 				25696F4720BD0ED5002CC53F /* CommonViews */,
 			);
@@ -1881,13 +1929,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		257A378A205BBF5700E86794 /* ConfirmTransaction */ = {
+		257A378A205BBF5700E86794 /* ConfirmView */ = {
 			isa = PBXGroup;
 			children = (
 				257A378C205BBFC200E86794 /* Coordinator */,
 				257A378B205BBFBD00E86794 /* Controller */,
 			);
-			path = ConfirmTransaction;
+			path = ConfirmView;
 			sourceTree = "<group>";
 		};
 		257A378B205BBFBD00E86794 /* Controller */ = {
@@ -2002,13 +2050,13 @@
 			path = CreatePassword;
 			sourceTree = "<group>";
 		};
-		257C9FCB2078FB2000EE0128 /* SettingsTab */ = {
+		257C9FCB2078FB2000EE0128 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				25BE32952090961600D760FB /* ListWalletsVC */,
 				25BE32962090963C00D760FB /* SettingsVC */,
 			);
-			path = SettingsTab;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		257C9FCC2078FB2700EE0128 /* Controller */ = {
@@ -2111,13 +2159,13 @@
 			path = SFCompact;
 			sourceTree = "<group>";
 		};
-		25931F0C20AEE6BF00BAC774 /* BackupWallet */ = {
+		25931F0C20AEE6BF00BAC774 /* Backup */ = {
 			isa = PBXGroup;
 			children = (
 				25931F1220AEEB9400BAC774 /* ViewModel */,
 				25931F1120AEEB8C00BAC774 /* Controller */,
 			);
-			path = BackupWallet;
+			path = Backup;
 			sourceTree = "<group>";
 		};
 		25931F1120AEEB8C00BAC774 /* Controller */ = {
@@ -2138,14 +2186,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		25A293F620CE7AD4008C6759 /* IEO */ = {
+		25A293F620CE7AD4008C6759 /* KyberGO */ = {
 			isa = PBXGroup;
 			children = (
 				25A2940E20CE9F8F008C6759 /* Storage */,
 				25A293FC20CE7B0F008C6759 /* Models */,
 				25A293FB20CE7B06008C6759 /* Screens */,
 			);
-			path = IEO;
+			path = KyberGO;
 			sourceTree = "<group>";
 		};
 		25A293F720CE7AE6008C6759 /* HomePage */ = {
@@ -2267,13 +2315,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		25BA01CC20BFEB2C00053863 /* TransactionStatusView */ = {
+		25BA01CC20BFEB2C00053863 /* StatusView */ = {
 			isa = PBXGroup;
 			children = (
 				25BA01CD20BFEBA700053863 /* KNTransactionStatusView.swift */,
 				25BA01CF20BFEBB500053863 /* KNTransactionStatusView.xib */,
 			);
-			path = TransactionStatusView;
+			path = StatusView;
 			sourceTree = "<group>";
 		};
 		25BE32952090961600D760FB /* ListWalletsVC */ = {
@@ -2294,16 +2342,16 @@
 			path = SettingsVC;
 			sourceTree = "<group>";
 		};
-		25BE32972090967100D760FB /* HistoryVC */ = {
+		25BE32972090967100D760FB /* History */ = {
 			isa = PBXGroup;
 			children = (
 				25CE6F8C2073E03800A3A2F9 /* Controller */,
 				25CE6F8B2073E03100A3A2F9 /* Coordinator */,
 			);
-			path = HistoryVC;
+			path = History;
 			sourceTree = "<group>";
 		};
-		25BE32992090969600D760FB /* ExchangeVC */ = {
+		25BE32992090969600D760FB /* SwapVC */ = {
 			isa = PBXGroup;
 			children = (
 				25696F5820BD2E6D002CC53F /* ViewModel */,
@@ -2311,7 +2359,7 @@
 				25CC0AC52059260A0009D0D5 /* Coordinator */,
 				25CC0AC4205926040009D0D5 /* Controller */,
 			);
-			path = ExchangeVC;
+			path = SwapVC;
 			sourceTree = "<group>";
 		};
 		25BE329E209096ED00D760FB /* Controller */ = {
@@ -2368,13 +2416,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		25C45AC820AC470400CDA1FF /* ImportWallet */ = {
+		25C45AC820AC470400CDA1FF /* Import */ = {
 			isa = PBXGroup;
 			children = (
 				25C45ACA20AC471500CDA1FF /* Coordinator */,
 				25C45AC920AC471000CDA1FF /* Controller */,
 			);
-			path = ImportWallet;
+			path = Import;
 			sourceTree = "<group>";
 		};
 		25C45AC920AC471000CDA1FF /* Controller */ = {
@@ -2497,12 +2545,12 @@
 			path = LoadingInterval;
 			sourceTree = "<group>";
 		};
-		25CC0A9A2057E2680009D0D5 /* ExchangeTab */ = {
+		25CC0A9A2057E2680009D0D5 /* KyberSwap */ = {
 			isa = PBXGroup;
 			children = (
-				25BE32992090969600D760FB /* ExchangeVC */,
+				25BE32992090969600D760FB /* SwapVC */,
 			);
-			path = ExchangeTab;
+			path = KyberSwap;
 			sourceTree = "<group>";
 		};
 		25CC0A9B2057E2940009D0D5 /* Model */ = {
@@ -2603,14 +2651,6 @@
 			path = EtherScan;
 			sourceTree = "<group>";
 		};
-		25CE6F8A2073E02500A3A2F9 /* HistoryTab */ = {
-			isa = PBXGroup;
-			children = (
-				25BE32972090967100D760FB /* HistoryVC */,
-			);
-			path = HistoryTab;
-			sourceTree = "<group>";
-		};
 		25CE6F8B2073E03100A3A2F9 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -2630,14 +2670,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		25D3259C20C06D51008BB235 /* SendToken */ = {
+		25D3259C20C06D51008BB235 /* Send */ = {
 			isa = PBXGroup;
 			children = (
 				25D325A320C0707C008BB235 /* Coordinator */,
 				25D325A220C07076008BB235 /* ViewModel */,
 				25D325A120C0706C008BB235 /* Controller */,
 			);
-			path = SendToken;
+			path = Send;
 			sourceTree = "<group>";
 		};
 		25D325A120C0706C008BB235 /* Controller */ = {
@@ -2665,13 +2705,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		25DBB57F205FB9080020F19D /* TransactionStatus */ = {
+		25DBB57F205FB9080020F19D /* Status */ = {
 			isa = PBXGroup;
 			children = (
 				25DBB580205FB9190020F19D /* PendingTransactionList */,
 				257A37A1205D180800E86794 /* TransactionStatus */,
 			);
-			path = TransactionStatus;
+			path = Status;
 			sourceTree = "<group>";
 		};
 		25DBB580205FB9190020F19D /* PendingTransactionList */ = {
