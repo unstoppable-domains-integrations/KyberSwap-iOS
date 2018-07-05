@@ -48,11 +48,12 @@ platform :ios do
         }
       }
     )
-    notification(subtitle: "Built Successfully!", message: "Start uploading build " + build_number + " to TestFlight.")
+    old_build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    notification(subtitle: "Built Successfully!", message: "Start uploading build " + old_build_number + " to TestFlight.")
     upload_to_testflight(
 	skip_waiting_for_build_processing: true,
     )
-    notification(subtitle: "Uploaded Successfully!", message: "New build has been uploaded successfully to TestFlight. Waiting for processing.")
+    notification(subtitle: "Uploaded Successfully!", message: "New build (" + old_build_number + ") has been uploaded successfully to TestFlight. Waiting for processing.")
     increment_build_number()
     git_add
     version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
