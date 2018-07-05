@@ -192,7 +192,6 @@
 		25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25A4F031209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib */; };
 		25A6AEB920A95D6B00DCDA88 /* KNBalanceTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A6AEB820A95D6B00DCDA88 /* KNBalanceTabViewModel.swift */; };
 		25A6AEBC20A96CEA00DCDA88 /* KNBalanceTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A6AEBB20A96CEA00DCDA88 /* KNBalanceTabCoordinator.swift */; };
-		25A6AEBE20A974B000DCDA88 /* UIApplication+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A6AEBD20A974B000DCDA88 /* UIApplication+Kyber.swift */; };
 		25A6AEC620A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A6AEC420A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.swift */; };
 		25A6AEC720A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25A6AEC520A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.xib */; };
 		25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */; };
@@ -836,7 +835,6 @@
 		25A4F031209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNewCustomTokenViewController.xib; sourceTree = "<group>"; };
 		25A6AEB820A95D6B00DCDA88 /* KNBalanceTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabViewModel.swift; sourceTree = "<group>"; };
 		25A6AEBB20A96CEA00DCDA88 /* KNBalanceTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabCoordinator.swift; sourceTree = "<group>"; };
-		25A6AEBD20A974B000DCDA88 /* UIApplication+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Kyber.swift"; sourceTree = "<group>"; };
 		25A6AEC420A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTokenBalanceCollectionViewCell.swift; sourceTree = "<group>"; };
 		25A6AEC520A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTokenBalanceCollectionViewCell.xib; sourceTree = "<group>"; };
 		25AC247F205FBED900989EBA /* KNPendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPendingTransactionListViewController.swift; sourceTree = "<group>"; };
@@ -1510,7 +1508,6 @@
 				25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */,
 				257C9FBF2078A5E400EE0128 /* Array+Kyber.swift */,
 				258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */,
-				25A6AEBD20A974B000DCDA88 /* UIApplication+Kyber.swift */,
 				255A68E620AADB2000F39749 /* Double+Kyber.swift */,
 				255F6F2520BBC9BF00EF808F /* UIImage+Kyber.swift */,
 				2519E10F20CFBB6A00D8AFC5 /* UIImageView+Kyber.swift */,
@@ -5042,7 +5039,6 @@
 				29D03F1D1F712183006E548C /* Button.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
-				25A6AEBE20A974B000DCDA88 /* UIApplication+Kyber.swift in Sources */,
 				CCCD74FD1FD2D38D004A087D /* CheckDeviceCoordinator.swift in Sources */,
 				25696F4B20BD0F52002CC53F /* KNWalletHeaderView.swift in Sources */,
 				25AC2481205FBED900989EBA /* KNPendingTransactionListViewController.swift in Sources */,
