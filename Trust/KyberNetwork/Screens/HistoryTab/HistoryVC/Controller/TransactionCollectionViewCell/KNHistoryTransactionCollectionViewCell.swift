@@ -6,70 +6,124 @@ protocol KNHistoryTransactionCollectionViewCellDelegate: class {
   func historyTransactionCollectionViewCell(_ cell: KNHistoryTransactionCollectionViewCell, openDetails transaction: Transaction)
 }
 
-class KNHistoryTransactionCollectionViewModel {
+struct KNHistoryTransactionCollectionViewModel {
   let transaction: Transaction
   let ownerAddress: String
+  let ownerWalletName: String
 
   init(
     transaction: Transaction,
-    ownerAddress: String
+    ownerAddress: String,
+    ownerWalletName: String
     ) {
     self.transaction = transaction
     self.ownerAddress = ownerAddress
+    self.ownerWalletName = ownerWalletName
   }
 
-  var leftLabelString: String {
-    guard let localObject = self.transaction.localizedOperations.first else { return "" }
-    if localObject.type == "exchange" {
-      // trade/exchange transaction
-      let fromAmount: String = String(self.transaction.value.prefix(6))
-      return "\(fromAmount) \(localObject.symbol ?? "")"
-    } else {
-      // normal transfer transaction
-      return "\(self.transaction.value.prefix(6)) \(localObject.symbol ?? "")"
-    }
+  var isSwap: Bool { return self.transaction.localizedOperations.first?.type == "exchange" }
+  var isSent: Bool {
+    if self.isSwap { return false }
+    return self.transaction.from.lowercased() == self.ownerAddress.lowercased()
   }
 
-  var rightLabelString: String {
-    guard let localObject = self.transaction.localizedOperations.first else { return "" }
-    if localObject.type == "exchange" {
-      // trade/exchange transaction
-      let toAmount: String = String(localObject.value.prefix(6))
-      return "\(toAmount) \(localObject.name ?? "")"
-    } else {
-      // normal transfer transaction
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: self.transaction.to.lowercased()) {
-        return contact.name
-      }
-      return "\(self.transaction.to.prefix(6))...\(self.transaction.to.suffix(1))"
+  var iconName: String {
+    if self.transaction.state == .error || self.transaction.state == .failed { return "error_icon" }
+    if self.isSwap { return "token_swap_icon" }
+    return self.isSent ? "out_icon" : "in_icon"
+  }
+
+  var transactionTitleString: String {
+    if self.transaction.state == .error || self.transaction.state == .failed { return "[Error]".toBeLocalised() }
+    let typeString: String = {
+      if self.isSwap { return "Swap".toBeLocalised() }
+      return self.isSent ? "Send".toBeLocalised() : "Receive".toBeLocalised()
+    }()
+    return typeString
+  }
+
+  let normalTextAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "b6bab9"),
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+  ]
+
+  let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+  ]
+
+  var descriptionLabelAttributedString: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    if self.isSwap {
+      attributedString.append(NSAttributedString(string: self.ownerWalletName, attributes: highlightedTextAttributes))
+      attributedString.append(NSAttributedString(string: "\n\(self.ownerAddress.prefix(8))....\(self.ownerAddress.suffix(6))", attributes: normalTextAttributes))
+      return attributedString
     }
+
+    let fromText: String = {
+      if self.isSent { return self.ownerWalletName }
+      return "\(self.transaction.from.prefix(8))....\(self.transaction.from.suffix(6))"
+    }()
+    let toText: String = {
+      if self.isSent { return "\(self.transaction.to.prefix(8))....\(self.transaction.to.suffix(6))" }
+      return self.ownerWalletName
+    }()
+    attributedString.append(NSAttributedString(string: "From ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: fromText, attributes: highlightedTextAttributes))
+    attributedString.append(NSAttributedString(string: "\nTo ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: toText, attributes: highlightedTextAttributes))
+    return attributedString
+  }
+
+  var displayedAmountString: String {
+    guard let localObject = self.transaction.localizedOperations.first else { return "" }
+    if self.isSwap {
+      let amountFrom: String = String(self.transaction.value.prefix(6))
+      let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
+
+      let amountTo: String = String(localObject.value.prefix(6))
+      let toText = "\(amountTo) \(localObject.name ?? "")"
+
+      return "\(fromText) -> \(toText)"
+    }
+    let sign: String = self.isSent ? "-" : "+"
+    return "\(sign)\(self.transaction.value.prefix(6)) \(localObject.symbol ?? "")"
+  }
+
+  var displayedAmountColorHex: String {
+    if self.isSwap { return "f89f50" }
+    return self.isSent ? "f87171" : "31cb9e"
   }
 }
 
 class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kHistoryTransactionCellID"
-  static let height: CGFloat = 36.0
+  static let height: CGFloat = 84.0
 
   weak var delegate: KNHistoryTransactionCollectionViewCellDelegate?
   fileprivate var viewModel: KNHistoryTransactionCollectionViewModel!
 
-  @IBOutlet weak var fromLabel: UILabel!
-  @IBOutlet weak var toLabel: UILabel!
+  @IBOutlet weak var stateImageView: UIImageView!
+  @IBOutlet weak var transactionStateTitleLabel: UILabel!
+  @IBOutlet weak var transactionDescLabel: UILabel!
+  @IBOutlet weak var transactionAmountLabel: UILabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    // Initialization code
+    // reset data
+    self.transactionStateTitleLabel.text = ""
+    self.transactionDescLabel.text = ""
+    self.transactionAmountLabel.text = ""
   }
 
   func updateCell(with model: KNHistoryTransactionCollectionViewModel) {
     self.viewModel = model
-    self.fromLabel.text = model.leftLabelString
-    self.toLabel.text = model.rightLabelString
+    self.stateImageView.image = UIImage(named: model.iconName)
+    self.transactionStateTitleLabel.text = model.transactionTitleString
+    self.transactionDescLabel.attributedText = model.descriptionLabelAttributedString
+    self.transactionAmountLabel.text = model.displayedAmountString
+    self.transactionAmountLabel.textColor = UIColor(hex: model.displayedAmountColorHex)
     self.layoutIfNeeded()
-  }
-
-  @IBAction func linkButtonPressed(_ sender: Any) {
-    self.delegate?.historyTransactionCollectionViewCell(self, openDetails: self.viewModel.transaction)
   }
 }

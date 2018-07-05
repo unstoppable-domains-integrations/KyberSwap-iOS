@@ -20,7 +20,7 @@ struct KNHistoryViewModel {
   fileprivate(set) var pendingTxData: [String: [Transaction]] = [:]
   fileprivate(set) var pendingTxHeaders: [String] = []
 
-  fileprivate(set) var ownerAddress: String
+  fileprivate(set) var currentWallet: KNWalletObject
 
   fileprivate(set) var isShowingPending: Bool = true
 
@@ -30,14 +30,14 @@ struct KNHistoryViewModel {
     completedTxHeaders: [String],
     pendingTxData: [String: [Transaction]],
     pendingTxHeaders: [String],
-    ownerAddress: String
+    currentWallet: KNWalletObject
     ) {
     self.tokens = tokens
     self.completedTxData = completedTxData
     self.completedTxHeaders = completedTxHeaders
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
-    self.ownerAddress = ownerAddress
+    self.currentWallet = currentWallet
     self.isShowingPending = true
   }
 
@@ -59,8 +59,8 @@ struct KNHistoryViewModel {
     self.completedTxHeaders = completedTxHeaders
   }
 
-  mutating func updateOwnerAddress(_ ownerAddress: String) {
-    self.ownerAddress = ownerAddress
+  mutating func updateCurrentWallet(_ currentWallet: KNWalletObject) {
+    self.currentWallet = currentWallet
   }
 
   var isEmptyStateHidden: Bool {
@@ -234,19 +234,20 @@ extension KNHistoryViewController {
   func coordinatorUpdateCompletedTransactions(
     data: [String: [Transaction]],
     dates: [String],
-    ownerAddress: String
+    currentWallet: KNWalletObject
     ) {
     self.viewModel.update(completedTxData: data, completedTxHeaders: dates)
-    self.viewModel.updateOwnerAddress(ownerAddress)
+    self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }
 
   func coordinatorUpdatePendingTransaction(
     data: [String: [Transaction]],
     dates: [String],
-    ownerAddress: String) {
+    currentWallet: KNWalletObject
+    ) {
     self.viewModel.update(pendingTxData: data, pendingTxHeaders: dates)
-    self.viewModel.updateOwnerAddress(ownerAddress)
+    self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }
 }
@@ -303,14 +304,16 @@ extension KNHistoryViewController: UICollectionViewDataSource {
       guard let tx = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
       let model = KNHistoryTransactionCollectionViewModel(
         transaction: tx,
-        ownerAddress: self.viewModel.ownerAddress
+        ownerAddress: self.viewModel.currentWallet.address,
+        ownerWalletName: self.viewModel.currentWallet.name
       )
       cell.updateCell(with: model)
     } else {
       guard let tx = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
       let model = KNHistoryTransactionCollectionViewModel(
         transaction: tx,
-        ownerAddress: self.viewModel.ownerAddress
+        ownerAddress: self.viewModel.currentWallet.address,
+        ownerWalletName: self.viewModel.currentWallet.name
       )
       cell.updateCell(with: model)
     }

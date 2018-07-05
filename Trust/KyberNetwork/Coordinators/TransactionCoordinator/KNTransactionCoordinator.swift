@@ -511,7 +511,7 @@ extension UnconfirmedTransaction {
       to: "",
       contract: nil,
       type: "transfer",
-      value: self.value.fullString(decimals: token.decimals),
+      value: self.value.shortString(decimals: token.decimals),
       symbol: token.symbol,
       name: token.name,
       decimals: token.decimals
@@ -521,7 +521,7 @@ extension UnconfirmedTransaction {
       blockNumber: 0,
       from: wallet.address.description,
       to: self.to?.description ?? "",
-      value: self.value.fullString(decimals: token.decimals),
+      value: self.value.shortString(decimals: token.decimals),
       gas: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
       gasPrice: self.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
       gasUsed: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
@@ -568,6 +568,11 @@ extension RawTransaction {
 
 // MARK: Transaction Storage Extension
 extension TransactionsStorage {
+
+  var nonePendingObjects: [Transaction] {
+    return objects.filter({ $0.state != .pending })
+  }
+
   func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
     self.realm.beginWrite()
     self.realm.add(transactions, update: true)

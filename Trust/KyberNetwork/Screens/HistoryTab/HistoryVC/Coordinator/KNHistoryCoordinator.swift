@@ -13,6 +13,8 @@ class KNHistoryCoordinator: Coordinator {
   let navigationController: UINavigationController
   private(set) var session: KNSession
 
+  var currentWallet: KNWalletObject
+
   var coordinators: [Coordinator] = []
 
   lazy var rootViewController: KNHistoryViewController = {
@@ -21,7 +23,7 @@ class KNHistoryCoordinator: Coordinator {
       completedTxHeaders: [],
       pendingTxData: [:],
       pendingTxHeaders: [],
-      ownerAddress: self.session.wallet.address.description
+      currentWallet: self.currentWallet
     )
     let controller = KNHistoryViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
@@ -35,6 +37,7 @@ class KNHistoryCoordinator: Coordinator {
     ) {
     self.navigationController = navigationController
     self.session = session
+    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description)!
   }
 
   func start() {
@@ -50,11 +53,12 @@ class KNHistoryCoordinator: Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description)!
     self.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    let transactions: [Transaction] = self.session.transactionStorage.completedObjects
+    let transactions: [Transaction] = self.session.transactionStorage.nonePendingObjects
 
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
@@ -77,7 +81,7 @@ class KNHistoryCoordinator: Coordinator {
     self.rootViewController.coordinatorUpdateCompletedTransactions(
       data: sectionData,
       dates: dates,
-      ownerAddress: self.session.wallet.address.description
+      currentWallet: self.currentWallet
     )
   }
 
@@ -104,7 +108,7 @@ class KNHistoryCoordinator: Coordinator {
     self.rootViewController.coordinatorUpdatePendingTransaction(
       data: sectionData,
       dates: dates,
-      ownerAddress: self.session.wallet.address.description
+      currentWallet: self.currentWallet
     )
   }
 }
