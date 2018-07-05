@@ -31,6 +31,14 @@ class KNHistoryCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var txDetailsCoordinator: KNTransactionDetailsCoordinator = {
+    return KNTransactionDetailsCoordinator(
+      navigationController: self.navigationController,
+      transaction: nil,
+      currentWallet: self.currentWallet
+    )
+  }()
+
   init(
     navigationController: UINavigationController,
     session: KNSession
@@ -117,7 +125,11 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   func historyViewController(_ controller: KNHistoryViewController, run event: KNHistoryViewEvent) {
     switch event {
     case .selectTransaction(let transaction):
-      self.openEtherScanForTransaction(with: transaction.id)
+      self.txDetailsCoordinator.update(
+        transaction: transaction,
+        currentWallet: self.currentWallet
+      )
+      self.txDetailsCoordinator.start()
     case .dismiss:
       self.stop()
     }
