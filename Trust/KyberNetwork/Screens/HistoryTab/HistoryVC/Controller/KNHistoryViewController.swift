@@ -11,7 +11,7 @@ protocol KNHistoryViewControllerDelegate: class {
   func historyViewController(_ controller: KNHistoryViewController, run event: KNHistoryViewEvent)
 }
 
-class KNHistoryViewModel {
+struct KNHistoryViewModel {
   fileprivate(set) var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
 
   fileprivate(set) var completedTxData: [String: [Transaction]] = [:]
@@ -41,35 +41,47 @@ class KNHistoryViewModel {
     self.isShowingPending = true
   }
 
-  func updateIsShowingPending(_ isShowingPending: Bool) {
+  mutating func updateIsShowingPending(_ isShowingPending: Bool) {
     self.isShowingPending = isShowingPending
   }
 
-  func update(tokens: [TokenObject]) {
+  mutating func update(tokens: [TokenObject]) {
     self.tokens = tokens
   }
 
-  func update(pendingTxData: [String: [Transaction]], pendingTxHeaders: [String]) {
+  mutating func update(pendingTxData: [String: [Transaction]], pendingTxHeaders: [String]) {
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
   }
 
-  func update(completedTxData: [String: [Transaction]], completedTxHeaders: [String]) {
+  mutating func update(completedTxData: [String: [Transaction]], completedTxHeaders: [String]) {
     self.completedTxData = completedTxData
     self.completedTxHeaders = completedTxHeaders
   }
 
-  func updateOwnerAddress(_ ownerAddress: String) {
+  mutating func updateOwnerAddress(_ ownerAddress: String) {
     self.ownerAddress = ownerAddress
   }
 
-  var isNoPendingTxHidden: Bool {
+  var isEmptyStateHidden: Bool {
     if self.isShowingPending { return !self.pendingTxHeaders.isEmpty }
-    return true
+    return !self.completedTxHeaders.isEmpty
+  }
+
+  var emptyStateIconName: String {
+    return self.isShowingPending ? "no_pending_tx_icon" : "no_mined_tx_icon"
+  }
+
+  var emptyStateTitleLabelString: String {
+    return self.isShowingPending ? "You are all set".toBeLocalised() : "None completed".toBeLocalised()
+  }
+
+  var emptyStateDescLabelString: String {
+    return self.isShowingPending ? "You do not have any pending transactions.".toBeLocalised() : "You do not have any completed transactions.".toBeLocalised()
   }
 
   var isRateMightChangeHidden: Bool {
-    return (!self.isShowingPending || !self.isNoPendingTxHidden)
+    return !(self.isShowingPending && !self.pendingTxHeaders.isEmpty)
   }
 
   var transactionCollectionViewBottomPaddingConstraint: CGFloat {
@@ -77,7 +89,7 @@ class KNHistoryViewModel {
   }
 
   var isTransactionCollectionViewHidden: Bool {
-    return !self.isNoPendingTxHidden
+    return !self.isEmptyStateHidden
   }
 
   var numberSections: Int {
@@ -115,12 +127,12 @@ class KNHistoryViewModel {
   }
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 17)!,
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "d8d8d8"),
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 13)!,
+    NSAttributedStringKey.foregroundColor: UIColor(hex: "31cb9e"),
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 17)!,
+    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 13)!,
     NSAttributedStringKey.foregroundColor: UIColor.white,
   ]
 }
@@ -130,8 +142,11 @@ class KNHistoryViewController: KNBaseViewController {
   weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate var viewModel: KNHistoryViewModel
 
-  @IBOutlet weak var noPendingTxContainerView: UIView!
-  @IBOutlet weak var youAreAllSet: UILabel!
+  @IBOutlet weak var emptyStateContainerView: UIView!
+  @IBOutlet weak var emptyStateImageView: UIImageView!
+  @IBOutlet weak var emptyStateTitleLabel: UILabel!
+  @IBOutlet weak var emptyStateDescLabel: UILabel!
+
   @IBOutlet weak var rateMightChangeContainerView: UIView!
 
   @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -169,12 +184,12 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = "History".toBeLocalised()
-  }
-
-  fileprivate func setupCollectionView() {
     self.segmentedControl.rounded(color: .clear, width: 0, radius: 5.0)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
+  }
+
+  fileprivate func setupCollectionView() {
 
     let nib = UINib(nibName: KNHistoryTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID)
@@ -187,7 +202,10 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIWhenDataDidChange() {
-    self.noPendingTxContainerView.isHidden = self.viewModel.isNoPendingTxHidden
+    self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
+    self.emptyStateImageView.image = UIImage(named: self.viewModel.emptyStateIconName)
+    self.emptyStateTitleLabel.text = self.viewModel.emptyStateTitleLabelString
+    self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint

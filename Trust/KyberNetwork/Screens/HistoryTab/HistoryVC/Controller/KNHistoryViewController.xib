@@ -23,13 +23,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNHistoryViewController" customModule="Trust" customModuleProvider="target">
             <connections>
-                <outlet property="noPendingTxContainerView" destination="38H-s2-1f5" id="3Ne-b5-U2s"/>
+                <outlet property="emptyStateContainerView" destination="38H-s2-1f5" id="bfP-jC-EnZ"/>
+                <outlet property="emptyStateDescLabel" destination="bv9-ei-Ioj" id="w0I-rt-Qt3"/>
+                <outlet property="emptyStateImageView" destination="pl2-px-VEG" id="qGp-Dy-ruG"/>
+                <outlet property="emptyStateTitleLabel" destination="6pp-oS-9os" id="MXf-qA-Udk"/>
                 <outlet property="rateMightChangeContainerView" destination="Cib-c5-K25" id="gqz-Jg-Jq7"/>
                 <outlet property="segmentedControl" destination="2QL-Po-GGO" id="vBa-Gm-mU8"/>
                 <outlet property="transactionCollectionView" destination="oeZ-dP-Rut" id="TzK-da-nmD"/>
                 <outlet property="transactionCollectionViewBottomConstraint" destination="b18-BJ-adl" id="Igp-c2-CDB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="youAreAllSet" destination="6pp-oS-9os" id="Z6T-Zn-KH3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -38,48 +40,51 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gaQ-YO-jy8">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="116"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="History" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYJ-ao-QW0">
-                            <rect key="frame" x="153" y="44" width="70" height="24"/>
+                            <rect key="frame" x="153" y="32" width="70" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1R-53-YNK">
-                            <rect key="frame" x="16" y="44" width="24" height="24"/>
+                            <rect key="frame" x="16" y="32" width="24" height="24"/>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="esS-rv-P2Q"/>
                             </connections>
                         </button>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2QL-Po-GGO">
+                            <rect key="frame" x="16" y="68" width="343" height="33"/>
+                            <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="iWK-xZ-DrK"/>
+                            </constraints>
+                            <segments>
+                                <segment title="Pending"/>
+                                <segment title="Mined"/>
+                            </segments>
+                            <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="segmentedControlValueDidChange:" destination="-1" eventType="valueChanged" id="owZ-w1-ts3"/>
+                            </connections>
+                        </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="84" id="88A-PP-VnU"/>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="top" secondItem="GYJ-ao-QW0" secondAttribute="bottom" constant="12" id="2sN-bz-oI5"/>
+                        <constraint firstAttribute="height" constant="116" id="88A-PP-VnU"/>
+                        <constraint firstAttribute="bottom" secondItem="2QL-Po-GGO" secondAttribute="bottom" constant="16" id="Fcy-Xn-t8j"/>
                         <constraint firstItem="GYJ-ao-QW0" firstAttribute="centerX" secondItem="gaQ-YO-jy8" secondAttribute="centerX" id="QLv-5r-OC9"/>
                         <constraint firstItem="n1R-53-YNK" firstAttribute="centerY" secondItem="GYJ-ao-QW0" secondAttribute="centerY" id="RPI-Uw-uMB"/>
                         <constraint firstItem="n1R-53-YNK" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="16" id="V3u-bQ-Yy9"/>
-                        <constraint firstAttribute="bottom" secondItem="GYJ-ao-QW0" secondAttribute="bottom" constant="16" id="fi9-wj-GlQ"/>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="16" id="alW-rr-ZX9"/>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="centerX" secondItem="gaQ-YO-jy8" secondAttribute="centerX" id="nxV-z5-KXl"/>
                     </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2QL-Po-GGO">
-                    <rect key="frame" x="16" y="100" width="343" height="47"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="46" id="iWK-xZ-DrK"/>
-                    </constraints>
-                    <segments>
-                        <segment title="Pending"/>
-                        <segment title="Completed"/>
-                    </segments>
-                    <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <action selector="segmentedControlValueDidChange:" destination="-1" eventType="valueChanged" id="owZ-w1-ts3"/>
-                    </connections>
-                </segmentedControl>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="oeZ-dP-Rut">
-                    <rect key="frame" x="0.0" y="166" width="375" height="491"/>
+                    <rect key="frame" x="0.0" y="116" width="375" height="541"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bEn-sP-ATM">
                         <size key="itemSize" width="50" height="50"/>
@@ -89,7 +94,7 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38H-s2-1f5">
-                    <rect key="frame" x="0.0" y="166" width="375" height="501"/>
+                    <rect key="frame" x="0.0" y="172" width="375" height="495"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are all set" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pp-oS-9os">
                             <rect key="frame" x="119.5" y="216" width="137.5" height="24"/>
@@ -179,19 +184,17 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oeZ-dP-Rut" secondAttribute="trailing" id="1Fs-os-FYt"/>
+                <constraint firstItem="gaQ-YO-jy8" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4iH-ac-bj8"/>
                 <constraint firstItem="Cib-c5-K25" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BDS-1f-YEo"/>
-                <constraint firstItem="38H-s2-1f5" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="82" id="Eug-JB-gbB"/>
-                <constraint firstItem="2QL-Po-GGO" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="16" id="NGb-zu-bLD"/>
+                <constraint firstItem="38H-s2-1f5" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="56" id="Eug-JB-gbB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Cib-c5-K25" secondAttribute="bottom" id="Na8-5b-l4C"/>
-                <constraint firstItem="oeZ-dP-Rut" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="82" id="TIC-6A-T0J"/>
-                <constraint firstItem="2QL-Po-GGO" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Ts2-CB-2b0"/>
+                <constraint firstItem="oeZ-dP-Rut" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" id="TIC-6A-T0J"/>
                 <constraint firstItem="oeZ-dP-Rut" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Wt6-vY-Pvn"/>
                 <constraint firstItem="gaQ-YO-jy8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XdV-ZB-MLR"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="oeZ-dP-Rut" secondAttribute="bottom" constant="10" id="b18-BJ-adl"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="38H-s2-1f5" secondAttribute="bottom" id="e8U-7c-Htz"/>
                 <constraint firstItem="gaQ-YO-jy8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="i5I-Lc-hlp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="38H-s2-1f5" secondAttribute="trailing" id="jng-wq-nZT"/>
-                <constraint firstItem="2QL-Po-GGO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="jzI-Wa-XLP"/>
                 <constraint firstItem="38H-s2-1f5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="n6F-Rq-SnA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cib-c5-K25" secondAttribute="trailing" id="qVL-Rk-80P"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gaQ-YO-jy8" secondAttribute="trailing" id="zIp-Ed-MuD"/>
