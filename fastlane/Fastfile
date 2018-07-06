@@ -40,7 +40,7 @@ platform :ios do
     git_add
     version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
     build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
+    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
@@ -59,7 +59,7 @@ platform :ios do
     git_add
     version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
     build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: "./*.plist", message: "Increase version and build number " + build_number + " version " + version_number)
+    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase version and build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
@@ -95,7 +95,7 @@ platform :ios do
     git_add
     version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
     build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
+    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
