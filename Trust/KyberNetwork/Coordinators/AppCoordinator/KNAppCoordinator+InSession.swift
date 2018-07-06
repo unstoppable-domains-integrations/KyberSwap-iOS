@@ -59,34 +59,26 @@ extension KNAppCoordinator {
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(hex: "00d3a7")
-    self.balanceTabCoordinator.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "Balance".toBeLocalised(),
-        image: UIImage(named: "balance_tab_icon"),
-        selectedImage: UIImage(named: "balance_tab_icon")
-      )
-      tabBarItem.tag = 0
-      return tabBarItem
-    }()
-    self.exchangeCoordinator?.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "KyberSwap".toBeLocalised(),
-        image: UIImage(named: "exchange_tab_icon"),
-        selectedImage: UIImage(named: "exchange_tab_icon")
-      )
-      tabBarItem.tag = 1
-      return tabBarItem
-    }()
-    self.kyberGOCoordinator?.navigationController.tabBarItem = {
-      let tabBarItem = UITabBarItem(
-        title: "KyberGO".toBeLocalised(),
-        image: UIImage(named: "kybergo_tab_icon"),
-        selectedImage: UIImage(named: "kybergo_tab_icon")
-      )
-      tabBarItem.tag = 2
-      return tabBarItem
-    }()
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Settings".toBeLocalised(), image: nil, tag: 3)
+    self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
+      title: "Balance".toBeLocalised(),
+      image: UIImage(named: "tabbar_balance_icon"),
+      tag: 0
+    )
+    self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: "KyberSwap".toBeLocalised(),
+      image: UIImage(named: "tabbar_kyberswap_icon"),
+      tag: 1
+    )
+    self.kyberGOCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: "KyberGO".toBeLocalised(),
+      image: UIImage(named: "tabbar_kybergo_icon"),
+      tag: 2
+    )
+    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
+      title: "Settings".toBeLocalised(),
+      image: UIImage(named: "tabbar_settings_icon"),
+      tag: 3
+    )
 
     if let topViewController = self.navigationController.topViewController {
       topViewController.addChildViewController(self.tabbarController)

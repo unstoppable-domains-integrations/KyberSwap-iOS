@@ -33,6 +33,10 @@ struct KNHistoryTransactionCollectionViewModel {
     return self.isSent ? "out_icon" : "in_icon"
   }
 
+  var isAmountTransactionHidden: Bool {
+    return self.transaction.state == .error || self.transaction.state == .failed
+  }
+
   var transactionTitleString: String {
     if self.transaction.state == .error || self.transaction.state == .failed { return "[Error]".toBeLocalised() }
     let typeString: String = {
@@ -124,6 +128,7 @@ class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
     self.transactionDescLabel.attributedText = model.descriptionLabelAttributedString
     self.transactionAmountLabel.text = model.displayedAmountString
     self.transactionAmountLabel.textColor = UIColor(hex: model.displayedAmountColorHex)
+    self.transactionAmountLabel.isHidden = model.isAmountTransactionHidden
     self.layoutIfNeeded()
   }
 }

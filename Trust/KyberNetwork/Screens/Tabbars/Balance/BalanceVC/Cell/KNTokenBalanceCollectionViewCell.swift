@@ -63,7 +63,7 @@ struct KNTokenBalanceCollectionViewCellModel {
         rate: rateETH,
         decimals: 18
       )
-      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 4, maxFractionDigits: 6)
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 6, maxFractionDigits: 9)
       return "Val \(value.prefix(11))"
     }
     return "Val ---"
@@ -96,7 +96,7 @@ struct KNTokenBalanceCollectionViewCellModel {
       return nil
     }()
     let attributedString = NSMutableAttributedString()
-    let rateString = rate?.string(units: .ether, minFractionDigits: 4, maxFractionDigits: 6) ?? "-.--"
+    let rateString = rate?.string(units: .ether, minFractionDigits: 4, maxFractionDigits: 9) ?? "-.--"
     attributedString.append(NSAttributedString(string: "\(rateString.prefix(11))", attributes: highlighted))
     attributedString.append(NSAttributedString(string: "\n\(value.prefix(11))", attributes: normal))
     return attributedString
