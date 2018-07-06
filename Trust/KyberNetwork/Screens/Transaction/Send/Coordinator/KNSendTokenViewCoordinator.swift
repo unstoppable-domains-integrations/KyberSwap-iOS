@@ -102,6 +102,8 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
       self.send(transaction: transaction)
     case .addContact(let address):
       self.openNewContact(address: address)
+    case .contactSelectMore:
+      self.openListContactsView()
     }
   }
 
@@ -157,6 +159,13 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address)
     self.addContactVC.updateView(viewModel: viewModel)
     self.navigationController.pushViewController(self.addContactVC, animated: true)
+  }
+
+  fileprivate func openListContactsView() {
+    let controller = KNListContactViewController()
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    self.navigationController.pushViewController(controller, animated: true)
   }
 }
 
@@ -227,23 +236,21 @@ extension KNSendTokenViewCoordinator {
   }
 }
 
-extension KNSendTokenViewCoordinator: KNSaveContactViewControllerDelegate {
-  func saveContactViewController(_ controller: KNSaveContactViewController, run event: KNSaveContactViewEvent) {
-    self.navigationController.dismiss(animated: true) {
-      if case .save(let address, let name) = event {
-        let contact = KNContact(address: address, name: name)
-        KNContactStorage.shared.update(contacts: [contact])
-        KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
-      }
-    }
-  }
-}
-
 extension KNSendTokenViewCoordinator: KNNewContactViewControllerDelegate {
   func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
     switch event {
     case .dismiss:
       self.navigationController.popViewController(animated: true)
+    }
+  }
+}
+
+extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
+  func listContactViewController(_ controller: KNListContactViewController, run event: KNListContactViewEvent) {
+    self.navigationController.popViewController(animated: true) {
+      if case .select(let contact) = event {
+        self.rootViewController.coordinatorDidSelectContact(contact)
+      }
     }
   }
 }

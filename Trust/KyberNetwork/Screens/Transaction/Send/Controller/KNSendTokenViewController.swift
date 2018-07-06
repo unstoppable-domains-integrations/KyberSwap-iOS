@@ -13,6 +13,7 @@ enum KNSendTokenViewEvent {
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case send(transaction: UnconfirmedTransaction)
   case addContact(address: String)
+  case contactSelectMore
 }
 
 protocol KNSendTokenViewControllerDelegate: class {
@@ -226,7 +227,7 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    self.showWarningTopBannerMessage(with: "", message: "This feature will be available soon")
+    self.delegate?.sendTokenViewController(self, run: .contactSelectMore)
   }
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
@@ -327,6 +328,11 @@ extension KNSendTokenViewController {
   func coordinatorGasPriceCachedDidUpdate() {
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
   }
+
+  func coordinatorDidSelectContact(_ contact: KNContact) {
+    self.viewModel.updateAddress(contact.address)
+    self.updateUIAddressQRCode()
+  }
 }
 
 // MARK: UITextFieldDelegate
@@ -390,6 +396,8 @@ extension KNSendTokenViewController: KNContactTableViewDelegate {
       self.updateContactTableView(height: height)
     case .select(let contact):
       self.contactTableView(select: contact)
+    case .edit(let contact):
+      self.delegate?.sendTokenViewController(self, run: .addContact(address: contact.address))
     case .delete(let contact):
       self.contactTableView(delete: contact)
     }

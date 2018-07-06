@@ -69,6 +69,16 @@ class KNNewContactViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.nameTextField.becomeFirstResponder()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.view.endEditing(true)
+  }
+
   fileprivate func setupUI() {
     self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
     self.deleteButton.setTitle("Delete".toBeLocalised(), for: .normal)
@@ -107,9 +117,13 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
-    let alertController = UIAlertController(title: "Delete?", message: "Do you want to delete this contact?", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+    let alertController = UIAlertController(
+      title: "",
+      message: "Do you want to delete this contact?".toBeLocalised(),
+      preferredStyle: .actionSheet
+    )
+    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
       KNContactStorage.shared.delete(contacts: [self.viewModel.contact])
       KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
       self.delegate?.newContactViewController(self, run: .dismiss)

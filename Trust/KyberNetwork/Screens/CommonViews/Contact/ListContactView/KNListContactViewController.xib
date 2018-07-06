@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="contactTableView" destination="0eJ-nQ-IR7" id="Kii-ul-jFu"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Nx-3L-1U6">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JI-zn-Q2P">
+                            <rect key="frame" x="144.5" y="44" width="87.5" height="24"/>
+                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUV-Ge-Xk8">
+                            <rect key="frame" x="16" y="44" width="24" height="24"/>
+                            <state key="normal" image="back_white_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="wwR-2D-uWu"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEr-kh-NAw">
+                            <rect key="frame" x="335" y="44" width="24" height="24"/>
+                            <state key="normal" image="add_icon_white"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="NKS-mc-lY2"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.035294117647058823" green="0.15686274509803921" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="5JI-zn-Q2P" secondAttribute="bottom" constant="16" id="9zb-0C-2Hs"/>
+                        <constraint firstItem="hEr-kh-NAw" firstAttribute="centerY" secondItem="5JI-zn-Q2P" secondAttribute="centerY" id="Hco-qU-emf"/>
+                        <constraint firstAttribute="height" constant="84" id="Uy4-cI-igf"/>
+                        <constraint firstItem="5JI-zn-Q2P" firstAttribute="centerX" secondItem="6Nx-3L-1U6" secondAttribute="centerX" id="cHy-bY-YH5"/>
+                        <constraint firstItem="eUV-Ge-Xk8" firstAttribute="centerY" secondItem="5JI-zn-Q2P" secondAttribute="centerY" id="h5z-bX-a2z"/>
+                        <constraint firstItem="eUV-Ge-Xk8" firstAttribute="leading" secondItem="6Nx-3L-1U6" secondAttribute="leading" constant="16" id="pXF-E2-r4u"/>
+                        <constraint firstAttribute="trailing" secondItem="hEr-kh-NAw" secondAttribute="trailing" constant="16" id="t8I-Zg-vbK"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="Trust" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="6Nx-3L-1U6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DuY-ql-7gd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0eJ-nQ-IR7" secondAttribute="bottom" id="KoO-dy-EQH"/>
+                <constraint firstItem="0eJ-nQ-IR7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Lgr-Zb-axb"/>
+                <constraint firstItem="0eJ-nQ-IR7" firstAttribute="top" secondItem="6Nx-3L-1U6" secondAttribute="bottom" id="a2b-HW-UT0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0eJ-nQ-IR7" secondAttribute="trailing" id="i3V-6j-0oh"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6Nx-3L-1U6" secondAttribute="trailing" id="mXL-aT-jGs"/>
+                <constraint firstItem="6Nx-3L-1U6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pWb-JZ-tFw"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="HH1-PQ-gRm" appends="YES" id="Vbp-lZ-5Wa"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="HH1-PQ-gRm">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanAction:" destination="-1" id="rVg-A9-Ggs"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="add_icon_white" width="24" height="24"/>
+        <image name="back_white_icon" width="24" height="24"/>
+    </resources>
+</document>

@@ -5,6 +5,7 @@ import UIKit
 enum KNContactTableViewEvent {
   case select(contact: KNContact)
   case delete(contact: KNContact)
+  case edit(contact: KNContact)
   case update(height: CGFloat)
 }
 
@@ -18,6 +19,7 @@ class KNContactTableView: XibLoaderView {
   @IBOutlet weak var tableView: UITableView!
 
   fileprivate var contacts: [KNContact] = []
+  fileprivate var isFull: Bool = false
 
   weak var delegate: KNContactTableViewDelegate?
 
@@ -31,7 +33,8 @@ class KNContactTableView: XibLoaderView {
 
   override func commonInit() {
     super.commonInit()
-    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: kContactTableViewCellID)
+    let nib = UINib(nibName: KNContactTableViewCell.className, bundle: nil)
+    self.tableView.register(nib, forCellReuseIdentifier: kContactTableViewCellID)
     self.tableView.rowHeight = 44
     self.tableView.delegate = self
     self.tableView.dataSource = self
@@ -54,8 +57,9 @@ class KNContactTableView: XibLoaderView {
     self.updateView(with: KNContactStorage.shared.contacts)
   }
 
-  func updateView(with contacts: [KNContact]) {
-    self.contacts = Array(contacts.prefix(2))
+  func updateView(with contacts: [KNContact], isFull: Bool = false) {
+    self.isFull = isFull
+    self.contacts = isFull ? contacts : Array(contacts.prefix(2))
     self.tableView.reloadData()
     self.delegate?.contactTableView(
       self.tableView,
@@ -88,24 +92,10 @@ extension KNContactTableView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: kContactTableViewCellID, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: kContactTableViewCellID, for: indexPath) as! KNContactTableViewCell
     let contact: KNContact = self.contacts[indexPath.row]
-    let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "0c0033"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular),
-    ]
-    let addressAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular),
-    ]
-    let address = "\(contact.address.prefix(12))...\(contact.address.suffix(10))"
-    let attributedString: NSAttributedString = {
-      let attributed: NSMutableAttributedString = NSMutableAttributedString()
-      attributed.append(NSAttributedString(string: contact.name, attributes: nameAttributes))
-      attributed.append(NSAttributedString(string: " - \(address)", attributes: addressAttributes))
-      return attributed
-    }()
-    cell.textLabel?.attributedText = attributedString
+    let viewModel = KNContactTableViewCellModel(contact: contact)
+    cell.update(with: viewModel)
     return cell
   }
 
@@ -113,12 +103,21 @@ extension KNContactTableView: UITableViewDataSource {
     return true
   }
 
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    let edit = UITableViewRowAction(style: .normal, title: "Edit") { (_, _) in
+      self.delegate?.contactTableView(
+        tableView,
+        run: .edit(contact: self.contacts[indexPath.row])
+      )
+    }
+    edit.backgroundColor = .blue
+    let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .delete(contact: self.contacts[indexPath.row])
       )
     }
+    delete.backgroundColor = .red
+    return [delete, edit]
   }
 }
