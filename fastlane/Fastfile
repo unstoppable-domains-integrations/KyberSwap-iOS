@@ -32,6 +32,43 @@ platform :ios do
     frameit(white: true)
   end
 
+  desc "Increase build number"
+  lane :increase_build do
+    ensure_git_branch(branch: "wallet_1.0_dev")
+    ensure_git_status_clean
+    increment_build_number()
+    git_add
+    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
+    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    git_commit(path: "./*.plist", message: "Increase build number " + build_number + " version " + version_number)
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "wallet_1.0_dev",
+      remote_branch: "wallet_1.0_dev",
+      tags: false
+    )
+
+  end
+
+  desc "Increase version and build number"
+  lane :increase_version do
+    ensure_git_branch(branch: "wallet_1.0_dev")
+    ensure_git_status_clean
+    increment_build_number()
+    increment_version_number()
+    git_add
+    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
+    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    git_commit(path: "./*.plist", message: "Increase version and build number " + build_number + " version " + version_number)
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "wallet_1.0_dev",
+      remote_branch: "wallet_1.0_dev",
+      tags: false
+    )
+
+  end
+
   desc "TestFlight deployment to itunes connect"
   lane :beta do
     ensure_git_branch(branch: "wallet_1.0_dev")
