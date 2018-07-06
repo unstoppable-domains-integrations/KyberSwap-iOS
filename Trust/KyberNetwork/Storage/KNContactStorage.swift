@@ -27,11 +27,11 @@ class KNContactStorage {
     self.realm.beginWrite()
     self.realm.add(contacts, update: true)
     try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func update(contacts: [KNContact]) {
     self.add(contacts: contacts)
-    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func updateLastUsed(contact: KNContact) {
@@ -45,11 +45,13 @@ class KNContactStorage {
     self.realm.beginWrite()
     self.realm.delete(contacts)
     try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func deleteAll() {
     try! realm.write {
       realm.delete(realm.objects(KNContact.self))
+      KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
     }
   }
 }

@@ -384,17 +384,45 @@ extension KNSendTokenViewController: QRCodeReaderDelegate {
 }
 
 extension KNSendTokenViewController: KNContactTableViewDelegate {
-  func contactTableView(_ sender: KNContactTableView, didUpdate height: CGFloat) {
-    self.recentContactView.isHidden = (height == 0)
-    self.recentContactHeightConstraint.constant = height + 34.0
-    self.recentContactTableViewHeightConstraint.constant = height
-    self.view.layoutIfNeeded()
+  func contactTableView(_ tableView: UITableView, run event: KNContactTableViewEvent) {
+    switch event {
+    case .update(let height):
+      self.updateContactTableView(height: height)
+    case .select(let contact):
+      self.contactTableView(select: contact)
+    case .delete(let contact):
+      self.contactTableView(delete: contact)
+    }
   }
 
-  func contactTableView(_ sender: KNContactTableView, didSelect contact: KNContact) {
+  fileprivate func updateContactTableView(height: CGFloat) {
+    UIView.animate(
+    withDuration: 0.25) {
+      self.recentContactView.isHidden = (height == 0)
+      self.recentContactHeightConstraint.constant = height + 34.0
+      self.recentContactTableViewHeightConstraint.constant = height
+      self.updateUIAddressQRCode()
+      self.view.layoutIfNeeded()
+    }
+  }
+
+  fileprivate func contactTableView(select contact: KNContact) {
     self.viewModel.updateAddress(contact.address)
     self.updateUIAddressQRCode()
     KNContactStorage.shared.updateLastUsed(contact: contact)
+  }
+
+  fileprivate func contactTableView(delete contact: KNContact) {
+    let alertController = UIAlertController(
+      title: "Do you want to delete this contact?".toBeLocalised(),
+      message: "",
+      preferredStyle: .actionSheet
+    )
+    alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+      KNContactStorage.shared.delete(contacts: [contact])
+    }))
+    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+    self.present(alertController, animated: true, completion: nil)
   }
 }
 

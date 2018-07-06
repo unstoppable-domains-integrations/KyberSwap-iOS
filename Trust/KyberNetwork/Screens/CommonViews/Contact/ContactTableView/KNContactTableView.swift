@@ -2,9 +2,14 @@
 
 import UIKit
 
+enum KNContactTableViewEvent {
+  case select(contact: KNContact)
+  case delete(contact: KNContact)
+  case update(height: CGFloat)
+}
+
 protocol KNContactTableViewDelegate: class {
-  func contactTableView(_ sender: KNContactTableView, didSelect contact: KNContact)
-  func contactTableView(_ sender: KNContactTableView, didUpdate height: CGFloat)
+  func contactTableView(_ tableView: UITableView, run event: KNContactTableViewEvent)
 }
 
 class KNContactTableView: XibLoaderView {
@@ -52,14 +57,20 @@ class KNContactTableView: XibLoaderView {
   func updateView(with contacts: [KNContact]) {
     self.contacts = Array(contacts.prefix(2))
     self.tableView.reloadData()
-    self.delegate?.contactTableView(self, didUpdate: self.tableView.rowHeight * CGFloat(self.contacts.count))
+    self.delegate?.contactTableView(
+      self.tableView,
+      run: .update(height: self.tableView.rowHeight * CGFloat(self.contacts.count))
+    )
   }
 }
 
 extension KNContactTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    self.delegate?.contactTableView(self, didSelect: self.contacts[indexPath.row])
+    self.delegate?.contactTableView(
+      tableView,
+      run: .select(contact: self.contacts[indexPath.row])
+    )
   }
 }
 
@@ -96,5 +107,18 @@ extension KNContactTableView: UITableViewDataSource {
     }()
     cell.textLabel?.attributedText = attributedString
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      self.delegate?.contactTableView(
+        tableView,
+        run: .delete(contact: self.contacts[indexPath.row])
+      )
+    }
   }
 }
