@@ -47,7 +47,7 @@ class KNSettingsCoordinator: Coordinator {
     session: KNSession
     ) {
     self.navigationController = navigationController
-    self.navigationController.setNavigationBarHidden(true, animated: false)
+    self.navigationController.applyStyle()
     self.session = session
   }
 
