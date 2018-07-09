@@ -372,6 +372,15 @@ extension KNExchangeTabViewController {
     )
   }
 
+  func coordinatorUpdateWalletObjects() {
+    self.viewModel.updateWalletObject()
+    self.walletHeaderView.updateView(with: self.viewModel.walletObject)
+    self.hamburgerMenu.update(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.viewModel.walletObject
+    )
+  }
+
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.balanceLabel.text = self.viewModel.balanceText

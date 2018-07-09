@@ -6,6 +6,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidSelectExit()
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
+  func settingsCoordinatorUserDidUpdateWalletObjects()
 }
 
 class KNSettingsCoordinator: Coordinator {
@@ -198,5 +199,9 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
     self.listWalletsCoordinator.stop()
     self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
+  }
+
+  func listWalletsCoordinatorDidUpdateWalletObjects() {
+    self.delegate?.settingsCoordinatorUserDidUpdateWalletObjects()
   }
 }

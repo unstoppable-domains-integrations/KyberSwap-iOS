@@ -40,6 +40,12 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
+  func settingsCoordinatorUserDidUpdateWalletObjects() {
+    self.balanceTabCoordinator.appCoordinatorDidUpdateWalletObjects()
+    self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.kyberGOCoordinator?.appCoordinatorDidUpdateWalletObjects()
+  }
+
   func settingsCoordinatorUserDidSelectExit() {
     self.userDidClickExitSession()
   }

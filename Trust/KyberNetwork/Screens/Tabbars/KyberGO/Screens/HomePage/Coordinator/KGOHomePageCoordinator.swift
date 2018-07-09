@@ -86,6 +86,10 @@ class KGOHomePageCoordinator: Coordinator {
     self.navigationController.popToRootViewController(animated: false)
   }
 
+  func appCoordinatorDidUpdateWalletObjects() {
+    self.buyTokenVC?.coordinatorDidUpdateWalletObjects()
+  }
+
   fileprivate func initialLoadListKGO() {
     var isLoadingShown: Bool = false
     if IEOObjectStorage.shared.objects.isEmpty {

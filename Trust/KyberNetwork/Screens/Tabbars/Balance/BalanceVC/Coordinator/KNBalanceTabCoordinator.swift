@@ -85,6 +85,11 @@ extension KNBalanceTabCoordinator {
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(self.session.transactionStorage.pendingObjects)
   }
 
+  func appCoordinatorDidUpdateWalletObjects() {
+    self.rootViewController.coordinatorUpdateWalletObjects()
+    self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
+  }
+
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
     self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
     self.appCoordinatorExchangeRateDidUpdate(

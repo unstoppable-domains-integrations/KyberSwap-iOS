@@ -314,6 +314,8 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == self.walletListTableView {
       let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
+      cell.imageView?.isUserInteractionEnabled = true
+      cell.textLabel?.isUserInteractionEnabled = true
       let wallet = self.viewModel.wallet(at: indexPath.row)
       cell.imageView?.image = UIImage(named: wallet.icon)
       cell.textLabel?.text = wallet.name
@@ -327,6 +329,8 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
       return cell
     }
     let cell = tableView.dequeueReusableCell(withIdentifier: kPendingTableViewCellID, for: indexPath)
+    cell.imageView?.isUserInteractionEnabled = true
+    cell.textLabel?.isUserInteractionEnabled = true
     cell.imageView?.image = UIImage(named: "loading_icon")
     let transaction = self.viewModel.transaction(at: indexPath.row)
     cell.imageView?.startRotating()

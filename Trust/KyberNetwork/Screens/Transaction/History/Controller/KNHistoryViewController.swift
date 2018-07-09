@@ -248,6 +248,12 @@ extension KNHistoryViewController {
     self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }
+
+  func coordinatorUpdateWalletObjects() {
+    guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.viewModel.currentWallet.address) else { return }
+    self.viewModel.updateCurrentWallet(currentWallet)
+    self.updateUIWhenDataDidChange()
+  }
 }
 
 extension KNHistoryViewController: UICollectionViewDelegate {

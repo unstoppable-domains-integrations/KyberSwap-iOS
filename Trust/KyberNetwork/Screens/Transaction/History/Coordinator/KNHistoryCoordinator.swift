@@ -65,6 +65,10 @@ class KNHistoryCoordinator: Coordinator {
     self.appCoordinatorTokensTransactionsDidUpdate()
   }
 
+  func appCoordinatorDidUpdateWalletObjects() {
+    self.rootViewController.coordinatorUpdateWalletObjects()
+  }
+
   func appCoordinatorTokensTransactionsDidUpdate() {
     let transactions: [Transaction] = self.session.transactionStorage.nonePendingObjects
 

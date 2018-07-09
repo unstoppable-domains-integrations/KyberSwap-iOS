@@ -158,6 +158,10 @@ class KNBalanceTabViewModel: NSObject {
   // return true if data is updated and we need to update UIs
   // to reduce number of reloading collection view
 
+  func updateWalletObject(_ walletObject: KNWalletObject) {
+    self.wallet = walletObject
+  }
+
   func updateTokenObjects(_ tokenObjects: [TokenObject]) -> Bool {
     if self.tokenObjects == tokenObjects { return false }
     self.tokenObjects = tokenObjects

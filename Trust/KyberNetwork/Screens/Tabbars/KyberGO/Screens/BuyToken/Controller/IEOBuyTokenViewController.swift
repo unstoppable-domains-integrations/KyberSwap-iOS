@@ -500,6 +500,12 @@ extension IEOBuyTokenViewController {
       self.updateViewAmountDidChange()
     }
   }
+
+  func coordinatorDidUpdateWalletObjects() {
+    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.viewModel.walletObject.address) else { return }
+    self.viewModel.updateWallet(walletObject)
+    self.selectWalletButton.setTitle(self.viewModel.walletButtonTitle, for: .normal)
+  }
 }
 
 extension IEOBuyTokenViewController: UITextFieldDelegate {

@@ -6,6 +6,7 @@ enum KNListWalletsViewEvent {
   case close
   case select(wallet: KNWalletObject)
   case remove(wallet: KNWalletObject)
+  case edit(wallet: KNWalletObject)
 }
 
 protocol KNListWalletsViewControllerDelegate: class {
@@ -116,11 +117,17 @@ extension KNListWalletsViewController: UITableViewDataSource {
     return true
   }
 
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      let wallet = self.viewModel.wallet(at: indexPath.row)
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    let wallet = self.viewModel.wallet(at: indexPath.row)
+    let edit = UITableViewRowAction(style: .normal, title: "Edit".toBeLocalised()) { (_, _) in
+      self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
+    }
+    edit.backgroundColor = .blue
+    let delete = UITableViewRowAction(style: .destructive, title: "Delete".toBeLocalised()) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }
+    delete.backgroundColor = .red
+    return [delete, edit]
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

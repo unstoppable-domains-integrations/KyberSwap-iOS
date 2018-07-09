@@ -193,6 +193,16 @@ extension KNBalanceTabViewController {
     )
   }
 
+  func coordinatorUpdateWalletObjects() {
+    guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: viewModel.wallet.address) else { return }
+    self.viewModel.updateWalletObject(currentWallet)
+    self.walletHeaderView.updateView(with: currentWallet)
+    self.hamburgerMenu.update(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: currentWallet
+    )
+  }
+
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
     if self.viewModel.updateTokenObjects(tokenObjects) {
       self.tokensBalanceCollectionView.reloadData()

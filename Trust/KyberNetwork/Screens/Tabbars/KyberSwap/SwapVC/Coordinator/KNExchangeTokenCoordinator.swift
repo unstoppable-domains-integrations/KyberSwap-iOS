@@ -100,6 +100,11 @@ extension KNExchangeTokenCoordinator {
     self.navigationController.popToRootViewController(animated: false)
   }
 
+  func appCoordinatorDidUpdateWalletObjects() {
+    self.rootViewController.coordinatorUpdateWalletObjects()
+    self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
+  }
+
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
     self.rootViewController.coordinatorUpdateTokenBalance(otherTokensBalance)
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }

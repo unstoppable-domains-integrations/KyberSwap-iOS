@@ -170,6 +170,10 @@ class KNExchangeTabViewModel {
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
   }
 
+  func updateWalletObject() {
+    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address) ?? self.walletObject
+  }
+
   func swapTokens() {
     swap(&self.from, &self.to)
     self.amountFrom = ""
