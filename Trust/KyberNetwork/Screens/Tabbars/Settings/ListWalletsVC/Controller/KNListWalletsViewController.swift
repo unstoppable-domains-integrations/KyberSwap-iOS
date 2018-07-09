@@ -91,6 +91,12 @@ class KNListWalletsViewController: KNBaseViewController {
   @objc func backButtonPressed(_ sender: Any) {
     self.delegate?.listWalletsViewController(self, run: .close)
   }
+
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.listWalletsViewController(self, run: .close)
+    }
+  }
 }
 
 extension KNListWalletsViewController: UITableViewDelegate {

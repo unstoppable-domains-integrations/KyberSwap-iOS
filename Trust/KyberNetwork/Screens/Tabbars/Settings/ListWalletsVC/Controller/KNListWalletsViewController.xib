@@ -32,12 +32,22 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="TaA-Qi-UUl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8FL-qF-vxS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TaA-Qi-UUl" secondAttribute="trailing" id="Ncx-8J-13i"/>
                 <constraint firstItem="TaA-Qi-UUl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="dWX-Tv-XNh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="UeW-F6-I1o" appends="YES" id="EpA-uK-Tlr"/>
+            </connections>
         </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="UeW-F6-I1o">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="tPY-Ug-sdJ"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
     </objects>
 </document>
