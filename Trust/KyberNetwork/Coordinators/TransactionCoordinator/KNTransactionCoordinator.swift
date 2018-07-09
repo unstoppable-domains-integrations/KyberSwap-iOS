@@ -345,7 +345,7 @@ extension KNTransactionCoordinator {
         do {
           let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
-          let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() })
+          let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
           self.updateListTokenTransactions(transactions)
           print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
           completion?(.success(transactions))
