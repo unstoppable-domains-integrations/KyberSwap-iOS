@@ -170,8 +170,6 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
       self.hamburgerMenuSelectAddWallet()
     case .selectSendToken:
       self.openSendTokenView()
-    case .selectSettings:
-      self.openSettingsView()
     case .selectAllTransactions:
       self.openHistoryTransactionView()
     }
@@ -204,10 +202,6 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
       from: self.session.tokenStorage.ethToken
     )
     self.sendTokenCoordinator?.start()
-  }
-
-  func openSettingsView() {
-    //TODO: Implement it
   }
 
   func openHistoryTransactionView() {

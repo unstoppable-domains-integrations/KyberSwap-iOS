@@ -29,7 +29,6 @@
                 <outlet property="pendingTableView" destination="vuO-W4-4eH" id="tzz-TW-fL1"/>
                 <outlet property="pendingTransactionContainerView" destination="sad-Rt-dMF" id="syv-Sc-NbX"/>
                 <outlet property="sendTokenButton" destination="U4x-Dq-HfY" id="vcj-Np-vTh"/>
-                <outlet property="settingsButton" destination="fnT-P7-tl2" id="snZ-vi-axz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletListTableView" destination="cWZ-m5-3ET" id="Y6D-qH-VEn"/>
                 <outlet property="walletListTableViewHeightConstraint" destination="Uyb-6Y-bW6" id="RTM-8g-Ihq"/>
@@ -43,22 +42,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBS-qe-UMl">
                     <rect key="frame" x="155" y="0.0" width="220" height="667"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnT-P7-tl2">
-                            <rect key="frame" x="0.0" y="404" width="220" height="42"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="42" id="AUy-vk-OOF"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="hCP-ZP-HBH"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
-                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Settings">
-                                <color key="titleColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="settingsButtonPressed:" destination="-1" eventType="touchUpInside" id="20K-DR-thh"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rco-Sw-vF2">
                             <rect key="frame" x="0.0" y="362" width="220" height="42"/>
                             <constraints>
@@ -74,7 +57,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4x-Dq-HfY">
-                            <rect key="frame" x="0.0" y="447" width="220" height="42"/>
+                            <rect key="frame" x="0.0" y="404" width="220" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="Rz7-OR-B3M"/>
                             </constraints>
@@ -157,7 +140,6 @@
                     <constraints>
                         <constraint firstItem="YFv-XV-KR6" firstAttribute="top" secondItem="sad-Rt-dMF" secondAttribute="bottom" constant="1" id="11W-1c-0GL"/>
                         <constraint firstAttribute="width" constant="220" id="1yZ-xR-0cC"/>
-                        <constraint firstAttribute="trailing" secondItem="fnT-P7-tl2" secondAttribute="trailing" id="49q-f4-zNa"/>
                         <constraint firstItem="fDl-gv-gvl" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="5Rh-c6-ifi"/>
                         <constraint firstAttribute="trailing" secondItem="sad-Rt-dMF" secondAttribute="trailing" id="84M-xR-d9w"/>
                         <constraint firstItem="cWZ-m5-3ET" firstAttribute="top" secondItem="sad-Rt-dMF" secondAttribute="bottom" constant="1" id="CB0-Ll-PD0"/>
@@ -165,16 +147,14 @@
                         <constraint firstItem="fDl-gv-gvl" firstAttribute="top" secondItem="cWZ-m5-3ET" secondAttribute="bottom" id="KzQ-3X-9RE"/>
                         <constraint firstItem="Rco-Sw-vF2" firstAttribute="top" secondItem="cWZ-m5-3ET" secondAttribute="bottom" constant="1" id="PED-kz-oId"/>
                         <constraint firstAttribute="trailing" secondItem="Rco-Sw-vF2" secondAttribute="trailing" id="X1o-iW-ddi"/>
-                        <constraint firstItem="fnT-P7-tl2" firstAttribute="top" secondItem="Rco-Sw-vF2" secondAttribute="bottom" id="bAQ-3E-fxY"/>
                         <constraint firstItem="sad-Rt-dMF" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="cCv-Gk-oeo"/>
                         <constraint firstItem="YFv-XV-KR6" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="g8f-f5-NQ3"/>
                         <constraint firstAttribute="trailing" secondItem="U4x-Dq-HfY" secondAttribute="trailing" id="gJC-9U-7JG"/>
-                        <constraint firstItem="fnT-P7-tl2" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="hhz-za-Wb1"/>
                         <constraint firstAttribute="trailing" secondItem="YFv-XV-KR6" secondAttribute="trailing" id="lCh-Wv-k3U"/>
+                        <constraint firstItem="U4x-Dq-HfY" firstAttribute="top" secondItem="Rco-Sw-vF2" secondAttribute="bottom" id="lvj-bd-wCb"/>
                         <constraint firstItem="Rco-Sw-vF2" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="mnS-ur-TlX"/>
                         <constraint firstItem="cWZ-m5-3ET" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="nSy-pK-C1p"/>
                         <constraint firstItem="U4x-Dq-HfY" firstAttribute="leading" secondItem="cBS-qe-UMl" secondAttribute="leading" id="qIO-92-OtZ"/>
-                        <constraint firstItem="U4x-Dq-HfY" firstAttribute="top" secondItem="fnT-P7-tl2" secondAttribute="bottom" constant="1" id="rAL-7L-nrB"/>
                         <constraint firstAttribute="trailing" secondItem="fDl-gv-gvl" secondAttribute="trailing" id="rxu-IO-Viy"/>
                         <constraint firstAttribute="trailing" secondItem="cWZ-m5-3ET" secondAttribute="trailing" id="u2F-B0-xUX"/>
                     </constraints>

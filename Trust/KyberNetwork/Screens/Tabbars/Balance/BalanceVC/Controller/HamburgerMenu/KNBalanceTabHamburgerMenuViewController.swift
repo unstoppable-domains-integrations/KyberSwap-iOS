@@ -7,7 +7,6 @@ enum KNBalanceTabHamburgerMenuViewEvent {
   case select(wallet: KNWalletObject)
   case selectAddWallet
   case selectSendToken
-  case selectSettings
   case selectAllTransactions
 }
 
@@ -85,7 +84,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
   @IBOutlet weak var addWalletButton: UIButton!
   @IBOutlet weak var sendTokenButton: UIButton!
-  @IBOutlet weak var settingsButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
   @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
@@ -200,12 +198,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBAction func sendTokenButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSendToken)
-    }
-  }
-
-  @IBAction func settingsButtonPressed(_ sender: Any) {
-    self.hideMenu(animated: true) {
-      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSettings)
     }
   }
 

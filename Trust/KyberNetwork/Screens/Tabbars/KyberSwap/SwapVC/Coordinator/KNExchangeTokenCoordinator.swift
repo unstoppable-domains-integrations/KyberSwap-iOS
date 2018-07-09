@@ -269,8 +269,6 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
 
   func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
     switch event {
-    case .selectSettings:
-      self.openSettingsView()
     case .selectSendToken:
       self.openSendTokenView()
     case .selectAddWallet:
@@ -373,10 +371,6 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     }()
     self.setGasPriceVC = setGasPriceVC
     self.navigationController.pushViewController(setGasPriceVC, animated: true)
-  }
-
-  fileprivate func openSettingsView() {
-    //TODO: Open settings
   }
 
   fileprivate func openSendTokenView() {
