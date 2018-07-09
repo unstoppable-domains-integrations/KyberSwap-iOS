@@ -46,6 +46,14 @@ struct IEOBuyTokenViewModel {
   }
 
   // MARK: From Token
+  var allFromTokenBalanceString: String {
+    return self.balance?.value.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: self.from.decimals
+    ) ?? ""
+  }
+
   var amountFromBigInt: BigInt {
     return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
@@ -442,7 +450,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
   }
 
   @objc func keyboardExchangeAllButtonPressed(_ sender: Any) {
-    self.buyAmountTextField.text = self.viewModel.balance?.amountFull ?? ""
+    self.buyAmountTextField.text = self.viewModel.allFromTokenBalanceString
     self.viewModel.updateFocusingField(true)
     self.viewModel.updateAmount(self.buyAmountTextField.text ?? "", isSource: true)
     self.tokenBalanceLabel.text = self.viewModel.balanceText
@@ -519,6 +527,8 @@ extension IEOBuyTokenViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    if textField == self.buyAmountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    if textField == self.receivedAmountTextField, text.fullBigInt(decimals: self.viewModel.to.tokenDecimals) == nil { return false }
     if text.isEmpty || Double(text) != nil {
       textField.text = text
       self.viewModel.updateFocusingField(textField == self.buyAmountTextField)

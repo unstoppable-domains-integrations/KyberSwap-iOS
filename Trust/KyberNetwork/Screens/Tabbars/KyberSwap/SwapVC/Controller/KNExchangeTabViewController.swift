@@ -256,14 +256,14 @@ class KNExchangeTabViewController: KNBaseViewController {
       return
     }
     // TODO: This is not true in case we could exchange token/token
-    guard self.viewModel.from != self.viewModel.to, self.viewModel.from.isETH || self.viewModel.to.isETH else {
-      self.showWarningTopBannerMessage(with: "Invalid tokens", message: "Only can exchange between ETH and other tokens")
+    guard self.viewModel.from != self.viewModel.to else {
+      self.showWarningTopBannerMessage(with: "Invalid tokens", message: "Can not exchange the same token")
       return
     }
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
       let expectedExchange: BigInt = {
-        let amount = self.viewModel.amountTo.fullBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0)
+        let amount = self.viewModel.amountToBigInt
         return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
       }()
       return expectedExchange
@@ -286,9 +286,10 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   @objc func keyboardExchangeAllButtonPressed(_ sender: Any) {
-    self.fromAmountTextField.text = self.viewModel.balance?.amountFull ?? ""
+    self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString
     self.viewModel.updateFocusingField(true)
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     self.updateTokensView()
     self.updateViewAmountDidChange()
     self.view.endEditing(true)
@@ -434,25 +435,7 @@ extension KNExchangeTabViewController {
   func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
-    let oldToken: TokenObject = {
-      return isSource ? self.viewModel.from : self.viewModel.to
-    }()
     self.viewModel.updateSelectedToken(token, isSource: isSource)
-    var updatedFrom: Bool = isSource
-    var updatedTo: Bool = !isSource
-    if self.viewModel.from.isETH && self.viewModel.to.isETH {
-      /* both tokens are ETH, should change one of them to another token
-       here we just simply swap 2 tokens
-      */
-      self.viewModel.updateSelectedToken(oldToken, isSource: !isSource)
-      updatedFrom = true
-      updatedTo = true
-    } else if !self.viewModel.from.isETH && !self.viewModel.to.isETH {
-      // both tokens are not ETH, change one to ETH
-      self.viewModel.updateSelectedToken(self.viewModel.eth, isSource: !isSource)
-      updatedFrom = true
-      updatedTo = true
-    }
 
     if self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.text = self.viewModel.amountFrom
@@ -461,9 +444,10 @@ extension KNExchangeTabViewController {
       self.toAmountTextField.text = self.viewModel.amountTo
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
     }
+    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
-    self.updateTokensView(updatedFrom: updatedFrom, updatedTo: updatedTo)
+    self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
   }
 
   /*
@@ -516,6 +500,8 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    if textField == self.fromAmountTextField && text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    if textField == self.toAmountTextField && text.fullBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     if text.isEmpty || Double(text) != nil {
       textField.text = text
       self.viewModel.updateFocusingField(textField == self.fromAmountTextField)

@@ -30,7 +30,7 @@ enum KNTransactionStatus: String {
   var imageName: String {
     switch self {
     case .broadcasting, .pending: return "loading_icon"
-    case .failed: return "fail"
+    case .failed, .broadcastingError: return "fail"
     case .success: return "success"
     default: return ""
     }
@@ -76,10 +76,6 @@ class KNTransactionStatusView: XibLoaderView {
   }
 
   func updateView(with status: KNTransactionStatus, txHash: String?, details: String? = nil) {
-//    if let oldTxHash = self.txHash, let newTxHash = txHash, oldTxHash != newTxHash { return }
-    // after broadcasting, should be mining
-//    if self.status == .broadcasting, status != .pending { return }
-//    if self.txHash != nil && txHash == nil { return }
     self.status = status
     self.txHash = txHash
     self.txStatusLabel.text = status.rawValue

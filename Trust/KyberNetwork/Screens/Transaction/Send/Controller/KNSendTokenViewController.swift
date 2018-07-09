@@ -235,9 +235,9 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
-    self.amountTextField.text = self.viewModel.balance?.amountFull ?? ""
-    self.amountTextField.resignFirstResponder()
+    self.amountTextField.text = self.viewModel.allTokenBalanceString
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
+    self.amountTextField.resignFirstResponder()
     self.shouldUpdateEstimatedGasLimit(nil)
   }
 
@@ -351,6 +351,7 @@ extension KNSendTokenViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    if textField == self.amountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     textField.text = text
     if self.amountTextField == textField {
       self.viewModel.updateAmount(text)

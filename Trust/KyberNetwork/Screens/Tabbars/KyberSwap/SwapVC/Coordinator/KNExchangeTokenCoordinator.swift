@@ -424,5 +424,3 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
   }
 }
-
-// MARK: History transaction

@@ -45,6 +45,14 @@ class KNExchangeTabViewModel {
   }
 
   // MARK: From Token
+  var allFromTokenBalanceString: String {
+    return self.balance?.value.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: self.from.decimals
+    ) ?? ""
+  }
+
   var amountFromBigInt: BigInt {
     return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
@@ -63,7 +71,7 @@ class KNExchangeTabViewModel {
       return ""
     }
     let expectedExchange: BigInt = {
-      let amount = self.amountTo.fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+      let amount = self.amountToBigInt
       return amount * BigInt(10).power(self.from.decimals) / rate
     }()
     return expectedExchange.string(decimals: self.from.decimals, minFractionDigits: 6, maxFractionDigits: 6)

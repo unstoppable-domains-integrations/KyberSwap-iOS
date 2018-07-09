@@ -446,6 +446,11 @@ extension KNTransactionCoordinator {
             switch respError {
             case .responseError(let code, let message, _):
               NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)")
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: respError,
+                userInfo: nil
+              )
               self.transactionStorage.delete([transaction])
             case .resultObjectParseError:
               // transaction seems to be removed

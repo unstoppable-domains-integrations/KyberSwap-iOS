@@ -42,7 +42,7 @@ class KNTransactionStatusCoordinator: Coordinator {
     self.rootViewController?.dismiss(animated: true, completion: completion)
   }
 
-  func updateTransaction(_ transaction: Transaction?, error: Error?) {
+  func updateTransaction(_ transaction: Transaction?, error: String?) {
     self.transaction = transaction
     self.rootViewController?.updateViewWithTransaction(self.transaction, error: error)
   }

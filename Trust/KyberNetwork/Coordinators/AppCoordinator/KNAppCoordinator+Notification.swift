@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import Result
 
 /*
  Handling notification from many fetchers, views, ...
@@ -211,7 +212,7 @@ extension KNAppCoordinator {
       }
       return nil
     }()
-    let error: Error? = sender.object as? Error
+    let error: AnyError? = sender.object as? AnyError
     if self.transactionStatusCoordinator == nil {
       self.transactionStatusCoordinator = KNTransactionStatusCoordinator(
         navigationController: self.navigationController,
@@ -220,7 +221,7 @@ extension KNAppCoordinator {
       )
       self.transactionStatusCoordinator.start()
     }
-    self.transactionStatusCoordinator.updateTransaction(transaction, error: error)
+    self.transactionStatusCoordinator.updateTransaction(transaction, error: error?.prettyError)
     // Force load new token transactions to faster updating history view
     if let tran = transaction, tran.state == .completed {
       self.session.transacionCoordinator?.forceFetchTokenTransactions()

@@ -45,10 +45,10 @@ class KNTransactionStatusViewController: KNBaseViewController {
     self.view.isUserInteractionEnabled = true
   }
 
-  func updateViewWithTransaction(_ transaction: Transaction?, error: Error? = nil) {
+  func updateViewWithTransaction(_ transaction: Transaction?, error: String? = nil) {
     if let err = error {
       // Broadcasting error
-      self.transactionStatusView.updateView(with: .broadcastingError, txHash: transaction?.id, details: err.prettyError)
+      self.transactionStatusView.updateView(with: .broadcastingError, txHash: transaction?.id, details: err)
       return
     }
     self.transaction = transaction

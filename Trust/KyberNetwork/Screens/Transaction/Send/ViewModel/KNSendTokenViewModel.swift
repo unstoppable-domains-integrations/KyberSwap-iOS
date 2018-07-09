@@ -22,6 +22,14 @@ class KNSendTokenViewModel: NSObject {
 
   fileprivate(set) var addressString: String = ""
 
+  var allTokenBalanceString: String {
+    return self.balance?.value.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: self.from.decimals
+    ) ?? ""
+  }
+
   var amountBigInt: BigInt {
     return amount.shortBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
