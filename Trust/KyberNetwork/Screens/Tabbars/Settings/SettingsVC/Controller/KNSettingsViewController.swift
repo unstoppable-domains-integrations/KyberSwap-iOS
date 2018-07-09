@@ -67,17 +67,17 @@ class KNSettingsViewController: FormViewController {
     }
     form += [accountSection]
 
-    var securitySection = Section("Security")
-    form += [securitySection]
-    self.passcodeRow = SwitchRow("SwitchRow") {
-      $0.title = "TouchID/FaceID/Passcode".toBeLocalised()
-      $0.value = KNPasscodeUtil.shared.currentPasscode() != nil
-    }.onChange { [unowned self] row in
-      self.delegate?.settingsViewController(self, run: .passcodeDidChange(isOn: row.value == true))
-    }.cellSetup { cell, _ in
-      cell.imageView?.image = UIImage(named: "settings_lock")
-    }
-    securitySection += [self.passcodeRow]
+//    var securitySection = Section("Security")
+//    form += [securitySection]
+//    self.passcodeRow = SwitchRow("SwitchRow") {
+//      $0.title = "TouchID/FaceID/Passcode".toBeLocalised()
+//      $0.value = KNPasscodeUtil.shared.currentPasscode() != nil
+//    }.onChange { [unowned self] row in
+//      self.delegate?.settingsViewController(self, run: .passcodeDidChange(isOn: row.value == true))
+//    }.cellSetup { cell, _ in
+//      cell.imageView?.image = UIImage(named: "settings_lock")
+//    }
+//    securitySection += [self.passcodeRow]
 
     form +++ Section()
     <<< TextRow {
