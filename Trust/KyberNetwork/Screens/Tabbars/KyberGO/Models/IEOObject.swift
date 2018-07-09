@@ -45,6 +45,9 @@ class IEOObject: Object {
   @objc dynamic var tokenDecimals: Int = 0
   @objc dynamic var totalSupply: String = ""
 
+  @objc dynamic var needsUpdateRate: Bool = true
+  @objc dynamic var needsUpdateRaised: Bool = true
+
   convenience init(dict: JSONDictionary) {
     self.init()
     self.id = dict["id"] as? Int ?? -1
@@ -109,6 +112,8 @@ class IEOObject: Object {
     self.tokenAddr = details["token_address"] as? String ?? ""
     self.tokenSymbol = details["token_symbol"] as? String ?? ""
     self.tokenDecimals = details["token_decimals"] as? Int ?? 0
+    self.needsUpdateRate = true
+    self.needsUpdateRaised = true
   }
 
   override static func primaryKey() -> String {

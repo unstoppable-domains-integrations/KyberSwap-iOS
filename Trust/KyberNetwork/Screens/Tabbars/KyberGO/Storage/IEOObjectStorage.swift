@@ -32,14 +32,24 @@ class IEOObjectStorage {
 
   @discardableResult
   func update(raised: Double, object: IEOObject) -> IEOObject {
-    try! self.realm.write { object.raised = raised }
+    try! self.realm.write {
+      object.raised = raised
+      if object.endDate.timeIntervalSince(Date()) <= 0.0 {
+        object.needsUpdateRaised = false
+      }
+    }
     self.update(objects: [object])
     return object
   }
 
   @discardableResult
   func update(rate: String, object: IEOObject) -> IEOObject {
-    try! self.realm.write { object.rate = rate }
+    try! self.realm.write {
+      object.rate = rate
+      if object.endDate.timeIntervalSince(Date()) <= 60.0 {
+        object.needsUpdateRate = false
+      }
+    }
     self.update(objects: [object])
     return object
   }
@@ -48,6 +58,8 @@ class IEOObjectStorage {
     try! self.realm.write {
       object.rate = objc.rate
       object.raised = objc.raised
+      object.needsUpdateRaised = objc.needsUpdateRaised
+      object.needsUpdateRate = objc.needsUpdateRate
     }
     return object
   }

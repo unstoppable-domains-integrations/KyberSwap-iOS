@@ -144,35 +144,40 @@ class KGOHomePageCoordinator: Coordinator {
 
   fileprivate func reloadIEODataFromNode() {
     let objects = IEOObjectStorage.shared.objects.filter { obj -> Bool in
-      return Date().timeIntervalSince(obj.endDate) <= 60.0 && obj.startDate.timeIntervalSince(Date()) < 0
+      // not update upcoming token sales
+      return obj.startDate.timeIntervalSince(Date()) < 0
     }
     for object in objects {
-      // get rate
-      IEOProvider.shared.getRate(for: object.contract, completion: { result in
-        switch result {
-        case .success(let data):
-          if !data.1.isZero {
-            let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
-            let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
-            IEOObjectStorage.shared.update(rate: rateString, object: object)
-            self.ieoListViewController?.coordinatorDidUpdateRate(rate, object: object)
-            self.buyTokenVC?.coordinatorDidUpdateEstRate(for: object, rate: rate)
+      if object.needsUpdateRate {
+        // get rate if it is not ended
+        IEOProvider.shared.getRate(for: object.contract, completion: { result in
+          switch result {
+          case .success(let data):
+            if !data.1.isZero {
+              let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
+              let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
+              IEOObjectStorage.shared.update(rate: rateString, object: object)
+              self.ieoListViewController?.coordinatorDidUpdateRate(rate, object: object)
+              self.buyTokenVC?.coordinatorDidUpdateEstRate(for: object, rate: rate)
+            }
+          case .failure(let error):
+            print("Error: \(error.prettyError)")
           }
-        case .failure(let error):
-          print("Error: \(error.prettyError)")
-        }
-      })
+        })
+      }
 
-      // get raised data
-      IEOProvider.shared.getDistributedTokensWei(for: object.contract) { [weak self] result in
-        switch result {
-        case .success(let value):
-          let raised = Double(value / BigInt(10).power(object.tokenDecimals))
+      if object.needsUpdateRaised {
+        // get raised data if it is not ended
+        IEOProvider.shared.getDistributedTokensWei(for: object.contract) { [weak self] result in
+          switch result {
+          case .success(let value):
+            let raised = Double(value / BigInt(10).power(object.tokenDecimals))
             IEOObjectStorage.shared.update(raised: raised, object: object)
-          self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
-          self?.ieoListViewController?.coordinatorDidUpdateProgress()
-        case .failure(let error):
-          print("Error: \(error.prettyError)")
+            self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
+            self?.ieoListViewController?.coordinatorDidUpdateProgress()
+          case .failure(let error):
+            print("Error: \(error.prettyError)")
+          }
         }
       }
     }
