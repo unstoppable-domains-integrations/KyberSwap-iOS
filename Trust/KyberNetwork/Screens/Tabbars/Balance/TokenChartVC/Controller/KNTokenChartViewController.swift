@@ -263,7 +263,7 @@ class KNTokenChartViewController: KNBaseViewController {
     self.changePercentLabel.isHidden = true
     self.touchPriceLabel.isHidden = true
 
-    self.priceChart.delegate = self
+//    self.priceChart.delegate = self
     self.reloadViewDataDidUpdate()
   }
 
