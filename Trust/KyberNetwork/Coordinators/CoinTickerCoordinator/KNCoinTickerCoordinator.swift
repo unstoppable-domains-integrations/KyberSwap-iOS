@@ -24,6 +24,7 @@ class KNCoinTickerCoordinator {
 
   fileprivate func startLoadingAllCoinTickers() {
     self.allCoinTickersTimer?.invalidate()
+    self.fetchCoinTickers(completion: nil)
     // Immediately fetch when it is started
     if self.lastUpdate == nil || Date().timeIntervalSince(self.lastUpdate!) >= KNLoadingInterval.loadingCoinTickerInterval {
       self.isLoadingAllCoinTickers = true
@@ -54,7 +55,7 @@ class KNCoinTickerCoordinator {
 
   // inital fetch until it is success for the first time
   fileprivate func initialFetchAllCoinTickers() {
-    self.fetchCoinTickers(limit: 1000) { [weak self] result in
+    self.fetchCoinTickers(limit: 100) { [weak self] result in
       if case .failure = result {
         let timeOut = DispatchTime.now() + KNLoadingInterval.defaultLoadingInterval
         DispatchQueue.main.asyncAfter(deadline: timeOut, execute: {
@@ -74,8 +75,9 @@ class KNCoinTickerCoordinator {
           switch result {
           case .success(let resp):
             do {
-              let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
-              let coinTickers = jsonArr.map({ KNCoinTicker(dict: $0, currency: currency) })
+              let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let dataArr = json["data"] as? [JSONDictionary] ?? []
+              let coinTickers = dataArr.map({ KNCoinTicker(dict: $0, currency: currency) })
               var supportedTickers: [KNCoinTicker] = []
               KNSupportedTokenStorage.shared.supportedTokens.forEach({ token in
                 if let coinTicker = coinTickers.first(where: { $0.isData(for: token) }) {
@@ -105,7 +107,8 @@ class KNCoinTickerCoordinator {
       case .success(let resp):
         do {
           let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let coinTicker: KNCoinTicker = KNCoinTicker(dict: json, currency: currency)
+          let data = json["data"] as? JSONDictionary ?? [:]
+          let coinTicker: KNCoinTicker = KNCoinTicker(dict: data, currency: currency)
           KNCoinTickerStorage.shared.update(coinTickers: [coinTicker])
           KNNotificationUtil.postNotification(for: kCoinTickersDidUpdateNotificationKey)
           completion?(.success(coinTicker))

@@ -48,7 +48,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   fileprivate var displayBalanceInUSD: String {
     if let amount = balance?.value, let coinTicker = coinTicker {
       let rate = KNRate.rateUSD(from: coinTicker)
-      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 2, maxFractionDigits: 2)
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 2, maxFractionDigits: 4)
       return "Val $\(value.prefix(11))"
     }
     return "Val ---"

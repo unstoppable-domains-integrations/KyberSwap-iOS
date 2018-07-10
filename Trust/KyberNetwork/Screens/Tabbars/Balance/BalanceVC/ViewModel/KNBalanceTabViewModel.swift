@@ -94,7 +94,7 @@ class KNBalanceTabViewModel: NSObject {
     case .usd:
       return "\(self.totalUSDBalance.shortString(units: .ether, maxFractionDigits: 2)) USD"
     case .eth:
-      return "\(self.totalETHBalance.shortString(units: .ether)) ETH"
+      return "\(self.totalETHBalance.shortString(units: .ether, maxFractionDigits: 6)) ETH"
     }
   }
 

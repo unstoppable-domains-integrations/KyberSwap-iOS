@@ -11,10 +11,10 @@ extension KNCoinMarketCapService: TargetType {
   var baseURL: URL {
     switch self {
     case .loadCoinTickers(let limit, let currency):
-      let base = "https://api.coinmarketcap.com/v1/ticker/?limit=\(limit)&convert=\(currency)"
+      let base = "https://api.coinmarketcap.com/v2/ticker/?limit=\(limit)&convert=\(currency)&structure=array"
       return URL(string: base)!
     case .loadCoinTicker(let id, let currency):
-      let base = "https://api.coinmarketcap.com/v1/ticker/\(id)/?convert=\(currency)"
+      let base = "https://api.coinmarketcap.com/v2/ticker/\(id)/?convert=\(currency)"
       return URL(string: base)!
     }
   }

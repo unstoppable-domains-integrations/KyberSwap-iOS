@@ -27,62 +27,47 @@ class KNCoinTicker: Object {
 
   convenience init(dict: JSONDictionary, currency: String) {
     self.init()
-    self.id = dict["id"] as? String ?? ""
+    self.id = {
+      let idInt: Int = dict["id"] as? Int ?? 0
+      return "\(idInt)"
+    }()
     self.name = dict["name"] as? String ?? ""
     self.symbol = dict["symbol"] as? String ?? ""
-    self.rank = {
-      let rankString: String = dict["rank"] as? String ?? ""
-      return Int(rankString) ?? 0
-    }()
-    self.priceUSD = {
-      let priceUSDString: String = dict["price_usd"] as? String ?? ""
-      return Double(priceUSDString) ?? 0
-    }()
+    self.rank = dict["rank"] as? Int ?? 0
     self.priceBTC = {
       let priceBTCString: String = dict["price_btc"] as? String ?? ""
       return Double(priceBTCString) ?? 0
     }()
-    self.volumeUSD24h = {
-      let volumeUSD24hString: String = dict["24h_volume_usd"] as? String ?? ""
-      return Double(volumeUSD24hString) ?? 0
-    }()
-    self.marketCapUSD = {
-      let marketCapUSDString: String = dict["market_cap_usd"] as? String ?? ""
-      return Double(marketCapUSDString) ?? 0
-    }()
-    self.availableSupply = {
-      let availableSupplyString: String = dict["available_supply"] as? String ?? ""
-      return Double(availableSupplyString) ?? 0
-    }()
-    self.totalSupply = {
-      let totalSupplyString: String = dict["total_supply"] as? String ?? ""
-      return Double(totalSupplyString) ?? 0
-    }()
-    self.maxSupply = {
-      let maxSupplyString: String = dict["max_supply"] as? String ?? ""
-      return Double(maxSupplyString) ?? 0
-    }()
-    self.percentChange1h = dict["percent_change_1h"] as? String ?? ""
-    self.percentChange24h = dict["percent_change_24h"] as? String ?? ""
-    self.percentChange7d = dict["percent_change_7d"] as? String ?? ""
     self.lastUpdated = {
-      let lastUpdatedString: String = dict["last_updated"] as? String ?? ""
-      let lastUpdatedDouble: Double = Double(lastUpdatedString) ?? 0
-      return Date(timeIntervalSince1970: lastUpdatedDouble)
+      let lastUpdated: Double = dict["last_updated"] as? Double ?? 0.0
+      return Date(timeIntervalSince1970: lastUpdated)
     }()
+    self.availableSupply = dict["available_supply"] as? Double ?? 0.0
+    self.totalSupply = dict["total_supply"] as? Double ?? 0.0
+    self.maxSupply = dict["max_supply"] as? Double ?? 0.0
+
+    guard let quotes = dict["quotes"] as? JSONDictionary else { return }
+    guard let usdDict = quotes["USD"] as? JSONDictionary else { return }
+    self.priceUSD = usdDict["price"] as? Double ?? 0.0
+    self.percentChange1h = {
+      let value = usdDict["percent_change_1h"] as? Double ?? 0.0
+      return "\(value)"
+    }()
+    self.percentChange24h = {
+      let value = usdDict["percent_change_24h"] as? Double ?? 0.0
+      return "\(value)"
+    }()
+    self.percentChange7d = {
+      let value = usdDict["percent_change_7d"] as? Double ?? 0.0
+      return "\(value)"
+    }()
+    self.volumeUSD24h = usdDict["volume_24h"] as? Double ?? 0.0
+    self.marketCapUSD = usdDict["market_cap"] as? Double ?? 0.0
     self.currency = currency
-    self.priceCurrency = {
-      let priceCurrencyString: String = dict["price_\(currency.lowercased())"] as? String ?? ""
-      return Double(priceCurrencyString) ?? 0
-    }()
-    self.volume24hCurrency = {
-      let volumeCurrency24hString: String = dict["24h_volume_\(currency.lowercased())"] as? String ?? ""
-      return Double(volumeCurrency24hString) ?? 0
-    }()
-    self.marketCapCurrency = {
-      let marketCapCurrencyString: String = dict["market_cap_\(currency.lowercased())"] as? String ?? ""
-      return Double(marketCapCurrencyString) ?? 0
-    }()
+    guard let currencyDict = quotes[currency.uppercased()] as? JSONDictionary else { return }
+    self.priceCurrency = currencyDict["price"] as? Double ?? 0.0
+    self.volume24hCurrency = currencyDict["volume_24h"] as? Double ?? 0.0
+    self.marketCapCurrency = currencyDict["market_cap"] as? Double ?? 0.0
   }
 
   override class func primaryKey() -> String? {
