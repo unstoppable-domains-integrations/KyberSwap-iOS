@@ -166,7 +166,7 @@ extension KNAppCoordinator {
     )
   }
 
-  @objc func ethBalanceDidUpdateNotification(_ sender: Notification) {
+  @objc func ethBalanceDidUpdateNotification(_ sender: Any?) {
     if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
@@ -185,7 +185,7 @@ extension KNAppCoordinator {
     )
   }
 
-  @objc func tokenBalancesDidUpdateNotification(_ sender: Notification) {
+  @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
     if self.session == nil { return }
     guard let balanceCoordinator = self.balanceCoordinator else { return }
     let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
@@ -231,12 +231,12 @@ extension KNAppCoordinator {
     self.balanceTabCoordinator.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
-  @objc func tokenTransactionListDidUpdate(_ sender: Notification) {
+  @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
-  @objc func tokenObjectListDidUpdate(_ sender: Notification) {
+  @objc func tokenObjectListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.session.tokenStorage.addKyberSupportedTokens()
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
@@ -244,12 +244,12 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
-  @objc func coinTickerDidUpdate(_ sender: Notification) {
+  @objc func coinTickerDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.balanceTabCoordinator.appCoordinatorCoinTickerDidUpdate()
   }
 
-  @objc func gasPriceCachedDidUpdate(_ sender: Notification) {
+  @objc func gasPriceCachedDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
     self.balanceTabCoordinator.appCoordinatorGasPriceCachedDidUpdate()

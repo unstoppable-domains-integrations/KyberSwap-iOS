@@ -61,6 +61,7 @@ class KNBalanceCoordinator {
   init(session: KNSession) {
     self.session = session
     self.ethToken = session.tokenStorage.ethToken
+    self.updateBalancesFromLocalData()
   }
 
   func restartNewSession(_ session: KNSession) {
@@ -68,7 +69,19 @@ class KNBalanceCoordinator {
     self.ethToken = session.tokenStorage.ethToken
     self.ethBalance = Balance(value: BigInt(0))
     self.otherTokensBalance = [:]
+    self.updateBalancesFromLocalData()
     self.resume()
+  }
+
+  fileprivate func updateBalancesFromLocalData() {
+    let tokens = self.session.tokenStorage.tokens
+    tokens.forEach { token in
+      if token.isETH {
+        self.ethBalance = Balance(value: token.valueBigInt)
+      } else {
+        self.otherTokensBalance[token.contract] = Balance(value: token.valueBigInt)
+      }
+    }
   }
 
   func resume() {

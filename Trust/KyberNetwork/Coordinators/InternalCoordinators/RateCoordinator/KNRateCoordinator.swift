@@ -78,12 +78,16 @@ class KNRateCoordinator {
   @objc func fetchExchangeTokenRate(_ sender: Any?) {
     if isLoadingExchangeTokenRates { return }
     isLoadingExchangeTokenRates = true
-    KNInternalProvider.shared.getKNExchangeTokenRate { [weak self] (result) in
-      guard let `self` = self else { return }
-      self.isLoadingExchangeTokenRates = false
-      if case .success(let rates) = result {
-        self.tokenRates = rates
-        KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+    DispatchQueue.global(qos: .background).async {
+      KNInternalProvider.shared.getKNExchangeTokenRate { [weak self] (result) in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          self.isLoadingExchangeTokenRates = false
+          if case .success(let rates) = result {
+            self.tokenRates = rates
+            KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+          }
+        }
       }
     }
   }

@@ -168,25 +168,29 @@ class KNTokenChartViewModel {
       rateType: "mid"
     )
     print("------ Chart history: Fetching for \(token.symbol) resolution \(type.resolution) ------")
-    provider.request(service) { response in
-      switch response {
-      case .success(let result):
-        do {
-          if let data = try result.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
-            self.updateData(data, symbol: token.symbol, resolution: type.resolution)
-            print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) ------")
-            completion(.success(true))
-          } else {
-            print("------ Chart history: Failed parse data for \(token.symbol) resolution \(type.resolution) ------")
-            completion(.success(false))
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { response in
+        DispatchQueue.main.async {
+          switch response {
+          case .success(let result):
+            do {
+              if let data = try result.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
+                self.updateData(data, symbol: token.symbol, resolution: type.resolution)
+                print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) ------")
+                completion(.success(true))
+              } else {
+                print("------ Chart history: Failed parse data for \(token.symbol) resolution \(type.resolution) ------")
+                completion(.success(false))
+              }
+            } catch let error {
+              print("------ Chart history: Failed map JSON data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError)------")
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError) ------")
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          print("------ Chart history: Failed map JSON data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError)------")
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError) ------")
-        completion(.failure(AnyError(error)))
       }
     }
   }
@@ -197,21 +201,25 @@ class KNTokenChartViewModel {
       return
     }
     let provider = MoyaProvider<KNTrackerService>()
-    provider.request(.getRates()) { result in
-      switch result {
-      case .success(let response):
-        do {
-          if let data = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
-            self.updateRates(data)
-            completion(.success(true))
-          } else {
-            completion(.success(false))
+    DispatchQueue.global(qos: .background).async {
+      provider.request(.getRates()) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              if let data = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
+                self.updateRates(data)
+                completion(.success(true))
+              } else {
+                completion(.success(false))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }

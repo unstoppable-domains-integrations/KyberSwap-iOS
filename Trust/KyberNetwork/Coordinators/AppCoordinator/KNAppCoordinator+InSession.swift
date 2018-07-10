@@ -90,6 +90,7 @@ extension KNAppCoordinator {
     self.tabbarController.selectedIndex = 1
 
     self.addObserveNotificationFromSession()
+    self.updateLocalData()
   }
 
   func stopAllSessions() {
@@ -131,6 +132,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.tabbarController.selectedIndex = 1
     self.addObserveNotificationFromSession()
+    self.updateLocalData()
   }
 
   // Remove a wallet
@@ -164,5 +166,13 @@ extension KNAppCoordinator {
       animated: false) {
       addWalletCoordinator.start()
     }
+  }
+
+  fileprivate func updateLocalData() {
+    self.tokenBalancesDidUpdateNotification(nil)
+    self.ethBalanceDidUpdateNotification(nil)
+    self.coinTickerDidUpdate(nil)
+    self.tokenObjectListDidUpdate(nil)
+    self.tokenTransactionListDidUpdate(nil)
   }
 }

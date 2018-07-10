@@ -86,11 +86,15 @@ class KNGasCoordinator {
   @objc func fetchKNGasPrice(_ sender: Timer?) {
     if isLoadingGasPrice { return }
     isLoadingGasPrice = true
-    KNInternalProvider.shared.getKNCachedGasPrice { [weak self] (result) in
-      guard let `self` = self else { return }
-      self.isLoadingGasPrice = false
-      if case .success(let data) = result {
-        try? self.updateGasPrice(dataJSON: data)
+    DispatchQueue.global(qos: .background).async {
+      KNInternalProvider.shared.getKNCachedGasPrice { [weak self] (result) in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          self.isLoadingGasPrice = false
+          if case .success(let data) = result {
+            try? self.updateGasPrice(dataJSON: data)
+          }
+        }
       }
     }
   }

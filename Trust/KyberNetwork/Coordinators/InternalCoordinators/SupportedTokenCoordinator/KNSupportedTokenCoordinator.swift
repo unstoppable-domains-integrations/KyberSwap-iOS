@@ -35,20 +35,24 @@ class KNSupportedTokenCoordinator {
     // Tracker is not supported for other environment
     if KNEnvironment.default != .mainnetTest && KNEnvironment.default != .production { return }
     print("---- Supported Tokens: Start fetching data ----")
-    provider.request(.getSupportedTokens()) { result in
-      switch result {
-      case .success(let response):
-        do {
-          let jsonArr: [JSONDictionary] = try response.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
-          let tokenObjects = jsonArr.map({ return TokenObject(trackerDict: $0) })
-          KNSupportedTokenStorage.shared.updateFromTracker(tokenObjects: tokenObjects)
-          KNAppTracker.updateSuccessfullyLoadSupportedTokens()
-          print("---- Supported Tokens: Load successfully")
-        } catch let error {
-          print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----")
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getSupportedTokens()) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              let jsonArr: [JSONDictionary] = try response.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
+              let tokenObjects = jsonArr.map({ return TokenObject(trackerDict: $0) })
+              KNSupportedTokenStorage.shared.updateFromTracker(tokenObjects: tokenObjects)
+              KNAppTracker.updateSuccessfullyLoadSupportedTokens()
+              print("---- Supported Tokens: Load successfully")
+            } catch let error {
+              print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----")
+            }
+          case .failure(let error):
+            print("---- Supported Tokens: Failed with error: \(error.prettyError)")
+          }
         }
-      case .failure(let error):
-        print("---- Supported Tokens: Failed with error: \(error.prettyError)")
       }
     }
   }

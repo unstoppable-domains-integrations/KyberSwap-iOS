@@ -84,7 +84,7 @@ class KNBalanceTabViewController: KNBaseViewController {
 
   fileprivate func setupBalanceTopView() {
     self.walletBalanceButton.semanticContentAttribute = .forceRightToLeft
-    self.walletBalanceButton.setTitle("0 USD", for: .normal)
+    self.walletBalanceButton.setTitle(self.viewModel.balanceDisplayText, for: .normal)
   }
 
   fileprivate func setupBalanceButtonControlView() {

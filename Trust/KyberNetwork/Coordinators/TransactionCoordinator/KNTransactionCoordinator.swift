@@ -48,154 +48,15 @@ class KNTransactionCoordinator {
   }
 }
 
-// MARK: Lock data when user confirmed
-extension KNTransactionCoordinator {
-
-  // Prepare data before submitting exchange request
-  // Data needed: gas limit, expected rate
-  static func requestDataPrepareForExchangeTransaction(_ transaction: KNDraftExchangeTransaction, provider: KNExternalProvider, completion: @escaping (Result<KNDraftExchangeTransaction?, AnyError>) -> Void) {
-    var error: AnyError?
-    let group = DispatchGroup()
-
-    // Est Gas Used
-    var gasLimit = transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
-    group.enter()
-    provider.getEstimateGasLimit(for: transaction) { result in
-      switch result {
-      case .success(let gas): gasLimit = gas
-        // TODO (Mike): Est. Gas Limit is temp not working
-      //case .failure(let err): error = err
-      default: break
-      }
-      group.leave()
-    }
-
-    // Expected Rate
-    var expectedRate = transaction.expectedRate
-    group.enter()
-    provider.getExpectedRate(
-      from: transaction.from,
-      to: transaction.to,
-      amount: transaction.amount) { result in
-        switch result {
-        case .success(let data):
-          if !data.0.isZero { expectedRate = data.0 }
-        case .failure(let err): error = err
-        }
-        group.leave()
-    }
-
-    // Balance
-    var balance = BigInt(0)
-    group.enter()
-    if transaction.from.isETH {
-      provider.getETHBalance(completion: { result in
-        switch result {
-        case .success(let bal): balance = bal.value
-        case .failure(let err): error = err
-        }
-        group.leave()
-      })
-    } else {
-      provider.getTokenBalance(for: Address(string: transaction.from.contract)!, completion: { result in
-        switch result {
-        case .success(let bal): balance = bal
-        case .failure(let err): error = err
-        }
-        group.leave()
-      })
-    }
-
-    group.notify(queue: .main) {
-      if let err = error {
-        completion(.failure(err))
-        return
-      }
-      if balance < transaction.amount {
-        completion(.success(nil))
-        return
-      }
-      completion(.success(transaction.copy(expectedRate: expectedRate, gasLimit: gasLimit)))
-    }
-  }
-
-  // Prepare data before submitting transfer request
-  // Data needed: gas limit
-  static func requestDataPrepareForTransferTransaction(_ transaction: UnconfirmedTransaction, provider: KNExternalProvider, completion: @escaping (Result<UnconfirmedTransaction?, AnyError>) -> Void) {
-    var error: AnyError?
-    let group = DispatchGroup()
-
-    let token: TokenObject = transaction.transferType.tokenObject()
-
-    // Est Gas Used
-    var gasLimit: BigInt = {
-      if let gas = transaction.gasLimit { return gas }
-      return token.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
-    }()
-    group.enter()
-    provider.getEstimateGasLimit(for: transaction) { result in
-      switch result {
-      case .success(let gas): gasLimit = gas
-        // TODO (Mike): Est. Gas Limit is temp not working
-      //case .failure(let err): error = err
-      default: break
-      }
-      group.leave()
-    }
-
-    // Balance
-    var balance = BigInt(0)
-    group.enter()
-    if token.isETH {
-      provider.getETHBalance(completion: { result in
-        switch result {
-        case .success(let bal): balance = bal.value
-        case .failure(let err): error = err
-        }
-        group.leave()
-      })
-    } else {
-      provider.getTokenBalance(for: Address(string: token.contract)!, completion: { result in
-        switch result {
-        case .success(let bal): balance = bal
-        case .failure(let err): error = err
-        }
-        group.leave()
-      })
-    }
-
-    group.notify(queue: .main) {
-      if let err = error {
-        completion(.failure(err))
-        return
-      }
-      if balance < transaction.value {
-        completion(.success(nil))
-        return
-      }
-      let newTransaction = UnconfirmedTransaction(
-        transferType: transaction.transferType,
-        value: transaction.value,
-        to: transaction.to,
-        data: transaction.data,
-        gasLimit: gasLimit,
-        gasPrice: transaction.gasPrice,
-        nonce: transaction.nonce
-      )
-      completion(.success(newTransaction))
-    }
-  }
-}
-
 // MARK: Update transactions
 extension KNTransactionCoordinator {
   func startUpdatingAllTransactions() {
-    self.stopUpdatingAllTransactions()
-    self.allTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-      repeats: true,
-      block: { [weak self] _ in
-        guard let `self` = self else { return }
+//    self.stopUpdatingAllTransactions()
+//    self.allTxTimer = Timer.scheduledTimer(
+//      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+//      repeats: true,
+//      block: { [weak self] _ in
+//        guard let `self` = self else { return }
 //        let startBlock: Int = {
 //          guard let transaction = self.storage.completedObjects.first else { return 1 }
 //          return transaction.blockNumber - 2000
@@ -206,22 +67,22 @@ extension KNTransactionCoordinator {
 //          startBlock: startBlock,
 //          completion: nil
 //        )
-        let fromDate: Date? = {
-          guard let transaction = self.transactionStorage.historyTransactions.first else { return nil }
-          return Date(timeIntervalSince1970: Double(transaction.blockTimestamp))
-        }()
-        self.fetchHistoryTransactions(
-          from: fromDate,
-          toDate: nil,
-          address: self.wallet.address.description,
-          completion: nil
-        )
-    })
+//        let fromDate: Date? = {
+//          guard let transaction = self.transactionStorage.historyTransactions.first else { return nil }
+//          return Date(timeIntervalSince1970: Double(transaction.blockTimestamp))
+//        }()
+//        self.fetchHistoryTransactions(
+//          from: fromDate,
+//          toDate: nil,
+//          address: self.wallet.address.description,
+//          completion: nil
+//        )
+//    })
   }
 
   func stopUpdatingAllTransactions() {
-    self.allTxTimer?.invalidate()
-    self.allTxTimer = nil
+//    self.allTxTimer?.invalidate()
+//    self.allTxTimer = nil
   }
 
 //  func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
@@ -338,24 +199,28 @@ extension KNTransactionCoordinator {
       page: page,
       sort: sort
     )
-    provider.request(service) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let response):
-        do {
-          let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
-          let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
-          self.updateListTokenTransactions(transactions)
-          print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
-          completion?(.success(transactions))
-        } catch let error {
-          print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
-          completion?(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
+              let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
+              self.updateListTokenTransactions(transactions)
+              print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
+              completion?(.success(transactions))
+            } catch let error {
+              print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            completion?(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
-        completion?(.failure(AnyError(error)))
       }
     }
   }
@@ -462,9 +327,9 @@ extension KNTransactionCoordinator {
           }
         } else {
           // Success to get transaction by hash, but not have status yet
-//          if transaction.date.addingTimeInterval(60) < Date() {
-//            self.updateTransactionStateIfNeeded(transaction, state: .completed)
-//          }
+          //          if transaction.date.addingTimeInterval(60) < Date() {
+          //            self.updateTransactionStateIfNeeded(transaction, state: .completed)
+          //          }
         }
       })
     }

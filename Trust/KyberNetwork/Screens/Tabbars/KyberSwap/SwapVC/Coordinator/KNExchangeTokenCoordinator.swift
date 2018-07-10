@@ -174,7 +174,6 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
-    // Lock all data for exchange transaction first
     self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
