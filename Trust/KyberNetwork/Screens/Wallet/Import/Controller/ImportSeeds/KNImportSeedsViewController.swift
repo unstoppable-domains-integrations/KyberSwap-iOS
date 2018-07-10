@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import TrustKeystore
 
 protocol KNImportSeedsViewControllerDelegate: class {
   func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String])
@@ -29,8 +30,15 @@ class KNImportSeedsViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
-    if let seeds = self.seedsTextView.text {
-      let words = seeds.replacingOccurrences(of: "  ", with: " ").split(separator: " ").filter { return !$0.isEmpty }
+    if let seeds = self.seedsTextView.text?.trimmed {
+      guard Mnemonic.isValid(seeds) else {
+        self.parent?.showErrorTopBannerMessage(
+          with: "Invalid Seeds".toBeLocalised(),
+          message: "Please check your seeds again.".toBeLocalised()
+        )
+        return
+      }
+      let words = seeds.components(separatedBy: " ").map({ $0.trimmed })
       if words.count == self.numberWords {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
