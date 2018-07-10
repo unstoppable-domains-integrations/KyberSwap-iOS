@@ -135,6 +135,12 @@ class KNAppTracker {
     return .change24h
   }
 
+  //MARK: KyberGO base string
+  static func getKyberGOBaseString() -> String {
+    return "https://dev-userdashboard.knstats.com"
+    //TODO: https://kyber.mangcut.vn
+  }
+
   // MARK: Reset app tracker
   static func resetAppTrackerData(for address: Address) {
     self.updateTransactionLoadState(.none, for: address)

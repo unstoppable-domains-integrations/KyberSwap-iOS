@@ -112,13 +112,14 @@ enum KyberGOService {
 
 extension KyberGOService: TargetType {
   var baseURL: URL {
+    let baseString = KNAppTracker.getKyberGOBaseString()
     switch self {
     case .listIEOs:
-      return URL(string: "https://kyber.mangcut.vn/api/ieos")!
+      return URL(string: "\(baseString)/api/ieos")!
     case .getAccessToken:
-      return URL(string: "https://kyber.mangcut.vn/oauth/token")!
+      return URL(string: "\(baseString)/oauth/token")!
     case .getUserInfo:
-      return URL(string: "https://kyber.mangcut.vn/api/user_info")!
+      return URL(string: "\(baseString)/api/user_info")!
     case .getSignedTx:
       return URL(string: KNSecret.ieoSignedEndpoint)!
     }

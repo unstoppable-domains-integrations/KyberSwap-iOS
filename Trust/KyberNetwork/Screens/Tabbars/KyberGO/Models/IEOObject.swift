@@ -56,7 +56,7 @@ class IEOObject: Object {
     self.term = dict["term"] as? String ?? ""
     self.icon = {
       guard let iconJson = dict["icon"] as? JSONDictionary else { return "" }
-      return "https://kyber.mangcut.vn" + (iconJson["url"] as? String ?? "")
+      return KNAppTracker.getKyberGOBaseString() + (iconJson["url"] as? String ?? "")
     }()
     self.blackListNal = dict["blacklist_nationalities"] as? String ?? ""
     self.blackListCountries = dict["blacklist_country_of_residences"] as? String ?? ""
@@ -84,11 +84,11 @@ class IEOObject: Object {
     }
     self.bannerShort = {
       guard let json = dict["short_banner"] as? JSONDictionary else { return "" }
-      return "https://kyber.mangcut.vn" + (json["url"] as? String ?? "")
+      return KNAppTracker.getKyberGOBaseString() + (json["url"] as? String ?? "")
     }()
     self.bannerLong = {
       guard let json = dict["long_banner"] as? JSONDictionary else { return "" }
-      return "https://kyber.mangcut.vn" + (json["url"] as? String ?? "")
+      return KNAppTracker.getKyberGOBaseString() + (json["url"] as? String ?? "")
     }()
     guard let details = dict["details"] as? JSONDictionary else { return }
     let dateFormatter = DateFormatter()
