@@ -4,6 +4,7 @@ import Foundation
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 
 protocol SendCoordinatorDelegate: class {
     func didFinish(_ result: ConfirmResult, in coordinator: SendCoordinator)

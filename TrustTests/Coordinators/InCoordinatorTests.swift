@@ -3,6 +3,7 @@
 import XCTest
 @testable import Trust
 import TrustKeystore
+import TrustCore
 
 class InCoordinatorTests: XCTestCase {
     

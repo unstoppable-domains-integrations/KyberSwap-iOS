@@ -4,6 +4,7 @@ import Foundation
 import RealmSwift
 import BigInt
 import TrustKeystore
+import TrustCore
 
 class TokenObject: Object {
     @objc dynamic var contract: String = ""

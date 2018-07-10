@@ -6,6 +6,7 @@ import JSONRPCKit
 import StatefulViewController
 import Result
 import TrustKeystore
+import TrustCore
 
 protocol TransactionsViewControllerDelegate: class {
     func didPressSend(in viewController: TransactionsViewController)

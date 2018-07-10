@@ -3,6 +3,7 @@
 import UIKit
 import TrustKeystore
 import BigInt
+import TrustCore
 
 struct KNDraftExchangeTransaction {
   let from: TokenObject

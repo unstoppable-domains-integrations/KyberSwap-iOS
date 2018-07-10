@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 
 class KNSendTokenViewModel: NSObject {
 

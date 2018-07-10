@@ -3,6 +3,7 @@
 import UIKit
 import RealmSwift
 import TrustKeystore
+import TrustCore
 
 // "ERC20 - Token Transfer Events" by Address
 class KNTokenTransaction: Object {

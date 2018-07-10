@@ -45,7 +45,8 @@ class KNHistoryCoordinator: Coordinator {
     ) {
     self.navigationController = navigationController
     self.session = session
-    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description)!
+    let address = self.session.wallet.address.description
+    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
   func start() {
@@ -61,7 +62,8 @@ class KNHistoryCoordinator: Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
-    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description)!
+    let address = self.session.wallet.address.description
+    self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.appCoordinatorTokensTransactionsDidUpdate()
   }
 

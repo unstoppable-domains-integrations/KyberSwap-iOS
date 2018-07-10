@@ -56,8 +56,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   }
 
   func importWalletViewControllerDidNext(sender: KNImportWalletViewController, seeds: [String]) {
-    let password = "1234567890"//PasswordGenerator.generateRandom()
-    let type = ImportType.mnemonic(words: seeds, password: password)
+    let type = ImportType.mnemonic(words: seeds, password: "")
     self.importWallet(with: type)
   }
 

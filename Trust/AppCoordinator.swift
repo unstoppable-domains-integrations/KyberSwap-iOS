@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 import UIKit
 
 class AppCoordinator: NSObject, Coordinator {
@@ -56,9 +57,8 @@ class AppCoordinator: NSObject, Coordinator {
     }
 
     func inializers() {
-        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true).flatMap { URL(fileURLWithPath: $0) }
+      var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true).compactMap { URL(fileURLWithPath: $0) }
         paths.append(keystore.keysDirectory)
-        paths.append(keystore.walletsDirectory)
 
         let initializers: [Initializer] = [
             CrashReportInitializer(),

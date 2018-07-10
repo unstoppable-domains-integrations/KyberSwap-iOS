@@ -5,6 +5,7 @@ import UserNotifications
 import UIKit
 import Moya
 import TrustKeystore
+import TrustCore
 
 class PushNotificationsRegistrar {
 

@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustKeystore
+import TrustCore
 import BigInt
 
 protocol KNAddNewWalletCoordinatorDelegate: class {

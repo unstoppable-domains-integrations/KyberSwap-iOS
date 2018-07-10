@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)

@@ -7,6 +7,7 @@ import RealmSwift
 import BigInt
 import Moya
 import TrustKeystore
+import TrustCore
 
 enum TokenAction {
     case updateValue(BigInt)

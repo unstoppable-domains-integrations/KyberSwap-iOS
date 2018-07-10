@@ -4,6 +4,7 @@ import UIKit
 import Moya
 import BigInt
 import TrustKeystore
+import TrustCore
 import Result
 import SafariServices
 

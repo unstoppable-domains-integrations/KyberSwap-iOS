@@ -22,8 +22,8 @@ class KNBackUpWalletViewModel {
 
   init(seeds: [String]) {
     self.seeds = seeds
-    self.firstWordID = Int(arc4random() % 12)
-    self.secondWordID = (self.firstWordID + Int(arc4random() % 11 + 1)) % 12
+    self.firstWordID = Int(arc4random() % 11) + 1
+    self.secondWordID = self.firstWordID + 1 + Int(arc4random() % UInt32(12 - self.firstWordID))
   }
 
   func backupAgain() {

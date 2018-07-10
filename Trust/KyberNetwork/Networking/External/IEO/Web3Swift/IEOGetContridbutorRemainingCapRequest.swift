@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 import BigInt
 
 struct IEOGetContridbutorRemainingCapEncode: Web3Request {

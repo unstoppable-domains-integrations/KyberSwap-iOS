@@ -3,6 +3,8 @@
 import Foundation
 import BigInt
 import TrustKeystore
+import TrustCore
+import TrustCore
 
 struct UnconfirmedTransaction {
     let transferType: TransferType

@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustKeystore
+import TrustCore
 
 protocol KNCreateWalletCoordinatorDelegate: class {
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?)
@@ -30,9 +31,8 @@ class KNCreateWalletCoordinator: Coordinator {
     if let wallet = self.newWallet {
       self.openBackUpWallet(wallet)
     } else {
-      let password = "1234567890"//PasswordGenerator.generateRandom()
       DispatchQueue.global(qos: .userInitiated).async {
-        let account = self.keystore.create12wordsAccount(with: password)
+        let account = self.keystore.create12wordsAccount(with: "")
         DispatchQueue.main.async {
           let wallet = Wallet(type: WalletType.real(account))
           self.openBackUpWallet(wallet)

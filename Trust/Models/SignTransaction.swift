@@ -2,7 +2,9 @@
 
 import Foundation
 import BigInt
+import TrustCore
 import TrustKeystore
+import TrustCore
 
 public struct SignTransaction {
     let value: BigInt

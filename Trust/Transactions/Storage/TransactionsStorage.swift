@@ -3,6 +3,7 @@
 import Foundation
 import RealmSwift
 import TrustKeystore
+import TrustCore
 
 class TransactionsStorage {
 

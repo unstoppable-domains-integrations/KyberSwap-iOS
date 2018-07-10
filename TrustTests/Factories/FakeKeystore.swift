@@ -3,6 +3,7 @@
 import Foundation
 @testable import Trust
 import TrustKeystore
+import TrustCore
 import Result
 
 struct FakeKeystore: Keystore {

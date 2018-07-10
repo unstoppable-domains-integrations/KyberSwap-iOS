@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustKeystore
+import TrustCore
 
 protocol KNImportSeedsViewControllerDelegate: class {
   func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String])

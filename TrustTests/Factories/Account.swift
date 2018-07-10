@@ -3,6 +3,7 @@
 import Foundation
 @testable import Trust
 import TrustKeystore
+import TrustCore
 
 extension Account {
     static func make(

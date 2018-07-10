@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 struct GetERC20BalanceEncode: Web3Request {
     typealias Response = String

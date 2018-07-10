@@ -4,6 +4,7 @@ import Foundation
 import BigInt
 import Result
 import TrustKeystore
+import TrustCore
 import JSONRPCKit
 import APIKit
 

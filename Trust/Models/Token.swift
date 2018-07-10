@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 struct Token {
     let address: Address

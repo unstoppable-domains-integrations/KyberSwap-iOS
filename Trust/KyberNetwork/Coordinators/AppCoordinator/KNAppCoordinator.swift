@@ -59,16 +59,33 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    self.addMissingWalletObjects()
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
+    self.startLandingPageCoordinator()
+    self.startFirstSessionIfNeeded()
+    self.addInternalObserveNotification()
+  }
+
+  fileprivate func addMissingWalletObjects() {
+    let walletObjects = self.keystore.wallets.filter {
+      return KNWalletStorage.shared.get(forPrimaryKey: $0.address.description) == nil
+      }.map { return KNWalletObject(address: $0.address.description) }
+    KNWalletStorage.shared.add(wallets: walletObjects)
+  }
+
+  fileprivate func startLandingPageCoordinator() {
     self.addCoordinator(self.landingPageCoordinator)
     self.landingPageCoordinator.start()
+  }
+
+  fileprivate func startFirstSessionIfNeeded() {
     // For security, should always have passcode protection when user has imported wallets
     // In case user created a new wallet, it should be backed up
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first,
-      KNPasscodeUtil.shared.currentPasscode() != nil, KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == true {
+      KNPasscodeUtil.shared.currentPasscode() != nil,
+      KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == true {
       self.startNewSession(with: wallet)
     }
-    self.addInternalObserveNotification()
   }
 }
 

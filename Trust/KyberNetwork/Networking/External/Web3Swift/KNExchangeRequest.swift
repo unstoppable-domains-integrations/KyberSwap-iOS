@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 
 //swiftlint:disable line_length
 struct KNExchangeRequestEncode: Web3Request {

@@ -146,7 +146,7 @@ extension KNAppCoordinator {
       guard let newWallet = self.keystore.wallets.first(where: { $0 != wallet }) else { return }
       self.restartNewSession(newWallet)
     }
-    self.balanceCoordinator?.pause()
+    self.balanceCoordinator?.exit()
     self.session.removeWallet(wallet)
     self.balanceCoordinator?.restartNewSession(self.session)
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)

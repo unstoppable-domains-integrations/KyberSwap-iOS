@@ -3,6 +3,7 @@
 import Foundation
 import UIKit
 import TrustKeystore
+import TrustCore
 
 protocol ExportPrivateKeyCoordinatorDelegate: class {
     func didCancel(in coordinator: ExportPrivateKeyCoordinator)

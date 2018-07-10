@@ -8,6 +8,7 @@ import RealmSwift
 import Result
 import Moya
 import TrustKeystore
+import TrustCore
 
 enum TransactionError: Error {
     case failedToFetch

@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 protocol EnterPasswordCoordinatorDelegate: class {
     func didEnterPassword(password: String, account: Account, in coordinator: EnterPasswordCoordinator)

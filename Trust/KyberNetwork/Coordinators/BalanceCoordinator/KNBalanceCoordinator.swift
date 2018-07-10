@@ -5,6 +5,7 @@ import JSONRPCKit
 import APIKit
 import Result
 import TrustKeystore
+import TrustCore
 
 class KNBalanceCoordinator {
 
@@ -121,6 +122,7 @@ class KNBalanceCoordinator {
   }
 
   func exit() {
+    self.session = nil
     pause()
   }
 

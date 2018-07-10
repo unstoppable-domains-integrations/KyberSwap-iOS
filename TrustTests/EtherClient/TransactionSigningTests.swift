@@ -3,6 +3,7 @@
 import BigInt
 @testable import Trust
 import TrustKeystore
+import TrustCore
 import XCTest
 
 class TransactionSigningTests: XCTestCase {

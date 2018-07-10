@@ -6,6 +6,7 @@ import Result
 import KeychainSwift
 import CryptoSwift
 import TrustKeystore
+import TrustCore
 
 enum EtherKeystoreError: LocalizedError {
     case protectionDisabled
@@ -22,23 +23,20 @@ open class EtherKeystore: Keystore {
     let keyStore: KeyStore
     private let defaultKeychainAccess: KeychainSwiftAccessOptions = .accessibleWhenUnlockedThisDeviceOnly
     let keysDirectory: URL
-    let walletsDirectory: URL
     let userDefaults: UserDefaults
 
     public init(
         keychain: KeychainSwift = KeychainSwift(keyPrefix: Constants.keychainKeyPrefix),
         keysSubfolder: String = "/keystore",
-        walletsSubfolder: String = "/wallets",
         userDefaults: UserDefaults = UserDefaults.standard
     ) throws {
         if !UIApplication.shared.isProtectedDataAvailable {
             throw EtherKeystoreError.protectionDisabled
         }
         self.keysDirectory = URL(fileURLWithPath: datadir + keysSubfolder)
-        self.walletsDirectory = URL(fileURLWithPath: datadir + walletsSubfolder)
         self.keychain = keychain
         self.keychain.synchronizable = false
-        self.keyStore = try KeyStore(keyDirectory: keysDirectory, walletDirectory: walletsDirectory)
+        self.keyStore = try KeyStore(keyDirectory: keysDirectory)
         self.userDefaults = userDefaults
     }
 
@@ -90,8 +88,8 @@ open class EtherKeystore: Keystore {
 
     func create12wordsAccount(with password: String) -> Account {
         let mnemonic = Mnemonic.generate(strength: 128)
-        let account = try! self.keyStore.import(mnemonic: mnemonic, password: password)
         let newPassword = PasswordGenerator.generateRandom()
+        let account = try! self.keyStore.import(mnemonic: mnemonic, encryptPassword: newPassword)
         let _ = self.setPassword(newPassword, for: account)
         return account
     }
@@ -135,7 +133,7 @@ open class EtherKeystore: Keystore {
         case .mnemonic(let words, let password):
           let key = words.joined(separator: " ")
           do {
-            let account = try keyStore.import(mnemonic: key, password: password)
+            let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
             _ = setPassword(newPassword, for: account)
             completion(.success(Wallet(type: .real(account))))
           } catch let error {
@@ -206,7 +204,7 @@ open class EtherKeystore: Keystore {
     }
 
     var wallets: [Wallet] {
-        let addresses = watchAddresses.flatMap { Address(string: $0) }
+      let addresses = watchAddresses.compactMap { Address(string: $0) }
         return [
             keyStore.accounts.map { Wallet(type: .real($0)) },
             addresses.map { Wallet(type: .watch($0)) },
@@ -237,22 +235,6 @@ open class EtherKeystore: Keystore {
         guard let account = getAccount(for: account.address) else {
             return .failure(.accountNotFound)
         }
-        // account created from 12 words seeds
-        if account.type == .hierarchicalDeterministicWallet {
-          do {
-            let key = try KeystoreKey(password: password)
-            var privateKey = try key.decrypt(password: password)
-            defer {
-              privateKey.resetBytes(in: 0..<privateKey.count)
-            }
-
-            let newKey = try KeystoreKey(password: newPassword, key: privateKey)
-            let data = try JSONEncoder().encode(newKey)
-            return .success(data)
-          } catch {
-            return .failure(.failedToDecryptKey)
-          }
-        }
         do {
             let data = try keyStore.export(account: account, password: password, newPassword: newPassword)
             return (.success(data))
@@ -266,16 +248,6 @@ open class EtherKeystore: Keystore {
         guard let password = getPassword(for: account) else {
             return .failure(KeystoreError.accountNotFound)
         }
-        // account created from 12 words seeds
-        if account.type == .hierarchicalDeterministicWallet {
-            do {
-              let key = try KeystoreKey(password: password)
-              let privateKey = try key.decrypt(password: password)
-              return .success(privateKey)
-            } catch {
-              return .failure(KeystoreError.failedToExportPrivateKey)
-            }
-        }
         do {
             let privateKey = try keyStore.exportPrivateKey(account: account, password: password)
             return .success(privateKey)
@@ -286,10 +258,15 @@ open class EtherKeystore: Keystore {
     }
 
     func exportMnemonics(account: Account) -> Result<String, KeystoreError> {
-      if let wallet = keyStore.wallet(for: account.address) {
-        return .success(wallet.mnemonic)
+      guard let password = getPassword(for: account) else {
+        return .failure(KeystoreError.accountNotFound)
       }
-      return .failure(KeystoreError.failedToExportMnemonics)
+      do {
+        let mnemonic = try self.keyStore.exportMnemonic(account: account, password: password)
+        return .success(mnemonic)
+      } catch {
+        return .failure(KeystoreError.failedToExportMnemonics)
+      }
     }
 
     func delete(wallet: Wallet) -> Result<Void, KeystoreError> {

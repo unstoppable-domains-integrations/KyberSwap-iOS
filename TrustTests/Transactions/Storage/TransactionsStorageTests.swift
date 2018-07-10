@@ -3,6 +3,7 @@
 import XCTest
 @testable import Trust
 import TrustKeystore
+import TrustCore
 import RealmSwift
 
 class TransactionsStorageTests: XCTestCase {

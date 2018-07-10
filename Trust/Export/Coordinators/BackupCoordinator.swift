@@ -4,6 +4,7 @@ import Foundation
 import UIKit
 import Result
 import TrustKeystore
+import TrustCore
 
 protocol BackupCoordinatorDelegate: class {
     func didCancel(coordinator: BackupCoordinator)

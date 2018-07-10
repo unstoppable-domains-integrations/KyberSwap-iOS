@@ -3,6 +3,7 @@
 import UIKit
 import SafariServices
 import TrustKeystore
+import TrustCore
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: Wallet)

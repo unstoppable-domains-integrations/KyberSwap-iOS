@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 enum TransferType {
     case ether(destination: Address?)

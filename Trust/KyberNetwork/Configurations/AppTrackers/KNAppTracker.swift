@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustKeystore
+import TrustCore
 
 enum KNTransactionLoadState: Int {
   case none = 0

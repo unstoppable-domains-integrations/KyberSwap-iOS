@@ -4,6 +4,7 @@ import Foundation
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 
 protocol BrowserCoordinatorDelegate: class {
     func didSentTransaction(transaction: SentTransaction, in coordinator: BrowserCoordinator)

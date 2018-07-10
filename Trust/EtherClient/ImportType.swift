@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 enum ImportType {
     case keystore(string: String, password: String)

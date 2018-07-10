@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 struct IEODistributedTokensWeiEncode: Web3Request {
   typealias Response = String

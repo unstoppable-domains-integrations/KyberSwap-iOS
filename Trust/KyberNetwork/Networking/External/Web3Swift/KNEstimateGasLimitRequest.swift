@@ -3,6 +3,7 @@
 import Foundation
 import JSONRPCKit
 import TrustKeystore
+import TrustCore
 import BigInt
 
 struct KNEstimateGasLimitRequest: JSONRPCKit.Request {

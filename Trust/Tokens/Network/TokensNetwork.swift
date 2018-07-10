@@ -3,6 +3,7 @@
 import UIKit
 import Moya
 import TrustKeystore
+import TrustCore
 
 protocol TokensNetworkProtocol: TrustNetworkProtocol {
     func tickers(for tokens: [TokenObject], completion: @escaping (_ tickers: [CoinTicker]?) -> Void)

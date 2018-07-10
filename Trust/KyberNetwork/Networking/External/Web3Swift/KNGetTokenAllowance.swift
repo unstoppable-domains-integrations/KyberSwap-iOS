@@ -2,6 +2,7 @@
 
 import BigInt
 import TrustKeystore
+import TrustCore
 
 struct KNGetTokenAllowanceEndcode: Web3Request {
   typealias Response = String

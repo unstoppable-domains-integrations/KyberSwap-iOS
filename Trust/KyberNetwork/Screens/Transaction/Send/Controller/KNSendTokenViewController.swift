@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import TrustKeystore
+import TrustCore
 import Result
 import QRCodeReaderViewController
 

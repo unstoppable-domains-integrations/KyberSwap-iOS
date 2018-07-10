@@ -8,6 +8,7 @@ import JavaScriptKit
 import Result
 import BigInt
 import TrustKeystore
+import TrustCore
 import Moya
 
 class KNTransactionCoordinator {

@@ -3,6 +3,7 @@
 import Foundation
 import JSONRPCKit
 import TrustKeystore
+import TrustCore
 
 struct GetTransactionRequest: JSONRPCKit.Request {
     typealias Response = PendingTransaction

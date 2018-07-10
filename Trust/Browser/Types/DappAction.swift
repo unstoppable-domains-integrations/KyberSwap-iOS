@@ -3,6 +3,7 @@
 import Foundation
 import BigInt
 import TrustKeystore
+import TrustCore
 
 enum DappAction {
     case signMessage(String)

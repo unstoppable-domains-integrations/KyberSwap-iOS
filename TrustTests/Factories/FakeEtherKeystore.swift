@@ -3,6 +3,7 @@
 import Foundation
 @testable import Trust
 import TrustKeystore
+import TrustCore
 import KeychainSwift
 import Result
 
@@ -12,7 +13,6 @@ class FakeEtherKeystore: EtherKeystore {
         try! self.init(
             keychain: KeychainSwift(keyPrefix: "fake" + uniqueString),
             keysSubfolder: "/keys" + uniqueString,
-            walletsSubfolder: "/wallets" + uniqueString,
             userDefaults: UserDefaults.test
         )
     }

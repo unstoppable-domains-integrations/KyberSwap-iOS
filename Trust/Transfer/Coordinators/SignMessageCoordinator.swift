@@ -3,6 +3,7 @@
 import Foundation
 import UIKit
 import TrustKeystore
+import TrustCore
 import CryptoSwift
 import Result
 

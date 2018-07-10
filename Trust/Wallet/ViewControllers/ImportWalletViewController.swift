@@ -3,6 +3,7 @@
 import UIKit
 import Eureka
 import TrustKeystore
+import TrustCore
 import QRCodeReaderViewController
 
 protocol ImportWalletViewControllerDelegate: class {

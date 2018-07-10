@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 struct RawTransaction: Decodable {
     let hash: String

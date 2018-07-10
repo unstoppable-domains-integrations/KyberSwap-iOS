@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 enum Errors: LocalizedError {
     case invalidAddress

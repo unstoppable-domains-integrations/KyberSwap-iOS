@@ -3,6 +3,7 @@
 import UIKit
 import Eureka
 import TrustKeystore
+import TrustCore
 
 protocol EnterPasswordViewControllerDelegate: class {
     func didEnterPassword(password: String, for account: Account, in viewController: EnterPasswordViewController)

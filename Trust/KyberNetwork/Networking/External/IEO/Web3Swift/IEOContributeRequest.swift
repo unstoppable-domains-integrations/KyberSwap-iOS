@@ -3,6 +3,7 @@
 import Foundation
 import TrustKeystore
 import BigInt
+import TrustCore
 
 //swiftlint:disable line_length
 struct IEOContributeEncode: Web3Request {

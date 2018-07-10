@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 import UIKit
 
 protocol SettingsCoordinatorDelegate: class {

@@ -4,6 +4,7 @@ import APIKit
 import JSONRPCKit
 import BigInt
 import TrustKeystore
+import TrustCore
 import RealmSwift
 
 protocol KNSessionDelegate: class {

@@ -8,6 +8,7 @@ import APIKit
 import BigInt
 import QRCodeReaderViewController
 import TrustKeystore
+import TrustCore
 
 protocol SendViewControllerDelegate: class {
     func didPressConfirm(

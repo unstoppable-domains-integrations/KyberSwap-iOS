@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 import BigInt
 import JSONRPCKit
 import APIKit

@@ -2,6 +2,7 @@
 
 import Foundation
 import TrustKeystore
+import TrustCore
 
 extension DecryptError: LocalizedError {
     public var errorDescription: String? {

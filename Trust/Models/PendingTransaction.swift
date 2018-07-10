@@ -3,6 +3,7 @@
 import BigInt
 import Foundation
 import TrustKeystore
+import TrustCore
 
 struct PendingTransaction: Decodable {
     let blockHash: String
