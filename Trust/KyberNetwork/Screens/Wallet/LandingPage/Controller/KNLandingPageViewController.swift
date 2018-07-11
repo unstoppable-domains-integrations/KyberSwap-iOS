@@ -12,6 +12,7 @@ class KNLandingPageViewController: KNBaseViewController {
 
   weak var delegate: KNLandingPageViewControllerDelegate?
 
+  @IBOutlet weak var debugButton: UIButton!
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
@@ -25,6 +26,7 @@ class KNLandingPageViewController: KNBaseViewController {
     self.view.backgroundColor = .white
     self.createWalletButton.rounded(color: .clear, width: 0, radius: 4.0)
     self.importWalletButton.rounded(color: .clear, width: 0, radius: 4.0)
+    self.debugButton.isHidden = true
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {

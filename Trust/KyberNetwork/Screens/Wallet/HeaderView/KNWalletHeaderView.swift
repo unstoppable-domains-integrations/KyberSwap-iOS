@@ -79,6 +79,7 @@ class KNWalletHeaderView: XibLoaderView {
     self.walletInfoLabel.isUserInteractionEnabled = true
 
     self.debugButton.setTitleColor(self.viewModel.tintColor, for: .normal)
+    self.debugButton.isHidden = true
     self.layoutIfNeeded()
   }
 
