@@ -226,6 +226,10 @@ extension KNAppCoordinator {
     if let tran = transaction, tran.state == .completed {
       self.session.transacionCoordinator?.forceFetchTokenTransactions()
     }
+    if let state = transaction?.state, state != .pending, state != .unknown {
+      // update history transaction
+      self.tokenTransactionListDidUpdate(nil)
+    }
     let transactions = self.session.transactionStorage.pendingObjects
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.balanceTabCoordinator.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
@@ -234,6 +238,7 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    self.balanceTabCoordinator.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {

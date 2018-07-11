@@ -206,6 +206,8 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     let alertController = UIAlertController(title: "", message: "You are signed in as \(user.name). Do you want to sign out?", preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "Keep Sign In", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "Sign Out", style: .default, handler: { _ in
+      let storage = HTTPCookieStorage.shared
+      storage.cookies?.forEach { storage.deleteCookie($0) }
       IEOUserStorage.shared.deleteAll()
       self.rootViewController.coordinatorDidSignOut()
     }))
@@ -262,14 +264,20 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       switch result {
       case .success(let data):
         if let dataJSON = try? data.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = dataJSON {
-          guard let accessToken = json["access_token"] as? String else { return }
+          guard let accessToken = json["access_token"] as? String else {
+            self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get access token")
+            return
+          }
           // got access token, user access token to retrieve user information
           let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
           provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
             guard let _ = `self` else { return }
             switch userInfoResult {
             case .success(let userInfo):
-              guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else { return }
+              guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
+                self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get user infor")
+                return
+              }
               let user = IEOUser(dict: userJSON)
               IEOUserStorage.shared.update(objects: [user])
               IEOUserStorage.shared.updateToken(object: user, dict: json)
@@ -280,6 +288,8 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
               self?.navigationController.displayError(error: error)
             }
           })
+        } else {
+          self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get access token")
         }
       case .failure(let error):
         self?.navigationController.displayError(error: error)
