@@ -92,19 +92,24 @@ class KNSession {
   }
 
   // Remove a wallet, it should not be a current wallet
-  func removeWallet(_ wallet: Wallet) {
+  @discardableResult
+  func removeWallet(_ wallet: Wallet) -> Bool {
     // delete all storage for each wallet
-    let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
-    let realm = try! Realm(configuration: config)
-    let transactionStorage = TransactionsStorage(realm: realm)
-    transactionStorage.deleteAll()
-    let tokenStorage = KNTokenStorage(realm: realm)
-    tokenStorage.deleteAll()
-    _ = self.keystore.delete(wallet: wallet)
-    KNAppTracker.resetAppTrackerData(for: wallet.address)
-    if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
-      KNWalletStorage.shared.delete(wallets: [walletObject])
+    let deleteResult = self.keystore.delete(wallet: wallet)
+    if case .success() = deleteResult {
+      let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+      let realm = try! Realm(configuration: config)
+      let transactionStorage = TransactionsStorage(realm: realm)
+      transactionStorage.deleteAll()
+      let tokenStorage = KNTokenStorage(realm: realm)
+      tokenStorage.deleteAll()
+      KNAppTracker.resetAppTrackerData(for: wallet.address)
+      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
+        KNWalletStorage.shared.delete(wallets: [walletObject])
+      }
+      return true
     }
+    return false
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {

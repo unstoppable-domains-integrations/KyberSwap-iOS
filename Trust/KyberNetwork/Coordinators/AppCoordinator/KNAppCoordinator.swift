@@ -69,7 +69,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate func addMissingWalletObjects() {
     let walletObjects = self.keystore.wallets.filter {
       return KNWalletStorage.shared.get(forPrimaryKey: $0.address.description) == nil
-      }.map { return KNWalletObject(address: $0.address.description) }
+      }.map {
+        return KNWalletObject(address: $0.address.description)
+      }
     KNWalletStorage.shared.add(wallets: walletObjects)
   }
 

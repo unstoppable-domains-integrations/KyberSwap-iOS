@@ -10,7 +10,7 @@ import TrustCore
 class KNBalanceCoordinator {
 
   fileprivate var session: KNSession!
-  fileprivate var ethToken: TokenObject
+  fileprivate var ethToken: TokenObject!
 
   fileprivate var fetchETHBalanceTimer: Timer?
   fileprivate var isFetchingETHBalance: Bool = false
@@ -57,6 +57,7 @@ class KNBalanceCoordinator {
   deinit {
     self.exit()
     self.session = nil
+    self.ethToken = nil
   }
 
   init(session: KNSession) {
@@ -122,14 +123,15 @@ class KNBalanceCoordinator {
   }
 
   func exit() {
-    self.session = nil
     pause()
+    self.session = nil
   }
 
   @objc func fetchETHBalance(_ sender: Timer?) {
     if isFetchingETHBalance { return }
     isFetchingETHBalance = true
     DispatchQueue.global(qos: .background).async {
+      if self.session == nil { return }
       self.session.externalProvider.getETHBalance { [weak self] result in
         DispatchQueue.main.async {
           guard let `self` = self else { return }
@@ -137,7 +139,7 @@ class KNBalanceCoordinator {
           switch result {
           case .success(let balance):
             self.ethBalance = balance
-            if self.session != nil {
+            if self.session != nil, self.ethToken != nil {
               self.session.tokenStorage.updateBalance(for: self.ethToken, balance: balance.value)
             }
             KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
@@ -158,6 +160,7 @@ class KNBalanceCoordinator {
       if let contractAddress = Address(string: contract) {
         group.enter()
         DispatchQueue.global(qos: .background).async {
+          if self.session == nil { return }
           self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
             DispatchQueue.main.async {
               guard let `self` = self else { return }

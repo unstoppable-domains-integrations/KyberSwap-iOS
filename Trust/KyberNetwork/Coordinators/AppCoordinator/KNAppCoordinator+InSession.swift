@@ -123,7 +123,7 @@ extension KNAppCoordinator {
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet) {
     self.removeObserveNotificationFromSession()
-    self.balanceCoordinator?.pause()
+    self.balanceCoordinator?.exit()
     self.session.switchSession(wallet)
     self.balanceCoordinator?.restartNewSession(self.session)
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
@@ -147,11 +147,15 @@ extension KNAppCoordinator {
       self.restartNewSession(newWallet)
     }
     self.balanceCoordinator?.exit()
-    self.session.removeWallet(wallet)
-    self.balanceCoordinator?.restartNewSession(self.session)
-    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    if self.session.removeWallet(wallet) {
+      self.balanceCoordinator?.restartNewSession(self.session)
+      self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+      self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    } else {
+      self.balanceCoordinator?.restartNewSession(self.session)
+      self.navigationController.showErrorTopBannerMessage(with: "Error", message: "Something went wrong. Can not remove the wallet")
+    }
   }
 
   func addNewWallet() {
