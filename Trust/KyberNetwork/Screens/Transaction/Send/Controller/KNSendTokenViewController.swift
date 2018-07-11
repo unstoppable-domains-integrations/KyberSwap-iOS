@@ -177,11 +177,11 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    guard self.viewModel.isAmountTooSmall else {
+    guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too small to perform send")
       return
     }
-    guard self.viewModel.isAmountTooBig else {
+    guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too big to perform send")
       return
     }

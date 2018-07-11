@@ -137,12 +137,12 @@ class KNExternalProvider {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
-      case .success(let count):
+      case .success:
         self.requestDataForTokenExchange(exchange, completion: { [weak self] dataResult in
           guard let `self` = self else { return }
           switch dataResult {
           case .success(let data):
-            self.signTransactionData(from: exchange, nonce: count, data: data, completion: { [weak self] signResult in
+            self.signTransactionData(from: exchange, nonce: self.minTxCount, data: data, completion: { [weak self] signResult in
               guard let `self` = self else { return }
               switch signResult {
               case .success(let signData):
