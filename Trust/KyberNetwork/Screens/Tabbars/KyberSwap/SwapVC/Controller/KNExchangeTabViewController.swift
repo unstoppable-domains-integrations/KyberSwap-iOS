@@ -247,8 +247,12 @@ class KNExchangeTabViewController: KNBaseViewController {
    */
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
     // Check data
-    guard self.viewModel.isAmountValid else {
-      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Please enter a valid amount to exchange")
+    guard !self.viewModel.isAmountTooSmall else {
+      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too small to perform exchange")
+      return
+    }
+    guard !self.viewModel.isAmountTooBig else {
+      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too big to perform exchange")
       return
     }
     guard let rate = self.viewModel.estRate, self.viewModel.isRateValid else {

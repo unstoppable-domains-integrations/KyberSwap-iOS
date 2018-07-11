@@ -98,9 +98,17 @@ class KNSendTokenViewModel: NSObject {
     return "Add Contact".toBeLocalised()
   }
 
-  var isAmountValid: Bool {
+  var isAmountTooSmall: Bool {
+    return amountBigInt <= BigInt(0)
+  }
+
+  var isAmountTooBig: Bool {
     let balanceVal = balance?.value ?? BigInt(0)
-    return amountBigInt > 0 && amountBigInt <= balanceVal
+    return amountBigInt > balanceVal
+  }
+
+  var isAmountValid: Bool {
+    return !isAmountTooSmall && !isAmountTooBig
   }
 
   var isAddressValid: Bool {

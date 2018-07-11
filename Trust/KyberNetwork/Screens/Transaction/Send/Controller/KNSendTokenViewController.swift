@@ -134,7 +134,7 @@ class KNSendTokenViewController: KNBaseViewController {
       bottom: -35
     )
 
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
+    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "default_token"), for: .normal)
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
 
     self.balanceTextLabel.text = self.viewModel.balanceText
@@ -177,8 +177,12 @@ class KNSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    guard self.viewModel.isAmountValid else {
-      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Please enter a valid amount to send")
+    guard self.viewModel.isAmountTooSmall else {
+      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too small to perform send")
+      return
+    }
+    guard self.viewModel.isAmountTooBig else {
+      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too big to perform send")
       return
     }
     guard self.viewModel.isAddressValid else {
@@ -261,7 +265,7 @@ extension KNSendTokenViewController {
   func updateUIFromTokenDidChange() {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "accounts_active"), for: .normal)
+    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "default_token"), for: .normal)
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
     self.updateUIBalanceDidChange()
   }

@@ -5,7 +5,7 @@ import BigInt
 
 class KNExchangeTabViewModel {
 
-  let defaultTokenIconImg = UIImage(named: "accounts_active")
+  let defaultTokenIconImg = UIImage(named: "default_token")
   let eth = KNSupportedTokenStorage.shared.ethToken
   let knc = KNSupportedTokenStorage.shared.kncToken
 
@@ -148,10 +148,20 @@ class KNExchangeTabViewModel {
 
   // MARK: Verify data
   // Amount should > 0 and <= balance
+  var isAmountTooSmall: Bool {
+    if self.amountFromBigInt <= BigInt(0) { return true }
+    if self.slippageRate == nil || self.slippageRate?.isZero == true { return true }
+    return false
+  }
+
+  var isAmountTooBig: Bool {
+    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return true }
+    if self.estRate?.isZero == true { return true }
+    return false
+  }
+
   var isAmountValid: Bool {
-    if self.amountFromBigInt <= BigInt(0) { return false }
-    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return false }
-    return true
+    return !self.isAmountTooSmall && !self.isAmountTooBig
   }
 
   // rate should not be nil and greater than zero
