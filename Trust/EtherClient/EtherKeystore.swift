@@ -235,6 +235,23 @@ open class EtherKeystore: Keystore {
         guard let account = getAccount(for: account.address) else {
             return .failure(.accountNotFound)
         }
+      // TODO: Keystore is exported wrongly for this type wallet
+      if account.type == .hierarchicalDeterministicWallet {
+        let privateKey = self.exportPrivateKey(account: account)
+        if case .success(let key) = privateKey {
+          let keystore = self.convertPrivateKeyToKeystoreFile(privateKey: key.hexString, passphrase: newPassword)
+          switch keystore {
+          case .success(let data):
+            let keystoreString = data.jsonString ?? ""
+            if let data = keystoreString.data(using: .utf8) {
+              return .success(data)
+            }
+          default:
+            break
+          }
+        }
+        return (.failure(.failedToDecryptKey))
+      }
         do {
             let data = try keyStore.export(account: account, password: password, newPassword: newPassword)
             return (.success(data))
@@ -271,8 +288,8 @@ open class EtherKeystore: Keystore {
 
     func delete(wallet: Wallet) -> Result<Void, KeystoreError> {
         switch wallet.type {
-        case .real(let account):
-            guard let account = getAccount(for: account.address) else {
+        case .real(let acc):
+            guard let account = getAccount(for: acc.address) else {
                 return .failure(.accountNotFound)
             }
 
