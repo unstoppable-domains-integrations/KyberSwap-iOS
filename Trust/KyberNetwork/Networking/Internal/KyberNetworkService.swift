@@ -74,7 +74,7 @@ extension KNTrackerService: TargetType {
       let url = "/chart/history?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!
     case .getRates:
-      return URL(string: baseURLString + "/api/tokens/rates")!
+      return URL(string: baseURLString + "/api/change24h?usd=1")!
     }
   }
 

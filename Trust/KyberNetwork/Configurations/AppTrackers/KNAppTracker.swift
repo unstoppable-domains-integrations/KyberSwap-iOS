@@ -31,7 +31,7 @@ class KNAppTracker {
     if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
       return value
     }
-    return "https://tracker.kyber.network"
+    return "https://staging-tracker.knstats.com"//https://tracker.kyber.network"
   }
 
   static func updateInternalTrackerEndpoint(value: String) {

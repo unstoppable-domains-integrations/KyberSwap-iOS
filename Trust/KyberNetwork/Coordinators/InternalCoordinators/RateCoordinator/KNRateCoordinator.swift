@@ -15,93 +15,85 @@ class KNRateCoordinator {
 
   static let shared = KNRateCoordinator()
 
-  fileprivate let provider = MoyaProvider<KyberNetworkService>()
+  fileprivate let provider = MoyaProvider<KNTrackerService>()
 
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
-  fileprivate(set) var tokenRates: [KNRate] = []
-
-  fileprivate var exchangeUSDRatesTimer: Timer?
-  fileprivate var isLoadingExchangeUSDRates: Bool = false
-  fileprivate(set) var usdRates: [KNRate] = []
 
   func getRate(from: TokenObject, to: TokenObject) -> KNRate? {
-    if let rate = KNRate.rate(from: from, toToken: to) { return rate }
-    return self.tokenRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol })
+    if from.isETH {
+      if let rate = KNTrackerRateStorage.shared.trackerRate(for: to) {
+        return KNRate.rateETH(from: rate)
+      }
+    } else if to.isETH {
+      if let rate = KNTrackerRateStorage.shared.trackerRate(for: from) {
+        return KNRate.rateETH(from: rate)
+      }
+    }
+    guard let rateFrom = KNTrackerRateStorage.shared.trackerRate(for: from),
+      let rateTo = KNTrackerRateStorage.shared.trackerRate(for: to) else { return nil }
+    if rateTo.rateUSDNow == 0.0 { return nil }
+    return KNRate(
+      source: from.symbol,
+      dest: to.symbol,
+      rate: rateFrom.rateUSDNow / rateTo.rateUSDNow,
+      decimals: to.decimals
+    )
   }
 
   func usdRate(for token: TokenObject) -> KNRate? {
-    // Take data from coinmarketcap if we had
-    if let coinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.isData(for: token) }) {
-      return KNRate.rateUSD(from: coinTicker)
+    if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: token) {
+      return KNRate.rateUSD(from: trackerRate)
     }
-    return self.usdRates.first(where: { $0.source == token.symbol })
+    return nil
   }
 
   init() {}
 
   func resume() {
     // Immediate fetch data from server, then run timers with interview 60 seconds
-//    self.fetchExchangeTokenRate(nil)
-//    self.exchangeTokenRatesTimer?.invalidate()
-//
-//    self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-//      target: self,
-//      selector: #selector(self.fetchExchangeTokenRate(_:)),
-//      userInfo: nil,
-//      repeats: true
-//    )
-//
-//    self.fetchExchangeUSDRates(nil)
-//    self.exchangeUSDRatesTimer?.invalidate()
-//
-//    self.exchangeUSDRatesTimer = Timer.scheduledTimer(
-//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-//      target: self,
-//      selector: #selector(self.fetchExchangeUSDRates(_:)),
-//      userInfo: nil,
-//      repeats: true
-//    )
+    self.fetchExchangeTokenRate(nil)
+    self.exchangeTokenRatesTimer?.invalidate()
+
+    self.exchangeTokenRatesTimer = Timer.scheduledTimer(
+      timeInterval: KNLoadingInterval.defaultLoadingInterval,
+      target: self,
+      selector: #selector(self.fetchExchangeTokenRate(_:)),
+      userInfo: nil,
+      repeats: true
+    )
   }
 
   func pause() {
-//    self.exchangeTokenRatesTimer?.invalidate()
-//    self.exchangeTokenRatesTimer = nil
-//    self.isLoadingExchangeTokenRates = false
-//
-//    self.exchangeUSDRatesTimer?.invalidate()
-//    self.exchangeUSDRatesTimer = nil
-//    self.isLoadingExchangeUSDRates = false
+    self.exchangeTokenRatesTimer?.invalidate()
+    self.exchangeTokenRatesTimer = nil
+    self.isLoadingExchangeTokenRates = false
   }
 
   @objc func fetchExchangeTokenRate(_ sender: Any?) {
     if isLoadingExchangeTokenRates { return }
     isLoadingExchangeTokenRates = true
     DispatchQueue.global(qos: .background).async {
-      KNInternalProvider.shared.getKNExchangeTokenRate { [weak self] (result) in
+      let provider = MoyaProvider<KNTrackerService>()
+      provider.request(.getRates(), completion: { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           self.isLoadingExchangeTokenRates = false
-          if case .success(let rates) = result {
-            self.tokenRates = rates
-            KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+          if case .success(let resp) = result {
+            do {
+              guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else { return }
+              var rates: [KNTrackerRate] = []
+              for value in json.values {
+                if let rateJSON = value as? JSONDictionary {
+                  rates.append(KNTrackerRate(dict: rateJSON))
+                }
+              }
+              KNTrackerRateStorage.shared.update(rates: rates)
+              KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+            } catch {}
           }
         }
-      }
-    }
-  }
-
-  @objc func fetchExchangeUSDRates(_ sender: Any?) {
-    if isLoadingExchangeUSDRates { return }
-    isLoadingExchangeUSDRates = true
-    KNInternalProvider.shared.getKNExchangeRateUSD { [weak self] (result) in
-      guard let `self` = self else { return }
-      self.isLoadingExchangeUSDRates = false
-      if case .success(let rates) = result {
-        self.usdRates = rates
-        KNNotificationUtil.postNotification(for: kExchangeUSDRateNotificationKey)
-      }
+      })
     }
   }
 }

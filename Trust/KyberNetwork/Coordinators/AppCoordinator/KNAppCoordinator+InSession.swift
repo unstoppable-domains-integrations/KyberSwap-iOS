@@ -185,7 +185,7 @@ extension KNAppCoordinator {
   fileprivate func updateLocalData() {
     self.tokenBalancesDidUpdateNotification(nil)
     self.ethBalanceDidUpdateNotification(nil)
-    self.coinTickerDidUpdate(nil)
+    self.exchangeRateTokenDidUpdateNotification(nil)
     self.tokenObjectListDidUpdate(nil)
     self.tokenTransactionListDidUpdate(nil)
   }

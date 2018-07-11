@@ -84,4 +84,22 @@ extension KNRate {
     }
     return nil
   }
+
+  static func rateETH(from trackerRate: KNTrackerRate) -> KNRate {
+    return KNRate(
+      source: trackerRate.tokenSymbol,
+      dest: "ETH",
+      rate: trackerRate.tokenSymbol == "ETH" ? 1.0 : trackerRate.rateETHNow,
+      decimals: 18
+    )
+  }
+
+  static func rateUSD(from trackerRate: KNTrackerRate) -> KNRate {
+    return KNRate(
+      source: trackerRate.tokenSymbol,
+      dest: "USD",
+      rate: trackerRate.rateUSDNow,
+      decimals: 18
+    )
+  }
 }

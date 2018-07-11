@@ -126,6 +126,7 @@ extension KNBalanceTabCoordinator {
     totalBalanceInUSD: BigInt,
     totalBalanceInETH: BigInt
     ) {
+    self.tokenChartCoordinator?.coordinatorExchangeRateDidUpdate()
     self.rootViewController.coordinatorUpdateBalanceInETHAndUSD(
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD
@@ -136,10 +137,6 @@ extension KNBalanceTabCoordinator {
     self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
-  }
-
-  func appCoordinatorCoinTickerDidUpdate() {
-    self.rootViewController.coordinatorCoinTickerDidUpdate()
   }
 
   func appCoordinatorSupportedTokensDidUpdate(tokenObjects: [TokenObject]) {

@@ -222,10 +222,7 @@ extension KNBalanceTabViewController {
       usdBalance: usdBalance
     )
     self.updateBalanceUI()
-  }
-
-  func coordinatorCoinTickerDidUpdate() {
-    self.viewModel.coinTickersDidUpdate()
+    self.viewModel.exchangeRatesDataUpdated()
     self.tokensBalanceCollectionView.reloadData()
   }
 
@@ -301,16 +298,15 @@ extension KNBalanceTabViewController: UICollectionViewDataSource {
 
     // Data for cell
     let tokenObject: TokenObject = self.viewModel.tokenObject(for: row)
-    let coinTicker: KNCoinTicker? = self.viewModel.coinTicker(for: row)
+    let trackerRate: KNTrackerRate? = self.viewModel.trackerRate(for: row)
     let balance: Balance? = self.viewModel.balance(for: tokenObject)
     let icon: String? = self.viewModel.iconName(for: tokenObject)
 
     let cellModel = KNTokenBalanceCollectionViewCellModel(
       token: tokenObject,
       icon: icon,
-      coinTicker: coinTicker,
+      trackerRate: trackerRate,
       balance: balance,
-      ethCoinTicker: self.viewModel.ethCoinTicker,
       displayedType: self.viewModel.balanceDisplayType
     )
     cell.updateCell(

@@ -16,25 +16,22 @@ struct KNTokenBalanceCollectionViewCellModel {
 
   let token: TokenObject
   let icon: String?
-  let coinTicker: KNCoinTicker?
+  let trackerRate: KNTrackerRate?
   let balance: Balance?
-  let ethCoinTicker: KNCoinTicker?
 
   var displayedType: KNBalanceDisplayDataType = .eth
 
   init(
     token: TokenObject,
     icon: String?,
-    coinTicker: KNCoinTicker?,
+    trackerRate: KNTrackerRate?,
     balance: Balance?,
-    ethCoinTicker: KNCoinTicker?,
     displayedType: KNBalanceDisplayDataType
     ) {
     self.token = token
     self.icon = icon
-    self.coinTicker = coinTicker
+    self.trackerRate = trackerRate
     self.balance = balance
-    self.ethCoinTicker = ethCoinTicker
     self.displayedType = displayedType
   }
 
@@ -46,8 +43,8 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   fileprivate var displayBalanceInUSD: String {
-    if let amount = balance?.value, let coinTicker = coinTicker {
-      let rate = KNRate.rateUSD(from: coinTicker)
+    if let amount = balance?.value, let trackerRate = self.trackerRate {
+      let rate = KNRate.rateUSD(from: trackerRate)
       let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 2, maxFractionDigits: 4)
       return "Val $\(value.prefix(11))"
     }
@@ -55,14 +52,8 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   fileprivate var displayBalanceInETH: String {
-    if let amount = balance?.value, let coinTicker = coinTicker, let ethCoinTicker = ethCoinTicker {
-      let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
-      let rate = KNRate(
-        source: self.token.symbol,
-        dest: "ETH",
-        rate: rateETH,
-        decimals: 18
-      )
+    if let amount = balance?.value, let trackerRate = self.trackerRate {
+      let rate = KNRate.rateETH(from: trackerRate)
       let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 6, maxFractionDigits: 9)
       return "Val \(value.prefix(11))"
     }
@@ -78,20 +69,13 @@ struct KNTokenBalanceCollectionViewCellModel {
     }()
     let rate: BigInt? = {
       if self.displayedType == .usd {
-        if let coinTicker = self.coinTicker {
-          return KNRate.rateUSD(from: coinTicker).rate
+        if let trackerRate = self.trackerRate {
+          return KNRate.rateUSD(from: trackerRate).rate
         }
         return nil
       }
-      if let coinTicker = coinTicker, let ethCoinTicker = ethCoinTicker {
-        let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
-        let rate = KNRate(
-          source: self.token.symbol,
-          dest: "ETH",
-          rate: rateETH,
-          decimals: 18
-        )
-        return rate.rate
+      if let trackerRate = self.trackerRate {
+        return KNRate.rateETH(from: trackerRate).rate
       }
       return nil
     }()
@@ -111,22 +95,25 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   var displayChange24h: String {
-    if let percentageChange = coinTicker?.percentChange24h, !percentageChange.isEmpty {
-      return "\(percentageChange)%"
+    let change24h = self.displayedType == .eth ? self.trackerRate?.changeETH24h : self.trackerRate?.changeUSD24h
+    if let percentageChange = change24h {
+      return "\("\(percentageChange)".prefix(5))%"
     }
     return "- - - - - -"
   }
 
   var textColorChange24h: UIColor {
-    if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
-      return String(percentageChange) == "-" ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
+    let change24h = self.displayedType == .eth ? self.trackerRate?.changeETH24h : self.trackerRate?.changeUSD24h
+    if let percentageChange = change24h {
+      return percentageChange < 0 ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
     }
     return UIColor(hex: "5a5e67")
   }
 
   var backgroundColorChange24h: UIColor {
-    if let percentageChange = coinTicker?.percentChange24h.prefix(1) {
-      return String(percentageChange) == "-" ? UIColor(hex: "fef6ef") : UIColor(hex: "edfbf6")
+    let change24h = self.displayedType == .eth ? self.trackerRate?.changeETH24h : self.trackerRate?.changeUSD24h
+    if let percentageChange = change24h {
+      return percentageChange < 0 ? UIColor(hex: "fef6ef") : UIColor(hex: "edfbf6")
     }
     return UIColor.white
   }

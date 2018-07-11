@@ -258,6 +258,8 @@
 		25D325A020C06D7F008BB235 /* KNSendTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25D3259E20C06D7F008BB235 /* KNSendTokenViewController.xib */; };
 		25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D325A420C0708E008BB235 /* KNSendTokenViewModel.swift */; };
 		25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D325A620C075DE008BB235 /* KNSendTokenViewCoordinator.swift */; };
+		25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3E920F61C110071D599 /* KNTrackerRate.swift */; };
+		25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */; };
 		25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */; };
 		25E3D3A020D7D3E9005D506B /* IEOUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D39F20D7D3E9005D506B /* IEOUser.swift */; };
 		25E3D3A220D7D83B005D506B /* IEOUserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */; };
@@ -909,6 +911,8 @@
 		25D3259E20C06D7F008BB235 /* KNSendTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSendTokenViewController.xib; sourceTree = "<group>"; };
 		25D325A420C0708E008BB235 /* KNSendTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSendTokenViewModel.swift; sourceTree = "<group>"; };
 		25D325A620C075DE008BB235 /* KNSendTokenViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSendTokenViewCoordinator.swift; sourceTree = "<group>"; };
+		25D3D3E920F61C110071D599 /* KNTrackerRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRate.swift; sourceTree = "<group>"; };
+		25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRateStorage.swift; sourceTree = "<group>"; };
 		25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
 		25E3D39F20D7D3E9005D506B /* IEOUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUser.swift; sourceTree = "<group>"; };
 		25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUserStorage.swift; sourceTree = "<group>"; };
@@ -1476,6 +1480,7 @@
 				25C9D7072096CDAC00FB121F /* KNCoinTicker.swift */,
 				2561454320C6442400FB00CF /* KNContact.swift */,
 				2561455A20C795AF00FB00CF /* KNChartObject.swift */,
+				25D3D3E920F61C110071D599 /* KNTrackerRate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1618,6 +1623,7 @@
 				253BA6702096D25700D89337 /* KNCoinTickerStorage.swift */,
 				2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */,
 				2561454520C648A700FB00CF /* KNContactStorage.swift */,
+				25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -4774,6 +4780,7 @@
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				290B2B5F1F9177860053C83E /* UIImage.swift in Sources */,
+				25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */,
 				255D93FF20D56EF9000F757C /* KGOSignInViewController.swift in Sources */,
 				257740C120579335003323EB /* UIView+Kyber.swift in Sources */,
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
@@ -5120,6 +5127,7 @@
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				295247DF1F8326EF007FDC31 /* AccountViewCell.swift in Sources */,
 				2981C29C1FC18F7700537E43 /* ChangellyBuyWidget.swift in Sources */,
+				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
 				291F52B71F6B870400B369AB /* CastError.swift in Sources */,
 				25CE6F8E2073E05A00A3A2F9 /* KNHistoryCoordinator.swift in Sources */,
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,

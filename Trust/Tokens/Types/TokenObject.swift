@@ -120,3 +120,12 @@ class TokenObject: Object {
     )
   }
 }
+
+extension TokenObject {
+  func identifier() -> String {
+    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
+      return self.symbol
+    }
+    return self.contract
+  }
+}

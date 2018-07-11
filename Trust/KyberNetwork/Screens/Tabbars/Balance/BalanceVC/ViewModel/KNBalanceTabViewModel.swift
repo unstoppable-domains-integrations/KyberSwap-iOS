@@ -30,18 +30,11 @@ class KNBalanceTabViewModel: NSObject {
 
   private(set) var wallet: KNWalletObject
   private(set) var tokenObjects: [TokenObject] = []
-  // cointicker with key is symbol + name
-  private(set) var coinTickers: [String: KNCoinTicker] = [:]
-  // faster retrieve to update value/eth
-  private(set) var ethCoinTicker: KNCoinTicker?
-  // cointicker with key is symbol only (due to inconsistent between KN and CMC
-  private(set) var symbolCoinTickers: [String: KNCoinTicker] = [:]
-  // cointicker with key is name only (due to custom symbol name from KN supported token)
-  private(set) var nameCoinTickers: [String: KNCoinTicker] = [:]
-
   private(set) var tokensDisplayType: KNTokensDisplayType = KNAppTracker.getTokenListDisplayDataType()
+
+  private(set) var trackerRateData: [String: KNTrackerRate] = [:]
   private(set) var displayedTokens: [TokenObject] = []
-  private(set) var displayedCoinTickers: [KNCoinTicker?] = []
+  private(set) var displayTrackerRates: [KNTrackerRate?] = []
 
   private(set) var balanceDisplayType: KNBalanceDisplayDataType = KNAppTracker.getBalanceDisplayDataType()
   private(set) var balances: [String: Balance] = [:]
@@ -53,19 +46,11 @@ class KNBalanceTabViewModel: NSObject {
   init(wallet: KNWalletObject) {
     self.wallet = wallet
     super.init()
-    self.setupData()
   }
 
-  private func setupData() {
-    let coinTickers = KNCoinTickerStorage.shared.coinTickers
-    coinTickers.forEach {
-      let identifier = $0.symbol + " " + $0.name.replacingOccurrences(of: " ", with: "").lowercased()
-      if $0.symbol == "ETH" && $0.name.lowercased() == "ethereum" {
-        self.ethCoinTicker = $0
-      }
-      self.coinTickers[identifier] = $0
-      self.symbolCoinTickers[$0.symbol] = $0
-      self.nameCoinTickers[$0.name.replacingOccurrences(of: " ", with: "").lowercased()] = $0
+  fileprivate func setupTrackerRateData() {
+    KNTrackerRateStorage.shared.rates.forEach { rate in
+      self.trackerRateData[rate.identifier] = rate
     }
   }
 
@@ -134,8 +119,8 @@ class KNBalanceTabViewModel: NSObject {
     return self.displayedTokens[row]
   }
 
-  func coinTicker(for row: Int) -> KNCoinTicker? {
-    return self.displayedCoinTickers[row]
+  func trackerRate(for row: Int) -> KNTrackerRate? {
+    return self.displayTrackerRates[row]
   }
 
   func balance(for token: TokenObject) -> Balance? {
@@ -186,8 +171,8 @@ class KNBalanceTabViewModel: NSObject {
     self.totalUSDBalance = usdBalance
   }
 
-  func coinTickersDidUpdate() {
-    self.setupData()
+  func exchangeRatesDataUpdated() {
+    self.setupTrackerRateData()
     self.createDisplayedData()
   }
 
@@ -205,19 +190,13 @@ class KNBalanceTabViewModel: NSObject {
         return self.tokenObjects.filter { return !$0.isSupported }
       }
     }()
-    self.displayedCoinTickers = self.displayedTokens.map({
-      let name = $0.name.replacingOccurrences(of: " ", with: "").lowercased()
-      let coinTicker = self.coinTickers[$0.symbolAndNameID] ?? self.nameCoinTickers[name] ?? self.symbolCoinTickers[$0.symbol]
-      return coinTicker
+    self.displayTrackerRates = self.displayedTokens.map({
+      return self.trackerRateData[$0.identifier()]
     })
   }
 
   // Either display by 24h change, balance value, or balance holding
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
-    let name0 = left.name.replacingOccurrences(of: " ", with: "").lowercased()
-    let name1 = right.name.replacingOccurrences(of: " ", with: "").lowercased()
-    let id0 = left.symbol + " " + name0
-    let id1 = right.symbol + " " + name1
     guard let balance0 = self.balance(for: left) else { return false }
     guard let balance1 = self.balance(for: right) else { return true }
     // sort by balance holdings (number of coins)
@@ -225,17 +204,17 @@ class KNBalanceTabViewModel: NSObject {
       return balance0.value > balance1.value
     }
     // display by change 24h or balance value in USD
-    guard let ticker0 = self.coinTickers[id0] ?? self.nameCoinTickers[name0] ?? self.symbolCoinTickers[left.symbol] else { return false }
-    guard let ticker1 = self.coinTickers[id1] ?? self.nameCoinTickers[name1] ?? self.symbolCoinTickers[right.symbol] else { return true }
+    guard let trackerRate0 = self.trackerRateData[left.identifier()] else { return false }
+    guard let trackerRate1 = self.trackerRateData[right.identifier()] else { return true }
     if self.tokensDisplayType == .change24h {
       // sort by 24h change
-      guard let double0 = Double(ticker0.percentChange24h) else { return false }
-      guard let double1 = Double(ticker1.percentChange24h) else { return true }
-      return double0 > double1
+      let change24h0 = self.balanceDisplayType == .eth ? trackerRate0.changeETH24h : trackerRate0.changeUSD24h
+      let change24h1 = self.balanceDisplayType == .eth ? trackerRate1.changeETH24h : trackerRate1.changeUSD24h
+      return change24h0 > change24h1
     } else {
       // sort by balance in USD
-      let rate0 = KNRate.rateUSD(from: ticker0)
-      let rate1 = KNRate.rateUSD(from: ticker1)
+      let rate0 = KNRate.rateUSD(from: trackerRate0)
+      let rate1 = KNRate.rateUSD(from: trackerRate1)
       return rate0.rate * balance0.value > rate1.rate * balance1.value
     }
   }
