@@ -14,7 +14,7 @@ target 'Trust' do
   pod 'StatefulViewController'
   pod 'QRCodeReaderViewController', :git=>'https://github.com/yannickl/QRCodeReaderViewController.git', :branch=>'master'
   pod 'KeychainSwift'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.25.1'
   pod 'SeedStackViewController'
   pod 'RealmSwift'
   pod 'Lokalise'

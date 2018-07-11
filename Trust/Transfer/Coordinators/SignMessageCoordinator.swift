@@ -79,7 +79,7 @@ class SignMessageCoordinator: Coordinator {
     }
 
     func isMessage(data: Data) -> Bool {
-        guard let _ = String(data: data, encoding: .utf8) else { return false}
+        guard let _ = String(data: data, encoding: .utf8) else { return false }
         return true
     }
 

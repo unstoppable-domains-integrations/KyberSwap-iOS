@@ -115,7 +115,7 @@ class TransactionDataCoordinator {
             case .success(let response):
                 do {
                     let rawTransactions = try response.map(ArrayResponse<RawTransaction>.self).docs
-                    let transactions: [Transaction] = rawTransactions.flatMap { .from(transaction: $0) }
+                  let transactions: [Transaction] = rawTransactions.compactMap { .from(transaction: $0) }
                     completion(.success(transactions))
                 } catch {
                     completion(.failure(AnyError(error)))
@@ -127,7 +127,7 @@ class TransactionDataCoordinator {
     }
 
     func update(items: [PendingTransaction]) {
-        let transactionItems: [Transaction] = items.flatMap { .from(transaction: $0) }
+      let transactionItems: [Transaction] = items.compactMap { .from(transaction: $0) }
         update(items: transactionItems)
     }
 
@@ -140,7 +140,7 @@ class TransactionDataCoordinator {
         Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
             guard let `self` = self else { return }
             switch result {
-            case .success(let parsedTransaction):
+            case .success:
                 // NSLog("parsedTransaction \(parsedTransaction)")
                 if transaction.date > Date().addingTimeInterval(Config.deleyedTransactionInternalSeconds) {
                     self.update(state: .completed, for: transaction)
@@ -153,7 +153,7 @@ class TransactionDataCoordinator {
                     // TODO: Think about the logic to handle pending transactions.
                     guard let error = error as? JSONRPCError else { return }
                     switch error {
-                    case .responseError(let code, let message, _):
+                    case .responseError:
                         // NSLog("code \(code), error: \(message)")
                         self.delete(transactions: [transaction])
                     case .resultObjectParseError:
@@ -231,6 +231,7 @@ class TransactionDataCoordinator {
         }
     }
     func stop() {
+      //swiftlint:disable notification_center_detachment
         NotificationCenter.default.removeObserver(self)
         timer?.invalidate()
         timer = nil

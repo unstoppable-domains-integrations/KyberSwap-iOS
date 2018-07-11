@@ -135,7 +135,7 @@ class KNAppTracker {
     return .change24h
   }
 
-  //MARK: KyberGO base string
+  // MARK: KyberGO base string
   static func getKyberGOBaseString() -> String {
     return "https://dev-userdashboard.knstats.com"
     //TODO: https://kyber.mangcut.vn

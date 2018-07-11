@@ -29,6 +29,7 @@ class SettingsViewController: FormViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+  // swiftlint:disable function_body_length
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -187,8 +188,9 @@ class SettingsViewController: FormViewController {
             <<< AppFormAppearance.button { row in
                 row.cellStyle = .value1
                 row.presentationMode = .show(controllerProvider: ControllerProvider<UIViewController>.callback {
-                    return SupportViewController()
-            }, onDismiss: { _ in })
+                      return SupportViewController()
+                }, onDismiss: { _ in }
+                )
             }.cellUpdate { cell, _ in
                 cell.textLabel?.textColor = .black
                 cell.imageView?.image = R.image.settings_terms()

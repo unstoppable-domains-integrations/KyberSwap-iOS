@@ -129,6 +129,7 @@ class BrowserViewController: UIViewController {
         browserNavBar?.goForward.isEnabled = webView.canGoForward
     }
 
+  //swiftlint:disable block_based_kvo
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let change = change else { return }
         if context != &myContext {

@@ -243,7 +243,8 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
       return
     }
-    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.appID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
+    //TODO: Change to prod app id
+    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
   }
@@ -427,7 +428,8 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
     )
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "Sign In", style: .default, handler: { _ in
-      if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.appID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
+      //TODO: Change to prod app id
+      if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
       }
     }))

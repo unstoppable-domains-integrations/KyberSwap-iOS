@@ -138,12 +138,13 @@ extension KyberGOService: TargetType {
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code):
+      //TODO: Change to prod app id and secret
       let json: JSONDictionary = [
         "grant_type": "authorization_code",
         "code": code,
         "redirect_uri": KNSecret.redirectURL,
-        "client_id": KNSecret.appID,
-        "client_secret": KNSecret.secret,
+        "client_id": KNSecret.debugAppID,
+        "client_secret": KNSecret.debugSecret,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
