@@ -138,7 +138,13 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
   }
 
   fileprivate func exportDataString(_ value: String) {
-    let url = URL(fileURLWithPath: NSTemporaryDirectory().appending("trust_backup_\(self.session.wallet.address.description).json"))
+    let dateFormatter: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy-MM-dd_HH:mm"
+      return formatter
+    }()
+    let fileName = "kyber_network_backup\(self.session.wallet.address.description)_\(dateFormatter.string(from: Date())).json"
+    let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
     } catch { return }
