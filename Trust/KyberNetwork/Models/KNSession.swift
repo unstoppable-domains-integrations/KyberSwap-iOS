@@ -127,14 +127,19 @@ class KNSession {
     KNRateCoordinator.shared.resume()
     KNGasCoordinator.shared.resume()
     KNRecentTradeCoordinator.shared.resume()
-    KNSupportedTokenCoordinator.shared.resume()
+    // only load supported token for production, mainnet, staging
+    if KNEnvironment.default != .kovan && KNEnvironment.default != .ropsten {
+      KNSupportedTokenCoordinator.shared.resume()
+    }
   }
 
   static func pauseInternalSession() {
     KNRateCoordinator.shared.pause()
     KNGasCoordinator.shared.pause()
     KNRecentTradeCoordinator.shared.pause()
-    KNSupportedTokenCoordinator.shared.pause()
+    if KNEnvironment.default != .kovan && KNEnvironment.default != .ropsten {
+      KNSupportedTokenCoordinator.shared.pause()
+    }
   }
 }
 

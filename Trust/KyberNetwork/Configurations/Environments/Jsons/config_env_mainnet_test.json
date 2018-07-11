@@ -142,4 +142,4 @@
   "networkId": 1,
   "chainName": "Mainnet",
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json"
-}
+  }

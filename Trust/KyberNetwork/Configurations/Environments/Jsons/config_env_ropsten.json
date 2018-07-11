@@ -6,8 +6,8 @@
              "type": "cached"
              },
              {
-             "endPoint" : "https://ropsten.infura.io",
-             "type": "node"
+             "endPoint" : "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
+             "type": "prune"
              }
              ],
     "ws": "wss://ropsten.kyber.network/ws/"
@@ -212,6 +212,13 @@
       "symbol" : "BBO",
       "decimal": 18,
       "icon": "bbo"
+    },
+    "COFI": {
+      "name": "ConFi",
+      "decimal": 18,
+      "symbol" : "COFI",
+      "address": "0xb91786188f8d4e35d6d67799e9f162587bf4da03",
+      "icon": "cofi"
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",
@@ -219,7 +226,7 @@
   "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
   "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
   "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
-  "endpoint": "https://ropsten.infura.io",
+  "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
   "averageBlockTime": 6000,
   "networkId": 3,
   "chainName": "Ropsten",
@@ -228,5 +235,6 @@
     "url": "ropsten.etherscan.io",
     "api_key": "D8YAEQ3V4THAPDA9YSB1YGA1QY9KAMHY6M"
   },
-  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json"
+  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
+  "tracker":"https://tracker.kyber.network"
 }
