@@ -61,14 +61,26 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
 }
 
 extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
-  // Authentication
-  func passcodeViewControllerDidSuccessEvaluatePolicyWithBio() {
+  func passcodeViewController(_ controller: KNPasscodeViewController, run event: KNPasscodeViewEvent) {
+    switch event {
+    case .cancel:
+      self.delegate?.passcodeCoordinatorDidCancel()
+    case .evaluatedPolicyWithBio:
+      self.didFinishEvaluatingWithBio()
+    case .enterPasscode(let passcode):
+      self.didFinishEnterPasscode(passcode)
+    case .createNewPasscode(let passcode):
+      self.didCreateNewPasscode(passcode)
+    }
+  }
+
+  fileprivate func didFinishEvaluatingWithBio() {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
     self.stop { }
   }
 
-  func passcodeViewControllerDidEnterPasscode(_ passcode: String) {
+  fileprivate func didFinishEnterPasscode(_ passcode: String) {
     guard let currentPasscode = KNPasscodeUtil.shared.currentPasscode() else {
       self.stop {}
       return
@@ -86,12 +98,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
     }
   }
 
-  // Create passcode
-  func passcodeViewControllerDidCancel() {
-    self.delegate?.passcodeCoordinatorDidCancel()
-  }
-
-  func passcodeViewControllerDidCreateNewPasscode(_ passcode: String) {
+  fileprivate func didCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
     self.delegate?.passcodeCoordinatorDidCreatePasscode()
   }

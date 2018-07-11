@@ -24,7 +24,7 @@ extension KNAppCoordinator {
     self.addCoordinator(self.balanceTabCoordinator)
     self.balanceTabCoordinator.start()
 
-    // Exchange Tab
+    // KyberSwap Tab
     self.exchangeCoordinator = {
       let coordinator = KNExchangeTokenCoordinator(
         session: self.session
@@ -35,6 +35,7 @@ extension KNAppCoordinator {
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
 
+    // KyberGO Tab
     self.kyberGOCoordinator = {
       return KGOHomePageCoordinator(session: self.session)
     }()
@@ -116,6 +117,8 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()
     self.balanceTabCoordinator = nil
+    self.kyberGOCoordinator?.stop()
+    self.kyberGOCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
   }
@@ -123,13 +126,16 @@ extension KNAppCoordinator {
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet) {
     self.removeObserveNotificationFromSession()
+
     self.balanceCoordinator?.exit()
     self.session.switchSession(wallet)
     self.balanceCoordinator?.restartNewSession(self.session)
+
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.kyberGOCoordinator?.updateSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+
     self.tabbarController.selectedIndex = 1
     self.addObserveNotificationFromSession()
     self.updateLocalData()
@@ -160,7 +166,11 @@ extension KNAppCoordinator {
 
   func addNewWallet() {
     if self.session.keystore.wallets.count == 3 {
-      self.navigationController.showWarningTopBannerMessage(with: "", message: "You can only add at most 3 wallets", time: 2.5)
+      self.navigationController.showWarningTopBannerMessage(
+        with: "",
+        message: "You can only add at most 3 wallets".toBeLocalised(),
+        time: 2.5
+      )
       return
     }
     let addWalletCoordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)

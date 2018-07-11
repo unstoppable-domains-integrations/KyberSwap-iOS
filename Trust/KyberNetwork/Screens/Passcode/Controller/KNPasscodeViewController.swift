@@ -3,11 +3,15 @@
 import UIKit
 import LocalAuthentication
 
+enum KNPasscodeViewEvent {
+  case cancel
+  case enterPasscode(passcode: String)
+  case createNewPasscode(passcode: String)
+  case evaluatedPolicyWithBio
+}
+
 protocol KNPasscodeViewControllerDelegate: class {
-  func passcodeViewControllerDidSuccessEvaluatePolicyWithBio()
-  func passcodeViewControllerDidEnterPasscode(_ passcode: String)
-  func passcodeViewControllerDidCreateNewPasscode(_ passcode: String)
-  func passcodeViewControllerDidCancel()
+  func passcodeViewController(_ controller: KNPasscodeViewController, run event: KNPasscodeViewEvent)
 }
 
 enum KNPasscodeViewType {
@@ -102,7 +106,7 @@ class KNPasscodeViewController: KNBaseViewController {
       guard let `self` = self else { return }
       DispatchQueue.main.async {
         if success {
-          self.delegate?.passcodeViewControllerDidSuccessEvaluatePolicyWithBio()
+          self.delegate?.passcodeViewController(self, run: .evaluatedPolicyWithBio)
         } else {
           guard let error = error else { return }
           guard let message = self.errorMessageForLAErrorCode(error.code) else {
@@ -170,7 +174,7 @@ class KNPasscodeViewController: KNBaseViewController {
 
   fileprivate func userDidEnterPasscode() {
     if self.viewType == .authenticate {
-      self.delegate?.passcodeViewControllerDidEnterPasscode(self.currentPasscode)
+      self.delegate?.passcodeViewController(self, run: .enterPasscode(passcode: self.currentPasscode))
     } else {
       guard let firstPass = self.firstPasscode else {
         self.firstPasscode = self.currentPasscode
@@ -178,7 +182,7 @@ class KNPasscodeViewController: KNBaseViewController {
         return
       }
       if firstPass == self.currentPasscode {
-        self.delegate?.passcodeViewControllerDidCreateNewPasscode(self.currentPasscode)
+        self.delegate?.passcodeViewController(self, run: .createNewPasscode(passcode: self.currentPasscode))
       } else {
         self.firstPasscode = nil
         self.currentPasscode = ""

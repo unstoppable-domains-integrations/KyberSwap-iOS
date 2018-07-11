@@ -62,26 +62,22 @@ class KNTokenChartCoordinator: Coordinator {
 }
 
 extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
-  func tokenChartViewController(didPressBack sender: KNTokenChartViewController) {
-    self.stop()
-  }
-
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldBuy token: TokenObject) {
-    self.delegate?.tokenChartCoordinator(buy: token)
-  }
-
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldSell token: TokenObject) {
-    self.delegate?.tokenChartCoordinator(sell: token)
-  }
-
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldSend token: TokenObject) {
-    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
-      navigationController: self.navigationController,
-      session: self.session,
-      balances: self.balances,
-      from: token
-    )
-//    self.sendTokenCoordinator?.delegate = self
-    self.sendTokenCoordinator?.start()
+  func tokenChartViewController(_ controller: KNTokenChartViewController, run event: KNTokenChartViewEvent) {
+    switch event {
+    case .back:
+      self.stop()
+    case .buy(let token):
+      self.delegate?.tokenChartCoordinator(buy: token)
+    case .sell(let token):
+      self.delegate?.tokenChartCoordinator(sell: token)
+    case .send(let token):
+      self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+        navigationController: self.navigationController,
+        session: self.session,
+        balances: self.balances,
+        from: token
+      )
+      self.sendTokenCoordinator?.start()
+    }
   }
 }

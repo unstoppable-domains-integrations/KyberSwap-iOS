@@ -80,8 +80,9 @@ extension KNBalanceTabCoordinator {
       return viewModel
     }()
     self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
-    self.rootViewController.coordinatorUpdatePendingTransactions(self.session.transactionStorage.pendingObjects)
-    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(self.session.transactionStorage.pendingObjects)
+    let pendingObjects = self.session.transactionStorage.pendingObjects
+    self.rootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
+    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -89,7 +90,11 @@ extension KNBalanceTabCoordinator {
     self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
   }
 
-  func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
+  func appCoordinatorTokenBalancesDidUpdate(
+    totalBalanceInUSD: BigInt,
+    totalBalanceInETH: BigInt,
+    otherTokensBalance: [String: Balance]
+    ) {
     self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
     self.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalBalanceInUSD,
@@ -100,7 +105,11 @@ extension KNBalanceTabCoordinator {
     self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
 
-  func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
+  func appCoordinatorETHBalanceDidUpdate(
+    totalBalanceInUSD: BigInt,
+    totalBalanceInETH: BigInt,
+    ethBalance: Balance
+    ) {
     if let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH }) {
       self.rootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
       self.balances[ethToken.contract] = ethBalance
@@ -113,7 +122,10 @@ extension KNBalanceTabCoordinator {
     self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
-  func appCoordinatorExchangeRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
+  func appCoordinatorExchangeRateDidUpdate(
+    totalBalanceInUSD: BigInt,
+    totalBalanceInETH: BigInt
+    ) {
     self.rootViewController.coordinatorUpdateBalanceInETHAndUSD(
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD

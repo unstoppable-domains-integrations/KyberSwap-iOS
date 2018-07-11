@@ -57,11 +57,15 @@ enum KNTokenChartType: Int {
   }
 }
 
+enum KNTokenChartViewEvent {
+  case back
+  case buy(token: TokenObject)
+  case sell(token: TokenObject)
+  case send(token: TokenObject)
+}
+
 protocol KNTokenChartViewControllerDelegate: class {
-  func tokenChartViewController(didPressBack sender: KNTokenChartViewController)
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldBuy token: TokenObject)
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldSell token: TokenObject)
-  func tokenChartViewController(_ sender: KNTokenChartViewController, shouldSend token: TokenObject)
+  func tokenChartViewController(_ controller: KNTokenChartViewController, run event: KNTokenChartViewEvent)
 }
 
 class KNTokenChartViewModel {
@@ -276,16 +280,16 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    self.delegate?.tokenChartViewController(didPressBack: self)
+    self.delegate?.tokenChartViewController(self, run: .back)
   }
 
   @IBAction func actionButtonDidPress(_ sender: UISegmentedControl) {
     if sender.selectedSegmentIndex == 0 {
-      self.delegate?.tokenChartViewController(self, shouldBuy: self.viewModel.token)
+      self.delegate?.tokenChartViewController(self, run: .buy(token: self.viewModel.token))
     } else if sender.selectedSegmentIndex == 1 {
-      self.delegate?.tokenChartViewController(self, shouldSell: self.viewModel.token)
+      self.delegate?.tokenChartViewController(self, run: .sell(token: self.viewModel.token))
     } else {
-      self.delegate?.tokenChartViewController(self, shouldSend: self.viewModel.token)
+      self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
     }
     sender.selectedSegmentIndex = -1
   }
@@ -300,7 +304,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      self.delegate?.tokenChartViewController(didPressBack: self)
+      self.delegate?.tokenChartViewController(self, run: .back)
     }
   }
 
