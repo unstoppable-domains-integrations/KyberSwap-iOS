@@ -306,15 +306,18 @@ class IEOBuyTokenViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     self.balanceTimer?.invalidate()
     self.reloadDataFromNode()
-    self.balanceTimer = Timer.scheduledTimer(withTimeInterval: KNLoadingInterval.defaultLoadingInterval, repeats: true, block: { [weak self] _ in
-      guard let `self` = self else { return }
-      self.reloadDataFromNode()
+    self.balanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+      self?.reloadDataFromNode()
     })
   }
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.balanceTimer?.invalidate()
+    self.balanceTimer = nil
   }
 
   fileprivate func setupUI() {

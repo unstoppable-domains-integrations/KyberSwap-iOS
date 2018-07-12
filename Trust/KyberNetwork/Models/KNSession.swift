@@ -67,7 +67,7 @@ class KNSession {
 
   // Switch between wallets
   func switchSession(_ wallet: Wallet) {
-    self.transacionCoordinator?.stopUpdatingPendingTransactions()
+    self.transacionCoordinator?.stop()
     self.transacionCoordinator = nil
 
     self.wallet = wallet

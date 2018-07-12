@@ -30,15 +30,7 @@ class KGOHomePageCoordinator: Coordinator {
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
 
   deinit {
-    self.ieoListTimer?.invalidate()
-    self.ieoListTimer = nil
-    self.nodeDataTimer?.invalidate()
-    self.nodeDataTimer = nil
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
-      object: nil
-    )
+    self.stop()
   }
 
   init(
@@ -79,7 +71,14 @@ class KGOHomePageCoordinator: Coordinator {
 
   func stop() {
     self.ieoListTimer?.invalidate()
+    self.ieoListTimer = nil
     self.nodeDataTimer?.invalidate()
+    self.nodeDataTimer = nil
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
+      object: nil
+    )
   }
 
   func updateSession(_ session: KNSession) {

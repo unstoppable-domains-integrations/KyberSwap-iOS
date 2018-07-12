@@ -21,7 +21,7 @@ class InCoordinator: Coordinator {
     let appTracker: AppTracker
     weak var delegate: InCoordinatorDelegate?
     var transactionCoordinator: TransactionCoordinator? {
-        return self.coordinators.flatMap { $0 as? TransactionCoordinator }.first
+      return self.coordinators.compactMap { $0 as? TransactionCoordinator }.first
     }
     var tabBarController: UITabBarController? {
         return self.navigationController.viewControllers.first as? UITabBarController

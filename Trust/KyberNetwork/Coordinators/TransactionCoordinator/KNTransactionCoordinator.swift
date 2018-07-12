@@ -233,6 +233,7 @@ extension KNTransactionCoordinator {
       page: page,
       sort: "desc") { [weak self] result in
       guard let `self` = self else { return }
+      if address != self.wallet.address { return }
       switch result {
       case .success(let transactions):
         if transactions.isEmpty || self.transactionStorage.tokenTransactions.count >= 5000 {

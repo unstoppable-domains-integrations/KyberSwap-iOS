@@ -92,24 +92,22 @@ class KNBalanceCoordinator {
     fetchETHBalance(nil)
 
     fetchETHBalanceTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-      target: self,
-      selector: #selector(self.fetchETHBalance(_:)),
-      userInfo: nil,
-      repeats: true
-    )
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] timer in
+      self?.fetchETHBalance(timer)
+    })
 
     fetchOtherTokensBalanceTimer?.invalidate()
     isFetchingOtherTokensBalance = false
     fetchOtherTokensBalance(nil)
 
-    fetchETHBalanceTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-      target: self,
-      selector: #selector(self.fetchOtherTokensBalance(_:)),
-      userInfo: nil,
-      repeats: true
-    )
+    fetchOtherTokensBalanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] timer in
+      self?.fetchOtherTokensBalance(timer)
+    })
   }
 
   func pause() {
@@ -125,23 +123,25 @@ class KNBalanceCoordinator {
   func exit() {
     pause()
     self.session = nil
+    self.ethToken = nil
   }
 
   @objc func fetchETHBalance(_ sender: Timer?) {
     if isFetchingETHBalance { return }
     isFetchingETHBalance = true
+    let currentWallet = self.session.wallet
+    let address = self.ethToken.address
     DispatchQueue.global(qos: .background).async {
       if self.session == nil { return }
       self.session.externalProvider.getETHBalance { [weak self] result in
         DispatchQueue.main.async {
           guard let `self` = self else { return }
+          if self.session == nil || currentWallet != self.session.wallet { return }
           self.isFetchingETHBalance = false
           switch result {
           case .success(let balance):
             self.ethBalance = balance
-            if self.session != nil, self.ethToken != nil {
-              self.session.tokenStorage.updateBalance(for: self.ethToken, balance: balance.value)
-            }
+            self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
             KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
           case .failure(let error):
             NSLog("Load ETH Balance failed with error: \(error.description)")
@@ -155,6 +155,7 @@ class KNBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
     let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).map({ $0.contract })
+    let currentWallet = self.session.wallet
     let group = DispatchGroup()
     for contract in tokenContracts {
       if let contractAddress = Address(string: contract) {
@@ -164,16 +165,15 @@ class KNBalanceCoordinator {
           self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
             DispatchQueue.main.async {
               guard let `self` = self else { return }
+              if self.session != nil || currentWallet != self.session.wallet { return }
               switch result {
               case .success(let bigInt):
                 let balance = Balance(value: bigInt)
                 self.otherTokensBalance[contract] = balance
-                if self.session != nil {
-                  self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
-                }
-                print("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
+                self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
+                NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
               case .failure(let error):
-                print("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+                NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
               }
               group.leave()
             }

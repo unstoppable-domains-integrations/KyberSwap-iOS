@@ -33,11 +33,11 @@ class KNTokenStorage {
   }
 
   var ethToken: TokenObject {
-   return self.tokens.first(where: { $0.isETH })!
+   return self.tokens.first(where: { $0.isETH }) ?? KNSupportedTokenStorage.shared.ethToken
   }
 
   var kncToken: TokenObject {
-    return self.tokens.first(where: { $0.isKNC })!
+    return self.tokens.first(where: { $0.isKNC }) ?? KNSupportedTokenStorage.shared.kncToken
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {

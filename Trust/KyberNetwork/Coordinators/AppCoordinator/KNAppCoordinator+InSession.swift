@@ -9,6 +9,8 @@ extension KNAppCoordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
+    self.balanceCoordinator?.exit()
+    self.balanceCoordinator = nil
     self.balanceCoordinator = KNBalanceCoordinator(session: self.session)
     self.balanceCoordinator?.resume()
 
@@ -99,7 +101,7 @@ extension KNAppCoordinator {
     self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
     self.removeObserveNotificationFromSession()
 
-    self.balanceCoordinator?.pause()
+    self.balanceCoordinator?.exit()
     self.balanceCoordinator = nil
 
     self.session.stopSession()
