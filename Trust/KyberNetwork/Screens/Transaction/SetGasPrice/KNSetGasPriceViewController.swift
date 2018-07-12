@@ -147,6 +147,13 @@ class KNSetGasPriceViewController: KNBaseViewController {
   }
 
   @IBAction func doneButtonPressed(_ sender: Any) {
+    guard !self.viewModel.gasPrice.isZero else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid Gas Price".toBeLocalised(),
+        message: "Gas price should not be zero".toBeLocalised()
+      )
+      return
+    }
     self.delegate?.setGasPriceViewControllerDidReturn(gasPrice: self.viewModel.gasPrice)
   }
 }
