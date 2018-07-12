@@ -148,16 +148,26 @@ extension KNAppCoordinator {
       return
     }
     // User remove current wallet, switch to another wallet first
-    if self.session.wallet == wallet {
+    let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
+    if isRemovingCurrentWallet {
       guard let newWallet = self.keystore.wallets.first(where: { $0 != wallet }) else { return }
       self.restartNewSession(newWallet)
     }
     self.balanceCoordinator?.exit()
     if self.session.removeWallet(wallet) {
       self.balanceCoordinator?.restartNewSession(self.session)
-      self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-      self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-      self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+      self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: isRemovingCurrentWallet
+      )
+      self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: isRemovingCurrentWallet
+      )
+      self.settingsCoordinator.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: isRemovingCurrentWallet
+      )
     } else {
       self.balanceCoordinator?.restartNewSession(self.session)
       self.navigationController.showErrorTopBannerMessage(with: "Error", message: "Something went wrong. Can not remove the wallet")

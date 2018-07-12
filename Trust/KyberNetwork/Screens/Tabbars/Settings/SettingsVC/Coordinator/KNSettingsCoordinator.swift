@@ -59,9 +59,11 @@ class KNSettingsCoordinator: Coordinator {
   func stop() {
   }
 
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
-    self.navigationController.popToRootViewController(animated: false)
+    if resetRoot {
+      self.navigationController.popToRootViewController(animated: false)
+    }
     self.listWalletsCoordinator.updateNewSession(self.session)
     self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)
   }
@@ -204,7 +206,6 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   }
 
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    self.listWalletsCoordinator.stop()
     self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
   }
 

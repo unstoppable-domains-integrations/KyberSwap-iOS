@@ -68,9 +68,11 @@ class KNBalanceTabCoordinator: Coordinator {
 
 // Update from appcoordinator
 extension KNBalanceTabCoordinator {
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
-    self.navigationController.popToRootViewController(animated: false)
+    if resetRoot {
+      self.navigationController.popToRootViewController(animated: false)
+    }
     let viewModel: KNBalanceTabViewModel = {
       let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
       let address: String = session.wallet.address.description

@@ -92,13 +92,15 @@ class KNExchangeTokenCoordinator: Coordinator {
 
 // MARK: Update from app coordinator
 extension KNExchangeTokenCoordinator {
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     let pendingTrans = self.session.transactionStorage.pendingObjects
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
-    self.navigationController.popToRootViewController(animated: false)
+    if resetRoot {
+      self.navigationController.popToRootViewController(animated: false)
+    }
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
