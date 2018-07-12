@@ -99,7 +99,17 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAmountTooSmall: Bool {
-    return amountBigInt <= BigInt(0)
+    if amountBigInt <= BigInt(0) { return true }
+    let ethRate: BigInt = {
+      if self.from.isETH { return BigInt(EthereumUnit.ether.rawValue) }
+      if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
+        return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
+      }
+      return BigInt(0)
+    }()
+    let valueInETH = ethRate * self.amountBigInt
+    let valueMin = BigInt(0.001 * Double(EthereumUnit.ether.rawValue)) * BigInt(10).power(self.from.decimals)
+    return valueInETH < valueMin
   }
 
   var isAmountTooBig: Bool {
