@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,6 +23,8 @@
                 <outlet property="enterPrivateKeyTextField" destination="gIO-Zo-F0D" id="A23-IC-OTV"/>
                 <outlet property="enterPrivateKeyTextLabel" destination="lPr-sF-4PB" id="guT-jT-GLr"/>
                 <outlet property="nextButton" destination="FCx-Sw-ble" id="FNG-h0-zZ7"/>
+                <outlet property="privateKeyNoteLabel" destination="RyR-hr-61I" id="5iP-z1-KuO"/>
+                <outlet property="secureTextButton" destination="U3Y-4S-pW7" id="R0J-Vr-j2A"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -61,8 +63,21 @@
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" secureTextEntry="YES"/>
                 </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private key has to be 64 characters" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RyR-hr-61I">
+                    <rect key="frame" x="35" y="137" width="305" height="17"/>
+                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
+                    <color key="textColor" red="0.71372549019999998" green="0.72941176470000002" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3Y-4S-pW7">
+                    <rect key="frame" x="311" y="97" width="24" height="24"/>
+                    <state key="normal" image="hide_secure_text"/>
+                    <connections>
+                        <action selector="secureTextButtonPressed:" destination="-1" eventType="touchUpInside" id="0rQ-Z8-tOA"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMq-0K-qYG">
-                    <rect key="frame" x="307" y="97.5" width="23" height="23"/>
+                    <rect key="frame" x="312" y="53.5" width="23" height="23"/>
                     <state key="normal" image="qr_code_icon"/>
                     <connections>
                         <action selector="qrCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="dj0-VP-d07"/>
@@ -72,20 +87,26 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="gIO-Zo-F0D" firstAttribute="top" secondItem="lPr-sF-4PB" secondAttribute="bottom" constant="10" id="0K4-R1-rRH"/>
+                <constraint firstItem="eMq-0K-qYG" firstAttribute="centerY" secondItem="lPr-sF-4PB" secondAttribute="centerY" id="0S2-Ya-xmr"/>
+                <constraint firstItem="U3Y-4S-pW7" firstAttribute="centerY" secondItem="gIO-Zo-F0D" secondAttribute="centerY" id="6QW-Sx-8EQ"/>
+                <constraint firstItem="RyR-hr-61I" firstAttribute="top" secondItem="gIO-Zo-F0D" secondAttribute="bottom" constant="4" id="7f2-eB-vte"/>
                 <constraint firstItem="lPr-sF-4PB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="A3H-a3-WwU"/>
                 <constraint firstItem="FCx-Sw-ble" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="JsW-od-Nc2"/>
                 <constraint firstItem="lPr-sF-4PB" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="35" id="ME7-RE-iDu"/>
+                <constraint firstItem="RyR-hr-61I" firstAttribute="leading" secondItem="gIO-Zo-F0D" secondAttribute="leading" id="RIS-CJ-6So"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gIO-Zo-F0D" secondAttribute="trailing" constant="35" id="WZe-Sm-dnA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="FCx-Sw-ble" secondAttribute="bottom" constant="35" id="YUg-Al-wgd"/>
-                <constraint firstItem="eMq-0K-qYG" firstAttribute="centerY" secondItem="gIO-Zo-F0D" secondAttribute="centerY" id="YVZ-RE-rJg"/>
-                <constraint firstItem="eMq-0K-qYG" firstAttribute="trailing" secondItem="gIO-Zo-F0D" secondAttribute="trailing" constant="-10" id="bT5-vq-f6y"/>
+                <constraint firstItem="eMq-0K-qYG" firstAttribute="trailing" secondItem="gIO-Zo-F0D" secondAttribute="trailing" constant="-5" id="bT5-vq-f6y"/>
+                <constraint firstItem="U3Y-4S-pW7" firstAttribute="trailing" secondItem="gIO-Zo-F0D" secondAttribute="trailing" constant="-5" id="eiK-AF-QyJ"/>
                 <constraint firstItem="gIO-Zo-F0D" firstAttribute="leading" secondItem="lPr-sF-4PB" secondAttribute="leading" id="iav-rN-VCi"/>
+                <constraint firstItem="RyR-hr-61I" firstAttribute="trailing" secondItem="gIO-Zo-F0D" secondAttribute="trailing" id="lxB-jb-sFa"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FCx-Sw-ble" secondAttribute="trailing" constant="35" id="wWg-8n-Gi2"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
     <resources>
+        <image name="hide_secure_text" width="24" height="24"/>
         <image name="qr_code_icon" width="23" height="23"/>
     </resources>
 </document>
