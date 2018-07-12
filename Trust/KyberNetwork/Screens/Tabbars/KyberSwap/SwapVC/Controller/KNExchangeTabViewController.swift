@@ -350,6 +350,10 @@ extension KNExchangeTabViewController {
       )
       self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
     }
+    // TODO (Build): Only added for mainnet, production, staging
+    self.viewModel.updateEstimatedRateFromCachedIfNeeded()
+    // call update est rate from node
+    self.updateEstimatedRate()
     self.balanceLabel.text = self.viewModel.balanceText
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
     self.view.layoutIfNeeded()

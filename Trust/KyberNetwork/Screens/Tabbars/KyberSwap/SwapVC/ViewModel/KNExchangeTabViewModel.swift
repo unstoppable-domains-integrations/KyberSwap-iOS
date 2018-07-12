@@ -223,6 +223,12 @@ class KNExchangeTabViewModel {
     self.balance = self.balances[self.from.contract]
   }
 
+  func updateEstimatedRateFromCachedIfNeeded() {
+    guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to) else { return }
+    self.estRate = rate.rate
+    self.slippageRate = rate.minRate
+  }
+
   func updateFocusingField(_ isSource: Bool) {
     self.isFocusingFromAmount = isSource
   }

@@ -22,8 +22,13 @@ class KNRateCoordinator {
 
   func getRate(from: TokenObject, to: TokenObject) -> KNRate? {
     if from.isETH {
-      if let rate = KNTrackerRateStorage.shared.trackerRate(for: to) {
-        return KNRate.rateETH(from: rate)
+      if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: to) {
+        return KNRate(
+          source: from.symbol,
+          dest: to.symbol,
+          rate: trackerRate.rateETHNow == 0.0 ? 0.0 : 1.0 / trackerRate.rateETHNow,
+          decimals: to.decimals
+        )
       }
     } else if to.isETH {
       if let rate = KNTrackerRateStorage.shared.trackerRate(for: from) {
