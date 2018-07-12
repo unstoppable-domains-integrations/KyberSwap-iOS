@@ -47,44 +47,6 @@ class KNRate: NSObject {
 }
 
 extension KNRate {
-  static func rateUSD(from coinTicker: KNCoinTicker) -> KNRate {
-    return KNRate(
-      source: coinTicker.symbol,
-      dest: "USD",
-      rate: coinTicker.priceUSD,
-      decimals: 18
-    )
-  }
-
-  static func rate(from token: TokenObject, toToken: TokenObject) -> KNRate? {
-    let coinTickers = KNCoinTickerStorage.shared.coinTickers
-    if let fromCoinTicker = coinTickers.first(where: { $0.isData(for: token) }),
-      let toCoinTicker = coinTickers.first(where: { $0.isData(for: toToken) }),
-      toCoinTicker.priceUSD > 0 {
-      let rate = fromCoinTicker.priceUSD / toCoinTicker.priceUSD
-      return KNRate(
-        source: token.symbol,
-        dest: toToken.symbol,
-        rate: rate,
-        decimals: toToken.decimals
-      )
-    }
-    return nil
-  }
-
-  static func rateETH(from coinTicker: KNCoinTicker) -> KNRate? {
-    if let ethCoinTicker = KNCoinTickerStorage.shared.coinTickers.first(where: { $0.symbol == "ETH" && $0.name.lowercased() == "ethereum" }), ethCoinTicker.priceUSD > 0 {
-      let rateETH = coinTicker.priceUSD / ethCoinTicker.priceUSD
-      return KNRate(
-        source: coinTicker.symbol,
-        dest: ethCoinTicker.symbol,
-        rate: rateETH,
-        decimals: 18
-      )
-    }
-    return nil
-  }
-
   static func rateETH(from trackerRate: KNTrackerRate) -> KNRate {
     return KNRate(
       source: trackerRate.tokenSymbol,
