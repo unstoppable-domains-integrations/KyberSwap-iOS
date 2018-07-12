@@ -25,7 +25,7 @@ class KNTrackerRate: Object {
     self.rateETHNow = dict["rate_eth_now"] as? Double ?? 0.0
     self.changeETH24h = dict["change_eth_24h"] as? Double ?? 0.0
     self.changeUSD24h = dict["change_usd_24h"] as? Double ?? 0.0
-    self.rateUSDNow = dict["rate_usd_24h"] as? Double ?? 0.0
+    self.rateUSDNow = dict["rate_usd_now"] as? Double ?? 0.0
   }
 
   var rateETHBigInt: BigInt {

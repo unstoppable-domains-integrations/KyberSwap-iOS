@@ -161,11 +161,11 @@ class KNBalanceCoordinator {
       if let contractAddress = Address(string: contract) {
         group.enter()
         DispatchQueue.global(qos: .background).async {
-          if self.session == nil { return }
+          if self.session == nil { group.leave(); return }
           self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
             DispatchQueue.main.async {
-              guard let `self` = self else { return }
-              if self.session != nil || currentWallet != self.session.wallet { return }
+              guard let `self` = self else { group.leave(); return }
+              if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
               switch result {
               case .success(let bigInt):
                 let balance = Balance(value: bigInt)
