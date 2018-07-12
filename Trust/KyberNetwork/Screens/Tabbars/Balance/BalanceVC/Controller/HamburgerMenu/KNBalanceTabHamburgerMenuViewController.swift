@@ -73,6 +73,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   fileprivate let kWalletTableViewCellID: String = "kKNBalanceTabHamburgerMenuTableViewCellID"
   fileprivate let kPendingTableViewCellID: String = "kPendingTableViewCellID"
 
+  @IBOutlet weak var tabToDismissView: UIView!
   @IBOutlet weak var pendingTransactionContainerView: UIView!
   @IBOutlet weak var noPendingTransactionLabel: UILabel!
   @IBOutlet weak var pendingTableView: UITableView!
@@ -110,8 +111,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     self.view.isUserInteractionEnabled = true
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backgroundViewTap(_:)))
-    tapGesture.delegate = self
-    self.view.addGestureRecognizer(tapGesture)
+    self.tabToDismissView.addGestureRecognizer(tapGesture)
 
     self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletListTableView.rowHeight = self.viewModel.walletCellRowHeight
@@ -329,12 +329,5 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     cell.textLabel?.text = transaction?.shortDesc
     cell.backgroundColor = UIColor.clear
     return cell
-  }
-}
-
-// to be able select table view cell
-extension KNBalanceTabHamburgerMenuViewController: UIGestureRecognizerDelegate {
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    return !(touch.view?.isDescendant(of: self.walletListTableView) == true || touch.view?.isDescendant(of: self.pendingTableView) == true)
   }
 }

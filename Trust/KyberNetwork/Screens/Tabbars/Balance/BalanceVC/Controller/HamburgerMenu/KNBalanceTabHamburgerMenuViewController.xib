@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,6 +29,7 @@
                 <outlet property="pendingTableView" destination="vuO-W4-4eH" id="tzz-TW-fL1"/>
                 <outlet property="pendingTransactionContainerView" destination="sad-Rt-dMF" id="syv-Sc-NbX"/>
                 <outlet property="sendTokenButton" destination="U4x-Dq-HfY" id="vcj-Np-vTh"/>
+                <outlet property="tabToDismissView" destination="TgP-Z8-VTM" id="bhg-i3-jUE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletListTableView" destination="cWZ-m5-3ET" id="Y6D-qH-VEn"/>
                 <outlet property="walletListTableViewHeightConstraint" destination="Uyb-6Y-bW6" id="RTM-8g-Ihq"/>
@@ -159,13 +160,21 @@
                         <constraint firstAttribute="trailing" secondItem="cWZ-m5-3ET" secondAttribute="trailing" id="u2F-B0-xUX"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TgP-Z8-VTM">
+                    <rect key="frame" x="0.0" y="0.0" width="155" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="cBS-qe-UMl" firstAttribute="leading" secondItem="TgP-Z8-VTM" secondAttribute="trailing" id="9vt-LL-x6U"/>
+                <constraint firstItem="TgP-Z8-VTM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="B7D-MG-3wL"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="cBS-qe-UMl" secondAttribute="bottom" id="TeE-3e-2cw"/>
                 <constraint firstItem="cBS-qe-UMl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="bdA-jZ-BFG"/>
+                <constraint firstItem="TgP-Z8-VTM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="lWV-5w-Z4u"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cBS-qe-UMl" secondAttribute="trailing" id="md2-TE-yB9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TgP-Z8-VTM" secondAttribute="bottom" id="vVb-rU-uul"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>
