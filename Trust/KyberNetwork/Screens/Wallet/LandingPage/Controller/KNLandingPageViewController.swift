@@ -16,6 +16,7 @@ class KNLandingPageViewController: KNBaseViewController {
 
   weak var delegate: KNLandingPageViewControllerDelegate?
 
+  @IBOutlet weak var welcomeScreenCollectionView: KNWelcomeScreenCollectionView!
   @IBOutlet weak var debugButton: UIButton!
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!

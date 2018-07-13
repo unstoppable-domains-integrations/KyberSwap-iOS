@@ -1,0 +1,28 @@
+{
+  "data": [
+  {
+           "icon": "welcome_tokenized",
+           "title": "Connecting The Tokenized World",
+           "subtitle": "KyberSwap, KyberDeveloper and KyberGO",
+           "position": 0
+  },
+  {
+           "icon": "welcome_kyberswap",
+           "title": "KyberSwap: Swap Tokens Instantly",
+           "subtitle": "Simple, Instant and Secure",
+           "position": 1
+  },
+  {
+           "icon": "welcome_tokenized",
+           "title": "KyberDeveloper: Powering Decentralized Liquidity For The Ecosystem",
+           "subtitle": "Instant, Friendly and Diverse token pool",
+           "position": 2
+  },
+  {
+           "icon": "welcome_kyberswap",
+           "title": "KyberGO: A New Standard For Democratic Token Sales",
+           "subtitle": "Comming Soon",
+           "position": 3
+  }
+  ]
+}

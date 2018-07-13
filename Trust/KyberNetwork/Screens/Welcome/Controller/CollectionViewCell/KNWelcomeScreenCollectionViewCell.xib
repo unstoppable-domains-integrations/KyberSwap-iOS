@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Medium.otf">
+            <string>SFProText-Medium</string>
+        </array>
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNWelcomeScreenCollectionViewCell" customModule="Trust" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8v5-dI-w9v">
+                        <rect key="frame" x="107.5" y="15" width="160" height="160"/>
+                        <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="160" id="6sJ-H5-9b9"/>
+                            <constraint firstAttribute="width" secondItem="8v5-dI-w9v" secondAttribute="height" multiplier="1:1" id="o8D-cp-bUf"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberDeveloper: Powering Decentralized Liquidity For The Ecosystem" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n2K-hw-Me4">
+                        <rect key="frame" x="30" y="195" width="315" height="72"/>
+                        <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
+                        <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instant, Secure and Friendly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lg7-lM-55N">
+                        <rect key="frame" x="20" y="277" width="335" height="19.5"/>
+                        <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                        <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="n2K-hw-Me4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="7LW-DQ-xye"/>
+                <constraint firstItem="n2K-hw-Me4" firstAttribute="top" secondItem="8v5-dI-w9v" secondAttribute="bottom" constant="20" id="FKY-LR-wQL"/>
+                <constraint firstItem="8v5-dI-w9v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="I6K-kS-kwJ"/>
+                <constraint firstItem="n2K-hw-Me4" firstAttribute="centerX" secondItem="8v5-dI-w9v" secondAttribute="centerX" id="TO1-VJ-xyk"/>
+                <constraint firstItem="8v5-dI-w9v" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Vdu-Gv-GLL"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="YSd-dt-Urf"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="top" secondItem="n2K-hw-Me4" secondAttribute="bottom" constant="10" id="oAP-kw-uer"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="centerX" secondItem="n2K-hw-Me4" secondAttribute="centerX" id="wdG-0e-ksT"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="imageView" destination="8v5-dI-w9v" id="Brb-IW-7Yi"/>
+                <outlet property="subTitleLabel" destination="lg7-lM-55N" id="20d-t4-nPy"/>
+                <outlet property="titleLabel" destination="n2K-hw-Me4" id="G79-Kr-1gn"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

@@ -43,6 +43,12 @@
 		252DB13820D12D0D00D10FF7 /* IEOGetRateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */; };
 		252DB13C20D2481100D10FF7 /* IEOSignInWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13A20D2481100D10FF7 /* IEOSignInWebViewViewController.swift */; };
 		2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */; };
+		25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */; };
+		25369F0820F88835007231FE /* welcome_screen_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 25369F0720F88835007231FE /* welcome_screen_data.json */; };
+		25369F0B20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F0920F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift */; };
+		25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F0A20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib */; };
+		25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F0F20F88C3E007231FE /* KNWelcomeScreenCollectionView.swift */; };
+		25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2547714C20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */; };
@@ -694,6 +700,12 @@
 		252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOGetRateRequest.swift; sourceTree = "<group>"; };
 		252DB13A20D2481100D10FF7 /* IEOSignInWebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOSignInWebViewViewController.swift; sourceTree = "<group>"; };
 		2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Kyber.swift"; sourceTree = "<group>"; };
+		25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenViewModel.swift; sourceTree = "<group>"; };
+		25369F0720F88835007231FE /* welcome_screen_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = welcome_screen_data.json; sourceTree = "<group>"; };
+		25369F0920F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenCollectionViewCell.swift; sourceTree = "<group>"; };
+		25369F0A20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionViewCell.xib; sourceTree = "<group>"; };
+		25369F0F20F88C3E007231FE /* KNWelcomeScreenCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenCollectionView.swift; sourceTree = "<group>"; };
+		25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionView.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckWhiteListedAddressRequest.swift; sourceTree = "<group>"; };
@@ -1592,6 +1604,51 @@
 			path = WebView;
 			sourceTree = "<group>";
 		};
+		25369F0220F88666007231FE /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				25369F0420F88685007231FE /* ViewModel */,
+				25369F0320F88679007231FE /* Controller */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		25369F0320F88679007231FE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				25369F0E20F88C16007231FE /* CollectionView */,
+				25369F0D20F88A98007231FE /* CollectionViewCell */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		25369F0420F88685007231FE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */,
+				25369F0720F88835007231FE /* welcome_screen_data.json */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		25369F0D20F88A98007231FE /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				25369F0920F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift */,
+				25369F0A20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		25369F0E20F88C16007231FE /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				25369F0F20F88C3E007231FE /* KNWelcomeScreenCollectionView.swift */,
+				25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
 		2537431C20ECEA52002C29FC /* Secret */ = {
 			isa = PBXGroup;
 			children = (
@@ -1929,6 +1986,7 @@
 				25682B6C20EE0315009738C4 /* Wallet */,
 				25682B6E20EE0421009738C4 /* Transaction */,
 				257740C32057943B003323EB /* Splash */,
+				25369F0220F88666007231FE /* Welcome */,
 				25696F4720BD0ED5002CC53F /* CommonViews */,
 			);
 			path = Screens;
@@ -4401,6 +4459,7 @@
 				25929C6720DA5C760045CFA3 /* SF-Pro-Text-Medium.otf in Resources */,
 				29FA00D2201CA79F002F7DC5 /* web3.min.js in Resources */,
 				25696F4920BD0F07002CC53F /* KNWalletHeaderView.xib in Resources */,
+				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				25929C9820DA5CC10045CFA3 /* SFCompactText-Semibold.otf in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
@@ -4425,6 +4484,7 @@
 				291794FC1F95DE5F00539A30 /* index.html in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
 				259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */,
+				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
 				25929C5E20DA5C760045CFA3 /* SF-Pro-Text-RegularItalic.otf in Resources */,
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
@@ -4475,6 +4535,7 @@
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,
 				25929C9120DA5CC10045CFA3 /* SFCompactText-Light.otf in Resources */,
+				25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25A2940520CE8851008C6759 /* KGOHomePageViewController.xib in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
@@ -4821,6 +4882,7 @@
 				291ED0921F6FA5D900E7E93A /* RequestViewController.swift in Sources */,
 				299B5E341FCBC5180051361C /* ConfirmPaymentViewModel.swift in Sources */,
 				771AA94E1FF971CD00D25403 /* DappAction.swift in Sources */,
+				25369F0B20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift in Sources */,
 				25EE4A7420C54F2F00E2282F /* KNAddNewWalletCoordinator.swift in Sources */,
 				25C45ABE20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift in Sources */,
 				25CC0A962057DD4E0009D0D5 /* KNExternalProvider.swift in Sources */,
@@ -4955,6 +5017,7 @@
 				293E626F1FA2ED1400CB0A66 /* InCoordinator.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
+				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
 				29E9CFCB1FE70D5B00017744 /* TokensBalanceService.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
@@ -5126,6 +5189,7 @@
 				2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */,
 				CCA4FE381FD428B300749AE4 /* JailbreakChecker.swift in Sources */,
 				291A1B651F974E8600ADEC80 /* WalletEntryPoint.swift in Sources */,
+				25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */,
 				2959960E1FAB05C200DB66A8 /* TransactionsEmptyView.swift in Sources */,
 				29BB94931F6FC380009B09CC /* BalanceViewModel.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
