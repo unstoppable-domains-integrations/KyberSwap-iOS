@@ -119,7 +119,12 @@
 	<key>branch_app_domain</key>
 	<string>kybermangcut.app.link</string>
 	<key>branch_key</key>
-	<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
+	<dict>
+		<key>test</key>
+		<string>key_test_pmz7B1tgw6fUZWJipeueVipptwpH0cH5</string>
+		<key>live</key>
+		<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
+	</dict>
 	<key>branch_universal_link_domains</key>
 	<string></string>
 	<key>com.apple.security.get-task-allow</key>

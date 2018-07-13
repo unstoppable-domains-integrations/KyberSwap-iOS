@@ -90,6 +90,10 @@ class KGOHomePageViewController: KNBaseViewController {
 
   func coordinatorDidSignOut() {
     self.userStatusLabel.text = "Unknown"
+    self.showSuccessTopBannerMessage(
+      with: "Logged out from app successfully",
+      message: "You will need to open Safari and logout from your session"
+    )
   }
 
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {

@@ -205,8 +205,6 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     let alertController = UIAlertController(title: "", message: "You are signed in as \(user.name). Do you want to sign out?", preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "Keep Sign In", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "Sign Out", style: .default, handler: { _ in
-      let storage = HTTPCookieStorage.shared
-      storage.cookies?.forEach { storage.deleteCookie($0) }
       IEOUserStorage.shared.deleteAll()
       self.rootViewController.coordinatorDidSignOut()
     }))
@@ -253,7 +251,7 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
   @objc func appCoordinatorDidReceiveCallback(_ sender: Notification) {
     if IEOUserStorage.shared.objects.first != nil { return } // return if user exists
     guard let params = sender.object as? JSONDictionary else { return }
-    guard let code = params["code"] as? String, let state = params["state"] as? String, state == KNSecret.state else { return }
+    guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
     // got authentication code from KyberGO
     // use the code to get access token for user
     let provider = MoyaProvider<KyberGOService>()
