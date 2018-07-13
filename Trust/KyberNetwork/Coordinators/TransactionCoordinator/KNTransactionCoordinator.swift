@@ -171,7 +171,7 @@ extension KNTransactionCoordinator {
 
   func forceFetchTokenTransactions() {
     let startBlock: Int = {
-      guard let transaction = self.transactionStorage.tokenTransactions.first else {
+      guard let transaction = self.transactionStorage.objects.first else {
         return 0
       }
       return transaction.blockNumber + 1
