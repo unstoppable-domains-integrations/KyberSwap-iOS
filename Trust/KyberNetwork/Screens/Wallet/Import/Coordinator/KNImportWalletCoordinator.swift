@@ -41,23 +41,17 @@ class KNImportWalletCoordinator: Coordinator {
 }
 
 extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
-  func importWalletViewControllerDidBack(sender: KNImportWalletViewController) {
-    self.stop()
-  }
-
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, json: String, password: String) {
-    let type = ImportType.keystore(string: json, password: password)
-    self.importWallet(with: type)
-  }
-
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, privateKey: String) {
-    let type = ImportType.privateKey(privateKey: privateKey)
-    self.importWallet(with: type)
-  }
-
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, seeds: [String]) {
-    let type = ImportType.mnemonic(words: seeds, password: "")
-    self.importWallet(with: type)
+  func importWalletViewController(_ controller: KNImportWalletViewController, run event: KNImportWalletViewEvent) {
+    switch event {
+    case .back:
+      self.stop()
+    case .importJSON(let json, let password):
+      self.importWallet(with: .keystore(string: json, password: password))
+    case .importPrivateKey(let privateKey):
+      self.importWallet(with: .privateKey(privateKey: privateKey))
+    case .importSeeds(let seeds):
+      self.importWallet(with: .mnemonic(words: seeds, password: ""))
+    }
   }
 
   fileprivate func importWallet(with type: ImportType) {

@@ -2,10 +2,14 @@
 
 import UIKit
 
+enum KNLandingPageViewEvent {
+  case openCreateWallet
+  case openImportWallet
+  case openTermAndCondition
+}
+
 protocol KNLandingPageViewControllerDelegate: class {
-  func landingPageCreateWalletPressed(sender: KNLandingPageViewController)
-  func landingPageImportWalletPressed(sender: KNLandingPageViewController)
-  func landingPageTermAndConditionPressed(sender: KNLandingPageViewController)
+  func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent)
 }
 
 class KNLandingPageViewController: KNBaseViewController {
@@ -30,15 +34,15 @@ class KNLandingPageViewController: KNBaseViewController {
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {
-    self.delegate?.landingPageCreateWalletPressed(sender: self)
+    self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
   }
 
   @IBAction func importWalletButtonPressed(_ sender: Any) {
-    self.delegate?.landingPageImportWalletPressed(sender: self)
+    self.delegate?.landinagePageViewController(self, run: .openImportWallet)
   }
 
   @IBAction func termAndConditionButtonPressed(_ sender: Any) {
-    self.delegate?.landingPageTermAndConditionPressed(sender: self)
+    self.delegate?.landinagePageViewController(self, run: .openTermAndCondition)
   }
 
   @IBAction func debugPressed(_ sender: Any) {

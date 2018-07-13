@@ -6,9 +6,9 @@ extension UIImageView {
   func setImage(with url: URL, placeholder: UIImage?) {
     self.image = placeholder
     URLSession.shared.dataTask(with: url) { (data, _, error) in
-      if error == nil, let data = data {
+      if error == nil, let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
-          self.image = UIImage(data: data)
+          self.image = image
         }
       }
     }.resume()

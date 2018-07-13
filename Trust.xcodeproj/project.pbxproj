@@ -1982,7 +1982,6 @@
 		257A378A205BBF5700E86794 /* Confirm */ = {
 			isa = PBXGroup;
 			children = (
-				257A378C205BBFC200E86794 /* Coordinator */,
 				257A378B205BBFBD00E86794 /* Controller */,
 			);
 			path = Confirm;
@@ -1997,13 +1996,6 @@
 				257A3796205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		257A378C205BBFC200E86794 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		257A3792205BC26500E86794 /* BaseController */ = {

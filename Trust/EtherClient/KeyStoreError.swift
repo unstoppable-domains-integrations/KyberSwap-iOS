@@ -23,8 +23,8 @@ enum KeystoreError: LocalizedError {
             return "Failed to delete account"
         case .failedToDecryptKey:
             return "Could not decrypt key with given passphrase"
-        case .failedToImport(let error):
-            return error.localizedDescription
+        case .failedToImport:
+            return "Can not import your wallet"
         case .duplicateAccount:
             return "You already added this address to wallets"
         case .failedToSignTransaction:

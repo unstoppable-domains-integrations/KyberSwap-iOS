@@ -123,21 +123,18 @@ class KNLandingPageCoordinator: Coordinator {
 }
 
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
-  func landingPageCreateWalletPressed(sender: KNLandingPageViewController) {
-    self.createWalletCoordinator.updateNewWallet(nil)
-    self.createWalletCoordinator.start()
-  }
-
-  func landingPageImportWalletPressed(sender: KNLandingPageViewController) {
-    self.importWalletCoordinator.start()
-  }
-
-  func landingPageTermAndConditionPressed(sender: KNLandingPageViewController) {
-    guard let url = URL(string: "https://home.kyber.network/assets/tac.pdf") else { return }
-    let safariVC: SFSafariViewController = {
-      return SFSafariViewController(url: url)
-    }()
-    self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
+  func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
+    switch event {
+    case .openCreateWallet:
+      self.createWalletCoordinator.updateNewWallet(nil)
+      self.createWalletCoordinator.start()
+    case .openImportWallet:
+      self.importWalletCoordinator.start()
+    case .openTermAndCondition:
+      guard let url = URL(string: "https://home.kyber.network/assets/tac.pdf") else { return }
+      let safariVC: SFSafariViewController = SFSafariViewController(url: url)
+      self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
+    }
   }
 }
 

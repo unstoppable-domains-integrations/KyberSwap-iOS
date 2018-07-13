@@ -2,11 +2,15 @@
 
 import UIKit
 
+enum KNImportWalletViewEvent {
+  case back
+  case importJSON(json: String, password: String)
+  case importPrivateKey(privateKey: String)
+  case importSeeds(seeds: [String])
+}
+
 protocol KNImportWalletViewControllerDelegate: class {
-  func importWalletViewControllerDidBack(sender: KNImportWalletViewController)
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, json: String, password: String)
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, privateKey: String)
-  func importWalletViewControllerDidNext(sender: KNImportWalletViewController, seeds: [String])
+  func importWalletViewController(_ controller: KNImportWalletViewController, run event: KNImportWalletViewEvent)
 }
 
 class KNImportWalletViewController: KNBaseViewController {
@@ -127,7 +131,7 @@ class KNImportWalletViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    self.delegate?.importWalletViewControllerDidBack(sender: self)
+    self.delegate?.importWalletViewController(self, run: .back)
   }
 
   @IBAction func pageControlValueDidChange(_ sender: UIPageControl) {
@@ -166,10 +170,9 @@ extension KNImportWalletViewController: UIScrollViewDelegate {
 
 extension KNImportWalletViewController: KNImportJSONViewControllerDelegate {
   func importJSONViewControllerDidPressNext(sender: KNImportJSONViewController, json: String, password: String) {
-    self.delegate?.importWalletViewControllerDidNext(
-      sender: self,
-      json: json,
-      password: password
+    self.delegate?.importWalletViewController(
+      self,
+      run: .importJSON(json: json, password: password)
     )
     let json: JSONDictionary = ["json": json, "password": password]
     KNNotificationUtil.postNotification(for: "notification", object: nil, userInfo: json)
@@ -178,18 +181,15 @@ extension KNImportWalletViewController: KNImportJSONViewControllerDelegate {
 
 extension KNImportWalletViewController: KNImportPrivateKeyViewControllerDelegate {
   func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String) {
-    self.delegate?.importWalletViewControllerDidNext(
-      sender: self,
-      privateKey: privateKey
+    self.delegate?.importWalletViewController(
+      self,
+      run: .importPrivateKey(privateKey: privateKey)
     )
   }
 }
 
 extension KNImportWalletViewController: KNImportSeedsViewControllerDelegate {
   func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String]) {
-    self.delegate?.importWalletViewControllerDidNext(
-      sender: self,
-      seeds: seeds
-    )
+    self.delegate?.importWalletViewController(self, run: .importSeeds(seeds: seeds))
   }
 }
