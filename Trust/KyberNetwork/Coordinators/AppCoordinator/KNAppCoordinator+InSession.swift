@@ -115,6 +115,7 @@ extension KNAppCoordinator {
     self.tabbarController.removeFromParentViewController()
 
     // Stop all coordinators in tabs and re-assign to nil
+    IEOUserStorage.shared.deleteAll()
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()

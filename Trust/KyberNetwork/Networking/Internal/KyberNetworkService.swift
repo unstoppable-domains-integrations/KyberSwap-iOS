@@ -107,7 +107,7 @@ enum KyberGOService {
   case listIEOs
   case getAccessToken(code: String)
   case getUserInfo(accessToken: String)
-  case checkParticipate(accessToken: String, ieoID: String)
+  case checkParticipate(accessToken: String, ieoID: Int)
   case getSignedTx(userID: Int, ieoID: Int, address: String, time: UInt)
   case getTxList(accessToken: String)
 }
@@ -159,7 +159,7 @@ extension KyberGOService: TargetType {
         "client_id": KNSecret.debugAppID,
         "client_secret": KNSecret.debugSecret,
         "access_token": accessToken,
-        "ieoID": ieoID,
+        "ieoid": ieoID,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

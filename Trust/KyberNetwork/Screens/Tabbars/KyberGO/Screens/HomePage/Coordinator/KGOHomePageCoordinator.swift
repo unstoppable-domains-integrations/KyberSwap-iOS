@@ -296,17 +296,65 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
 
   fileprivate func openBuy(object: IEOObject) {
     guard IEOUserStorage.shared.user != nil else {
-      self.openSignInView()
+      self.showAlertUserNotSignIn()
       return
     }
-    guard let wallet = KNWalletStorage.shared.wallets.first(where: {
-      $0.address.lowercased() == self.session.wallet.address.description.lowercased()
-    }) else { return }
-    let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
-    self.buyTokenVC = IEOBuyTokenViewController(viewModel: viewModel)
-    self.buyTokenVC?.loadViewIfNeeded()
-    self.buyTokenVC?.delegate = self
-    self.navigationController.pushViewController(self.buyTokenVC!, animated: true)
+    self.checkIEOWhitelisted(ieo: object) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let canBuy):
+        guard canBuy else {
+          self.navigationController.showWarningTopBannerMessage(
+            with: "Error",
+            message: "You are not whitelisted for this token sale.".toBeLocalised()
+          )
+          return
+        }
+        guard let wallet = KNWalletStorage.shared.wallets.first(where: {
+          $0.address.lowercased() == self.session.wallet.address.description.lowercased()
+        }) else { return }
+        let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
+        self.buyTokenVC = IEOBuyTokenViewController(viewModel: viewModel)
+        self.buyTokenVC?.loadViewIfNeeded()
+        self.buyTokenVC?.delegate = self
+        self.navigationController.pushViewController(self.buyTokenVC!, animated: true)
+        return
+      case .failure(let error):
+        self.navigationController.showWarningTopBannerMessage(
+          with: "Error",
+          message: error.prettyError
+        )
+      }
+    }
+  }
+
+  fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    //TODO: Remove when api is ready
+    if isDebug {
+      completion(.success(true))
+      return
+    }
+    guard let user = IEOUserStorage.shared.user else {
+      completion(.success(false))
+      return
+    }
+    let provider = MoyaProvider<KyberGOService>()
+    provider.request(.checkParticipate(accessToken: user.accessToken, ieoID: ieo.id)) { result in
+      switch result {
+      case .success(let resp):
+        do {
+          guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
+            completion(.success(false))
+            return
+          }
+          completion(.success(json["data"] as? Bool ?? false))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
   }
 
   fileprivate func getContributorRemainingCap(userID: Int, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
@@ -435,10 +483,7 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
     )
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "Sign In", style: .default, handler: { _ in
-      //TODO: Change to prod app id
-      if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-      }
+      self.openSignInView()
     }))
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
