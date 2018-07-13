@@ -46,7 +46,7 @@ class TokenObject: Object {
       self.name = localDict["name"] as? String ?? ""
       self.symbol = localDict["symbol"] as? String ?? ""
       self.icon = localDict["icon"] as? String ?? self.symbol.lowercased()
-      self.contract = localDict["address"] as? String ?? ""
+      self.contract = (localDict["address"] as? String ?? "").lowercased()
       self.decimals = localDict["decimal"] as? Int ?? 0
       self.isSupported = true
     }
@@ -57,7 +57,7 @@ class TokenObject: Object {
       self.name = trackerDict["name"] as? String ?? ""
       self.symbol = trackerDict["symbol"] as? String ?? ""
       self.icon = (trackerDict["iconID"] as? String ?? "").lowercased()
-      self.contract = trackerDict["contractAddress"] as? String ?? ""
+      self.contract = (trackerDict["contractAddress"] as? String ?? "").lowercased()
       self.decimals = trackerDict["decimals"] as? Int ?? 0
       self.isSupported = true
     }
@@ -127,5 +127,10 @@ extension TokenObject {
       return self.symbol
     }
     return self.contract
+  }
+
+  var iconURL: String {
+    // Token image from Trust public repo
+    return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(self.contract.lowercased()).png"
   }
 }

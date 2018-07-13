@@ -340,7 +340,10 @@ extension KNExchangeTabViewController {
         self.viewModel.tokenButtonAttributedText(isSource: true),
         for: .normal
       )
-      self.fromTokenButton.setImage(UIImage(named: self.viewModel.fromTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
+      self.fromTokenButton.setTokenImage(
+        token: self.viewModel.from,
+        size: self.viewModel.defaultTokenIconImg?.size
+      )
       self.balanceTextLabel.text = self.viewModel.balanceTextString
     }
     if updatedTo {
@@ -348,7 +351,10 @@ extension KNExchangeTabViewController {
         self.viewModel.tokenButtonAttributedText(isSource: false),
         for: .normal
       )
-      self.toTokenButton.setImage(UIImage(named: self.viewModel.toTokenIconName) ?? self.viewModel.defaultTokenIconImg, for: .normal)
+      self.toTokenButton.setTokenImage(
+        token: self.viewModel.to,
+        size: self.viewModel.defaultTokenIconImg?.size
+      )
     }
     // TODO (Build): Only added for mainnet, production, staging
     self.viewModel.updateEstimatedRateFromCachedIfNeeded()

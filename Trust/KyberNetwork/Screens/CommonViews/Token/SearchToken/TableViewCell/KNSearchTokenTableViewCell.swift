@@ -21,10 +21,8 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     if let image = UIImage(named: token.icon) {
       self.iconImageView.image = image
     } else {
-      // Token image from Trust public repo
-      let url = "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(token.contract.lowercased()).png"
       self.iconImageView.setImage(
-        with: url,
+        with: token.iconURL,
         placeholder: UIImage(named: "default_token"))
     }
     self.tokenSymbolLabel.text = token.symbol

@@ -134,7 +134,10 @@ class KNSendTokenViewController: KNBaseViewController {
       bottom: -35
     )
 
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "default_token"), for: .normal)
+    self.tokenButton.setTokenImage(
+      token: self.viewModel.from,
+      size: self.viewModel.defaultTokenIconImg?.size
+    )
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
 
     self.balanceTextLabel.text = self.viewModel.balanceText
@@ -265,7 +268,10 @@ extension KNSendTokenViewController {
   func updateUIFromTokenDidChange() {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
-    self.tokenButton.setImage(UIImage(named: self.viewModel.tokenIconName) ?? UIImage(named: "default_token"), for: .normal)
+    self.tokenButton.setTokenImage(
+      token: self.viewModel.from,
+      size: self.viewModel.defaultTokenIconImg?.size
+    )
     self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
     self.updateUIBalanceDidChange()
   }

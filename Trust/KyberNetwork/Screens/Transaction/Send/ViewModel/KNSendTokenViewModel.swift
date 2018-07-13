@@ -13,6 +13,8 @@ class KNSendTokenViewModel: NSObject {
     KNGasConfiguration.gasPriceMax,
   ]
 
+  let defaultTokenIconImg = UIImage(named: "default_token")
+
   fileprivate(set) var from: TokenObject
   fileprivate(set) var balance: Balance?
 
@@ -75,8 +77,6 @@ class KNSendTokenViewModel: NSObject {
     guard let bal = self.balance else { return "---" }
     return bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6)
   }
-
-  var tokenIconName: String { return self.from.icon }
 
   var placeHolderEnterAddress: String {
     return "Enter address or scan QR code".toBeLocalised()

@@ -16,6 +16,8 @@ protocol IEOBuyTokenViewControllerDelegate: class {
 }
 
 struct IEOBuyTokenViewModel {
+  let defaultTokenIconImg = UIImage(named: "default_token")
+
   fileprivate(set) var walletObject: KNWalletObject
 
   fileprivate(set) var from: TokenObject
@@ -336,6 +338,10 @@ class IEOBuyTokenViewController: KNBaseViewController {
     self.fromTokenButton.setAttributedTitle(
       self.viewModel.tokenButtonAttributedText(isSource: true),
       for: .normal
+    )
+    self.fromTokenButton.setTokenImage(
+      token: self.viewModel.from,
+      size: self.viewModel.defaultTokenIconImg?.size
     )
     self.toIEOButton.setAttributedTitle(
       self.viewModel.tokenButtonAttributedText(isSource: false),
