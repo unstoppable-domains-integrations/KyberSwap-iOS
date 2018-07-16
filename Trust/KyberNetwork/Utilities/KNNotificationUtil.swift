@@ -35,6 +35,7 @@ let kUpdateListContactNotificationKey = "kUpdateListContactNotificationKey"
 // IEO
 let kIEOUserDidUpdateNotificationKey = "kIEOUserDidUpdateNotificationKey"
 let kIEODidReceiveCallbackNotificationKey = "kIEODidReceiveCallbackNotificationKey"
+let kIEOTxListUpdateNotificationKey = "kIEOTxListUpdateNotificationKey"
 
 class KNNotificationUtil {
 

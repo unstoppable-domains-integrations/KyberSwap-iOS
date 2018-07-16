@@ -132,7 +132,7 @@ extension IEOObject {
     return Float(raised / cap)
   }
 
-  var isSoldOut: Bool { return self.progress >= 0.9999 }
+  var isSoldOut: Bool { return self.progress >= 0.99999 }
   var getCurrentBonus: (Date?, String?) {
     let bonusDateFormatter: DateFormatter = {
       let formatter = DateFormatter()

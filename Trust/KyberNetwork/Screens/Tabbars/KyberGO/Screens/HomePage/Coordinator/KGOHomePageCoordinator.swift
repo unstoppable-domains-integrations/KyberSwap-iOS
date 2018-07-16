@@ -25,6 +25,7 @@ class KGOHomePageCoordinator: Coordinator {
   fileprivate var ieoListViewController: IEOListViewController?
   fileprivate var ieoListTimer: Timer?
   fileprivate var nodeDataTimer: Timer?
+  fileprivate var kyberGOTxListTimer: Timer?
 
   fileprivate var buyTokenVC: IEOBuyTokenViewController?
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
@@ -58,6 +59,14 @@ class KGOHomePageCoordinator: Coordinator {
       block: { [weak self] _ in
         self?.reloadIEODataFromNode()
     })
+    self.kyberGOTxListTimer?.invalidate()
+    self.reloadKyberGOTransactionList()
+    self.kyberGOTxListTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.reloadKyberGOTransactionList()
+    })
     let callbackName = Notification.Name(kIEODidReceiveCallbackNotificationKey)
     NotificationCenter.default.addObserver(
       self,
@@ -72,6 +81,8 @@ class KGOHomePageCoordinator: Coordinator {
     self.ieoListTimer = nil
     self.nodeDataTimer?.invalidate()
     self.nodeDataTimer = nil
+    self.kyberGOTxListTimer?.invalidate()
+    self.kyberGOTxListTimer = nil
     NotificationCenter.default.removeObserver(
       self,
       name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
@@ -102,88 +113,9 @@ class KGOHomePageCoordinator: Coordinator {
       }
     }
   }
-
-  fileprivate func reloadListKGO(completion: ((Result<Bool, AnyError>) -> Void)? = nil) {
-    DispatchQueue.global().async {
-      let provider = MoyaProvider<KyberGOService>()
-      provider.request(.listIEOs, completion: { [weak self] result in
-        DispatchQueue.main.async(execute: {
-          switch result {
-          case .success(let resp):
-            do {
-              guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else { return }
-              if let dataArr = json["data"] as? [JSONDictionary] {
-                let objects = dataArr.map({ json -> IEOObject in
-                  var object = IEOObject(dict: json)
-                  if let objc = IEOObjectStorage.shared.getObject(primaryKey: object.id) {
-                    object = IEOObjectStorage.shared.update(object: object, from: objc)
-                  }
-                  return object
-                })
-                IEOObjectStorage.shared.update(objects: objects)
-                self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
-              }
-              completion?(.success(true))
-            } catch {
-              completion?(.success(false))
-              print("Error to map result")
-            }
-          case .failure(let error):
-            completion?(.failure(AnyError(error)))
-            print("Failed to load list IEOs")
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() +  5.0, execute: {
-              self?.reloadListKGO()
-            })
-          }
-        })
-      })
-    }
-  }
-
-  fileprivate func reloadIEODataFromNode() {
-    let objects = IEOObjectStorage.shared.objects.filter { obj -> Bool in
-      // not update upcoming token sales
-      return obj.startDate.timeIntervalSince(Date()) < 0
-    }
-    for object in objects {
-      if object.needsUpdateRate {
-        // get rate if it is not ended
-        IEOProvider.shared.getRate(for: object.contract, completion: { result in
-          switch result {
-          case .success(let data):
-            if !data.1.isZero {
-              let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
-              let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
-              IEOObjectStorage.shared.update(rate: rateString, object: object)
-              self.ieoListViewController?.coordinatorDidUpdateRate(rate, object: object)
-              self.buyTokenVC?.coordinatorDidUpdateEstRate(for: object, rate: rate)
-            }
-          case .failure(let error):
-            print("Error: \(error.prettyError)")
-          }
-        })
-      }
-
-      if object.needsUpdateRaised {
-        // get raised data if it is not ended
-        IEOProvider.shared.getDistributedTokensWei(for: object.contract) { [weak self] result in
-          switch result {
-          case .success(let value):
-            let raised = Double(value / BigInt(10).power(object.tokenDecimals))
-            IEOObjectStorage.shared.update(raised: raised, object: object)
-            self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
-            self?.ieoListViewController?.coordinatorDidUpdateProgress()
-          case .failure(let error):
-            print("Error: \(error.prettyError)")
-          }
-        }
-      }
-    }
-  }
 }
 
 extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
-
   func kyberGOHomePageViewController(_ controller: KGOHomePageViewController, run event: KGOHomePageViewEvent) {
     switch event {
     case .select(let object, let listObjects):
@@ -234,64 +166,6 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     self.navigationController.pushViewController(self.ieoListViewController!, animated: true)
   }
 
-  fileprivate func openSignInView() {
-    if let user = IEOUserStorage.shared.objects.first {
-      // User already signed in
-      self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
-      return
-    }
-    //TODO: Change to prod app id
-    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
-      UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
-  }
-
-  @objc func appCoordinatorDidReceiveCallback(_ sender: Notification) {
-    if IEOUserStorage.shared.objects.first != nil { return } // return if user exists
-    guard let params = sender.object as? JSONDictionary else { return }
-    guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
-    // got authentication code from KyberGO
-    // use the code to get access token for user
-    let provider = MoyaProvider<KyberGOService>()
-    let accessToken = KyberGOService.getAccessToken(code: code)
-    provider.request(accessToken, completion: { [weak self] result in
-      guard let _ = `self` else { return }
-      switch result {
-      case .success(let data):
-        if let dataJSON = try? data.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = dataJSON {
-          guard let accessToken = json["access_token"] as? String else {
-            self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get access token")
-            return
-          }
-          // got access token, user access token to retrieve user information
-          let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
-          provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
-            guard let _ = `self` else { return }
-            switch userInfoResult {
-            case .success(let userInfo):
-              guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
-                self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get user infor")
-                return
-              }
-              let user = IEOUser(dict: userJSON)
-              IEOUserStorage.shared.update(objects: [user])
-              IEOUserStorage.shared.updateToken(object: user, dict: json)
-              self?.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
-              self?.rootViewController.coordinatorUserDidSignInSuccessfully()
-              // Already have user
-            case .failure(let error):
-              self?.navigationController.displayError(error: error)
-            }
-          })
-        } else {
-          self?.navigationController.showWarningTopBannerMessage(with: "Error", message: "Can not get access token")
-        }
-      case .failure(let error):
-        self?.navigationController.displayError(error: error)
-      }
-    })
-  }
-
   fileprivate func openBuy(object: IEOObject) {
     guard IEOUserStorage.shared.user != nil else {
       self.showAlertUserNotSignIn()
@@ -325,6 +199,119 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       }
     }
   }
+}
+
+// MARK: KyberGO OAuth
+extension KGOHomePageCoordinator {
+  fileprivate func openSignInView() {
+    if let user = IEOUserStorage.shared.objects.first {
+      // User already signed in
+      self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
+      return
+    }
+    //TODO: Change to prod app id
+    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+  }
+
+  @objc func appCoordinatorDidReceiveCallback(_ sender: Notification) {
+    if IEOUserStorage.shared.objects.first != nil { return } // return if user exists
+    guard let params = sender.object as? JSONDictionary else { return }
+    guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
+    // got authentication code from KyberGO
+    // use the code to get access token for user
+    let provider = MoyaProvider<KyberGOService>()
+    let accessToken = KyberGOService.getAccessToken(code: code)
+    provider.request(accessToken, completion: { [weak self] result in
+      guard let _ = `self` else { return }
+      switch result {
+      case .success(let data):
+        if let dataJSON = try? data.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = dataJSON {
+          guard let accessToken = json["access_token"] as? String else {
+            self?.navigationController.showWarningTopBannerMessage(
+              with: "Error",
+              message: "Can not get access token"
+            )
+            return
+          }
+          // got access token, user access token to retrieve user information
+          let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
+          provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
+            guard let _ = `self` else { return }
+            switch userInfoResult {
+            case .success(let userInfo):
+              guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
+                self?.navigationController.showWarningTopBannerMessage(
+                  with: "Error",
+                  message: "Can not get user infor"
+                )
+                return
+              }
+              let user = IEOUser(dict: userJSON)
+              IEOUserStorage.shared.update(objects: [user])
+              IEOUserStorage.shared.updateToken(object: user, dict: json)
+              self?.navigationController.showSuccessTopBannerMessage(
+                with: "Hi \(user.name)",
+                message: "You have signed in successfully! You could buy tokens now"
+              )
+              self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+              // Already have user
+            case .failure(let error):
+              self?.navigationController.displayError(error: error)
+            }
+          })
+        } else {
+          self?.navigationController.showWarningTopBannerMessage(
+            with: "Error",
+            message: "Can not get access token"
+          )
+        }
+      case .failure(let error):
+        self?.navigationController.displayError(error: error)
+      }
+    })
+  }
+}
+
+// MARK: KyberGO Provider (Networking)
+extension KGOHomePageCoordinator {
+  fileprivate func reloadListKGO(completion: ((Result<Bool, AnyError>) -> Void)? = nil) {
+    DispatchQueue.global().async {
+      let provider = MoyaProvider<KyberGOService>()
+      provider.request(.listIEOs, completion: { [weak self] result in
+        DispatchQueue.main.async(execute: {
+          switch result {
+          case .success(let resp):
+            do {
+              guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else { return }
+              if let dataArr = json["data"] as? [JSONDictionary] {
+                let objects = dataArr.map({ json -> IEOObject in
+                  var object = IEOObject(dict: json)
+                  if let objc = IEOObjectStorage.shared.getObject(primaryKey: object.id) {
+                    object = IEOObjectStorage.shared.update(object: object, from: objc)
+                  }
+                  return object
+                })
+                IEOObjectStorage.shared.update(objects: objects)
+                self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
+              }
+              completion?(.success(true))
+            } catch {
+              completion?(.success(false))
+              print("Error to map result")
+            }
+          case .failure(let error):
+            completion?(.failure(AnyError(error)))
+            print("Failed to load list IEOs")
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() +  5.0, execute: {
+              self?.reloadListKGO()
+            })
+          }
+        })
+      })
+    }
+  }
 
   fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     //TODO: Remove when api is ready
@@ -355,14 +342,6 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
     }
   }
 
-  fileprivate func getContributorRemainingCap(userID: Int, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    IEOProvider.shared.getContributorRemainingCap(
-      contractAddress: contract,
-      userID: userID,
-      completion: completion
-    )
-  }
-
   fileprivate func getSignData(userID: Int, address: String, ieoID: Int, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     let provider = MoyaProvider<KyberGOService>()
     let service = KyberGOService.getSignedTx(
@@ -382,6 +361,114 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       case .failure(let error):
         completion(.failure(AnyError(error)))
       }
+    }
+  }
+
+  fileprivate func reloadKyberGOTransactionList() {
+    self.fetchKyberGOTxList { [weak self] result in
+      if case .success(let transactions) = result {
+        IEOTransactionStorage.shared.update(objects: transactions)
+        self?.rootViewController.coordinatorUpdateListKyberGOTx(
+          transactions: IEOTransactionStorage.shared.objects
+        )
+      }
+    }
+  }
+
+  fileprivate func fetchKyberGOTxList(completion: ((Result<[IEOTransaction], AnyError>) -> Void)?) {
+    guard let user = IEOUserStorage.shared.user, !user.accessToken.isEmpty else {
+      // no user
+      completion?(.success([]))
+      return
+    }
+    let provider = MoyaProvider<KyberGOService>()
+    provider.request(.getTxList(accessToken: user.accessToken)) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
+          let transactions = jsonArr.map({ return IEOTransaction(dict: $0) })
+          completion?(.success(transactions))
+        } catch let error {
+          completion?(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion?(.failure(AnyError(error)))
+      }
+    }
+  }
+}
+
+// MARK: KyberGO SmartContract
+extension KGOHomePageCoordinator {
+  fileprivate func reloadIEODataFromNode() {
+    let objects = IEOObjectStorage.shared.objects.filter { obj -> Bool in
+      // not update upcoming token sales
+      return obj.startDate.timeIntervalSince(Date()) < 0
+    }
+    for object in objects {
+      if object.needsUpdateRate {
+        // get rate if it is not ended
+        IEOProvider.shared.getRate(for: object.contract, completion: { result in
+          switch result {
+          case .success(let data):
+            if !data.1.isZero {
+              let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
+              let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
+              IEOObjectStorage.shared.update(rate: rateString, object: object)
+              self.ieoListViewController?.coordinatorDidUpdateRate(rate, object: object)
+              self.buyTokenVC?.coordinatorDidUpdateEstRate(for: object, rate: rate)
+            }
+          case .failure(let error):
+            print("Error: \(error.prettyError)")
+          }
+        })
+      }
+
+      if object.needsUpdateRaised {
+        // get raised data if it is not ended
+        IEOProvider.shared.getDistributedTokensWei(for: object.contract) { [weak self] result in
+          switch result {
+          case .success(let value):
+            let raised = Double(value / BigInt(10).power(object.tokenDecimals))
+            IEOObjectStorage.shared.update(raised: raised, object: object)
+            self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
+            self?.ieoListViewController?.coordinatorDidUpdateProgress()
+          case .failure(let error):
+            print("Error: \(error.prettyError)")
+          }
+        }
+      }
+    }
+  }
+
+  fileprivate func getContributorRemainingCap(userID: Int, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    IEOProvider.shared.getContributorRemainingCap(
+      contractAddress: contract,
+      userID: userID,
+      completion: completion
+    )
+  }
+
+  fileprivate func sendBuyTransaction(_ transaction: IEODraftTransaction) {
+    guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == transaction.wallet.address.lowercased() }) else { return }
+    if case .real(let account) = wal.type {
+      self.navigationController.displayLoading(text: "Broadcasting...", animated: true)
+      IEOProvider.shared.buy(
+        transaction: transaction,
+        account: account,
+        keystore: self.session.keystore,
+        completion: { [weak self] result in
+          self?.navigationController.hideLoading()
+          switch result {
+          case .success(let resp):
+            self?.showBroadcastSuccessfully(resp)
+          case .failure(let error):
+            self?.navigationController.displayError(error: error)
+          }
+      })
     }
   }
 }
@@ -441,26 +528,6 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
     }
   }
 
-  fileprivate func sendBuyTransaction(_ transaction: IEODraftTransaction) {
-    guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == transaction.wallet.address.lowercased() }) else { return }
-    if case .real(let account) = wal.type {
-      self.navigationController.displayLoading()
-      IEOProvider.shared.buy(
-        transaction: transaction,
-        account: account,
-        keystore: self.session.keystore,
-        completion: { [weak self] result in
-          self?.navigationController.hideLoading()
-          switch result {
-          case .success(let resp):
-            self?.showBroadcastSuccessfully(resp)
-          case .failure(let error):
-            self?.navigationController.displayError(error: error)
-          }
-      })
-    }
-  }
-
   fileprivate func showBroadcastSuccessfully(_ hash: String) {
     let alertController = UIAlertController(title: "Successfully", message: "Your transaction is being mined", preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
@@ -475,12 +542,12 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
 
   fileprivate func showAlertUserNotSignIn() {
     let alertController = UIAlertController(
-      title: "Sign In Required",
-      message: "You are not signed in with KyberGO. Please sign in to continue.",
+      title: "Sign In Required".toBeLocalised(),
+      message: "You are not signed in with KyberGO. Please sign in to continue.".toBeLocalised(),
       preferredStyle: .alert
     )
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Sign In", style: .default, handler: { _ in
+    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: "Sign In".toBeLocalised(), style: .default, handler: { _ in
       self.openSignInView()
     }))
     self.navigationController.present(alertController, animated: true, completion: nil)

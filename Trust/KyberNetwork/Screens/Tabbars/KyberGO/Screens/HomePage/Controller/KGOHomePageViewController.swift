@@ -23,6 +23,7 @@ class KGOHomePageViewController: KNBaseViewController {
   @IBOutlet weak var kyberGOLabel: UILabel!
   @IBOutlet weak var userAccountImageView: UIImageView!
   @IBOutlet weak var userStatusLabel: UILabel!
+  @IBOutlet weak var pendingTxNotiView: UIView!
 
   @IBOutlet weak var ieoTableView: UITableView!
 
@@ -67,6 +68,8 @@ class KGOHomePageViewController: KNBaseViewController {
     self.userAccountImageView.addGestureRecognizer(tapGesture)
     self.userAccountImageView.isUserInteractionEnabled = true
     self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
+    self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
+    self.pendingTxNotiView.isHidden = true
   }
 
   func setupIEOTableView() {
@@ -90,10 +93,16 @@ class KGOHomePageViewController: KNBaseViewController {
 
   func coordinatorDidSignOut() {
     self.userStatusLabel.text = "Unknown"
+    self.pendingTxNotiView.isHidden = true
     self.showSuccessTopBannerMessage(
       with: "Logged out from app successfully",
       message: "You will need to open Safari and logout from your session"
     )
+  }
+
+  func coordinatorUpdateListKyberGOTx(transactions: [IEOTransaction]) {
+    let pendingTrans = transactions.filter({ $0.txStatus == .pending })
+    self.pendingTxNotiView.isHidden = !pendingTrans.isEmpty
   }
 
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {

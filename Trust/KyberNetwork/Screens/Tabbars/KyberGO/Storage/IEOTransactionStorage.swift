@@ -22,12 +22,14 @@ class IEOTransactionStorage {
   }
 
   var objects: [IEOTransaction] {
+    if self.realm == nil { return [] }
     return self.realm.objects(IEOTransaction.self)
       .sorted(byKeyPath: "createdDate", ascending: true)
       .filter { !($0.id != -1) }
   }
 
   func add(objects: [IEOTransaction]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.add(objects, update: true)
     try! self.realm.commitWrite()
@@ -38,10 +40,12 @@ class IEOTransactionStorage {
   }
 
   func getObject(primaryKey: Int) -> IEOTransaction? {
+    if self.realm == nil { return nil }
     return self.realm.object(ofType: IEOTransaction.self, forPrimaryKey: primaryKey)
   }
 
   func deleteAll() {
+    if self.realm == nil { return }
     try! realm.write {
       realm.delete(realm.objects(IEOTransaction.self))
     }

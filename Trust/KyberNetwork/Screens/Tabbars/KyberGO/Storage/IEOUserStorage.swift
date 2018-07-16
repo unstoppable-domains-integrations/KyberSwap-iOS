@@ -44,6 +44,7 @@ class IEOUserStorage {
   }
 
   func deleteAll() {
+    IEOTransactionStorage.shared.loggedOut()
     try! realm.write {
       realm.delete(realm.objects(IEOUser.self))
     }

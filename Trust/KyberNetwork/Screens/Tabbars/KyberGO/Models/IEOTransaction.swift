@@ -2,6 +2,14 @@
 
 import RealmSwift
 
+enum IEOTransactionStatus: String {
+  case success = "success"
+  case fail = "fail"
+  case lost = "lost"
+  case pending = "pending"
+  case unknown = ""
+}
+
 class IEOTransaction: Object {
 
   @objc dynamic var id: Int = -1
@@ -45,5 +53,9 @@ class IEOTransaction: Object {
 
   override class func primaryKey() -> String? {
     return "id"
+  }
+
+  var txStatus: IEOTransactionStatus {
+    return IEOTransactionStatus(rawValue: self.status) ?? .unknown
   }
 }

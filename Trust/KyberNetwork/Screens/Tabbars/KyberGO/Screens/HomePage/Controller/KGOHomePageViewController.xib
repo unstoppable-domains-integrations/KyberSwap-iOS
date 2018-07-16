@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,7 @@
             <connections>
                 <outlet property="ieoTableView" destination="bbt-EQ-Zwn" id="eZp-B2-aRp"/>
                 <outlet property="kyberGOLabel" destination="yRq-8f-kpd" id="vJs-8k-NE8"/>
+                <outlet property="pendingTxNotiView" destination="G8z-Ie-dYl" id="sEp-Cy-5CC"/>
                 <outlet property="topContainerView" destination="tkr-V6-cU9" id="F1a-Ls-v5B"/>
                 <outlet property="userAccountImageView" destination="d9w-Fi-Dbh" id="txY-w0-ODJ"/>
                 <outlet property="userStatusLabel" destination="mnD-0L-3d6" id="2am-DG-EtK"/>
@@ -56,14 +57,24 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G8z-Ie-dYl">
+                            <rect key="frame" x="349" y="44" width="10" height="10"/>
+                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="bki-te-NGg"/>
+                                <constraint firstAttribute="height" constant="10" id="nB3-39-Pal"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="mnD-0L-3d6" firstAttribute="top" secondItem="d9w-Fi-Dbh" secondAttribute="bottom" constant="-10" id="AkX-Xf-esq"/>
                         <constraint firstAttribute="height" constant="100" id="H9e-PB-E5p"/>
+                        <constraint firstItem="G8z-Ie-dYl" firstAttribute="top" secondItem="d9w-Fi-Dbh" secondAttribute="top" id="MaS-g4-nHR"/>
                         <constraint firstItem="d9w-Fi-Dbh" firstAttribute="centerY" secondItem="yRq-8f-kpd" secondAttribute="centerY" id="YR9-qi-Eef"/>
                         <constraint firstItem="mnD-0L-3d6" firstAttribute="trailing" secondItem="d9w-Fi-Dbh" secondAttribute="trailing" id="fPe-8Z-A1X"/>
                         <constraint firstAttribute="bottom" secondItem="yRq-8f-kpd" secondAttribute="bottom" constant="16" id="kW6-RG-WPp"/>
+                        <constraint firstItem="G8z-Ie-dYl" firstAttribute="trailing" secondItem="d9w-Fi-Dbh" secondAttribute="trailing" id="myS-k2-JQu"/>
                         <constraint firstAttribute="trailing" secondItem="d9w-Fi-Dbh" secondAttribute="trailing" constant="16" id="rFS-aZ-xns"/>
                         <constraint firstAttribute="bottom" secondItem="d9w-Fi-Dbh" secondAttribute="bottom" constant="16" id="yTO-ye-uic"/>
                         <constraint firstItem="yRq-8f-kpd" firstAttribute="leading" secondItem="tkr-V6-cU9" secondAttribute="leading" constant="16" id="yzt-Sz-aNO"/>
@@ -85,6 +96,7 @@
                 <constraint firstItem="bbt-EQ-Zwn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mFl-f0-SaH"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="24.5" y="51.5"/>
         </view>
     </objects>
     <resources>

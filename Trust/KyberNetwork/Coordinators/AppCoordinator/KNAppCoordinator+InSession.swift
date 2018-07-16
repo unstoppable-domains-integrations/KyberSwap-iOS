@@ -115,7 +115,6 @@ extension KNAppCoordinator {
     self.tabbarController.removeFromParentViewController()
 
     // Stop all coordinators in tabs and re-assign to nil
-    IEOUserStorage.shared.deleteAll()
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()
@@ -124,6 +123,7 @@ extension KNAppCoordinator {
     self.kyberGOCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
+    IEOUserStorage.shared.deleteAll()
   }
 
   // Switching account, restart a new session
