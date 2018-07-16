@@ -367,6 +367,19 @@ extension KGOHomePageCoordinator {
   fileprivate func reloadKyberGOTransactionList() {
     self.fetchKyberGOTxList { [weak self] result in
       if case .success(let transactions) = result {
+        var txMap: [String: IEOTransaction] = [:]
+        transactions.forEach({ txMap[$0.txHash] = $0 })
+        var ieoMap: [Int: IEOObject] = [:]
+        IEOObjectStorage.shared.objects.forEach({ ieoMap[$0.id] = $0 })
+        IEOTransactionStorage.shared.objects.forEach({ tran in
+          //TODO: Show local push notification
+          if tran.txStatus == .pending, let tx = txMap[tran.txHash], tx.txStatus != .pending, let ieo = ieoMap[tx.ieoID] {
+            KNNotificationUtil.localPushNotification(
+              title: tx.status,
+              body: "Transaction of buying \(ieo.name) returned \(tx.status)"
+            )
+          }
+        })
         IEOTransactionStorage.shared.update(objects: transactions)
         self?.rootViewController.coordinatorUpdateListKyberGOTx(
           transactions: IEOTransactionStorage.shared.objects
@@ -464,6 +477,7 @@ extension KGOHomePageCoordinator {
           self?.navigationController.hideLoading()
           switch result {
           case .success(let resp):
+            self?.reloadKyberGOTransactionList()
             self?.showBroadcastSuccessfully(resp)
           case .failure(let error):
             self?.navigationController.displayError(error: error)
