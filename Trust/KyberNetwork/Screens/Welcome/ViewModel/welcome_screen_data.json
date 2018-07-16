@@ -2,27 +2,21 @@
   "data": [
   {
            "icon": "welcome_tokenized",
-           "title": "Connecting The Tokenized World",
-           "subtitle": "KyberSwap, KyberDeveloper and KyberGO",
+           "title": "Secure & Compatible",
+           "subtitle": "Design with highest security standard. Easily import & export accounts from other wallet apps.",
            "position": 0
   },
   {
            "icon": "welcome_kyberswap",
-           "title": "KyberSwap: Swap Tokens Instantly",
-           "subtitle": "Simple, Instant and Secure",
+           "title": "Instant Swap with KyberSwap",
+           "subtitle": "Swap between arbitrary token pairs. No deposit needed.",
            "position": 1
   },
   {
            "icon": "welcome_kyberdev",
-           "title": "KyberDeveloper: Powering Decentralized Liquidity For The Ecosystem",
-           "subtitle": "Instant, Friendly and Diverse token pool",
+           "title": "Stress-free Token Sales with KyberGO",
+           "subtitle": "Verify account just one and participate to all token sales hosted on KyberGO.",
            "position": 2
-  },
-  {
-           "icon": "welcome_kybergo",
-           "title": "KyberGO: A New Standard For Democratic Token Sales",
-           "subtitle": "Comming Soon",
-           "position": 3
   }
   ]
 }

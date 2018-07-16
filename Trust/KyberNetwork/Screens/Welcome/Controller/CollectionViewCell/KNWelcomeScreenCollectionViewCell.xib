@@ -43,7 +43,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instant, Secure and Friendly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lg7-lM-55N">
-                        <rect key="frame" x="20" y="277" width="335" height="19.5"/>
+                        <rect key="frame" x="30" y="277" width="315" height="19.5"/>
                         <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
                         <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -56,7 +56,7 @@
                 <constraint firstItem="8v5-dI-w9v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="I6K-kS-kwJ"/>
                 <constraint firstItem="n2K-hw-Me4" firstAttribute="centerX" secondItem="8v5-dI-w9v" secondAttribute="centerX" id="TO1-VJ-xyk"/>
                 <constraint firstItem="8v5-dI-w9v" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Vdu-Gv-GLL"/>
-                <constraint firstItem="lg7-lM-55N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="YSd-dt-Urf"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="YSd-dt-Urf"/>
                 <constraint firstItem="lg7-lM-55N" firstAttribute="top" secondItem="n2K-hw-Me4" secondAttribute="bottom" constant="10" id="oAP-kw-uer"/>
                 <constraint firstItem="lg7-lM-55N" firstAttribute="centerX" secondItem="n2K-hw-Me4" secondAttribute="centerX" id="wdG-0e-ksT"/>
             </constraints>
