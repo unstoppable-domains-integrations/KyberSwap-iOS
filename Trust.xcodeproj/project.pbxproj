@@ -49,6 +49,8 @@
 		25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F0A20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib */; };
 		25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F0F20F88C3E007231FE /* KNWelcomeScreenCollectionView.swift */; };
 		25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */; };
+		25369F1420FC7587007231FE /* IEOTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1320FC7587007231FE /* IEOTransaction.swift */; };
+		25369F1620FC75AA007231FE /* IEOTransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1520FC75AA007231FE /* IEOTransactionStorage.swift */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2547714C20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */; };
@@ -706,6 +708,8 @@
 		25369F0A20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionViewCell.xib; sourceTree = "<group>"; };
 		25369F0F20F88C3E007231FE /* KNWelcomeScreenCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenCollectionView.swift; sourceTree = "<group>"; };
 		25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionView.xib; sourceTree = "<group>"; };
+		25369F1320FC7587007231FE /* IEOTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransaction.swift; sourceTree = "<group>"; };
+		25369F1520FC75AA007231FE /* IEOTransactionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransactionStorage.swift; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckWhiteListedAddressRequest.swift; sourceTree = "<group>"; };
@@ -2372,6 +2376,7 @@
 				25A293FF20CE7CF5008C6759 /* IEOObject.swift */,
 				25E3D39F20D7D3E9005D506B /* IEOUser.swift */,
 				251981BF20D9FD8800106986 /* IEODraftTransaction.swift */,
+				25369F1320FC7587007231FE /* IEOTransaction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2390,6 +2395,7 @@
 			children = (
 				25A2940F20CE9FA7008C6759 /* IEOObjectStorage.swift */,
 				25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */,
+				25369F1520FC75AA007231FE /* IEOTransactionStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -5006,6 +5012,7 @@
 				299B5E3B1FD141B70051361C /* BackupViewModel.swift in Sources */,
 				775DF43E203E38D2009CD082 /* NonFungibleTokenViewCell.swift in Sources */,
 				29CA4B791F6FBFD50032313D /* Balance.swift in Sources */,
+				25369F1420FC7587007231FE /* IEOTransaction.swift in Sources */,
 				252DB13820D12D0D00D10FF7 /* IEOGetRateRequest.swift in Sources */,
 				291F52A71F6B766100B369AB /* BalanceRequest.swift in Sources */,
 				251ABCBC205790210069687F /* KNEnvironment.swift in Sources */,
@@ -5191,6 +5198,7 @@
 				291A1B651F974E8600ADEC80 /* WalletEntryPoint.swift in Sources */,
 				25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */,
 				2959960E1FAB05C200DB66A8 /* TransactionsEmptyView.swift in Sources */,
+				25369F1620FC75AA007231FE /* IEOTransactionStorage.swift in Sources */,
 				29BB94931F6FC380009B09CC /* BalanceViewModel.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				BB03A86D20416AF600649DA0 /* BalanceStatus.swift in Sources */,

@@ -480,6 +480,11 @@ class KNExternalProvider {
   }
 
   func getTokenAllowanceDecodeData(_ data: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if data == "0x" {
+      // Fix: Can not decode 0x to uint
+      completion(.success(false))
+      return
+    }
     let decodeRequest = KNGetTokenAllowanceDecode(data: data)
     self.web3Swift.request(request: decodeRequest, completion: { decodeResult in
       switch decodeResult {

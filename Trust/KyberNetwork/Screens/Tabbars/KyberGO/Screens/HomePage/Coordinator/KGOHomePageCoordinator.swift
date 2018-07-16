@@ -29,9 +29,7 @@ class KGOHomePageCoordinator: Coordinator {
   fileprivate var buyTokenVC: IEOBuyTokenViewController?
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
 
-  deinit {
-    self.stop()
-  }
+  deinit { self.stop() }
 
   init(
     navigationController: UINavigationController = UINavigationController(),

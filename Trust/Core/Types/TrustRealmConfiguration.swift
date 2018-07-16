@@ -22,4 +22,10 @@ struct RealmConfiguration {
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(id).realm")
       return config
     }
+
+    static func kyberGOConfiguration(for userID: Int) -> Realm.Configuration {
+      var config = Realm.Configuration()
+      config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-kybergo-\(userID).realm")
+      return config
+    }
 }
