@@ -88,6 +88,12 @@ class KNTransactionStatusView: XibLoaderView {
       self.isAnimating = false
       self.loadingImageView.stopRotating()
     }
+    if status == .broadcastingError || status == .success || status == .failed {
+      KNNotificationUtil.localPushNotification(
+        title: status.rawValue,
+        body: details ?? status.statusDetails
+      )
+    }
     self.layoutIfNeeded()
   }
 

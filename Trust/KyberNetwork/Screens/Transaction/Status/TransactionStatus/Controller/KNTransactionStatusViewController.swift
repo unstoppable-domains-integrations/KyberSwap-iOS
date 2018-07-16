@@ -65,11 +65,11 @@ class KNTransactionStatusViewController: KNBaseViewController {
       guard let from = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.from) else { return nil }
       guard let amount = transaction?.value.fullBigInt(decimals: from.decimals) else { return nil }
       if object.type.lowercased() == "transfer" {
-        return "Send \(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) to \n\(transaction?.to ?? "")"
+        return "\(status.rawValue) sent \(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) to \n\(transaction?.to ?? "")"
       }
       guard let to = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.to) else { return nil }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return nil }
-      return "\(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) converted to\n\(expectedAmount.shortString(decimals: object.decimals, maxFractionDigits: 6)) \(to.symbol)"
+      return "\(status.rawValue) \(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) converted to\n\(expectedAmount.shortString(decimals: object.decimals, maxFractionDigits: 6)) \(to.symbol)"
     }()
     self.transactionStatusView.updateView(with: status, txHash: transaction?.id, details: details)
   }

@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import NotificationCenter
+import UserNotifications
 
 // Transaction Keys
 let kTransactionDidUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
@@ -44,5 +45,16 @@ class KNNotificationUtil {
 
   static func notificationName(from name: String) -> Notification.Name {
     return Notification.Name(name)
+  }
+
+  static func localPushNotification(title: String, body: String) {
+    let content = UNMutableNotificationContent()
+    content.title = title
+    content.body = body
+    content.setValue("YES", forKey: "shouldAlwaysAlertWhileAppIsForeground")
+    let request = UNNotificationRequest(identifier: "localPushNotification", content: content, trigger: nil)
+    UNUserNotificationCenter.current().add(request) { error in
+      NSLog("Error \(error.debugDescription)")
+    }
   }
 }
