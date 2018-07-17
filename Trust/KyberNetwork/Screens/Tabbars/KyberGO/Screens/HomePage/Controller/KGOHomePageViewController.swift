@@ -67,7 +67,7 @@ class KGOHomePageViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.accountImageViewDidTap(_:)))
     self.userAccountImageView.addGestureRecognizer(tapGesture)
     self.userAccountImageView.isUserInteractionEnabled = true
-    self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
+    self.userStatusLabel.text = IEOUserStorage.shared.user?.name ?? "Unknown"
     self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
     self.pendingTxNotiView.isHidden = true
     self.coordinatorUpdateListKyberGOTx(transactions: IEOTransactionStorage.shared.objects)
@@ -89,7 +89,7 @@ class KGOHomePageViewController: KNBaseViewController {
   }
 
   func coordinatorUserDidSignInSuccessfully() {
-    self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
+    self.userStatusLabel.text = IEOUserStorage.shared.user?.name ?? "Unknown"
   }
 
   func coordinatorDidSignOut() {

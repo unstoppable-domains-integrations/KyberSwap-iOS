@@ -27,6 +27,7 @@ class KGOHomePageCoordinator: Coordinator {
   fileprivate var ieoListTimer: Timer?
   fileprivate var nodeDataTimer: Timer?
   fileprivate var kyberGOTxListTimer: Timer?
+  fileprivate var accessTokenExpireTimer: Timer?
 
   fileprivate var buyTokenVC: IEOBuyTokenViewController?
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
@@ -49,6 +50,21 @@ class KGOHomePageCoordinator: Coordinator {
     self.timerLoadDataFromNode()
     self.timerLoadKyberGOTxList()
 
+    if let user = IEOUserStorage.shared.user {
+      let time = Date(timeIntervalSince1970: user.expireTime).timeIntervalSinceNow
+      guard time > 0 else {
+        self.handleUserAccessTokenExpired()
+        return
+      }
+      self.accessTokenExpireTimer?.invalidate()
+      self.accessTokenExpireTimer = Timer.scheduledTimer(
+        withTimeInterval: time,
+        repeats: false,
+        block: { [weak self] _ in
+        self?.handleUserAccessTokenExpired()
+      })
+    }
+
     // Add notification observer
     let callbackName = Notification.Name(kIEODidReceiveCallbackNotificationKey)
     NotificationCenter.default.addObserver(
@@ -66,6 +82,8 @@ class KGOHomePageCoordinator: Coordinator {
     self.nodeDataTimer = nil
     self.kyberGOTxListTimer?.invalidate()
     self.kyberGOTxListTimer = nil
+    self.accessTokenExpireTimer?.invalidate()
+    self.accessTokenExpireTimer = nil
 
     // Remove notification observer
     NotificationCenter.default.removeObserver(
@@ -106,6 +124,16 @@ class KGOHomePageCoordinator: Coordinator {
       block: { [weak self] _ in
         self?.reloadKyberGOTransactionList()
     })
+  }
+
+  fileprivate func handleUserAccessTokenExpired() {
+    KNNotificationUtil.localPushNotification(
+      title: "Session expired",
+      body: "Your session has expired, please sign in again to continue"
+    )
+    IEOUserStorage.shared.signedOut()
+    self.navigationController.popToRootViewController(animated: true)
+    self.rootViewController.coordinatorDidSignOut()
   }
 
   // MARK: Update from app coordinator
@@ -235,9 +263,19 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
 // MARK: KyberGO OAuth
 extension KGOHomePageCoordinator {
   fileprivate func openSignInView() {
-    if let user = IEOUserStorage.shared.objects.first {
+    if let user = IEOUserStorage.shared.user {
       // User already signed in
       self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
+      return
+    }
+    if let user = IEOUserStorage.shared.objects.first, Date(timeIntervalSince1970: user.expireTime).timeIntervalSinceNow > 0 {
+      IEOUserStorage.shared.signedIn()
+      self.getUserInfo(
+        type: user.tokenType,
+        accessToken: user.accessToken,
+        refreshToken: user.refreshToken,
+        expireTime: user.expireTime
+      )
       return
     }
     //TODO: Change to prod app id
@@ -247,7 +285,7 @@ extension KGOHomePageCoordinator {
   }
 
   @objc func appCoordinatorDidReceiveCallback(_ sender: Notification) {
-    if IEOUserStorage.shared.objects.first != nil { return } // return if user exists
+    if IEOUserStorage.shared.user != nil { return } // return if user exists
     guard let params = sender.object as? JSONDictionary else { return }
     guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
     // got authentication code from KyberGO
@@ -269,35 +307,15 @@ extension KGOHomePageCoordinator {
             return
           }
           // got access token, user access token to retrieve user information
-          let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
-          provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
-            guard let _ = `self` else { return }
-            switch userInfoResult {
-            case .success(let userInfo):
-              guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
-                self?.navigationController.hideLoading()
-                self?.navigationController.showWarningTopBannerMessage(
-                  with: "Error",
-                  message: "Can not get user infor"
-                )
-                return
-              }
-              let user = IEOUser(dict: userJSON)
-              IEOUserStorage.shared.update(objects: [user])
-              IEOUserStorage.shared.updateToken(object: user, dict: json)
-              IEOTransactionStorage.shared.userLoggedIn()
-              self?.navigationController.hideLoading()
-              self?.navigationController.showSuccessTopBannerMessage(
-                with: "Hi \(user.name)",
-                message: "You have signed in successfully! You could buy tokens now"
-              )
-              self?.rootViewController.coordinatorUserDidSignInSuccessfully()
-              // Already have user
-            case .failure(let error):
-              self?.navigationController.hideLoading()
-              self?.navigationController.displayError(error: error)
-            }
-          })
+          let tokenType = json["token_type"] as? String ?? ""
+          let refreshToken = json["refresh_token"] as? String ?? ""
+          let expireTime = json["expires_in"] as? Double ?? 0.0
+          self?.getUserInfo(
+            type: tokenType,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
+          )
         } else {
           self?.navigationController.hideLoading()
           self?.navigationController.showWarningTopBannerMessage(
@@ -305,6 +323,46 @@ extension KGOHomePageCoordinator {
             message: "Can not get access token"
           )
         }
+      case .failure(let error):
+        self?.navigationController.hideLoading()
+        self?.navigationController.displayError(error: error)
+      }
+    })
+  }
+
+  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
+    // got access token, user access token to retrieve user information
+    let provider = MoyaProvider<KyberGOService>()
+    let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
+    provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
+      guard let _ = `self` else { return }
+      switch userInfoResult {
+      case .success(let userInfo):
+        guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
+          self?.navigationController.hideLoading()
+          self?.navigationController.showWarningTopBannerMessage(
+            with: "Error",
+            message: "Can not get user info"
+          )
+          return
+        }
+        let user = IEOUser(dict: userJSON)
+        IEOUserStorage.shared.update(objects: [user])
+        IEOUserStorage.shared.updateToken(
+          object: user,
+          type: type,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          expireTime: expireTime
+        )
+        IEOTransactionStorage.shared.userLoggedIn()
+        self?.navigationController.hideLoading()
+        self?.navigationController.showSuccessTopBannerMessage(
+          with: "Hi \(user.name)",
+          message: "You have signed in successfully! You could buy tokens now"
+        )
+        self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+      // Already have user
       case .failure(let error):
         self?.navigationController.hideLoading()
         self?.navigationController.displayError(error: error)
@@ -456,7 +514,8 @@ extension KGOHomePageCoordinator {
       case .success(let resp):
         do {
           _ = try resp.filterSuccessfulStatusCodes()
-          let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
+          let jsonData: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let jsonArr = jsonData["data"] as? [JSONDictionary] ?? []
           let transactions = jsonArr.map({ return IEOTransaction(dict: $0) })
           NSLog("----KyberGO: reload KyberGO Tx list successully \(transactions.count) transactions----")
           completion?(.success(transactions))
@@ -621,6 +680,29 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
       with: "Broadcasted".toBeLocalised(),
       message: "Transaction has been successfully broadcasted".toBeLocalised()
     )
+    self.addTransactionRequest(draftTx: draftTx, hash: hash)
+  }
+
+  // Add transaction until it is success
+  fileprivate func addTransactionRequest(draftTx: IEODraftTransaction, hash: String) {
+    let provider = MoyaProvider<KyberGOService>()
+    let request = KyberGOService.createTx(
+      ieoID: draftTx.ieo.id,
+      srcAddress: draftTx.wallet.address,
+      hash: hash,
+      accessToken: IEOUserStorage.shared.user?.accessToken ?? "")
+    NSLog("----KyberGO: Add transaction----")
+    provider.request(request) { [weak self] result in
+      switch result {
+      case .success(let resp):
+        NSLog("----KyberGO: Add transaction status code: \(resp.statusCode)----")
+      case .failure(let error):
+        NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
+          self?.addTransactionRequest(draftTx: draftTx, hash: hash)
+        })
+      }
+    }
   }
 
   fileprivate func showAlertUserNotSignIn() {
@@ -667,7 +749,8 @@ extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
 
   private func userSelectSignOut() {
     self.navigationController.popViewController(animated: true) {
-      IEOUserStorage.shared.deleteAll()
+      IEOUserStorage.shared.signedOut()
+      self.navigationController.popToRootViewController(animated: true)
       self.rootViewController.coordinatorDidSignOut()
     }
   }

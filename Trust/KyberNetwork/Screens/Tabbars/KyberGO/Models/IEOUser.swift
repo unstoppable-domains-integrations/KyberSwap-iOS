@@ -14,6 +14,7 @@ class IEOUser: Object {
   @objc dynamic var expireTime: Double = 0
   @objc dynamic var accessToken: String = ""
   @objc dynamic var refreshToken: String = ""
+  @objc dynamic var isSignedIn: Bool = true
   var registeredAddress: List<String> = List<String>()
 
   convenience init(dict: JSONDictionary) {
@@ -29,14 +30,11 @@ class IEOUser: Object {
     }
   }
 
-  func updateToken(dict: JSONDictionary) {
-    self.tokenType = dict["token_type"] as? String ?? ""
-    self.accessToken = dict["access_token"] as? String ?? ""
-    self.expireTime = {
-      let expiresIn = dict["expires_in"] as? Double ?? 0
-      return Date().addingTimeInterval(expiresIn).timeIntervalSince1970
-    }()
-    self.refreshToken = dict["refresh_token"] as? String ?? ""
+  func updateToken(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
+    self.tokenType = type
+    self.accessToken = accessToken
+    self.refreshToken = refreshToken
+    self.expireTime = expireTime
   }
 
   override class func primaryKey() -> String? {

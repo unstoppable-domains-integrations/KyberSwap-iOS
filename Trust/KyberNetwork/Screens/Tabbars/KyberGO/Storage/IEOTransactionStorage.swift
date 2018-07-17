@@ -43,6 +43,14 @@ class IEOTransactionStorage {
     return self.realm.object(ofType: IEOTransaction.self, forPrimaryKey: primaryKey)
   }
 
+  func markAllViewed() {
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    let objects = self.objects
+    objects.forEach({ $0.viewed = true })
+    try! self.realm.commitWrite()
+  }
+
   func deleteAll() {
     if self.realm == nil { return }
     try! realm.write {

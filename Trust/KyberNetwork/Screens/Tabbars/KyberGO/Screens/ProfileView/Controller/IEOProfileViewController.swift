@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Moya
 
 enum IEOProfileViewEvent {
   case back
@@ -55,6 +56,7 @@ class IEOProfileViewController: KNBaseViewController {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
     self.setupUI()
+    self.setAllTransactionsViewed()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -99,6 +101,19 @@ class IEOProfileViewController: KNBaseViewController {
   @IBAction func screenEdgePanGesture(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
       self.delegate?.ieoProfileViewController(self, run: .back)
+    }
+  }
+
+  fileprivate func setAllTransactionsViewed() {
+    let provider = MoyaProvider<KyberGOService>()
+    provider.request(.markView) { [weak self] result in
+      switch result {
+      case .success:
+        IEOTransactionStorage.shared.markAllViewed()
+        KNNotificationUtil.postNotification(for: kIEOTxListUpdateNotificationKey)
+      case .failure(let error):
+        self?.displayError(error: error)
+      }
     }
   }
 }

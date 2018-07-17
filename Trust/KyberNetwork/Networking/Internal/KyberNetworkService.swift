@@ -110,6 +110,8 @@ enum KyberGOService {
   case checkParticipate(accessToken: String, ieoID: Int)
   case getSignedTx(userID: Int, ieoID: Int, address: String, time: UInt)
   case getTxList(accessToken: String)
+  case createTx(ieoID: Int, srcAddress: String, hash: String, accessToken: String)
+  case markView
 }
 
 extension KyberGOService: TargetType {
@@ -123,11 +125,15 @@ extension KyberGOService: TargetType {
     case .getUserInfo:
       return URL(string: "\(baseString)/api/user_info")!
     case .checkParticipate:
-      return URL(string: "\(baseString)/api/ieo_whitelisted")!
+      return URL(string: "\(baseString)/api/can_participate_ieo")!
     case .getSignedTx:
       return URL(string: KNSecret.ieoSignedEndpoint)!
     case .getTxList:
-      return URL(string: "\(baseString)/api/user_txs")!
+      return URL(string: "\(baseString)/api/txs")!
+    case .createTx:
+      return URL(string: "\(baseString)/api/txs")!
+    case .markView:
+      return URL(string: "\(baseString)/api/txs/set_viewed_txs")!
     }
   }
 
@@ -142,7 +148,7 @@ extension KyberGOService: TargetType {
 
   var task: Task {
     switch self {
-    case .listIEOs: return .requestPlain
+    case .listIEOs, .markView: return .requestPlain
     case .getAccessToken(let code):
       //TODO: Change to prod app id and secret
       let json: JSONDictionary = [
@@ -183,6 +189,17 @@ extension KyberGOService: TargetType {
         "userid": userID,
       ]
       return .requestCompositeData(bodyData: Data(), urlParameters: params)
+    case .createTx(let ieoID, let srcAddress, let hash, let accessToken):
+      let json: JSONDictionary = [
+        "client_id": KNSecret.debugAppID,
+        "client_secret": KNSecret.debugSecret,
+        "access_token": accessToken,
+        "ieo_id": ieoID,
+        "hash": hash,
+        "source_address": srcAddress,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
     }
   }
   var sampleData: Data { return Data() }

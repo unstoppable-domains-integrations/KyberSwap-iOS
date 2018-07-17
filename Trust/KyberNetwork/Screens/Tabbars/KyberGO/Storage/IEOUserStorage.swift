@@ -12,7 +12,7 @@ class IEOUserStorage {
   }
 
   var user: IEOUser? {
-    return self.objects.first
+    return self.objects.first(where: { $0.isSignedIn })
   }
 
   var objects: [IEOUser] {
@@ -32,9 +32,14 @@ class IEOUserStorage {
   }
 
   @discardableResult
-  func updateToken(object: IEOUser, dict: JSONDictionary) -> IEOUser {
+  func updateToken(object: IEOUser, type: String, accessToken: String, refreshToken: String, expireTime: Double) -> IEOUser {
     try! self.realm.write {
-      object.updateToken(dict: dict)
+      object.updateToken(
+        type: type,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        expireTime: expireTime
+      )
     }
     return object
   }
@@ -43,9 +48,32 @@ class IEOUserStorage {
     return self.realm.object(ofType: IEOUser.self, forPrimaryKey: primaryKey)
   }
 
-  func deleteAll() {
-    IEOTransactionStorage.shared.deleteAll()
-    try! realm.write {
-      realm.delete(realm.objects(IEOUser.self))
+  func delete(objects: [IEOUser]) {
+    if self.realm == nil { return }
+    try! self.realm.write {
+      self.realm.delete(objects)
     }
-  }}
+  }
+
+  func signedOut() {
+    if self.realm == nil { return }
+    guard let user = self.user else { return }
+    IEOTransactionStorage.shared.deleteAll()
+    self.realm.beginWrite()
+    user.isSignedIn = false
+    self.realm.add(user, update: true)
+    try! self.realm.commitWrite()
+  }
+
+  func signedIn() {
+    if self.realm == nil { return }
+    guard let user = self.objects.first else { return }
+    self.realm.beginWrite()
+    user.isSignedIn = true
+    self.realm.add(user, update: true)
+    try! self.realm.commitWrite()
+    // Remove all other users
+    let removedUsers = self.objects.filter({ return !$0.isSignedIn })
+    self.delete(objects: removedUsers)
+  }
+}

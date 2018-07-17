@@ -123,7 +123,7 @@ extension KNAppCoordinator {
     self.kyberGOCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
-    IEOUserStorage.shared.deleteAll()
+    IEOUserStorage.shared.signedOut()
   }
 
   // Switching account, restart a new session
