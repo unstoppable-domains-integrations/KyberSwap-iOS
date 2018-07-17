@@ -70,6 +70,7 @@ class KGOHomePageViewController: KNBaseViewController {
     self.userStatusLabel.text = IEOUserStorage.shared.objects.first?.name ?? "Unknown"
     self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
     self.pendingTxNotiView.isHidden = true
+    self.coordinatorUpdateListKyberGOTx(transactions: IEOTransactionStorage.shared.objects)
   }
 
   func setupIEOTableView() {
@@ -101,8 +102,8 @@ class KGOHomePageViewController: KNBaseViewController {
   }
 
   func coordinatorUpdateListKyberGOTx(transactions: [IEOTransaction]) {
-    let pendingTrans = transactions.filter({ $0.txStatus == .pending })
-    self.pendingTxNotiView.isHidden = !pendingTrans.isEmpty
+    let unviewedTrans = transactions.filter({ !$0.viewed })
+    self.pendingTxNotiView.isHidden = unviewedTrans.isEmpty
   }
 
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {

@@ -8,6 +8,16 @@ enum IEOTransactionStatus: String {
   case lost = "lost"
   case pending = "pending"
   case unknown = ""
+
+  var displayText: String {
+    switch self {
+    case .success: return "Transaction Success"
+    case .fail: return "Transaction Failed"
+    case .lost: return "Transaction Lost"
+    case .pending: return "Transaction Pending"
+    default: return "Unknown Status"
+    }
+  }
 }
 
 class IEOTransaction: Object {
@@ -19,8 +29,8 @@ class IEOTransaction: Object {
   @objc dynamic var status: String = ""
   @objc dynamic var createdDate: Date = Date()
   @objc dynamic var updatedDate: Date = Date()
-  @objc dynamic var distributedTokensWei: Int32 = 0
-  @objc dynamic var payedWei: Int32 = 0
+  @objc dynamic var distributedTokensWei: Double = 0
+  @objc dynamic var payedWei: Double = 0
   @objc dynamic var viewed: Bool = false
   @objc dynamic var srcAddress: String = ""
   @objc dynamic var destAddress: String = ""
@@ -36,14 +46,14 @@ class IEOTransaction: Object {
     self.status = dict["status"] as? String ?? ""
     self.createdDate = {
       let date = dict["created_at"] as? Double ?? 0.0
-      return Date(timeIntervalSince1970: date)
+      return Date(timeIntervalSince1970: date / 1000.0)
     }()
     self.updatedDate = {
       let date = dict["updated_at"] as? Double ?? 0.0
-      return Date(timeIntervalSince1970: date)
+      return Date(timeIntervalSince1970: date / 1000.0)
     }()
-    self.distributedTokensWei = dict["distributed_tokens_wei"] as? Int32 ?? 0
-    self.payedWei = dict["payed_wei"] as? Int32 ?? 0
+    self.distributedTokensWei = dict["distributed_tokens_wei"] as? Double ?? 0.0
+    self.payedWei = dict["payed_wei"] as? Double ?? 0.0
     self.viewed = dict["viewed"] as? Bool ?? false
     self.srcAddress = dict["src_address"] as? String ?? ""
     self.destAddress = dict["dest_address"] as? String ?? ""

@@ -32,7 +32,10 @@ class IEOUser: Object {
   func updateToken(dict: JSONDictionary) {
     self.tokenType = dict["token_type"] as? String ?? ""
     self.accessToken = dict["access_token"] as? String ?? ""
-    self.expireTime = dict["expires_int"] as? Double ?? 0
+    self.expireTime = {
+      let expiresIn = dict["expires_in"] as? Double ?? 0
+      return Date().addingTimeInterval(expiresIn).timeIntervalSince1970
+    }()
     self.refreshToken = dict["refresh_token"] as? String ?? ""
   }
 

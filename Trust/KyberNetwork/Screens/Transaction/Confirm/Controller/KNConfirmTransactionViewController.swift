@@ -19,7 +19,11 @@ struct KNConfirmTransactionViewModel {
   }
 
   var leftButtonTitle: String {
-    return type.isTransfer ? "SEND".toBeLocalised() : "SWAP".toBeLocalised()
+    switch self.type {
+    case .transfer: return "SEND"
+    case .exchange: return "SWAP"
+    case .buyTokenSale: return "CONTRIBUTE"
+    }
   }
 
   var leftButtonIcon: String {
@@ -36,6 +40,12 @@ struct KNConfirmTransactionViewModel {
       return tx.value.string(decimals: token.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(token.symbol)"
     case .exchange(let trans):
       return trans.amount.string(decimals: trans.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(trans.from.symbol)"
+    case .buyTokenSale(let trans):
+      return trans.amount.string(
+        decimals: trans.token.decimals,
+        minFractionDigits: 4,
+        maxFractionDigits: 4
+      ) + " \(trans.token.symbol)"
     }
   }
 
@@ -62,6 +72,9 @@ struct KNConfirmTransactionViewModel {
     case .exchange(let trans):
       let receivedAmount = "\(trans.expectedReceive.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)) \(trans.to.symbol)"
       attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
+    case .buyTokenSale(let trans):
+      let receivedAmount = "\(trans.expectedReceive.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 4)) \(trans.ieo.tokenSymbol)"
+      attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
     }
     return attributedString
   }
@@ -70,14 +83,23 @@ struct KNConfirmTransactionViewModel {
   var heightForEstimatedRate: CGFloat { return type.isTransfer ? 0.0 : 52.0 }
   var isEstimatedRateHidden: Bool { return type.isTransfer }
   var displayEstimatedRate: String {
-    if case .exchange(let trans) = type {
+    switch self.type {
+    case .exchange(let trans):
       let rateString = trans.expectedRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
       return "1 \(trans.from.symbol) = \(rateString) \(trans.to.symbol)"
+    case .buyTokenSale(let trans):
+      let rateString = trans.estRate?.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 6) ?? "0"
+      return "1 \(trans.token.symbol) = \(rateString) \(trans.ieo.tokenSymbol)"
+    default: return ""
     }
-    return ""
   }
-  var heightForSlippageRate: CGFloat { return type.isTransfer ? 0.0 : 52.0 }
-  var isSlippageRateHidden: Bool { return type.isTransfer }
+  var isSlippageRateHidden: Bool {
+    if case .exchange = self.type { return false }
+    return true
+  }
+  var heightForSlippageRate: CGFloat {
+    return self.isSlippageRateHidden ? 0.0 : 52.0
+  }
   var slippageRateString: String {
     if case .exchange(let trans) = type, let minRate = trans.minRate {
       let percentage = ((trans.expectedRate - minRate) * BigInt(100) / trans.expectedRate)
@@ -98,6 +120,9 @@ struct KNConfirmTransactionViewModel {
       return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
     case .exchange(let trans):
       let fee = (trans.gasPrice ?? BigInt(0)) * (trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
+      return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
+    case .buyTokenSale(let trans):
+      let fee = trans.gasPrice * trans.gasLimit
       return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
     }
   }

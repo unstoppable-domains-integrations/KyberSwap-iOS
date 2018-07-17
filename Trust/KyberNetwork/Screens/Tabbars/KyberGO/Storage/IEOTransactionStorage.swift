@@ -8,14 +8,13 @@ class IEOTransactionStorage {
   static let shared = IEOTransactionStorage()
   private(set) var realm: Realm!
 
-  init() { self.loggedIn() }
-
-  func loggedOut() {
-    self.deleteAll()
-    self.realm = nil
+  init() {
+    guard let user = IEOUserStorage.shared.user else { return }
+    let config = RealmConfiguration.kyberGOConfiguration(for: user.userID)
+    self.realm = try! Realm(configuration: config)
   }
 
-  func loggedIn() {
+  func userLoggedIn() {
     guard let user = IEOUserStorage.shared.user else { return }
     let config = RealmConfiguration.kyberGOConfiguration(for: user.userID)
     self.realm = try! Realm(configuration: config)
@@ -24,8 +23,8 @@ class IEOTransactionStorage {
   var objects: [IEOTransaction] {
     if self.realm == nil { return [] }
     return self.realm.objects(IEOTransaction.self)
-      .sorted(byKeyPath: "createdDate", ascending: true)
-      .filter { !($0.id != -1) }
+      .sorted(byKeyPath: "createdDate", ascending: false)
+      .filter { $0.id != -1 }
   }
 
   func add(objects: [IEOTransaction]) {

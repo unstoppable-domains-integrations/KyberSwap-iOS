@@ -127,7 +127,7 @@ extension KyberGOService: TargetType {
     case .getSignedTx:
       return URL(string: KNSecret.ieoSignedEndpoint)!
     case .getTxList:
-      return URL(string: "\(baseString)/api/user/txs")!
+      return URL(string: "\(baseString)/api/user_txs")!
     }
   }
 
@@ -135,7 +135,7 @@ extension KyberGOService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .listIEOs, .getUserInfo: return .get
+    case .listIEOs, .getUserInfo, .checkParticipate, .getTxList: return .get
     default: return .post
     }
   }
@@ -159,7 +159,7 @@ extension KyberGOService: TargetType {
         "client_id": KNSecret.debugAppID,
         "client_secret": KNSecret.debugSecret,
         "access_token": accessToken,
-        "ieoid": ieoID,
+        "ieo_id": ieoID,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

@@ -50,10 +50,8 @@ class KNTransactionStatusCoordinator: Coordinator {
 
 extension KNTransactionStatusCoordinator: KNTransactionStatusViewControllerDelegate {
   func transactionStatusVCUserDidTapToView(transaction: Transaction) {
-    if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "tx/\(transaction.id)") {
-      let safariController = SFSafariViewController(url: url)
-      self.rootViewController?.present(safariController, animated: true, completion: nil)
-    }
+    let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(transaction.id)"
+    self.rootViewController?.openSafari(with: urlString)
   }
 
   func transactionStatusVCUserDidClickClose() {

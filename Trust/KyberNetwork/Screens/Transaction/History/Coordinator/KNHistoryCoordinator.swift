@@ -143,8 +143,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
 
   fileprivate func openEtherScanForTransaction(with hash: String) {
     if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
-      let controller = SFSafariViewController(url: url)
-      self.rootViewController.present(controller, animated: true, completion: nil)
+      self.rootViewController.openSafari(with: url)
     }
   }
 }

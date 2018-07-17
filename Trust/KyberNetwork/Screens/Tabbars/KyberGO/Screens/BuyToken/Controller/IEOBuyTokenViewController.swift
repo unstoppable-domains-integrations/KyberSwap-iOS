@@ -151,10 +151,17 @@ struct IEOBuyTokenViewModel {
 
   // MARK: Verify data
   // Amount should > 0 and <= balance
+  var isAmountTooSmall: Bool {
+    return self.amountFromBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+  }
+
+  var isAmountTooBig: Bool {
+    // TODO: Check user cap
+    return self.amountFromBigInt > self.balance?.value ?? BigInt(0)
+  }
+
   var isAmountValid: Bool {
-    if self.amountFromBigInt <= BigInt(0) { return false }
-    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return false }
-    return true
+    return !self.isAmountTooSmall && !self.isAmountTooBig
   }
 
   // rate should not be nil and greater than zero
@@ -438,12 +445,25 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   @IBAction func buyButtonPressed(_ sender: Any) {
     let amount = self.viewModel.amountFromBigInt
-    guard self.viewModel.isAmountValid else {
-      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Please input a valid amount to buy")
+    if self.viewModel.isAmountTooSmall {
+      self.showWarningTopBannerMessage(
+        with: "Invalid Amount".toBeLocalised(),
+        message: "Amount is too small to buy token sale".toBeLocalised()
+      )
+      return
+    }
+    if self.viewModel.isAmountTooBig {
+      self.showWarningTopBannerMessage(
+        with: "Invalid Amount".toBeLocalised(),
+        message: "Amount is too big to buy token sale".toBeLocalised()
+      )
       return
     }
     guard let rate = self.viewModel.estRate else {
-      self.showWarningTopBannerMessage(with: "Invalid Rate", message: "We could not update rate from node")
+      self.showWarningTopBannerMessage(
+        with: "Invalid Rate".toBeLocalised(),
+        message: "We could not update rate from node".toBeLocalised()
+      )
       return
     }
     let transaction = IEODraftTransaction(

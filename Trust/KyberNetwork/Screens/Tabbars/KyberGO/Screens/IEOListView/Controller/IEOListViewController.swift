@@ -118,8 +118,6 @@ extension IEOListViewController: KGOIEODetailsViewControllerDelegate {
       }
       return ""
     }()
-    guard let url = URL(string: urlString) else { return }
-    let safariController = SFSafariViewController(url: url)
-    self.present(safariController, animated: true, completion: nil)
+    self.openSafari(with: urlString)
   }
 }

@@ -51,10 +51,8 @@ extension KNTransactionDetailsCoordinator: KNTransactionDetailsViewControllerDel
     switch event {
     case .back: self.stop()
     case .openEtherScan:
-      if let url = URL(string: "\(self.etherScanURL)tx/\(self.transaction?.id ?? "")") {
-        let safariVC = SFSafariViewController(url: url)
-        self.rootViewController.present(safariVC, animated: true, completion: nil)
-      }
+      let urlString = "\(self.etherScanURL)tx/\(self.transaction?.id ?? "")"
+      self.rootViewController.openSafari(with: urlString)
     }
   }
 }

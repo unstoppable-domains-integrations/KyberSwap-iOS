@@ -277,12 +277,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
       }
     } else {
       let tx = self.viewModel.transaction(at: indexPath.row)?.id ?? ""
-      if let url = URL(string: KNEnvironment.default.etherScanIOURLString + "tx/\(tx)") {
-        self.hideMenu(animated: true) {
-          let safariVC = SFSafariViewController(url: url)
-          self.present(safariVC, animated: true, completion: nil)
-        }
-      }
+      self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "tx/\(tx)")
     }
   }
 }

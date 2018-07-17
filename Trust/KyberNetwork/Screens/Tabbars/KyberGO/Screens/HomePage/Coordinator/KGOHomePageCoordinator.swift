@@ -8,6 +8,7 @@ import TrustCore
 import Result
 import SafariServices
 
+//swiftlint:disable file_length
 class KGOHomePageCoordinator: Coordinator {
 
   let navigationController: UINavigationController
@@ -29,6 +30,7 @@ class KGOHomePageCoordinator: Coordinator {
 
   fileprivate var buyTokenVC: IEOBuyTokenViewController?
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
+  fileprivate var profileVC: IEOProfileViewController?
 
   deinit { self.stop() }
 
@@ -43,30 +45,11 @@ class KGOHomePageCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    self.ieoListTimer?.invalidate()
-    self.initialLoadListKGO()
-    self.ieoListTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingListIEOInterval,
-      repeats: true,
-      block: { [weak self] _ in
-      self?.reloadListKGO()
-    })
-    self.nodeDataTimer?.invalidate()
-    self.reloadIEODataFromNode()
-    self.nodeDataTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-      repeats: true,
-      block: { [weak self] _ in
-        self?.reloadIEODataFromNode()
-    })
-    self.kyberGOTxListTimer?.invalidate()
-    self.reloadKyberGOTransactionList()
-    self.kyberGOTxListTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-      repeats: true,
-      block: { [weak self] _ in
-        self?.reloadKyberGOTransactionList()
-    })
+    self.timerLoadIEOList()
+    self.timerLoadDataFromNode()
+    self.timerLoadKyberGOTxList()
+
+    // Add notification observer
     let callbackName = Notification.Name(kIEODidReceiveCallbackNotificationKey)
     NotificationCenter.default.addObserver(
       self,
@@ -83,6 +66,8 @@ class KGOHomePageCoordinator: Coordinator {
     self.nodeDataTimer = nil
     self.kyberGOTxListTimer?.invalidate()
     self.kyberGOTxListTimer = nil
+
+    // Remove notification observer
     NotificationCenter.default.removeObserver(
       self,
       name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
@@ -90,6 +75,40 @@ class KGOHomePageCoordinator: Coordinator {
     )
   }
 
+  fileprivate func timerLoadIEOList() {
+    self.ieoListTimer?.invalidate()
+    self.initialLoadListKGO()
+    self.ieoListTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.loadingListIEOInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.reloadListKGO()
+    })
+  }
+
+  fileprivate func timerLoadDataFromNode() {
+    self.nodeDataTimer?.invalidate()
+    self.reloadIEODataFromNode()
+    self.nodeDataTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.reloadIEODataFromNode()
+    })
+  }
+
+  fileprivate func timerLoadKyberGOTxList() {
+    self.kyberGOTxListTimer?.invalidate()
+    self.reloadKyberGOTransactionList()
+    self.kyberGOTxListTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.reloadKyberGOTransactionList()
+    })
+  }
+
+  // MARK: Update from app coordinator
   func updateSession(_ session: KNSession) {
     self.session = session
     self.navigationController.popToRootViewController(animated: false)
@@ -99,6 +118,7 @@ class KGOHomePageCoordinator: Coordinator {
     self.buyTokenVC?.coordinatorDidUpdateWalletObjects()
   }
 
+  // MARK: Initial load list KyberGO, show error if needed
   fileprivate func initialLoadListKGO() {
     var isLoadingShown: Bool = false
     if IEOObjectStorage.shared.objects.isEmpty {
@@ -113,8 +133,21 @@ class KGOHomePageCoordinator: Coordinator {
       }
     }
   }
+
+  fileprivate func openConfirmView(for transaction: IEODraftTransaction) {
+    let viewModel: KNConfirmTransactionViewModel = {
+      let type = KNTransactionType.buyTokenSale(transaction)
+      return KNConfirmTransactionViewModel(type: type)
+    }()
+    let confirmVC = KNConfirmTransactionViewController(viewModel: viewModel)
+    confirmVC.delegate = self
+    confirmVC.modalPresentationStyle = .overFullScreen
+    confirmVC.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(confirmVC, animated: true, completion: nil)
+  }
 }
 
+// MARK: KGO Home Page VC Delegation
 extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
   func kyberGOHomePageViewController(_ controller: KGOHomePageViewController, run event: KGOHomePageViewEvent) {
     switch event {
@@ -128,17 +161,13 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
   }
 
   fileprivate func userSelectedAccount() {
-    guard let user = IEOUserStorage.shared.user else {
+    guard let _ = IEOUserStorage.shared.user else {
       self.openSignInView()
       return
     }
-    let alertController = UIAlertController(title: "", message: "You are signed in as \(user.name). Do you want to sign out?", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "Keep Sign In", style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Sign Out", style: .default, handler: { _ in
-      IEOUserStorage.shared.deleteAll()
-      self.rootViewController.coordinatorDidSignOut()
-    }))
-    self.navigationController.present(alertController, animated: true, completion: nil)
+    self.profileVC = IEOProfileViewController(viewModel: IEOProfileViewModel())
+    self.profileVC?.delegate = self
+    self.navigationController.pushViewController(self.profileVC!, animated: true)
   }
 
   fileprivate func openListIEOView(selectedObject: IEOObject, listObjects: [IEOObject]) {
@@ -171,7 +200,9 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       self.showAlertUserNotSignIn()
       return
     }
+    self.navigationController.displayLoading(text: "Checking...", animated: true)
     self.checkIEOWhitelisted(ieo: object) { [weak self] result in
+      self?.navigationController.hideLoading()
       guard let `self` = self else { return }
       switch result {
       case .success(let canBuy):
@@ -221,6 +252,7 @@ extension KGOHomePageCoordinator {
     guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
     // got authentication code from KyberGO
     // use the code to get access token for user
+    self.navigationController.displayLoading(text: "Initial Session...", animated: true)
     let provider = MoyaProvider<KyberGOService>()
     let accessToken = KyberGOService.getAccessToken(code: code)
     provider.request(accessToken, completion: { [weak self] result in
@@ -229,6 +261,7 @@ extension KGOHomePageCoordinator {
       case .success(let data):
         if let dataJSON = try? data.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = dataJSON {
           guard let accessToken = json["access_token"] as? String else {
+            self?.navigationController.hideLoading()
             self?.navigationController.showWarningTopBannerMessage(
               with: "Error",
               message: "Can not get access token"
@@ -242,6 +275,7 @@ extension KGOHomePageCoordinator {
             switch userInfoResult {
             case .success(let userInfo):
               guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
+                self?.navigationController.hideLoading()
                 self?.navigationController.showWarningTopBannerMessage(
                   with: "Error",
                   message: "Can not get user infor"
@@ -251,6 +285,8 @@ extension KGOHomePageCoordinator {
               let user = IEOUser(dict: userJSON)
               IEOUserStorage.shared.update(objects: [user])
               IEOUserStorage.shared.updateToken(object: user, dict: json)
+              IEOTransactionStorage.shared.userLoggedIn()
+              self?.navigationController.hideLoading()
               self?.navigationController.showSuccessTopBannerMessage(
                 with: "Hi \(user.name)",
                 message: "You have signed in successfully! You could buy tokens now"
@@ -258,16 +294,19 @@ extension KGOHomePageCoordinator {
               self?.rootViewController.coordinatorUserDidSignInSuccessfully()
               // Already have user
             case .failure(let error):
+              self?.navigationController.hideLoading()
               self?.navigationController.displayError(error: error)
             }
           })
         } else {
+          self?.navigationController.hideLoading()
           self?.navigationController.showWarningTopBannerMessage(
             with: "Error",
             message: "Can not get access token"
           )
         }
       case .failure(let error):
+        self?.navigationController.hideLoading()
         self?.navigationController.displayError(error: error)
       }
     })
@@ -277,6 +316,7 @@ extension KGOHomePageCoordinator {
 // MARK: KyberGO Provider (Networking)
 extension KGOHomePageCoordinator {
   fileprivate func reloadListKGO(completion: ((Result<Bool, AnyError>) -> Void)? = nil) {
+    NSLog("----KyberGO: reload list KGO----")
     DispatchQueue.global().async {
       let provider = MoyaProvider<KyberGOService>()
       provider.request(.listIEOs, completion: { [weak self] result in
@@ -284,6 +324,7 @@ extension KGOHomePageCoordinator {
           switch result {
           case .success(let resp):
             do {
+              _ = try resp.filterSuccessfulStatusCodes()
               guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else { return }
               if let dataArr = json["data"] as? [JSONDictionary] {
                 let objects = dataArr.map({ json -> IEOObject in
@@ -296,14 +337,15 @@ extension KGOHomePageCoordinator {
                 IEOObjectStorage.shared.update(objects: objects)
                 self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
               }
+              NSLog("----KyberGO: reload list KGO successfully----")
               completion?(.success(true))
             } catch {
+              NSLog("----KyberGO: reload list KGO parse error----")
               completion?(.success(false))
-              print("Error to map result")
             }
           case .failure(let error):
             completion?(.failure(AnyError(error)))
-            print("Failed to load list IEOs")
+            NSLog("----KyberGO: reload list KGO failed with error: \(error.prettyError)----")
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() +  5.0, execute: {
               self?.reloadListKGO()
             })
@@ -314,35 +356,41 @@ extension KGOHomePageCoordinator {
   }
 
   fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    //TODO: Remove when api is ready
-    if isDebug {
-      completion(.success(true))
-      return
-    }
     guard let user = IEOUserStorage.shared.user else {
       completion(.success(false))
       return
     }
+    NSLog("----KyberGO: Check can participate----")
     let provider = MoyaProvider<KyberGOService>()
     provider.request(.checkParticipate(accessToken: user.accessToken, ieoID: ieo.id)) { result in
       switch result {
       case .success(let resp):
         do {
+          _ = try resp.filterSuccessfulStatusCodes()
           guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
+            NSLog("----KyberGO: Check can participate parse error----")
             completion(.success(false))
             return
           }
-          completion(.success(json["data"] as? Bool ?? false))
+          NSLog("----KyberGO: Check can participate successfully data: \(json)----")
+          let canParticipate: Bool = {
+            guard let data = json["data"] as? JSONDictionary else { return false }
+            return data["can_participate"] as? Bool ?? false
+          }()
+          completion(.success(canParticipate))
         } catch let error {
+          NSLog("----KyberGO: Check can participate parse error: \(error.prettyError)----")
           completion(.failure(AnyError(error)))
         }
       case .failure(let error):
+        NSLog("----KyberGO: Check can participate failed error: \(error.prettyError)----")
         completion(.failure(AnyError(error)))
       }
     }
   }
 
   fileprivate func getSignData(userID: Int, address: String, ieoID: Int, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
+    NSLog("----KyberGO: Get Sign Data----")
     let provider = MoyaProvider<KyberGOService>()
     let service = KyberGOService.getSignedTx(
       userID: userID,
@@ -354,17 +402,20 @@ extension KGOHomePageCoordinator {
       switch result {
       case .success(let resp):
         if let data = try? resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = data {
+          NSLog("----KyberGO: Get Sign Data Successfully: \(json)----")
           completion(.success(json))
         } else {
+          NSLog("----KyberGO: Get Sign Data Parse Error")
           completion(.success(["reason": "Can not parse response data"]))
         }
       case .failure(let error):
+        NSLog("----KyberGO: Get Sign Data Error \(error.prettyError)----")
         completion(.failure(AnyError(error)))
       }
     }
   }
 
-  fileprivate func reloadKyberGOTransactionList() {
+  fileprivate func reloadKyberGOTransactionList(completion: ((Result<[IEOTransaction], AnyError>) -> Void)? = nil) {
     self.fetchKyberGOTxList { [weak self] result in
       if case .success(let transactions) = result {
         var txMap: [String: IEOTransaction] = [:]
@@ -381,10 +432,13 @@ extension KGOHomePageCoordinator {
           }
         })
         IEOTransactionStorage.shared.update(objects: transactions)
+        let trans = IEOTransactionStorage.shared.objects
+        self?.profileVC?.coordinatorUpdateTransactionList(trans)
         self?.rootViewController.coordinatorUpdateListKyberGOTx(
-          transactions: IEOTransactionStorage.shared.objects
+          transactions: trans
         )
       }
+      completion?(result)
     }
   }
 
@@ -394,6 +448,7 @@ extension KGOHomePageCoordinator {
       completion?(.success([]))
       return
     }
+    NSLog("----KyberGO: reload KyberGO Tx list----")
     let provider = MoyaProvider<KyberGOService>()
     provider.request(.getTxList(accessToken: user.accessToken)) { [weak self] result in
       guard let _ = self else { return }
@@ -403,11 +458,14 @@ extension KGOHomePageCoordinator {
           _ = try resp.filterSuccessfulStatusCodes()
           let jsonArr: [JSONDictionary] = try resp.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
           let transactions = jsonArr.map({ return IEOTransaction(dict: $0) })
+          NSLog("----KyberGO: reload KyberGO Tx list successully \(transactions.count) transactions----")
           completion?(.success(transactions))
         } catch let error {
+          NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
           completion?(.failure(AnyError(error)))
         }
       case .failure(let error):
+        NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
         completion?(.failure(AnyError(error)))
       }
     }
@@ -466,27 +524,59 @@ extension KGOHomePageCoordinator {
   }
 
   fileprivate func sendBuyTransaction(_ transaction: IEODraftTransaction) {
-    guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == transaction.wallet.address.lowercased() }) else { return }
-    if case .real(let account) = wal.type {
-      self.navigationController.displayLoading(text: "Broadcasting...", animated: true)
-      IEOProvider.shared.buy(
-        transaction: transaction,
-        account: account,
-        keystore: self.session.keystore,
-        completion: { [weak self] result in
-          self?.navigationController.hideLoading()
-          switch result {
-          case .success(let resp):
-            self?.reloadKyberGOTransactionList()
-            self?.showBroadcastSuccessfully(resp)
-          case .failure(let error):
-            self?.navigationController.displayError(error: error)
-          }
-      })
+    self.waitingForGettingSignData(transaction: transaction) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let trans) = result, let newTransaction = trans {
+        guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == transaction.wallet.address.lowercased() }) else { return }
+        if case .real(let account) = wal.type {
+          self.navigationController.displayLoading(text: "Broadcasting...", animated: true)
+          IEOProvider.shared.buy(
+            transaction: newTransaction,
+            account: account,
+            keystore: self.session.keystore,
+            completion: { [weak self] result in
+              self?.navigationController.hideLoading()
+              switch result {
+              case .success(let resp):
+                self?.didFinishBuyTokenWithHash(resp, draftTx: newTransaction)
+              case .failure(let error):
+                self?.navigationController.displayError(error: error)
+              }
+          })
+        }
+      }
     }
+  }
+
+  fileprivate func waitingForGettingSignData(transaction: IEODraftTransaction, completion: @escaping (Result<IEODraftTransaction?, AnyError>) -> Void) {
+    guard let userID = IEOUserStorage.shared.user?.userID else { return }
+    self.navigationController.displayLoading(text: "Getting sign data...", animated: true)
+    self.getSignData(
+      userID: userID,
+      address: transaction.wallet.address,
+      ieoID: transaction.ieo.id,
+      completion: { [weak self] result in
+        guard let `self` = self else { return }
+        self.navigationController.hideLoading()
+        switch result {
+        case .success(let data):
+          guard let v = data["v"] as? String, let r = data["r"] as? String, let s = data["s"] as? String else {
+            let reason = data["reason"] as? String ?? "Something went wrong".toBeLocalised()
+            self.navigationController.showWarningTopBannerMessage(with: "Error", message: reason)
+            completion(.success(nil))
+            return
+          }
+          transaction.update(v: v, r: r, s: s)
+          completion(.success(transaction))
+        case .failure(let error):
+          self.navigationController.displayError(error: error)
+          completion(.failure(error))
+        }
+    })
   }
 }
 
+// MARK: KGO IEO List View Delegation
 extension KGOHomePageCoordinator: IEOListViewControllerDelegate {
   func ieoListViewController(_ controller: IEOListViewController, run event: IEOListViewEvent) {
     switch event {
@@ -498,6 +588,7 @@ extension KGOHomePageCoordinator: IEOListViewControllerDelegate {
   }
 }
 
+// MARK: KGO IEO Buy View Delegation
 extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
   func ieoBuyTokenViewController(_ controller: IEOBuyTokenViewController, run event: IEOBuyTokenViewEvent) {
     switch event {
@@ -519,39 +610,17 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
         self.showAlertUserNotSignIn()
         return
       }
-      self.getSignData(
-        userID: userID,
-        address: transaction.wallet.address,
-        ieoID: transaction.ieo.id,
-        completion: { [weak self] result in
-        guard let `self` = self else { return }
-          switch result {
-          case .success(let data):
-            guard let v = data["v"] as? String, let r = data["r"] as? String, let s = data["s"] as? String else {
-              let reason = data["reason"] as? String ?? "Something went wrong"
-              self.navigationController.showWarningTopBannerMessage(with: "Error", message: reason)
-              return
-            }
-            transaction.update(userID: userID)
-            transaction.update(v: v, r: r, s: s)
-            self.sendBuyTransaction(transaction)
-          case .failure(let error):
-            self.navigationController.displayError(error: error)
-          }
-      })
+      transaction.update(userID: userID)
+      self.openConfirmView(for: transaction)
     }
   }
 
-  fileprivate func showBroadcastSuccessfully(_ hash: String) {
-    let alertController = UIAlertController(title: "Successfully", message: "Your transaction is being mined", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Open Details", style: .default, handler: { _ in
-      if let url = URL(string: "\(KNEnvironment.default.etherScanIOURLString)tx/\(hash)") {
-        let safariVC = SFSafariViewController(url: url)
-        self.navigationController.present(safariVC, animated: true, completion: nil)
-      }
-    }))
-    self.navigationController.present(alertController, animated: true, completion: nil)
+  fileprivate func didFinishBuyTokenWithHash(_ hash: String, draftTx: IEODraftTransaction) {
+    self.reloadKyberGOTransactionList()
+    self.navigationController.showSuccessTopBannerMessage(
+      with: "Broadcasted".toBeLocalised(),
+      message: "Transaction has been successfully broadcasted".toBeLocalised()
+    )
   }
 
   fileprivate func showAlertUserNotSignIn() {
@@ -568,11 +637,67 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
   }
 }
 
+// MARK: Set Gas View Delegation
 extension KGOHomePageCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
       self.buyTokenVC?.coordinatorBuyTokenDidUpdateGasPrice(gasPrice)
       self.setGasPriceVC = nil
+    }
+  }
+}
+
+// MARK: IEO Profile Delegation
+extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
+  func ieoProfileViewController(_ controller: IEOProfileViewController, run event: IEOProfileViewEvent) {
+    switch event {
+    case .back: self.navigationController.popViewController(animated: true)
+    case .select(let transaction): self.openEtherScan(for: transaction)
+    case .signedOut:
+      self.userSelectSignOut()
+    case .viewDidAppear:
+      self.reloadKGOTransactionListViewDidAppear()
+    }
+  }
+
+  private func openEtherScan(for transaction: IEOTransaction) {
+    let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(transaction.txHash)"
+    self.profileVC?.openSafari(with: urlString)
+  }
+
+  private func userSelectSignOut() {
+    self.navigationController.popViewController(animated: true) {
+      IEOUserStorage.shared.deleteAll()
+      self.rootViewController.coordinatorDidSignOut()
+    }
+  }
+
+  private func reloadKGOTransactionListViewDidAppear() {
+    // Immediately reload KGO transaction list when view appeared
+    let displayLoading: Bool = IEOTransactionStorage.shared.objects.isEmpty
+    if displayLoading {
+      self.profileVC?.displayLoading(text: "Loading Transactions...", animated: true)
+    }
+    self.reloadKyberGOTransactionList(completion: { [weak self] result in
+      if displayLoading { self?.profileVC?.hideLoading() }
+      switch result {
+      case .success:
+        let trans = IEOTransactionStorage.shared.objects
+        self?.profileVC?.coordinatorUpdateTransactionList(trans)
+      case .failure(let error):
+        self?.profileVC?.displayError(error: error)
+      }
+    })
+  }
+}
+
+// MARK: Confirm Buy Delegation
+extension KGOHomePageCoordinator: KNConfirmTransactionViewControllerDelegate {
+  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
+    controller.dismiss(animated: true) {
+      if case .confirm(let type) = event, case .buyTokenSale(let trans) = type {
+        self.sendBuyTransaction(trans)
+      }
     }
   }
 }

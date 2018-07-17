@@ -33,6 +33,7 @@ class IEODraftTransaction {
     self.wallet = wallet
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
+    self.estRate = estRate
   }
 
   func update(userID: Int) {
@@ -43,5 +44,10 @@ class IEODraftTransaction {
     self.v = v
     self.r = r
     self.s = s
+  }
+
+  var expectedReceive: BigInt {
+    guard let rate = self.estRate else { return BigInt(0) }
+    return rate * amount / BigInt(10).power(self.token.decimals)
   }
 }

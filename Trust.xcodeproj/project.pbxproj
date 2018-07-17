@@ -51,6 +51,8 @@
 		25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */; };
 		25369F1420FC7587007231FE /* IEOTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1320FC7587007231FE /* IEOTransaction.swift */; };
 		25369F1620FC75AA007231FE /* IEOTransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1520FC75AA007231FE /* IEOTransactionStorage.swift */; };
+		25369F1A20FCB062007231FE /* IEOProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1820FCB062007231FE /* IEOProfileViewController.swift */; };
+		25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1920FCB062007231FE /* IEOProfileViewController.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2547714C20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */; };
@@ -102,6 +104,8 @@
 		25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */; };
 		256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */; };
 		256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */; };
+		25767B4F20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25767B4D20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift */; };
+		25767B5020FD9367004FF538 /* IEOTransactionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25767B4E20FD9367004FF538 /* IEOTransactionCollectionViewCell.xib */; };
 		257740C120579335003323EB /* UIView+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740C020579335003323EB /* UIView+Kyber.swift */; };
 		257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257740C420579456003323EB /* KNSplashScreenViewController.xib */; };
 		257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257740C520579456003323EB /* KNSplashScreenViewController.swift */; };
@@ -710,6 +714,8 @@
 		25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionView.xib; sourceTree = "<group>"; };
 		25369F1320FC7587007231FE /* IEOTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransaction.swift; sourceTree = "<group>"; };
 		25369F1520FC75AA007231FE /* IEOTransactionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransactionStorage.swift; sourceTree = "<group>"; };
+		25369F1820FCB062007231FE /* IEOProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOProfileViewController.swift; sourceTree = "<group>"; };
+		25369F1920FCB062007231FE /* IEOProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOProfileViewController.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckWhiteListedAddressRequest.swift; sourceTree = "<group>"; };
@@ -760,6 +766,8 @@
 		25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenTableViewCell.xib; sourceTree = "<group>"; };
 		256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabHamburgerMenuViewController.swift; sourceTree = "<group>"; };
 		256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBalanceTabHamburgerMenuViewController.xib; sourceTree = "<group>"; };
+		25767B4D20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransactionCollectionViewCell.swift; sourceTree = "<group>"; };
+		25767B4E20FD9367004FF538 /* IEOTransactionCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOTransactionCollectionViewCell.xib; sourceTree = "<group>"; };
 		257740C020579335003323EB /* UIView+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Kyber.swift"; sourceTree = "<group>"; };
 		257740C420579456003323EB /* KNSplashScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNSplashScreenViewController.xib; sourceTree = "<group>"; };
 		257740C520579456003323EB /* KNSplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSplashScreenViewController.swift; sourceTree = "<group>"; };
@@ -1653,6 +1661,24 @@
 			path = CollectionView;
 			sourceTree = "<group>";
 		};
+		25369F1720FCAFBA007231FE /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				25369F1C20FCB072007231FE /* Controller */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		25369F1C20FCB072007231FE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				25767B4C20FD9316004FF538 /* IEOTransactionCollectionViewCell */,
+				25369F1820FCB062007231FE /* IEOProfileViewController.swift */,
+				25369F1920FCB062007231FE /* IEOProfileViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		2537431C20ECEA52002C29FC /* Secret */ = {
 			isa = PBXGroup;
 			children = (
@@ -1980,6 +2006,15 @@
 				256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */,
 			);
 			path = HamburgerMenu;
+			sourceTree = "<group>";
+		};
+		25767B4C20FD9316004FF538 /* IEOTransactionCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				25767B4D20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift */,
+				25767B4E20FD9367004FF538 /* IEOTransactionCollectionViewCell.xib */,
+			);
+			path = IEOTransactionCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		257740C2205793C6003323EB /* Screens */ = {
@@ -2360,6 +2395,7 @@
 		25A293FB20CE7B06008C6759 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				25369F1720FCAFBA007231FE /* ProfileView */,
 				25069E4020D91080002A8F96 /* BuyToken */,
 				255D93FC20D56ED4000F757C /* SignIn */,
 				252DB13920D247FC00D10FF7 /* WebView */,
@@ -4485,6 +4521,7 @@
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
+				25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
 				291794FC1F95DE5F00539A30 /* index.html in Resources */,
@@ -4511,6 +4548,7 @@
 				25929C9720DA5CC10045CFA3 /* SFCompactDisplay-Heavy.otf in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
+				25767B5020FD9367004FF538 /* IEOTransactionCollectionViewCell.xib in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
 				25929C9420DA5CC10045CFA3 /* SFCompactText-MediumItalic.otf in Resources */,
@@ -4818,6 +4856,7 @@
 				255D93FF20D56EF9000F757C /* KGOSignInViewController.swift in Sources */,
 				257740C120579335003323EB /* UIView+Kyber.swift in Sources */,
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
+				25369F1A20FCB062007231FE /* IEOProfileViewController.swift in Sources */,
 				294EC1DA1FD8E4E60065EB20 /* GasPriceRequest.swift in Sources */,
 				295A59381F71C1B90092F0FC /* AccountsCoordinator.swift in Sources */,
 				299B5E2D1FCBC0660051361C /* BalanceProtocol.swift in Sources */,
@@ -5129,6 +5168,7 @@
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,
 				2923D9B51FDA4E07000CF3F8 /* PasswordGenerator.swift in Sources */,
+				25767B4F20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift in Sources */,
 				25C45AE620AEB4A700CDA1FF /* KNEnterWalletNameViewController.swift in Sources */,
 				25D3259F20C06D7F008BB235 /* KNSendTokenViewController.swift in Sources */,
 				298542F51FBD8E6A00CB5081 /* ConfigExplorer.swift in Sources */,

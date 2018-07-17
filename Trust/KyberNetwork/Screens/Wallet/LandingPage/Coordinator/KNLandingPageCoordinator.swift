@@ -131,9 +131,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
     case .openImportWallet:
       self.importWalletCoordinator.start()
     case .openTermAndCondition:
-      guard let url = URL(string: "https://home.kyber.network/assets/tac.pdf") else { return }
-      let safariVC: SFSafariViewController = SFSafariViewController(url: url)
-      self.navigationController.topViewController?.present(safariVC, animated: true, completion: nil)
+      self.navigationController.topViewController?.openSafari(with: "https://home.kyber.network/assets/tac.pdf")
     }
   }
 }
