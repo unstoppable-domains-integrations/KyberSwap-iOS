@@ -159,21 +159,25 @@ class IEOProfileViewController: KNBaseViewController {
 
   fileprivate func setAllTransactionsViewed() {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-    NSLog("----KyberGO: Set All Transactions Viewed----")
-    let provider = MoyaProvider<KyberGOService>()
-    provider.request(.markView(accessToken: accessToken)) { result in
-      switch result {
-      case .success(let resp):
-        do {
-          _ = try resp.filterSuccessfulStatusCodes()
-          NSLog("----KyberGO: Set All Transactions Viewed Successfully----")
-          IEOTransactionStorage.shared.markAllViewed()
-          KNNotificationUtil.postNotification(for: kIEOTxListUpdateNotificationKey)
-        } catch let error {
-          NSLog("----KyberGO: Set All Transactions Viewed error: \(error.prettyError)----")
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 0.3) {
+      NSLog("----KyberGO: Set All Transactions Viewed----")
+      let provider = MoyaProvider<KyberGOService>()
+      provider.request(.markView(accessToken: accessToken)) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              NSLog("----KyberGO: Set All Transactions Viewed Successfully----")
+              IEOTransactionStorage.shared.markAllViewed()
+              KNNotificationUtil.postNotification(for: kIEOTxListUpdateNotificationKey)
+            } catch let error {
+              NSLog("----KyberGO: Set All Transactions Viewed error: \(error.prettyError)----")
+            }
+          case .failure(let error):
+            NSLog("----KyberGO: Set All Transactions Viewed error: \(error.prettyError)----")
+          }
         }
-      case .failure(let error):
-        NSLog("----KyberGO: Set All Transactions Viewed error: \(error.prettyError)----")
       }
     }
   }
