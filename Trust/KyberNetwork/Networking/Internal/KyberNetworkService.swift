@@ -147,23 +147,24 @@ extension KyberGOService: TargetType {
   }
 
   var task: Task {
+    let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
+    let clientSecret = KNEnvironment.default == .ropsten ? KNSecret.debugSecret : KNSecret.secret
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
-      //TODO: Change to prod app id and secret
       let json: JSONDictionary = [
         "grant_type": isRefresh ? "refresh_token" : "authorization_code",
         "code": code,
         "redirect_uri": KNSecret.redirectURL,
-        "client_id": KNSecret.debugAppID,
-        "client_secret": KNSecret.debugSecret,
+        "client_id": clientID,
+        "client_secret": clientSecret,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .checkParticipate(let accessToken, let ieoID):
       let json: JSONDictionary = [
-        "client_id": KNSecret.debugAppID,
-        "client_secret": KNSecret.debugSecret,
+        "client_id": clientID,
+        "client_secret": clientSecret,
         "access_token": accessToken,
         "ieo_id": ieoID,
       ]
@@ -175,8 +176,8 @@ extension KyberGOService: TargetType {
       return .requestData(data)
     case .getTxList(let accessToken):
       let json: JSONDictionary = [
-        "client_id": KNSecret.debugAppID,
-        "client_secret": KNSecret.debugSecret,
+        "client_id": clientID,
+        "client_secret": clientSecret,
         "access_token": accessToken,
         ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
@@ -191,8 +192,8 @@ extension KyberGOService: TargetType {
       return .requestCompositeData(bodyData: Data(), urlParameters: params)
     case .createTx(let ieoID, let srcAddress, let hash, let accessToken):
       let json: JSONDictionary = [
-        "client_id": KNSecret.debugAppID,
-        "client_secret": KNSecret.debugSecret,
+        "client_id": clientSecret,
+        "client_secret": clientSecret,
         "access_token": accessToken,
         "ieo_id": ieoID,
         "hash": hash,
@@ -202,8 +203,8 @@ extension KyberGOService: TargetType {
       return .requestData(data)
     case .markView(let accessToken):
       let json: JSONDictionary = [
-        "client_id": KNSecret.debugAppID,
-        "client_secret": KNSecret.debugSecret,
+        "client_id": clientID,
+        "client_secret": clientSecret,
         "access_token": accessToken,
         ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])

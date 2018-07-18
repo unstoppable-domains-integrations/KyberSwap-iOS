@@ -126,7 +126,7 @@ extension TokenObject {
     if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
       return self.symbol
     }
-    return self.contract
+    return self.contract.lowercased()
   }
 
   var iconURL: String {

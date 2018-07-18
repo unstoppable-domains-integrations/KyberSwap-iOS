@@ -31,7 +31,7 @@ class KNAppTracker {
     if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
       return value
     }
-    return "https://tracker.kyber.network"//"https://staging-tracker.knstats.com"
+    return KNEnvironment.default == .ropsten ? "https://staging-tracker.knstats.com" : "https://tracker.kyber.network"
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
@@ -57,7 +57,7 @@ class KNAppTracker {
     if let value = userDefaults.object(forKey: kExternalEnvironmentKey) as? Int, let env = KNEnvironment(rawValue: value) {
       return env
     }
-    return .ropsten//isDebug ? KNEnvironment.ropsten : KNEnvironment.ropsten
+    return KNEnvironment.ropsten
   }
 
   static func updateExternalEnvironment(_ env: KNEnvironment) {
@@ -137,8 +137,7 @@ class KNAppTracker {
 
   // MARK: KyberGO base string
   static func getKyberGOBaseString() -> String {
-    return "https://dev-userdashboard.knstats.com"
-    //TODO: https://kyber.mangcut.vn
+    return KNEnvironment.default == .ropsten ? "https://dev-userdashboard.knstats.com" : "https://kyber.mangcut.vn"
   }
 
   // MARK: Reset app tracker

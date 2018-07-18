@@ -341,8 +341,8 @@ extension KGOHomePageCoordinator {
 //      )
 //      return
 //    }
-    //TODO: Change to prod app id
-    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(KNSecret.debugAppID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
+    let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
+    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
   }

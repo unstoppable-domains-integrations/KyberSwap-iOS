@@ -46,13 +46,13 @@ extension KNTrackerRate {
     if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
       return self.tokenSymbol == token.symbol
     }
-    return self.tokenAddress == token.contract
+    return self.tokenAddress.lowercased() == token.contract.lowercased()
   }
 
   var identifier: String {
     if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
       return self.tokenSymbol
     }
-    return self.tokenAddress
+    return self.tokenAddress.lowercased()
   }
 }

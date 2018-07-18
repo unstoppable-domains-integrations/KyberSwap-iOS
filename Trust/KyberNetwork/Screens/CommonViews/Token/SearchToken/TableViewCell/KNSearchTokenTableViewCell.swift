@@ -17,8 +17,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
   }
 
   func updateCell(with token: TokenObject) {
-    //TODO: remove default value
-    if let image = UIImage(named: token.icon) {
+    if let image = UIImage(named: token.icon.lowercased()) {
       self.iconImageView.image = image
     } else {
       self.iconImageView.setImage(

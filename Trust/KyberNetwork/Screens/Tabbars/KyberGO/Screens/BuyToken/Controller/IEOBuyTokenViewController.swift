@@ -371,7 +371,9 @@ class IEOBuyTokenViewController: KNBaseViewController {
   fileprivate func updateBalanceAndRate() {
     self.balanceTextLabel.text = self.viewModel.balanceTextString
     self.tokenBalanceLabel.text = self.viewModel.balanceText
-
+    if !self.buyAmountTextField.isEditing {
+      self.buyAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
     self.rateLabel.text = self.viewModel.exchangeRateText
   }
 
