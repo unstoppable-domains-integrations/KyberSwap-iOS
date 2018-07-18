@@ -49,21 +49,7 @@ class KGOHomePageCoordinator: Coordinator {
     self.timerLoadIEOList()
     self.timerLoadDataFromNode()
     self.timerLoadKyberGOTxList()
-
-    if let user = IEOUserStorage.shared.user {
-      let time = Date(timeIntervalSince1970: user.expireTime).timeIntervalSinceNow
-      guard time > 0 else {
-        self.handleUserAccessTokenExpired()
-        return
-      }
-      self.accessTokenExpireTimer?.invalidate()
-      self.accessTokenExpireTimer = Timer.scheduledTimer(
-        withTimeInterval: time,
-        repeats: false,
-        block: { [weak self] _ in
-        self?.handleUserAccessTokenExpired()
-      })
-    }
+    self.timerAccessTokenExpired()
 
     // Add notification observer
     let callbackName = Notification.Name(kIEODidReceiveCallbackNotificationKey)
@@ -91,6 +77,23 @@ class KGOHomePageCoordinator: Coordinator {
       name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
       object: nil
     )
+  }
+
+  fileprivate func timerAccessTokenExpired() {
+    if let user = IEOUserStorage.shared.user {
+      let time = Date(timeIntervalSince1970: user.expireTime).timeIntervalSinceNow
+      guard time > 0 else {
+        self.handleUserAccessTokenExpired()
+        return
+      }
+      self.accessTokenExpireTimer?.invalidate()
+      self.accessTokenExpireTimer = Timer.scheduledTimer(
+        withTimeInterval: time,
+        repeats: false,
+        block: { [weak self] _ in
+          self?.handleUserAccessTokenExpired()
+      })
+    }
   }
 
   fileprivate func timerLoadIEOList() {
@@ -127,13 +130,42 @@ class KGOHomePageCoordinator: Coordinator {
   }
 
   fileprivate func handleUserAccessTokenExpired() {
-    KNNotificationUtil.localPushNotification(
-      title: "Session expired",
-      body: "Your session has expired, please sign in again to continue"
-    )
-    IEOUserStorage.shared.signedOut()
-    self.navigationController.popToRootViewController(animated: true)
-    self.rootViewController.coordinatorDidSignOut()
+    guard let user = IEOUserStorage.shared.user else { return }
+    let provider = MoyaProvider<KyberGOService>()
+    let request = KyberGOService.getAccessToken(code: user.refreshToken, isRefresh: true)
+    provider.request(request) { [weak self] result in
+      switch result {
+      case .success(let data):
+        do {
+          _ = try data.filterSuccessfulStatusCodes()
+          if let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary,
+            let accessToken = json["access_token"] as? String,
+            let tokenType = json["token_type"] as? String,
+            let refreshToken = json["refresh_token"] as? String,
+            let expireTime = json["expires_in"] as? Double {
+            IEOUserStorage.shared.updateToken(
+              object: user,
+              type: tokenType,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              expireTime: expireTime
+            )
+            self?.timerAccessTokenExpired()
+            return
+          }
+        } catch {}
+      case .failure:
+        break
+      }
+      // Error for some reason
+      KNNotificationUtil.localPushNotification(
+        title: "Session expired",
+        body: "Your session has expired, please sign in again to continue"
+      )
+      IEOUserStorage.shared.signedOut()
+      self?.navigationController.popToRootViewController(animated: true)
+      self?.rootViewController.coordinatorDidSignOut()
+    }
   }
 
   // MARK: Update from app coordinator
@@ -292,35 +324,37 @@ extension KGOHomePageCoordinator {
     // use the code to get access token for user
     self.navigationController.displayLoading(text: "Initial Session...", animated: true)
     let provider = MoyaProvider<KyberGOService>()
-    let accessToken = KyberGOService.getAccessToken(code: code)
+    let accessToken = KyberGOService.getAccessToken(code: code, isRefresh: false)
     provider.request(accessToken, completion: { [weak self] result in
       guard let _ = `self` else { return }
       switch result {
       case .success(let data):
-        if let dataJSON = try? data.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = dataJSON {
-          guard let accessToken = json["access_token"] as? String else {
-            self?.navigationController.hideLoading()
-            self?.navigationController.showWarningTopBannerMessage(
-              with: "Error",
-              message: "Can not get access token"
-            )
-            return
+        do {
+          _ = try data.filterSuccessfulStatusCodes()
+          let dataJSON: JSONDictionary = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          guard let accessToken = dataJSON["access_token"] as? String,
+            let tokenType = dataJSON["token_type"] as? String,
+            let refreshToken = dataJSON["refresh_token"] as? String,
+            let expireTime = dataJSON["expires_in"] as? Double
+            else {
+              self?.navigationController.hideLoading()
+              self?.navigationController.showWarningTopBannerMessage(
+                with: "Error",
+                message: "Can not get access token".toBeLocalised()
+              )
+              return
           }
-          // got access token, user access token to retrieve user information
-          let tokenType = json["token_type"] as? String ?? ""
-          let refreshToken = json["refresh_token"] as? String ?? ""
-          let expireTime = json["expires_in"] as? Double ?? 0.0
           self?.getUserInfo(
             type: tokenType,
             accessToken: accessToken,
             refreshToken: refreshToken,
             expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
           )
-        } else {
+        } catch {
           self?.navigationController.hideLoading()
           self?.navigationController.showWarningTopBannerMessage(
             with: "Error",
-            message: "Can not get access token"
+            message: "Can not get access token".toBeLocalised()
           )
         }
       case .failure(let error):
@@ -336,10 +370,10 @@ extension KGOHomePageCoordinator {
     let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
     provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
       guard let _ = `self` else { return }
+      self?.navigationController.hideLoading()
       switch userInfoResult {
       case .success(let userInfo):
         guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
-          self?.navigationController.hideLoading()
           self?.navigationController.showWarningTopBannerMessage(
             with: "Error",
             message: "Can not get user info"
@@ -355,16 +389,15 @@ extension KGOHomePageCoordinator {
           refreshToken: refreshToken,
           expireTime: expireTime
         )
+        self?.timerAccessTokenExpired()
         IEOTransactionStorage.shared.userLoggedIn()
-        self?.navigationController.hideLoading()
         self?.navigationController.showSuccessTopBannerMessage(
           with: "Hi \(user.name)",
-          message: "You have signed in successfully! You could buy tokens now"
+          message: "You have signed in successfully! You could buy token sales now".toBeLocalised()
         )
         self?.rootViewController.coordinatorUserDidSignInSuccessfully()
       // Already have user
       case .failure(let error):
-        self?.navigationController.hideLoading()
         self?.navigationController.displayError(error: error)
       }
     })
@@ -491,6 +524,12 @@ extension KGOHomePageCoordinator {
         })
         IEOTransactionStorage.shared.update(objects: transactions)
         let trans = IEOTransactionStorage.shared.objects
+
+        // Update badge for kybergo tab
+        if let tabItems = self?.navigationController.tabBarController?.tabBar.items {
+          let values = trans.filter({ !$0.viewed }).count
+          tabItems[2].badgeValue = values > 0 ? "\(values)" : nil
+        }
         self?.profileVC?.coordinatorUpdateTransactionList(trans)
         self?.rootViewController.coordinatorUpdateListKyberGOTx(
           transactions: trans
@@ -652,7 +691,9 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
   func ieoBuyTokenViewController(_ controller: IEOBuyTokenViewController, run event: IEOBuyTokenViewEvent) {
     switch event {
     case .close:
-      self.navigationController.popViewController(animated: true)
+      self.navigationController.popViewController(animated: true) {
+        self.buyTokenVC = nil
+      }
     case .selectSetGasPrice(let gasPrice, let gasLimit):
       let setGasPriceVC: KNSetGasPriceViewController = {
         let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: gasLimit)
@@ -695,13 +736,19 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
     provider.request(request) { [weak self] result in
       switch result {
       case .success(let resp):
-        NSLog("----KyberGO: Add transaction status code: \(resp.statusCode)----")
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          self?.reloadKyberGOTransactionList()
+          return
+        } catch let error {
+          NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
+        }
       case .failure(let error):
         NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
-          self?.addTransactionRequest(draftTx: draftTx, hash: hash)
-        })
       }
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
+        self?.addTransactionRequest(draftTx: draftTx, hash: hash)
+      })
     }
   }
 
@@ -733,7 +780,10 @@ extension KGOHomePageCoordinator: KNSetGasPriceViewControllerDelegate {
 extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
   func ieoProfileViewController(_ controller: IEOProfileViewController, run event: IEOProfileViewEvent) {
     switch event {
-    case .back: self.navigationController.popViewController(animated: true)
+    case .back:
+      self.navigationController.popViewController(animated: true) {
+        self.profileVC = nil
+      }
     case .select(let transaction): self.openEtherScan(for: transaction)
     case .signedOut:
       self.userSelectSignOut()
@@ -751,6 +801,9 @@ extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
     self.navigationController.popViewController(animated: true) {
       IEOUserStorage.shared.signedOut()
       self.navigationController.popToRootViewController(animated: true)
+      self.profileVC = nil
+      self.buyTokenVC = nil
+      self.setGasPriceVC = nil
       self.rootViewController.coordinatorDidSignOut()
     }
   }

@@ -105,13 +105,13 @@ extension KNTrackerService: TargetType {
 
 enum KyberGOService {
   case listIEOs
-  case getAccessToken(code: String)
+  case getAccessToken(code: String, isRefresh: Bool)
   case getUserInfo(accessToken: String)
   case checkParticipate(accessToken: String, ieoID: Int)
   case getSignedTx(userID: Int, ieoID: Int, address: String, time: UInt)
   case getTxList(accessToken: String)
   case createTx(ieoID: Int, srcAddress: String, hash: String, accessToken: String)
-  case markView
+  case markView(accessToken: String)
 }
 
 extension KyberGOService: TargetType {
@@ -148,11 +148,11 @@ extension KyberGOService: TargetType {
 
   var task: Task {
     switch self {
-    case .listIEOs, .markView: return .requestPlain
-    case .getAccessToken(let code):
+    case .listIEOs: return .requestPlain
+    case .getAccessToken(let code, let isRefresh):
       //TODO: Change to prod app id and secret
       let json: JSONDictionary = [
-        "grant_type": "authorization_code",
+        "grant_type": isRefresh ? "refresh_token" : "authorization_code",
         "code": code,
         "redirect_uri": KNSecret.redirectURL,
         "client_id": KNSecret.debugAppID,
@@ -198,6 +198,14 @@ extension KyberGOService: TargetType {
         "hash": hash,
         "source_address": srcAddress,
       ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .markView(let accessToken):
+      let json: JSONDictionary = [
+        "client_id": KNSecret.debugAppID,
+        "client_secret": KNSecret.debugSecret,
+        "access_token": accessToken,
+        ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     }
