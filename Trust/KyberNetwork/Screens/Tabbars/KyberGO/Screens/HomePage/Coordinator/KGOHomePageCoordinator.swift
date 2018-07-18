@@ -131,40 +131,45 @@ class KGOHomePageCoordinator: Coordinator {
 
   fileprivate func handleUserAccessTokenExpired() {
     guard let user = IEOUserStorage.shared.user else { return }
-    let provider = MoyaProvider<KyberGOService>()
-    let request = KyberGOService.getAccessToken(code: user.refreshToken, isRefresh: true)
-    provider.request(request) { [weak self] result in
-      switch result {
-      case .success(let data):
-        do {
-          _ = try data.filterSuccessfulStatusCodes()
-          if let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary,
-            let accessToken = json["access_token"] as? String,
-            let tokenType = json["token_type"] as? String,
-            let refreshToken = json["refresh_token"] as? String,
-            let expireTime = json["expires_in"] as? Double {
-            IEOUserStorage.shared.updateToken(
-              object: user,
-              type: tokenType,
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-              expireTime: expireTime
-            )
-            self?.timerAccessTokenExpired()
-            return
+    let refreshToken = user.refreshToken
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      let request = KyberGOService.getAccessToken(code: refreshToken, isRefresh: true)
+      provider.request(request) { [weak self] result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              _ = try data.filterSuccessfulStatusCodes()
+              if let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary,
+                let accessToken = json["access_token"] as? String,
+                let tokenType = json["token_type"] as? String,
+                let refreshToken = json["refresh_token"] as? String,
+                let expireTime = json["expires_in"] as? Double {
+                IEOUserStorage.shared.updateToken(
+                  object: user,
+                  type: tokenType,
+                  accessToken: accessToken,
+                  refreshToken: refreshToken,
+                  expireTime: expireTime
+                )
+                self?.timerAccessTokenExpired()
+                return
+              }
+            } catch {}
+          case .failure:
+            break
           }
-        } catch {}
-      case .failure:
-        break
+          // Error for some reason
+          KNNotificationUtil.localPushNotification(
+            title: "Session expired",
+            body: "Your session has expired, please sign in again to continue"
+          )
+          IEOUserStorage.shared.signedOut()
+          self?.navigationController.popToRootViewController(animated: true)
+          self?.rootViewController.coordinatorDidSignOut()
+        }
       }
-      // Error for some reason
-      KNNotificationUtil.localPushNotification(
-        title: "Session expired",
-        body: "Your session has expired, please sign in again to continue"
-      )
-      IEOUserStorage.shared.signedOut()
-      self?.navigationController.popToRootViewController(animated: true)
-      self?.rootViewController.coordinatorDidSignOut()
     }
   }
 
@@ -204,6 +209,29 @@ class KGOHomePageCoordinator: Coordinator {
     confirmVC.modalPresentationStyle = .overFullScreen
     confirmVC.modalTransitionStyle = .crossDissolve
     self.navigationController.present(confirmVC, animated: true, completion: nil)
+  }
+
+  fileprivate func sendLocalPushNotification(transaction: IEOTransaction, ieo: IEOObject) {
+    let details: String = {
+      switch transaction.txStatus {
+      case .success:
+        let distributedAmount = BigInt(transaction.distributedTokensWei).string(
+          decimals: ieo.tokenDecimals,
+          minFractionDigits: 0,
+          maxFractionDigits: 4
+        )
+        return "Successfully bought \(distributedAmount) \(ieo.tokenSymbol) from token sale \(ieo.name)"
+      case .lost:
+        return "Your transaction of buying token sale \(ieo.name) has been lost"
+      case .fail:
+        return "Failed to buy token sale \(ieo.name)"
+      default: return ""
+      }
+    }()
+    KNNotificationUtil.localPushNotification(
+      title: transaction.status,
+      body: details
+    )
   }
 }
 
@@ -323,84 +351,92 @@ extension KGOHomePageCoordinator {
     // got authentication code from KyberGO
     // use the code to get access token for user
     self.navigationController.displayLoading(text: "Initial Session...", animated: true)
-    let provider = MoyaProvider<KyberGOService>()
-    let accessToken = KyberGOService.getAccessToken(code: code, isRefresh: false)
-    provider.request(accessToken, completion: { [weak self] result in
-      guard let _ = `self` else { return }
-      switch result {
-      case .success(let data):
-        do {
-          _ = try data.filterSuccessfulStatusCodes()
-          let dataJSON: JSONDictionary = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          guard let accessToken = dataJSON["access_token"] as? String,
-            let tokenType = dataJSON["token_type"] as? String,
-            let refreshToken = dataJSON["refresh_token"] as? String,
-            let expireTime = dataJSON["expires_in"] as? Double
-            else {
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      let accessToken = KyberGOService.getAccessToken(code: code, isRefresh: false)
+      provider.request(accessToken, completion: { [weak self] result in
+        DispatchQueue.main.async {
+          guard let _ = `self` else { return }
+          switch result {
+          case .success(let data):
+            do {
+              _ = try data.filterSuccessfulStatusCodes()
+              let dataJSON: JSONDictionary = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              guard let accessToken = dataJSON["access_token"] as? String,
+                let tokenType = dataJSON["token_type"] as? String,
+                let refreshToken = dataJSON["refresh_token"] as? String,
+                let expireTime = dataJSON["expires_in"] as? Double
+                else {
+                  self?.navigationController.hideLoading()
+                  self?.navigationController.showWarningTopBannerMessage(
+                    with: "Error",
+                    message: "Can not get access token".toBeLocalised()
+                  )
+                  return
+              }
+              self?.getUserInfo(
+                type: tokenType,
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+                expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
+              )
+            } catch {
               self?.navigationController.hideLoading()
               self?.navigationController.showWarningTopBannerMessage(
                 with: "Error",
                 message: "Can not get access token".toBeLocalised()
               )
-              return
+            }
+          case .failure(let error):
+            self?.navigationController.hideLoading()
+            self?.navigationController.displayError(error: error)
           }
-          self?.getUserInfo(
-            type: tokenType,
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
-          )
-        } catch {
-          self?.navigationController.hideLoading()
-          self?.navigationController.showWarningTopBannerMessage(
-            with: "Error",
-            message: "Can not get access token".toBeLocalised()
-          )
         }
-      case .failure(let error):
-        self?.navigationController.hideLoading()
-        self?.navigationController.displayError(error: error)
-      }
-    })
+      })
+    }
   }
 
   fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
     // got access token, user access token to retrieve user information
-    let provider = MoyaProvider<KyberGOService>()
-    let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
-    provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
-      guard let _ = `self` else { return }
-      self?.navigationController.hideLoading()
-      switch userInfoResult {
-      case .success(let userInfo):
-        guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
-          self?.navigationController.showWarningTopBannerMessage(
-            with: "Error",
-            message: "Can not get user info"
-          )
-          return
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
+      provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
+        DispatchQueue.main.async {
+          guard let _ = `self` else { return }
+          self?.navigationController.hideLoading()
+          switch userInfoResult {
+          case .success(let userInfo):
+            guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
+              self?.navigationController.showWarningTopBannerMessage(
+                with: "Error",
+                message: "Can not get user info"
+              )
+              return
+            }
+            let user = IEOUser(dict: userJSON)
+            IEOUserStorage.shared.update(objects: [user])
+            IEOUserStorage.shared.updateToken(
+              object: user,
+              type: type,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              expireTime: expireTime
+            )
+            self?.timerAccessTokenExpired()
+            IEOTransactionStorage.shared.userLoggedIn()
+            self?.navigationController.showSuccessTopBannerMessage(
+              with: "Hi \(user.name)",
+              message: "You have signed in successfully! You could buy token sales now".toBeLocalised()
+            )
+            self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+          // Already have user
+          case .failure(let error):
+            self?.navigationController.displayError(error: error)
+          }
         }
-        let user = IEOUser(dict: userJSON)
-        IEOUserStorage.shared.update(objects: [user])
-        IEOUserStorage.shared.updateToken(
-          object: user,
-          type: type,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          expireTime: expireTime
-        )
-        self?.timerAccessTokenExpired()
-        IEOTransactionStorage.shared.userLoggedIn()
-        self?.navigationController.showSuccessTopBannerMessage(
-          with: "Hi \(user.name)",
-          message: "You have signed in successfully! You could buy token sales now".toBeLocalised()
-        )
-        self?.rootViewController.coordinatorUserDidSignInSuccessfully()
-      // Already have user
-      case .failure(let error):
-        self?.navigationController.displayError(error: error)
-      }
-    })
+      })
+    }
   }
 }
 
@@ -452,56 +488,66 @@ extension KGOHomePageCoordinator {
       return
     }
     NSLog("----KyberGO: Check can participate----")
-    let provider = MoyaProvider<KyberGOService>()
-    provider.request(.checkParticipate(accessToken: user.accessToken, ieoID: ieo.id)) { result in
-      switch result {
-      case .success(let resp):
-        do {
-          _ = try resp.filterSuccessfulStatusCodes()
-          guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
-            NSLog("----KyberGO: Check can participate parse error----")
-            completion(.success(false))
-            return
+    let accessToken: String = user.accessToken
+    let ieoID: Int = ieo.id
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      provider.request(.checkParticipate(accessToken: accessToken, ieoID: ieoID)) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
+                NSLog("----KyberGO: Check can participate parse error----")
+                completion(.success(false))
+                return
+              }
+              NSLog("----KyberGO: Check can participate successfully data: \(json)----")
+              let canParticipate: Bool = {
+                guard let data = json["data"] as? JSONDictionary else { return false }
+                return data["can_participate"] as? Bool ?? false
+              }()
+              completion(.success(canParticipate))
+            } catch let error {
+              NSLog("----KyberGO: Check can participate parse error: \(error.prettyError)----")
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            NSLog("----KyberGO: Check can participate failed error: \(error.prettyError)----")
+            completion(.failure(AnyError(error)))
           }
-          NSLog("----KyberGO: Check can participate successfully data: \(json)----")
-          let canParticipate: Bool = {
-            guard let data = json["data"] as? JSONDictionary else { return false }
-            return data["can_participate"] as? Bool ?? false
-          }()
-          completion(.success(canParticipate))
-        } catch let error {
-          NSLog("----KyberGO: Check can participate parse error: \(error.prettyError)----")
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        NSLog("----KyberGO: Check can participate failed error: \(error.prettyError)----")
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   fileprivate func getSignData(userID: Int, address: String, ieoID: Int, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     NSLog("----KyberGO: Get Sign Data----")
-    let provider = MoyaProvider<KyberGOService>()
-    let service = KyberGOService.getSignedTx(
-      userID: userID,
-      ieoID: ieoID,
-      address: address,
-      time: UInt(floor(Date().timeIntervalSince1970)) * 1000
-    )
-    provider.request(service) { result in
-      switch result {
-      case .success(let resp):
-        if let data = try? resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = data {
-          NSLog("----KyberGO: Get Sign Data Successfully: \(json)----")
-          completion(.success(json))
-        } else {
-          NSLog("----KyberGO: Get Sign Data Parse Error")
-          completion(.success(["reason": "Can not parse response data"]))
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      let service = KyberGOService.getSignedTx(
+        userID: userID,
+        ieoID: ieoID,
+        address: address,
+        time: UInt(floor(Date().timeIntervalSince1970)) * 1000
+      )
+      provider.request(service) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            if let data = try? resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let json = data {
+              NSLog("----KyberGO: Get Sign Data Successfully: \(json)----")
+              completion(.success(json))
+            } else {
+              NSLog("----KyberGO: Get Sign Data Parse Error")
+              completion(.success(["reason": "Can not parse response data"]))
+            }
+          case .failure(let error):
+            NSLog("----KyberGO: Get Sign Data Error \(error.prettyError)----")
+            completion(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        NSLog("----KyberGO: Get Sign Data Error \(error.prettyError)----")
-        completion(.failure(AnyError(error)))
       }
     }
   }
@@ -516,10 +562,7 @@ extension KGOHomePageCoordinator {
         IEOTransactionStorage.shared.objects.forEach({ tran in
           //TODO: Show local push notification
           if tran.txStatus == .pending, let tx = txMap[tran.txHash], tx.txStatus != .pending, let ieo = ieoMap[tx.ieoID] {
-            KNNotificationUtil.localPushNotification(
-              title: tx.status,
-              body: "Transaction of buying \(ieo.name) returned \(tx.status)"
-            )
+            self?.sendLocalPushNotification(transaction: tx, ieo: ieo)
           }
         })
         IEOTransactionStorage.shared.update(objects: transactions)
@@ -540,31 +583,35 @@ extension KGOHomePageCoordinator {
   }
 
   fileprivate func fetchKyberGOTxList(completion: ((Result<[IEOTransaction], AnyError>) -> Void)?) {
-    guard let user = IEOUserStorage.shared.user, !user.accessToken.isEmpty else {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken, !accessToken.isEmpty else {
       // no user
       completion?(.success([]))
       return
     }
     NSLog("----KyberGO: reload KyberGO Tx list----")
-    let provider = MoyaProvider<KyberGOService>()
-    provider.request(.getTxList(accessToken: user.accessToken)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let resp):
-        do {
-          _ = try resp.filterSuccessfulStatusCodes()
-          let jsonData: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let jsonArr = jsonData["data"] as? [JSONDictionary] ?? []
-          let transactions = jsonArr.map({ return IEOTransaction(dict: $0) })
-          NSLog("----KyberGO: reload KyberGO Tx list successully \(transactions.count) transactions----")
-          completion?(.success(transactions))
-        } catch let error {
-          NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
-          completion?(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KyberGOService>()
+      provider.request(.getTxList(accessToken: accessToken)) { [weak self] result in
+        DispatchQueue.main.async {
+          guard let _ = self else { return }
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              let jsonData: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let jsonArr = jsonData["data"] as? [JSONDictionary] ?? []
+              let transactions = jsonArr.map({ return IEOTransaction(dict: $0) })
+              NSLog("----KyberGO: reload KyberGO Tx list successully \(transactions.count) transactions----")
+              completion?(.success(transactions))
+            } catch let error {
+              NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
+            completion?(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        NSLog("----KyberGO: reload KyberGO Tx list error: \(error.prettyError)----")
-        completion?(.failure(AnyError(error)))
       }
     }
   }
@@ -716,7 +763,6 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
   }
 
   fileprivate func didFinishBuyTokenWithHash(_ hash: String, draftTx: IEODraftTransaction) {
-    self.reloadKyberGOTransactionList()
     self.navigationController.showSuccessTopBannerMessage(
       with: "Broadcasted".toBeLocalised(),
       message: "Transaction has been successfully broadcasted".toBeLocalised()
@@ -733,22 +779,26 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
       hash: hash,
       accessToken: IEOUserStorage.shared.user?.accessToken ?? "")
     NSLog("----KyberGO: Add transaction----")
-    provider.request(request) { [weak self] result in
-      switch result {
-      case .success(let resp):
-        do {
-          _ = try resp.filterSuccessfulStatusCodes()
-          self?.reloadKyberGOTransactionList()
-          return
-        } catch let error {
-          NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
+    DispatchQueue.global(qos: .background).async {
+      provider.request(request) { [weak self] result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              self?.reloadKyberGOTransactionList()
+              return
+            } catch let error {
+              NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
+            }
+          case .failure(let error):
+            NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
+          }
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
+            self?.addTransactionRequest(draftTx: draftTx, hash: hash)
+          })
         }
-      case .failure(let error):
-        NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
       }
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
-        self?.addTransactionRequest(draftTx: draftTx, hash: hash)
-      })
     }
   }
 
