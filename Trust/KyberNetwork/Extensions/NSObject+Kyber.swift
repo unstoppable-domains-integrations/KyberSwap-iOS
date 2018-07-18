@@ -23,10 +23,10 @@ extension NSObject {
       view.configureDropShadow()
       view.button?.isHidden = true
       if theme == .success {
-        let iconText = ["😁", "😄", "😆", "😉", "😎", "😍"].sm_random()!
+        let iconText = ""//["😁", "😄", "😆", "😉", "😎", "😍"].sm_random()!
         view.configureContent(title: title, body: message, iconText: iconText)
       } else {
-        let iconText = ["🤔", "😳", "🙄", "😶", "😰", "😢", "😥"].sm_random()!
+        let iconText = ""//["🤔", "😳", "🙄", "😶", "😰", "😢", "😥"].sm_random()!
         view.configureContent(title: title, body: message, iconText: iconText)
       }
       return view
