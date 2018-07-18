@@ -50,9 +50,15 @@ struct IEOTransactionCollectionViewModel {
     guard let ieo = self.ieoObject else {
       return "Unknown token sale".toBeLocalised()
     }
-    if self.transaction.txStatus != .success && self.transaction.txStatus != .pending {
+
+    if self.transaction.txStatus == .pending {
+      return ""
+    }
+
+    if self.transaction.txStatus != .success {
       return "0 \(ieo.tokenSymbol)"
     }
+
     //let fromText: String = "\(transaction.sentETH) ETH"
     let toText: String = {
       let distributedAmount: BigInt = BigInt(transaction.distributedTokensWei)
@@ -64,6 +70,10 @@ struct IEOTransactionCollectionViewModel {
     }()
     //return "\(fromText) -> \(toText)"
     return "+\(toText) \(ieo.tokenSymbol)"
+  }
+
+  var amountLabelTextColor: UIColor {
+    return self.transaction.txStatus == .pending ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
   }
 
   var backgroundColor: UIColor {

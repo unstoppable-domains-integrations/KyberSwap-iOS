@@ -1,5 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+import UIKit
 import Moya
 import BigInt
 import TrustKeystore
@@ -7,84 +8,72 @@ import TrustCore
 import Result
 import SafariServices
 
-extension KGOHomePageCoordinator {
-  internal func openBuy(object: IEOObject) {
-    guard IEOUserStorage.shared.user != nil else {
-      self.showAlertUserNotSignIn()
-      return
-    }
-    self.navigationController.displayLoading(text: "Checking...", animated: true)
-    self.checkIEOWhitelisted(ieo: object) { [weak self] result in
-      self?.navigationController.hideLoading()
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let canBuy):
-        guard canBuy else {
-          self.navigationController.showWarningTopBannerMessage(
-            with: "Error",
-            message: "You are not whitelisted for this token sale.".toBeLocalised()
-          )
-          return
-        }
-        guard let wallet = KNWalletStorage.shared.wallets.first(where: {
-          $0.address.lowercased() == self.session.wallet.address.description.lowercased()
-        }) else { return }
-        let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
-        self.buyTokenVC = IEOBuyTokenViewController(viewModel: viewModel)
-        self.buyTokenVC?.loadViewIfNeeded()
-        self.buyTokenVC?.delegate = self
-        self.navigationController.pushViewController(self.buyTokenVC!, animated: true)
-        return
-      case .failure(let error):
-        self.navigationController.showWarningTopBannerMessage(
-          with: "Error",
-          message: error.prettyError
-        )
-      }
+enum IEOBuyTokenCoordinatorEvent {
+  case stop
+  case bought
+  case openSignIn
+}
+
+protocol IEOBuyTokenCoordinatorDelegate: class {
+  func ieoBuyTokenCoordinator(_ coordinator: IEOBuyTokenCoordinator, run event: IEOBuyTokenCoordinatorEvent)
+}
+
+class IEOBuyTokenCoordinator: Coordinator {
+
+  var coordinators: [Coordinator] = []
+
+  let navigationController: UINavigationController
+  fileprivate(set) var session: KNSession
+  fileprivate(set) var object: IEOObject?
+
+  weak var delegate: IEOBuyTokenCoordinatorDelegate?
+
+  fileprivate var rootViewController: IEOBuyTokenViewController?
+
+  private(set) var setGasPriceVC: KNSetGasPriceViewController?
+  private(set) var profileVC: IEOProfileViewController?
+
+  init(
+    navigationController: UINavigationController,
+    session: KNSession,
+    object: IEOObject?
+    ) {
+    self.navigationController = navigationController
+    self.session = session
+    self.object = object
+  }
+
+  func start() {
+    guard let wallet = KNWalletStorage.shared.wallets.first(where: {
+      $0.address.lowercased() == self.session.wallet.address.description.lowercased()
+    }), let object = self.object else { return }
+    let viewModel = IEOBuyTokenViewModel(to: object, walletObject: wallet)
+    self.rootViewController = IEOBuyTokenViewController(viewModel: viewModel)
+    self.rootViewController?.loadViewIfNeeded()
+    self.rootViewController?.delegate = self
+    self.navigationController.pushViewController(self.rootViewController!, animated: true)
+  }
+
+  func updateSession(_ session: KNSession, object: IEOObject) {
+    self.session = session
+    self.object = object
+  }
+
+  func coordinatorDidUpdateEstRate(for object: IEOObject, rate: BigInt) {
+    self.rootViewController?.coordinatorDidUpdateEstRate(for: object, rate: rate)
+  }
+
+  func coordinatorDidUpdateWalletObjects() {
+    self.rootViewController?.coordinatorDidUpdateWalletObjects()
+  }
+
+  func stop() {
+    self.navigationController.popViewController(animated: true) {
+      self.rootViewController = nil
     }
   }
 
-  fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    guard let user = IEOUserStorage.shared.user else {
-      completion(.success(false))
-      return
-    }
-    NSLog("----KyberGO: Check can participate----")
-    let accessToken: String = user.accessToken
-    let ieoID: Int = ieo.id
-    DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<KyberGOService>()
-      provider.request(.checkParticipate(accessToken: accessToken, ieoID: ieoID)) { result in
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let resp):
-            do {
-              _ = try resp.filterSuccessfulStatusCodes()
-              guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
-                NSLog("----KyberGO: Check can participate parse error----")
-                completion(.success(false))
-                return
-              }
-              NSLog("----KyberGO: Check can participate successfully data: \(json)----")
-              let canParticipate: Bool = {
-                guard let data = json["data"] as? JSONDictionary else { return false }
-                return data["can_participate"] as? Bool ?? false
-              }()
-              completion(.success(canParticipate))
-            } catch let error {
-              NSLog("----KyberGO: Check can participate parse error: \(error.prettyError)----")
-              completion(.failure(AnyError(error)))
-            }
-          case .failure(let error):
-            NSLog("----KyberGO: Check can participate failed error: \(error.prettyError)----")
-            completion(.failure(AnyError(error)))
-          }
-        }
-      }
-    }
-  }
-
-  internal func sendBuyTransaction(_ transaction: IEODraftTransaction) {
+  fileprivate func sendBuyTransaction(_ transaction: IEODraftTransaction) {
     self.waitingForGettingSignData(transaction: transaction) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let trans) = result, let newTransaction = trans {
@@ -186,11 +175,12 @@ extension KGOHomePageCoordinator {
     DispatchQueue.global(qos: .background).async {
       provider.request(request) { [weak self] result in
         DispatchQueue.main.async {
+          guard let `self` = self else { return }
           switch result {
           case .success(let resp):
             do {
               _ = try resp.filterSuccessfulStatusCodes()
-              self?.reloadKyberGOTransactionList()
+              self.delegate?.ieoBuyTokenCoordinator(self, run: .bought)
               return
             } catch let error {
               NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
@@ -199,11 +189,24 @@ extension KGOHomePageCoordinator {
             NSLog("----KyberGO: Add transaction failed with error: \(error.prettyError)----")
           }
           DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
-            self?.addTransactionRequest(draftTx: draftTx, hash: hash)
+            self.addTransactionRequest(draftTx: draftTx, hash: hash)
           })
         }
       }
     }
+  }
+
+  fileprivate func showAlertUserNotSignIn() {
+    let alertController = UIAlertController(
+      title: "Sign In Required".toBeLocalised(),
+      message: "You are not signed in with KyberGO. Please sign in to continue.".toBeLocalised(),
+      preferredStyle: .alert
+    )
+    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: "Sign In".toBeLocalised(), style: .default, handler: { _ in
+      self.delegate?.ieoBuyTokenCoordinator(self, run: .openSignIn)
+    }))
+    self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
   fileprivate func getContributorRemainingCap(userID: Int, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
@@ -213,16 +216,25 @@ extension KGOHomePageCoordinator {
       completion: completion
     )
   }
+
+  fileprivate func openConfirmView(for transaction: IEODraftTransaction) {
+    let viewModel: KNConfirmTransactionViewModel = {
+      let type = KNTransactionType.buyTokenSale(transaction)
+      return KNConfirmTransactionViewModel(type: type)
+    }()
+    let confirmVC = KNConfirmTransactionViewController(viewModel: viewModel)
+    confirmVC.delegate = self
+    confirmVC.modalPresentationStyle = .overFullScreen
+    confirmVC.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(confirmVC, animated: true, completion: nil)
+  }
 }
 
-// MARK: KGO IEO Buy View Delegation
-extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
+extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
   func ieoBuyTokenViewController(_ controller: IEOBuyTokenViewController, run event: IEOBuyTokenViewEvent) {
     switch event {
     case .close:
-      self.navigationController.popViewController(animated: true) {
-        self.buyTokenVC = nil
-      }
+      self.delegate?.ieoBuyTokenCoordinator(self, run: .stop)
     case .selectSetGasPrice(let gasPrice, let gasLimit):
       let setGasPriceVC: KNSetGasPriceViewController = {
         let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: gasLimit)
@@ -243,45 +255,20 @@ extension KGOHomePageCoordinator: IEOBuyTokenViewControllerDelegate {
       self.openConfirmView(for: transaction)
     }
   }
-
-  fileprivate func openConfirmView(for transaction: IEODraftTransaction) {
-    let viewModel: KNConfirmTransactionViewModel = {
-      let type = KNTransactionType.buyTokenSale(transaction)
-      return KNConfirmTransactionViewModel(type: type)
-    }()
-    let confirmVC = KNConfirmTransactionViewController(viewModel: viewModel)
-    confirmVC.delegate = self
-    confirmVC.modalPresentationStyle = .overFullScreen
-    confirmVC.modalTransitionStyle = .crossDissolve
-    self.navigationController.present(confirmVC, animated: true, completion: nil)
-  }
-
-  internal func showAlertUserNotSignIn() {
-    let alertController = UIAlertController(
-      title: "Sign In Required".toBeLocalised(),
-      message: "You are not signed in with KyberGO. Please sign in to continue.".toBeLocalised(),
-      preferredStyle: .alert
-    )
-    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Sign In".toBeLocalised(), style: .default, handler: { _ in
-      self.openSignInView()
-    }))
-    self.navigationController.present(alertController, animated: true, completion: nil)
-  }
 }
 
 // MARK: Set Gas View Delegation
-extension KGOHomePageCoordinator: KNSetGasPriceViewControllerDelegate {
+extension IEOBuyTokenCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
-      self.buyTokenVC?.coordinatorBuyTokenDidUpdateGasPrice(gasPrice)
+      self.rootViewController?.coordinatorBuyTokenDidUpdateGasPrice(gasPrice)
       self.setGasPriceVC = nil
     }
   }
 }
 
 // MARK: Confirm Buy Delegation
-extension KGOHomePageCoordinator: KNConfirmTransactionViewControllerDelegate {
+extension IEOBuyTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
   func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
     controller.dismiss(animated: true) {
       if case .confirm(let type) = event, case .buyTokenSale(let trans) = type {
