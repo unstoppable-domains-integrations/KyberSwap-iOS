@@ -466,6 +466,16 @@ class IEOBuyTokenViewController: KNBaseViewController {
       )
       return
     }
+    if IEOTransactionStorage.shared.objects.first(where: {
+      $0.txStatus == .pending && $0.srcAddress.lowercased() == self.viewModel.walletObject.address.lowercased()
+    }) != nil {
+      // User has one pending IEO tx with same address
+      self.showWarningTopBannerMessage(
+        with: "",
+        message: "You have another pending token sale transaction, it might be lost if you send another transaction",
+        time: 2.5
+      )
+    }
     let transaction = IEODraftTransaction(
       token: self.viewModel.from,
       ieo: self.viewModel.to,
