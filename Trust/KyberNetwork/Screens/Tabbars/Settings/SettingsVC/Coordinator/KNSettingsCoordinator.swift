@@ -80,6 +80,8 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
       self.settingsViewControllerPasscodeDidChange(isOn)
     case .backUp:
       self.settingsViewControllerBackUpButtonPressed()
+    case .selectEnvironment:
+      self.settingsViewControllerOpenDebug()
     case .close:
       self.navigationController.dismiss(animated: true, completion: nil)
     }
@@ -99,6 +101,11 @@ extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
     } else {
       KNPasscodeUtil.shared.deletePasscode()
     }
+  }
+
+  func settingsViewControllerOpenDebug() {
+    let debugVC = KNDebugMenuViewController()
+    self.navigationController.present(debugVC, animated: true, completion: nil)
   }
 
   func settingsViewControllerBackUpButtonPressed() {

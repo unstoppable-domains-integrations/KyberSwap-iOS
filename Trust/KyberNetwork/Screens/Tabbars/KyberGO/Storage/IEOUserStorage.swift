@@ -58,7 +58,13 @@ class IEOUserStorage {
   func signedOut() {
     if self.realm == nil { return }
     guard let user = self.user else { return }
-    IEOTransactionStorage.shared.deleteAll()
+
+    for env in KNEnvironment.allEnvironments() {
+      let config = RealmConfiguration.kyberGOConfiguration(for: user.userID, chainID: env.chainID)
+      let realm = try! Realm(configuration: config)
+      try! realm.write { realm.deleteAll() }
+    }
+
     self.realm.beginWrite()
     user.isSignedIn = false
     self.realm.add(user, update: true)

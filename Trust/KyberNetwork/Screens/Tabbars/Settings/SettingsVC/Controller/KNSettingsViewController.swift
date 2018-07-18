@@ -10,6 +10,7 @@ enum KNSettingsViewEvent {
   case backUp
   case clickWallets
   case passcodeDidChange(isOn: Bool)
+  case selectEnvironment
 }
 
 protocol KNSettingsViewControllerDelegate: class {
@@ -78,6 +79,17 @@ class KNSettingsViewController: FormViewController {
 //      cell.imageView?.image = UIImage(named: "settings_lock")
 //    }
 //    securitySection += [self.passcodeRow]
+
+    form +++ Section("Environment")
+    <<< AppFormAppearance.button { button in
+      button.cellStyle = .value1
+    }.onCellSelection { [unowned self] _, _ in
+      self.delegate?.settingsViewController(self, run: .selectEnvironment)
+    }.cellUpdate { cell, _ in
+      cell.textLabel?.textColor = .black
+      cell.textLabel?.text = KNEnvironment.default.displayName
+      cell.accessoryType = .disclosureIndicator
+    }
 
     form +++ Section()
     <<< TextRow {

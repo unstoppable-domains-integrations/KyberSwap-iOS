@@ -10,6 +10,26 @@ enum KNEnvironment: Int {
   case ropsten = 3
   case kovan = 4
 
+  var displayName: String {
+    switch self {
+    case .mainnetTest: return "Mainnet"
+    case .production: return "Production"
+    case .staging: return "Staging"
+    case .ropsten: return "Ropsten"
+    case .kovan: return "Kovan"
+    }
+  }
+
+  static func allEnvironments() -> [KNEnvironment] {
+    return [
+      KNEnvironment.mainnetTest,
+      KNEnvironment.production,
+      KNEnvironment.staging,
+      KNEnvironment.ropsten,
+      KNEnvironment.kovan,
+    ]
+  }
+
   static let internalBaseEndpoint: String = {
     return KNAppTracker.internalCacheEndpoint()
   }()

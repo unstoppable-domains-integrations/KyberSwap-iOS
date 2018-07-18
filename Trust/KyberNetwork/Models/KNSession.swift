@@ -97,15 +97,22 @@ class KNSession {
     // delete all storage for each wallet
     let deleteResult = self.keystore.delete(wallet: wallet)
     if case .success() = deleteResult {
-      let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
-      let realm = try! Realm(configuration: config)
-      let transactionStorage = TransactionsStorage(realm: realm)
-      transactionStorage.deleteAll()
-      let tokenStorage = KNTokenStorage(realm: realm)
-      tokenStorage.deleteAll()
       KNAppTracker.resetAppTrackerData(for: wallet.address)
-      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
-        KNWalletStorage.shared.delete(wallets: [walletObject])
+      for env in KNEnvironment.allEnvironments() {
+        // Remove token and transaction storage
+        let config = RealmConfiguration.configuration(for: wallet, chainID: env.chainID)
+        let realm = try! Realm(configuration: config)
+        let transactionStorage = TransactionsStorage(realm: realm)
+        transactionStorage.deleteAll()
+        let tokenStorage = KNTokenStorage(realm: realm)
+        tokenStorage.deleteAll()
+
+        // Remove wallet storage
+        let globalConfig = RealmConfiguration.globalConfiguration(for: env.chainID)
+        let globalRealm = try! Realm(configuration: globalConfig)
+        if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
+          try! globalRealm.write { globalRealm.delete(walletObject) }
+        }
       }
       return true
     }
