@@ -3,7 +3,7 @@
   {
            "icon": "welcome_tokenized",
            "title": "Secure & Compatible",
-           "subtitle": "Design with highest security standard. Easily import & export accounts from other wallet apps.",
+           "subtitle": "Designed with highest security standard. Easily import & export accounts from other wallet apps.",
            "position": 0
   },
   {
@@ -15,7 +15,7 @@
   {
            "icon": "welcome_kyberdev",
            "title": "Stress-free Token Sales with KyberGO",
-           "subtitle": "Verify account just one and participate to all token sales hosted on KyberGO.",
+           "subtitle": "Verify account just once and participate to all token sales hosted on KyberGO.",
            "position": 2
   }
   ]
