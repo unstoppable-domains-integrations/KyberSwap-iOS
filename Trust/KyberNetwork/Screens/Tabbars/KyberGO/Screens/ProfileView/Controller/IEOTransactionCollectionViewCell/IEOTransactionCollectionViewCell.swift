@@ -67,6 +67,7 @@ struct IEOTransactionCollectionViewModel {
   }
 
   var backgroundColor: UIColor {
+    if transaction.txStatus == .pending { return UIColor(hex: "fef6ef") }
     return transaction.viewed ? .white : UIColor(hex: "edfbf6")
   }
 }

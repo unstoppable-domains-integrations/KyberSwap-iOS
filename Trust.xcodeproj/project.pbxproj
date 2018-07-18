@@ -12,6 +12,7 @@
 		2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */; };
 		2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502AC1A20947794007F23CD /* KNWalletObject.swift */; };
 		2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502AC1C20947840007F23CD /* KNWalletStorage.swift */; };
+		2503371A20FF288D00C3FC2D /* KGOHomePageCoordinator+BuyToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2503371920FF288D00C3FC2D /* KGOHomePageCoordinator+BuyToken.swift */; };
 		250343FF20DA37F700528810 /* KNSaveContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250343FD20DA37F700528810 /* KNSaveContactViewController.swift */; };
 		2503440020DA37F700528810 /* KNSaveContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 250343FE20DA37F700528810 /* KNSaveContactViewController.xib */; };
 		25069E4320D91098002A8F96 /* IEOBuyTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25069E4120D91098002A8F96 /* IEOBuyTokenViewController.swift */; };
@@ -675,6 +676,7 @@
 		2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsTableViewCell.xib; sourceTree = "<group>"; };
 		2502AC1A20947794007F23CD /* KNWalletObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletObject.swift; sourceTree = "<group>"; };
 		2502AC1C20947840007F23CD /* KNWalletStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletStorage.swift; sourceTree = "<group>"; };
+		2503371920FF288D00C3FC2D /* KGOHomePageCoordinator+BuyToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KGOHomePageCoordinator+BuyToken.swift"; sourceTree = "<group>"; };
 		250343FD20DA37F700528810 /* KNSaveContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSaveContactViewController.swift; sourceTree = "<group>"; };
 		250343FE20DA37F700528810 /* KNSaveContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSaveContactViewController.xib; sourceTree = "<group>"; };
 		25069E4120D91098002A8F96 /* IEOBuyTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOBuyTokenViewController.swift; sourceTree = "<group>"; };
@@ -2380,6 +2382,7 @@
 			isa = PBXGroup;
 			children = (
 				25A2941120CEA07D008C6759 /* KGOHomePageCoordinator.swift */,
+				2503371920FF288D00C3FC2D /* KGOHomePageCoordinator+BuyToken.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -4987,6 +4990,7 @@
 				2561455920C6AB5600FB00CF /* KNTokenChartCoordinator.swift in Sources */,
 				73C41C71201B46AD00243C6C /* LockEnterPasscodeViewModel.swift in Sources */,
 				2959960C1FAB03EC00DB66A8 /* CoinbaseBuyWidget.swift in Sources */,
+				2503371A20FF288D00C3FC2D /* KGOHomePageCoordinator+BuyToken.swift in Sources */,
 				291A1B671F98092F00ADEC80 /* ConfirmPaymentViewController.swift in Sources */,
 				29F1C8421FEB62ED003780D8 /* EditTokenTableCellViewModel.swift in Sources */,
 				2931122E1FC94E4200966EEA /* SettingsError.swift in Sources */,
