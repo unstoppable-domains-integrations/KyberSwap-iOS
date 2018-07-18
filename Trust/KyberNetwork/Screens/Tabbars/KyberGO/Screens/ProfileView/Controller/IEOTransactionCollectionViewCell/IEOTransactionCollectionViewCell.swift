@@ -65,6 +65,10 @@ struct IEOTransactionCollectionViewModel {
     //return "\(fromText) -> \(toText)"
     return "+\(toText) \(ieo.tokenSymbol)"
   }
+
+  var backgroundColor: UIColor {
+    return transaction.viewed ? .white : UIColor(hex: "edfbf6")
+  }
 }
 
 class IEOTransactionCollectionViewCell: UICollectionViewCell {
@@ -87,5 +91,6 @@ class IEOTransactionCollectionViewCell: UICollectionViewCell {
     self.txStatusLabel.text = viewModel.statusLabelText
     self.txDetailsLabel.attributedText = viewModel.detailsLabelText
     self.txAmountLabel.text = viewModel.amountLabelText
+    self.backgroundColor = viewModel.backgroundColor
   }
 }
