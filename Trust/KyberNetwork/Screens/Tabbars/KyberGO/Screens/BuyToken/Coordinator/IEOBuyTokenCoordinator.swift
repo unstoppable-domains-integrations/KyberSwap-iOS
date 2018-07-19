@@ -78,7 +78,7 @@ class IEOBuyTokenCoordinator: Coordinator {
   }
 
   func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
-    if let objc = self.object, objc == object {
+    if let objc = self.object, objc == object, halted {
       self.navigationController.showWarningTopBannerMessage(with: "Halted IEO", message: "This IEO has been halted", time: 2.5)
       self.delegate?.ieoBuyTokenCoordinator(self, run: .stop)
     }
