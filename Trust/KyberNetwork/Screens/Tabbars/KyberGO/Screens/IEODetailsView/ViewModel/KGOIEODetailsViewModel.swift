@@ -17,6 +17,7 @@ class KGOIEODetailsViewModel {
     ) {
     self.object = object
     self.isFull = isFull
+    self.isHalted = object.halted
   }
 
   var bannerURL: URL? { return URL(string: object.bannerShort) }

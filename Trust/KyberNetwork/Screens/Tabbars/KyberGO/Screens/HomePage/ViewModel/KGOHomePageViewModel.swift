@@ -14,6 +14,7 @@ class KGOHomePageViewModel {
 
   init(objects: [IEOObject]) {
     self.updateObjects(objects)
+    objects.forEach({ self.isHalted[$0.contract] = $0.halted })
   }
 
   func updateObjects(_ objects: [IEOObject]) {
@@ -107,7 +108,7 @@ class KGOHomePageViewModel {
   }
 
   func isHalted(for object: IEOObject) -> Bool {
-    return self.isHalted[object.contract] ?? false
+    return self.isHalted[object.contract] ?? object.halted
   }
 
   func updateIsHalted(_ halted: Bool, object: IEOObject) {

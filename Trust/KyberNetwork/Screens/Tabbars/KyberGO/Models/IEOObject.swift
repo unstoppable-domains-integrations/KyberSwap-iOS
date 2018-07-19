@@ -44,6 +44,8 @@ class IEOObject: Object {
   @objc dynamic var tokenSymbol: String = ""
   @objc dynamic var tokenDecimals: Int = 0
   @objc dynamic var totalSupply: String = ""
+  @objc dynamic var soldOut: Bool = false
+  @objc dynamic var halted: Bool = false
 
   @objc dynamic var needsUpdateRate: Bool = true
   @objc dynamic var needsUpdateRaised: Bool = true
@@ -69,6 +71,8 @@ class IEOObject: Object {
         }
       }
     }
+    self.soldOut = dict["soldout"] as? Bool ?? false
+    self.halted = false
     self.headline = dict["headline"] as? String ?? ""
     self.subtitle = dict["subtitle"] as? String ?? ""
     self.tagLine = dict["tagline"] as? String ?? ""
@@ -132,7 +136,11 @@ extension IEOObject {
     return Float(raised / cap)
   }
 
-  var isSoldOut: Bool { return self.progress >= 0.99999 }
+  var isSoldOut: Bool {
+    if self.soldOut { return true }
+    return self.progress >= 0.99999
+  }
+
   var getCurrentBonus: (Date?, String?) {
     let bonusDateFormatter: DateFormatter = {
       let formatter = DateFormatter()

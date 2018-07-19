@@ -13,6 +13,8 @@ class KNDebugMenuViewController: KNBaseViewController {
 
   fileprivate var newEnvironment: KNEnvironment = KNEnvironment.default
 
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()

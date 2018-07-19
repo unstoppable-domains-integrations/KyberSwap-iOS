@@ -5,7 +5,7 @@ import UIKit
 class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kWelcomeScreenCollectionViewCellID"
-  static let height: CGFloat = 300
+  static let height: CGFloat = 400
 
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var titleLabel: UILabel!
@@ -14,7 +14,6 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
-    self.imageView.rounded(radius: self.imageView.frame.width / 2.0)
   }
 
   func updateCell(with data: KNWelcomeScreenViewModel.KNWelcomeData) {

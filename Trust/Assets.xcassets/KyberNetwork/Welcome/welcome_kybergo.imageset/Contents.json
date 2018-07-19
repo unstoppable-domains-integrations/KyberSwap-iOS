@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "go1x.png",
+      "filename" : "kybergo.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GO2X.png",
+      "filename" : "kybergo@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GO3X.png",
+      "filename" : "kybergo@3x.png",
       "scale" : "3x"
     }
   ],

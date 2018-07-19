@@ -629,6 +629,7 @@ extension KGOHomePageCoordinator {
           switch result {
           case .success(let value):
             self.isHalted[object.contract] = value
+            IEOObjectStorage.shared.update(isHalted: value, object: object)
             self.rootViewController.coordinatorDidUpdateIsHalted(value, object: object)
             self.ieoListViewController?.coordinatorDidUpdateIsHalted(value, object: object)
             self.buyTokenCoordinator.coordinatorDidUpdateIsHalted(value, object: object)
