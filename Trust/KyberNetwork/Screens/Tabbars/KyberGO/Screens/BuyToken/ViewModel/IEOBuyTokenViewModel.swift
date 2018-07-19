@@ -185,6 +185,7 @@ struct IEOBuyTokenViewModel {
   // rate should not be nil and greater than zero
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
+    if !self.from.isETH && (self.minTokenRate == nil || self.minTokenRate?.isZero == true) { return false }
     return true
   }
 

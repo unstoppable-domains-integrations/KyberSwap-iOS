@@ -185,9 +185,12 @@ class IEOBuyTokenViewController: KNBaseViewController {
       return
     }
     self.viewModel.updateWallet(wallet)
+    self.buyAmountTextField.text = ""
+    self.receivedAmountTextField.text = ""
     self.selectWalletButton.setTitle(self.viewModel.walletButtonTitle, for: .normal)
     self.updateBalanceAndRate()
     self.reloadDataFromNode()
+    self.updateViewAmountDidChange()
   }
 
   @objc func gasPriceSegmentedControlDidTouch(_ sender: Any) {
@@ -219,7 +222,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
       )
       return
     }
-    guard let rate = self.viewModel.estRate, !rate.isZero else {
+    guard self.viewModel.isRateValid else {
       self.showWarningTopBannerMessage(
         with: "Invalid Rate".toBeLocalised(),
         message: "We could not update rate from node".toBeLocalised()
@@ -241,6 +244,13 @@ class IEOBuyTokenViewController: KNBaseViewController {
       self,
       run: .buy(transaction: self.viewModel.transaction)
     )
+
+    // Reset view
+    self.buyAmountTextField.text = ""
+    self.receivedAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
+    self.updateViewAmountDidChange()
   }
 
   @objc func keyboardExchangeAllButtonPressed(_ sender: Any) {

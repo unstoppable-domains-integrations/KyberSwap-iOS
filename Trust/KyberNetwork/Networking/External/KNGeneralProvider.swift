@@ -80,14 +80,14 @@ class KNGeneralProvider {
     }
   }
 
-  func getAllowance(for token: TokenObject, address: Address, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     if token.isETH {
       // ETH no need to request for approval
       completion(.success(true))
       return
     }
     let tokenAddress: Address = Address(string: token.contract)!
-    self.getTokenAllowanceEncodeData(for: address) { [weak self] dataResult in
+    self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
       switch dataResult {
       case .success(let data):
         let callRequest = CallRequest(to: tokenAddress.description, data: data)
@@ -131,14 +131,14 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, account: Account, keystore: Keystore, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, account: Account, keystore: Keystore, networkAddress: Address, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
     let group = DispatchGroup()
 
     group.enter()
-    self.getSendApproveERC20TokenEncodeData(completion: { result in
+    self.getSendApproveERC20TokenEncodeData(networkAddress: networkAddress, completion: { result in
       switch result {
       case .success(let resp):
         encodeData = resp
@@ -233,9 +233,9 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getSendApproveERC20TokenEncodeData(completion: @escaping (Result<Data, AnyError>) -> Void) {
+  fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
-      address: self.networkAddress,
+      address: networkAddress,
       value: BigInt(2).power(255)
     )
     self.web3Swift.request(request: encodeRequest) { (encodeResult) in
@@ -248,10 +248,10 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getTokenAllowanceEncodeData(for address: Address, completion: @escaping (Result<String, AnyError>) -> Void) {
+  fileprivate func getTokenAllowanceEncodeData(for address: Address, networkAddress: Address, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = KNGetTokenAllowanceEndcode(
       ownerAddress: address,
-      spenderAddress: self.networkAddress
+      spenderAddress: networkAddress
     )
     self.web3Swift.request(request: request) { result in
       switch result {

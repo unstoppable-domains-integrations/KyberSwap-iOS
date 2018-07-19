@@ -250,14 +250,16 @@ class IEOProvider {
   }
 
   fileprivate func preProcessForBuyingWithToken(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<Int, AnyError>) -> Void) {
-    KNGeneralProvider.shared.getAllowance(for: transaction.token, address: account.address) { result in
+    let tokenIEOAddress: Address = Address(string: KNEnvironment.default.knCustomRPC?.tokenIEOAddress ?? "")!
+    KNGeneralProvider.shared.getAllowance(for: transaction.token, address: account.address, networkAddress: tokenIEOAddress) { result in
       switch result {
       case .success(let allow):
         if allow {
           KNGeneralProvider.shared.getTransactionCount(for: account.address.description, completion: completion)
           return
         }
-        KNGeneralProvider.shared.approve(token: transaction.token, account: account, keystore: keystore, completion: completion)
+        let tokenIEOAddress: Address = Address(string: KNEnvironment.default.knCustomRPC?.tokenIEOAddress ?? "")!
+        KNGeneralProvider.shared.approve(token: transaction.token, account: account, keystore: keystore, networkAddress: tokenIEOAddress, completion: completion)
       case .failure(let error):
         completion(.failure(error))
       }

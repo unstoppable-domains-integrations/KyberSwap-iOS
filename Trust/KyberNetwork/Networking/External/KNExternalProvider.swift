@@ -164,6 +164,7 @@ class KNExternalProvider {
     KNGeneralProvider.shared.getAllowance(
       for: token,
       address: self.account.address,
+      networkAddress: self.networkAddress,
       completion: completion
     )
   }
@@ -173,7 +174,7 @@ class KNExternalProvider {
     KNGeneralProvider.shared.approve(
       token: exchangeTransaction.from,
       account: self.account,
-      keystore: self.keystore) { [weak self] result in
+      keystore: self.keystore, networkAddress: self.networkAddress) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let txCount):
