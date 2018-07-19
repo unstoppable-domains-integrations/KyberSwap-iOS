@@ -26,12 +26,22 @@ class IEOBuyTokenCoordinator: Coordinator {
   fileprivate(set) var session: KNSession
   fileprivate(set) var object: IEOObject?
 
+  fileprivate(set) var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
+
   weak var delegate: IEOBuyTokenCoordinatorDelegate?
 
   fileprivate var rootViewController: IEOBuyTokenViewController?
 
   private(set) var setGasPriceVC: KNSetGasPriceViewController?
   private(set) var profileVC: IEOProfileViewController?
+
+  lazy var searchTokensViewController: KNSearchTokenViewController = {
+    let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
+    let controller = KNSearchTokenViewController(viewModel: viewModel)
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    return controller
+  }()
 
   init(
     navigationController: UINavigationController,
@@ -245,7 +255,10 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
       }()
       self.setGasPriceVC = setGasPriceVC
       self.navigationController.pushViewController(setGasPriceVC, animated: true)
-    case .selectBuyToken, .selectIEO: break
+    case .selectBuyToken:
+      self.tokens = KNSupportedTokenStorage.shared.supportedTokens
+      self.searchTokensViewController.updateListSupportedTokens(self.tokens)
+      self.navigationController.present(self.searchTokensViewController, animated: true, completion: nil)
     case .buy(let transaction):
       guard let userID = IEOUserStorage.shared.user?.userID else {
         self.showAlertUserNotSignIn()
@@ -253,6 +266,18 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
       }
       transaction.update(userID: userID)
       self.openConfirmView(for: transaction)
+    default: break
+    }
+  }
+}
+
+// MARK: Search token
+extension IEOBuyTokenCoordinator: KNSearchTokenViewControllerDelegate {
+  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
+    self.searchTokensViewController.dismiss(animated: true) {
+      if case .select(let token) = event {
+        self.rootViewController?.coordinatorUpdateBuyToken(token)
+      }
     }
   }
 }

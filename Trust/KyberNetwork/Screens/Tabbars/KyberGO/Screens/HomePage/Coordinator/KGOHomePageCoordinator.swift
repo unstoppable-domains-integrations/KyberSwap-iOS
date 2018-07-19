@@ -225,7 +225,7 @@ class KGOHomePageCoordinator: Coordinator {
       }
     }()
     KNNotificationUtil.localPushNotification(
-      title: transaction.status,
+      title: transaction.txStatus.displayText,
       body: details
     )
   }
@@ -702,6 +702,7 @@ extension KGOHomePageCoordinator: IEOBuyTokenCoordinatorDelegate {
       self.buyTokenCoordinator.stop()
     case .bought:
       self.reloadKyberGOTransactionList()
+      self.userSelectedAccount()
     case .openSignIn:
       self.openSignInView()
     }

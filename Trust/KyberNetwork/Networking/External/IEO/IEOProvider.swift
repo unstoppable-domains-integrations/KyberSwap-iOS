@@ -25,14 +25,17 @@ class IEOProvider {
   /*
    Get ETH Balance for a given address in IEO
    */
-  func getETHBalance(for address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
-    let request = EtherServiceRequest(batch: BatchFactory().create(BalanceRequest(address: address)))
-    Session.send(request) { result in
-      switch result {
-      case .success(let balance):
-        completion(.success(balance))
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
+  func getBalance(for address: String, token: TokenObject, completion: @escaping (Result<Balance, AnyError>) -> Void) {
+    if token.isETH {
+      KNGeneralProvider.shared.getETHBalanace(for: address, completion: completion)
+    } else {
+      KNGeneralProvider.shared.getTokenBalance(for: Address(string: address)!, contract: token.address) { result in
+        switch result {
+        case .success(let value):
+          completion(.success(Balance(value: value)))
+        case .failure(let error):
+          completion(.failure(error))
+        }
       }
     }
   }
@@ -179,7 +182,15 @@ class IEOProvider {
   }
 
   func buy(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
-    KNExternalProvider.getTransactionCount(for: account.address.description) { [weak self] txCountResult in
+    if transaction.token.isETH {
+      self.buyWithETH(transaction: transaction, account: account, keystore: keystore, completion: completion)
+    } else {
+      self.buyWithToken(transaction: transaction, account: account, keystore: keystore, completion: completion)
+    }
+  }
+
+  fileprivate func buyWithETH(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getTransactionCount(for: account.address.description) { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
       case .success(let count):
@@ -191,11 +202,10 @@ class IEOProvider {
           switch encodeResult {
           case .success(let encodeData):
             transaction.data = encodeData
-            self?.signTransaction(transaction: transaction, account: account, keystore: keystore, completion: { [weak self] signedResult in
-              guard let `self` = self else { return }
+            self?.signTransaction(transaction: transaction, account: account, keystore: keystore, completion: { signedResult in
               switch signedResult {
               case .success(let data):
-                self.sendSignedTransaction(data: data, completion: completion)
+                KNGeneralProvider.shared.sendSignedTransactionData(data, completion: completion)
               case .failure(let error):
                 completion(.failure(AnyError(error)))
               }
@@ -210,8 +220,73 @@ class IEOProvider {
     }
   }
 
+  fileprivate func buyWithToken(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.preProcessForBuyingWithToken(transaction: transaction, account: account, keystore: keystore) { [weak self] preProcessResult in
+      guard let `self` = self else { return }
+      switch preProcessResult {
+      case .success(let count):
+        transaction.nonce = count
+        self.getIEOContributeWithTokenData(transaction: transaction, completion: { [weak self] encodeResult in
+          guard let `self` = self else { return }
+          switch encodeResult {
+          case .success(let encodeData):
+            transaction.data = encodeData
+            self.signTransaction(transaction: transaction, account: account, keystore: keystore, completion: { signedResult in
+              switch signedResult {
+              case .success(let data):
+                KNGeneralProvider.shared.sendSignedTransactionData(data, completion: completion)
+              case .failure(let error):
+                completion(.failure(error))
+              }
+            })
+          case .failure(let error):
+            completion(.failure(error))
+          }
+        })
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func preProcessForBuyingWithToken(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<Int, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getAllowance(for: transaction.token, address: account.address) { result in
+      switch result {
+      case .success(let allow):
+        if allow {
+          KNGeneralProvider.shared.getTransactionCount(for: account.address.description, completion: completion)
+          return
+        }
+        KNGeneralProvider.shared.approve(token: transaction.token, account: account, keystore: keystore, completion: completion)
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
   func getIEOContributeEncodeData(transaction: IEODraftTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    if transaction.token.isETH {
+      self.getIEOContributeETHEncodeData(transaction: transaction, completion: completion)
+    } else {
+      self.getIEOContributeWithTokenData(transaction: transaction, completion: completion)
+    }
+  }
+
+  fileprivate func getIEOContributeETHEncodeData(transaction: IEODraftTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let request = IEOContributeEncode(transaction: transaction)
+    self.web3Swift.request(request: request) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let data):
+        completion(.success(Data(hex: data.drop0x)))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  fileprivate func getIEOContributeWithTokenData(transaction: IEODraftTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    let request = IEOContributeWithTokenEncode(transaction: transaction)
     self.web3Swift.request(request: request) { [weak self] result in
       guard let _ = self else { return }
       switch result {
@@ -247,10 +322,12 @@ class IEOProvider {
   }
 
   func signTransaction(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    let value: BigInt = transaction.token.isETH ? transaction.amount : BigInt(0)
+    let to: Address? = transaction.token.isETH ? Address(string: transaction.ieo.contract) : Address(string: KNEnvironment.default.knCustomRPC?.tokenIEOAddress ?? "")
     let signTransaction = SignTransaction(
-      value: transaction.amount,
+      value: value,
       account: account,
-      to: Address(string: transaction.ieo.contract),
+      to: to,
       nonce: transaction.nonce,
       data: transaction.data ?? Data(),
       gasPrice: transaction.gasPrice,
@@ -263,19 +340,6 @@ class IEOProvider {
       completion(.success(data))
     case .failure(let error):
       completion(.failure(AnyError(error)))
-    }
-  }
-
-  func sendSignedTransaction(data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
-    let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
-    let request = EtherServiceRequest(batch: batch)
-    Session.send(request) { result in
-      switch result {
-      case .success(let transactionID):
-        completion(.success(transactionID))
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
-      }
     }
   }
 }

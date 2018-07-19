@@ -70,10 +70,10 @@ struct KNConfirmTransactionViewModel {
         attributedString.append(NSAttributedString(string: displayedAddress, attributes: highlightedAttributes))
       }
     case .exchange(let trans):
-      let receivedAmount = "\(trans.expectedReceive.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)) \(trans.to.symbol)"
+      let receivedAmount = "\(trans.displayExpectedReceive(short: true)) \(trans.to.symbol)"
       attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
     case .buyTokenSale(let trans):
-      let receivedAmount = "\(trans.expectedReceive.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 4)) \(trans.ieo.tokenSymbol)"
+      let receivedAmount = "\(trans.displayExpectedReceived) \(trans.ieo.tokenSymbol)"
       attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
     }
     return attributedString

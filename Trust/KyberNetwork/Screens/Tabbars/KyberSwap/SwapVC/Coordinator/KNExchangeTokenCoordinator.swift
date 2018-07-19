@@ -345,7 +345,8 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
       expectedRate: BigInt(0),
       minRate: .none,
       gasPrice: gasPrice,
-      gasLimit: .none
+      gasLimit: .none,
+      expectedReceivedString: nil
     )
     self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { [weak self] result in
       if case .success(let estimate) = result {

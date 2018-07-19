@@ -131,22 +131,18 @@ class KNBalanceCoordinator {
     isFetchingETHBalance = true
     let currentWallet = self.session.wallet
     let address = self.ethToken.address
-    DispatchQueue.global(qos: .background).async {
-      if self.session == nil { return }
-      self.session.externalProvider.getETHBalance { [weak self] result in
-        DispatchQueue.main.async {
-          guard let `self` = self else { return }
-          if self.session == nil || currentWallet != self.session.wallet { return }
-          self.isFetchingETHBalance = false
-          switch result {
-          case .success(let balance):
-            self.ethBalance = balance
-            self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
-            KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
-          case .failure(let error):
-            NSLog("Load ETH Balance failed with error: \(error.description)")
-          }
-        }
+    if self.session == nil { return }
+    self.session.externalProvider.getETHBalance { [weak self] result in
+      guard let `self` = self else { return }
+      if self.session == nil || currentWallet != self.session.wallet { return }
+      self.isFetchingETHBalance = false
+      switch result {
+      case .success(let balance):
+        self.ethBalance = balance
+        self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
+        KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+      case .failure(let error):
+        NSLog("Load ETH Balance failed with error: \(error.description)")
       }
     }
   }
@@ -160,25 +156,21 @@ class KNBalanceCoordinator {
     for contract in tokenContracts {
       if let contractAddress = Address(string: contract) {
         group.enter()
-        DispatchQueue.global(qos: .background).async {
-          if self.session == nil { group.leave(); return }
-          self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
-            DispatchQueue.main.async {
-              guard let `self` = self else { group.leave(); return }
-              if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
-              switch result {
-              case .success(let bigInt):
-                let balance = Balance(value: bigInt)
-                self.otherTokensBalance[contract] = balance
-                self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
-                NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
-              case .failure(let error):
-                NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
-              }
-              group.leave()
-            }
-          })
-        }
+        if self.session == nil { group.leave(); return }
+        self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
+          guard let `self` = self else { group.leave(); return }
+          if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+          switch result {
+          case .success(let bigInt):
+            let balance = Balance(value: bigInt)
+            self.otherTokensBalance[contract] = balance
+            self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
+            NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
+          case .failure(let error):
+            NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+          }
+          group.leave()
+        })
       }
     }
     // notify when all load balances are done

@@ -16,7 +16,11 @@ class IEODraftTransaction {
   var userID: BigInt = BigInt(-1)
   var nonce: Int = -1
   var estRate: BigInt?
+  var minRate: BigInt?
+  var maxDestAmount: BigInt?
   var data: Data?
+
+  var expectedReceivedString: String? = ""
 
   init(
     token: TokenObject,
@@ -25,7 +29,10 @@ class IEODraftTransaction {
     wallet: KNWalletObject,
     gasPrice: BigInt,
     gasLimit: BigInt,
-    estRate: BigInt?
+    estRate: BigInt?,
+    minRate: BigInt? = nil,
+    maxDestAmount: BigInt? = nil,
+    expectedReceived: String? = nil
     ) {
     self.token = token
     self.ieo = ieo
@@ -34,6 +41,9 @@ class IEODraftTransaction {
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
     self.estRate = estRate
+    self.minRate = minRate
+    self.maxDestAmount = maxDestAmount
+    self.expectedReceivedString = expectedReceived
   }
 
   func update(userID: Int) {
@@ -46,7 +56,14 @@ class IEODraftTransaction {
     self.s = s
   }
 
-  var expectedReceive: BigInt {
+  var displayExpectedReceived: String {
+    if let expectedReceived = self.expectedReceivedString {
+      return "\(expectedReceived.prefix(10))"
+    }
+    return "\(self.expectedReceivedBigInt.fullString(decimals: self.ieo.tokenDecimals).prefix(10))"
+  }
+
+  fileprivate var expectedReceivedBigInt: BigInt {
     guard let rate = self.estRate else { return BigInt(0) }
     return rate * amount / BigInt(10).power(self.token.decimals)
   }

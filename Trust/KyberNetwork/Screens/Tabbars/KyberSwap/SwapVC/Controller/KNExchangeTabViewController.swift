@@ -248,7 +248,7 @@ class KNExchangeTabViewController: KNBaseViewController {
   @IBAction func exchangeButtonPressed(_ sender: UIButton) {
     // Check data
     guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too small to perform exchange")
+      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too small to perform exchange, minumum equivalent to 0.001 ETH")
       return
     }
     guard !self.viewModel.isAmountTooBig else {
@@ -280,7 +280,8 @@ class KNExchangeTabViewController: KNBaseViewController {
       expectedRate: rate,
       minRate: self.viewModel.slippageRate,
       gasPrice: self.viewModel.gasPrice,
-      gasLimit: self.viewModel.estimateGasLimit
+      gasLimit: self.viewModel.estimateGasLimit,
+      expectedReceivedString: self.viewModel.amountTo
     )
     self.delegate?.exchangeTabViewController(self, run: .exchange(data: exchange))
   }
@@ -293,7 +294,6 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString
     self.viewModel.updateFocusingField(true)
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
-    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     self.updateTokensView()
     self.updateViewAmountDidChange()
     self.view.endEditing(true)
@@ -356,12 +356,14 @@ extension KNExchangeTabViewController {
         size: self.viewModel.defaultTokenIconImg?.size
       )
     }
-    // TODO (Build): Only added for mainnet, production, staging
     self.viewModel.updateEstimatedRateFromCachedIfNeeded()
     // call update est rate from node
     self.updateEstimatedRate()
     self.balanceLabel.text = self.viewModel.balanceText
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    if !self.fromAmountTextField.isFirstResponder {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
     self.view.layoutIfNeeded()
   }
 
@@ -399,7 +401,7 @@ extension KNExchangeTabViewController {
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.balanceLabel.text = self.viewModel.balanceText
-    if !self.fromAmountTextField.isEditing {
+    if !self.fromAmountTextField.isFirstResponder {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
     self.view.layoutIfNeeded()
@@ -458,7 +460,6 @@ extension KNExchangeTabViewController {
       self.toAmountTextField.text = self.viewModel.amountTo
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
     }
-    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
     self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
@@ -544,6 +545,9 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
     }
     self.updateEstimatedRate()
     self.updateEstimatedGasLimit()
+    if !self.fromAmountTextField.isFirstResponder {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
   }
 }
 

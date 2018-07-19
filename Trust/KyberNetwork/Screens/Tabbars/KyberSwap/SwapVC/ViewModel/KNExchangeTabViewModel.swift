@@ -148,6 +148,12 @@ class KNExchangeTabViewModel {
   var isAmountTooSmall: Bool {
     if self.amountFromBigInt <= BigInt(0) { return true }
     if self.slippageRate == nil || self.slippageRate?.isZero == true { return true }
+    if self.from.isETH {
+      return self.amountFromBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+    }
+    if self.to.isETH {
+      return self.amountToBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+    }
     let ethRate: BigInt = {
       if self.from.isETH { return BigInt(EthereumUnit.ether.rawValue) }
       if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {

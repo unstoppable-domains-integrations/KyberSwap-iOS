@@ -14,6 +14,7 @@ struct KNDraftExchangeTransaction {
   let minRate: BigInt?
   let gasPrice: BigInt?
   let gasLimit: BigInt?
+  let expectedReceivedString: String?
 }
 
 extension KNDraftExchangeTransaction {
@@ -26,6 +27,10 @@ extension KNDraftExchangeTransaction {
   }
 
   func displayExpectedReceive(short: Bool = true) -> String {
+    if let string = self.expectedReceivedString {
+      let received = string.fullBigInt(decimals: self.to.decimals) ?? self.expectedReceive
+      return short ? received.shortString(decimals: to.decimals) : received.fullString(decimals: to.decimals)
+    }
     return short ? expectedReceive.shortString(decimals: to.decimals) : expectedReceive.fullString(decimals: to.decimals)
   }
 
@@ -80,7 +85,8 @@ extension KNDraftExchangeTransaction {
       expectedRate: expectedRate,
       minRate: self.minRate,
       gasPrice: self.gasPrice,
-      gasLimit: gasLimit ?? self.gasLimit
+      gasLimit: gasLimit ?? self.gasLimit,
+      expectedReceivedString: (expectedRate * amount / BigInt(10).power(self.from.decimals)).fullString(decimals: self.to.decimals)
     )
   }
 
