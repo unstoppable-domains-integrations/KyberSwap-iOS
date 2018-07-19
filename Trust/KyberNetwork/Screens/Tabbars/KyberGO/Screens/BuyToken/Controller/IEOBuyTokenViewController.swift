@@ -50,7 +50,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: "Exchange All",
+      leftBtnTitle: "Contribute All",
       rightBtnTitle: "Done",
       delegate: self)
   }()
@@ -96,10 +96,14 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   fileprivate func setupTokenView() {
     self.buyAmountTextField.text = ""
+    self.buyAmountTextField.adjustsFontSizeToFitWidth = true
+    self.buyAmountTextField.inputAccessoryView = self.toolBar
+    self.buyAmountTextField.delegate = self
+
     self.receivedAmountTextField.text = ""
+    self.receivedAmountTextField.adjustsFontSizeToFitWidth = true
 
     self.receivedAmountTextField.delegate = self
-    self.buyAmountTextField.delegate = self
 
     self.fromTokenButton.setAttributedTitle(
       self.viewModel.tokenButtonAttributedText(isSource: true),
@@ -244,16 +248,9 @@ class IEOBuyTokenViewController: KNBaseViewController {
       self,
       run: .buy(transaction: self.viewModel.transaction)
     )
-
-    // Reset view
-    self.buyAmountTextField.text = ""
-    self.receivedAmountTextField.text = ""
-    self.viewModel.updateAmount("", isSource: true)
-    self.viewModel.updateAmount("", isSource: false)
-    self.updateViewAmountDidChange()
   }
 
-  @objc func keyboardExchangeAllButtonPressed(_ sender: Any) {
+  @objc func keyboardAllButtonPressed(_ sender: Any) {
     self.buyAmountTextField.text = self.viewModel.allFromTokenBalanceString
     self.viewModel.updateFocusingField(true)
     self.viewModel.updateAmount(self.buyAmountTextField.text ?? "", isSource: true)
@@ -342,6 +339,15 @@ extension IEOBuyTokenViewController {
     self.viewModel.updateWallet(walletObject)
     self.selectWalletButton.setTitle(self.viewModel.walletButtonTitle, for: .normal)
   }
+
+  func coordinatorDidConfirmContribute() {
+    // Reset view
+    self.buyAmountTextField.text = ""
+    self.receivedAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
+    self.updateViewAmountDidChange()
+  }
 }
 
 extension IEOBuyTokenViewController: UITextFieldDelegate {
@@ -392,7 +398,7 @@ extension IEOBuyTokenViewController: UITextFieldDelegate {
 // MARK: Toolbar delegate
 extension IEOBuyTokenViewController: KNCustomToolbarDelegate {
   func customToolbarLeftButtonPressed(_ toolbar: KNCustomToolbar) {
-    self.keyboardExchangeAllButtonPressed(toolbar)
+    self.keyboardAllButtonPressed(toolbar)
   }
 
   func customToolbarRightButtonPressed(_ toolbar: KNCustomToolbar) {

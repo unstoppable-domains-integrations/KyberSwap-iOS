@@ -298,6 +298,7 @@ extension IEOBuyTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
     controller.dismiss(animated: true) {
       if case .confirm(let type) = event, case .buyTokenSale(let trans) = type {
         self.sendBuyTransaction(trans)
+        self.rootViewController?.coordinatorDidConfirmContribute()
       }
     }
   }
