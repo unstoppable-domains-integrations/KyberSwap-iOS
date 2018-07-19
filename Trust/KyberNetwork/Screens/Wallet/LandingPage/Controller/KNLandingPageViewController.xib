@@ -64,9 +64,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2C-Xx-uQV">
-                    <rect key="frame" x="122.5" y="628.5" width="130" height="29"/>
+                    <rect key="frame" x="115.5" y="628.5" width="144" height="29"/>
                     <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
-                    <state key="normal" title="Term and Conditions">
+                    <state key="normal" title="Terms and Conditions">
                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
