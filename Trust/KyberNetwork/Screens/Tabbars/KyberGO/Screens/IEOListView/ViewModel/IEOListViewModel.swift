@@ -8,14 +8,17 @@ class IEOListViewModel {
   var curObject: IEOObject
   var title: String
 
+  var isHalted: [String: Bool] = [:]
+
   init(
     objects: [IEOObject],
     curObject: IEOObject,
-    title: String
+    title: String,
+    isHalted: [String: Bool]
     ) {
     self.objects = objects
     self.curObject = curObject
     self.title = title
+    self.isHalted = isHalted
   }
-
 }

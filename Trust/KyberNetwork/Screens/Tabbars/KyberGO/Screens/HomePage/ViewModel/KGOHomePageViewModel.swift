@@ -10,6 +10,8 @@ class KGOHomePageViewModel {
   fileprivate var dataSet: [[IEOObject]] = []
   fileprivate var titles: [String] = []
 
+  fileprivate(set) var isHalted: [String: Bool] = [:]
+
   init(objects: [IEOObject]) {
     self.updateObjects(objects)
   }
@@ -102,5 +104,13 @@ class KGOHomePageViewModel {
 
   func object(for row: Int, in section: Int) -> IEOObject {
     return self.dataSet[section][row]
+  }
+
+  func isHalted(for object: IEOObject) -> Bool {
+    return self.isHalted[object.contract] ?? false
+  }
+
+  func updateIsHalted(_ halted: Bool, object: IEOObject) {
+    self.isHalted[object.contract] = halted
   }
 }

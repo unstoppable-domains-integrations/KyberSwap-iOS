@@ -92,6 +92,11 @@ class KGOHomePageViewController: KNBaseViewController {
     self.userStatusLabel.text = IEOUserStorage.shared.user?.name ?? "Unknown"
   }
 
+  func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
+    self.viewModel.updateIsHalted(halted, object: object)
+    self.ieoTableView.reloadData()
+  }
+
   func coordinatorDidSignOut() {
     self.userStatusLabel.text = "Unknown"
     self.pendingTxNotiView.isHidden = true
@@ -152,7 +157,10 @@ extension KGOHomePageViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kIEOTableViewCellID, for: indexPath) as! KGOIEOTableViewCell
     let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
-    let model = KGOIEOTableViewCellModel(object: object)
+    let model = KGOIEOTableViewCellModel(
+      object: object,
+      isHalted: self.viewModel.isHalted(for: object)
+    )
     cell.updateView(with: model)
     cell.delegate = self
     return cell

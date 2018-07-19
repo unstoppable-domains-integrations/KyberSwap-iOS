@@ -77,6 +77,13 @@ class IEOBuyTokenCoordinator: Coordinator {
     self.rootViewController?.coordinatorDidUpdateWalletObjects()
   }
 
+  func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
+    if let objc = self.object, objc == object {
+      self.navigationController.showWarningTopBannerMessage(with: "Halted IEO", message: "This IEO has been halted", time: 2.5)
+      self.delegate?.ieoBuyTokenCoordinator(self, run: .stop)
+    }
+  }
+
   func stop() {
     self.navigationController.popViewController(animated: true) {
       self.rootViewController = nil

@@ -177,6 +177,13 @@ class KGOIEODetailsViewController: KNBaseViewController {
       self.updateDisplayRateAndBonus()
     }
   }
+
+  func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
+    if self.viewModel.object.id == object.id {
+      self.viewModel.isHalted = halted
+      self.updateProgess()
+    }
+  }
 }
 
 extension KGOIEODetailsViewController: UIScrollViewDelegate {

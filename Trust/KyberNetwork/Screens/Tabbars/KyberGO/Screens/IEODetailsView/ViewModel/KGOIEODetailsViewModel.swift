@@ -9,6 +9,8 @@ class KGOIEODetailsViewModel {
   let isFull: Bool
   var currentRate: BigInt?
 
+  var isHalted: Bool = false
+
   init(
     object: IEOObject,
     isFull: Bool = false
@@ -59,13 +61,14 @@ class KGOIEODetailsViewModel {
   }
 
   var buyTokenButtonEnabled: Bool {
-    return self.object.type == .active && !self.object.isSoldOut
+    return self.object.type == .active && !self.object.isSoldOut && !self.isHalted
   }
 
   var buyTokenButtonTitle: String {
     if self.object.type == .past { return "Ended" }
     if self.object.type == .upcoming { return "Coming Soon" }
     if self.object.isSoldOut { return "Sold Out" }
+    if self.isHalted { return "Halted" }
     if let bonusAmount = self.object.getAmountBonus {
       return "Buy Tokens\n +\(bonusAmount)%"
     }
@@ -76,6 +79,7 @@ class KGOIEODetailsViewModel {
     if self.object.type == .past { return UIColor(hex: "adb6ba") }
     if self.object.type == .upcoming { return UIColor(hex: "fad961") }
     if self.object.isSoldOut { return UIColor(hex: "F89F50") }
+    if self.isHalted { return UIColor(hex: "1f3468") }
     return UIColor(hex: "31CB9E")
   }
 

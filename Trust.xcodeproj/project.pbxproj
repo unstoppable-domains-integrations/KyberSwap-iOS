@@ -289,6 +289,7 @@
 		25EE4A7420C54F2F00E2282F /* KNAddNewWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */; };
 		25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */; };
 		25FCB18F2100531900F030A8 /* IEOBuyTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB18E2100531900F030A8 /* IEOBuyTokenViewModel.swift */; };
+		25FCB1912100874F00F030A8 /* IEOCheckHaltedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB1902100874F00F030A8 /* IEOCheckHaltedRequest.swift */; };
 		290B2B541F8F50030053C83E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 290B2B561F8F50030053C83E /* Localizable.strings */; };
 		290B2B5B1F8F551E0053C83E /* LokaliseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */; };
 		290B2B5F1F9177860053C83E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B2B5E1F9177860053C83E /* UIImage.swift */; };
@@ -955,6 +956,7 @@
 		25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAddNewWalletCoordinator.swift; sourceTree = "<group>"; };
 		25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGeneralProvider.swift; sourceTree = "<group>"; };
 		25FCB18E2100531900F030A8 /* IEOBuyTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOBuyTokenViewModel.swift; sourceTree = "<group>"; };
+		25FCB1902100874F00F030A8 /* IEOCheckHaltedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckHaltedRequest.swift; sourceTree = "<group>"; };
 		290B2B551F8F50030053C83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		290B2B5A1F8F551E0053C83E /* LokaliseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LokaliseInitializer.swift; sourceTree = "<group>"; };
 		290B2B5E1F9177860053C83E /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -1623,6 +1625,7 @@
 				2547714D20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift */,
 				25069E4920D92E16002A8F96 /* IEOContributeRequest.swift */,
 				2531119E20FFA386004440F0 /* IEOContributeWithTokenRequest.swift */,
+				25FCB1902100874F00F030A8 /* IEOCheckHaltedRequest.swift */,
 			);
 			path = Web3Swift;
 			sourceTree = "<group>";
@@ -5260,6 +5263,7 @@
 				290B2B701F930AB90053C83E /* PushNotificationsRegistrar.swift in Sources */,
 				739533971FEFF5FD0084AFAB /* Currency.swift in Sources */,
 				298542F31FBD594D00CB5081 /* SettingsViewModel.swift in Sources */,
+				25FCB1912100874F00F030A8 /* IEOCheckHaltedRequest.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,
 				255F6F2820BBCA6800EF808F /* KNWalletQRCodeCoordinator.swift in Sources */,
 				775DF441203E3A5D009CD082 /* NonFungibleTokenViewModel.swift in Sources */,

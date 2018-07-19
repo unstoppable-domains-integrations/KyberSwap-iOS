@@ -17,15 +17,18 @@ struct KGOIEOTableViewCellModel {
   }()
 
   fileprivate let object: IEOObject
+  fileprivate let isHalted: Bool
 
-  init(object: IEOObject) {
+  init(object: IEOObject, isHalted: Bool) {
     self.object = object
+    self.isHalted = isHalted
   }
 
   var highlightText: String? {
     // check sold out
     if self.object.type != .active { return "" }
     if self.object.isSoldOut { return " Sold Out ".toBeLocalised() }
+    if self.isHalted { return nil }
     // check bonus
     if let bonus = self.object.getAmountBonus { return " Bonus \(bonus)% " }
     return nil
@@ -34,9 +37,28 @@ struct KGOIEOTableViewCellModel {
   var highlightTextBackgroundColor: UIColor {
     // check sold out
     if self.object.isSoldOut { return UIColor(hex: "f89f50") }
+    if self.isHalted { return UIColor(hex: "1f3468") }
     // check bonus
     if self.object.getAmountBonus != nil { return UIColor(hex: "31cb9e") }
     return UIColor.white
+  }
+
+  var buyButtonTitle: String {
+    if self.object.isSoldOut { return "Sold Out" }
+    if self.isHalted { return "Halted" }
+    return self.object.type == .active ? "Buy" : ""
+  }
+
+  var isBuyButtonEnabled: Bool {
+    if self.object.isSoldOut { return false }
+    if self.isHalted { return false }
+    return self.object.type == .active
+  }
+
+  var buyButtonBackgroundColor: UIColor {
+    if self.object.isSoldOut { return UIColor(hex: "f89f50") }
+    if self.isHalted { return UIColor(hex: "1f3468") }
+    return UIColor(hex: "31cb9e")
   }
 
   var displayedName: String { return object.name }
@@ -131,8 +153,10 @@ class KGOIEOTableViewCell: UITableViewCell {
     self.raisedAmountLabel.text = model.raisedAmountText
     self.raisedPercentLabel.text = model.raisedAmountPercentText
 
-    self.buyButton.setTitle("Buy", for: .normal)
+    self.buyButton.setTitle(model.buyButtonTitle, for: .normal)
     self.buyButton.isHidden = model.object.type != .active
+    self.buyButton.isEnabled = model.isBuyButtonEnabled
+    self.buyButton.backgroundColor = model.buyButtonBackgroundColor
 
     self.stateTimer?.invalidate()
     self.countdownTimer?.invalidate()

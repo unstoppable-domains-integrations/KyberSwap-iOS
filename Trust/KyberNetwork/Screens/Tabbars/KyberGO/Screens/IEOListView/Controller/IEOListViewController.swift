@@ -87,6 +87,11 @@ class IEOListViewController: KNBaseViewController {
       self.scrollView.scrollRectToVisible(rect, animated: false)
     }
     self.automaticallyAdjustsScrollViewInsets = false
+
+    for object in self.viewModel.objects {
+      let halted: Bool = self.viewModel.isHalted[object.contract] ?? false
+      self.coordinatorDidUpdateIsHalted(halted, object: object)
+    }
   }
 
   func coordinatorDidUpdateProgress() {
@@ -97,6 +102,12 @@ class IEOListViewController: KNBaseViewController {
   func coordinatorDidUpdateRate(_ rate: BigInt, object: IEOObject) {
     guard let controller = self.controllers.first(where: { $0.viewModel.object.id == object.id }) else { return }
     controller.coordinatorDidUpdateRate(rate, object: object)
+  }
+
+  func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
+    for controller in self.controllers {
+      controller.coordinatorDidUpdateIsHalted(halted, object: object)
+    }
   }
 
   @IBAction func closeButtonPressed(_ sender: Any) {

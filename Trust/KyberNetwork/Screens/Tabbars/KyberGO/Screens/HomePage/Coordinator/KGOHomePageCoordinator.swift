@@ -41,6 +41,8 @@ class KGOHomePageCoordinator: Coordinator {
   internal(set) var setGasPriceVC: KNSetGasPriceViewController?
   internal(set) var profileVC: IEOProfileViewController?
 
+  fileprivate(set) var isHalted: [String: Bool] = [:]
+
   deinit { self.stop() }
 
   init(
@@ -310,7 +312,8 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
         return IEOListViewModel(
           objects: listObjects,
           curObject: selectedObject,
-          title: title
+          title: title,
+          isHalted: self.isHalted
         )
       }()
       let controller = IEOListViewController(viewModel: viewModel)
@@ -331,16 +334,6 @@ extension KGOHomePageCoordinator {
       self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
       return
     }
-//    if let user = IEOUserStorage.shared.objects.first, Date(timeIntervalSince1970: user.expireTime).timeIntervalSinceNow > 0 {
-//      IEOUserStorage.shared.signedIn()
-//      self.getUserInfo(
-//        type: user.tokenType,
-//        accessToken: user.accessToken,
-//        refreshToken: user.refreshToken,
-//        expireTime: user.expireTime
-//      )
-//      return
-//    }
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
     if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -610,7 +603,7 @@ extension KGOHomePageCoordinator {
               self.buyTokenCoordinator.coordinatorDidUpdateEstRate(for: object, rate: rate)
             }
           case .failure(let error):
-            print("Error: \(error.prettyError)")
+            NSLog("Error: \(error.prettyError)")
           }
         })
       }
@@ -625,7 +618,22 @@ extension KGOHomePageCoordinator {
             self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
             self?.ieoListViewController?.coordinatorDidUpdateProgress()
           case .failure(let error):
-            print("Error: \(error.prettyError)")
+            NSLog("Error: \(error.prettyError)")
+          }
+        }
+      }
+
+      if object.type == .active {
+        IEOProvider.shared.checkIsHalted(address: object.contract) { [weak self] result in
+          guard let `self` = self else { return }
+          switch result {
+          case .success(let value):
+            self.isHalted[object.contract] = value
+            self.rootViewController.coordinatorDidUpdateIsHalted(value, object: object)
+            self.ieoListViewController?.coordinatorDidUpdateIsHalted(value, object: object)
+            self.buyTokenCoordinator.coordinatorDidUpdateIsHalted(value, object: object)
+          case .failure(let error):
+            NSLog("Error: \(error.prettyError)")
           }
         }
       }

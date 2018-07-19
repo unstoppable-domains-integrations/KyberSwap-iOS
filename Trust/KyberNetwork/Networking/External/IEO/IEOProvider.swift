@@ -141,6 +141,33 @@ class IEOProvider {
   }
 
   /*
+   Check if the given IEO has been halted
+   */
+  func checkIsHalted(address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    let encodeRequest = IEOCheckHaltedEncode()
+    self.web3Swift.request(request: encodeRequest) { result in
+      switch result {
+      case .success(let encodeData):
+        let request = EtherServiceRequest(batch: BatchFactory().create(CallRequest(to: address, data: encodeData)))
+        Session.send(request) { result in
+          switch result {
+          case .success(let data):
+            let value: Bool = {
+              if data == "0x" { return false }
+              return Double(data.drop0x) != 0
+            }()
+            completion(.success(value))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  /*
    Get contributor remaining cap from node, there are 2 phases, in the first phase user is limited cap until cap lifted time
    - contractAddress: Address of the IEO
    - userID: Current user ID
