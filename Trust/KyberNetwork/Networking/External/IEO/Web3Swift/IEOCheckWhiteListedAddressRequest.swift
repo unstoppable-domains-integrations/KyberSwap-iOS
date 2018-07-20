@@ -12,7 +12,7 @@ struct IEOCheckWhiteListedAddressEncode: Web3Request {
   let address: Address
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(IEOCheckWhiteListedAddressEncode.abi), [\"\(address)\"])"
+    let run = "web3.eth.abi.encodeFunctionCall(\(IEOCheckWhiteListedAddressEncode.abi), [\"\(address.description)\"])"
     return .script(command: run)
   }
 }

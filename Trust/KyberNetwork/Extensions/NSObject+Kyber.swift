@@ -8,12 +8,12 @@ extension NSObject {
     self.showTopBannerView(with: title, message: message, theme: .warning, time: time)
   }
 
-  func showSuccessTopBannerMessage(with title: String = "", message: String = "") {
-    self.showTopBannerView(with: title, message: message, theme: .success)
+  func showSuccessTopBannerMessage(with title: String = "", message: String = "", time: TimeInterval = 1.5) {
+    self.showTopBannerView(with: title, message: message, theme: .success, time: time)
   }
 
-  func showErrorTopBannerMessage(with title: String = "", message: String = "") {
-    self.showTopBannerView(with: title, message: message, theme: .error)
+  func showErrorTopBannerMessage(with title: String = "", message: String = "", time: TimeInterval = 1.5) {
+    self.showTopBannerView(with: title, message: message, theme: .error, time: time)
   }
 
   func showTopBannerView(with title: String = "", message: String = "", theme: Theme, layout: MessageView.Layout = .cardView, time: TimeInterval = 1.5) {

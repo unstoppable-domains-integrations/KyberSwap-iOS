@@ -23,7 +23,9 @@ class IEOProvider {
   init() { self.web3Swift.start() }
 
   /*
-   Get ETH Balance for a given address in IEO
+   Get Balance for a given address in IEO
+   - address: Wallet address
+   - token: token to check balance
    */
   func getBalance(for address: String, token: TokenObject, completion: @escaping (Result<Balance, AnyError>) -> Void) {
     if token.isETH {
@@ -42,6 +44,7 @@ class IEOProvider {
 
   /*
    Get current distributed tokens wei for a given address in IEO
+   - address: IEO contract address to check distributed token weis
    */
   func getDistributedTokensWei(for address: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let encodeRequest = IEODistributedTokensWeiEncode()
@@ -73,6 +76,7 @@ class IEOProvider {
 
   /*
    Get current rate in ICO phase for a given IEO contract
+   - address: IEO contract address
    */
   func getRate(for address: String, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
     let encodeRequest = IEOGetRateEncode()
@@ -142,6 +146,7 @@ class IEOProvider {
 
   /*
    Check if the given IEO has been halted
+   - address: IEO contract address
    */
   func checkIsHalted(address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     let encodeRequest = IEOCheckHaltedEncode()
@@ -208,6 +213,12 @@ class IEOProvider {
     }
   }
 
+  /*
+   Send contribute data to buy IEO
+   - transaction: Data of transaction
+   - account: Account address to use
+   - keystore: Use to sign transaction
+   */
   func buy(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
     if transaction.token.isETH {
       self.buyWithETH(transaction: transaction, account: account, keystore: keystore, completion: completion)
@@ -216,6 +227,12 @@ class IEOProvider {
     }
   }
 
+  /*
+   Buy token sale using ETH
+   - transaction: Data of transaction
+   - account: Account address to use
+   - keystore: Use to sign transaction
+   */
   fileprivate func buyWithETH(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
     KNGeneralProvider.shared.getTransactionCount(for: account.address.description) { [weak self] txCountResult in
       guard let `self` = self else { return }
@@ -247,6 +264,12 @@ class IEOProvider {
     }
   }
 
+  /*
+   Buy token sale using token
+   - transaction: Data of transaction
+   - account: Account address to use
+   - keystore: Use to sign transaction
+   */
   fileprivate func buyWithToken(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.preProcessForBuyingWithToken(transaction: transaction, account: account, keystore: keystore) { [weak self] preProcessResult in
       guard let `self` = self else { return }
@@ -276,6 +299,12 @@ class IEOProvider {
     }
   }
 
+  /*
+   Pre-process to buy using token, check token allownce and send approve request if needed
+   - transaction: Data of transation
+   - account: Account address
+   - keystore: Use to sign transaction
+   */
   fileprivate func preProcessForBuyingWithToken(transaction: IEODraftTransaction, account: Account, keystore: Keystore, completion: @escaping (Result<Int, AnyError>) -> Void) {
     let tokenIEOAddress: Address = Address(string: KNEnvironment.default.knCustomRPC?.tokenIEOAddress ?? "")!
     KNGeneralProvider.shared.getAllowance(for: transaction.token, address: account.address, networkAddress: tokenIEOAddress) { result in
@@ -293,6 +322,62 @@ class IEOProvider {
     }
   }
 
+  /*
+   Get IEO address for given IEO to prevent hacker
+   - ieo: ieo to get its contract address
+   */
+  func getIEOAddress(for ieoID: Int, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let authorizedAddress: String = KNEnvironment.default.knCustomRPC?.authorizedAddress ?? ""
+    self.getIEOAddressEncodeData(for: ieoID) { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceRequest(batch: BatchFactory().create(CallRequest(to: authorizedAddress, data: data)))
+        Session.send(request) { [weak self] result in
+          guard let `self` = self else { return }
+          switch result {
+          case .success(let resp):
+            self.getIEOAddressDecodeData(resp, completion: completion)
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func getIEOAddressEncodeData(for ieoID: Int, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = IEOGetIEOAddressEncode(ieoID: ieoID)
+    self.web3Swift.request(request: request) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func getIEOAddressDecodeData(_ data: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = IEOGetIEOAddressDecode(data: data)
+    self.web3Swift.request(request: request) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let resp):
+        completion(.success(resp))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  /*
+   Get contribute encode data for transaction
+   - transaction: Contribute transaction
+   */
   func getIEOContributeEncodeData(transaction: IEODraftTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
     if transaction.token.isETH {
       self.getIEOContributeETHEncodeData(transaction: transaction, completion: completion)

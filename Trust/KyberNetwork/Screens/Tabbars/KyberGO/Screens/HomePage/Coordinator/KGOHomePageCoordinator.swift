@@ -238,27 +238,62 @@ class KGOHomePageCoordinator: Coordinator {
       return
     }
     self.navigationController.displayLoading(text: "Checking...", animated: true)
+
+    var error: Error?
+    var isWhiteListed: Bool = true
+    var ieoAddress: String = ""
+
+    let group = DispatchGroup()
+    group.enter()
+    IEOProvider.shared.getIEOAddress(for: object.id) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let address):
+        ieoAddress = address
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    }
+
+    group.enter()
     self.checkIEOWhitelisted(ieo: object) { [weak self] result in
-      self?.navigationController.hideLoading()
-      guard let `self` = self else { return }
+      guard let _ = self else { return }
       switch result {
       case .success(let canBuy):
-        guard canBuy else {
-          self.navigationController.showWarningTopBannerMessage(
-            with: "Error",
-            message: "You are not whitelisted for this token sale.".toBeLocalised()
-          )
-          return
-        }
-        self.buyTokenCoordinator.updateSession(self.session, object: object)
-        self.buyTokenCoordinator.start()
-        return
-      case .failure(let error):
+        isWhiteListed = canBuy
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    }
+
+    group.notify(queue: .main) {
+      self.navigationController.hideLoading()
+      if let error = error {
         self.navigationController.showWarningTopBannerMessage(
           with: "Error",
           message: error.prettyError
         )
+        return
       }
+      if !isWhiteListed {
+        self.navigationController.showWarningTopBannerMessage(
+          with: "Error",
+          message: "You are not whitelisted for this token sale.".toBeLocalised()
+        )
+        return
+      }
+      if ieoAddress.lowercased() != object.contract.lowercased() {
+        self.navigationController.showErrorTopBannerMessage(
+          with: "Attention!!!!".toBeLocalised(),
+          message: "We detected that this token sale has a wrong address. Please check with our team before buying this token sale.".toBeLocalised(),
+          time: 2.5
+        )
+        return
+      }
+      self.buyTokenCoordinator.updateSession(self.session, object: object)
+      self.buyTokenCoordinator.start()
     }
   }
 

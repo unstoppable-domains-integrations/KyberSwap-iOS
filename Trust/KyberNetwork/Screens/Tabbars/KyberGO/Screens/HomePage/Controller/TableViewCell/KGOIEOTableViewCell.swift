@@ -143,17 +143,27 @@ class KGOIEOTableViewCell: UITableViewCell {
   }
 
   func updateView(with model: KGOIEOTableViewCellModel) {
+    let placeholderImg: UIImage? = {
+      if let curModel = self.model, curModel.object.id == model.object.id {
+        return self.tokenIconImageView.image
+      }
+      return nil
+    }()
     self.model = model
-    self.tokenIconImageView.setImage(with: model.iconURL, placeholder: nil)
+    self.tokenIconImageView.setImage(with: model.iconURL, placeholder: placeholderImg)
+
     self.ieoHighlightLabel.text = model.highlightText
     self.ieoHighlightLabel.backgroundColor = model.highlightTextBackgroundColor
+
     self.nameLabel.text = model.displayedName
     self.timeLabel.text = model.displayedTime
     self.progressView.progress = model.progress
     self.raisedAmountLabel.text = model.raisedAmountText
     self.raisedPercentLabel.text = model.raisedAmountPercentText
 
-    self.buyButton.setTitle(model.buyButtonTitle, for: .normal)
+    if self.buyButton.currentTitle != model.buyButtonTitle {
+      self.buyButton.setTitle(model.buyButtonTitle, for: .normal)
+    }
     self.buyButton.isHidden = model.object.type != .active
     self.buyButton.isEnabled = model.isBuyButtonEnabled
     self.buyButton.backgroundColor = model.buyButtonBackgroundColor
