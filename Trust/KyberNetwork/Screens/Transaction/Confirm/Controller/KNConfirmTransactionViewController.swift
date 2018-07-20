@@ -94,8 +94,7 @@ struct KNConfirmTransactionViewModel {
     }
   }
   var isSlippageRateHidden: Bool {
-    if case .exchange = self.type { return false }
-    return true
+    return self.type.isTransfer
   }
   var heightForSlippageRate: CGFloat {
     return self.isSlippageRateHidden ? 0.0 : 52.0
@@ -103,6 +102,9 @@ struct KNConfirmTransactionViewModel {
   var slippageRateString: String {
     if case .exchange(let trans) = type, let minRate = trans.minRate {
       let percentage = ((trans.expectedRate - minRate) * BigInt(100) / trans.expectedRate)
+      return percentage.string(decimals: 0, minFractionDigits: 2, maxFractionDigits: 2) + " %"
+    } else if case .buyTokenSale(let trans) = self.type, let estRate = trans.estRate, let minRate = trans.minRate {
+      let percentage = ((estRate - minRate) * BigInt(100) / estRate)
       return percentage.string(decimals: 0, minFractionDigits: 2, maxFractionDigits: 2) + " %"
     }
     return ""
