@@ -493,7 +493,10 @@ extension KGOHomePageCoordinator {
                   return object
                 })
                 IEOObjectStorage.shared.update(objects: objects)
-                self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
+                // To update rate for IEO tokens
+                KNTrackerRateStorage.shared.updateRates(from: objects)
+                let allObjects = IEOObjectStorage.shared.objects
+                self?.rootViewController.coordinatorDidUpdateListKGO(allObjects)
               }
               NSLog("----KyberGO: reload list KGO successfully----")
               completion?(.success(true))
@@ -633,7 +636,9 @@ extension KGOHomePageCoordinator {
             if !data.1.isZero {
               let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
               let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
-              IEOObjectStorage.shared.update(rate: rateString, object: object)
+              let obj = IEOObjectStorage.shared.update(rate: rateString, object: object)
+              // Update est rate for this IEO
+              KNTrackerRateStorage.shared.updateRates(from: [obj])
               self.ieoListViewController?.coordinatorDidUpdateRate(rate, object: object)
               self.buyTokenCoordinator.coordinatorDidUpdateEstRate(for: object, rate: rate)
             }

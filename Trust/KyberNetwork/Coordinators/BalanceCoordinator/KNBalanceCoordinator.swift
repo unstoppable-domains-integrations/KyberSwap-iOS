@@ -138,9 +138,11 @@ class KNBalanceCoordinator {
       self.isFetchingETHBalance = false
       switch result {
       case .success(let balance):
-        self.ethBalance = balance
-        self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
-        KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+        if self.ethBalance.value != balance.value {
+          self.ethBalance = balance
+          self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
+          KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+        }
       case .failure(let error):
         NSLog("Load ETH Balance failed with error: \(error.description)")
       }
@@ -150,6 +152,7 @@ class KNBalanceCoordinator {
   @objc func fetchOtherTokensBalance(_ sender: Timer?) {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
+    var isBalanceChanged: Bool = false
     let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).map({ $0.contract })
     let currentWallet = self.session.wallet
     let group = DispatchGroup()
@@ -163,6 +166,9 @@ class KNBalanceCoordinator {
           switch result {
           case .success(let bigInt):
             let balance = Balance(value: bigInt)
+            if self.otherTokensBalance[contract] == nil || self.otherTokensBalance[contract]!.value != bigInt {
+              isBalanceChanged = true
+            }
             self.otherTokensBalance[contract] = balance
             self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
             NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
@@ -176,7 +182,9 @@ class KNBalanceCoordinator {
     // notify when all load balances are done
     group.notify(queue: .main) {
       self.isFetchingOtherTokensBalance = false
-      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      if isBalanceChanged {
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      }
     }
   }
 }
