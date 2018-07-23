@@ -118,6 +118,9 @@ class IEOObject: Object {
     self.tokenDecimals = details["token_decimals"] as? Int ?? 0
     self.needsUpdateRate = true
     self.needsUpdateRaised = true
+    if let value = Double(self.standardRate) {
+      self.standardRate = BigInt(value * pow(10.0, Double(self.tokenDecimals))).string(decimals: self.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 4)
+    }
   }
 
   override static func primaryKey() -> String {
