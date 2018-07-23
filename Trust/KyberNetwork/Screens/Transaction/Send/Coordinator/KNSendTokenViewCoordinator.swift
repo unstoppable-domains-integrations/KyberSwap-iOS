@@ -23,7 +23,7 @@ class KNSendTokenViewCoordinator: Coordinator {
   }()
 
   lazy var searchTokensVC: KNSearchTokenViewController = {
-    let viewModel = KNSearchTokenViewModel(supportedTokens: KNSupportedTokenStorage.shared.supportedTokens)
+    let viewModel = KNSearchTokenViewModel(supportedTokens: self.session.tokenStorage.tokens)
     let controller = KNSearchTokenViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
@@ -79,7 +79,9 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
-    self.searchTokensVC.updateListSupportedTokens(tokenObjects)
+    if self.searchTokensVC.isBeingPresented {
+      self.searchTokensVC.updateListSupportedTokens(tokenObjects)
+    }
   }
 
   func coordinatorGasPriceCachedDidUpdate() {
@@ -132,7 +134,7 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-    let tokens = KNSupportedTokenStorage.shared.supportedTokens
+    let tokens = self.session.tokenStorage.tokens
     self.searchTokensVC.updateListSupportedTokens(tokens)
     self.navigationController.present(self.searchTokensVC, animated: true, completion: nil)
   }

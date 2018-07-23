@@ -135,6 +135,9 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.tokens = tokenObjects
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
+    if self.searchTokensViewController.isBeingPresented {
+      self.searchTokensViewController.updateListSupportedTokens(tokenObjects)
+    }
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
