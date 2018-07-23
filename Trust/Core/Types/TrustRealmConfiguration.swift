@@ -8,9 +8,16 @@ import TrustCore
 struct RealmConfiguration {
 
     static func configuration(for account: Wallet, chainID: Int = KNEnvironment.default.chainID) -> Realm.Configuration {
-        var config = Realm.Configuration()
-        config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(account.address.description.lowercased())-\(chainID).realm")
-        return config
+        return RealmConfiguration.configuration(
+          for: account.address.description,
+          chainID: chainID
+        )
+    }
+
+    static func configuration(for address: String, chainID: Int = KNEnvironment.default.chainID) -> Realm.Configuration {
+      var config = Realm.Configuration()
+      config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(address.lowercased())-\(chainID).realm")
+      return config
     }
 
     static func globalConfiguration(for chainID: Int = KNEnvironment.default.chainID) -> Realm.Configuration {

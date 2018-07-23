@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import RealmSwift
 
 struct IEOBuyTokenViewModel {
   let defaultTokenIconImg = UIImage(named: "default_token")
@@ -37,6 +38,8 @@ struct IEOBuyTokenViewModel {
     self.ethRate = self.to.rate.fullBigInt(decimals: self.to.tokenDecimals)
     self.estTokenRate = self.ethRate
     self.minTokenRate = self.ethRate
+
+    self.updateCachedBalances()
   }
 
   var estRate: BigInt? {
@@ -220,6 +223,22 @@ struct IEOBuyTokenViewModel {
 
     self.balances = [:]
     self.balance = nil
+
+    self.updateCachedBalances()
+  }
+
+  // update balance from realm data
+  mutating private func updateCachedBalances() {
+    let config = RealmConfiguration.configuration(for: self.walletObject.address)
+    let realm = try! Realm(configuration: config)
+    let tokens: [TokenObject] = {
+      let tokenStorage = KNTokenStorage(realm: realm)
+      return tokenStorage.tokens
+    }()
+    tokens.forEach { token in
+      self.balances[token.contract] = Balance(value: token.valueBigInt)
+    }
+    self.balance = self.balances[self.from.contract]
   }
 
   mutating func updateFocusingField(_ isSource: Bool) {
