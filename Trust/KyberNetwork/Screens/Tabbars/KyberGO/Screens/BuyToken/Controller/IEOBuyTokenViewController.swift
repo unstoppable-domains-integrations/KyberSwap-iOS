@@ -102,6 +102,8 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
     self.receivedAmountTextField.text = ""
     self.receivedAmountTextField.adjustsFontSizeToFitWidth = true
+    // Disable typing dest amount as new behaviour changed for web
+    self.receivedAmountTextField.isEnabled = false
 
     self.receivedAmountTextField.delegate = self
 
