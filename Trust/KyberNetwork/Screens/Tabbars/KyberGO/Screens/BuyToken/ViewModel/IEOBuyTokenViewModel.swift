@@ -209,7 +209,7 @@ struct IEOBuyTokenViewModel {
       ethRate: self.ethRate,
       estTokenRate: self.estTokenRate,
       minTokenRate: self.minTokenRate,
-      maxDestAmount: self.estETHAmount,
+      maxDestAmount: BigInt(2).power(255), // new requirement, no need max dest amount
       expectedReceived: self.amountTo
     )
   }

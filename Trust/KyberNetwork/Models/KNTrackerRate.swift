@@ -43,10 +43,11 @@ class KNTrackerRate: Object {
     self.changeETH24h = 0.0
     if let ethTrackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) {
       self.rateUSDNow = self.rateETHNow * ethTrackerRate.rateUSDNow
+      self.changeUSD24h = ethTrackerRate.changeUSD24h
     } else {
       self.rateUSDNow = 0.0
+      self.changeUSD24h = 0.0
     }
-    self.changeUSD24h = 0.0
   }
 
   var rateETHBigInt: BigInt {
