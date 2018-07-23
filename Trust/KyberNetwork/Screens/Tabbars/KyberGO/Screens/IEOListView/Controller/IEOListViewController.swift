@@ -18,6 +18,7 @@ class IEOListViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var scrollView: UIScrollView!
+  @IBOutlet weak var pagingLabel: UILabel!
 
   weak var delegate: IEOListViewControllerDelegate?
   fileprivate var viewModel: IEOListViewModel
@@ -58,6 +59,7 @@ class IEOListViewController: KNBaseViewController {
       width: self.view.frame.width,
       height: height
     )
+    self.scrollView.delegate = self
     var padding: CGFloat = 15.0
     self.controllers = []
     for object in self.viewModel.objects {
@@ -85,6 +87,7 @@ class IEOListViewController: KNBaseViewController {
         height: height
       )
       self.scrollView.scrollRectToVisible(rect, animated: false)
+      self.pagingLabel.text = "\(id + 1)/\(self.viewModel.objects.count)"
     }
     self.automaticallyAdjustsScrollViewInsets = false
 
@@ -130,5 +133,13 @@ extension IEOListViewController: KGOIEODetailsViewControllerDelegate {
       return ""
     }()
     self.openSafari(with: urlString)
+  }
+}
+
+extension IEOListViewController: UIScrollViewDelegate {
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    let offsetX = scrollView.contentOffset.x
+    let id = Int(round(offsetX / self.scrollView.frame.width))
+    self.pagingLabel.text = "\(id + 1)/\(self.viewModel.objects.count)"
   }
 }
