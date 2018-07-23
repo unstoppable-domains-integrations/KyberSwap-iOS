@@ -15,8 +15,9 @@ class IEODraftTransaction {
   var s: String = ""
   var userID: BigInt = BigInt(-1)
   var nonce: Int = -1
-  var estRate: BigInt?
-  var minRate: BigInt?
+  var ethRate: BigInt?
+  var estTokenRate: BigInt?
+  var minTokenRate: BigInt?
   var maxDestAmount: BigInt?
   var data: Data?
 
@@ -29,8 +30,9 @@ class IEODraftTransaction {
     wallet: KNWalletObject,
     gasPrice: BigInt,
     gasLimit: BigInt,
-    estRate: BigInt?,
-    minRate: BigInt? = nil,
+    ethRate: BigInt?,
+    estTokenRate: BigInt? = nil,
+    minTokenRate: BigInt? = nil,
     maxDestAmount: BigInt? = nil,
     expectedReceived: String? = nil
     ) {
@@ -40,10 +42,19 @@ class IEODraftTransaction {
     self.wallet = wallet
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
-    self.estRate = estRate
-    self.minRate = minRate
+    self.ethRate = ethRate
+    self.estTokenRate = estTokenRate
+    self.minTokenRate = minTokenRate
     self.maxDestAmount = maxDestAmount
     self.expectedReceivedString = expectedReceived
+  }
+
+  var estRate: BigInt? {
+    if self.token.isETH { return self.ethRate }
+    if let ethRate = self.ethRate, let tokenRate = self.estTokenRate {
+      return ethRate * tokenRate / BigInt(EthereumUnit.ether.rawValue)
+    }
+    return nil
   }
 
   func update(userID: Int) {

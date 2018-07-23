@@ -50,7 +50,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="175" height="180"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hS-FD-y4r">
-                                    <rect key="frame" x="22" y="30" width="131" height="68"/>
+                                    <rect key="frame" x="22" y="30" width="145" height="68"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="68" id="ywI-Ui-aqw"/>
@@ -84,14 +84,14 @@
                                 <constraint firstAttribute="height" constant="180" id="aKX-jJ-ToF"/>
                                 <constraint firstItem="8hS-FD-y4r" firstAttribute="leading" secondItem="en4-Ae-8rH" secondAttribute="leading" constant="22" id="lI9-W0-afd"/>
                                 <constraint firstAttribute="trailing" secondItem="Llz-yn-NxS" secondAttribute="trailing" constant="5" id="qZA-da-9dW"/>
-                                <constraint firstAttribute="trailing" secondItem="8hS-FD-y4r" secondAttribute="trailing" constant="22" id="uoW-65-rYH"/>
+                                <constraint firstAttribute="trailing" secondItem="8hS-FD-y4r" secondAttribute="trailing" constant="8" id="uoW-65-rYH"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXu-29-qDK">
                             <rect key="frame" x="176" y="0.0" width="175" height="180"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Aq-gS-Pqa">
-                                    <rect key="frame" x="22" y="30" width="131" height="68"/>
+                                    <rect key="frame" x="8" y="30" width="145" height="68"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="68" id="vYN-oL-Y55"/>
@@ -122,7 +122,7 @@
                                 <constraint firstItem="8Aq-gS-Pqa" firstAttribute="top" secondItem="BXu-29-qDK" secondAttribute="top" constant="30" id="DpX-E6-qq9"/>
                                 <constraint firstItem="6M5-TX-r4u" firstAttribute="trailing" secondItem="8Aq-gS-Pqa" secondAttribute="trailing" id="RAA-d1-LFW"/>
                                 <constraint firstAttribute="height" constant="180" id="qL6-Al-Acg"/>
-                                <constraint firstItem="8Aq-gS-Pqa" firstAttribute="leading" secondItem="BXu-29-qDK" secondAttribute="leading" constant="22" id="rSN-Mg-2Cd"/>
+                                <constraint firstItem="8Aq-gS-Pqa" firstAttribute="leading" secondItem="BXu-29-qDK" secondAttribute="leading" constant="8" id="rSN-Mg-2Cd"/>
                                 <constraint firstItem="6M5-TX-r4u" firstAttribute="leading" secondItem="BXu-29-qDK" secondAttribute="leading" constant="5" id="w8J-4M-LLh"/>
                                 <constraint firstAttribute="trailing" secondItem="8Aq-gS-Pqa" secondAttribute="trailing" constant="22" id="zod-g1-7g7"/>
                             </constraints>

@@ -37,7 +37,7 @@ class KNTrackerRate: Object {
     self.tokenDecimals = ieoObject.tokenDecimals
     let rateDouble: Double = {
       let rateBigInt = ieoObject.rate.fullBigInt(decimals: ieoObject.tokenDecimals) ?? BigInt(0)
-      return rateBigInt.isZero ? 0.0 : Double(EthereumUnit.ether.rawValue) / Double(rateBigInt)
+      return rateBigInt.isZero ? 0.0 : Double(BigInt(10).power(ieoObject.tokenDecimals)) / Double(rateBigInt)
     }()
     self.rateETHNow = rateDouble
     self.changeETH24h = 0.0

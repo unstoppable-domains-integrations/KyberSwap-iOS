@@ -13,7 +13,8 @@ struct IEOContributeWithTokenEncode: Web3Request {
   let transaction: IEODraftTransaction
 
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(IEOContributeWithTokenEncode.abi), [\"\(transaction.userID.description)\", \"\(transaction.token.address.description)\", \"\(transaction.amount.description)\", \"\(transaction.minRate?.description ?? "")\", \"\(transaction.maxDestAmount?.description ?? "0x")\", \"\(KNEnvironment.default.knCustomRPC?.networkAddress ?? "0x")\", \"\(transaction.ieo.contract)\", \"\(transaction.v)\", \"\(transaction.r)\", \"\(transaction.s)\"])"
+    let minRate: BigInt? = transaction.token.isETH ? nil : transaction.minTokenRate
+    let run = "web3.eth.abi.encodeFunctionCall(\(IEOContributeWithTokenEncode.abi), [\"\(transaction.userID.description)\", \"\(transaction.token.address.description)\", \"\(transaction.amount.description)\", \"\(minRate?.description ?? "")\", \"\(transaction.maxDestAmount?.description ?? "0x")\", \"\(KNEnvironment.default.knCustomRPC?.networkAddress ?? "0x")\", \"\(transaction.ieo.contract)\", \"\(transaction.v)\", \"\(transaction.r)\", \"\(transaction.s)\"])"
     return .script(command: run)
   }
 }

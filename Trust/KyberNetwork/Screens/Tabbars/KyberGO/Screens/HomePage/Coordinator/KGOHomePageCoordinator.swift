@@ -634,7 +634,7 @@ extension KGOHomePageCoordinator {
           switch result {
           case .success(let data):
             if !data.1.isZero {
-              let rate = (data.0 * BigInt(10).power(object.tokenDecimals) / data.1)
+              let rate = (data.0 * BigInt(10).power(18) / data.1)
               let rateString = rate.string(decimals: object.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
               let obj = IEOObjectStorage.shared.update(rate: rateString, object: object)
               // Update est rate for this IEO

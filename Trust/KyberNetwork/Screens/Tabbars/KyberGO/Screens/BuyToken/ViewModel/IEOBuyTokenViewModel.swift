@@ -206,8 +206,9 @@ struct IEOBuyTokenViewModel {
       wallet: self.walletObject,
       gasPrice: self.gasPrice,
       gasLimit: self.estimateGasLimit,
-      estRate: self.estRate,
-      minRate: self.from.isETH ? nil : self.minTokenRate,
+      ethRate: self.ethRate,
+      estTokenRate: self.estTokenRate,
+      minTokenRate: self.minTokenRate,
       maxDestAmount: self.estETHAmount,
       expectedReceived: self.amountTo
     )
