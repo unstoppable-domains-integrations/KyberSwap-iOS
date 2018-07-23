@@ -35,6 +35,8 @@ struct IEOBuyTokenViewModel {
     self.from = from
     self.to = to
     self.ethRate = self.to.rate.fullBigInt(decimals: self.to.tokenDecimals)
+    self.estTokenRate = self.ethRate
+    self.minTokenRate = self.ethRate
   }
 
   var estRate: BigInt? {
@@ -201,7 +203,7 @@ struct IEOBuyTokenViewModel {
       wallet: self.walletObject,
       gasPrice: self.gasPrice,
       gasLimit: self.estimateGasLimit,
-      estRate: self.estTokenRate,
+      estRate: self.estRate,
       minRate: self.from.isETH ? nil : self.minTokenRate,
       maxDestAmount: self.estETHAmount,
       expectedReceived: self.amountTo
@@ -271,8 +273,15 @@ struct IEOBuyTokenViewModel {
   mutating func updateBuyToken(_ token: TokenObject) {
     if token == self.from { return }
     self.from = token
-    self.minTokenRate = nil
-    self.estTokenRate = nil
+    if self.from.isETH {
+      self.minTokenRate = self.ethRate
+      self.estTokenRate = self.ethRate
+    } else if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
+      // Use rate from cached server while waiting for rate from nodes
+      let rate = KNRate.rateETH(from: trackerRate)
+      self.estTokenRate = rate.rate
+      self.minTokenRate = rate.minRate
+    }
     self.amountFrom = ""
     if self.isFocusingFromAmount { self.amountTo = "" }
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
