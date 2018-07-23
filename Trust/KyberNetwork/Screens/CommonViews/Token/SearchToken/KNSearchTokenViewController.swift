@@ -51,6 +51,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var noMatchingTokensLabel: UILabel!
+  @IBOutlet weak var tableViewBottomPaddingConstraint: NSLayoutConstraint!
 
   fileprivate var viewModel: KNSearchTokenViewModel
   weak var delegate: KNSearchTokenViewControllerDelegate?
@@ -62,6 +63,19 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name.UIKeyboardDidShow,
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name.UIKeyboardDidHide,
+      object: nil
+    )
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -77,9 +91,7 @@ class KNSearchTokenViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     self.searchBar.text = ""
     self.searchTextDidChange("")
-    self.transitionCoordinator?.animate(alongsideTransition: { _ in
-      self.searchBar.becomeFirstResponder()
-    }, completion: nil)
+    self.searchBar.becomeFirstResponder()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -96,6 +108,19 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.tokensTableView.rowHeight = 46
     self.tokensTableView.delegate = self
     self.tokensTableView.dataSource = self
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.keyboardDidShow(_:)),
+      name: NSNotification.Name.UIKeyboardDidShow,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.keyboardDidHide(_:)),
+      name: NSNotification.Name.UIKeyboardDidHide,
+      object: nil
+    )
   }
 
   fileprivate func searchTextDidChange(_ newText: String) {
@@ -116,6 +141,24 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
     self.delegate?.searchTokenViewController(self, run: .cancel)
+  }
+
+  @objc func keyboardDidShow(_ sender: Notification) {
+    if let keyboardSize = (sender.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+      UIView.animate(
+      withDuration: 0.25) {
+        self.tableViewBottomPaddingConstraint.constant = keyboardSize.height
+        self.view.updateConstraints()
+      }
+    }
+  }
+
+  @objc func keyboardDidHide(_ sender: Notification) {
+    UIView.animate(
+    withDuration: 0.25) {
+      self.tableViewBottomPaddingConstraint.constant = 0
+      self.view.updateConstraints()
+    }
   }
 }
 
