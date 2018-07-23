@@ -88,8 +88,8 @@ class KGOIEODetailsViewController: KNBaseViewController {
       self.bannerImageView.setImage(with: url, placeholder: nil)
     }
     self.iconImageView.rounded(
-      color: .lightGray,
-      width: 0.5,
+      color: UIColor(hex: "31CB9E"),
+      width: 4,
       radius: self.iconImageView.frame.width / 2.0
     )
     if let url = self.viewModel.iconURL {

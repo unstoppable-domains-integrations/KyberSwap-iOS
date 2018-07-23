@@ -123,8 +123,8 @@ class KGOIEOTableViewCell: UITableViewCell {
     super.awakeFromNib()
     self.tokenIconImageView.image = nil
     self.tokenIconImageView.rounded(
-      color: .lightGray,
-      width: 0.5,
+      color: UIColor(hex: "31CB9E"),
+      width: 2,
       radius: self.tokenIconImageView.frame.width / 2.0
     )
 
