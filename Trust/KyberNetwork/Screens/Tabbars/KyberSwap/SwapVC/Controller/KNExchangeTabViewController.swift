@@ -427,6 +427,9 @@ extension KNExchangeTabViewController {
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
+    if !self.fromAmountTextField.isEditing {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
     self.view.layoutIfNeeded()
   }
 

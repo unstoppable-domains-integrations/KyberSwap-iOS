@@ -155,7 +155,6 @@ class KNExchangeTabViewModel {
       return self.amountToBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
     let ethRate: BigInt = {
-      if self.from.isETH { return BigInt(EthereumUnit.ether.rawValue) }
       if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
         return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
       }
@@ -236,7 +235,7 @@ class KNExchangeTabViewModel {
   }
 
   func updateEstimatedRateFromCachedIfNeeded() {
-    guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to) else { return }
+    guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
     self.estRate = rate.rate
     self.slippageRate = rate.minRate
   }

@@ -301,6 +301,9 @@ struct IEOBuyTokenViewModel {
       let rate = KNRate.rateETH(from: trackerRate)
       self.estTokenRate = rate.rate
       self.minTokenRate = rate.minRate
+    } else {
+      self.estTokenRate = nil
+      self.minTokenRate = nil
     }
     self.amountFrom = ""
     if self.isFocusingFromAmount { self.amountTo = "" }
