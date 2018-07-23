@@ -113,10 +113,15 @@ class IEOBuyTokenViewController: KNBaseViewController {
       token: self.viewModel.from,
       size: self.viewModel.defaultTokenIconImg?.size
     )
+    self.fromTokenButton.titleLabel?.numberOfLines = 2
+    self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.toIEOButton.setAttributedTitle(
       self.viewModel.tokenButtonAttributedText(isSource: false),
       for: .normal
     )
+    self.toIEOButton.semanticContentAttribute = .forceRightToLeft
+    self.toIEOButton.titleLabel?.numberOfLines = 2
+    self.toIEOButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.updateBalanceAndRate()
   }
 
