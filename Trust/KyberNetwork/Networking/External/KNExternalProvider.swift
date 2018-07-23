@@ -62,7 +62,7 @@ class KNExternalProvider {
       guard let `self` = self else { return }
       switch result {
       case .success(let txCount):
-        self.minTxCount = txCount
+        self.minTxCount = max(self.minTxCount, txCount)
         completion(.success(txCount))
       case .failure(let error):
         completion(.failure(error))
@@ -82,7 +82,11 @@ class KNExternalProvider {
             self.signTransactionData(from: transaction, nonce: self.minTxCount, data: data, completion: { signResult in
               switch signResult {
               case .success(let signData):
-                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: completion)
+                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { [weak self] result in
+                  guard let `self` = self else { return }
+                  if case .success = result { self.minTxCount += 1 }
+                  completion(result)
+                })
               case .failure(let error):
                 completion(.failure(error))
               }
@@ -109,7 +113,11 @@ class KNExternalProvider {
             self.signTransactionData(from: exchange, nonce: self.minTxCount, data: data, completion: { signResult in
               switch signResult {
               case .success(let signData):
-                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: completion)
+                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { [weak self] result in
+                  guard let `self` = self else { return }
+                  if case .success = result { self.minTxCount += 1 }
+                  completion(result)
+                })
               case .failure(let error):
                 completion(.failure(error))
               }
