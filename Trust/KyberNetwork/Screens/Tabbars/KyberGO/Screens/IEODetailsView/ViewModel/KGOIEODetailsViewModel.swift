@@ -29,11 +29,11 @@ class KGOIEODetailsViewModel {
   lazy var endDaysAttributedString: NSAttributedString = {
     let attributedString = NSMutableAttributedString()
     let timeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
     ]
     let typeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 12)!,
     ]
     let string: String = {
@@ -78,11 +78,11 @@ class KGOIEODetailsViewModel {
   }
 
   var buyTokenButtonBackgroundColor: UIColor {
-    if self.object.type == .past { return UIColor(hex: "adb6ba") }
-    if self.object.type == .upcoming { return UIColor(hex: "fad961") }
-    if self.object.isSoldOut { return UIColor(hex: "F89F50") }
-    if self.isHalted { return UIColor(hex: "1f3468") }
-    return UIColor(hex: "31CB9E")
+    if self.object.type == .past { return UIColor.Kyber.grey }
+    if self.object.type == .upcoming { return UIColor.Kyber.yellow }
+    if self.object.isSoldOut { return UIColor.Kyber.orange }
+    if self.isHalted { return UIColor.Kyber.darkBlue }
+    return UIColor.Kyber.green
   }
 
   var isBonusEndDateHidden: Bool { return self.object.getAmountBonus == nil }
@@ -125,7 +125,7 @@ class KGOIEODetailsViewModel {
 
   var whitePaperAttributedText: NSAttributedString {
     let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 12)!,
       NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
     ]
@@ -162,11 +162,11 @@ class KGOIEODetailsViewModel {
   fileprivate func displayTimeAttributedString(time: String, type: String) -> NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let timeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
     ]
     let typeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 14)!,
     ]
     attributedString.append(NSAttributedString(string: time, attributes: timeAttributes))
@@ -174,6 +174,7 @@ class KGOIEODetailsViewModel {
     return attributedString
   }
 
+  var isBoughtAmountLabelHidden: Bool { return IEOUserStorage.shared.user == nil }
   var boughtAmountAttributedString: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let normalAttributes: [NSAttributedStringKey: Any] = [

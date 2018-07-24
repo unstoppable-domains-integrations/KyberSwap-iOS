@@ -91,11 +91,11 @@ class KNTokenChartViewModel {
       return "---"
     }()
     let eth: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "141927"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayDark,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: .medium),
     ]
     let rate: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "0d0d0d"),
+      NSAttributedStringKey.foregroundColor: UIColor.black,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 32, weight: .regular),
     ]
     let attributedString = NSMutableAttributedString()
@@ -132,7 +132,7 @@ class KNTokenChartViewModel {
       return (x: Double($0.time - first.time) / (15.0 * 60.0), y: $0.close)
     }
     let series = ChartSeries(data: data)
-    series.color = UIColor(hex: "31cb9e")
+    series.color = UIColor.Kyber.green
     series.area = true
     return series
   }

@@ -7,7 +7,7 @@ extension UINavigationController {
     navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
     navigationBar.isTranslucent = false
     navigationBar.shadowImage = UIImage()
-    navigationBar.barTintColor = UIColor(hex: "09281f")
+    navigationBar.barTintColor = UIColor.Kyber.navDark
     navigationBar.barStyle = UIBarStyle.black
     navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
   }

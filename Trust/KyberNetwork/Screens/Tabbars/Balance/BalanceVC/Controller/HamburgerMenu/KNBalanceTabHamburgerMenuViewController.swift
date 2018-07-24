@@ -307,7 +307,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
       cell.imageView?.image = UIImage(named: wallet.icon)
       cell.textLabel?.text = wallet.name
       if wallet == self.viewModel.currentWallet {
-        cell.backgroundColor = UIColor(hex: "edfbf6")
+        cell.backgroundColor = UIColor.Kyber.veryLightGreen
         cell.accessoryType = .checkmark
       } else {
         cell.backgroundColor = .clear

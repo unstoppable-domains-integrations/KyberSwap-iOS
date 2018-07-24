@@ -47,12 +47,12 @@ struct KNHistoryTransactionCollectionViewModel {
   }
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "b6bab9"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.lightGray,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
   ]
 

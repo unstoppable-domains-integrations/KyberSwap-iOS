@@ -141,7 +141,7 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupTokensView() {
-    self.dataContainerView.rounded(color: UIColor(hex: "979797").withAlphaComponent(0.15), width: 1, radius: 4.0)
+    self.dataContainerView.rounded(color: UIColor.Kyber.darkerGrey.withAlphaComponent(0.15), width: 1, radius: 4.0)
     self.fromTokenButton.titleLabel?.numberOfLines = 2
     self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.toTokenButton.titleLabel?.numberOfLines = 2
@@ -154,7 +154,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.fromAmountTextField.delegate = self
     self.fromAmountTextField.underlined(
       lineHeight: 0.25,
-      color: UIColor(hex: "e8ebed"),
+      color: UIColor.Kyber.light,
       isAlignLeft: true,
       width: 100,
       bottom: 0
@@ -168,7 +168,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.toAmountTextField.delegate = self
     self.toAmountTextField.underlined(
       lineHeight: 0.25,
-      color: UIColor(hex: "e8ebed"),
+      color: UIColor.Kyber.light,
       isAlignLeft: false,
       width: 100,
       bottom: 0
@@ -531,7 +531,7 @@ extension KNExchangeTabViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
-    self.fromAmountTextField.textColor = UIColor(hex: "31CB9E")
+    self.fromAmountTextField.textColor = UIColor.Kyber.green
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

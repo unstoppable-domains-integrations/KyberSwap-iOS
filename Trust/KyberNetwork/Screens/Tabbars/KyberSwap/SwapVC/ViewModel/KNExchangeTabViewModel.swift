@@ -91,7 +91,7 @@ class KNExchangeTabViewModel {
   }
 
   var amountTextFieldColor: UIColor {
-    return self.isAmountValid ? UIColor(hex: "31CB9E") : UIColor.red
+    return self.isAmountValid ? UIColor.Kyber.green : UIColor.red
   }
 
   var expectedReceivedAmountText: String {
@@ -109,11 +109,11 @@ class KNExchangeTabViewModel {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     let symbol = isSource ? self.from.symbol : self.to.symbol
     let name = isSource ? self.from.name : self.to.name

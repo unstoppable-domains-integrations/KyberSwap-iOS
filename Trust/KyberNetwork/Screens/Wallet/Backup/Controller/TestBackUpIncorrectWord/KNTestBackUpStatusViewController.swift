@@ -17,7 +17,7 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var backgroundColor: UIColor {
-    return self.isSuccess ? UIColor(hex: "395497") : UIColor.black.withAlphaComponent(0.5)
+    return self.isSuccess ? UIColor.Kyber.lightBlue : UIColor.black.withAlphaComponent(0.5)
   }
 
   var isContainerViewHidden: Bool {

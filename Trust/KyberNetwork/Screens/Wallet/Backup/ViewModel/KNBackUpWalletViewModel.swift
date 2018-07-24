@@ -42,11 +42,11 @@ class KNBackUpWalletViewModel {
     let word: String = self.seeds[wordID - 1]
     let attributedString: NSMutableAttributedString = {
       let idAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(hex: "04140b"),
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayDarker,
         NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17),
       ]
       let wordAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(hex: "f89f50"),
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.orange,
       ]
       let attributedString = NSMutableAttributedString()
       attributedString.append(NSAttributedString(string: "\(wordID)", attributes: idAttributes))

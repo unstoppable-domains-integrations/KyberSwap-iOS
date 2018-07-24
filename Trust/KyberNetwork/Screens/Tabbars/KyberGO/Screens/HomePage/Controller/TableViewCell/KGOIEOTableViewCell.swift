@@ -36,10 +36,10 @@ struct KGOIEOTableViewCellModel {
 
   var highlightTextBackgroundColor: UIColor {
     // check sold out
-    if self.object.isSoldOut { return UIColor(hex: "f89f50") }
-    if self.isHalted { return UIColor(hex: "1f3468") }
+    if self.object.isSoldOut { return UIColor.Kyber.orange }
+    if self.isHalted { return UIColor.Kyber.darkBlue }
     // check bonus
-    if self.object.getAmountBonus != nil { return UIColor(hex: "31cb9e") }
+    if self.object.getAmountBonus != nil { return UIColor.Kyber.green }
     return UIColor.white
   }
 
@@ -56,9 +56,9 @@ struct KGOIEOTableViewCellModel {
   }
 
   var buyButtonBackgroundColor: UIColor {
-    if self.object.isSoldOut { return UIColor(hex: "f89f50") }
-    if self.isHalted { return UIColor(hex: "1f3468") }
-    return UIColor(hex: "31cb9e")
+    if self.object.isSoldOut { return UIColor.Kyber.orange }
+    if self.isHalted { return UIColor.Kyber.darkBlue }
+    return UIColor.Kyber.green
   }
 
   var displayedName: String { return object.name }
@@ -123,7 +123,7 @@ class KGOIEOTableViewCell: UITableViewCell {
     super.awakeFromNib()
     self.tokenIconImageView.image = nil
     self.tokenIconImageView.rounded(
-      color: UIColor(hex: "31CB9E"),
+      color: UIColor.Kyber.green,
       width: 2,
       radius: self.tokenIconImageView.frame.width / 2.0
     )

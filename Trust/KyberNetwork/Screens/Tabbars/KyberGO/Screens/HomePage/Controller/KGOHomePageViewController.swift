@@ -63,7 +63,7 @@ class KGOHomePageViewController: KNBaseViewController {
   fileprivate func setupTopView() {
     self.kyberGOLabel.text = "KyberGO"
     self.userAccountImageView.rounded(radius: self.userAccountImageView.frame.width / 2.0)
-    self.userAccountImageView.backgroundColor = UIColor(hex: "f5f5f5")
+    self.userAccountImageView.backgroundColor = UIColor.Kyber.lighter
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.accountImageViewDidTap(_:)))
     self.userAccountImageView.addGestureRecognizer(tapGesture)
     self.userAccountImageView.isUserInteractionEnabled = true
@@ -146,7 +146,7 @@ extension KGOHomePageViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
-    view.backgroundColor = UIColor(hex: "f5f5f5")
+    view.backgroundColor = UIColor.Kyber.lighter
     let label = UILabel(frame: CGRect(x: 20.0, y: 0, width: tableView.frame.width - 40.0, height: 44))
     label.text = self.viewModel.headerTitle(for: section)
     label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.medium)

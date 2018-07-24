@@ -46,8 +46,8 @@ class KNBackUpWalletViewController: KNBaseViewController {
     self.iconImageView.image = UIImage(named: self.viewModel.iconName)
     self.backupWalletLabel.text = self.viewModel.headerText
 
-    self.wroteDownButton.setBackgroundColor(.lightGray, forState: .disabled)
-    self.wroteDownButton.setBackgroundColor(UIColor(hex: "5ec2ba"), forState: .normal)
+    self.wroteDownButton.setBackgroundColor(UIColor.Kyber.lightGray, forState: .disabled)
+    self.wroteDownButton.setBackgroundColor(UIColor.Kyber.lightGreen, forState: .normal)
     self.wroteDownButton.semanticContentAttribute = .forceRightToLeft
 
     self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
@@ -60,8 +60,8 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
     self.completeButton.rounded(radius: 4.0)
     self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
-    self.completeButton.setBackgroundColor(.lightGray, forState: .disabled)
-    self.completeButton.setBackgroundColor(UIColor(hex: "5ec2ba"), forState: .normal)
+    self.completeButton.setBackgroundColor(UIColor.Kyber.lightGray, forState: .disabled)
+    self.completeButton.setBackgroundColor(UIColor.Kyber.lightGreen, forState: .normal)
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
 
     self.updateUI()

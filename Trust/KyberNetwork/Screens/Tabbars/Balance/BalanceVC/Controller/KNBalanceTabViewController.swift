@@ -88,7 +88,7 @@ class KNBalanceTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupBalanceButtonControlView() {
-    self.topButtonContainerView.rounded(color: UIColor(hex: "d2d5d4"), width: 1.0, radius: 0.0)
+    self.topButtonContainerView.rounded(color: UIColor.Kyber.lighterGray, width: 1.0, radius: 0.0)
     self.filterSortButton.semanticContentAttribute = .forceRightToLeft
     self.selectedFilterSortString = self.viewModel.tokensDisplayType.rawValue
 
@@ -117,13 +117,13 @@ class KNBalanceTabViewController: KNBaseViewController {
         target: nil,
         action: nil
       )
-      doneBtn.tintColor = UIColor(hex: "505352")
+      doneBtn.tintColor = UIColor.Kyber.dark
       let cancelBtn = UIBarButtonItem(
         barButtonSystemItem: .cancel,
         target: self,
         action: #selector(self.displayDataTypePickerViewCancelPressed(_:))
       )
-      cancelBtn.tintColor = UIColor(hex: "505352")
+      cancelBtn.tintColor = UIColor.Kyber.dark
       toolBar.setItems([cancelBtn, flexibleSpaceBtn, doneBtn], animated: false)
       return toolBar
     }()
@@ -337,7 +337,7 @@ extension KNBalanceTabViewController: UIPickerViewDataSource {
 
   func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
     let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "505352"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.dark,
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
     ]
     return NSAttributedString(

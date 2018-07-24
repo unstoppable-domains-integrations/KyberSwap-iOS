@@ -37,7 +37,7 @@ class KNTransactionStatusViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-    self.transactionStatusView.rounded(color: .lightGray, width: 0.1, radius: 4.0)
+    self.transactionStatusView.rounded(color: UIColor.Kyber.lightGray, width: 0.1, radius: 4.0)
     self.transactionStatusView.delegate = self
     self.updateViewWithTransaction(self.transaction)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewDidTap(_:)))

@@ -19,9 +19,9 @@ protocol KNSetGasPriceViewControllerDelegate: class {
 struct KNSetGasPriceViewModel {
 
   let gradientColors: [UIColor] = [
-    UIColor(hex: "fad961"),
-    UIColor(hex: "f9cb41"),
-    UIColor(hex: "f76b1c"),
+    UIColor.Kyber.yellow,
+    UIColor.Kyber.yellowDarker,
+    UIColor.Kyber.orangeDarker,
   ]
 
   var gasPrice: BigInt
@@ -56,11 +56,11 @@ struct KNSetGasPriceViewModel {
 
   var txFeeAttributedString: NSAttributedString {
     let textAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "0c3533"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.darkGreen,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let attributedString = NSMutableAttributedString()

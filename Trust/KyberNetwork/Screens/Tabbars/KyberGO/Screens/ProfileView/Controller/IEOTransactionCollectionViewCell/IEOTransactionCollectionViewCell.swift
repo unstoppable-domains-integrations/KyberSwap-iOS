@@ -24,12 +24,12 @@ struct IEOTransactionCollectionViewModel {
   }
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "b6bab9"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
   ]
 
@@ -73,12 +73,12 @@ struct IEOTransactionCollectionViewModel {
   }
 
   var amountLabelTextColor: UIColor {
-    return self.transaction.txStatus == .pending ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
+    return self.transaction.txStatus == .pending ? UIColor.Kyber.orange : UIColor.Kyber.green
   }
 
   var backgroundColor: UIColor {
-    if transaction.txStatus == .pending { return UIColor(hex: "fef6ef") }
-    return transaction.viewed ? .white : UIColor(hex: "edfbf6")
+    if transaction.txStatus == .pending { return UIColor.Kyber.veryLightOrange }
+    return transaction.viewed ? .white : UIColor.Kyber.veryLightGreen
   }
 }
 

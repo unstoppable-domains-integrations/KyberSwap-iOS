@@ -80,7 +80,7 @@ class KNImportWalletViewController: KNBaseViewController {
     ]
     self.buttonsTabBar.unselectedItemTintColor = .white
     self.buttonsTabBar.selectedItem = jsonItem
-    self.bottomIndicatorViews[0].backgroundColor = UIColor(hex: "2ed573")
+    self.bottomIndicatorViews[0].backgroundColor = UIColor.Kyber.lighterGreen
     self.buttonsTabBar.delegate = self
   }
 
@@ -146,7 +146,7 @@ class KNImportWalletViewController: KNBaseViewController {
       let x = CGFloat(page) * self.scrollView.frame.size.width
       self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
       self.bottomIndicatorViews.forEach {
-        $0.backgroundColor = $0.tag == page ? UIColor(hex: "2ed573") : .clear
+        $0.backgroundColor = $0.tag == page ? UIColor.Kyber.lighterGreen : .clear
       }
       self.view.layoutIfNeeded()
     }

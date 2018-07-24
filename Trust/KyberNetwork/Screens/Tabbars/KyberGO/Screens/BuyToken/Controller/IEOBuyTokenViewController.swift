@@ -399,7 +399,7 @@ extension IEOBuyTokenViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.updateFocusingField(textField == self.buyAmountTextField)
-    self.buyAmountTextField.textColor = UIColor(hex: "31CB9E")
+    self.buyAmountTextField.textColor = UIColor.Kyber.green
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

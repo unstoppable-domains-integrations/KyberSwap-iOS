@@ -38,7 +38,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var amountTextColor: UIColor {
-    return isAmountValid ? UIColor(hex: "31cb9e") : UIColor.red
+    return isAmountValid ? UIColor.Kyber.green : UIColor.red
   }
 
   var address: Address? {
@@ -58,11 +58,11 @@ class KNSendTokenViewModel: NSObject {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     attributedString.append(NSAttributedString(string: self.from.symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: "\n\(self.from.name)", attributes: nameAttributes))

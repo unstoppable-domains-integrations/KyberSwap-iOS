@@ -14,7 +14,7 @@ class KNCustomToolbar: UIToolbar {
   init(
     leftBtnTitle: String,
     rightBtnTitle: String,
-    barTintColor: UIColor = UIColor(hex: "31cb9e"),
+    barTintColor: UIColor = UIColor.Kyber.green,
     tintColor: UIColor = .white,
     delegate: KNCustomToolbarDelegate?
     ) {

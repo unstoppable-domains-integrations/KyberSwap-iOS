@@ -30,7 +30,7 @@ class KNLandingPageViewController: KNBaseViewController {
     super.viewDidLoad()
     self.view.backgroundColor = .white
     self.createWalletButton.rounded(color: .clear, width: 0, radius: 4.0)
-    self.importWalletButton.rounded(color: UIColor(hex: "31cb9e"), width: 1.0, radius: 4.0)
+    self.importWalletButton.rounded(color: UIColor.Kyber.green, width: 1.0, radius: 4.0)
     self.debugButton.isHidden = false
   }
 

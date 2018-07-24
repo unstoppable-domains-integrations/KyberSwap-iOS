@@ -128,7 +128,7 @@ struct KNHistoryViewModel {
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 13)!,
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "31cb9e"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.green,
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [

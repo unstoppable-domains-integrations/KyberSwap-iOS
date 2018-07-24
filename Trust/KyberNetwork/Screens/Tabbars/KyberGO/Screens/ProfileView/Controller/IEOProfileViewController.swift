@@ -109,7 +109,7 @@ class IEOProfileViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.userImageView.rounded(
-      color: .lightGray,
+      color: UIColor.Kyber.lightGray,
       width: 0.5,
       radius: self.userImageView.frame.width / 2.0
     )

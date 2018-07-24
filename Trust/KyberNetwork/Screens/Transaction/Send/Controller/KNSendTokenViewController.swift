@@ -128,7 +128,7 @@ class KNSendTokenViewController: KNBaseViewController {
     self.amountTextField.inputAccessoryView = self.toolBar
     self.amountTextField.underlined(
       lineHeight: 0.25,
-      color: UIColor(hex: "e8ebed"),
+      color: UIColor.Kyber.light,
       isAlignLeft: true,
       width: 100.0,
       bottom: -35
@@ -374,7 +374,7 @@ extension KNSendTokenViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    self.amountTextField.textColor = UIColor(hex: "31cb9e")
+    self.amountTextField.textColor = UIColor.Kyber.green
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.addressString
     }

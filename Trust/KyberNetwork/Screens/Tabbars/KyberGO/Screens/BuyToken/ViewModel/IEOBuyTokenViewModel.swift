@@ -124,7 +124,7 @@ struct IEOBuyTokenViewModel {
   }
 
   var amountTextFieldColor: UIColor {
-    return self.isAmountValid ? UIColor(hex: "31CB9E") : UIColor.red
+    return self.isAmountValid ? UIColor.Kyber.green : UIColor.red
   }
 
   var expectedReceivedAmountText: String {
@@ -142,11 +142,11 @@ struct IEOBuyTokenViewModel {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular),
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       ]
     let symbol = isSource ? self.from.symbol : self.to.tokenSymbol
     let name = isSource ? self.from.name : self.to.tokenName

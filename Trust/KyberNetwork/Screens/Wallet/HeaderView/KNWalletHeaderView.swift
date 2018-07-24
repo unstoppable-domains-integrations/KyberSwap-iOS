@@ -12,7 +12,7 @@ struct KNWalletHeaderViewModel {
   init() {}
 
   var backgroundColor: UIColor {
-    return UIColor(hex: "09281f")
+    return UIColor.Kyber.navDark
   }
 
   var tintColor: UIColor {
@@ -28,7 +28,7 @@ struct KNWalletHeaderViewModel {
   }
 
   var walletAddressAttributes: [NSAttributedStringKey: Any] {
-    return [NSAttributedStringKey.foregroundColor: UIColor(hex: "c4c4c4"),
+    return [NSAttributedStringKey.foregroundColor: UIColor.Kyber.lightGray,
             NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
     ]
   }

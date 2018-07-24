@@ -53,11 +53,11 @@ struct KNConfirmTransactionViewModel {
     let attributedString = NSMutableAttributedString()
     let highlightedAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 20)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "000000"),
+      NSAttributedStringKey.foregroundColor: UIColor.black,
     ]
     let normalAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
-      NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     switch type {
     case .transfer(let tx):
@@ -179,7 +179,7 @@ class KNConfirmTransactionViewController: UIViewController {
     self.view.addGestureRecognizer(tapGesture)
 
     self.confirmButton.rounded(
-      color: UIColor(hex: "31CB9E"),
+      color: UIColor.Kyber.green,
       width: 1,
       radius: self.confirmButton.frame.height / 2.0
     )

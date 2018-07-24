@@ -6,11 +6,11 @@ import BigInt
 struct KNTokenBalanceCollectionViewCellModel {
 
   fileprivate let highlighted: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "141927"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayDark,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
   ]
   fileprivate let normal: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
     NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 12)!,
   ]
 
@@ -105,15 +105,15 @@ struct KNTokenBalanceCollectionViewCellModel {
   var textColorChange24h: UIColor {
     let change24h = self.displayedType == .eth ? self.trackerRate?.changeETH24h : self.trackerRate?.changeUSD24h
     if let percentageChange = change24h {
-      return percentageChange < 0 ? UIColor(hex: "f89f50") : UIColor(hex: "31cb9e")
+      return percentageChange < 0 ? UIColor.Kyber.orange : UIColor.Kyber.green
     }
-    return UIColor(hex: "5a5e67")
+    return UIColor.Kyber.gray
   }
 
   var backgroundColorChange24h: UIColor {
     let change24h = self.displayedType == .eth ? self.trackerRate?.changeETH24h : self.trackerRate?.changeUSD24h
     if let percentageChange = change24h {
-      return percentageChange < 0 ? UIColor(hex: "fef6ef") : UIColor(hex: "edfbf6")
+      return percentageChange < 0 ? UIColor.Kyber.veryLightOrange : UIColor.Kyber.veryLightGreen
     }
     return UIColor.white
   }

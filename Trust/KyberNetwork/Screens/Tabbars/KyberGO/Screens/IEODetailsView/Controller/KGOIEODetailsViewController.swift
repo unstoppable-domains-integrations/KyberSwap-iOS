@@ -81,7 +81,7 @@ class KGOIEODetailsViewController: KNBaseViewController {
     if self.viewModel.isFull {
       self.closeButton.isHidden = false
     } else {
-      self.view.rounded(color: .lightGray, width: 0.5, radius: 5.0)
+      self.view.rounded(color: UIColor.Kyber.lightGray, width: 0.5, radius: 5.0)
       self.closeButton.isHidden = true
     }
     self.boughtAmountLabel.rounded(
@@ -89,13 +89,14 @@ class KGOIEODetailsViewController: KNBaseViewController {
       width: 2,
       radius: 4.0
     )
+    self.boughtAmountLabel.isHidden = self.viewModel.isBoughtAmountLabelHidden
     self.boughtAmountLabel.attributedText = self.viewModel.boughtAmountAttributedString
-    self.bannerImageView.rounded(color: .lightGray, width: 0.5, radius: 0.0)
+    self.bannerImageView.rounded(color: UIColor.Kyber.lightGray, width: 0.5, radius: 0.0)
     if let url = self.viewModel.bannerURL {
       self.bannerImageView.setImage(with: url, placeholder: nil)
     }
     self.iconImageView.rounded(
-      color: UIColor(hex: "31CB9E"),
+      color: UIColor.Kyber.green,
       width: 4,
       radius: self.iconImageView.frame.width / 2.0
     )
