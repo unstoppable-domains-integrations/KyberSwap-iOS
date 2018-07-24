@@ -14,6 +14,7 @@ class KGOIEODetailsViewController: KNBaseViewController {
   @IBOutlet weak var closeButton: UIButton!
   @IBOutlet weak var bannerImageView: UIImageView!
   @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var boughtAmountLabel: UILabel!
 
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var contentLabel: UILabel!
@@ -83,6 +84,12 @@ class KGOIEODetailsViewController: KNBaseViewController {
       self.view.rounded(color: .lightGray, width: 0.5, radius: 5.0)
       self.closeButton.isHidden = true
     }
+    self.boughtAmountLabel.rounded(
+      color: UIColor.white,
+      width: 2,
+      radius: 4.0
+    )
+    self.boughtAmountLabel.attributedText = self.viewModel.boughtAmountAttributedString
     self.bannerImageView.rounded(color: .lightGray, width: 0.5, radius: 0.0)
     if let url = self.viewModel.bannerURL {
       self.bannerImageView.setImage(with: url, placeholder: nil)
@@ -183,6 +190,12 @@ class KGOIEODetailsViewController: KNBaseViewController {
       self.viewModel.isHalted = halted
       self.updateProgess()
     }
+  }
+
+  func coordinatorDidUpdateBoughtAmount(_ amount: Double) {
+    self.viewModel.updateBoughtAmount(amount)
+    self.boughtAmountLabel.attributedText = self.viewModel.boughtAmountAttributedString
+    self.view.layoutIfNeeded()
   }
 }
 

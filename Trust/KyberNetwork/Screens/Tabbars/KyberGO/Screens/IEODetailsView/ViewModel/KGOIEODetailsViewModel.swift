@@ -8,6 +8,7 @@ class KGOIEODetailsViewModel {
   var object: IEOObject
   let isFull: Bool
   var currentRate: BigInt?
+  var boughtAmount: Double = 0.0
 
   var isHalted: Bool = false
 
@@ -29,11 +30,11 @@ class KGOIEODetailsViewModel {
     let attributedString = NSMutableAttributedString()
     let timeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
     ]
     let typeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 12)!,
     ]
     let string: String = {
       if object.type == .past { return "ENDED" }
@@ -125,7 +126,7 @@ class KGOIEODetailsViewModel {
   var whitePaperAttributedText: NSAttributedString {
     let attributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 12)!,
       NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
     ]
     return NSAttributedString(
@@ -162,19 +163,45 @@ class KGOIEODetailsViewModel {
     let attributedString = NSMutableAttributedString()
     let timeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "5a5e67"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
     ]
     let typeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(hex: "adb6ba"),
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 14)!,
     ]
     attributedString.append(NSAttributedString(string: time, attributes: timeAttributes))
     attributedString.append(NSAttributedString(string: "\n\(type)", attributes: typeAttributes))
     return attributedString
   }
 
+  var boughtAmountAttributedString: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let normalAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor.white,
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 16)!,
+    ]
+    let highlightedAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor.white,
+      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
+    ]
+    attributedString.append(NSAttributedString(string: "   Bought: ", attributes: normalAttributes))
+    let amount: String = {
+      let formatter = NumberFormatter()
+      formatter.minimumFractionDigits = 1
+      formatter.maximumFractionDigits = 1
+      formatter.minimumIntegerDigits = 1
+      return formatter.string(from: NSNumber(value: self.boughtAmount)) ?? "0.0"
+    }()
+    attributedString.append(NSAttributedString(string: "\(amount) \(self.object.tokenSymbol)   ", attributes: highlightedAttributes))
+    return attributedString
+  }
+
   // MARK: Update
   func updateCurrentRate(_ rate: BigInt) {
     self.currentRate = rate
+  }
+
+  func updateBoughtAmount(_ amount: Double) {
+    self.boughtAmount = amount
   }
 }

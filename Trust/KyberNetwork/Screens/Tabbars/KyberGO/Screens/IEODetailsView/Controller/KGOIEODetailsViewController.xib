@@ -16,12 +16,16 @@
         <array key="SF-Pro-Text-Regular.otf">
             <string>SFProText-Regular</string>
         </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KGOIEODetailsViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="bannerImageView" destination="Yh1-H2-tcK" id="cNV-q2-aJ1"/>
                 <outlet property="bonusEndDateLabel" destination="ttP-tK-RYe" id="wKA-sU-ZNc"/>
+                <outlet property="boughtAmountLabel" destination="suT-8S-ElX" id="WHN-VN-OHk"/>
                 <outlet property="buyTokenButton" destination="alF-Ub-99s" id="alz-mV-7tA"/>
                 <outlet property="closeButton" destination="AZY-bE-Gfh" id="EeF-by-lVE"/>
                 <outlet property="contentLabel" destination="j0i-Na-0VQ" id="iVl-pK-ItY"/>
@@ -59,7 +63,7 @@
                         </imageView>
                         <view alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oOO-4d-kVX">
                             <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.74689150528169013" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZY-bE-Gfh">
                             <rect key="frame" x="16" y="36" width="24" height="24"/>
@@ -222,6 +226,15 @@
                             <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="    Bought: 0 IEO    " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="suT-8S-ElX">
+                            <rect key="frame" x="216" y="36" width="142" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="6dX-bO-iL6"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -245,9 +258,11 @@
                         <constraint firstItem="gjf-2d-0Ga" firstAttribute="top" secondItem="Yh1-H2-tcK" secondAttribute="bottom" constant="16" id="O5c-EY-C2q"/>
                         <constraint firstAttribute="trailing" secondItem="DeK-LS-kio" secondAttribute="trailing" constant="20" id="PyA-ny-PRK"/>
                         <constraint firstItem="qpX-Lg-jbf" firstAttribute="top" secondItem="DeK-LS-kio" secondAttribute="bottom" constant="40" id="Wlw-SA-abO"/>
+                        <constraint firstItem="suT-8S-ElX" firstAttribute="top" secondItem="AZY-bE-Gfh" secondAttribute="top" id="Wu5-HQ-C1n"/>
                         <constraint firstItem="zFC-tM-Zct" firstAttribute="centerY" secondItem="FPf-DH-TQQ" secondAttribute="centerY" id="YdE-qn-y1h"/>
                         <constraint firstItem="hJ6-o8-Xjv" firstAttribute="top" secondItem="ttP-tK-RYe" secondAttribute="bottom" constant="15" id="bun-IZ-gU9"/>
                         <constraint firstItem="DeK-LS-kio" firstAttribute="top" secondItem="DnQ-8N-0OV" secondAttribute="bottom" constant="16" id="ckh-3i-xSm"/>
+                        <constraint firstAttribute="trailing" secondItem="suT-8S-ElX" secondAttribute="trailing" constant="16" id="cpZ-x9-PQK"/>
                         <constraint firstItem="Yh1-H2-tcK" firstAttribute="top" secondItem="zhw-rg-P46" secondAttribute="top" id="e29-V8-K9o"/>
                         <constraint firstItem="j0i-Na-0VQ" firstAttribute="leading" secondItem="wde-bZ-H7r" secondAttribute="leading" id="eDW-OB-4tB"/>
                         <constraint firstItem="RJi-qp-zNX" firstAttribute="top" secondItem="DeK-LS-kio" secondAttribute="bottom" constant="8" id="fZc-vJ-w8q"/>

@@ -577,9 +577,8 @@ extension KGOHomePageCoordinator {
           tabItems[2].badgeValue = values > 0 ? "\(values)" : nil
         }
         self?.profileVC?.coordinatorUpdateTransactionList(trans)
-        self?.rootViewController.coordinatorUpdateListKyberGOTx(
-          transactions: trans
-        )
+        self?.rootViewController.coordinatorUpdateListKyberGOTx(trans)
+        self?.ieoListViewController?.coordinatorDidUpdateListKyberGoTx(trans)
       }
       completion?(result)
     }

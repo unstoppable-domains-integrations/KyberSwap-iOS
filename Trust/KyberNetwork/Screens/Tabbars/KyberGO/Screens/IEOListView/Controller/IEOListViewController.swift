@@ -95,6 +95,7 @@ class IEOListViewController: KNBaseViewController {
       let halted: Bool = self.viewModel.isHalted[object.contract] ?? false
       self.coordinatorDidUpdateIsHalted(halted, object: object)
     }
+    self.coordinatorDidUpdateListKyberGoTx(IEOTransactionStorage.shared.objects)
   }
 
   func coordinatorDidUpdateProgress() {
@@ -110,6 +111,20 @@ class IEOListViewController: KNBaseViewController {
   func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
     for controller in self.controllers {
       controller.coordinatorDidUpdateIsHalted(halted, object: object)
+    }
+  }
+
+  func coordinatorDidUpdateListKyberGoTx(_ transactions: [IEOTransaction]) {
+    var amounts: [Int: Double] = [:]
+    transactions.forEach { tran in
+      if tran.txStatus == .success {
+        amounts[tran.ieoID] = (amounts[tran.ieoID] ?? 0.0) + tran.distributedTokensWei
+      }
+    }
+    for controller in self.controllers {
+      var amount: Double = amounts[controller.viewModel.object.id] ?? 0.0
+      amount /= pow(10.0, Double(controller.viewModel.object.tokenDecimals))
+      controller.coordinatorDidUpdateBoughtAmount(amount)
     }
   }
 
