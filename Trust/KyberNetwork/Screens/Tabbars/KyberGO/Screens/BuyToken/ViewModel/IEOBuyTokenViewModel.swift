@@ -9,6 +9,10 @@ struct IEOBuyTokenViewModel {
 
   fileprivate(set) var walletObject: KNWalletObject
 
+  fileprivate(set) var signDataV: String = ""
+  fileprivate(set) var signDataR: String = ""
+  fileprivate(set) var signDataS: String = ""
+
   fileprivate(set) var from: TokenObject
   fileprivate(set) var to: IEOObject
 
@@ -26,7 +30,7 @@ struct IEOBuyTokenViewModel {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
 
-  fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.transferETHBuyTokenSaleGasLimitDefault
+  fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.buytokenSaleByETHGasLimitDefault
 
   init(from: TokenObject = KNSupportedTokenStorage.shared.ethToken,
        to: IEOObject,
@@ -38,7 +42,10 @@ struct IEOBuyTokenViewModel {
     self.ethRate = self.to.rate.fullBigInt(decimals: self.to.tokenDecimals)
     self.estTokenRate = self.ethRate
     self.minTokenRate = self.ethRate
-
+    self.estimateGasLimit = {
+      if self.from.isETH { return KNGasConfiguration.buytokenSaleByETHGasLimitDefault }
+      return KNGasConfiguration.buyTokenSaleByTokenGasLimitDefault
+    }()
     self.updateCachedBalances()
   }
 
@@ -199,7 +206,7 @@ struct IEOBuyTokenViewModel {
   }
 
   var transaction: IEODraftTransaction {
-    return IEODraftTransaction(
+    let transaction = IEODraftTransaction(
       token: self.from,
       ieo: self.to,
       amount: self.amountFromBigInt,
@@ -212,6 +219,10 @@ struct IEOBuyTokenViewModel {
       maxDestAmount: BigInt(2).power(255), // new requirement, no need max dest amount
       expectedReceived: self.amountTo
     )
+    transaction.update(v: signDataV, r: signDataR, s: signDataS)
+    guard let userID = IEOUserStorage.shared.user?.userID else { return transaction }
+    transaction.update(userID: userID)
+    return transaction
   }
 
   // MARK: Update data
@@ -224,6 +235,10 @@ struct IEOBuyTokenViewModel {
 
     self.balances = [:]
     self.balance = nil
+
+    self.signDataR = ""
+    self.signDataS = ""
+    self.signDataV = ""
 
     self.updateCachedBalances()
   }
@@ -276,8 +291,10 @@ struct IEOBuyTokenViewModel {
     self.minTokenRate = minRate
   }
 
-  mutating func updateEstimateGasLimit(_ gasLimit: BigInt) {
-    self.estimateGasLimit = gasLimit
+  mutating func updateEstimateGasLimit(_ gasLimit: BigInt, transaction: IEODraftTransaction) {
+    if transaction.amount == self.amountFromBigInt, transaction.token.contract == self.from.contract, transaction.ieo.id == self.to.id {
+      self.estimateGasLimit = gasLimit
+    }
   }
 
   mutating func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
@@ -307,8 +324,19 @@ struct IEOBuyTokenViewModel {
     }
     self.amountFrom = ""
     if self.isFocusingFromAmount { self.amountTo = "" }
-    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.estimateGasLimit = {
+      if self.from.isETH { return KNGasConfiguration.buytokenSaleByETHGasLimitDefault }
+      return KNGasConfiguration.buyTokenSaleByTokenGasLimitDefault
+    }()
     self.balance = self.balances[self.from.contract]
+  }
+
+  mutating func updateSignData(for userID: Int, ieoID: Int, address: String, v: String, r: String, s: String) {
+    guard let currentUserID = IEOUserStorage.shared.user?.userID else { return }
+    guard currentUserID == userID, ieoID == self.to.id, address == self.walletObject.address else { return }
+    self.signDataV = v
+    self.signDataS = s
+    self.signDataR = r
   }
 
   // update when set gas price

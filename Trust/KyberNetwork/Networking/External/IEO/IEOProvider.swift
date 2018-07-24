@@ -414,17 +414,20 @@ class IEOProvider {
 
   func getEstimateGasLimit(for transaction: IEODraftTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let defaultGasLimit: BigInt = {
-      return KNGasConfiguration.transferETHBuyTokenSaleGasLimitDefault
+      if transaction.token.isETH { return KNGasConfiguration.buytokenSaleByETHGasLimitDefault }
+      return KNGasConfiguration.buyTokenSaleByTokenGasLimitDefault
     }()
+    let value: BigInt = transaction.token.isETH ? transaction.amount : BigInt(0)
+    let to: String? = transaction.token.isETH ? transaction.ieo.contract : KNEnvironment.default.knCustomRPC?.tokenIEOAddress
     self.getIEOContributeEncodeData(transaction: transaction) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let data):
         KNExternalProvider.estimateGasLimit(
           from: transaction.wallet.address,
-          to: transaction.ieo.contract,
+          to: to,
           gasPrice: transaction.gasPrice,
-          value: transaction.amount,
+          value: value,
           data: data,
           defaultGasLimit: defaultGasLimit,
           completion: completion
