@@ -9,6 +9,9 @@ enum IEOBuyTokenViewEvent {
   case selectIEO
   case selectSetGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case buy(transaction: IEODraftTransaction)
+  case getBalance(address: String, token: TokenObject)
+  case getExpectedRate(token: TokenObject, amount: BigInt)
+  case getEstGasLimit(transaction: IEODraftTransaction)
 }
 
 protocol IEOBuyTokenViewControllerDelegate: class {
@@ -276,37 +279,52 @@ class IEOBuyTokenViewController: KNBaseViewController {
   }
 
   fileprivate func reloadDataFromNode() {
-    IEOProvider.shared.getBalance(
-      for: self.viewModel.walletObject.address,
-      token: self.viewModel.from) { [weak self] result in
-      guard let `self` = self else { return }
-      if case .success(let bal) = result {
-        self.viewModel.updateBalance(bal)
-        self.tokenBalanceLabel.text = self.viewModel.balanceText
-        if !self.buyAmountTextField.isEditing {
-          self.buyAmountTextField.textColor = self.viewModel.amountTextFieldColor
-        }
-      }
-    }
-    if !self.viewModel.from.isETH {
-      let amount = self.viewModel.amountFromBigInt
-      let eth = KNSupportedTokenStorage.shared.ethToken
-      KNGeneralProvider.shared.getExpectedRate(
-        from: self.viewModel.from,
-        to: eth,
-        amount: amount) { [weak self] result in
-        guard let `self` = self else { return }
-        if case .success(let data) = result, amount == self.viewModel.amountFromBigInt {
-          self.viewModel.updateEstimatedTokenRate(data.0, minRate: data.1)
-          self.rateLabel.text = self.viewModel.exchangeRateText
-          self.updateViewAmountDidChange()
-        }
-      }
-    }
+    let balanceEvent = IEOBuyTokenViewEvent.getBalance(
+      address: self.viewModel.walletObject.address,
+      token: self.viewModel.from
+    )
+    self.delegate?.ieoBuyTokenViewController(self, run: balanceEvent)
+    let expectedRateEvent = IEOBuyTokenViewEvent.getExpectedRate(
+      token: self.viewModel.from,
+      amount: self.viewModel.amountFromBigInt
+    )
+    self.delegate?.ieoBuyTokenViewController(self, run: expectedRateEvent)
+    let estGasLimitEvent = IEOBuyTokenViewEvent.getEstGasLimit(transaction: self.viewModel.transaction)
+    self.delegate?.ieoBuyTokenViewController(self, run: estGasLimitEvent)
   }
 }
 
 extension IEOBuyTokenViewController {
+  func coordinatorUpdateBalance(for address: String, token: TokenObject, balance: Balance) {
+    if address == self.viewModel.walletObject.address, token.contract == self.viewModel.from.contract {
+      self.viewModel.updateBalance(balance)
+      self.tokenBalanceLabel.text = self.viewModel.balanceText
+      if !self.buyAmountTextField.isEditing {
+        self.buyAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      }
+    }
+  }
+
+  func coordinatorUpdateExpectedRate(for token: TokenObject, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
+    self.viewModel.updateEstimatedTokenRate(expectedRate, minRate: slippageRate)
+    self.rateLabel.text = self.viewModel.exchangeRateText
+    self.updateViewAmountDidChange()
+  }
+
+  func coordinatorUpdateEstGasLimit(for transaction: IEODraftTransaction, gasLimit: BigInt) {
+    if !transaction.r.isEmpty, !transaction.v.isEmpty, !transaction.s.isEmpty {
+      self.viewModel.updateSignData(
+        for: Int(transaction.userID),
+        ieoID: transaction.ieo.id,
+        address: transaction.wallet.address,
+        v: transaction.v,
+        r: transaction.r,
+        s: transaction.s
+      )
+    }
+    self.viewModel.updateEstimateGasLimit(gasLimit, transaction: transaction)
+  }
+
   func coordinatorBuyTokenDidUpdateGasPrice(_ gasPrice: BigInt?) {
     if let gasPrice = gasPrice {
       self.viewModel.updateGasPrice(gasPrice)

@@ -33,7 +33,6 @@ class IEOBuyTokenCoordinator: Coordinator {
   fileprivate var rootViewController: IEOBuyTokenViewController?
 
   private(set) var setGasPriceVC: KNSetGasPriceViewController?
-  private(set) var profileVC: IEOProfileViewController?
 
   lazy var searchTokensViewController: KNSearchTokenViewController = {
     let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
@@ -90,6 +89,60 @@ class IEOBuyTokenCoordinator: Coordinator {
     }
   }
 
+  fileprivate func getBalanace(for address: String, token: TokenObject) {
+    IEOProvider.shared.getBalance(
+      for: address,
+      token: token) { [weak self] result in
+        if case .success(let bal) = result {
+          self?.rootViewController?.coordinatorUpdateBalance(
+            for: address,
+            token: token,
+            balance: bal
+          )
+        }
+    }
+  }
+
+  fileprivate func getExpectedRate(for token: TokenObject, amount: BigInt) {
+    if token.isETH { return }
+    KNGeneralProvider.shared.getExpectedRate(
+      from: token,
+      to: KNSupportedTokenStorage.shared.ethToken,
+      amount: amount) { [weak self] result in
+        if case .success(let data) = result {
+          self?.rootViewController?.coordinatorUpdateExpectedRate(
+            for: token,
+            amount: amount,
+            expectedRate: data.0,
+            slippageRate: data.1
+          )
+        }
+    }
+  }
+
+  fileprivate func getEstinateGasLimit(_ transaction: IEODraftTransaction) {
+    self.waitingForGettingSignData(transaction: transaction, showLoading: false) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let trans):
+        IEOProvider.shared.getEstimateGasLimit(for: trans ?? transaction, completion: { [weak self] estResult in
+          switch estResult {
+          case .success(let gasLimit):
+            NSLog("----KyberGO: Est gas limit success with gas limit: \(gasLimit.description)")
+            self?.rootViewController?.coordinatorUpdateEstGasLimit(
+              for: transaction,
+              gasLimit: gasLimit
+            )
+          case .failure(let error):
+            NSLog("----KyberGO: Est gas limit failed with error: \(error.prettyError)")
+          }
+        })
+      case .failure(let error):
+        NSLog("----KyberGO: Est gas limit failed with error: \(error.prettyError)")
+      }
+    }
+  }
+
   fileprivate func sendBuyTransaction(_ transaction: IEODraftTransaction) {
     self.waitingForGettingSignData(transaction: transaction) { [weak self] result in
       guard let `self` = self else { return }
@@ -115,28 +168,40 @@ class IEOBuyTokenCoordinator: Coordinator {
     }
   }
 
-  fileprivate func waitingForGettingSignData(transaction: IEODraftTransaction, completion: @escaping (Result<IEODraftTransaction?, AnyError>) -> Void) {
+  fileprivate func waitingForGettingSignData(transaction: IEODraftTransaction, showLoading: Bool = true, completion: @escaping (Result<IEODraftTransaction?, AnyError>) -> Void) {
+    // no need loading sign data if already loaded
+    if !transaction.r.isEmpty, !transaction.v.isEmpty, !transaction.s.isEmpty {
+      completion(.success(transaction))
+      return
+    }
     guard let userID = IEOUserStorage.shared.user?.userID else { return }
-    self.navigationController.displayLoading(text: "Getting sign data...", animated: true)
+    if showLoading {
+      self.navigationController.displayLoading(text: "Getting sign data...", animated: true)
+    }
     self.getSignData(
       userID: userID,
       address: transaction.wallet.address,
       ieoID: transaction.ieo.id,
       completion: { [weak self] result in
         guard let `self` = self else { return }
-        self.navigationController.hideLoading()
+        if showLoading { self.navigationController.hideLoading() }
         switch result {
         case .success(let data):
           guard let v = data["v"] as? String, let r = data["r"] as? String, let s = data["s"] as? String else {
             let reason = data["reason"] as? String ?? "Something went wrong".toBeLocalised()
-            self.navigationController.showWarningTopBannerMessage(with: "Error", message: reason)
+            if showLoading {
+              self.navigationController.showWarningTopBannerMessage(
+                with: "Error",
+                message: reason
+              )
+            }
             completion(.success(nil))
             return
           }
           transaction.update(v: v, r: r, s: s)
           completion(.success(transaction))
         case .failure(let error):
-          self.navigationController.displayError(error: error)
+          if showLoading { self.navigationController.displayError(error: error) }
           completion(.failure(error))
         }
     })
@@ -273,6 +338,12 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
       }
       transaction.update(userID: userID)
       self.openConfirmView(for: transaction)
+    case .getBalance(let address, let token):
+      self.getBalanace(for: address, token: token)
+    case .getExpectedRate(let token, let amount):
+      self.getExpectedRate(for: token, amount: amount)
+    case .getEstGasLimit(let transaction):
+      self.getEstinateGasLimit(transaction)
     default: break
     }
   }
