@@ -147,7 +147,6 @@ class KNExchangeTabViewModel {
   // Amount should > 0 and <= balance
   var isAmountTooSmall: Bool {
     if self.amountFromBigInt <= BigInt(0) { return true }
-    if self.slippageRate == nil || self.slippageRate?.isZero == true { return true }
     if self.from.isETH {
       return self.amountFromBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
@@ -178,6 +177,7 @@ class KNExchangeTabViewModel {
   // rate should not be nil and greater than zero
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
+    if self.slippageRate == nil || self.slippageRate?.isZero == true { return false }
     return true
   }
 
