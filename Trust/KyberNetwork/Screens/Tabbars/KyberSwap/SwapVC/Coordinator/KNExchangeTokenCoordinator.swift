@@ -62,15 +62,6 @@ class KNExchangeTokenCoordinator: Coordinator {
     return controller
   }()
 
-  lazy var pendingTransactionListCoordinator: KNPendingTransactionListCoordinator = {
-    let coordinator = KNPendingTransactionListCoordinator(
-      navigationController: self.navigationController,
-      storage: self.session.transactionStorage
-    )
-    coordinator.delegate = self
-    return coordinator
-  }()
-
   fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
 
   init(
@@ -231,25 +222,6 @@ extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate
         }
       }
     })
-  }
-}
-
-// MARK: Pending transaction list
-extension KNExchangeTokenCoordinator: KNPendingTransactionListCoordinatorDelegate {
-  func pendingTransactionListDidSelectTransferNow() {
-    self.rootViewController.tabBarController?.selectedIndex = 1
-  }
-
-  func pendingTransactionListDidSelectExchangeNow() {
-    self.rootViewController.tabBarController?.selectedIndex = 0
-  }
-
-  func pendingTransactionListDidSelectTransaction(_ transaction: Transaction) {
-    KNNotificationUtil.postNotification(
-      for: kTransactionDidUpdateNotificationKey,
-      object: transaction.id,
-      userInfo: nil
-    )
   }
 }
 
