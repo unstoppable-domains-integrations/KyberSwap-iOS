@@ -38,7 +38,6 @@ class KGOHomePageCoordinator: Coordinator {
   internal(set) var kyberGOTxListTimer: Timer?
   internal(set) var accessTokenExpireTimer: Timer?
 
-  internal(set) var setGasPriceVC: KNSetGasPriceViewController?
   internal(set) var profileVC: IEOProfileViewController?
 
   fileprivate(set) var isHalted: [String: Bool] = [:]
@@ -330,6 +329,7 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
       return
     }
     self.profileVC = IEOProfileViewController(viewModel: IEOProfileViewModel())
+    self.profileVC?.loadViewIfNeeded()
     self.profileVC?.delegate = self
     self.navigationController.pushViewController(self.profileVC!, animated: true)
   }
@@ -720,7 +720,6 @@ extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
       IEOUserStorage.shared.signedOut()
       self.navigationController.popToRootViewController(animated: true)
       self.profileVC = nil
-      self.setGasPriceVC = nil
       self.rootViewController.coordinatorDidSignOut()
     }
   }
