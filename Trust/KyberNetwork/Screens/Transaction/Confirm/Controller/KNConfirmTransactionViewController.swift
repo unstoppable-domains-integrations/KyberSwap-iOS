@@ -102,7 +102,7 @@ struct KNConfirmTransactionViewModel {
   var slippageRateString: String {
     if case .exchange(let trans) = type, let minRate = trans.minRate {
       return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
-    } else if case .buyTokenSale(let trans) = self.type, let estRate = trans.estTokenRate, let minRate = trans.minTokenRate, !estRate.isZero {
+    } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
       return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
     }
     return ""

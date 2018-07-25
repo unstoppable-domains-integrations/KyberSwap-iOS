@@ -57,6 +57,14 @@ class IEODraftTransaction {
     return nil
   }
 
+  var minRate: BigInt? {
+    if self.token.isETH { return self.ethRate }
+    if let ethRate = self.ethRate, let tokenRate = self.minTokenRate {
+      return ethRate * tokenRate / BigInt(EthereumUnit.ether.rawValue)
+    }
+    return nil
+  }
+
   func update(userID: Int) {
     self.userID = BigInt(userID)
   }

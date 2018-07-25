@@ -20,6 +20,7 @@ protocol IEOBuyTokenViewControllerDelegate: class {
 
 class IEOBuyTokenViewController: KNBaseViewController {
 
+  @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var tokenContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
   @IBOutlet weak var buyAmountTextField: UITextField!
@@ -31,9 +32,15 @@ class IEOBuyTokenViewController: KNBaseViewController {
   @IBOutlet weak var tokenBalanceLabel: UILabel!
   @IBOutlet weak var rateLabel: UILabel!
 
+  @IBOutlet weak var advancedSettingsView: UIView!
+  @IBOutlet weak var heightConstraintForAdvancedSettingsView: NSLayoutConstraint!
   @IBOutlet weak var gasPriceButton: UIButton!
   @IBOutlet weak var gasTextLabel: UILabel!
   @IBOutlet weak var gasPriceSegmentedControl: KNCustomSegmentedControl!
+  @IBOutlet weak var minRateSlider: CustomSlider!
+  @IBOutlet weak var minRatePercentLabel: UILabel!
+  @IBOutlet weak var leadingPaddingConstraintForMinRatePercentLabel: NSLayoutConstraint!
+  @IBOutlet weak var minRateValueLabel: UILabel!
 
   @IBOutlet weak var selectWalletButton: UIButton!
 
@@ -93,7 +100,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.setupTokenView()
-    self.setupGasPriceView()
+    self.setupAdvancedSettingsView()
     self.setupSelectWallet()
   }
 
@@ -127,13 +134,26 @@ class IEOBuyTokenViewController: KNBaseViewController {
     self.toIEOButton.semanticContentAttribute = .forceRightToLeft
     self.toIEOButton.titleLabel?.numberOfLines = 2
     self.toIEOButton.titleLabel?.lineBreakMode = .byWordWrapping
+
     self.updateBalanceAndRate()
   }
 
-  fileprivate func setupGasPriceView() {
-    self.gasTextLabel.isHidden = true
-    self.gasPriceSegmentedControl.isHidden = true
+  fileprivate func setupAdvancedSettingsView() {
+    self.gasTextLabel.isHidden = false
+    self.gasPriceSegmentedControl.isHidden = false
+    self.gasPriceSegmentedControl.selectedSegmentIndex = 0
+    self.viewModel.updateSelectedGasPriceType(.fast)
     self.gasPriceSegmentedControl.addTarget(self, action: #selector(self.gasPriceSegmentedControlDidTouch(_:)), for: .touchDown)
+
+    self.minRateSlider.isEnabled = false
+    self.minRateSlider.addTarget(self, action: #selector(self.minRatePercentDidChange(_:)), for: .valueChanged)
+    self.minRateSlider.value = self.viewModel.currentMinTokenRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateString
+    self.minRatePercentLabel.text = self.viewModel.currentMinTokenRatePercentText
+    self.leadingPaddingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinTokenRatePercentValue / 100.0)
+
+    self.advancedSettingsView.isHidden = true
+    self.heightConstraintForAdvancedSettingsView.constant = 0
   }
 
   fileprivate func setupSelectWallet() {
@@ -148,6 +168,12 @@ class IEOBuyTokenViewController: KNBaseViewController {
       self.buyAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
     self.rateLabel.text = self.viewModel.exchangeRateText
+
+    self.minRateSlider.value = self.viewModel.currentMinTokenRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateString
+    self.minRatePercentLabel.text = self.viewModel.currentMinTokenRatePercentText
+    self.leadingPaddingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinTokenRatePercentValue / 100.0)
+
     self.view.layoutIfNeeded()
   }
 
@@ -165,11 +191,24 @@ class IEOBuyTokenViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceButtonPressed(_ sender: Any) {
-    UIView.animate(withDuration: 0.3) {
-      self.gasPriceSegmentedControl.isHidden = !self.gasPriceSegmentedControl.isHidden
-      self.gasTextLabel.isHidden = !self.gasTextLabel.isHidden
-      self.gasPriceButton.setImage(
-        UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+    let isHidden = !self.advancedSettingsView.isHidden
+    UIView.animate(
+      withDuration: 0.25,
+      animations: {
+        if isHidden { self.advancedSettingsView.isHidden = isHidden }
+        self.heightConstraintForAdvancedSettingsView.constant = isHidden ? 0.0 : 220.0
+        self.gasPriceButton.setImage(
+          UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+        self.view.layoutIfNeeded()
+  }){ _ in
+      self.advancedSettingsView.isHidden = isHidden
+      if !self.advancedSettingsView.isHidden {
+        let bottomOffset = CGPoint(
+          x: 0,
+          y: self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
+        )
+        self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
+      }
     }
   }
 
@@ -219,6 +258,16 @@ class IEOBuyTokenViewController: KNBaseViewController {
     } else {
       self.viewModel.updateSelectedGasPriceType(KNSelectedGasPriceType(rawValue: selectedId) ?? .fast)
     }
+  }
+
+  @objc func minRatePercentDidChange(_ sender: CustomSlider) {
+    let value = Int(floor(sender.value))
+    self.viewModel.updateMinTokenRatePercent(Double(value))
+    self.minRateSlider.value = self.viewModel.currentMinTokenRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateString
+    self.minRatePercentLabel.text = self.viewModel.currentMinTokenRatePercentText
+    self.leadingPaddingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinTokenRatePercentValue / 100.0)
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func buyButtonPressed(_ sender: Any) {
@@ -307,7 +356,7 @@ extension IEOBuyTokenViewController {
 
   func coordinatorUpdateExpectedRate(for token: TokenObject, amount: BigInt, expectedRate: BigInt, slippageRate: BigInt) {
     self.viewModel.updateEstimatedTokenRate(expectedRate, minRate: slippageRate)
-    self.rateLabel.text = self.viewModel.exchangeRateText
+    self.updateBalanceAndRate()
     self.updateViewAmountDidChange()
   }
 
@@ -335,6 +384,7 @@ extension IEOBuyTokenViewController {
 
   func coordinatorUpdateBuyToken(_ token: TokenObject) {
     self.viewModel.updateBuyToken(token)
+    self.minRateSlider.isEnabled = !token.isETH
 
     self.fromTokenButton.setAttributedTitle(
       self.viewModel.tokenButtonAttributedText(isSource: true),
@@ -354,8 +404,8 @@ extension IEOBuyTokenViewController {
   func coordinatorDidUpdateEstRate(for ieo: IEOObject, rate: BigInt) {
     if ieo.contract == self.viewModel.to.contract {
       self.viewModel.updateEstimateETHRate(rate)
-      self.rateLabel.text = self.viewModel.exchangeRateText
       self.updateViewAmountDidChange()
+      self.updateBalanceAndRate()
     }
   }
 

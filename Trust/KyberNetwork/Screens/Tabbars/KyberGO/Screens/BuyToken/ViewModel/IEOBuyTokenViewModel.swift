@@ -25,7 +25,8 @@ struct IEOBuyTokenViewModel {
 
   fileprivate(set) var ethRate: BigInt?
   fileprivate(set) var estTokenRate: BigInt?
-  fileprivate(set) var minTokenRate: BigInt?
+  fileprivate(set) var slippageTokenRate: BigInt?
+  fileprivate(set) var minTokenRatePercent: Double?
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
@@ -41,7 +42,7 @@ struct IEOBuyTokenViewModel {
     self.to = to
     self.ethRate = self.to.rate.fullBigInt(decimals: self.to.tokenDecimals)
     self.estTokenRate = self.ethRate
-    self.minTokenRate = self.ethRate
+    self.slippageTokenRate = self.ethRate
     self.estimateGasLimit = {
       if self.from.isETH { return KNGasConfiguration.buytokenSaleByETHGasLimitDefault }
       return KNGasConfiguration.buyTokenSaleByTokenGasLimitDefault
@@ -58,7 +59,7 @@ struct IEOBuyTokenViewModel {
   }
 
   var minRate: BigInt? {
-    if self.from.isETH { return nil }
+    if self.from.isETH { return self.ethRate }
     if let ethRate = self.ethRate, let tokenRate = self.minTokenRate {
       return ethRate * tokenRate / BigInt(EthereumUnit.ether.rawValue)
     }
@@ -171,6 +172,30 @@ struct IEOBuyTokenViewModel {
     return "\(rateString)"
   }
 
+  var minTokenRate: BigInt? {
+    if self.from.isETH { return self.slippageTokenRate }
+    guard let estTokenRate = self.estTokenRate else { return nil }
+    if let percent = self.minTokenRatePercent {
+      return estTokenRate * BigInt(percent) / BigInt(100.0)
+    }
+    return self.slippageTokenRate
+  }
+
+  var minRateString: String? {
+    return self.minRate?.string(decimals: self.to.tokenDecimals, minFractionDigits: 2, maxFractionDigits: 9)
+  }
+
+  var currentMinTokenRatePercentValue: Float {
+    if let double = self.minTokenRatePercent { return Float(floor(double)) }
+    guard let estRate = self.estTokenRate, let slippageTokenRate = self.slippageTokenRate else { return 100.0 }
+    return Float(floor(Double(slippageTokenRate * BigInt(100) / estRate)))
+  }
+
+  var currentMinTokenRatePercentText: String {
+    let value = self.currentMinTokenRatePercentValue
+    return "\(Int(floor(value)))%"
+  }
+
   // MARK: Gas Price
   var gasPriceText: String {
     return "\(self.gasPrice.shortString(units: .gwei, maxFractionDigits: 1)) gwei"
@@ -197,7 +222,7 @@ struct IEOBuyTokenViewModel {
   // rate should not be nil and greater than zero
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
-    if !self.from.isETH && (self.minTokenRate == nil || self.minTokenRate?.isZero == true) { return false }
+    if !self.from.isETH && (self.minRate == nil || self.minRate?.isZero == true) { return false }
     return true
   }
 
@@ -288,7 +313,12 @@ struct IEOBuyTokenViewModel {
 
   mutating func updateEstimatedTokenRate(_ estRate: BigInt, minRate: BigInt) {
     self.estTokenRate = estRate
-    self.minTokenRate = minRate
+    let double = Double(BigInt(100) * minRate / estRate)
+    self.slippageTokenRate = BigInt(floor(double)) * estRate / BigInt(100)
+  }
+
+  mutating func updateMinTokenRatePercent(_ percent: Double) {
+    self.minTokenRatePercent = percent
   }
 
   mutating func updateEstimateGasLimit(_ gasLimit: BigInt, transaction: IEODraftTransaction) {
@@ -311,16 +341,16 @@ struct IEOBuyTokenViewModel {
     if token == self.from { return }
     self.from = token
     if self.from.isETH {
-      self.minTokenRate = self.ethRate
+      self.slippageTokenRate = self.ethRate
       self.estTokenRate = self.ethRate
     } else if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
       // Use rate from cached server while waiting for rate from nodes
       let rate = KNRate.rateETH(from: trackerRate)
       self.estTokenRate = rate.rate
-      self.minTokenRate = rate.minRate
+      self.slippageTokenRate = rate.minRate
     } else {
       self.estTokenRate = nil
-      self.minTokenRate = nil
+      self.slippageTokenRate = nil
     }
     self.amountFrom = ""
     if self.isFocusingFromAmount { self.amountTo = "" }
