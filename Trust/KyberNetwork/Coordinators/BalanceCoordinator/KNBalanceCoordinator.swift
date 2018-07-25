@@ -56,8 +56,6 @@ class KNBalanceCoordinator {
 
   deinit {
     self.exit()
-    self.session = nil
-    self.ethToken = nil
   }
 
   init(session: KNSession) {
@@ -122,8 +120,6 @@ class KNBalanceCoordinator {
 
   func exit() {
     pause()
-    self.session = nil
-    self.ethToken = nil
   }
 
   @objc func fetchETHBalance(_ sender: Timer?) {

@@ -21,7 +21,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   internal var kyberGOCoordinator: KGOHomePageCoordinator?
 
-  internal var tabbarController: UITabBarController!
+  internal var tabbarController: KNTabBarController!
   internal var transactionStatusCoordinator: KNTransactionStatusCoordinator!
 
   lazy var splashScreenCoordinator: KNSplashScreenCoordinator = {

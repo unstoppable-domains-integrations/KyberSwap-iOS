@@ -5,7 +5,11 @@ import UIKit
 // MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   func landingPageCoordinator(import wallet: Wallet) {
-    self.startNewSession(with: wallet)
+    if self.tabbarController == nil {
+      self.startNewSession(with: wallet)
+    } else {
+      self.restartNewSession(wallet)
+    }
   }
 }
 
@@ -86,6 +90,10 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
 // MARK: Add wallet coordinator delegate
 extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   func addNewWalletCoordinator(add wallet: Wallet) {
-    self.startNewSession(with: wallet)
+    if self.tabbarController == nil {
+      self.startNewSession(with: wallet)
+    } else {
+      self.restartNewSession(wallet)
+    }
   }
 }

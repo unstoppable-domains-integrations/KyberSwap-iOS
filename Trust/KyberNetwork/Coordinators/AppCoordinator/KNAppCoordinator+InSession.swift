@@ -14,7 +14,7 @@ extension KNAppCoordinator {
     self.balanceCoordinator = KNBalanceCoordinator(session: self.session)
     self.balanceCoordinator?.resume()
 
-    self.tabbarController = UITabBarController()
+    self.tabbarController = KNTabBarController()
     // Balance Tab
     self.balanceTabCoordinator = {
       let coordinator = KNBalanceTabCoordinator(
@@ -82,15 +82,9 @@ extension KNAppCoordinator {
       image: UIImage(named: "tabbar_settings_icon"),
       tag: 3
     )
-
-    if let topViewController = self.navigationController.topViewController {
-      topViewController.addChildViewController(self.tabbarController)
-      self.tabbarController.view.frame = topViewController.view.frame
-      self.navigationController.topViewController?.view.addSubview(self.tabbarController.view)
-      self.tabbarController.didMove(toParentViewController: topViewController)
+    self.navigationController.pushViewController(self.tabbarController, animated: true) {
+      self.tabbarController.selectedIndex = 1
     }
-    // Set select wallet tab
-    self.tabbarController.selectedIndex = 1
 
     // Update badges for kyberGO tab
     let values = IEOTransactionStorage.shared.objects.filter({ !$0.viewed }).count
@@ -117,8 +111,7 @@ extension KNAppCoordinator {
     self.keystore.recentlyUsedWallet = nil
     self.session = nil
 
-    self.tabbarController.view.removeFromSuperview()
-    self.tabbarController.removeFromParentViewController()
+    self.navigationController.popToRootViewController(animated: true)
 
     // Stop all coordinators in tabs and re-assign to nil
     self.exchangeCoordinator?.stop()
@@ -130,6 +123,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
     IEOUserStorage.shared.signedOut()
+    self.tabbarController = nil
   }
 
   // Switching account, restart a new session
