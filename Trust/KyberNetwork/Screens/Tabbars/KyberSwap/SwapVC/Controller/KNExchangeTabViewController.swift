@@ -43,6 +43,8 @@ class KNExchangeTabViewController: KNBaseViewController {
   @IBOutlet weak var gasTextLabel: UILabel!
   @IBOutlet weak var minRateTextLabel: UILabel!
   @IBOutlet weak var minRateSlider: CustomSlider!
+
+  @IBOutlet weak var leadingConstraintForMinRatePercentLabel: NSLayoutConstraint!
   @IBOutlet weak var minRatePercentLabel: UILabel!
   @IBOutlet weak var minRateValueLabel: UILabel!
 
@@ -232,7 +234,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       withDuration: 0.25,
       animations: {
       if isHidden { self.advancedSettingsView.isHidden = isHidden }
-      self.heightConstraintForAdvancedSettingsView.constant = isHidden ? 0.0 : 200.0
+      self.heightConstraintForAdvancedSettingsView.constant = isHidden ? 0.0 : 220.0
       self.gasPriceOptionButton.setImage(
         UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
       self.view.layoutIfNeeded()
@@ -269,6 +271,8 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
     self.minRateValueLabel.text = self.viewModel.minRateText
     self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
+    self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinRatePercentValue / 100.0)
+    self.view.layoutIfNeeded()
   }
 
   /*
@@ -397,6 +401,7 @@ extension KNExchangeTabViewController {
     self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
     self.minRateValueLabel.text = self.viewModel.minRateText
     self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
+    self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinRatePercentValue / 100.0)
     if !self.fromAmountTextField.isEditing {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
@@ -459,6 +464,7 @@ extension KNExchangeTabViewController {
     self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
     self.minRateValueLabel.text = self.viewModel.minRateText
     self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
+    self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * CGFloat(self.viewModel.currentMinRatePercentValue / 100.0)
 
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText

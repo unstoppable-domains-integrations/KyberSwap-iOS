@@ -101,11 +101,9 @@ struct KNConfirmTransactionViewModel {
   }
   var slippageRateString: String {
     if case .exchange(let trans) = type, let minRate = trans.minRate {
-      let percentage = ((trans.expectedRate - minRate) * BigInt(100) / trans.expectedRate)
-      return percentage.string(decimals: 0, minFractionDigits: 2, maxFractionDigits: 2) + " %"
+      return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
     } else if case .buyTokenSale(let trans) = self.type, let estRate = trans.estTokenRate, let minRate = trans.minTokenRate, !estRate.isZero {
-      let percentage = ((estRate - minRate) * BigInt(100) / estRate)
-      return percentage.string(decimals: 0, minFractionDigits: 2, maxFractionDigits: 2) + " %"
+      return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
     }
     return ""
   }
