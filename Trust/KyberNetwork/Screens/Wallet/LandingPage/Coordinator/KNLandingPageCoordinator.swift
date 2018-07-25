@@ -97,6 +97,10 @@ class KNLandingPageCoordinator: Coordinator {
     }
   }
 
+  func update(keystore: Keystore) {
+    self.keystore = keystore
+  }
+
   fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool) {
     // add new wallet into database in case user exits app
     let walletObject = KNWalletObject(address: wallet.address.description)
@@ -169,7 +173,7 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
 
 extension KNLandingPageCoordinator: KNEnterWalletNameViewControllerDelegate {
   func enterWalletNameDidNext(sender: KNEnterWalletNameViewController, walletObject: KNWalletObject) {
-    KNWalletStorage.shared.add(wallets: [walletObject])
+    KNWalletStorage.shared.update(wallets: [walletObject])
     guard let wallet = self.newWallet else { return }
     if self.keystore.wallets.count == 1 {
       KNPasscodeUtil.shared.deletePasscode()

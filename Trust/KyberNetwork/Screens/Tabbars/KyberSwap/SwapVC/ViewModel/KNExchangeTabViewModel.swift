@@ -11,20 +11,21 @@ class KNExchangeTabViewModel {
 
   fileprivate(set) var wallet: Wallet
   fileprivate(set) var walletObject: KNWalletObject
-  fileprivate(set) var supportedTokens: [TokenObject] = []
+  fileprivate var supportedTokens: [TokenObject] = []
 
   fileprivate(set) var from: TokenObject
   fileprivate(set) var to: TokenObject
 
-  fileprivate(set) var balances: [String: Balance] = [:]
-  fileprivate(set) var balance: Balance?
+  fileprivate var balances: [String: Balance] = [:]
+  fileprivate var balance: Balance?
 
   fileprivate(set) var amountFrom: String = ""
   fileprivate(set) var amountTo: String = ""
   fileprivate(set) var isFocusingFromAmount: Bool = true
 
   fileprivate(set) var estRate: BigInt?
-  fileprivate(set) var slippageRate: BigInt?
+  fileprivate var slippageRate: BigInt?
+  fileprivate var minRatePercent: Double?
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
@@ -138,6 +139,29 @@ class KNExchangeTabViewModel {
     return "\(rateString)"
   }
 
+  var minRate: BigInt? {
+    guard let estRate = self.estRate, let slippageRate = self.slippageRate else { return nil }
+    if let percent = self.minRatePercent {
+      return estRate * BigInt(percent) / BigInt(100.0)
+    }
+    return slippageRate
+  }
+
+  var minRateText: String? {
+    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 2, maxFractionDigits: 9)
+  }
+
+  var currentMinRatePercentValue: Float {
+    if let double = self.minRatePercent { return Float(floor(double)) }
+    guard let estRate = self.estRate, let slippageRate = self.slippageRate else { return 100.0 }
+    return Float(floor(Double(slippageRate * BigInt(100) / estRate)))
+  }
+
+  var currentMinRatePercentText: String {
+    let value = self.currentMinRatePercentValue
+    return "\(Int(floor(value)))%"
+  }
+
   // MARK: Gas Price
   var gasPriceText: String {
     return "\(self.gasPrice.shortString(units: .gwei, maxFractionDigits: 1)) gwei"
@@ -177,7 +201,7 @@ class KNExchangeTabViewModel {
   // rate should not be nil and greater than zero
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
-    if self.slippageRate == nil || self.slippageRate?.isZero == true { return false }
+    if self.minRate == nil || self.minRate?.isZero == true { return false }
     return true
   }
 
@@ -237,7 +261,8 @@ class KNExchangeTabViewModel {
   func updateEstimatedRateFromCachedIfNeeded() {
     guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
     self.estRate = rate.rate
-    self.slippageRate = rate.minRate
+    let percent = Double(rate.minRate * BigInt(100) / rate.rate)
+    self.slippageRate = rate.rate * BigInt(Int(floor(percent))) / BigInt(100)
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -280,8 +305,13 @@ class KNExchangeTabViewModel {
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
     if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estRate = rate
-      self.slippageRate = slippageRate
+      let percent = Double(slippageRate * BigInt(100) / rate)
+      self.slippageRate = rate * BigInt(Int(floor(percent))) / BigInt(100)
     }
+  }
+
+  func updateExchangeMinRatePercent(_ percent: Double) {
+    self.minRatePercent = percent
   }
 
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {

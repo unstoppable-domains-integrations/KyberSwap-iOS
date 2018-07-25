@@ -32,13 +32,13 @@ class KGOHomePageCoordinator: Coordinator {
     return coordinator
   }()
 
-  internal(set) var ieoListViewController: IEOListViewController?
-  internal(set) var ieoListTimer: Timer?
-  internal(set) var nodeDataTimer: Timer?
-  internal(set) var kyberGOTxListTimer: Timer?
-  internal(set) var accessTokenExpireTimer: Timer?
+  fileprivate(set) var ieoListViewController: IEOListViewController?
+  fileprivate(set) var ieoListTimer: Timer?
+  fileprivate(set) var nodeDataTimer: Timer?
+  fileprivate(set) var kyberGOTxListTimer: Timer?
+  fileprivate(set) var accessTokenExpireTimer: Timer?
 
-  internal(set) var profileVC: IEOProfileViewController?
+  fileprivate(set) var profileVC: IEOProfileViewController?
 
   fileprivate(set) var isHalted: [String: Bool] = [:]
 
@@ -363,7 +363,7 @@ extension KGOHomePageCoordinator: KGOHomePageViewControllerDelegate {
 
 // MARK: KyberGO OAuth
 extension KGOHomePageCoordinator {
-  internal func openSignInView() {
+  fileprivate func openSignInView() {
     if let user = IEOUserStorage.shared.user {
       // User already signed in
       self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")

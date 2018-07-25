@@ -22,6 +22,7 @@ class KNExchangeTabViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var walletHeaderView: KNWalletHeaderView!
 
+  @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
 
@@ -35,9 +36,15 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   @IBOutlet weak var exchangeRateLabel: UILabel!
 
+  @IBOutlet weak var advancedSettingsView: UIView!
+  @IBOutlet weak var heightConstraintForAdvancedSettingsView: NSLayoutConstraint!
   @IBOutlet weak var gasPriceOptionButton: UIButton!
   @IBOutlet weak var gasPriceSegmentedControl: KNCustomSegmentedControl!
   @IBOutlet weak var gasTextLabel: UILabel!
+  @IBOutlet weak var minRateTextLabel: UILabel!
+  @IBOutlet weak var minRateSlider: CustomSlider!
+  @IBOutlet weak var minRatePercentLabel: UILabel!
+  @IBOutlet weak var minRateValueLabel: UILabel!
 
   fileprivate var viewModel: KNExchangeTabViewModel
   weak var delegate: KNExchangeTabViewControllerDelegate?
@@ -176,10 +183,14 @@ class KNExchangeTabViewController: KNBaseViewController {
     self.viewModel.updateAmount("", isSource: false)
 
     self.gasPriceOptionButton.setImage(UIImage(named: "expand_icon"), for: .normal)
+    // Gas price
     self.gasPriceSegmentedControl.selectedSegmentIndex = 0 // select fast option
     self.gasPriceSegmentedControl.addTarget(self, action: #selector(self.gasPriceSegmentedControlDidTouch(_:)), for: .touchDown)
-    self.gasPriceSegmentedControl.isHidden = true
-    self.gasTextLabel.isHidden = true
+
+    self.minRateSlider.addTarget(self, action: #selector(self.minRatePercentDidChange(_:)), for: .valueChanged)
+
+    self.advancedSettingsView.isHidden = true
+    self.heightConstraintForAdvancedSettingsView.constant = 0
 
     self.updateTokensView()
   }
@@ -216,11 +227,25 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceButtonPressed(_ sender: Any) {
-    UIView.animate(withDuration: 0.3) {
-      self.gasPriceSegmentedControl.isHidden = !self.gasPriceSegmentedControl.isHidden
-      self.gasTextLabel.isHidden = !self.gasTextLabel.isHidden
+    let isHidden = !self.advancedSettingsView.isHidden
+    UIView.animate(
+      withDuration: 0.25,
+      animations: {
+      if isHidden { self.advancedSettingsView.isHidden = isHidden }
+      self.heightConstraintForAdvancedSettingsView.constant = isHidden ? 0.0 : 200.0
       self.gasPriceOptionButton.setImage(
         UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+      self.view.layoutIfNeeded()
+    }
+  ){ _ in
+      self.advancedSettingsView.isHidden = isHidden
+      if !self.advancedSettingsView.isHidden {
+        let bottomOffset = CGPoint(
+          x: 0,
+          y: self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
+        )
+        self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
+      }
     }
   }
 
@@ -236,6 +261,14 @@ class KNExchangeTabViewController: KNBaseViewController {
     } else {
       self.viewModel.updateSelectedGasPriceType(KNSelectedGasPriceType(rawValue: selectedId) ?? .fast)
     }
+  }
+
+  @objc func minRatePercentDidChange(_ sender: CustomSlider) {
+    let value = Int(floor(sender.value))
+    self.viewModel.updateExchangeMinRatePercent(Double(value))
+    self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateText
+    self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
   }
 
   /*
@@ -278,7 +311,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       amount: amount,
       maxDestAmount: BigInt(2).power(255),
       expectedRate: rate,
-      minRate: self.viewModel.slippageRate,
+      minRate: self.viewModel.minRate,
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.estimateGasLimit,
       expectedReceivedString: self.viewModel.amountTo
@@ -361,12 +394,14 @@ extension KNExchangeTabViewController {
     self.updateEstimatedRate()
     self.balanceLabel.text = self.viewModel.balanceText
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateText
+    self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
     if !self.fromAmountTextField.isEditing {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
     self.view.layoutIfNeeded()
   }
-
 }
 
 // MARK: Update from coordinator
@@ -419,7 +454,12 @@ extension KNExchangeTabViewController {
       rate: rate,
       slippageRate: slippageRate
     )
+
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.minRateSlider.value = self.viewModel.currentMinRatePercentValue
+    self.minRateValueLabel.text = self.viewModel.minRateText
+    self.minRatePercentLabel.text = self.viewModel.currentMinRatePercentText
+
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
