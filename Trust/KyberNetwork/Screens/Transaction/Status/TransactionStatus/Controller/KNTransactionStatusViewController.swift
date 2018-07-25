@@ -69,7 +69,7 @@ class KNTransactionStatusViewController: KNBaseViewController {
       }
       guard let to = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.to) else { return nil }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return nil }
-      return "\(status.rawValue) \(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) converted to\n\(expectedAmount.shortString(decimals: object.decimals, maxFractionDigits: 6)) \(to.symbol)"
+      return "\(status.rawValue) \(amount.shortString(decimals: from.decimals, maxFractionDigits: 6)) \(from.symbol) converted to \(expectedAmount.shortString(decimals: object.decimals, maxFractionDigits: 6)) \(to.symbol)"
     }()
     self.transactionStatusView.updateView(with: status, txHash: transaction?.id, details: details)
   }
