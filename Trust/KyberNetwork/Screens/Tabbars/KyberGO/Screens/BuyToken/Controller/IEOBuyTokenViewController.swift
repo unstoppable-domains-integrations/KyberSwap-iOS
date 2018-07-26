@@ -200,7 +200,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
         self.gasPriceButton.setImage(
           UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
         self.view.layoutIfNeeded()
-  }){ _ in
+    }, completion: { _ in
       self.advancedSettingsView.isHidden = isHidden
       if !self.advancedSettingsView.isHidden {
         let bottomOffset = CGPoint(
@@ -209,7 +209,7 @@ class IEOBuyTokenViewController: KNBaseViewController {
         )
         self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
       }
-    }
+    })
   }
 
   @IBAction func selectWalletButtonPressed(_ sender: Any) {

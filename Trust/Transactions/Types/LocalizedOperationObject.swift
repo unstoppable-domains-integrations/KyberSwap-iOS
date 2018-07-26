@@ -60,6 +60,6 @@ extension LocalizedOperationObject {
                 name: operation.contract.name,
                 decimals: operation.contract.decimals
             )
-        }
+      }
     }
 }

@@ -3,6 +3,8 @@ import UIKit
 import BigInt
 import Result
 
+//swiftlint:disable file_length
+
 enum KNExchangeTabViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt)
@@ -238,8 +240,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       self.gasPriceOptionButton.setImage(
         UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
       self.view.layoutIfNeeded()
-    }
-  ){ _ in
+    }, completion: { _ in
       self.advancedSettingsView.isHidden = isHidden
       if !self.advancedSettingsView.isHidden {
         let bottomOffset = CGPoint(
@@ -248,7 +249,7 @@ class KNExchangeTabViewController: KNBaseViewController {
         )
         self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
       }
-    }
+    })
   }
 
   @objc func gasPriceSegmentedControlDidTouch(_ sender: Any) {

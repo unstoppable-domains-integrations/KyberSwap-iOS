@@ -59,8 +59,8 @@ class TransactionsStorage {
                 symbol: symbol,
                 decimals: operation.decimals
             )
-        }
-        return tokens
+      }
+      return tokens
     }
 
     func delete(_ items: [Transaction]) {
