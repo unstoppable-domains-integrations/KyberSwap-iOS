@@ -361,7 +361,7 @@ extension KNSendTokenViewController: UITextFieldDelegate {
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
     if textField == self.amountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     textField.text = text
     if self.amountTextField == textField {

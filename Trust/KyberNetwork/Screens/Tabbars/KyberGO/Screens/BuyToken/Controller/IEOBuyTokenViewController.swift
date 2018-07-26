@@ -435,7 +435,7 @@ extension IEOBuyTokenViewController: UITextFieldDelegate {
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
     if textField == self.buyAmountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.receivedAmountTextField, text.fullBigInt(decimals: self.viewModel.to.tokenDecimals) == nil { return false }
     if text.isEmpty || Double(text) != nil {

@@ -8,6 +8,19 @@ extension String {
     return self.replacingOccurrences(of: EtherNumberFormatter.short.groupingSeparator, with: "")
   }
 
+  func cleanStringToNumber() -> String {
+    let decimals: Character = EtherNumberFormatter.short.decimalSeparator.first!
+    var valueString = ""
+    var hasDecimals: Bool = false
+    for char in self {
+      if (char >= "0" && char <= "9") || (char == decimals && !hasDecimals) {
+        valueString += "\(char)"
+        if char == decimals { hasDecimals = true }
+      }
+    }
+    return valueString
+  }
+
   func shortBigInt(decimals: Int) -> BigInt? {
     if let double = Double(self.removeGroupSeparator()) {
       return BigInt(double * pow(10.0, Double(decimals)))
