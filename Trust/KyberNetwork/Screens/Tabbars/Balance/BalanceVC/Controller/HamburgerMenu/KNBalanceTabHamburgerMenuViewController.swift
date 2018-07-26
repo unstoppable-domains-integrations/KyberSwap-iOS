@@ -38,7 +38,7 @@ struct KNBalanceTabHamburgerMenuViewModel {
   }
 
   var walletCellRowHeight: CGFloat {
-    return 46.0
+    return 60.0
   }
 
   var walletTableViewHeight: CGFloat {
@@ -301,8 +301,8 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == self.walletListTableView {
       let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
-      cell.imageView?.isUserInteractionEnabled = true
-      cell.textLabel?.isUserInteractionEnabled = true
+      cell.imageView?.isUserInteractionEnabled = false
+      cell.textLabel?.isUserInteractionEnabled = false
       let wallet = self.viewModel.wallet(at: indexPath.row)
       cell.imageView?.image = UIImage(named: wallet.icon)
       cell.textLabel?.text = wallet.name
