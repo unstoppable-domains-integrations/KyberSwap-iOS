@@ -149,13 +149,14 @@ extension KyberGOService: TargetType {
   var task: Task {
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
     let clientSecret = KNEnvironment.default == .ropsten ? KNSecret.debugSecret : KNSecret.secret
+    let redirectURL = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
       let json: JSONDictionary = [
         "grant_type": isRefresh ? "refresh_token" : "authorization_code",
         "code": code,
-        "redirect_uri": KNSecret.redirectURL,
+        "redirect_uri": redirectURL,
         "client_id": clientID,
         "client_secret": clientSecret,
       ]

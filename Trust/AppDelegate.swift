@@ -26,7 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         } catch {
             print("EtherKeystore init issue.")
         }
-        Branch.getInstance().setDebug()
+        if KNEnvironment.default == .ropsten {
+          Branch.setUseTestBranchKey(true)
+          Branch.getInstance().setDebug()
+        }
         Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
           if let params = params, error == nil {
             KNNotificationUtil.postNotification(
@@ -82,12 +85,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     // Respond to URI scheme links
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return true
+      Branch.getInstance().application(
+        application,
+        open: url,
+        sourceApplication: sourceApplication,
+        annotation: annotation
+      )
+      return true
     }
 
     // Respond to Universal Links
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-      Branch.getInstance().continue(userActivity)
+        Branch.getInstance().continue(userActivity)
         return true
     }
 }

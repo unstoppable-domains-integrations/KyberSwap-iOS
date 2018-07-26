@@ -7,6 +7,7 @@ import TrustKeystore
 import TrustCore
 import Result
 import SafariServices
+import Branch
 
 //swiftlint:disable file_length
 class KGOHomePageCoordinator: Coordinator {
@@ -373,7 +374,8 @@ extension KGOHomePageCoordinator {
       return
     }
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
-    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(KNSecret.redirectURL)&response_type=code&state=\(KNSecret.state)") {
+    let redirectLink = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
+    if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
   }
@@ -461,7 +463,7 @@ extension KGOHomePageCoordinator {
             IEOTransactionStorage.shared.userLoggedIn()
             self?.navigationController.showSuccessTopBannerMessage(
               with: "Hi \(user.name)",
-              message: "You have signed in successfully! You could buy token sales now".toBeLocalised()
+              message: "You have signed in successfully!".toBeLocalised()
             )
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
           // Already have user
@@ -727,6 +729,7 @@ extension KGOHomePageCoordinator: IEOProfileViewControllerDelegate {
       self.navigationController.popToRootViewController(animated: true)
       self.profileVC = nil
       self.rootViewController.coordinatorDidSignOut()
+      Branch.getInstance().logout()
     }
   }
 

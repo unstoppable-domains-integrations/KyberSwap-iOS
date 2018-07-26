@@ -117,7 +117,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>branch_app_domain</key>
-	<string>kybermangcut.app.link</string>
+	<array>
+		<string>kybermangcut.test-app.link</string>
+		<string>kybermangcut.app.link</string>
+	</array>
 	<key>branch_key</key>
 	<dict>
 		<key>test</key>
@@ -126,7 +129,12 @@
 		<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
 	</dict>
 	<key>branch_universal_link_domains</key>
-	<string></string>
+	<array>
+		<string>kybermangcut-alternate.test-app.link</string>
+		<string>kybermangcut.test-app.link</string>
+		<string>kybermangcut-alternate.app.link</string>
+		<string>kybermangcut.app.link</string>
+	</array>
 	<key>com.apple.security.get-task-allow</key>
 	<true/>
 </dict>
