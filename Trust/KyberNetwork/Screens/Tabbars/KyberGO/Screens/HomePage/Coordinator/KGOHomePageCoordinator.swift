@@ -240,6 +240,7 @@ class KGOHomePageCoordinator: Coordinator {
 
     var error: Error?
     var isWhiteListed: Bool = true
+    var whitelistedReason: String?
     var ieoAddress: String = ""
 
     let group = DispatchGroup()
@@ -259,8 +260,9 @@ class KGOHomePageCoordinator: Coordinator {
     self.checkIEOWhitelisted(ieo: object) { [weak self] result in
       guard let _ = self else { return }
       switch result {
-      case .success(let canBuy):
-        isWhiteListed = canBuy
+      case .success(let resp):
+        isWhiteListed = resp.0
+        whitelistedReason = resp.1
       case .failure(let err):
         error = err
       }
@@ -277,9 +279,10 @@ class KGOHomePageCoordinator: Coordinator {
         return
       }
       if !isWhiteListed {
+        let reason: String = whitelistedReason ?? "You are not whitelisted for this token sale.".toBeLocalised()
         self.navigationController.showWarningTopBannerMessage(
-          with: "Error",
-          message: "You are not whitelisted for this token sale.".toBeLocalised()
+          with: "Can not participate".toBeLocalised(),
+          message: reason
         )
         return
       }
@@ -516,9 +519,9 @@ extension KGOHomePageCoordinator {
     }
   }
 
-  fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  fileprivate func checkIEOWhitelisted(ieo: IEOObject, completion: @escaping (Result<(Bool, String?), AnyError>) -> Void) {
     guard let user = IEOUserStorage.shared.user else {
-      completion(.success(false))
+      completion(.success((false, "User not found".toBeLocalised())))
       return
     }
     NSLog("----KyberGO: Check can participate----")
@@ -534,7 +537,7 @@ extension KGOHomePageCoordinator {
               _ = try resp.filterSuccessfulStatusCodes()
               guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else {
                 NSLog("----KyberGO: Check can participate parse error----")
-                completion(.success(false))
+                completion(.success((false, "Can not get response data".toBeLocalised())))
                 return
               }
               NSLog("----KyberGO: Check can participate successfully data: \(json)----")
@@ -542,7 +545,11 @@ extension KGOHomePageCoordinator {
                 guard let data = json["data"] as? JSONDictionary else { return false }
                 return data["can_participate"] as? Bool ?? false
               }()
-              completion(.success(canParticipate))
+              let reason: String? = {
+                guard let data = json["data"] as? JSONDictionary else { return nil }
+                return data["reason"] as? String
+              }()
+              completion(.success((canParticipate, reason)))
             } catch let error {
               NSLog("----KyberGO: Check can participate parse error: \(error.prettyError)----")
               completion(.failure(AnyError(error)))
