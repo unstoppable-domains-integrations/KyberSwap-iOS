@@ -17,6 +17,8 @@ class KGOHomePageViewModel {
     objects.forEach({ self.isHalted[$0.contract] = $0.halted })
   }
 
+  var hasTokenSales: Bool { return !self.ieoObjects.isEmpty }
+
   func updateObjects(_ objects: [IEOObject]) {
     self.ieoObjects = objects
     self.pastObjects = objects.filter({ $0.type == .past })
@@ -26,15 +28,15 @@ class KGOHomePageViewModel {
     self.titles = []
     if !self.activeObjects.isEmpty {
       self.dataSet.append(self.activeObjects)
-      self.titles.append("Active Token Sales")
+      self.titles.append("Active Token Sales".toBeLocalised())
     }
     if !self.upcomingObjects.isEmpty {
       self.dataSet.append(self.upcomingObjects)
-      self.titles.append("Upcoming Token Sales")
+      self.titles.append("Upcoming Token Sales".toBeLocalised())
     }
     if !self.pastObjects.isEmpty {
       self.dataSet.append(self.pastObjects)
-      self.titles.append("Past Token Sales")
+      self.titles.append("Past Token Sales".toBeLocalised())
     }
   }
 

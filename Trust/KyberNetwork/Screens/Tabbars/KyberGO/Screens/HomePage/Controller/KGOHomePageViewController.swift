@@ -26,6 +26,7 @@ class KGOHomePageViewController: KNBaseViewController {
   @IBOutlet weak var pendingTxNotiView: UIView!
 
   @IBOutlet weak var ieoTableView: UITableView!
+  @IBOutlet weak var noTokenSalesFoundLabel: UILabel!
 
   fileprivate var viewModel: KGOHomePageViewModel
   weak var delegate: KGOHomePageViewControllerDelegate?
@@ -80,11 +81,15 @@ class KGOHomePageViewController: KNBaseViewController {
     self.ieoTableView.dataSource = self
     self.ieoTableView.rowHeight = 115
     self.ieoTableView.sectionHeaderHeight = 44
+    self.ieoTableView.isHidden = !self.viewModel.hasTokenSales
+    self.noTokenSalesFoundLabel.isHidden = self.viewModel.hasTokenSales
     self.ieoTableView.reloadData()
   }
 
   func coordinatorDidUpdateListKGO(_ objects: [IEOObject]) {
     self.viewModel.updateObjects(objects)
+    self.ieoTableView.isHidden = !self.viewModel.hasTokenSales
+    self.noTokenSalesFoundLabel.isHidden = self.viewModel.hasTokenSales
     self.ieoTableView.reloadData()
   }
 
