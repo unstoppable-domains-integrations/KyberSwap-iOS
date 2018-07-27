@@ -101,10 +101,10 @@ class KNExchangeTabViewController: KNBaseViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.dataContainerView.addShadow(
-      color: UIColor.black,
-      offset: CGSize(width: 0, height: 8),
-      opacity: 0.11,
-      radius: 14
+        color: UIColor.black.withAlphaComponent(0.5),
+        offset: CGSize(width: 0, height: 7),
+        opacity: 0.32,
+        radius: 32
     )
   }
 
@@ -152,7 +152,6 @@ class KNExchangeTabViewController: KNBaseViewController {
   }
 
   fileprivate func setupTokensView() {
-    self.dataContainerView.rounded(color: UIColor.Kyber.darkerGrey.withAlphaComponent(0.15), width: 1, radius: 4.0)
     self.fromTokenButton.titleLabel?.numberOfLines = 2
     self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.toTokenButton.titleLabel?.numberOfLines = 2

@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
         <array key="SF-Pro-Text-Medium.otf">
             <string>SFProText-Medium</string>
         </array>
@@ -55,7 +52,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Token" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdZ-45-bZl">
-                            <rect key="frame" x="135.5" y="44" width="105.5" height="24"/>
+                            <rect key="frame" x="135" y="44" width="105.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -114,8 +111,8 @@
                             <rect key="frame" x="10" y="10" width="355" height="200"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0j-Uy-2jw">
-                                    <rect key="frame" x="20" y="12" width="151.5" height="106"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                    <rect key="frame" x="16" y="12" width="155.5" height="106"/>
+                                    <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="22"/>
                                     <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" title="ETH" image="eth">
                                         <color key="titleColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -127,15 +124,15 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eR-51-mcz">
                                     <rect key="frame" x="0.0" y="118" width="355" height="82"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.123123" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhf-Qf-zFA">
-                                            <rect key="frame" x="24" y="40" width="92" height="26"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.123123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhf-Qf-zFA">
+                                            <rect key="frame" x="16" y="40" width="92" height="26"/>
+                                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="22"/>
                                             <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXh-W2-GZi">
-                                            <rect key="frame" x="24" y="16" width="99" height="20"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                            <rect key="frame" x="16" y="16" width="99" height="20"/>
+                                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
                                             <color key="textColor" red="0.41568627450980389" green="0.43137254901960786" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -145,12 +142,12 @@
                                         <constraint firstAttribute="height" constant="82" id="2Uj-FR-U07"/>
                                         <constraint firstItem="uXh-W2-GZi" firstAttribute="top" secondItem="9eR-51-mcz" secondAttribute="top" constant="16" id="MfF-Ni-qzD"/>
                                         <constraint firstItem="zhf-Qf-zFA" firstAttribute="leading" secondItem="uXh-W2-GZi" secondAttribute="leading" id="Smd-g0-Q9l"/>
-                                        <constraint firstItem="uXh-W2-GZi" firstAttribute="leading" secondItem="9eR-51-mcz" secondAttribute="leading" constant="24" id="fQa-er-d8l"/>
+                                        <constraint firstItem="uXh-W2-GZi" firstAttribute="leading" secondItem="9eR-51-mcz" secondAttribute="leading" constant="16" id="fQa-er-d8l"/>
                                         <constraint firstItem="zhf-Qf-zFA" firstAttribute="top" secondItem="uXh-W2-GZi" secondAttribute="bottom" constant="4" id="mSY-Fc-wCa"/>
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.000" placeholder="0.000" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="U0Y-CG-pqO">
-                                    <rect key="frame" x="183.5" y="12" width="151.5" height="106"/>
+                                    <rect key="frame" x="183.5" y="12" width="155.5" height="106"/>
                                     <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="36"/>
@@ -165,12 +162,12 @@
                                 <constraint firstItem="e0j-Uy-2jw" firstAttribute="width" secondItem="U0Y-CG-pqO" secondAttribute="width" id="HfA-5O-aME"/>
                                 <constraint firstItem="U0Y-CG-pqO" firstAttribute="leading" secondItem="e0j-Uy-2jw" secondAttribute="trailing" constant="12" id="HxU-V9-m8b"/>
                                 <constraint firstItem="9eR-51-mcz" firstAttribute="leading" secondItem="oRt-bT-lU6" secondAttribute="leading" id="Pa8-Vj-xo0"/>
-                                <constraint firstAttribute="trailing" secondItem="U0Y-CG-pqO" secondAttribute="trailing" constant="20" id="URl-3o-LdS"/>
+                                <constraint firstAttribute="trailing" secondItem="U0Y-CG-pqO" secondAttribute="trailing" constant="16" id="URl-3o-LdS"/>
                                 <constraint firstAttribute="bottom" secondItem="e0j-Uy-2jw" secondAttribute="bottom" constant="82" id="fA9-r9-6Ty"/>
                                 <constraint firstItem="e0j-Uy-2jw" firstAttribute="top" secondItem="oRt-bT-lU6" secondAttribute="top" constant="12" id="peP-Wz-OFb"/>
                                 <constraint firstItem="U0Y-CG-pqO" firstAttribute="bottom" secondItem="e0j-Uy-2jw" secondAttribute="bottom" id="r2S-od-6y3"/>
                                 <constraint firstItem="U0Y-CG-pqO" firstAttribute="top" secondItem="oRt-bT-lU6" secondAttribute="top" constant="12" id="rFB-YS-pcv"/>
-                                <constraint firstItem="e0j-Uy-2jw" firstAttribute="leading" secondItem="oRt-bT-lU6" secondAttribute="leading" constant="20" id="rOz-cc-GSN"/>
+                                <constraint firstItem="e0j-Uy-2jw" firstAttribute="leading" secondItem="oRt-bT-lU6" secondAttribute="leading" constant="16" id="rOz-cc-GSN"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S4b-5k-6U7">
