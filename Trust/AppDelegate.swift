@@ -103,6 +103,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    guard let txHash = response.notification.request.content.userInfo["transaction_hash"] as? String else {
+      completionHandler()
+      return
+    }
+    self.coordinator.appDidReceiveLocalNotification(transactionHash: txHash)
     completionHandler()
   }
 

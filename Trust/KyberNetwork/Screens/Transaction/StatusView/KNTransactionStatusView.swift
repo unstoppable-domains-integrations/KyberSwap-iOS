@@ -91,7 +91,8 @@ class KNTransactionStatusView: XibLoaderView {
     if status == .broadcastingError || status == .success || status == .failed {
       KNNotificationUtil.localPushNotification(
         title: status.rawValue,
-        body: details ?? status.statusDetails
+        body: details ?? status.statusDetails,
+        userInfo: ["transaction_hash": txHash ?? ""]
       )
     }
     self.layoutIfNeeded()

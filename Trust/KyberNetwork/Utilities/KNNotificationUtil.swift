@@ -48,10 +48,11 @@ class KNNotificationUtil {
     return Notification.Name(name)
   }
 
-  static func localPushNotification(title: String, body: String) {
+  static func localPushNotification(title: String, body: String, userInfo: [AnyHashable: Any] = [:]) {
     let content = UNMutableNotificationContent()
     content.title = title
     content.body = body
+    content.userInfo = userInfo
     content.setValue("YES", forKey: "shouldAlwaysAlertWhileAppIsForeground")
     let request = UNNotificationRequest(identifier: "localPushNotification", content: content, trigger: nil)
     UNUserNotificationCenter.current().add(request) { error in

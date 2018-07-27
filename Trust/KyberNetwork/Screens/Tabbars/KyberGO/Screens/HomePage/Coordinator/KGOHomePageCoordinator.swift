@@ -228,7 +228,8 @@ class KGOHomePageCoordinator: Coordinator {
     }()
     KNNotificationUtil.localPushNotification(
       title: transaction.txStatus.displayText,
-      body: details
+      body: details,
+      userInfo: ["transaction_hash": transaction.txHash]
     )
   }
 

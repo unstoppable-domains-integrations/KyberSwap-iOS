@@ -115,4 +115,13 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     self.balanceCoordinator?.pause()
   }
+
+  func appDidReceiveLocalNotification(transactionHash: String) {
+    let url = KNEnvironment.default.etherScanIOURLString + "tx/\(transactionHash)"
+    if self.transactionStatusCoordinator != nil {
+      self.transactionStatusCoordinator.rootViewController?.openSafari(with: url)
+    } else {
+      self.navigationController.topViewController?.openSafari(with: url)
+    }
+  }
 }
