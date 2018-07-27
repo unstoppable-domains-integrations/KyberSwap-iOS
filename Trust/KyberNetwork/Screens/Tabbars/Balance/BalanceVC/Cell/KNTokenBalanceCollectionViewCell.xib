@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,18 +31,18 @@
                         <rect key="frame" x="-0.5" y="0.0" width="375.5" height="56"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAL/ETH" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcZ-wS-irQ">
-                                <rect key="frame" x="16" y="18.5" width="68" height="20"/>
+                                <rect key="frame" x="16" y="19" width="68" height="19.5"/>
                                 <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00783782" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecv-vI-LUv">
-                                <rect key="frame" x="140" y="18.5" width="123.5" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00783782" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecv-vI-LUv">
+                                <rect key="frame" x="128" y="19" width="146.5" height="19.5"/>
                                 <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 2.2%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-oR-Ezt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+1.32%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-oR-Ezt">
                                 <rect key="frame" x="279.5" y="12.5" width="80" height="32"/>
                                 <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -57,10 +57,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="FGF-oR-Ezt" secondAttribute="trailing" constant="16" id="Jvb-kn-zpZ"/>
-                            <constraint firstItem="FGF-oR-Ezt" firstAttribute="leading" secondItem="ecv-vI-LUv" secondAttribute="trailing" constant="16" id="KGl-DH-u13"/>
+                            <constraint firstItem="FGF-oR-Ezt" firstAttribute="leading" secondItem="ecv-vI-LUv" secondAttribute="trailing" constant="5" id="KGl-DH-u13"/>
                             <constraint firstItem="FGF-oR-Ezt" firstAttribute="centerY" secondItem="fHp-KW-7Kw" secondAttribute="centerY" id="S2o-cP-umz"/>
                             <constraint firstItem="ecv-vI-LUv" firstAttribute="centerY" secondItem="fHp-KW-7Kw" secondAttribute="centerY" id="kRA-Da-qJP"/>
-                            <constraint firstItem="ecv-vI-LUv" firstAttribute="leading" secondItem="fHp-KW-7Kw" secondAttribute="leading" constant="140" id="m4K-kw-aOg"/>
+                            <constraint firstItem="ecv-vI-LUv" firstAttribute="leading" secondItem="fHp-KW-7Kw" secondAttribute="leading" constant="128" id="m4K-kw-aOg"/>
                             <constraint firstItem="bcZ-wS-irQ" firstAttribute="leading" secondItem="fHp-KW-7Kw" secondAttribute="leading" constant="16" id="vj3-Gz-7da"/>
                             <constraint firstItem="bcZ-wS-irQ" firstAttribute="centerY" secondItem="fHp-KW-7Kw" secondAttribute="centerY" id="zwy-Jr-8c0"/>
                         </constraints>

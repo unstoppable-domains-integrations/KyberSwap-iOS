@@ -77,9 +77,11 @@ class KNBalanceTabViewModel: NSObject {
   var balanceDisplayText: String {
     switch self.balanceDisplayType {
     case .usd:
-      return "\(self.totalUSDBalance.shortString(units: .ether, maxFractionDigits: 2)) USD"
+      let usdValue = self.totalUSDBalance.shortString(units: .ether, maxFractionDigits: 2).prefix(11)
+      return "\(usdValue) USD"
     case .eth:
-      return "\(self.totalETHBalance.shortString(units: .ether, maxFractionDigits: 6)) ETH"
+      let ethValue = self.totalETHBalance.shortString(units: .ether, maxFractionDigits: 6).prefix(11)
+      return "\(ethValue) ETH"
     }
   }
 

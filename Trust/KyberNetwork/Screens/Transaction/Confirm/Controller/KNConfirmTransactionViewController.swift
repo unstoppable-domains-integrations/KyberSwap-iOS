@@ -88,7 +88,7 @@ struct KNConfirmTransactionViewModel {
       let rateString = trans.expectedRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
       return "1 \(trans.from.symbol) = \(rateString) \(trans.to.symbol)"
     case .buyTokenSale(let trans):
-      let rateString = trans.estRate?.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 6) ?? "0"
+      let rateString = trans.estRate?.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6) ?? "0"
       return "1 \(trans.token.symbol) = \(rateString) \(trans.ieo.tokenSymbol)"
     default: return ""
     }
@@ -182,7 +182,7 @@ class KNConfirmTransactionViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.enableBtnTimer?.invalidate()
-    self.enableBtnTimer = Timer.scheduledTimer(withTimeInterval: 0.3 , repeats: false, block: { _ in
+    self.enableBtnTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
       self.confirmButton.isEnabled = true
     })
   }

@@ -136,7 +136,7 @@ struct IEOBuyTokenViewModel {
       let amount = self.amountFromBigInt
       return rate * amount / BigInt(10).power(self.from.decimals)
     }()
-    return expectedAmount.string(decimals: self.to.tokenDecimals, minFractionDigits: 1, maxFractionDigits: 4)
+    return expectedAmount.string(decimals: self.to.tokenDecimals, minFractionDigits: 0, maxFractionDigits: min(self.to.tokenDecimals, 4))
   }
 
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
@@ -168,7 +168,7 @@ struct IEOBuyTokenViewModel {
 
   // MARK: Rate
   var exchangeRateText: String {
-    let rateString: String = self.estRate?.string(decimals: self.to.tokenDecimals, minFractionDigits: 2, maxFractionDigits: 9) ?? "---"
+    let rateString: String = self.estRate?.string(decimals: self.to.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 9) ?? "---"
     return "\(rateString)"
   }
 
@@ -182,7 +182,7 @@ struct IEOBuyTokenViewModel {
   }
 
   var minRateString: String? {
-    return self.minRate?.string(decimals: self.to.tokenDecimals, minFractionDigits: 2, maxFractionDigits: 9)
+    return self.minRate?.string(decimals: self.to.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 9)
   }
 
   var currentMinTokenRatePercentValue: Float {

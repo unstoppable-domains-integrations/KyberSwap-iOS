@@ -135,7 +135,7 @@ class KNExchangeTabViewModel {
 
   // MARK: Rate
   var exchangeRateText: String {
-    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 2, maxFractionDigits: 9) ?? "---"
+    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: 9) ?? "---"
     return "\(rateString)"
   }
 
@@ -148,7 +148,7 @@ class KNExchangeTabViewModel {
   }
 
   var minRateText: String? {
-    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 2, maxFractionDigits: 9)
+    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: 9)
   }
 
   var currentMinRatePercentValue: Float {

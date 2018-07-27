@@ -36,7 +36,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   }
 
   fileprivate var displayBalanceHoldingsText: String {
-    if let amount = balance?.value.string(decimals: token.decimals, minFractionDigits: 2, maxFractionDigits: 6) {
+    if let amount = balance?.value.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: 6) {
       return "Bal \(amount.prefix(11))"
     }
     return "Bal ---"
@@ -45,7 +45,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   fileprivate var displayBalanceInUSD: String {
     if let amount = balance?.value, let trackerRate = self.trackerRate {
       let rate = KNRate.rateUSD(from: trackerRate)
-      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 2, maxFractionDigits: 4)
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6)
       return "Val $\(value.prefix(11))"
     }
     return "Val ---"
@@ -54,7 +54,7 @@ struct KNTokenBalanceCollectionViewCellModel {
   fileprivate var displayBalanceInETH: String {
     if let amount = balance?.value, let trackerRate = self.trackerRate {
       let rate = KNRate.rateETH(from: trackerRate)
-      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 6, maxFractionDigits: 9)
+      let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
       return "Val \(value.prefix(11))"
     }
     return "Val ---"
@@ -79,8 +79,9 @@ struct KNTokenBalanceCollectionViewCellModel {
       }
       return nil
     }()
+    let maxFractionsDigits: Int = self.displayedType == .eth ? 9 : 6
     let attributedString = NSMutableAttributedString()
-    let rateString = rate?.string(units: .ether, minFractionDigits: 4, maxFractionDigits: 9) ?? "-.--"
+    let rateString = rate?.string(units: .ether, minFractionDigits: 0, maxFractionDigits: maxFractionsDigits) ?? "-.--"
     attributedString.append(NSAttributedString(string: "\(rateString.prefix(11))", attributes: highlighted))
     attributedString.append(NSAttributedString(string: "\n\(value.prefix(11))", attributes: normal))
     return attributedString

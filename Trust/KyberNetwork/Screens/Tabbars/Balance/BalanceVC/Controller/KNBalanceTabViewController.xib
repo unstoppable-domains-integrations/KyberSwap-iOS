@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -57,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dt-fm-BpO">
-                            <rect key="frame" x="140" y="13.5" width="97" height="20"/>
+                            <rect key="frame" x="128" y="13.5" width="146" height="20"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <inset key="titleEdgeInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -72,7 +72,8 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="7dt-fm-BpO" firstAttribute="bottom" secondItem="2IH-nc-ozc" secondAttribute="bottom" id="Que-JY-T38"/>
-                        <constraint firstItem="7dt-fm-BpO" firstAttribute="leading" secondItem="EN6-Ah-tJJ" secondAttribute="leading" constant="140" id="Uqx-tE-3oT"/>
+                        <constraint firstItem="7dt-fm-BpO" firstAttribute="leading" secondItem="EN6-Ah-tJJ" secondAttribute="leading" constant="128" id="Uqx-tE-3oT"/>
+                        <constraint firstItem="WAU-tE-kcd" firstAttribute="leading" secondItem="7dt-fm-BpO" secondAttribute="trailing" constant="5" id="fPZ-07-dGz"/>
                         <constraint firstItem="2IH-nc-ozc" firstAttribute="centerY" secondItem="EN6-Ah-tJJ" secondAttribute="centerY" id="fur-s4-1v3"/>
                         <constraint firstAttribute="trailing" secondItem="WAU-tE-kcd" secondAttribute="trailing" constant="16" id="gzu-eQ-kme"/>
                         <constraint firstItem="WAU-tE-kcd" firstAttribute="bottom" secondItem="7dt-fm-BpO" secondAttribute="bottom" id="nng-fe-LTJ"/>
