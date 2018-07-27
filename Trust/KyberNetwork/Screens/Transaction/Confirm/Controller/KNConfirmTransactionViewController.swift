@@ -155,6 +155,8 @@ class KNConfirmTransactionViewController: UIViewController {
 
   fileprivate var data: [(String, String)] = []
 
+  fileprivate var enableBtnTimer: Timer?
+
   weak var delegate: KNConfirmTransactionViewControllerDelegate?
 
   init(viewModel: KNConfirmTransactionViewModel) {
@@ -171,6 +173,20 @@ class KNConfirmTransactionViewController: UIViewController {
     self.setupUI()
   }
 
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.enableBtnTimer?.invalidate()
+    self.enableBtnTimer = nil
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.enableBtnTimer?.invalidate()
+    self.enableBtnTimer = Timer.scheduledTimer(withTimeInterval: 0.3 , repeats: false, block: { _ in
+      self.confirmButton.isEnabled = true
+    })
+  }
+
   fileprivate func setupUI() {
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapToParentView(_:)))
@@ -181,6 +197,7 @@ class KNConfirmTransactionViewController: UIViewController {
       width: 1,
       radius: self.confirmButton.frame.height / 2.0
     )
+    self.confirmButton.isEnabled = false
     self.updateUI()
   }
 

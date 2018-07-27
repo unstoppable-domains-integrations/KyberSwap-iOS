@@ -106,8 +106,8 @@ class KGOHomePageViewController: KNBaseViewController {
     self.userStatusLabel.text = "Unknown"
     self.pendingTxNotiView.isHidden = true
     self.showSuccessTopBannerMessage(
-      with: "Logged out from app successfully",
-      message: "You will need to open Safari and logout from your session"
+      with: "Logged out successfully".toBeLocalised(),
+      message: "Login again if you want to see your transactions and buy token sales".toBeLocalised()
     )
   }
 
