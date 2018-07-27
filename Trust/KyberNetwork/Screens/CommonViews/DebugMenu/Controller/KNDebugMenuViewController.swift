@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import RealmSwift
 
 class KNDebugMenuViewController: KNBaseViewController {
 
@@ -43,6 +44,7 @@ class KNDebugMenuViewController: KNBaseViewController {
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "Apply", style: .default, handler: { _ in
       KNAppTracker.updateExternalEnvironment(self.newEnvironment)
+      self.handleEnviromentChangedIfNeeded()
       if self.newEnvironment != self.environment {
         exit(0)
       } else {
@@ -63,5 +65,19 @@ class KNDebugMenuViewController: KNBaseViewController {
     self.environmentEndpointLabel.text = self.newEnvironment.knCustomRPC?.customRPC.endpoint
     self.envNetworkAddressLabel.text = "Network Address: \(self.newEnvironment.knCustomRPC?.networkAddress ?? "")"
     self.envReserveAddressLabel.text = "Reserve Address: \(self.newEnvironment.knCustomRPC?.reserveAddress ?? "")"
+  }
+
+  private func handleEnviromentChangedIfNeeded() {
+    if self.newEnvironment == self.environment { return }
+    // update list wallets
+    let newRealm: Realm = {
+      let config = RealmConfiguration.globalConfiguration(for: self.newEnvironment.chainID)
+      return try! Realm(configuration: config)
+    }()
+    let newWallets = KNWalletStorage.shared.wallets.map({ return $0.copy(withNewName: $0.name) })
+    newRealm.beginWrite()
+    newRealm.delete(newRealm.objects(KNWalletObject.self))
+    newRealm.add(newWallets, update: true)
+    try! newRealm.commitWrite()
   }
 }
