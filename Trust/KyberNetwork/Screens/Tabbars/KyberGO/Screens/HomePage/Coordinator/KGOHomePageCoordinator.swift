@@ -662,7 +662,7 @@ extension KGOHomePageCoordinator {
         IEOProvider.shared.getDistributedTokensWei(for: object.contract) { [weak self] result in
           switch result {
           case .success(let value):
-            let raised = Double(value / BigInt(10).power(object.tokenDecimals))
+            let raised = Double(value) / pow(10.0, Double(object.tokenDecimals))
             IEOObjectStorage.shared.update(raised: raised, object: object)
             self?.rootViewController.coordinatorDidUpdateListKGO(IEOObjectStorage.shared.objects)
             self?.ieoListViewController?.coordinatorDidUpdateProgress()

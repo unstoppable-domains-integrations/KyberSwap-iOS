@@ -166,7 +166,7 @@ extension IEOObject {
   }
 
   var raisedText: String {
-    return (BigInt(raised) * BigInt(10).power(tokenDecimals)).string(
+    return (BigInt(raised * pow(10.0, Double(self.tokenDecimals)))).string(
       decimals: self.tokenDecimals,
       minFractionDigits: 4,
       maxFractionDigits: 4
