@@ -304,6 +304,7 @@ class KNExchangeTabViewController: KNBaseViewController {
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
       let expectedExchange: BigInt = {
+        if rate.isZero { return rate }
         let amount = self.viewModel.amountToBigInt
         return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
       }()

@@ -68,7 +68,7 @@ struct IEOBuyTokenViewModel {
 
   var estETHAmount: BigInt? {
     if self.from.isETH { return self.amountFromBigInt }
-    if let ethRate = self.ethRate {
+    if let ethRate = self.ethRate, !ethRate.isZero {
       return self.amountToBigInt * BigInt(EthereumUnit.ether.rawValue) / ethRate
     }
     return nil
@@ -101,6 +101,7 @@ struct IEOBuyTokenViewModel {
       return ""
     }
     let expectedExchange: BigInt = {
+      if rate.isZero { return rate }
       let amount = self.amountTo.fullBigInt(decimals: self.to.tokenDecimals) ?? BigInt(0)
       return amount * BigInt(10).power(self.from.decimals) / rate
     }()
@@ -187,7 +188,7 @@ struct IEOBuyTokenViewModel {
 
   var currentMinTokenRatePercentValue: Float {
     if let double = self.minTokenRatePercent { return Float(floor(double)) }
-    guard let estRate = self.estTokenRate, let slippageTokenRate = self.slippageTokenRate else { return 100.0 }
+    guard let estRate = self.estTokenRate, let slippageTokenRate = self.slippageTokenRate, !estRate.isZero else { return 100.0 }
     return Float(floor(Double(slippageTokenRate * BigInt(100) / estRate)))
   }
 
@@ -313,8 +314,12 @@ struct IEOBuyTokenViewModel {
 
   mutating func updateEstimatedTokenRate(_ estRate: BigInt, minRate: BigInt) {
     self.estTokenRate = estRate
-    let double = Double(BigInt(100) * minRate / estRate)
-    self.slippageTokenRate = BigInt(floor(double)) * estRate / BigInt(100)
+    if estRate.isZero {
+      self.slippageTokenRate = minRate
+    } else {
+      let double = Double(BigInt(100) * minRate / estRate)
+      self.slippageTokenRate = BigInt(floor(double)) * estRate / BigInt(100)
+    }
   }
 
   mutating func updateMinTokenRatePercent(_ percent: Double) {

@@ -72,6 +72,7 @@ class KNExchangeTabViewModel {
       return ""
     }
     let expectedExchange: BigInt = {
+      if rate.isZero { return rate }
       let amount = self.amountToBigInt
       return amount * BigInt(10).power(self.from.decimals) / rate
     }()
@@ -153,7 +154,7 @@ class KNExchangeTabViewModel {
 
   var currentMinRatePercentValue: Float {
     if let double = self.minRatePercent { return Float(floor(double)) }
-    guard let estRate = self.estRate, let slippageRate = self.slippageRate else { return 100.0 }
+    guard let estRate = self.estRate, let slippageRate = self.slippageRate, !estRate.isZero else { return 100.0 }
     return Float(floor(Double(slippageRate * BigInt(100) / estRate)))
   }
 
@@ -261,8 +262,12 @@ class KNExchangeTabViewModel {
   func updateEstimatedRateFromCachedIfNeeded() {
     guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
     self.estRate = rate.rate
-    let percent = Double(rate.minRate * BigInt(100) / rate.rate)
-    self.slippageRate = rate.rate * BigInt(Int(floor(percent))) / BigInt(100)
+    if rate.rate.isZero {
+      self.slippageRate = rate.minRate
+    } else {
+      let percent = Double(rate.minRate * BigInt(100) / rate.rate)
+      self.slippageRate = rate.rate * BigInt(Int(floor(percent))) / BigInt(100)
+    }
   }
 
   func updateFocusingField(_ isSource: Bool) {
