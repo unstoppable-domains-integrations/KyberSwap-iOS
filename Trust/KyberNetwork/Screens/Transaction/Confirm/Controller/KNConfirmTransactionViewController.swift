@@ -86,10 +86,10 @@ struct KNConfirmTransactionViewModel {
     switch self.type {
     case .exchange(let trans):
       let rateString = trans.expectedRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
-      return "1 \(trans.from.symbol) = \(rateString) \(trans.to.symbol)"
+      return "1 \(trans.from.symbol) = \(rateString.prefix(10)) \(trans.to.symbol)"
     case .buyTokenSale(let trans):
       let rateString = trans.estRate?.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6) ?? "0"
-      return "1 \(trans.token.symbol) = \(rateString) \(trans.ieo.tokenSymbol)"
+      return "1 \(trans.token.symbol) = \(rateString.prefix(10)) \(trans.ieo.tokenSymbol)"
     default: return ""
     }
   }
@@ -100,12 +100,15 @@ struct KNConfirmTransactionViewModel {
     return self.isSlippageRateHidden ? 0.0 : 52.0
   }
   var slippageRateString: String {
-    if case .exchange(let trans) = type, let minRate = trans.minRate {
-      return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
-    } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
-      return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
-    }
-    return ""
+    let rate: String = {
+      if case .exchange(let trans) = type, let minRate = trans.minRate {
+        return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
+      } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
+        return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
+      }
+      return ""
+    }()
+    return "\(rate.prefix(10))"
   }
 
   var feeString: String {

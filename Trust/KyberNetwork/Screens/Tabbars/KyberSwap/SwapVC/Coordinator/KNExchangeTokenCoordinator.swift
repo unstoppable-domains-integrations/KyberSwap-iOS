@@ -293,14 +293,15 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
         if case .success(let data) = result {
           estRate = data.0
           slippageRate = data.1
+          estRate /= BigInt(10).power(18 - to.decimals)
+          slippageRate /= BigInt(10).power(18 - to.decimals)
+        } else {
+          // fallback to rate from CMC
+          if estRate.isZero, let cmcRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
+            estRate = cmcRate.rate
+            slippageRate = cmcRate.minRate
+          }
         }
-        // fallback to rate from CMC
-        if estRate.isZero, let cmcRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
-          estRate = cmcRate.rate
-          slippageRate = cmcRate.minRate
-        }
-        estRate /= BigInt(10).power(18 - to.decimals)
-        slippageRate /= BigInt(10).power(18 - to.decimals)
         self?.rootViewController.coordinatorDidUpdateEstimateRate(
           from: from,
           to: to,

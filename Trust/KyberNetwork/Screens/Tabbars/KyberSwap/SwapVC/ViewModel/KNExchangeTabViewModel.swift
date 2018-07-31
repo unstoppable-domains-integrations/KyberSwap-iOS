@@ -310,8 +310,12 @@ class KNExchangeTabViewModel {
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
     if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estRate = rate
-      let percent = Double(slippageRate * BigInt(100) / rate)
-      self.slippageRate = rate * BigInt(Int(floor(percent))) / BigInt(100)
+      if rate.isZero {
+        self.slippageRate = slippageRate
+      } else {
+        let percent = Double(slippageRate * BigInt(100) / rate)
+        self.slippageRate = rate * BigInt(Int(floor(percent))) / BigInt(100)
+      }
     }
   }
 
