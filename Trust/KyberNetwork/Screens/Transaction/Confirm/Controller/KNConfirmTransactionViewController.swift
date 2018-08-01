@@ -102,9 +102,9 @@ struct KNConfirmTransactionViewModel {
   var slippageRateString: String {
     let rate: String = {
       if case .exchange(let trans) = type, let minRate = trans.minRate {
-        return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
+        return minRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
       } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
-        return minRate.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6)
+        return minRate.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
       }
       return ""
     }()
