@@ -82,7 +82,7 @@ extension KNTokenTransaction {
   func toTransaction() -> Transaction {
     let amountString: String = {
       let number = EtherNumberFormatter.short.number(from: self.value, decimals: 0)
-      let amount: String = number?.shortString(decimals: Int(self.tokenDecimal) ?? 0) ?? "0.0"
+      let amount: String = number?.fullString(decimals: Int(self.tokenDecimal) ?? 0) ?? "0.0"
       return amount
     }()
     let localObject = LocalizedOperationObject(

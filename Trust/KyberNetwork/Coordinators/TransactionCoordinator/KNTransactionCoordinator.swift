@@ -383,7 +383,7 @@ extension UnconfirmedTransaction {
       to: "",
       contract: nil,
       type: "transfer",
-      value: self.value.shortString(decimals: token.decimals),
+      value: self.value.fullString(decimals: token.decimals),
       symbol: token.symbol,
       name: token.name,
       decimals: token.decimals
@@ -393,7 +393,7 @@ extension UnconfirmedTransaction {
       blockNumber: 0,
       from: wallet.address.description,
       to: self.to?.description ?? "",
-      value: self.value.shortString(decimals: token.decimals),
+      value: self.value.fullString(decimals: token.decimals),
       gas: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",
       gasPrice: self.gasPrice?.fullString(units: UnitConfiguration.gasPriceUnit) ?? "",
       gasUsed: self.gasLimit?.fullString(units: UnitConfiguration.gasFeeUnit) ?? "",

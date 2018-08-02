@@ -67,9 +67,9 @@ extension KNTransactionReceipt {
       let (valueString, decimals): (String, Int) = {
         let value = BigInt(json["destAmount"] as? String ?? "") ?? BigInt(0)
         if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract == (json["dest"] as? String ?? "").lowercased() }) {
-          return (value.shortString(decimals: token.decimals), token.decimals)
+          return (value.fullString(decimals: token.decimals), token.decimals)
         }
-        return (value.shortString(units: .ether), 18)
+        return (value.fullString(units: .ether), 18)
       }()
       let localObject = LocalizedOperationObject(
         from: (json["src"] as? String ?? "").lowercased(),

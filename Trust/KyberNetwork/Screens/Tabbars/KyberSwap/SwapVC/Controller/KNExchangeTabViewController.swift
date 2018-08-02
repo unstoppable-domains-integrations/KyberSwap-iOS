@@ -72,7 +72,7 @@ class KNExchangeTabViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: "Exchange All",
+      leftBtnTitle: "Swap All",
       rightBtnTitle: "Done",
       delegate: self)
   }()
