@@ -237,7 +237,7 @@ class KNExchangeTabViewController: KNBaseViewController {
       if isHidden { self.advancedSettingsView.isHidden = isHidden }
       self.heightConstraintForAdvancedSettingsView.constant = isHidden ? 0.0 : 220.0
       self.gasPriceOptionButton.setImage(
-        UIImage(named: self.gasTextLabel.isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
+        UIImage(named: isHidden ? "expand_icon" : "collapse_icon"), for: .normal)
       self.view.layoutIfNeeded()
     }, completion: { _ in
       self.advancedSettingsView.isHidden = isHidden
