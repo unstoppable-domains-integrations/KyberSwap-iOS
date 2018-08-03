@@ -153,13 +153,17 @@ extension KyberGOService: TargetType {
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
-      let json: JSONDictionary = [
+      var json: JSONDictionary = [
         "grant_type": isRefresh ? "refresh_token" : "authorization_code",
-        "code": code,
         "redirect_uri": redirectURL,
         "client_id": clientID,
         "client_secret": clientSecret,
       ]
+      if isRefresh {
+        json["refresh_token"] = code
+      } else {
+        json["code"] = code
+      }
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .checkParticipate(let accessToken, let ieoID):

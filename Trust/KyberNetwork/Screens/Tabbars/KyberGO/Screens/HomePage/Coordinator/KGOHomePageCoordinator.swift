@@ -161,7 +161,7 @@ class KGOHomePageCoordinator: Coordinator {
                   type: tokenType,
                   accessToken: accessToken,
                   refreshToken: refreshToken,
-                  expireTime: expireTime
+                  expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
                 )
                 self?.timerAccessTokenExpired()
                 return
