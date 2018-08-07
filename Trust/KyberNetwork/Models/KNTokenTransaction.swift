@@ -27,6 +27,7 @@ class KNTokenTransaction: Object {
   @objc dynamic var cumulativeGasUsed: String = ""
   @objc dynamic var input: String = ""
   @objc dynamic var confirmations: String = ""
+  @objc dynamic var compoundKey: String = ""
 
   convenience init(dictionary: JSONDictionary) {
     self.init()
@@ -51,15 +52,16 @@ class KNTokenTransaction: Object {
     self.cumulativeGasUsed = dictionary["cumulativeGasUsed"] as? String ?? ""
     self.input = dictionary["input"] as? String ?? ""
     self.confirmations = dictionary["confirmations"] as? String ?? ""
+    self.compoundKey = "\(id)\(from)\(to)\(tokenSymbol)"
   }
 
   override static func primaryKey() -> String? {
-    return "id"
+    return "compoundKey"
   }
 
   override func isEqual(_ object: Any?) -> Bool {
     guard let object = object as? KNTokenTransaction else { return false }
-    return object.id == self.id
+    return object.compoundKey == self.compoundKey
   }
 }
 

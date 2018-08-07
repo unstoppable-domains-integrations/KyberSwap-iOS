@@ -72,7 +72,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    let transactions: [Transaction] = self.session.transactionStorage.nonePendingObjects
+    let transactions: [Transaction] = self.session.transactionStorage.transferNonePendingObjects
 
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }

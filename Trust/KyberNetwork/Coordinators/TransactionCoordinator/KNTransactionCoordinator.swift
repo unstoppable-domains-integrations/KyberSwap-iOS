@@ -445,6 +445,10 @@ extension TransactionsStorage {
     return objects.filter({ $0.state != .pending })
   }
 
+  var transferNonePendingObjects: [Transaction] {
+    return objects.filter({ $0.state != .pending && $0.isTransfer })
+  }
+
   func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
     self.realm.beginWrite()
     self.realm.add(transactions, update: true)

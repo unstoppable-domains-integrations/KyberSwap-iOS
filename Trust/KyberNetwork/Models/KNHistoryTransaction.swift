@@ -24,6 +24,8 @@ class KNHistoryTransaction: Object {
   @objc dynamic var gasUsed: Int64 = 0
   @objc dynamic var collectedFees: String = ""
 
+  @objc dynamic var compoundKey: String = ""
+
   // There are more information returned
   convenience init(dictionary: JSONDictionary) {
     self.init()
@@ -43,9 +45,10 @@ class KNHistoryTransaction: Object {
     self.gasPrice = dictionary["gasPrice"] as? Int64 ?? 0
     self.gasUsed = dictionary["gasUsed"] as? Int64 ?? 0
     self.collectedFees = dictionary["collectedFees"] as? String ?? ""
+    self.compoundKey = "\(id)\(makerAddress)\(takerAddress)"
   }
 
   override static func primaryKey() -> String? {
-    return "id"
+    return "compoundKey"
   }
 }

@@ -16,6 +16,7 @@ class Transaction: Object {
     @objc dynamic var date = Date()
     @objc dynamic var internalState: Int = TransactionState.completed.rawValue
     var localizedOperations = List<LocalizedOperationObject>()
+    @objc dynamic var compoundKey: String = ""
 
     convenience init(
         id: String,
@@ -51,6 +52,7 @@ class Transaction: Object {
         }
 
         self.localizedOperations = list
+        self.compoundKey = "\(id)\(from)\(to)"
     }
 
     convenience init(
@@ -62,10 +64,11 @@ class Transaction: Object {
         self.id = id
         self.date = date
         self.internalState = state.rawValue
+        self.compoundKey = id
     }
 
     override static func primaryKey() -> String? {
-        return "id"
+        return "compoundKey"
     }
 
     var state: TransactionState {
@@ -84,6 +87,11 @@ extension Transaction {
         return "\(object.symbol ?? "") -> \(self.to.prefix(10))..."
       }
       return "\(object.symbol ?? "") -> \(object.name ?? "")"
+    }
+
+    var isTransfer: Bool {
+      guard let object = self.localizedOperations.first else { return false }
+      return object.type == "transfer"
     }
 }
 
