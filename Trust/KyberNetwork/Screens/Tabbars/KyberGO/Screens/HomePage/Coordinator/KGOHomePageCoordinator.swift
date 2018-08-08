@@ -33,6 +33,7 @@ class KGOHomePageCoordinator: Coordinator {
     return coordinator
   }()
 
+  fileprivate(set) var webViewSignInVC: KGOInAppSignInViewController?
   fileprivate(set) var ieoListViewController: IEOListViewController?
   fileprivate(set) var ieoListTimer: Timer?
   fileprivate(set) var nodeDataTimer: Timer?
@@ -377,7 +378,15 @@ extension KGOHomePageCoordinator {
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
     let redirectLink = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
     if let url = URL(string: KNAppTracker.getKyberGOBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
-      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      // Clear old session
+      URLCache.shared.removeAllCachedResponses()
+      URLCache.shared.diskCapacity = 0
+      URLCache.shared.memoryCapacity = 0
+
+      let storage = HTTPCookieStorage.shared
+      storage.cookies?.forEach({ storage.deleteCookie($0) })
+      self.webViewSignInVC = KGOInAppSignInViewController(with: url)
+      self.navigationController.pushViewController(self.webViewSignInVC!, animated: true)
     }
   }
 
@@ -385,6 +394,11 @@ extension KGOHomePageCoordinator {
     if IEOUserStorage.shared.user != nil { return } // return if user exists
     guard let params = sender.object as? JSONDictionary else { return }
     guard let code = params["code"] as? String, let state = params["state"] as? String, state.contains(KNSecret.state) else { return }
+    if self.webViewSignInVC != nil {
+      self.navigationController.popViewController(animated: true) {
+        self.webViewSignInVC = nil
+      }
+    }
     // got authentication code from KyberGO
     // use the code to get access token for user
     self.navigationController.displayLoading(text: "Initial Session...", animated: true)
