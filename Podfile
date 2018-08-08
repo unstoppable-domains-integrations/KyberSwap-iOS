@@ -33,6 +33,7 @@ target 'Trust' do
   pod 'IQKeyboardManager'
   pod 'SwiftMessages'
   pod 'SwiftChart'
+  pod 'JdenticonSwift'
   pod 'MSCircularSlider'
   pod 'TrustWalletSDK', :git=>'https://github.com/TrustWallet/TrustSDK-iOS', :branch=>'master'
 

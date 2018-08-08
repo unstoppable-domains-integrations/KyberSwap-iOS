@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import JdenticonSwift
 
 extension UIImage {
   static func generateQRCode(from string: String) -> UIImage? {
@@ -17,6 +18,11 @@ extension UIImage {
     return nil
   }
 
+  static func generateImage(with size: CGFloat, hash: Data) -> UIImage? {
+    guard let cgImage = IconGenerator(size: size, hash: hash).render() else { return nil }
+    return UIImage(cgImage: cgImage)
+  }
+
   func resizeImage(to newSize: CGSize?) -> UIImage? {
     guard let size = newSize else { return self }
     if self.size == size { return self }
@@ -30,4 +36,5 @@ extension UIImage {
 
     return newImage ?? self
   }
+
 }

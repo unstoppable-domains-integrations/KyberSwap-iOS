@@ -15,6 +15,7 @@ PODS:
   - IQKeyboardManager (5.0.7)
   - JavaScriptKit (1.0.0):
     - Result (~> 3.1)
+  - JdenticonSwift (0.0.1)
   - JSONRPCKit (2.0.0):
     - Result (~> 3.0)
   - KeychainSwift (10.0.0)
@@ -68,6 +69,7 @@ DEPENDENCIES:
   - Fabric
   - IQKeyboardManager
   - JavaScriptKit
+  - JdenticonSwift
   - JSONRPCKit (from `https://github.com/bricklife/JSONRPCKit.git`)
   - KeychainSwift
   - Kingfisher (~> 4.0)
@@ -101,6 +103,7 @@ SPEC REPOS:
     - Fabric
     - IQKeyboardManager
     - JavaScriptKit
+    - JdenticonSwift
     - KeychainSwift
     - Kingfisher
     - Lokalise
@@ -166,6 +169,7 @@ SPEC CHECKSUMS:
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
   JavaScriptKit: 9ff565209e6efe21bcb9c6d6ca3e863a67a8ecf7
+  JdenticonSwift: bc532f2761566eb29f26b085e5f72de25bc065ce
   JSONRPCKit: 22132c575ba2dc6f2f4ae72fda4943a63efca686
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
@@ -192,6 +196,6 @@ SPEC CHECKSUMS:
   TrustWalletSDK: 12451433bda69bc07e5a27408449b1f4692879e4
   TrustWeb3Provider: 50fa391bdf170feb43dd4419992931510a5751d8
 
-PODFILE CHECKSUM: c835463a7fd3814d0d391816e99be31b089c6eea
+PODFILE CHECKSUM: fcbdf44ad6fccbba917fc299169584806e05a857
 
 COCOAPODS: 1.5.3
