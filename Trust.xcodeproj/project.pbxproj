@@ -18,6 +18,25 @@
 		25069E4320D91098002A8F96 /* IEOBuyTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25069E4120D91098002A8F96 /* IEOBuyTokenViewController.swift */; };
 		25069E4420D91098002A8F96 /* IEOBuyTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25069E4220D91098002A8F96 /* IEOBuyTokenViewController.xib */; };
 		25069E4A20D92E16002A8F96 /* IEOContributeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25069E4920D92E16002A8F96 /* IEOContributeRequest.swift */; };
+		25073D19211AF20D00833C92 /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D06211AF20900833C92 /* Montserrat-LightItalic.ttf */; };
+		25073D1A211AF20D00833C92 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D07211AF20900833C92 /* Montserrat-ExtraLightItalic.ttf */; };
+		25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D08211AF20A00833C92 /* Montserrat-ExtraBoldItalic.ttf */; };
+		25073D1C211AF20D00833C92 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D09211AF20A00833C92 /* Montserrat-SemiBoldItalic.ttf */; };
+		25073D1D211AF20D00833C92 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0A211AF20A00833C92 /* Montserrat-MediumItalic.ttf */; };
+		25073D1E211AF20D00833C92 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0B211AF20A00833C92 /* Montserrat-SemiBold.ttf */; };
+		25073D1F211AF20D00833C92 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0C211AF20A00833C92 /* Montserrat-Black.ttf */; };
+		25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0D211AF20B00833C92 /* Montserrat-BlackItalic.ttf */; };
+		25073D21211AF20D00833C92 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0E211AF20B00833C92 /* Montserrat-Bold.ttf */; };
+		25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D0F211AF20B00833C92 /* Montserrat-Italic.ttf */; };
+		25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D10211AF20B00833C92 /* Montserrat-Regular.ttf */; };
+		25073D24211AF20D00833C92 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D11211AF20B00833C92 /* Montserrat-Thin.ttf */; };
+		25073D25211AF20D00833C92 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 25073D12211AF20C00833C92 /* OFL.txt */; };
+		25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D13211AF20C00833C92 /* Montserrat-Light.ttf */; };
+		25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D14211AF20C00833C92 /* Montserrat-ThinItalic.ttf */; };
+		25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D15211AF20C00833C92 /* Montserrat-ExtraLight.ttf */; };
+		25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D16211AF20C00833C92 /* Montserrat-Medium.ttf */; };
+		25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D17211AF20D00833C92 /* Montserrat-BoldItalic.ttf */; };
+		25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25073D18211AF20D00833C92 /* Montserrat-ExtraBold.ttf */; };
 		251981C020D9FD8800106986 /* IEODraftTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251981BF20D9FD8800106986 /* IEODraftTransaction.swift */; };
 		2519E10920CFA04B00D8AFC5 /* KGOIEODetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519E10720CFA04B00D8AFC5 /* KGOIEODetailsViewController.swift */; };
 		2519E10A20CFA04B00D8AFC5 /* KGOIEODetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2519E10820CFA04B00D8AFC5 /* KGOIEODetailsViewController.xib */; };
@@ -684,6 +703,25 @@
 		25069E4120D91098002A8F96 /* IEOBuyTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOBuyTokenViewController.swift; sourceTree = "<group>"; };
 		25069E4220D91098002A8F96 /* IEOBuyTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOBuyTokenViewController.xib; sourceTree = "<group>"; };
 		25069E4920D92E16002A8F96 /* IEOContributeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOContributeRequest.swift; sourceTree = "<group>"; };
+		25073D06211AF20900833C92 /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
+		25073D07211AF20900833C92 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		25073D08211AF20A00833C92 /* Montserrat-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		25073D09211AF20A00833C92 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		25073D0A211AF20A00833C92 /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
+		25073D0B211AF20A00833C92 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		25073D0C211AF20A00833C92 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
+		25073D0D211AF20B00833C92 /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
+		25073D0E211AF20B00833C92 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		25073D0F211AF20B00833C92 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Italic.ttf"; sourceTree = "<group>"; };
+		25073D10211AF20B00833C92 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		25073D11211AF20B00833C92 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Thin.ttf"; sourceTree = "<group>"; };
+		25073D12211AF20C00833C92 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		25073D13211AF20C00833C92 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.ttf"; sourceTree = "<group>"; };
+		25073D14211AF20C00833C92 /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
+		25073D15211AF20C00833C92 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
+		25073D16211AF20C00833C92 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		25073D17211AF20D00833C92 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
+		25073D18211AF20D00833C92 /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		251981BF20D9FD8800106986 /* IEODraftTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEODraftTransaction.swift; sourceTree = "<group>"; };
 		2519E10720CFA04B00D8AFC5 /* KGOIEODetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KGOIEODetailsViewController.swift; sourceTree = "<group>"; };
 		2519E10820CFA04B00D8AFC5 /* KGOIEODetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KGOIEODetailsViewController.xib; sourceTree = "<group>"; };
@@ -1412,6 +1450,32 @@
 				25069E4220D91098002A8F96 /* IEOBuyTokenViewController.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		25073D05211AF1F600833C92 /* Montserrat */ = {
+			isa = PBXGroup;
+			children = (
+				25073D0C211AF20A00833C92 /* Montserrat-Black.ttf */,
+				25073D0D211AF20B00833C92 /* Montserrat-BlackItalic.ttf */,
+				25073D0E211AF20B00833C92 /* Montserrat-Bold.ttf */,
+				25073D17211AF20D00833C92 /* Montserrat-BoldItalic.ttf */,
+				25073D18211AF20D00833C92 /* Montserrat-ExtraBold.ttf */,
+				25073D08211AF20A00833C92 /* Montserrat-ExtraBoldItalic.ttf */,
+				25073D15211AF20C00833C92 /* Montserrat-ExtraLight.ttf */,
+				25073D07211AF20900833C92 /* Montserrat-ExtraLightItalic.ttf */,
+				25073D0F211AF20B00833C92 /* Montserrat-Italic.ttf */,
+				25073D13211AF20C00833C92 /* Montserrat-Light.ttf */,
+				25073D06211AF20900833C92 /* Montserrat-LightItalic.ttf */,
+				25073D16211AF20C00833C92 /* Montserrat-Medium.ttf */,
+				25073D0A211AF20A00833C92 /* Montserrat-MediumItalic.ttf */,
+				25073D10211AF20B00833C92 /* Montserrat-Regular.ttf */,
+				25073D0B211AF20A00833C92 /* Montserrat-SemiBold.ttf */,
+				25073D09211AF20A00833C92 /* Montserrat-SemiBoldItalic.ttf */,
+				25073D11211AF20B00833C92 /* Montserrat-Thin.ttf */,
+				25073D14211AF20C00833C92 /* Montserrat-ThinItalic.ttf */,
+				25073D12211AF20C00833C92 /* OFL.txt */,
+			);
+			path = Montserrat;
 			sourceTree = "<group>";
 		};
 		2519E10620CF9F6A00D8AFC5 /* IEODetailsView */ = {
@@ -2256,6 +2320,7 @@
 		25929C3320DA5C4C0045CFA3 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				25073D05211AF1F600833C92 /* Montserrat */,
 				25929C7320DA5CA50045CFA3 /* SFCompact */,
 				25929C7220DA5C8A0045CFA3 /* SFPro */,
 			);
@@ -4497,6 +4562,7 @@
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
+				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
 				256367902119B20B0034BA47 /* KGOInAppSignInViewController.xib in Resources */,
 				25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */,
@@ -4504,9 +4570,12 @@
 				25929C8C20DA5CC10045CFA3 /* SFCompactDisplay-Thin.otf in Resources */,
 				2519E10A20CFA04B00D8AFC5 /* KGOIEODetailsViewController.xib in Resources */,
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
+				25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */,
+				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
+				25073D25211AF20D00833C92 /* OFL.txt in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
 				25929C6720DA5C760045CFA3 /* SF-Pro-Text-Medium.otf in Resources */,
 				29FA00D2201CA79F002F7DC5 /* web3.min.js in Resources */,
@@ -4516,12 +4585,14 @@
 				25929C9820DA5CC10045CFA3 /* SFCompactText-Semibold.otf in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
 				25929C9020DA5CC10045CFA3 /* SFCompactDisplay-Medium.otf in Resources */,
+				25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */,
 				25929C6B20DA5C760045CFA3 /* SF-Pro-Text-Regular.otf in Resources */,
 				25929C8B20DA5CC10045CFA3 /* SFCompactText-Bold.otf in Resources */,
 				259925BA20EF2D4900CCF2D6 /* KNContactTableViewCell.xib in Resources */,
 				25929C9A20DA5CC10045CFA3 /* SFCompactDisplay-Black.otf in Resources */,
 				25A6AEC720A98AED00DCDA88 /* KNTokenBalanceCollectionViewCell.xib in Resources */,
 				259EC46A20E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib in Resources */,
+				25073D21211AF20D00833C92 /* Montserrat-Bold.ttf in Resources */,
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
@@ -4541,14 +4612,20 @@
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
+				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */,
 				25696F5220BD2345002CC53F /* KNExchangeTabViewController.xib in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				255DC60E20A94980002C2BBF /* KNBalanceTabViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
 				25929C9320DA5CC10045CFA3 /* SFCompactText-Medium.otf in Resources */,
+				25073D1E211AF20D00833C92 /* Montserrat-SemiBold.ttf in Resources */,
+				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
+				25073D24211AF20D00833C92 /* Montserrat-Thin.ttf in Resources */,
+				25073D1D211AF20D00833C92 /* Montserrat-MediumItalic.ttf in Resources */,
+				25073D1C211AF20D00833C92 /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				2561455520C696C800FB00CF /* KNTokenChartViewController.xib in Resources */,
 				25EBE93220B40CC000A57579 /* KNTestBackUpStatusViewController.xib in Resources */,
 				25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */,
@@ -4558,9 +4635,11 @@
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
 				25767B5020FD9367004FF538 /* IEOTransactionCollectionViewCell.xib in Resources */,
+				25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
 				25929C9420DA5CC10045CFA3 /* SFCompactText-MediumItalic.otf in Resources */,
+				25073D1F211AF20D00833C92 /* Montserrat-Black.ttf in Resources */,
 				25929C6920DA5C760045CFA3 /* SF-Pro-Display-HeavyItalic.otf in Resources */,
 				25929C5A20DA5C760045CFA3 /* SF-Pro-Display-Ultralight.otf in Resources */,
 				25929C5F20DA5C760045CFA3 /* SF-Pro-Display-BlackItalic.otf in Resources */,
@@ -4575,9 +4654,11 @@
 				25C45ACE20AC475700CDA1FF /* KNImportWalletViewController.xib in Resources */,
 				25929C5C20DA5C760045CFA3 /* SF-Pro-Text-LightItalic.otf in Resources */,
 				25C45AD420AD398C00CDA1FF /* KNImportJSONViewController.xib in Resources */,
+				25073D1A211AF20D00833C92 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				25929C6D20DA5C760045CFA3 /* SF-Pro-Display-Heavy.otf in Resources */,
 				257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */,
 				2503440020DA37F700528810 /* KNSaveContactViewController.xib in Resources */,
+				25073D19211AF20D00833C92 /* Montserrat-LightItalic.ttf in Resources */,
 				255D940020D56EF9000F757C /* KGOSignInViewController.xib in Resources */,
 				25069E4420D91098002A8F96 /* IEOBuyTokenViewController.xib in Resources */,
 				73CBC75F2020CBF800374666 /* AccountViewCell.xib in Resources */,
@@ -4586,6 +4667,7 @@
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
+				25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,
 				25929C9120DA5CC10045CFA3 /* SFCompactText-Light.otf in Resources */,
 				25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */,
@@ -4597,6 +4679,7 @@
 				25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */,
 				25A2940A20CE8DCD008C6759 /* KGOIEOTableViewCell.xib in Resources */,
 				25D325A020C06D7F008BB235 /* KNSendTokenViewController.xib in Resources */,
+				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
 				25929C9F20DA5CCC0045CFA3 /* SF Compact Font License.rtf in Resources */,
 				25682B7520EE06CD009738C4 /* KNTransactionDetailsViewController.xib in Resources */,
 				25929C9220DA5CC10045CFA3 /* SFCompactText-SemiboldItalic.otf in Resources */,
@@ -4612,6 +4695,7 @@
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
 				29F1C8481FEB6664003780D8 /* EditTokenTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
