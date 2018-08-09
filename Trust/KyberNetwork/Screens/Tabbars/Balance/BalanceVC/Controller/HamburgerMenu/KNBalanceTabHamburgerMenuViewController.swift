@@ -120,7 +120,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
 
     self.pendingTableView.register(UITableViewCell.self, forCellReuseIdentifier: kPendingTableViewCellID)
-    self.pendingTableView.rowHeight = 28
+    self.pendingTableView.rowHeight = 44
     self.pendingTableView.delegate = self
     self.pendingTableView.dataSource = self
 
@@ -335,7 +335,11 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     let transaction = self.viewModel.transaction(at: indexPath.row)
     cell.imageView?.startRotating()
     cell.textLabel?.text = transaction?.shortDesc
-    cell.backgroundColor = UIColor.clear
+    cell.textLabel?.tintColor = UIColor(red: 20, green: 25, blue: 39)
+    cell.textLabel?.font = UIFont.Kyber.medium(with: 14)
+    cell.backgroundColor = {
+      return indexPath.row % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250)
+    }()
     return cell
   }
 }
