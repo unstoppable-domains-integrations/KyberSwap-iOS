@@ -132,7 +132,7 @@ class KNExternalProvider {
     }
   }
 
-  func getReceipt(for transaction: Transaction, completion: @escaping (Result<Transaction, AnyError>) -> Void) {
+  func getReceipt(for transaction: KNTransaction, completion: @escaping (Result<KNTransaction, AnyError>) -> Void) {
     let request = KNGetTransactionReceiptRequest(hash: transaction.id)
     Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
       guard let `self` = self else { return }

@@ -9,7 +9,7 @@ protocol KNTransactionStatusCoordinatorDelegate: class {
 
 class KNTransactionStatusCoordinator: Coordinator {
 
-  var transaction: Transaction?
+  var transaction: KNTransaction?
   weak var delegate: KNTransactionStatusCoordinatorDelegate?
 
   var coordinators: [Coordinator] = []
@@ -19,7 +19,7 @@ class KNTransactionStatusCoordinator: Coordinator {
 
   init(
     navigationController: UINavigationController,
-    transaction: Transaction?,
+    transaction: KNTransaction?,
     delegate: KNTransactionStatusCoordinatorDelegate?
     ) {
     self.navigationController = navigationController
@@ -42,14 +42,14 @@ class KNTransactionStatusCoordinator: Coordinator {
     self.rootViewController?.dismiss(animated: true, completion: completion)
   }
 
-  func updateTransaction(_ transaction: Transaction?, error: String?) {
+  func updateTransaction(_ transaction: KNTransaction?, error: String?) {
     self.transaction = transaction
     self.rootViewController?.updateViewWithTransaction(self.transaction, error: error)
   }
 }
 
 extension KNTransactionStatusCoordinator: KNTransactionStatusViewControllerDelegate {
-  func transactionStatusVCUserDidTapToView(transaction: Transaction) {
+  func transactionStatusVCUserDidTapToView(transaction: KNTransaction) {
     let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(transaction.id)"
     self.rootViewController?.openSafari(with: urlString)
   }

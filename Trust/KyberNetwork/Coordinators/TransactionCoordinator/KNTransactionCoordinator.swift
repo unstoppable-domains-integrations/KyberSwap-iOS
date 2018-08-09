@@ -174,7 +174,7 @@ extension KNTransactionCoordinator {
       guard let transaction = self.transactionStorage.objects.first else {
         return 0
       }
-      return transaction.blockNumber + 1
+      return max(0, transaction.blockNumber - 200)
     }()
     self.fetchListERC20TokenTransactions(
       forAddress: self.wallet.address.description,
@@ -294,10 +294,10 @@ extension KNTransactionCoordinator {
   }
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
-    self.transactionStorage.pendingObjects.forEach { self.updatePendingTranscation($0) }
+    self.transactionStorage.kyberPendingTransactions.forEach { self.updatePendingTranscation($0) }
   }
 
-  func updatePendingTranscation(_ transaction: Transaction) {
+  func updatePendingTranscation(_ transaction: KNTransaction) {
     self.checkTransactionReceipt(transaction) { [weak self] error in
       if error == nil { return }
       guard let `self` = self else { return }
@@ -337,15 +337,15 @@ extension KNTransactionCoordinator {
     }
   }
 
-  fileprivate func checkTransactionReceipt(_ transaction: Transaction, completion: @escaping (Error?) -> Void) {
+  fileprivate func checkTransactionReceipt(_ transaction: KNTransaction, completion: @escaping (Error?) -> Void) {
     self.externalProvider.getReceipt(for: transaction) { [weak self] result in
       switch result {
       case .success(let newTx):
-        if let trans = self?.transactionStorage.get(forPrimaryKey: newTx.id), trans.state != .pending {
+        if let trans = self?.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
-        self?.transactionStorage.add([newTx])
+        self?.transactionStorage.addKyberTransactions([newTx])
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: newTx.id,
@@ -358,8 +358,8 @@ extension KNTransactionCoordinator {
     }
   }
 
-  fileprivate func updateTransactionStateIfNeeded(_ transaction: Transaction, state: TransactionState) {
-    if let trans = self.transactionStorage.get(forPrimaryKey: transaction.id), trans.state != .pending { return }
+  fileprivate func updateTransactionStateIfNeeded(_ transaction: KNTransaction, state: TransactionState) {
+    if let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state != .pending { return }
     self.transactionStorage.update(state: state, for: transaction)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,

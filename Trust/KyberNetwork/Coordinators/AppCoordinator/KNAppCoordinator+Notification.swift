@@ -194,9 +194,9 @@ extension KNAppCoordinator {
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
     if self.session == nil { return }
-    let transaction: Transaction? = {
+    let transaction: KNTransaction? = {
       if let txHash = sender.object as? String {
-        return self.session.transactionStorage.get(forPrimaryKey: txHash)
+        return self.session.transactionStorage.getKyberTransaction(forPrimaryKey: txHash)
       }
       return nil
     }()
@@ -218,7 +218,7 @@ extension KNAppCoordinator {
       // update history transaction
       self.tokenTransactionListDidUpdate(nil)
     }
-    let transactions = self.session.transactionStorage.pendingObjects
+    let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.balanceTabCoordinator.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }

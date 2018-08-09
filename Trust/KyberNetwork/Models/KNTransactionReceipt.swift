@@ -59,7 +59,7 @@ extension KNTransactionReceipt {
 
 extension KNTransactionReceipt {
 
-  func toTransaction(from transaction: Transaction, logsDict: JSONDictionary?) -> Transaction {
+  func toTransaction(from transaction: KNTransaction, logsDict: JSONDictionary?) -> KNTransaction {
     let localObjects: [LocalizedOperationObject] = {
       guard let json = logsDict else {
         return Array(transaction.localizedOperations)
@@ -83,7 +83,7 @@ extension KNTransactionReceipt {
       )
       return [localObject]
     }()
-    let newTransaction = Transaction(
+    let newTransaction = KNTransaction(
       id: transaction.id,
       blockNumber: Int(self.blockNumber) ?? transaction.blockNumber,
       from: transaction.from,

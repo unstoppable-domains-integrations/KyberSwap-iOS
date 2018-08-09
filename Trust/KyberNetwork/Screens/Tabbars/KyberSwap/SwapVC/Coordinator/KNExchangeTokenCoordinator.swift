@@ -86,7 +86,7 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
-    let pendingTrans = self.session.transactionStorage.pendingObjects
+    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     if resetRoot {
@@ -131,7 +131,7 @@ extension KNExchangeTokenCoordinator {
     }
   }
 
-  func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
+  func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }

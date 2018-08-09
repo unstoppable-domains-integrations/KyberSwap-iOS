@@ -82,7 +82,7 @@ extension KNBalanceTabCoordinator {
       return viewModel
     }()
     self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
-    let pendingObjects = self.session.transactionStorage.pendingObjects
+    let pendingObjects = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
   }
@@ -146,7 +146,7 @@ extension KNBalanceTabCoordinator {
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(self.session.tokenStorage.tokens)
   }
 
-  func appCoordinatorPendingTransactionsDidUpdate(transactions: [Transaction]) {
+  func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }

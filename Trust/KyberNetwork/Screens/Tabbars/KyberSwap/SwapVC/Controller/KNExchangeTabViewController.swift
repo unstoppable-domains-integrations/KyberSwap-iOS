@@ -547,7 +547,7 @@ extension KNExchangeTabViewController {
     self.view.layoutIfNeeded()
   }
 
-  func coordinatorDidUpdatePendingTransactions(_ transactions: [Transaction]) {
+  func coordinatorDidUpdatePendingTransactions(_ transactions: [KNTransaction]) {
     self.hamburgerMenu.update(transactions: transactions)
     self.walletHeaderView.updateBadgeCounter(transactions.count)
   }

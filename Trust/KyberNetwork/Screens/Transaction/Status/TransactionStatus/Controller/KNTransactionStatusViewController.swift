@@ -5,17 +5,17 @@ import BigInt
 
 protocol KNTransactionStatusViewControllerDelegate: class {
   func transactionStatusVCUserDidClickClose()
-  func transactionStatusVCUserDidTapToView(transaction: Transaction)
+  func transactionStatusVCUserDidTapToView(transaction: KNTransaction)
 }
 
 class KNTransactionStatusViewController: KNBaseViewController {
 
   fileprivate weak var delegate: KNTransactionStatusViewControllerDelegate?
-  fileprivate var transaction: Transaction?
+  fileprivate var transaction: KNTransaction?
 
   @IBOutlet weak var transactionStatusView: KNTransactionStatusView!
 
-  init(delegate: KNTransactionStatusViewControllerDelegate?, transaction: Transaction?) {
+  init(delegate: KNTransactionStatusViewControllerDelegate?, transaction: KNTransaction?) {
     self.delegate = delegate
     self.transaction = transaction
     super.init(nibName: KNTransactionStatusViewController.className, bundle: nil)
@@ -45,7 +45,7 @@ class KNTransactionStatusViewController: KNBaseViewController {
     self.view.isUserInteractionEnabled = true
   }
 
-  func updateViewWithTransaction(_ transaction: Transaction?, error: String? = nil) {
+  func updateViewWithTransaction(_ transaction: KNTransaction?, error: String? = nil) {
     if let err = error {
       // Broadcasting error
       self.transactionStatusView.updateView(with: .broadcastingError, txHash: transaction?.id, details: err)

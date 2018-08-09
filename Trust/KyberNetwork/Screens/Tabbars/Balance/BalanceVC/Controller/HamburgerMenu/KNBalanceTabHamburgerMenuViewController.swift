@@ -16,14 +16,14 @@ protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
 
 struct KNBalanceTabHamburgerMenuViewModel {
 
-  var pendingTransactions: [Transaction] = []
+  var pendingTransactions: [KNTransaction] = []
   var wallets: [KNWalletObject]
   var currentWallet: KNWalletObject
 
   init(
     walletObjects: [KNWalletObject],
     currentWallet: KNWalletObject,
-    transactions: [Transaction] = []) {
+    transactions: [KNTransaction] = []) {
     self.wallets = walletObjects
     self.currentWallet = currentWallet
     self.pendingTransactions = transactions
@@ -50,7 +50,7 @@ struct KNBalanceTabHamburgerMenuViewModel {
     self.currentWallet = currentWallet
   }
 
-  func transaction(at row: Int) -> Transaction? {
+  func transaction(at row: Int) -> KNTransaction? {
     if row >= self.pendingTransactions.count { return nil }
     return self.pendingTransactions[row]
   }
@@ -63,7 +63,7 @@ struct KNBalanceTabHamburgerMenuViewModel {
     return self.numberTransactions == 0
   }
 
-  mutating func update(transactions: [Transaction]) {
+  mutating func update(transactions: [KNTransaction]) {
     self.pendingTransactions = transactions
   }
 }
@@ -145,7 +145,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  func update(transactions: [Transaction]) {
+  func update(transactions: [KNTransaction]) {
     self.viewModel.update(transactions: transactions)
     self.pendingTableView.isHidden = self.viewModel.isTransactionTableHidden
     self.noPendingTransactionLabel.isHidden = !self.viewModel.isTransactionTableHidden

@@ -51,7 +51,7 @@ class KNHistoryCoordinator: Coordinator {
 
   func start() {
     self.appCoordinatorTokensTransactionsDidUpdate()
-    let pendingTrans = self.session.transactionStorage.pendingObjects
+    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
@@ -99,7 +99,7 @@ class KNHistoryCoordinator: Coordinator {
     )
   }
 
-  func appCoordinatorPendingTransactionDidUpdate(_ transactions: [Transaction]) {
+  func appCoordinatorPendingTransactionDidUpdate(_ transactions: [KNTransaction]) {
     let dates: [String] = {
       let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
       var uniqueDates = [String]()
@@ -113,7 +113,7 @@ class KNHistoryCoordinator: Coordinator {
       var data: [String: [Transaction]] = [:]
       transactions.forEach { tx in
         var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
-        trans.append(tx)
+        trans.append(tx.toTransaction())
         data[self.dateFormatter.string(from: tx.date)] = trans
       }
       return data

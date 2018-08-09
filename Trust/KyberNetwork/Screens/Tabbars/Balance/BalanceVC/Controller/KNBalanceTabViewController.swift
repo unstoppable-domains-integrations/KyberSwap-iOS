@@ -226,7 +226,7 @@ extension KNBalanceTabViewController {
     self.tokensBalanceCollectionView.reloadData()
   }
 
-  func coordinatorUpdatePendingTransactions(_ transactions: [Transaction]) {
+  func coordinatorUpdatePendingTransactions(_ transactions: [KNTransaction]) {
     self.hamburgerMenu.update(transactions: transactions)
     self.walletHeaderView.updateBadgeCounter(transactions.count)
   }

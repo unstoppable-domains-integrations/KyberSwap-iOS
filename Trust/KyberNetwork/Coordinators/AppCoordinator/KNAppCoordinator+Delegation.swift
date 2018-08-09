@@ -84,6 +84,8 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
 extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
   func transactionStatusCoordinatorDidClose() {
     self.transactionStatusCoordinator = nil
+    let trans = self.session.transactionStorage.kyberTransactions.filter({ $0.state != .pending })
+    if !trans.isEmpty { self.session.transactionStorage.delete(trans) }
   }
 }
 
