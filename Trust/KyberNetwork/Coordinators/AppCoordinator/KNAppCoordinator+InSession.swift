@@ -65,23 +65,27 @@ extension KNAppCoordinator {
     self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
       title: "Balance".toBeLocalised(),
       image: UIImage(named: "tabbar_balance_icon"),
-      tag: 0
+      selectedImage: UIImage(named: "tabbar_balance_icon")
     )
+    self.balanceTabCoordinator.navigationController.tabBarItem.tag = 0
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: "KyberSwap".toBeLocalised(),
       image: UIImage(named: "tabbar_kyberswap_icon"),
-      tag: 1
+      selectedImage: UIImage(named: "tabbar_kyberswap_icon")
     )
+    self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
     self.kyberGOCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: "KyberGO".toBeLocalised(),
       image: UIImage(named: "tabbar_kybergo_icon"),
-      tag: 2
+      selectedImage: UIImage(named: "tabbar_kybergo_icon")
     )
+    self.kyberGOCoordinator?.navigationController.tabBarItem.tag = 2
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
       title: "Settings".toBeLocalised(),
       image: UIImage(named: "tabbar_settings_icon"),
-      tag: 3
+      selectedImage: UIImage(named: "tabbar_settings_icon")
     )
+    self.settingsCoordinator.navigationController.tabBarItem.tag = 3
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
       self.tabbarController.selectedIndex = 1
     }
