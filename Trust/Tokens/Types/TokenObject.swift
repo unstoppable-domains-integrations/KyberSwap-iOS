@@ -133,4 +133,10 @@ extension TokenObject {
     // Token image from Trust public repo
     return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(self.contract.lowercased()).png"
   }
+
+  func contains(_ text: String) -> Bool {
+    if text.isEmpty { return true }
+    let desc = "\(symbol) \(name)".lowercased()
+    return desc.contains(text.lowercased())
+  }
 }
