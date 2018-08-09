@@ -38,7 +38,7 @@ struct KNBalanceTabHamburgerMenuViewModel {
   }
 
   var walletCellRowHeight: CGFloat {
-    return 60.0
+    return 66.0
   }
 
   var walletTableViewHeight: CGFloat {
@@ -301,18 +301,31 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == self.walletListTableView {
       let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
-      cell.imageView?.isUserInteractionEnabled = false
       cell.textLabel?.isUserInteractionEnabled = false
       let wallet = self.viewModel.wallet(at: indexPath.row)
-      cell.imageView?.image = UIImage(named: wallet.icon)
-      cell.textLabel?.text = wallet.name
-      if wallet == self.viewModel.currentWallet {
-        cell.backgroundColor = UIColor.Kyber.veryLightGreen
-        cell.accessoryType = .checkmark
-      } else {
-        cell.backgroundColor = .clear
-        cell.accessoryType = .none
-      }
+      cell.tintColor = UIColor(red: 49, green: 203, blue: 158)
+      cell.textLabel?.attributedText = {
+        let attributedString = NSMutableAttributedString()
+        let nameAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+          NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+          NSAttributedStringKey.kern: 1.0,
+        ]
+        let addressAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+          NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
+          NSAttributedStringKey.kern: 1.0,
+        ]
+        attributedString.append(NSAttributedString(string: wallet.name, attributes: nameAttributes))
+        let address: String = "\(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
+        attributedString.append(NSAttributedString(string: "\n\(address)", attributes: addressAttributes))
+        return attributedString
+      }()
+      cell.textLabel?.numberOfLines = 2
+      cell.backgroundColor = {
+        return indexPath.row % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250)
+      }()
+      cell.accessoryType = wallet == self.viewModel.currentWallet ? .checkmark : .none
       return cell
     }
     let cell = tableView.dequeueReusableCell(withIdentifier: kPendingTableViewCellID, for: indexPath)
