@@ -160,10 +160,10 @@ extension UIView {
     shapeLayer.lineDashPattern = [7, 3] // 7: length of dash, 3: length of gap between
 
     let path = CGMutablePath()
-    let start = CGPoint(x: self.frame.minX, y: self.center.y)
-    let end = CGPoint(x: self.frame.maxX, y: self.center.y)
+    let start = CGPoint(x: 0, y: self.frame.height / 2.0)
+    let end = CGPoint(x: self.frame.width, y: self.frame.height / 2.0)
     path.addLines(between: [start, end])
     shapeLayer.path = path
-    self.layer.addSublayer(shapeLayer)
+    self.layer.insertSublayer(shapeLayer, at: 0)
   }
 }

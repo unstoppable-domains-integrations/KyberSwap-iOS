@@ -38,8 +38,6 @@ class KNSendTokenViewCoordinator: Coordinator {
     return controller
   }()
 
-  fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
-
   init(
     navigationController: UINavigationController,
     session: KNSession,
@@ -140,21 +138,14 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
   }
 
   fileprivate func send(transaction: UnconfirmedTransaction) {
-    self.confirmTransactionViewController = {
-      let transactionType = KNTransactionType.transfer(transaction)
-      let viewModel = KNConfirmTransactionViewModel(type: transactionType)
-      let controller = KNConfirmTransactionViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
+    let confirmSendViewController: KConfirmSendViewController = {
+      let viewModel = KConfirmSendViewModel(transaction: transaction)
+      let controller = KConfirmSendViewController(viewModel: viewModel)
       controller.delegate = self
+      controller.loadViewIfNeeded()
       return controller
     }()
-    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
-    self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
-    self.navigationController.present(
-      self.confirmTransactionViewController,
-      animated: false,
-      completion: nil
-    )
+    self.navigationController.pushViewController(confirmSendViewController, animated: true)
   }
 
   fileprivate func openNewContact(address: String) {
@@ -184,20 +175,12 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 }
 
 // MARK: Confirm Transaction Delegate
-extension KNSendTokenViewCoordinator: KNConfirmTransactionViewControllerDelegate {
-  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
-    switch event {
-    case .cancel:
-      self.navigationController.dismiss(animated: true, completion: {
-        self.confirmTransactionViewController = nil
-      })
-    case .confirm(let type):
-      self.navigationController.dismiss(animated: true, completion: {
-        self.confirmTransactionViewController = nil
-        if case .transfer(let transaction) = type {
-          self.didConfirmTransfer(transaction)
-        }
-      })
+extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
+  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmSendViewEvent) {
+    self.navigationController.popViewController(animated: true) {
+      if case .confirm(let transaction) = event {
+        self.didConfirmTransfer(transaction)
+      }
     }
   }
 }
