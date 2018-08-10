@@ -57,5 +57,7 @@ extension UIColor {
     static var sapphire = UIColor(red: 0, green: 189, blue: 212)
     static var cyanLight = UIColor(red: 222, green: 242, blue: 253)
     static var denim = UIColor(red: 29, green: 38, blue: 62)
+
+    static var dashLine = UIColor(red: 172, green: 179, blue: 198)
   }
 }

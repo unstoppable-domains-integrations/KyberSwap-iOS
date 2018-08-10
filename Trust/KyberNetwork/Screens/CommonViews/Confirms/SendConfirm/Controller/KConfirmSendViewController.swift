@@ -2,13 +2,13 @@
 
 import UIKit
 
-enum KConfirmSendViewEvent {
-  case confirm(transaction: UnconfirmedTransaction)
+enum KConfirmViewEvent {
+  case confirm(type: KNTransactionType)
   case cancel
 }
 
 protocol KConfirmSendViewControllerDelegate: class {
-  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmSendViewEvent)
+  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent)
 }
 
 class KConfirmSendViewController: KNBaseViewController {
@@ -65,12 +65,12 @@ class KConfirmSendViewController: KNBaseViewController {
 
     self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
 
-    self.firstSeparatorView.dashLine(width: 1, color: UIColor(red: 172, green: 179, blue: 198))
-    self.secondSeparatorView.dashLine(width: 1, color: UIColor(red: 172, green: 179, blue: 198))
+    self.firstSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
+    self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    let event = KConfirmSendViewEvent.confirm(transaction: self.viewModel.transaction)
+    let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction))
     self.delegate?.kConfirmSendViewController(self, run: event)
   }
 

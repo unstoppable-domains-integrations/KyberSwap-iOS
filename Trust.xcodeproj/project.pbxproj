@@ -234,6 +234,9 @@
 		25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25931F0D20AEE85200BAC774 /* KNBackUpWalletViewController.swift */; };
 		25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25931F0E20AEE85200BAC774 /* KNBackUpWalletViewController.xib */; };
 		25931F1420AEEBF000BAC774 /* KNBackUpWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25931F1320AEEBF000BAC774 /* KNBackUpWalletViewModel.swift */; };
+		25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */; };
+		25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */; };
+		25968736211DEC980080A33F /* KConfirmSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */; };
 		259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B120EF286500CCF2D6 /* KNListContactViewController.swift */; };
 		259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259925B220EF286500CCF2D6 /* KNListContactViewController.xib */; };
 		259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */; };
@@ -933,6 +936,9 @@
 		25931F0D20AEE85200BAC774 /* KNBackUpWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBackUpWalletViewController.swift; sourceTree = "<group>"; };
 		25931F0E20AEE85200BAC774 /* KNBackUpWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBackUpWalletViewController.xib; sourceTree = "<group>"; };
 		25931F1320AEEBF000BAC774 /* KNBackUpWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBackUpWalletViewModel.swift; sourceTree = "<group>"; };
+		2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewController.swift; sourceTree = "<group>"; };
+		25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KConfirmSwapViewController.xib; sourceTree = "<group>"; };
+		25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewModel.swift; sourceTree = "<group>"; };
 		259925B120EF286500CCF2D6 /* KNListContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListContactViewController.swift; sourceTree = "<group>"; };
 		259925B220EF286500CCF2D6 /* KNListContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListContactViewController.xib; sourceTree = "<group>"; };
 		259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableViewCell.swift; sourceTree = "<group>"; };
@@ -1875,6 +1881,7 @@
 		254BB34F211D9A2300B8E75D /* Confirms */ = {
 			isa = PBXGroup;
 			children = (
+				2596872E211DEBF10080A33F /* SwapConfirm */,
 				254BB351211D9A3600B8E75D /* SendConfirm */,
 			);
 			path = Confirms;
@@ -2556,6 +2563,32 @@
 			isa = PBXGroup;
 			children = (
 				25931F1320AEEBF000BAC774 /* KNBackUpWalletViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2596872E211DEBF10080A33F /* SwapConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				25968734211DEC860080A33F /* ViewModel */,
+				25968733211DEC750080A33F /* Controller */,
+			);
+			path = SwapConfirm;
+			sourceTree = "<group>";
+		};
+		25968733211DEC750080A33F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */,
+				25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		25968734211DEC860080A33F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -4744,6 +4777,7 @@
 				254BB346211C9DCE00B8E75D /* KMarketViewController.xib in Resources */,
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
+				25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
 				25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
@@ -5326,6 +5360,7 @@
 				29B933F81F8609FF009FCABB /* PaymentFlow.swift in Sources */,
 				2963B6BF1F9AB9A2003063C1 /* ContractERC20Transfer.swift in Sources */,
 				25EE4A6F20C54BEC00E2282F /* KNAppCoordinator+Notification.swift in Sources */,
+				25968736211DEC980080A33F /* KConfirmSwapViewModel.swift in Sources */,
 				29A13E331F6B1B7A00E432A2 /* AppStyle.swift in Sources */,
 				257A3797205BC99300E86794 /* KNTransactionDetailsTableViewCell.swift in Sources */,
 				25CC0A992057E1DB0009D0D5 /* KNLoadingInterval.swift in Sources */,
@@ -5370,6 +5405,7 @@
 				25A293FE20CE7B5B008C6759 /* KGOHomePageViewModel.swift in Sources */,
 				2912CD2B1F6A833E00C6CBE3 /* TransactionsViewController.swift in Sources */,
 				25069E4A20D92E16002A8F96 /* IEOContributeRequest.swift in Sources */,
+				25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
 				254BB34E211CACA900B8E75D /* KMarketViewCoordinator.swift in Sources */,
 				BB5D6A9E20232EE8000FC5AB /* CurrencyRate+Fee.swift in Sources */,

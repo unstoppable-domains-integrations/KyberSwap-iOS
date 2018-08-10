@@ -62,8 +62,6 @@ class KNExchangeTokenCoordinator: Coordinator {
     return controller
   }()
 
-  fileprivate var confirmTransactionViewController: KNConfirmTransactionViewController!
-
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -209,19 +207,13 @@ extension KNExchangeTokenCoordinator {
 }
 
 // MARK: Confirm transaction
-extension KNExchangeTokenCoordinator: KNConfirmTransactionViewControllerDelegate {
-  func confirmTransactionViewController(_ controller: KNConfirmTransactionViewController, run event: KNConfirmTransactionViewEvent) {
-    self.navigationController.dismiss(animated: true, completion: {
-      switch event {
-      case .cancel:
-        self.confirmTransactionViewController = nil
-      case .confirm(let type):
-        self.confirmTransactionViewController = nil
-        if case .exchange(let exchangeTransaction) = type {
-          self.didConfirmSendExchangeTransaction(exchangeTransaction)
-        }
+extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent) {
+    self.navigationController.popViewController(animated: true) {
+      if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
+        self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }
-    })
+    }
   }
 }
 
@@ -266,21 +258,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
   }
 
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
-    self.confirmTransactionViewController = {
-      let transactionType = KNTransactionType.exchange(data)
-      let viewModel = KNConfirmTransactionViewModel(type: transactionType)
-      let controller = KNConfirmTransactionViewController(viewModel: viewModel)
+    let confirmSwapVC: KConfirmSwapViewController = {
+      let viewModel = KConfirmSwapViewModel(transaction: data)
+      let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
       return controller
     }()
-    self.confirmTransactionViewController.modalPresentationStyle = .overFullScreen
-    self.confirmTransactionViewController.modalTransitionStyle = .crossDissolve
-    self.navigationController.present(
-      self.confirmTransactionViewController,
-      animated: true,
-      completion: nil
-    )
+    self.navigationController.pushViewController(confirmSwapVC, animated: true)
   }
 
   fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {

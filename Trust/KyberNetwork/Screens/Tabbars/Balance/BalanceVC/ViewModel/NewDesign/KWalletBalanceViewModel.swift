@@ -40,10 +40,7 @@ class KWalletBalanceViewModel: NSObject {
 
   // MARK: Check if balance has tokens
   var hasTokens: Bool {
-    for (_, value) in self.balances.enumerated() {
-      if !value.value.isZero { return true }
-    }
-    return false
+    return self.balances.values.first(where: { !$0.value.isZero }) != nil
   }
 
   var textBalanceIsEmpty: String { return "Your balance is empty" }

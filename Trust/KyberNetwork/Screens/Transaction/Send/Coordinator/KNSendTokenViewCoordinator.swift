@@ -176,9 +176,9 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 
 // MARK: Confirm Transaction Delegate
 extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
-  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmSendViewEvent) {
+  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
     self.navigationController.popViewController(animated: true) {
-      if case .confirm(let transaction) = event {
+      if case .confirm(let type) = event, case .transfer(let transaction) = type {
         self.didConfirmTransfer(transaction)
       }
     }
