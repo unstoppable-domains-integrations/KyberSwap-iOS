@@ -22,7 +22,7 @@ struct KMarketCollectionViewCellModel {
   }
 
   var backgroundColor: UIColor {
-    return self.index % 2 == 0 ? .white : UIColor(red: 246, green: 247, blue: 250)
+    return self.index % 2 == 0 ? .white : UIColor.Kyber.whisper
   }
 
   var displaySymbolString: String { return self.token.symbol }
@@ -51,13 +51,13 @@ struct KMarketCollectionViewCellModel {
    }
 
   var colorChange24h: UIColor {
-    guard let tracker = self.trackerRate else { return UIColor(red: 49, green: 203, blue: 158) }
+    guard let tracker = self.trackerRate else { return UIColor.Kyber.shamrock }
     let change: Double = {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
      }()
-    if change >= 0 { return UIColor(red: 49, green: 203, blue: 158) }
-    return UIColor(red: 209, green: 47, blue: 47)
+    if change >= 0 { return UIColor.Kyber.shamrock }
+    return UIColor.Kyber.strawberry
   }
 
   var change24hString: String {

@@ -39,12 +39,12 @@ class KMarketsViewModel: NSObject {
   }
 
   var colorKyberListedButton: UIColor {
-    if self.isKyberList { return UIColor(red: 30, green: 137, blue: 193) }
+    if self.isKyberList { return UIColor.Kyber.blueGreen }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
   var colorOthersButton: UIColor {
-    if !self.isKyberList { return UIColor(red: 30, green: 137, blue: 193) }
+    if !self.isKyberList { return UIColor.Kyber.blueGreen }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 

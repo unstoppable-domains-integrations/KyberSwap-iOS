@@ -303,12 +303,12 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
       cell.textLabel?.isUserInteractionEnabled = false
       let wallet = self.viewModel.wallet(at: indexPath.row)
-      cell.tintColor = UIColor(red: 49, green: 203, blue: 158)
+      cell.tintColor = UIColor.Kyber.shamrock
       cell.textLabel?.attributedText = {
         let attributedString = NSMutableAttributedString()
         let nameAttributes: [NSAttributedStringKey: Any] = [
           NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-          NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+          NSAttributedStringKey.foregroundColor: UIColor.Kyber.migrate,
           NSAttributedStringKey.kern: 1.0,
         ]
         let addressAttributes: [NSAttributedStringKey: Any] = [
@@ -323,7 +323,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
       }()
       cell.textLabel?.numberOfLines = 2
       cell.backgroundColor = {
-        return indexPath.row % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250)
+        return indexPath.row % 2 == 0 ? UIColor.white : UIColor.Kyber.whisper
       }()
       cell.accessoryType = wallet == self.viewModel.currentWallet ? .checkmark : .none
       return cell
@@ -335,10 +335,10 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     let transaction = self.viewModel.transaction(at: indexPath.row)
     cell.imageView?.startRotating()
     cell.textLabel?.text = transaction?.shortDesc
-    cell.textLabel?.tintColor = UIColor(red: 20, green: 25, blue: 39)
+    cell.textLabel?.tintColor = UIColor.Kyber.migrate
     cell.textLabel?.font = UIFont.Kyber.medium(with: 14)
     cell.backgroundColor = {
-      return indexPath.row % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250)
+      return indexPath.row % 2 == 0 ? UIColor.white : UIColor.Kyber.whisper
     }()
     return cell
   }

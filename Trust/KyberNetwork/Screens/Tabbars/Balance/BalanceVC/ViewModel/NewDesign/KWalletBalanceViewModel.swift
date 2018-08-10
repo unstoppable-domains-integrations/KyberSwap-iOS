@@ -88,12 +88,12 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   var colorUSDButton: UIColor {
-    if self.currencyType == .usd { return UIColor(red: 30, green: 137, blue: 193) }
+    if self.currencyType == .usd { return UIColor.Kyber.blueGreen }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
   var colorETHButton: UIColor {
-    if self.currencyType == .eth { return UIColor(red: 30, green: 137, blue: 193) }
+    if self.currencyType == .eth { return UIColor.Kyber.blueGreen }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 

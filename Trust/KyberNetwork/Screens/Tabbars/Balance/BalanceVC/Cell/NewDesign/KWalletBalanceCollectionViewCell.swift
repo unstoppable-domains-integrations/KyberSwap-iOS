@@ -25,7 +25,7 @@ struct KWalletBalanceCollectionViewCellModel {
   }
 
   var backgroundColor: UIColor {
-    return self.index % 2 == 0 ? .white : UIColor(red: 246, green: 247, blue: 250)
+    return self.index % 2 == 0 ? .white : UIColor.Kyber.whisper
   }
 
   var displaySymbolAndNameAttributedString: NSAttributedString {
