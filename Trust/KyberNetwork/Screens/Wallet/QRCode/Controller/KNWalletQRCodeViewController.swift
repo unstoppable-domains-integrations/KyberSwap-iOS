@@ -5,6 +5,7 @@ import MBProgressHUD
 
 class KNWalletQRCodeViewController: KNBaseViewController {
 
+  @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var qrcodeImageView: UIImageView!
   @IBOutlet weak var addressLabel: UILabel!
 
@@ -28,18 +29,12 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.setupNavigationBar()
     self.setupWalletData()
     self.setupButtons()
   }
 
-  fileprivate func setupNavigationBar() {
-    self.navigationItem.title = self.viewModel.navigationTitle
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(self.leftBarButtonPressed(_:)))
-    self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-  }
-
   fileprivate func setupWalletData() {
+    self.titleLabel.text = self.viewModel.wallet.name
     self.addressLabel.text = self.viewModel.displayedAddress
     let text = self.viewModel.address
     DispatchQueue.global(qos: .background).async {
@@ -51,14 +46,18 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupButtons() {
-    self.copyWalletButton.rounded(radius: 4.0)
+    self.copyWalletButton.rounded(radius: self.copyWalletButton.frame.height / 2.0)
     self.copyWalletButton.setTitle(self.viewModel.copyAddressBtnTitle, for: .normal)
-    self.shareButton.rounded(radius: 4.0)
+    self.shareButton.rounded(
+      color: UIColor(red: 202, green: 208, blue: 223),
+      width: 1.0,
+      radius: self.shareButton.frame.height / 2.0
+    )
     self.shareButton.setTitle(self.viewModel.shareBtnTitle, for: .normal)
   }
 
-  @objc func leftBarButtonPressed(_ sender: Any) {
-    self.dismiss(animated: true, completion: nil)
+  @IBAction func backButtonPressed(_ sender: Any) {
+    self.navigationController?.popViewController(animated: true)
   }
 
   @IBAction func copyWalletButtonPressed(_ sender: Any) {
@@ -83,5 +82,11 @@ class KNWalletQRCodeViewController: KNBaseViewController {
     )
     activityViewController.popoverPresentationController?.sourceView = sender
     self.present(activityViewController, animated: true, completion: nil)
+  }
+
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }

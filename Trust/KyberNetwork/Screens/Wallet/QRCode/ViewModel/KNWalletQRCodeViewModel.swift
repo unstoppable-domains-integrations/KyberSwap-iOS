@@ -10,13 +10,13 @@ struct KNWalletQRCodeViewModel {
   }
 
   var displayedAddress: String {
-    return String(self.address.prefix(8)) + "......" + String(self.address.suffix(8))
+    return String(self.address.prefix(20)) + "......" + String(self.address.suffix(8))
   }
 
   var address: String { return self.wallet.address }
 
   var shareText: String {
-    return "My address: \(self.address)"
+    return "\(self.displayedAddress)"
   }
 
   var copyAddressBtnTitle: String {

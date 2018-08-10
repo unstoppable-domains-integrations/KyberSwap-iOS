@@ -19,6 +19,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
 
   @IBOutlet weak var headerContainerView: UIView!
+  @IBOutlet weak var walletDataView: UIView!
   @IBOutlet weak var balanceTextLabel: UILabel!
   @IBOutlet weak var balanceValueLabel: UILabel!
   @IBOutlet weak var walletNameLabel: UILabel!
@@ -78,6 +79,8 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   fileprivate func setupWalletBalanceHeaderView() {
     self.balanceTextLabel.text = "Balance".toBeLocalised()
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openQRCodeViewPressed(_:)))
+    self.walletDataView.addGestureRecognizer(tapGesture)
     self.updateWalletBalanceUI()
     self.updateWalletInfoUI()
   }
@@ -123,6 +126,11 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   // MARK: Actions handling
+
+  @objc func openQRCodeViewPressed(_ sender: Any) {
+    self.delegate?.kWalletBalanceViewController(self, run: .openQRCode)
+  }
+
   @IBAction func menuButtonPressed(_ sender: Any) {
     self.hamburgerMenu.openMenu(animated: true)
   }

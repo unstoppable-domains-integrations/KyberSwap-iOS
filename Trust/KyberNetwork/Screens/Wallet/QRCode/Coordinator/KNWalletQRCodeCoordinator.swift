@@ -28,11 +28,6 @@ class KNWalletQRCodeCoordinator: Coordinator {
   }()
 
   func start() {
-    let navController: UINavigationController = {
-      let navController = UINavigationController(rootViewController: self.rootViewController)
-      navController.applyStyle()
-      return navController
-    }()
-    self.navigationController.present(navController, animated: true, completion: nil)
+    self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
 }

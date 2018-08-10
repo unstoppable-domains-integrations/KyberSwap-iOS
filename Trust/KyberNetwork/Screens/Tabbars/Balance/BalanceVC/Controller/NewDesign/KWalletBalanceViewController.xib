@@ -28,6 +28,7 @@
                 <outlet property="tokensBalanceCollectionView" destination="r4m-dS-Kt1" id="wuX-PP-64O"/>
                 <outlet property="usdButton" destination="IPs-kS-P1d" id="GSI-Rc-f9w"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletDataView" destination="6LI-U8-W7j" id="3qi-tE-iHb"/>
                 <outlet property="walletNameLabel" destination="qlW-Mm-bZf" id="uuu-I5-sby"/>
             </connections>
         </placeholder>
@@ -45,13 +46,13 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4,543.123 USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-YM-0aU">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4,543.123 USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-YM-0aU">
                             <rect key="frame" x="20" y="82" width="195" height="34.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="28"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlW-Mm-bZf">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlW-Mm-bZf">
                             <rect key="frame" x="20" y="120.5" width="130.5" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -79,20 +80,28 @@
                                 <action selector="marketButtonPressed:" destination="-1" eventType="touchUpInside" id="S4k-L9-WTt"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LI-U8-W7j">
+                            <rect key="frame" x="20" y="44" width="195" height="94"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.11764705882352941" green="0.53725490196078429" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="160" id="5NU-lQ-IDx"/>
                         <constraint firstItem="uX4-lo-QAu" firstAttribute="centerY" secondItem="tNy-7j-Gt2" secondAttribute="centerY" id="8k0-jE-Bb5"/>
                         <constraint firstItem="vHc-Ib-Wny" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="Deg-66-vGZ"/>
+                        <constraint firstItem="6LI-U8-W7j" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="EvA-Hf-iuK"/>
                         <constraint firstItem="vHc-Ib-Wny" firstAttribute="trailing" secondItem="uX4-lo-QAu" secondAttribute="trailing" id="Ixj-J7-eRG"/>
+                        <constraint firstItem="6LI-U8-W7j" firstAttribute="trailing" secondItem="ztY-YM-0aU" secondAttribute="trailing" id="P5D-zl-cRn"/>
                         <constraint firstItem="ztY-YM-0aU" firstAttribute="top" secondItem="tNy-7j-Gt2" secondAttribute="bottom" constant="16" id="cT3-hR-YfF"/>
                         <constraint firstItem="ztY-YM-0aU" firstAttribute="leading" secondItem="tNy-7j-Gt2" secondAttribute="leading" id="dJb-xr-4hn"/>
                         <constraint firstItem="qlW-Mm-bZf" firstAttribute="leading" secondItem="ztY-YM-0aU" secondAttribute="leading" id="euK-03-sRz"/>
                         <constraint firstAttribute="trailing" secondItem="uX4-lo-QAu" secondAttribute="trailing" constant="20" id="gcp-dp-TdA"/>
+                        <constraint firstItem="6LI-U8-W7j" firstAttribute="leading" secondItem="iQw-Mq-Z8D" secondAttribute="leading" constant="20" id="hrw-ti-pJ2"/>
                         <constraint firstItem="tNy-7j-Gt2" firstAttribute="top" secondItem="iQw-Mq-Z8D" secondAttribute="top" constant="44" id="pwK-ta-aHc"/>
                         <constraint firstItem="qlW-Mm-bZf" firstAttribute="top" secondItem="ztY-YM-0aU" secondAttribute="bottom" constant="4" id="qLl-E1-hLm"/>
                         <constraint firstItem="tNy-7j-Gt2" firstAttribute="leading" secondItem="iQw-Mq-Z8D" secondAttribute="leading" constant="20" id="xPq-ZF-grJ"/>
+                        <constraint firstItem="6LI-U8-W7j" firstAttribute="top" secondItem="tNy-7j-Gt2" secondAttribute="top" id="zvu-hU-kGo"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ei3-S9-EbQ">
