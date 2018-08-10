@@ -31,12 +31,12 @@ struct KWalletBalanceCollectionViewCellModel {
   var displaySymbolAndNameAttributedString: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
       NSAttributedStringKey.kern: 1.0,
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 10),
+      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
       NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
       NSAttributedStringKey.kern: 1.0,
     ]
@@ -93,7 +93,7 @@ struct KWalletBalanceCollectionViewCellModel {
 class KWalletBalanceCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "KWalletBalanceCollectionViewCell"
-  static let cellHeight: CGFloat = 55
+  static let cellHeight: CGFloat = 64
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var symbolLabel: UILabel!
