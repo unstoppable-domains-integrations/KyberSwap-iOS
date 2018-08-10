@@ -61,7 +61,7 @@ extension KNAppCoordinator {
       self.kyberGOCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.lighterGreen
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.fire
     self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
       title: "Balance".toBeLocalised(),
       image: UIImage(named: "tabbar_balance_icon"),
