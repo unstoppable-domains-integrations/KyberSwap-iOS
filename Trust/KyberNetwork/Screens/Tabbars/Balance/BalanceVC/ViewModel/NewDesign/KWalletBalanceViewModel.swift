@@ -38,6 +38,16 @@ class KWalletBalanceViewModel: NSObject {
     super.init()
   }
 
+  // MARK: Check if balance has tokens
+  var hasTokens: Bool {
+    for (_, value) in self.balances.enumerated() {
+      if !value.value.isZero { return true }
+    }
+    return false
+  }
+
+  var textBalanceIsEmpty: String { return "Your balance is empty" }
+
   fileprivate func setupTrackerRateData() {
     KNTrackerRateStorage.shared.rates.forEach { rate in
       self.trackerRateData[rate.identifier] = rate

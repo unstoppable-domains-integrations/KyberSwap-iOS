@@ -22,8 +22,11 @@
             <connections>
                 <outlet property="balanceTextLabel" destination="tNy-7j-Gt2" id="YYj-GO-LL8"/>
                 <outlet property="balanceValueLabel" destination="ztY-YM-0aU" id="mPu-J4-bRa"/>
+                <outlet property="emptyBalanceTextLabel" destination="6g5-Hf-gED" id="3Gk-qg-ib1"/>
+                <outlet property="emptyStateView" destination="xZA-fD-Wsm" id="eVR-RX-Cji"/>
                 <outlet property="ethButton" destination="bfz-k4-GjU" id="WeL-Pk-EH5"/>
                 <outlet property="headerContainerView" destination="iQw-Mq-Z8D" id="D9T-OX-seg"/>
+                <outlet property="receiveTokenButton" destination="JRV-cy-j9I" id="XO1-Ce-6oo"/>
                 <outlet property="searchTextField" destination="7gf-Oi-kKw" id="ehw-gh-DKG"/>
                 <outlet property="tokensBalanceCollectionView" destination="r4m-dS-Kt1" id="wuX-PP-64O"/>
                 <outlet property="usdButton" destination="IPs-kS-P1d" id="GSI-Rc-f9w"/>
@@ -211,10 +214,44 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZA-fD-Wsm">
+                    <rect key="frame" x="0.0" y="236" width="375" height="431"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your balance is empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g5-Hf-gED">
+                            <rect key="frame" x="87" y="106.5" width="202" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-cy-j9I">
+                            <rect key="frame" x="68" y="192.5" width="240" height="46"/>
+                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="neE-Zv-WQ2"/>
+                                <constraint firstAttribute="width" constant="240" id="sT2-Zr-2Ib"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="RECEIVE TOKEN">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="receiveTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="XWj-wJ-vpe"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="6g5-Hf-gED" firstAttribute="centerX" secondItem="xZA-fD-Wsm" secondAttribute="centerX" id="5t5-Yd-FuP"/>
+                        <constraint firstItem="JRV-cy-j9I" firstAttribute="top" secondItem="6g5-Hf-gED" secondAttribute="bottom" constant="64" id="5zX-AB-1kr"/>
+                        <constraint firstItem="JRV-cy-j9I" firstAttribute="centerX" secondItem="xZA-fD-Wsm" secondAttribute="centerX" id="TJH-rB-8r9"/>
+                        <constraint firstItem="JRV-cy-j9I" firstAttribute="centerY" secondItem="xZA-fD-Wsm" secondAttribute="centerY" id="pfm-O1-guA"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xZA-fD-Wsm" secondAttribute="trailing" id="0iR-Gj-KpW"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r4m-dS-Kt1" secondAttribute="trailing" id="0mE-hd-Zf3"/>
                 <constraint firstAttribute="trailing" secondItem="iQw-Mq-Z8D" secondAttribute="trailing" id="7ss-Wt-wpa"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ei3-S9-EbQ" secondAttribute="trailing" id="GVw-QN-PGV"/>
@@ -223,11 +260,14 @@
                 <constraint firstItem="iQw-Mq-Z8D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U4Q-fn-a9i"/>
                 <constraint firstItem="iQw-Mq-Z8D" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Udh-ve-g8f"/>
                 <constraint firstItem="Ei3-S9-EbQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WVw-nn-gaH"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="xZA-fD-Wsm" secondAttribute="bottom" id="X3N-3J-Mg6"/>
                 <constraint firstItem="r4m-dS-Kt1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="a4y-s9-CKw"/>
                 <constraint firstItem="Ei3-S9-EbQ" firstAttribute="top" secondItem="iQw-Mq-Z8D" secondAttribute="bottom" id="etr-Af-Fkb"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ldd-eU-IaQ" secondAttribute="trailing" id="hol-4O-gS1"/>
                 <constraint firstItem="ldd-eU-IaQ" firstAttribute="top" secondItem="Ei3-S9-EbQ" secondAttribute="bottom" id="lBT-OQ-5Ot"/>
+                <constraint firstItem="xZA-fD-Wsm" firstAttribute="top" secondItem="ldd-eU-IaQ" secondAttribute="bottom" id="oco-6T-FOE"/>
                 <constraint firstItem="r4m-dS-Kt1" firstAttribute="top" secondItem="ldd-eU-IaQ" secondAttribute="bottom" id="pZW-oF-Zn3"/>
+                <constraint firstItem="xZA-fD-Wsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="upr-mT-u0y"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>

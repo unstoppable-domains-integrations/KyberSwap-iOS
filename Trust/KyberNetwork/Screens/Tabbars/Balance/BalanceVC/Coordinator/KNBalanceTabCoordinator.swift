@@ -210,6 +210,8 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
       self.openTokenChartView(for: token)
     case .openMarketView:
       self.openMarketView()
+    case .receiveToken:
+      self.qrcodeCoordinator?.start()
     }
   }
 

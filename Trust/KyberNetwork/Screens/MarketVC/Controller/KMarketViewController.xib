@@ -40,6 +40,10 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qtz-Y3-Bak">
                             <rect key="frame" x="16" y="43" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="UGy-zX-Wn0"/>
+                                <constraint firstAttribute="height" constant="24" id="ubf-KR-4RV"/>
+                            </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="back_white_icon">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -201,7 +205,7 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="back_white_icon" width="24" height="24"/>
+        <image name="back_white_icon" width="16" height="16"/>
         <image name="search_black_icon" width="15" height="16"/>
     </resources>
 </document>

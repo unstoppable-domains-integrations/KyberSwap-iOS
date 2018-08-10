@@ -7,6 +7,7 @@ enum KWalletBalanceViewEvent {
   case openQRCode
   case selectToken(token: TokenObject)
   case openMarketView
+  case receiveToken
 }
 
 protocol KWalletBalanceViewControllerDelegate: class {
@@ -23,6 +24,9 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var balanceTextLabel: UILabel!
   @IBOutlet weak var balanceValueLabel: UILabel!
   @IBOutlet weak var walletNameLabel: UILabel!
+  @IBOutlet weak var emptyStateView: UIView!
+  @IBOutlet weak var emptyBalanceTextLabel: UILabel!
+  @IBOutlet weak var receiveTokenButton: UIButton!
 
   @IBOutlet weak var usdButton: UIButton!
   @IBOutlet weak var ethButton: UIButton!
@@ -95,7 +99,6 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func setupTokensBalanceCollectionView() {
-    // TODO:
     let nib = UINib(nibName: KWalletBalanceCollectionViewCell.className, bundle: nil)
     self.tokensBalanceCollectionView.register(
       nib,
@@ -104,6 +107,9 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.tokensBalanceCollectionView.delegate = self
     self.tokensBalanceCollectionView.dataSource = self
     self.tokensBalanceCollectionView.reloadData()
+
+    self.emptyBalanceTextLabel.text = self.viewModel.textBalanceIsEmpty
+    self.receiveTokenButton.rounded(radius: self.receiveTokenButton.frame.height / 2.0)
   }
 
   // MARK: Update UIs
@@ -114,6 +120,8 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   fileprivate func updateWalletBalanceUI() {
     self.balanceValueLabel.attributedText = self.viewModel.balanceDisplayAttributedString
+    self.tokensBalanceCollectionView.isHidden = !self.viewModel.hasTokens
+    self.emptyStateView.isHidden = self.viewModel.hasTokens
     self.view.layoutIfNeeded()
   }
 
@@ -168,6 +176,10 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     self.hamburgerMenu.gestureScreenEdgePanAction(sender)
   }
+
+  @IBAction func receiveTokenButtonPressed(_ sender: Any) {
+    self.delegate?.kWalletBalanceViewController(self, run: .receiveToken)
+  }
 }
 
 // MARK: Update from coordinator
@@ -194,6 +206,7 @@ extension KWalletBalanceViewController {
 
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
     if self.viewModel.updateTokenObjects(tokenObjects) {
+      self.updateWalletBalanceUI()
       self.tokensBalanceCollectionView.reloadData()
     }
   }
