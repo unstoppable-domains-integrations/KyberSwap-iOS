@@ -57,6 +57,7 @@ class KNBalanceTabCoordinator: Coordinator {
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
+  fileprivate var marketCoordinator: KMarketViewCoordinator?
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -108,6 +109,7 @@ extension KNBalanceTabCoordinator {
 //    self.rootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
     self.newRootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
+    self.marketCoordinator?.coordinatorDidUpdateNewSession()
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -163,6 +165,7 @@ extension KNBalanceTabCoordinator {
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD
     )
+    self.marketCoordinator?.coordinatorUpdateTrackerRate()
   }
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
@@ -170,12 +173,15 @@ extension KNBalanceTabCoordinator {
     self.newRootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.marketCoordinator?.coordinatorDidUpdateTokenObjects(tokenObjects)
   }
 
   func appCoordinatorSupportedTokensDidUpdate(tokenObjects: [TokenObject]) {
 //    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
-    self.newRootViewController.coordinatorUpdateTokenObjects(tokenObjects)
-    self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(self.session.tokenStorage.tokens)
+    let tokens = self.session.tokenStorage.tokens
+    self.newRootViewController.coordinatorUpdateTokenObjects(tokens)
+    self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokens)
+    self.marketCoordinator?.coordinatorDidUpdateTokenObjects(tokens)
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
@@ -258,7 +264,13 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   }
 
   fileprivate func openMarketView() {
-    //TODO: Open market view
+    self.marketCoordinator = KMarketViewCoordinator(
+      navigationController: self.navigationController,
+      currencyType: KNAppTracker.getCurrencyType()
+    )
+    self.marketCoordinator?.delegate = self
+    self.marketCoordinator?.start()
+    self.marketCoordinator?.coordinatorDidUpdateTokenObjects(self.session.tokenStorage.tokens)
   }
 
   func hamburgerMenu(select walletObject: KNWalletObject) {
@@ -282,6 +294,17 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
   func openHistoryTransactionView() {
     self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
     self.historyCoordinator.start()
+  }
+}
+
+// MARK: Market Delegation
+extension KNBalanceTabCoordinator: KMarketViewCoordinatorDelegate {
+  func kMarketViewCoordinator(_ coordinator: KMarketViewCoordinator, run event: KMarketsViewEvent) {
+    switch event {
+    case .close: self.marketCoordinator?.stop { self.marketCoordinator = nil }
+    case .selectToken(let token):
+      self.openTokenChartView(for: token)
+    }
   }
 }
 

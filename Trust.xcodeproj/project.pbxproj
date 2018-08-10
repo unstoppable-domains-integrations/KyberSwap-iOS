@@ -84,6 +84,12 @@
 		254BB339211C016000B8E75D /* KWalletBalanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB337211C016000B8E75D /* KWalletBalanceCollectionViewCell.swift */; };
 		254BB33A211C016000B8E75D /* KWalletBalanceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254BB338211C016000B8E75D /* KWalletBalanceCollectionViewCell.xib */; };
 		254BB33C211C20E200B8E75D /* UIFont+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB33B211C20E200B8E75D /* UIFont+Kyber.swift */; };
+		254BB342211C994600B8E75D /* KMarketsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB341211C994600B8E75D /* KMarketsViewModel.swift */; };
+		254BB345211C9DCE00B8E75D /* KMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB343211C9DCE00B8E75D /* KMarketViewController.swift */; };
+		254BB346211C9DCE00B8E75D /* KMarketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254BB344211C9DCE00B8E75D /* KMarketViewController.xib */; };
+		254BB34A211CA4D600B8E75D /* KMarketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB348211CA4D600B8E75D /* KMarketCollectionViewCell.swift */; };
+		254BB34B211CA4D600B8E75D /* KMarketCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254BB349211CA4D600B8E75D /* KMarketCollectionViewCell.xib */; };
+		254BB34E211CACA900B8E75D /* KMarketViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB34D211CACA900B8E75D /* KMarketViewCoordinator.swift */; };
 		255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255709BD20DCB50800B5BC9E /* KNNewContactViewController.swift */; };
 		255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */; };
 		25577AE920F72A9700A54607 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E14FDA1F7F4F3D00185568 /* Transaction.swift */; };
@@ -775,6 +781,12 @@
 		254BB337211C016000B8E75D /* KWalletBalanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWalletBalanceCollectionViewCell.swift; sourceTree = "<group>"; };
 		254BB338211C016000B8E75D /* KWalletBalanceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KWalletBalanceCollectionViewCell.xib; sourceTree = "<group>"; };
 		254BB33B211C20E200B8E75D /* UIFont+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Kyber.swift"; sourceTree = "<group>"; };
+		254BB341211C994600B8E75D /* KMarketsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMarketsViewModel.swift; sourceTree = "<group>"; };
+		254BB343211C9DCE00B8E75D /* KMarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMarketViewController.swift; sourceTree = "<group>"; };
+		254BB344211C9DCE00B8E75D /* KMarketViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KMarketViewController.xib; sourceTree = "<group>"; };
+		254BB348211CA4D600B8E75D /* KMarketCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMarketCollectionViewCell.swift; sourceTree = "<group>"; };
+		254BB349211CA4D600B8E75D /* KMarketCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KMarketCollectionViewCell.xib; sourceTree = "<group>"; };
+		254BB34D211CACA900B8E75D /* KMarketViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMarketViewCoordinator.swift; sourceTree = "<group>"; };
 		255709BD20DCB50800B5BC9E /* KNNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNewContactViewController.swift; sourceTree = "<group>"; };
 		255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNewContactViewController.xib; sourceTree = "<group>"; };
 		25577AEA20F8619D00A54607 /* UIButton+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Kyber.swift"; sourceTree = "<group>"; };
@@ -1809,6 +1821,51 @@
 			path = NewDesign;
 			sourceTree = "<group>";
 		};
+		254BB33D211C98C400B8E75D /* MarketVC */ = {
+			isa = PBXGroup;
+			children = (
+				254BB34C211CAC8700B8E75D /* Coordinator */,
+				254BB347211CA4B800B8E75D /* Cell */,
+				254BB340211C98DD00B8E75D /* Controller */,
+				254BB33F211C98D700B8E75D /* ViewModel */,
+			);
+			path = MarketVC;
+			sourceTree = "<group>";
+		};
+		254BB33F211C98D700B8E75D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				254BB341211C994600B8E75D /* KMarketsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		254BB340211C98DD00B8E75D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				254BB343211C9DCE00B8E75D /* KMarketViewController.swift */,
+				254BB344211C9DCE00B8E75D /* KMarketViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		254BB347211CA4B800B8E75D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				254BB348211CA4D600B8E75D /* KMarketCollectionViewCell.swift */,
+				254BB349211CA4D600B8E75D /* KMarketCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		254BB34C211CAC8700B8E75D /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				254BB34D211CACA900B8E75D /* KMarketViewCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		255709BC20DCB4F500B5BC9E /* NewContact */ = {
 			isa = PBXGroup;
 			children = (
@@ -2154,6 +2211,7 @@
 			children = (
 				25E9E1F3208F036F00A9090D /* Passcode */,
 				25682B6D20EE0365009738C4 /* Tabbars */,
+				254BB33D211C98C400B8E75D /* MarketVC */,
 				25682B6C20EE0315009738C4 /* Wallet */,
 				25682B6E20EE0421009738C4 /* Transaction */,
 				257740C32057943B003323EB /* Splash */,
@@ -4603,6 +4661,7 @@
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
+				254BB34B211CA4D600B8E75D /* KMarketCollectionViewCell.xib in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
 				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
@@ -4641,6 +4700,7 @@
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */,
+				254BB346211C9DCE00B8E75D /* KMarketViewController.xib in Resources */,
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
@@ -5064,6 +5124,7 @@
 				29FA00D4201EC662002F7DC5 /* NSObject.swift in Sources */,
 				257C9FC42078A9F800EE0128 /* KNTransactionCollectionReusableView.swift in Sources */,
 				291ED0921F6FA5D900E7E93A /* RequestViewController.swift in Sources */,
+				254BB34A211CA4D600B8E75D /* KMarketCollectionViewCell.swift in Sources */,
 				299B5E341FCBC5180051361C /* ConfirmPaymentViewModel.swift in Sources */,
 				771AA94E1FF971CD00D25403 /* DappAction.swift in Sources */,
 				25369F0B20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift in Sources */,
@@ -5145,6 +5206,7 @@
 				61FC5ECF1FCFBAE500CCB12A /* EtherNumberFormatter.swift in Sources */,
 				73200B672044B22600118A82 /* TokensDataStore.swift in Sources */,
 				29DBF2A71F9F145900327C60 /* StateViewModel.swift in Sources */,
+				254BB345211C9DCE00B8E75D /* KMarketViewController.swift in Sources */,
 				2923D9B31FDA49F8000CF3F8 /* SkipBackupFilesInitializer.swift in Sources */,
 				254BB333211BFAF200B8E75D /* KWalletBalanceViewModel.swift in Sources */,
 				294DFBA01FE0CADE004CEB56 /* TransactionDetailsViewModel.swift in Sources */,
@@ -5266,6 +5328,7 @@
 				2912CD2B1F6A833E00C6CBE3 /* TransactionsViewController.swift in Sources */,
 				25069E4A20D92E16002A8F96 /* IEOContributeRequest.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
+				254BB34E211CACA900B8E75D /* KMarketViewCoordinator.swift in Sources */,
 				BB5D6A9E20232EE8000FC5AB /* CurrencyRate+Fee.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
 				77E0E773201FAD06009B4B31 /* BrowserURLParser.swift in Sources */,
@@ -5382,6 +5445,7 @@
 				2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */,
 				CCA4FE381FD428B300749AE4 /* JailbreakChecker.swift in Sources */,
 				291A1B651F974E8600ADEC80 /* WalletEntryPoint.swift in Sources */,
+				254BB342211C994600B8E75D /* KMarketsViewModel.swift in Sources */,
 				25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */,
 				2959960E1FAB05C200DB66A8 /* TransactionsEmptyView.swift in Sources */,
 				25369F1620FC75AA007231FE /* IEOTransactionStorage.swift in Sources */,
