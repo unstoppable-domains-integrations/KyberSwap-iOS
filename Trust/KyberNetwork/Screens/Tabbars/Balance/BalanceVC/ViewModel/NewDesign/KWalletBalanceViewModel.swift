@@ -25,7 +25,7 @@ class KWalletBalanceViewModel: NSObject {
   private(set) var displayedTokens: [TokenObject] = []
   private(set) var displayTrackerRates: [KNTrackerRate?] = []
 
-  private(set) var currencyType: KWalletCurrencyType = .usd
+  private(set) var currencyType: KWalletCurrencyType = KNAppTracker.getCurrencyType()
 
   private(set) var balances: [String: Balance] = [:]
   private(set) var totalETHBalance: BigInt = BigInt(0)
@@ -53,6 +53,7 @@ class KWalletBalanceViewModel: NSObject {
   func updateCurrencyType(_ type: KWalletCurrencyType) -> Bool {
     if self.currencyType == type { return false }
     self.currencyType = type
+    KNAppTracker.updateCurrencyType(type)
     return true
 //    KNAppTracker.updateBalanceDisplayDataType(self.balanceDisplayType)
   }

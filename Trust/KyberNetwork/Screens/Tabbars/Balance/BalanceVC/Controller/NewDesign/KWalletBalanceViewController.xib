@@ -160,10 +160,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldd-eU-IaQ">
-                    <rect key="frame" x="0.0" y="200" width="375" height="32"/>
+                    <rect key="frame" x="0.0" y="200" width="375" height="36"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0q-wm-sdr">
-                            <rect key="frame" x="52" y="1" width="44" height="30"/>
+                            <rect key="frame" x="52" y="3" width="44" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <state key="normal" title="Name">
                                 <color key="titleColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -173,7 +173,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
-                            <rect key="frame" x="297" y="1" width="58" height="30"/>
+                            <rect key="frame" x="297" y="3" width="58" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <state key="normal" title="Balance">
                                 <color key="titleColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -187,13 +187,13 @@
                     <constraints>
                         <constraint firstItem="EY4-fd-g0P" firstAttribute="centerY" secondItem="G0q-wm-sdr" secondAttribute="centerY" id="QMI-AY-SSh"/>
                         <constraint firstItem="G0q-wm-sdr" firstAttribute="leading" secondItem="ldd-eU-IaQ" secondAttribute="leading" constant="52" id="XLv-P7-9lR"/>
-                        <constraint firstAttribute="height" constant="32" id="XQa-0f-tCq"/>
+                        <constraint firstAttribute="height" constant="36" id="XQa-0f-tCq"/>
                         <constraint firstItem="G0q-wm-sdr" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="b2y-V0-TBh"/>
                         <constraint firstAttribute="trailing" secondItem="EY4-fd-g0P" secondAttribute="trailing" constant="20" id="s0f-ww-htC"/>
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r4m-dS-Kt1">
-                    <rect key="frame" x="0.0" y="232" width="375" height="435"/>
+                    <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="scw-P6-NAB">
                         <size key="itemSize" width="50" height="50"/>

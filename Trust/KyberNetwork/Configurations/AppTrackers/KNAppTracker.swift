@@ -23,6 +23,7 @@ class KNAppTracker {
   static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
 
   static let kBalanceDisplayDataTypeKey: String = "kBalanceDisplayDataTypeKey"
+  static let kCurrencyTypeKey: String = "kCurrencyTypeKey"
   static let kTokenListDisplayDataTypeKey: String = "kTokenListDisplayDataTypeKey"
 
   static let userDefaults: UserDefaults = UserDefaults.standard
@@ -118,6 +119,19 @@ class KNAppTracker {
   static func getBalanceDisplayDataType() -> KNBalanceDisplayDataType {
     if let type = userDefaults.object(forKey: kBalanceDisplayDataTypeKey) as? String {
       return KNBalanceDisplayDataType(rawValue: type) ?? .usd
+    }
+    return .usd
+  }
+
+  // MARK: Currency used (USD, ETH)
+  static func updateCurrencyType(_ type: KWalletCurrencyType) {
+    userDefaults.set(type.rawValue, forKey: kCurrencyTypeKey)
+    userDefaults.synchronize()
+  }
+
+  static func getCurrencyType() -> KWalletCurrencyType {
+    if let type = userDefaults.object(forKey: kCurrencyTypeKey) as? String {
+      return KWalletCurrencyType(rawValue: type) ?? .usd
     }
     return .usd
   }

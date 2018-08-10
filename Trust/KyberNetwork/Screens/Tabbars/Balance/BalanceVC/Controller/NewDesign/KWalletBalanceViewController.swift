@@ -263,7 +263,6 @@ extension KWalletBalanceViewController: UICollectionViewDataSource {
     let tokenObject: TokenObject = self.viewModel.tokenObject(for: row)
     let trackerRate: KNTrackerRate? = self.viewModel.trackerRate(for: row)
     let balance: Balance? = self.viewModel.balance(for: tokenObject)
-//    let icon: String? = self.viewModel.iconName(for: tokenObject)
 
     let cellModel = KWalletBalanceCollectionViewCellModel(
       token: tokenObject,

@@ -73,7 +73,7 @@ struct KMarketCollectionViewCellModel {
 class KMarketCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "KMarketCollectionViewCell"
-  static let cellHeight: CGFloat = 55
+  static let cellHeight: CGFloat = 64
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var symbolLabel: UILabel!
