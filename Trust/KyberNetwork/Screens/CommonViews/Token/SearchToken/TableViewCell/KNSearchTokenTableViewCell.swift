@@ -32,7 +32,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
       decimals: token.decimals,
       minFractionDigits: 0,
       maxFractionDigits: 6
-      ) ?? "--"
+      ) ?? ""
     self.balanceLabel.text = "\(balText.prefix(12))"
     self.layoutIfNeeded()
   }

@@ -25,7 +25,7 @@ struct KConfirmSwapViewModel {
   }
 
   var rightAmountString: String {
-    let receivedAmount = self.transaction.displayExpectedReceive(short: true)
+    let receivedAmount = self.transaction.displayExpectedReceive(short: false)
     return "\(receivedAmount.prefix(12)) \(self.transaction.to.symbol)"
   }
 

@@ -146,4 +146,3 @@ class KMarketsViewModel: NSObject {
     return tracker0.rateETHNow > tracker1.rateETHNow
   }
 }
-

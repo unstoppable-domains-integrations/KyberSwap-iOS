@@ -28,8 +28,7 @@ extension KNDraftExchangeTransaction {
 
   func displayExpectedReceive(short: Bool = true) -> String {
     if let string = self.expectedReceivedString {
-      let received = string.fullBigInt(decimals: self.to.decimals) ?? self.expectedReceive
-      return short ? received.shortString(decimals: to.decimals) : received.fullString(decimals: to.decimals)
+      return "\(string.prefix(12))"
     }
     return short ? expectedReceive.shortString(decimals: to.decimals) : expectedReceive.fullString(decimals: to.decimals)
   }

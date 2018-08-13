@@ -208,4 +208,3 @@ extension KMarketViewController: UITextFieldDelegate {
     self.tokensCollectionView.reloadData()
   }
 }
-
