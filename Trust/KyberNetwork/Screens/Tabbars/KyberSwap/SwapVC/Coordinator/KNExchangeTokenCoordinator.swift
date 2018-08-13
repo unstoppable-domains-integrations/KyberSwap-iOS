@@ -38,6 +38,19 @@ class KNExchangeTokenCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var newRootViewController: KSwapViewController = {
+    let viewModel = KSwapViewModel(
+      wallet: self.session.wallet,
+      from: KNSupportedTokenStorage.shared.ethToken,
+      to: KNSupportedTokenStorage.shared.kncToken,
+      supportedTokens: tokens
+    )
+    let controller = KSwapViewController(viewModel: viewModel)
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    return controller
+  }()
+
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
     guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
@@ -72,7 +85,7 @@ class KNExchangeTokenCoordinator: Coordinator {
   }
 
   func start() {
-    self.navigationController.viewControllers = [self.rootViewController]
+    self.navigationController.viewControllers = [self.newRootViewController]//[self.rootViewController]
   }
 
   func stop() {
@@ -83,9 +96,11 @@ class KNExchangeTokenCoordinator: Coordinator {
 extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
-    self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.newRootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+//    self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
+    self.newRootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
+//    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     if resetRoot {
       self.navigationController.popToRootViewController(animated: false)
@@ -93,12 +108,14 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
-    self.rootViewController.coordinatorUpdateWalletObjects()
+//    self.rootViewController.coordinatorUpdateWalletObjects()
+    self.newRootViewController.coordinatorUpdateWalletObjects()
     self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
-    self.rootViewController.coordinatorUpdateTokenBalance(otherTokensBalance)
+//    self.rootViewController.coordinatorUpdateTokenBalance(otherTokensBalance)
+    self.newRootViewController.coordinatorUpdateTokenBalance(otherTokensBalance)
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
     self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
@@ -106,7 +123,8 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
     if let eth = self.tokens.first(where: { $0.isETH }) {
       self.balances[eth.contract] = ethBalance
-      self.rootViewController.coordinatorUpdateTokenBalance([eth.contract: ethBalance])
+      self.newRootViewController.coordinatorUpdateTokenBalance([eth.contract: ethBalance])
+//      self.rootViewController.coordinatorUpdateTokenBalance([eth.contract: ethBalance])
     }
     self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
@@ -117,8 +135,10 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
-    self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
-    self.rootViewController.tabBarController?.selectedIndex = 1
+//    self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
+//    self.rootViewController.tabBarController?.selectedIndex = 1
+    self.newRootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
+    self.newRootViewController.tabBarController?.selectedIndex = 1
   }
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
@@ -130,12 +150,14 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
+//    self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
+    self.newRootViewController.coordinatorDidUpdatePendingTransactions(transactions)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
-    self.rootViewController.coordinatorUpdateGasPriceCached()
+//    self.rootViewController.coordinatorUpdateGasPriceCached()
+    self.newRootViewController.coordinatorUpdateGasPriceCached()
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
 
@@ -147,7 +169,8 @@ extension KNExchangeTokenCoordinator {
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
+//    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
+    self.newRootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
     KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
@@ -213,6 +236,40 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
       if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
         self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }
+    }
+  }
+}
+
+// MARK: Swap view delegation
+extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
+  func kSwapViewController(_ controller: KSwapViewController, run event: KSwapViewEvent) {
+    switch event {
+    case .searchToken(let from, let to, let isSource):
+      self.openSearchToken(from: from, to: to, isSource: isSource)
+    case .estimateRate(let from, let to, let amount):
+      self.updateEstimatedRate(from: from, to: to, amount: amount)
+    case .estimateGas(let from, let to, let amount, let gasPrice):
+      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+    case .showQRCode:
+      self.showWalletQRCode()
+    case .setGasPrice(let gasPrice, let gasLimit):
+      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .swap(let data):
+      self.exchangeButtonPressed(data: data)
+    }
+  }
+
+  func kSwapViewController(_ controller: KSwapViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
+    switch event {
+    case .selectSendToken:
+      self.openSendTokenView()
+    case .selectAddWallet:
+      self.openAddWalletView()
+    case .select(let wallet):
+      self.updateCurrentWallet(wallet)
+    case .selectAllTransactions:
+      self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator.start()
     }
   }
 }
@@ -287,7 +344,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
             slippageRate = cmcRate.minRate
           }
         }
-        self?.rootViewController.coordinatorDidUpdateEstimateRate(
+//        self?.rootViewController.coordinatorDidUpdateEstimateRate(
+//          from: from,
+//          to: to,
+//          amount: amount,
+//          rate: estRate,
+//          slippageRate: slippageRate
+//        )
+        self?.newRootViewController.coordinatorDidUpdateEstimateRate(
           from: from,
           to: to,
           amount: amount,
@@ -311,7 +375,13 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     )
     self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { [weak self] result in
       if case .success(let estimate) = result {
-        self?.rootViewController.coordinatorDidUpdateEstimateGasUsed(
+//        self?.rootViewController.coordinatorDidUpdateEstimateGasUsed(
+//          from: from,
+//          to: to,
+//          amount: amount,
+//          gasLimit: estimate
+//        )
+        self?.newRootViewController.coordinatorDidUpdateEstimateGasUsed(
           from: from,
           to: to,
           amount: amount,
@@ -361,7 +431,11 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
     self.searchTokensViewController.dismiss(animated: true) {
       if case .select(let token) = event {
-        self.rootViewController.coordinatorUpdateSelectedToken(
+//        self.rootViewController.coordinatorUpdateSelectedToken(
+//          token,
+//          isSource: self.isSelectingSourceToken
+//        )
+        self.newRootViewController.coordinatorUpdateSelectedToken(
           token,
           isSource: self.isSelectingSourceToken
         )
@@ -375,7 +449,8 @@ extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
     self.navigationController.popViewController(animated: true) {
       self.setGasPriceVC = nil
-      self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
+//      self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
+      self.newRootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
     }
   }
 }

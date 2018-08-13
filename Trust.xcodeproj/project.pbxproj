@@ -75,6 +75,11 @@
 		25369F1A20FCB062007231FE /* IEOProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1820FCB062007231FE /* IEOProfileViewController.swift */; };
 		25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1920FCB062007231FE /* IEOProfileViewController.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
+		2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604321215C120015ECC7 /* KSwapViewController.swift */; };
+		2542604621215C120015ECC7 /* KSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2542604421215C120015ECC7 /* KSwapViewController.xib */; };
+		2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604921215C360015ECC7 /* KSwapViewModel.swift */; };
+		2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604D21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift */; };
+		2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2542604E21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib */; };
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2547714C20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */; };
 		2547714E20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714D20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift */; };
@@ -237,6 +242,8 @@
 		25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */; };
 		25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */; };
 		25968736211DEC980080A33F /* KConfirmSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */; };
+		25968739211EA4180080A33F /* KAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25968738211EA4180080A33F /* KAdvancedSettingsView.swift */; };
+		2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */; };
 		259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B120EF286500CCF2D6 /* KNListContactViewController.swift */; };
 		259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259925B220EF286500CCF2D6 /* KNListContactViewController.xib */; };
 		259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */; };
@@ -778,6 +785,11 @@
 		25369F1820FCB062007231FE /* IEOProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOProfileViewController.swift; sourceTree = "<group>"; };
 		25369F1920FCB062007231FE /* IEOProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOProfileViewController.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
+		2542604321215C120015ECC7 /* KSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewController.swift; sourceTree = "<group>"; };
+		2542604421215C120015ECC7 /* KSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KSwapViewController.xib; sourceTree = "<group>"; };
+		2542604921215C360015ECC7 /* KSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewModel.swift; sourceTree = "<group>"; };
+		2542604D21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMinAcceptableRatePopupViewController.swift; sourceTree = "<group>"; };
+		2542604E21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KMinAcceptableRatePopupViewController.xib; sourceTree = "<group>"; };
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckWhiteListedAddressRequest.swift; sourceTree = "<group>"; };
 		2547714D20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOGetContridbutorRemainingCapRequest.swift; sourceTree = "<group>"; };
@@ -939,6 +951,8 @@
 		2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewController.swift; sourceTree = "<group>"; };
 		25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KConfirmSwapViewController.xib; sourceTree = "<group>"; };
 		25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewModel.swift; sourceTree = "<group>"; };
+		25968738211EA4180080A33F /* KAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KAdvancedSettingsView.swift; sourceTree = "<group>"; };
+		2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KAdvancedSettingsView.xib; sourceTree = "<group>"; };
 		259925B120EF286500CCF2D6 /* KNListContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListContactViewController.swift; sourceTree = "<group>"; };
 		259925B220EF286500CCF2D6 /* KNListContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListContactViewController.xib; sourceTree = "<group>"; };
 		259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableViewCell.swift; sourceTree = "<group>"; };
@@ -1807,6 +1821,49 @@
 			path = Secret;
 			sourceTree = "<group>";
 		};
+		25426042212154200015ECC7 /* NewDesign */ = {
+			isa = PBXGroup;
+			children = (
+				2542604821215C230015ECC7 /* ViewModel */,
+				2542604721215C190015ECC7 /* Controller */,
+			);
+			path = NewDesign;
+			sourceTree = "<group>";
+		};
+		2542604721215C190015ECC7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2542604321215C120015ECC7 /* KSwapViewController.swift */,
+				2542604421215C120015ECC7 /* KSwapViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2542604821215C230015ECC7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2542604921215C360015ECC7 /* KSwapViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2542604B21218EBC0015ECC7 /* Popups */ = {
+			isa = PBXGroup;
+			children = (
+				2542604C21218ED60015ECC7 /* MinAcceptableRate */,
+			);
+			path = Popups;
+			sourceTree = "<group>";
+		};
+		2542604C21218ED60015ECC7 /* MinAcceptableRate */ = {
+			isa = PBXGroup;
+			children = (
+				2542604D21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift */,
+				2542604E21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib */,
+			);
+			path = MinAcceptableRate;
+			sourceTree = "<group>";
+		};
 		254BB32C211BEC6100B8E75D /* NewDesign */ = {
 			isa = PBXGroup;
 			children = (
@@ -2160,6 +2217,8 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				2542604B21218EBC0015ECC7 /* Popups */,
+				25968737211EA4000080A33F /* AdvancedSettings */,
 				254BB34F211D9A2300B8E75D /* Confirms */,
 				25682B6F20EE04CB009738C4 /* Contact */,
 				25682B7020EE051F009738C4 /* Token */,
@@ -2593,6 +2652,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		25968737211EA4000080A33F /* AdvancedSettings */ = {
+			isa = PBXGroup;
+			children = (
+				25968738211EA4180080A33F /* KAdvancedSettingsView.swift */,
+				2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */,
+			);
+			path = AdvancedSettings;
+			sourceTree = "<group>";
+		};
 		259925B520EF288400CCF2D6 /* ListContactView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2955,6 +3023,7 @@
 		25CC0A9A2057E2680009D0D5 /* KyberSwap */ = {
 			isa = PBXGroup;
 			children = (
+				25426042212154200015ECC7 /* NewDesign */,
 				25BE32992090969600D760FB /* SwapVC */,
 			);
 			path = KyberSwap;
@@ -4771,6 +4840,7 @@
 				25073D21211AF20D00833C92 /* Montserrat-Bold.ttf in Resources */,
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
+				2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */,
@@ -4790,6 +4860,7 @@
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				775DF43F203E38D3009CD082 /* NonFungibleTokenViewCell.xib in Resources */,
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
+				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */,
 				25696F5220BD2345002CC53F /* KNExchangeTabViewController.xib in Resources */,
@@ -4811,6 +4882,7 @@
 				2519E11520CFBF9400D8AFC5 /* IEOListViewController.xib in Resources */,
 				25929C9720DA5CC10045CFA3 /* SFCompactDisplay-Heavy.otf in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
+				2542604621215C120015ECC7 /* KSwapViewController.xib in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
 				25767B5020FD9367004FF538 /* IEOTransactionCollectionViewCell.xib in Resources */,
 				25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */,
@@ -5289,6 +5361,7 @@
 				294DFBA01FE0CADE004CEB56 /* TransactionDetailsViewModel.swift in Sources */,
 				29C80D4B1FB51C460037B1E0 /* Decimal.swift in Sources */,
 				297800521F71FDCF003185C1 /* FormAppearance.swift in Sources */,
+				25968739211EA4180080A33F /* KAdvancedSettingsView.swift in Sources */,
 				250343FF20DA37F700528810 /* KNSaveContactViewController.swift in Sources */,
 				77B3BF3C201908ED00EEC15A /* ConfirmCoordinator.swift in Sources */,
 				298542F91FBE9A0100CB5081 /* CryptoAddressValidator.swift in Sources */,
@@ -5327,6 +5400,7 @@
 				294EC1D81FD7FBAB0065EB20 /* BiometryAuthenticationType.swift in Sources */,
 				29E6E0721FEA200D0079265A /* ConfirmPaymentDetailsViewModel.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
+				2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */,
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				29E6E0701FEA12910079265A /* TransactionConfigurator.swift in Sources */,
 				299B5E3B1FD141B70051361C /* BackupViewModel.swift in Sources */,
@@ -5339,6 +5413,7 @@
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				775DF439203DFF62009CD082 /* OpenseaToken.swift in Sources */,
 				29F1C85A20036968003780D8 /* HelpUsCoordinator.swift in Sources */,
+				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
 				29D72A2A1F6A8D1500CE9209 /* AppCoordinator.swift in Sources */,
 				290B2B671F9266630053C83E /* SettingsAction.swift in Sources */,
 				293E626F1FA2ED1400CB0A66 /* InCoordinator.swift in Sources */,
@@ -5420,6 +5495,7 @@
 				2519E11420CFBF9400D8AFC5 /* IEOListViewController.swift in Sources */,
 				254BB358211D9F1400B8E75D /* KConfirmSendViewController.swift in Sources */,
 				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
+				2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */,
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				29E6E06E1FE897EE0079265A /* BrowserViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
