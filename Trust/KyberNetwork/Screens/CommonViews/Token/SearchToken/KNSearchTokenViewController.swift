@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 enum KNSearchTokenViewEvent {
   case cancel
@@ -14,6 +15,7 @@ protocol KNSearchTokenViewControllerDelegate: class {
 class KNSearchTokenViewModel {
 
   var supportedTokens: [TokenObject] = []
+  var balances: [String: Balance] = [:]
   var searchedText: String = "" {
     didSet {
       self.updateDisplayedTokens()
@@ -30,17 +32,28 @@ class KNSearchTokenViewModel {
   var isNoMatchingTokenHidden: Bool { return !self.displayedTokens.isEmpty }
 
   func updateDisplayedTokens() {
-    if self.searchedText == "" {
-      self.displayedTokens = self.supportedTokens
-      return
+    self.displayedTokens = {
+      if self.searchedText == "" {
+        return self.supportedTokens
+      }
+      return self.supportedTokens.filter({ ($0.symbol + " " + $0.name).lowercased().contains(self.searchedText.lowercased()) })
+    }()
+    self.displayedTokens.sort { (token0, token1) -> Bool in
+      guard let balance0 = self.balances[token0.contract] else { return false }
+      guard let balance1 = self.balances[token1.contract] else { return true }
+      return balance0.value * BigInt(10).power(18 - token0.decimals) > balance1.value * BigInt(10).power(18 - token1.decimals)
     }
-    self.displayedTokens = self.supportedTokens.filter({ ($0.symbol + " " + $0.name).lowercased().contains(self.searchedText.lowercased()) })
-    self.displayedTokens.sort(by: { return $0.symbol < $1.symbol })
   }
 
   func updateListSupportedTokens(_ tokens: [TokenObject]) {
     self.supportedTokens = tokens.sorted(by: { return $0.symbol < $1.symbol })
     self.updateDisplayedTokens()
+  }
+
+  func updateBalances(_ balances: [String: Balance]) {
+    balances.forEach { (key, value) in
+      self.balances[key] = value
+    }
   }
 }
 
@@ -48,7 +61,7 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate let kSearchTokenTableViewCellID: String = "CellID"
 
-  @IBOutlet weak var searchBar: UISearchBar!
+  @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var noMatchingTokensLabel: UILabel!
   @IBOutlet weak var tableViewBottomPaddingConstraint: NSLayoutConstraint!
@@ -89,20 +102,25 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.searchBar.text = ""
+    self.searchTextField.text = ""
     self.searchTextDidChange("")
-    self.searchBar.becomeFirstResponder()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-      self.searchBar.resignFirstResponder()
+    self.view.endEditing(true)
   }
 
   fileprivate func setupUI() {
-    self.searchBar.isTranslucent = true
-    self.searchBar.delegate = self
-    self.searchBar.backgroundImage = UIImage()
+    self.searchTextField.delegate = self
+    self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
+    self.searchTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: self.searchTextField.frame.height))
+    self.searchTextField.rounded(
+      color: UIColor(red: 231, green: 231, blue: 231),
+      width: 1,
+      radius: 5.0
+    )
+
     let nib = UINib(nibName: KNSearchTokenTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kSearchTokenTableViewCellID)
     self.tokensTableView.rowHeight = 46
@@ -139,7 +157,12 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.updateUIDisplayedDataDidChange()
   }
 
-  @IBAction func cancelButtonPressed(_ sender: Any) {
+  func updateBalances(_ balances: [String: Balance]) {
+    self.viewModel.updateBalances(balances)
+    self.updateUIDisplayedDataDidChange()
+  }
+
+  @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.searchTokenViewController(self, run: .cancel)
   }
 
@@ -162,21 +185,12 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
 }
 
-extension KNSearchTokenViewController: UISearchBarDelegate {
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    searchBar.text = searchText
-    self.searchTextDidChange(searchText)
-  }
-
-  func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    let text = ((searchBar.text ?? "") as NSString).replacingCharacters(in: range, with: text)
-    searchBar.text = text
+extension KNSearchTokenViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text
     self.searchTextDidChange(text)
     return false
-  }
-
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    self.searchBar.resignFirstResponder()
   }
 }
 
@@ -206,7 +220,8 @@ extension KNSearchTokenViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kSearchTokenTableViewCellID, for: indexPath) as! KNSearchTokenTableViewCell
     let token = self.viewModel.displayedTokens[indexPath.row]
-    cell.updateCell(with: token)
+    let balance = self.viewModel.balances[token.contract]
+    cell.updateCell(with: token, balance: balance)
     return cell
   }
 }

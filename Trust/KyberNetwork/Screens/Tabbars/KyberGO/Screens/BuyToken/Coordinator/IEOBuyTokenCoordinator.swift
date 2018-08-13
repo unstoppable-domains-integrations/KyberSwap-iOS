@@ -34,13 +34,7 @@ class IEOBuyTokenCoordinator: Coordinator {
 
   private(set) var setGasPriceVC: KNSetGasPriceViewController?
 
-  lazy var searchTokensViewController: KNSearchTokenViewController = {
-    let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
-    let controller = KNSearchTokenViewController(viewModel: viewModel)
-    controller.loadViewIfNeeded()
-    controller.delegate = self
-    return controller
-  }()
+  fileprivate(set) var searchTokensViewController: KNSearchTokenViewController?
 
   init(
     navigationController: UINavigationController,
@@ -329,8 +323,15 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
       self.navigationController.pushViewController(setGasPriceVC, animated: true)
     case .selectBuyToken:
       self.tokens = KNSupportedTokenStorage.shared.supportedTokens
-      self.searchTokensViewController.updateListSupportedTokens(self.tokens)
-      self.navigationController.present(self.searchTokensViewController, animated: true, completion: nil)
+      //TODO: Update balance from storage here
+      self.searchTokensViewController = {
+        let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
+        let controller = KNSearchTokenViewController(viewModel: viewModel)
+        controller.loadViewIfNeeded()
+        controller.delegate = self
+        return controller
+      }()
+      self.navigationController.pushViewController(self.searchTokensViewController!, animated: true)
     case .buy(let transaction):
       guard let userID = IEOUserStorage.shared.user?.userID else {
         self.showAlertUserNotSignIn()
@@ -352,7 +353,8 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
 // MARK: Search token
 extension IEOBuyTokenCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    self.searchTokensViewController.dismiss(animated: true) {
+    self.navigationController.popViewController(animated: true) {
+      self.searchTokensViewController = nil
       if case .select(let token) = event {
         self.rootViewController?.coordinatorUpdateBuyToken(token)
       }

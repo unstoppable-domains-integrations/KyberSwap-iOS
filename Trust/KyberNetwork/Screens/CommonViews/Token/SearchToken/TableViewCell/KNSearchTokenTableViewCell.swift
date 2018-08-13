@@ -1,12 +1,14 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 class KNSearchTokenTableViewCell: UITableViewCell {
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
   @IBOutlet weak var tokenSymbolLabel: UILabel!
+  @IBOutlet weak var balanceLabel: UILabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -16,7 +18,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     self.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
   }
 
-  func updateCell(with token: TokenObject) {
+  func updateCell(with token: TokenObject, balance: Balance?) {
     if let image = UIImage(named: token.icon.lowercased()) {
       self.iconImageView.image = image
     } else {
@@ -26,6 +28,12 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     }
     self.tokenSymbolLabel.text = token.symbol
     self.tokenNameLabel.text = token.name
+    let balText: String = balance?.value.string(
+      decimals: token.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: 6
+      ) ?? "--"
+    self.balanceLabel.text = "\(balText.prefix(12))"
     self.layoutIfNeeded()
   }
 }

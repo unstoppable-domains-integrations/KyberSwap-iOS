@@ -205,7 +205,7 @@ class KAdvancedSettingsView: XibLoaderView {
     self.minRatePercentLabel.text = "\(Float(self.viewModel.minRatePercent ?? 0.0)) %"
     self.minRateValueLabel.text = self.viewModel.minRateString ?? "0.0"
 
-    self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 32.0) * (self.viewModel.minRatePercent ?? 0.0) / 100.0
+    self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 40.0) * (self.viewModel.minRatePercent ?? 0.0) / 100.0
     self.layoutIfNeeded()
   }
 

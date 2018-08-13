@@ -22,13 +22,7 @@ class KNSendTokenViewCoordinator: Coordinator {
     return controller
   }()
 
-  lazy var searchTokensVC: KNSearchTokenViewController = {
-    let viewModel = KNSearchTokenViewModel(supportedTokens: self.session.tokenStorage.tokens)
-    let controller = KNSearchTokenViewController(viewModel: viewModel)
-    controller.loadViewIfNeeded()
-    controller.delegate = self
-    return controller
-  }()
+  fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -64,12 +58,14 @@ extension KNSendTokenViewCoordinator {
   func coordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
     balances.forEach { self.balances[$0.key] = $0.value }
     self.rootViewController.coordinatorUpdateBalances(self.balances)
+    self.searchTokensVC?.updateBalances(self.balances)
   }
 
   func coordinatorETHBalanceDidUpdate(ethBalance: Balance) {
     let eth = KNSupportedTokenStorage.shared.ethToken
     self.balances[eth.contract] = ethBalance
     self.rootViewController.coordinatorUpdateBalances(self.balances)
+    self.searchTokensVC?.updateBalances(self.balances)
   }
 
   func coordinatorShouldOpenSend(from token: TokenObject) {
@@ -77,9 +73,7 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
-    if self.searchTokensVC.isBeingPresented {
-      self.searchTokensVC.updateListSupportedTokens(tokenObjects)
-    }
+    self.searchTokensVC?.updateListSupportedTokens(tokenObjects)
   }
 
   func coordinatorGasPriceCachedDidUpdate() {
@@ -133,8 +127,15 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
     let tokens = self.session.tokenStorage.tokens
-    self.searchTokensVC.updateListSupportedTokens(tokens)
-    self.navigationController.present(self.searchTokensVC, animated: true, completion: nil)
+    self.searchTokensVC = {
+      let viewModel = KNSearchTokenViewModel(supportedTokens: tokens)
+      let controller = KNSearchTokenViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      return controller
+    }()
+    self.navigationController.pushViewController(self.searchTokensVC!, animated: true)
+    self.searchTokensVC?.updateBalances(self.balances)
   }
 
   fileprivate func send(transaction: UnconfirmedTransaction) {
@@ -165,7 +166,8 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
 // MARK: Search Token Delegate
 extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    self.searchTokensVC.dismiss(animated: true) {
+    self.navigationController.popViewController(animated: true) {
+      self.searchTokensVC = nil
       if case .select(let token) = event {
         let balance = self.balances[token.contract]
         self.rootViewController.coordinatorDidUpdateSendToken(token, balance: balance)
