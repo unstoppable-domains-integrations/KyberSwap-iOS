@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Medium.otf">
-            <string>SFProText-Medium</string>
-        </array>
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -37,30 +34,30 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtu-F5-xff">
-                            <rect key="frame" x="16" y="44" width="24" height="24"/>
+                            <rect key="frame" x="16" y="46" width="38" height="22"/>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="n6U-gd-s8C"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Rs-OX-FDh">
-                            <rect key="frame" x="127.5" y="44" width="120.5" height="24"/>
-                            <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
+                            <rect key="frame" x="130" y="46" width="115" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoQ-1Q-KRG">
-                            <rect key="frame" x="320" y="39.5" width="39" height="33"/>
-                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
+                            <rect key="frame" x="323" y="41.5" width="36" height="31"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="15"/>
                             <state key="normal" title="Save">
-                                <color key="titleColor" white="0.8570033482142857" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
                                 <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="JvY-z2-7xo"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.035294117649999998" green="0.15686274510000001" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="xoQ-1Q-KRG" secondAttribute="trailing" constant="16" id="1Ka-CH-kWh"/>
                         <constraint firstItem="jtu-F5-xff" firstAttribute="centerY" secondItem="3Rs-OX-FDh" secondAttribute="centerY" id="6jd-vX-mqi"/>
@@ -71,13 +68,13 @@
                         <constraint firstAttribute="height" constant="84" id="wi6-zz-A3t"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-fd-JG1">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-fd-JG1">
                     <rect key="frame" x="20" y="144" width="335" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="lyy-65-r1L"/>
                     </constraints>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GH5-LD-QK8">
@@ -87,13 +84,13 @@
                         <constraint firstAttribute="height" constant="1" id="d6S-vv-ORI"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s16-ZQ-yPb">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s16-ZQ-yPb">
                     <rect key="frame" x="20" y="226" width="303" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Tmm-nE-GuY"/>
                     </constraints>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4SF-HT-RtA">
@@ -103,14 +100,15 @@
                         <constraint firstAttribute="height" constant="1" id="roz-Rl-63G"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-cw-bBf">
-                    <rect key="frame" x="127.5" y="336" width="120" height="46"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-cw-bBf">
+                    <rect key="frame" x="20" y="320" width="160" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="120" id="9ay-kX-CaJ"/>
-                        <constraint firstAttribute="height" constant="46" id="NJV-L2-9k2"/>
+                        <constraint firstAttribute="width" constant="160" id="DR2-zZ-i7X"/>
+                        <constraint firstAttribute="height" constant="44" id="bDy-Tz-OUz"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
-                    <state key="normal" title="Delete">
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Delete Contact" image="delete_icon">
                         <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -118,7 +116,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vl5-9Y-Ubp">
-                    <rect key="frame" x="332" y="236.5" width="23" height="23"/>
+                    <rect key="frame" x="333" y="237" width="22" height="22"/>
                     <state key="normal" image="qr_code_icon"/>
                     <connections>
                         <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="NWW-Zt-WpF"/>
@@ -134,8 +132,8 @@
                 <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D88-EM-4l3"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="F6h-np-jp8"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="Hn5-fV-8hs"/>
-                <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="60" id="MFq-QG-LQg"/>
-                <constraint firstItem="sgh-cw-bBf" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="REk-0p-6am"/>
+                <constraint firstItem="sgh-cw-bBf" firstAttribute="leading" secondItem="4SF-HT-RtA" secondAttribute="leading" id="J46-O0-6aD"/>
+                <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="44" id="OYr-TV-T3q"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="top" secondItem="BZJ-op-odJ" secondAttribute="bottom" constant="60" id="Rfh-03-fTj"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Rmf-BA-2Vl"/>
                 <constraint firstItem="vl5-9Y-Ubp" firstAttribute="centerY" secondItem="s16-ZQ-yPb" secondAttribute="centerY" id="UY4-4g-YpT"/>
@@ -163,7 +161,8 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="back_white_icon" width="24" height="24"/>
-        <image name="qr_code_icon" width="23" height="23"/>
+        <image name="back_white_icon" width="38" height="19"/>
+        <image name="delete_icon" width="21" height="24"/>
+        <image name="qr_code_icon" width="22" height="22"/>
     </resources>
 </document>

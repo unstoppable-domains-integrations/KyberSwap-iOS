@@ -101,7 +101,7 @@ class KNTokenChartViewModel {
     }()
     let rateAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
-      NSAttributedStringKey.font: UIFont.Kyber.bold(with: 22),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
     ]
     let changeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: changeColor,

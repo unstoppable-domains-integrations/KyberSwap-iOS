@@ -35,7 +35,7 @@ class KNContactTableView: XibLoaderView {
     super.commonInit()
     let nib = UINib(nibName: KNContactTableViewCell.className, bundle: nil)
     self.tableView.register(nib, forCellReuseIdentifier: kContactTableViewCellID)
-    self.tableView.rowHeight = 44
+    self.tableView.rowHeight = KNContactTableViewCell.height
     self.tableView.delegate = self
     self.tableView.dataSource = self
 

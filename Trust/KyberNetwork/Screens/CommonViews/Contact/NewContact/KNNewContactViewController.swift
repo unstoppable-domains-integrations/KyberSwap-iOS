@@ -70,11 +70,6 @@ class KNNewContactViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.nameTextField.becomeFirstResponder()
-  }
-
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.view.endEditing(true)
@@ -82,7 +77,7 @@ class KNNewContactViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
-    self.deleteButton.setTitle("Delete".toBeLocalised(), for: .normal)
+    self.deleteButton.setTitle("Delete Contact".toBeLocalised(), for: .normal)
     self.updateUI()
   }
 

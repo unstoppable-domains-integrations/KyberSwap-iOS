@@ -110,13 +110,13 @@ class KSwapViewModel {
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-      ]
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
+    ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 13),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-      ]
+    ]
     let symbol = isSource ? self.from.symbol : self.to.symbol
     let name = isSource ? self.from.name : self.to.name
     attributedString.append(NSAttributedString(string: symbol, attributes: symbolAttributes))
