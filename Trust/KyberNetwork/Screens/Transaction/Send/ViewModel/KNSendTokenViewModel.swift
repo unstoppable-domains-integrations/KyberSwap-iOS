@@ -26,11 +26,12 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var addressString: String = ""
 
   var allTokenBalanceString: String {
-    return self.balance?.value.string(
+    let string = self.balance?.value.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: self.from.decimals
-    ) ?? ""
+      maxFractionDigits: min(self.from.decimals, 9)
+      ) ?? ""
+    return "\(string.prefix(12))"
   }
 
   var amountBigInt: BigInt {
@@ -57,11 +58,11 @@ class KNSendTokenViewModel: NSObject {
   var tokenButtonAttributedText: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 22)!,
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 13)!,
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 13),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     attributedString.append(NSAttributedString(string: self.from.symbol, attributes: symbolAttributes))
@@ -75,20 +76,20 @@ class KNSendTokenViewModel: NSObject {
 
   var displayBalance: String {
     guard let bal = self.balance else { return "---" }
-    return bal.value.shortString(decimals: self.from.decimals, maxFractionDigits: 6)
+    let string = bal.value.string(decimals: self.from.decimals, minFractionDigits: 0, maxFractionDigits: 9)
+    return "\(string.prefix(12))"
   }
 
   var placeHolderEnterAddress: String {
-    return "Enter address or scan QR code".toBeLocalised()
+    return "Recipient address".toBeLocalised()
   }
 
   var displayAddress: String? {
     if self.address == nil { return self.addressString }
-    let displayedString = "\(self.addressString.prefix(8))....\(self.addressString.suffix(6))"
     if let contact = KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) {
-      return "\(contact.name) - \(displayedString)"
+      return "\(contact.name) - \(self.addressString)"
     }
-    return displayedString
+    return self.addressString
   }
 
   var newContactTitle: String {

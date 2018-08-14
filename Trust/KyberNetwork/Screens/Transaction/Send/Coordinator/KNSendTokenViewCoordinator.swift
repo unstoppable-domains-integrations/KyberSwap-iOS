@@ -11,12 +11,12 @@ class KNSendTokenViewCoordinator: Coordinator {
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
 
-  lazy var rootViewController: KNSendTokenViewController = {
+  lazy var rootViewController: KSendTokenViewController = {
     let viewModel = KNSendTokenViewModel(
       from: self.from,
       balance: self.balances[self.from.contract]
     )
-    let controller = KNSendTokenViewController(viewModel: viewModel)
+    let controller = KSendTokenViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
     return controller
@@ -82,12 +82,12 @@ extension KNSendTokenViewCoordinator {
 }
 
 // MARK: Send Token View Controller Delegate
-extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
-  func sendTokenViewController(_ controller: KNSendTokenViewController, run event: KNSendTokenViewEvent) {
+extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
+  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KNSendTokenViewEvent) {
     switch event {
     case .back: self.stop()
-    case .setGasPrice(let gasPrice, let gasLimit):
-      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .setGasPrice:
+      break
     case .estimateGas(let transaction):
       self.estimateGasLimit(for: transaction)
     case .searchToken(let selectedToken):
@@ -99,17 +99,6 @@ extension KNSendTokenViewCoordinator: KNSendTokenViewControllerDelegate {
     case .contactSelectMore:
       self.openListContactsView()
     }
-  }
-
-  fileprivate func openSetGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
-    let setGasPriceVC: KNSetGasPriceViewController = {
-      let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
-      let controller = KNSetGasPriceViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.navigationController.pushViewController(setGasPriceVC, animated: true)
   }
 
   fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
@@ -183,15 +172,6 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
       if case .confirm(let type) = event, case .transfer(let transaction) = type {
         self.didConfirmTransfer(transaction)
       }
-    }
-  }
-}
-
-// MARK: Set Gas Price Delegate
-extension KNSendTokenViewCoordinator: KNSetGasPriceViewControllerDelegate {
-  func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
-    self.navigationController.popViewController(animated: true) {
-      self.rootViewController.coordinatorUpdateGasPrice(gasPrice)
     }
   }
 }

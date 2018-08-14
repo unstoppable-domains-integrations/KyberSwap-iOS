@@ -52,13 +52,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Token" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdZ-45-bZl">
-                            <rect key="frame" x="135" y="44" width="105.5" height="24"/>
+                            <rect key="frame" x="135.5" y="44" width="105.5" height="24"/>
                             <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rVx-8S-mug">
-                            <rect key="frame" x="16" y="44" width="24" height="24"/>
+                            <rect key="frame" x="16" y="45" width="38" height="22"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="back_white_icon">
@@ -101,7 +101,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CQa-79-1mu">
-                            <rect key="frame" x="309" y="452" width="23" height="23"/>
+                            <rect key="frame" x="310" y="452.5" width="22" height="22"/>
                             <state key="normal" image="qr_code_icon"/>
                             <connections>
                                 <action selector="scanQRCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="Puo-nW-Gxo"/>
@@ -303,11 +303,11 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="back_white_icon" width="24" height="24"/>
+        <image name="back_white_icon" width="38" height="19"/>
         <image name="eth" width="36" height="36"/>
         <image name="exchange_icon" width="76" height="76"/>
-        <image name="expand_icon" width="19" height="19"/>
+        <image name="expand_icon" width="24" height="24"/>
         <image name="more_option_gas_icon" width="19" height="4"/>
-        <image name="qr_code_icon" width="23" height="23"/>
+        <image name="qr_code_icon" width="22" height="22"/>
     </resources>
 </document>
