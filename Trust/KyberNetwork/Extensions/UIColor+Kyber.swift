@@ -59,5 +59,6 @@ extension UIColor {
     static var denim = UIColor(red: 29, green: 38, blue: 62)
 
     static var dashLine = UIColor(red: 172, green: 179, blue: 198)
+    static var border = UIColor(red: 202, green: 208, blue: 223)
   }
 }

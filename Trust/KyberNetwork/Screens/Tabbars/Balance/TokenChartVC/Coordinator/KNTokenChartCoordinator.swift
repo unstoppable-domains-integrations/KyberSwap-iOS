@@ -41,6 +41,9 @@ class KNTokenChartCoordinator: Coordinator {
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
+    if let bal = balances[self.token.contract] {
+      self.rootViewController.coordinatorUpdateBalance(balance: [self.token.contract: bal])
+    }
   }
 
   func stop() {
@@ -49,6 +52,9 @@ class KNTokenChartCoordinator: Coordinator {
 
   func coordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
     balances.forEach { self.balances[$0.key] = $0.value }
+    if let bal = balances[self.token.contract] {
+      self.rootViewController.coordinatorUpdateBalance(balance: [self.token.contract: bal])
+    }
     self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
 

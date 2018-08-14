@@ -72,6 +72,7 @@ class KNTokenChartViewModel {
   let token: TokenObject
   var type: KNTokenChartType = .day
   var data: [KNChartObject] = []
+  var balance: Balance = Balance(value: BigInt())
 
   init(token: TokenObject) {
     self.token = token
@@ -79,34 +80,70 @@ class KNTokenChartViewModel {
   }
 
   var navigationTitle: String {
-    return "(WIP) \(self.token.symbol) Price"
+    return "(WIP) \(self.token.symbol)"
   }
 
+  var isTokenSupported: Bool { return self.token.isSupported }
+
   var rateAttributedString: NSAttributedString {
+    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else {
+      return NSMutableAttributedString()
+    }
     let rateString: String = {
-      if let double = KNTrackerRateStorage.shared.trackerRate(for: self.token)?.rateETHNow {
-        let rate = BigInt(double * Double(EthereumUnit.ether.rawValue))
-        return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(10))
-      }
-      return "---"
+      let rate = BigInt(trackerRate.rateETHNow * Double(EthereumUnit.ether.rawValue))
+      return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(12))
     }()
-    let eth: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayDark,
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12, weight: .medium),
+    let change24hString: String = {
+      return String("\(trackerRate.changeETH24h)".prefix(5)) + " %"
+    }()
+    let changeColor: UIColor = {
+      return trackerRate.changeETH24h >= 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.fire
+    }()
+    let rateAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
+      NSAttributedStringKey.font: UIFont.Kyber.bold(with: 22),
     ]
-    let rate: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.black,
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 32, weight: .regular),
+    let changeAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: changeColor,
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
     ]
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "ETH ", attributes: eth))
-    attributedString.append(NSAttributedString(string: rateString, attributes: rate))
+    attributedString.append(NSAttributedString(string: "ETH \(rateString) ", attributes: rateAttributes))
+    attributedString.append(NSAttributedString(string: "\n\(change24hString)", attributes: changeAttributes))
     return attributedString
+  }
+
+  var balanceAttributedString: NSAttributedString {
+    let balance: String = self.balance.value.string(
+      decimals: self.token.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: 6
+    )
+    let balanceAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 18),
+    ]
+    let attributedString = NSMutableAttributedString()
+    attributedString.append(NSAttributedString(string: balance, attributes: balanceAttributes))
+    return attributedString
+  }
+
+  var totalValueString: String {
+    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
+    let value: BigInt = {
+      return trackerRate.rateETHBigInt * self.balance.value / BigInt(10).power(self.token.decimals)
+    }()
+    let valueString: String = value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    return "~ \(valueString.prefix(12)) ETH"
   }
 
   func updateType(_ newType: KNTokenChartType) {
     self.type = newType
     self.data = []
+  }
+
+  func updateBalance(_ balance: Balance) {
+    self.balance = balance
   }
 
   func updateData(_ newData: JSONDictionary, symbol: String, resolution: String) {
@@ -132,7 +169,7 @@ class KNTokenChartViewModel {
       return (x: Double($0.time - first.time) / (15.0 * 60.0), y: $0.close)
     }
     let series = ChartSeries(data: data)
-    series.color = UIColor.Kyber.green
+    series.color = UIColor.Kyber.blueGreen
     series.area = true
     return series
   }
@@ -143,6 +180,17 @@ class KNTokenChartViewModel {
     }
     let data = self.data.map { return Double($0.time - first.time) / (15.0 * 60.0) }
     return data
+  }
+
+  var yDoubleLables: [Double] {
+    if self.data.isEmpty { return [] }
+    var minDouble: Double = self.data.first!.close
+    var maxDouble: Double = self.data.first!.close
+    self.data.forEach({
+      minDouble = min(minDouble, $0.close)
+      maxDouble = max(maxDouble, $0.close)
+    })
+    return [minDouble, maxDouble]
   }
 
   func fetchNewData(for token: TokenObject, type: KNTokenChartType, completion: @escaping ((Result<Bool, AnyError>) -> Void)) {
@@ -194,9 +242,22 @@ class KNTokenChartViewModel {
 class KNTokenChartViewController: KNBaseViewController {
 
   @IBOutlet weak var navigationLabel: UILabel!
+  @IBOutlet weak var symbolLabel: UILabel!
+  @IBOutlet weak var nameLabel: UILabel!
+
   @IBOutlet weak var ethRateLabel: UILabel!
-  @IBOutlet weak var changePercentLabel: UILabel!
+  @IBOutlet weak var balanceLabel: UILabel!
+  @IBOutlet weak var totalValueLabel: UILabel!
+
   @IBOutlet weak var priceChart: Chart!
+  @IBOutlet weak var noDataLabel: UILabel!
+  @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var buyButton: UIButton!
+  @IBOutlet weak var sellButton: UIButton!
+  @IBOutlet weak var sendButton: UIButton!
+
+  @IBOutlet weak var dataTypeButtonContainerView: UIView!
+  @IBOutlet var dataTypeButtons: [UIButton]!
 
   weak var delegate: KNTokenChartViewControllerDelegate?
   fileprivate var viewModel: KNTokenChartViewModel
@@ -221,46 +282,105 @@ class KNTokenChartViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.startTimer()
+    if self.viewModel.isTokenSupported {
+      self.startTimer()
+    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    self.stopTimer()
+    if self.viewModel.isTokenSupported {
+      self.stopTimer()
+    }
   }
 
   fileprivate func setupUI() {
+    self.iconImageView.setTokenImage(
+      token: self.viewModel.token,
+      size: self.iconImageView.frame.size
+    )
     self.navigationLabel.text = self.viewModel.navigationTitle
-    self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
+    self.symbolLabel.text = self.viewModel.token.symbol
+    self.nameLabel.text = self.viewModel.token.name
 
-    self.changePercentLabel.isHidden = true
+    self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
+    self.ethRateLabel.textAlignment = .center
+    self.ethRateLabel.numberOfLines = 0
+
+    self.balanceLabel.attributedText = self.viewModel.balanceAttributedString
+    self.totalValueLabel.text = self.viewModel.totalValueString
+
     self.touchPriceLabel.isHidden = true
 
 //    self.priceChart.delegate = self
+    self.noDataLabel.isHidden = false
+
+    self.priceChart.isHidden = true
+    self.priceChart.labelColor = UIColor.Kyber.lightSeaGreen
+    self.priceChart.labelFont = UIFont.Kyber.medium(with: 12)
+
+    self.sendButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1,
+      radius: self.sendButton.frame.height / 2.0
+    )
+    self.buyButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1,
+      radius: self.buyButton.frame.height / 2.0
+    )
+    self.sellButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1,
+      radius: self.sellButton.frame.height / 2.0
+    )
+
+    if self.viewModel.isTokenSupported {
+      self.updateDisplayDataType(.day)
+    } else {
+      self.dataTypeButtonContainerView.isHidden = true
+      self.noDataLabel.text = "This token is not supported by Kyber Network".toBeLocalised()
+      self.buyButton.isHidden = true
+      self.sellButton.setTitle("SEND", for: .normal)
+      self.sendButton.isHidden = true
+    }
+  }
+
+  fileprivate func updateDisplayDataType(_ type: KNTokenChartType) {
+    self.viewModel.updateType(type)
+    self.touchPriceLabel.isHidden = true
+    for button in self.dataTypeButtons {
+      button.rounded(
+        color: button.tag == type.rawValue ? UIColor.Kyber.shamrock : UIColor.clear,
+        width: 2,
+        radius: 4.0
+      )
+    }
     self.reloadViewDataDidUpdate()
+    self.startTimer()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.tokenChartViewController(self, run: .back)
   }
 
-  @IBAction func actionButtonDidPress(_ sender: UISegmentedControl) {
-    if sender.selectedSegmentIndex == 0 {
+  @IBAction func actionButtonDidPress(_ sender: UIButton) {
+    if !self.viewModel.isTokenSupported {
+      self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
+      return
+    }
+    if sender.tag == 0 {
       self.delegate?.tokenChartViewController(self, run: .buy(token: self.viewModel.token))
-    } else if sender.selectedSegmentIndex == 1 {
+    } else if sender.tag == 1 {
       self.delegate?.tokenChartViewController(self, run: .sell(token: self.viewModel.token))
     } else {
       self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
     }
-    sender.selectedSegmentIndex = -1
   }
 
-  @IBAction func dataTypeDidChange(_ sender: UISegmentedControl) {
-    let type = KNTokenChartType(rawValue: sender.selectedSegmentIndex) ?? .day
-    self.touchPriceLabel.isHidden = true
-    self.viewModel.updateType(type)
-    self.reloadViewDataDidUpdate()
-    self.startTimer()
+  @IBAction func dataTypeDidChange(_ sender: UIButton) {
+    let type = KNTokenChartType(rawValue: sender.tag) ?? .day
+    self.updateDisplayDataType(type)
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -302,13 +422,30 @@ class KNTokenChartViewController: KNBaseViewController {
 
   fileprivate func reloadViewDataDidUpdate() {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
-    self.priceChart.removeAllSeries()
-    self.priceChart.add(self.viewModel.displayDataSeries)
-    self.priceChart.xLabels = []
+    if self.viewModel.data.isEmpty {
+      self.noDataLabel.isHidden = false
+      self.priceChart.isHidden = true
+    } else {
+      self.noDataLabel.isHidden = true
+      self.priceChart.isHidden = false
+      self.priceChart.removeAllSeries()
+      self.priceChart.add(self.viewModel.displayDataSeries)
+      self.priceChart.yLabels = self.viewModel.yDoubleLables
+      self.priceChart.yLabelsFormatter = { (_, value) in return String("\(value)".prefix(8)) }
+      self.priceChart.xLabels = []
+    }
   }
 
   func coordinatorUpdateETHRate() {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
+  }
+
+  func coordinatorUpdateBalance(balance: [String: Balance]) {
+    if let bal = balance[self.viewModel.token.contract] {
+      self.viewModel.updateBalance(bal)
+      self.balanceLabel.attributedText = self.viewModel.balanceAttributedString
+      self.totalValueLabel.text = self.viewModel.totalValueString
+    }
   }
 }
 

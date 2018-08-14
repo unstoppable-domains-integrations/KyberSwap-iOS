@@ -88,7 +88,7 @@ class KSwapViewController: KNBaseViewController {
     if !self.isViewSetup {
       self.isViewSetup = true
       self.setupUI()
-      self.fromAmountTextField.becomeFirstResponder()
+//      self.fromAmountTextField.becomeFirstResponder()
     }
   }
 
