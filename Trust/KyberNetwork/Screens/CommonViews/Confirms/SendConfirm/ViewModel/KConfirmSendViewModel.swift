@@ -63,7 +63,7 @@ struct KConfirmSendViewModel {
     let feeString: String = fee?.string(
       units: EthereumUnit.ether,
       minFractionDigits: 0,
-      maxFractionDigits: 6
+      maxFractionDigits: 9
     ) ?? ""
     return "\(feeString.prefix(12)) ETH"
   }

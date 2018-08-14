@@ -57,7 +57,8 @@ struct KConfirmSwapViewModel {
   }
 
   var feeETHString: String {
-    return self.transactionFee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
+    let string: String = self.transactionFee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 9)
+    return "\(string.prefix(12)) ETH"
   }
 
   var feeUSDString: String {
