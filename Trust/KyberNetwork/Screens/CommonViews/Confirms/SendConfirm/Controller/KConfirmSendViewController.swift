@@ -48,6 +48,12 @@ class KConfirmSendViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+  }
+
   fileprivate func setupUI() {
     self.titleLabel.text = self.viewModel.titleString
 

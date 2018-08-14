@@ -154,6 +154,13 @@ class KAdvancedSettingsView: XibLoaderView {
     self.minRateSlider.addTarget(self, action: #selector(self.minRateSliderDidChange(_:)), for: .valueChanged)
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.topSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.gasPriceSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.minRateSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+  }
+
   func updateViewModel(_ viewModel: KAdvancedSettingsViewModel) {
     self.viewModel = viewModel
     self.updateGasPriceUIs()

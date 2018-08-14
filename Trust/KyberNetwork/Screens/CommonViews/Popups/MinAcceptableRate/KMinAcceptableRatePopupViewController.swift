@@ -37,7 +37,7 @@ struct KMinAcceptableRatePopupViewModel {
     attributedString.append(NSAttributedString(string: "Min Acceptable Rate".toBeLocalised(), attributes: self.titleAttributes))
     attributedString.append(NSAttributedString(string: "\n\nGuard yourself during volatile times by setting the lowest conversion rate you would accept for this transaction.\n".toBeLocalised(), attributes: self.descAttributes))
     attributedString.append(NSAttributedString(string: "Setting a high value may result in a failed transaction and you would be charged gas fees.\n\n", attributes: self.descAttributes))
-    attributedString.append(NSAttributedString(string: "Our recommended                                           Min Acceptable Rate is ".toBeLocalised(), attributes: self.descAttributes))
+    attributedString.append(NSAttributedString(string: "Our recommended Min Acceptable Rate is ".toBeLocalised(), attributes: self.descAttributes))
     attributedString.append(NSAttributedString(string: minRate, attributes: self.highlightedAttributes))
     attributedString.append(NSAttributedString(string: " \(symbol)", attributes: self.descAttributes))
     return attributedString
