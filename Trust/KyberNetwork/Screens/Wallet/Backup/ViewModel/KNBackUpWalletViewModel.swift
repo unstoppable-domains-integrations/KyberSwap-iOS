@@ -42,15 +42,16 @@ class KNBackUpWalletViewModel {
     let word: String = self.seeds[wordID - 1]
     let attributedString: NSMutableAttributedString = {
       let idAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayDarker,
-        NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17),
+        NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
       ]
       let wordAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor.Kyber.orange,
+        NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+        NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
       ]
       let attributedString = NSMutableAttributedString()
-      attributedString.append(NSAttributedString(string: "\(wordID)", attributes: idAttributes))
-      attributedString.append(NSAttributedString(string: " \(word)", attributes: wordAttributes))
+      attributedString.append(NSAttributedString(string: "\(wordID).", attributes: idAttributes))
+      attributedString.append(NSAttributedString(string: "  \(word)", attributes: wordAttributes))
       return attributedString
     }()
     return attributedString
@@ -60,8 +61,19 @@ class KNBackUpWalletViewModel {
     self.currentWordIndex += self.numberWords
     if self.currentWordIndex >= self.maxWords - 1 {
       self.state = .testBackup
+      self.firstWordID = Int(arc4random() % 11) + 1
+      self.secondWordID = self.firstWordID + 1 + Int(arc4random() % UInt32(12 - self.firstWordID))
     } else {
       self.state = .backup
+    }
+  }
+
+  func updateModelBackPressed() {
+    if self.currentWordIndex == 0 { return }
+    if self.state == .testBackup {
+      self.backupAgain()
+    } else {
+      self.currentWordIndex = max(self.currentWordIndex - self.numberWords, 0)
     }
   }
 
@@ -76,10 +88,10 @@ class KNBackUpWalletViewModel {
   var backUpDescAttributedString: NSMutableAttributedString {
     if self.currentWordIndex > 0 { return NSMutableAttributedString() }
     let regularttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
     ]
     let boldAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold),
+      NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: "We will give you a list of 12 random words. Please ".toBeLocalised(), attributes: regularttributes))
@@ -104,7 +116,7 @@ class KNBackUpWalletViewModel {
 
   lazy var testingBackUpDescText: NSMutableAttributedString = {
     let regularttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
       ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(
@@ -142,7 +154,11 @@ class KNBackUpWalletViewModel {
     return self.state == .testBackup
   }
 
-  var isWroteDownButtonHidden: Bool {
+  var isBackButtonHidden: Bool {
+    return self.state == .backup && self.currentWordIndex == 0
+  }
+
+  var isNextButtonHidden: Bool {
     return self.state == .testBackup
   }
 

@@ -11,8 +11,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
   weak var delegate: KNBackUpWalletViewControllerDelegate?
   fileprivate var viewModel: KNBackUpWalletViewModel
 
-  fileprivate var timeLeft: Int = 0
-
+  @IBOutlet weak var backButton: UIButton!
   @IBOutlet weak var backupWalletLabel: UILabel!
   @IBOutlet weak var titlelabel: UILabel!
   @IBOutlet weak var descriptionLabel: UILabel!
@@ -20,9 +19,11 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   @IBOutlet var wordLabels: [UILabel]!
 
-  @IBOutlet weak var wroteDownButton: UIButton!
+  @IBOutlet weak var nextButton: UIButton!
   @IBOutlet weak var firstWordTextField: UITextField!
+  @IBOutlet weak var firstSeparatorView: UIView!
   @IBOutlet weak var secondWordTextField: UITextField!
+  @IBOutlet weak var secondSeparatorView: UIView!
   @IBOutlet weak var completeButton: UIButton!
 
   var isCompleteButtonEnabled: Bool {
@@ -42,24 +43,23 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.nextButton.rounded(radius: self.nextButton.frame.height / 2.0)
+    self.completeButton.rounded(radius: self.completeButton.frame.height / 2.0)
     self.backupWalletLabel.text = self.viewModel.headerText
-
-    self.wroteDownButton.setBackgroundColor(UIColor.Kyber.lightGray, forState: .disabled)
-    self.wroteDownButton.setBackgroundColor(UIColor.Kyber.lightGreen, forState: .normal)
-    self.wroteDownButton.semanticContentAttribute = .forceRightToLeft
 
     self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
     self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.firstWordTextField.delegate = self
+    self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
     self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
     self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.secondWordTextField.delegate = self
+    self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
-    self.completeButton.rounded(radius: 4.0)
     self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
-    self.completeButton.setBackgroundColor(UIColor.Kyber.lightGray, forState: .disabled)
-    self.completeButton.setBackgroundColor(UIColor.Kyber.lightGreen, forState: .normal)
+    self.completeButton.setBackgroundColor(UIColor(red: 237, green: 238, blue: 242), forState: .disabled)
+    self.completeButton.setBackgroundColor(UIColor.Kyber.shamrock, forState: .normal)
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
 
     self.updateUI()
@@ -71,15 +71,13 @@ class KNBackUpWalletViewController: KNBaseViewController {
       delay: 0,
       options: UIViewAnimationOptions.curveEaseInOut,
       animations: {
+        self.backButton.isHidden = self.viewModel.isBackButtonHidden
         self.backupWalletLabel.text = self.viewModel.headerText
         self.titlelabel.text = self.viewModel.titleText
         self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
         self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
         self.writeDownWordsTextLabel.isHidden = self.viewModel.isWriteDownWordsLabelHidden
-        self.timeLeft = self.viewModel.defaultTime
-        self.wroteDownButton.setTitle("\(self.timeLeft) seconds", for: .disabled)
-        self.wroteDownButton.isEnabled = false
-        self.wroteDownButton.isHidden = self.viewModel.isListWordsLabelsHidden
+        self.nextButton.isHidden = self.viewModel.isNextButtonHidden
 
         for id in 0..<self.viewModel.numberWords {
           let label = self.wordLabels.first(where: { $0.tag == id })
@@ -87,37 +85,31 @@ class KNBackUpWalletViewController: KNBaseViewController {
           label?.isHidden = self.viewModel.isListWordsLabelsHidden
         }
 
+        self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
         self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+        self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
+
+        self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
+        self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
         self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+
+        if self.firstWordTextField.isHidden {
+          self.view.endEditing(true)
+        }
 
         self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
         self.completeButton.isEnabled = self.isCompleteButtonEnabled
         self.view.layoutIfNeeded()
       }, completion: nil
     )
-
-    if self.viewModel.state == .backup {
-      self.updateWroteDownButton()
-    }
   }
 
-  fileprivate func updateWroteDownButton() {
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-      self.timeLeft -= 1
-      if self.timeLeft > 0 {
-        // FIXME: Using localizing plurals
-        let title: String = self.timeLeft == 1 ? "1 second" : "\(self.timeLeft) seconds"
-        self.wroteDownButton.setTitle(title, for: .disabled)
-        self.updateWroteDownButton()
-      } else {
-        self.wroteDownButton.setTitle(self.viewModel.wroteDownButtonTitle, for: .normal)
-        self.wroteDownButton.isEnabled = true
-      }
-      self.view.layoutIfNeeded()
-    }
+  @IBAction func bacButtonPressed(_ sender: Any) {
+    self.viewModel.updateModelBackPressed()
+    self.updateUI()
   }
 
-  @IBAction func wroteDownButtonPressed(_ sender: UIButton) {
+  @IBAction func nextButtonPressed(_ sender: UIButton) {
     self.viewModel.updateNextBackUpWords()
     self.updateUI()
   }
@@ -126,6 +118,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
     guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
       return
     }
+    self.view.endEditing(true)
     var isFirstTime: Bool = false
     var isSuccess: Bool = false
     if self.viewModel.isTestPassed(firstWord: firstWord, secondWord: secondWord) {

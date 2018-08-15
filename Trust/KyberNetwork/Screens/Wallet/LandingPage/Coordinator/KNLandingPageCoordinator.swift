@@ -88,7 +88,8 @@ class KNLandingPageCoordinator: Coordinator {
         // Open back up wallet if it is created from app and not backed up yet
         self.newWallet = wallet
         self.isCreate = true
-        self.createWalletCoordinator.updateNewWallet(wallet)
+        let name: String? = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.name
+        self.createWalletCoordinator.updateNewWallet(wallet, name: name)
         self.createWalletCoordinator.start()
       } else if KNPasscodeUtil.shared.currentPasscode() == nil {
         // In case user imported a wallet and kill the app during settings passcode
@@ -123,7 +124,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
     case .openCreateWallet:
-      self.createWalletCoordinator.updateNewWallet(nil)
+      self.createWalletCoordinator.updateNewWallet(nil, name: nil)
       self.createWalletCoordinator.start()
     case .openImportWallet:
       self.importWalletCoordinator.start()
@@ -158,6 +159,9 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
 }
 
 extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
+  func createWalletCoordinatorDidClose() {
+  }
+
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
     guard let wallet = wallet else { return }
     self.addNewWallet(wallet, isCreate: true, name: name)

@@ -79,7 +79,7 @@ class KNAddNewWalletCoordinator: Coordinator {
   fileprivate func createNewWallet() {
     self.isCreate = true
     self.newWallet = nil
-    self.createWalletCoordinator.updateNewWallet(nil)
+    self.createWalletCoordinator.updateNewWallet(nil, name: nil)
     self.createWalletCoordinator.start()
   }
 
@@ -101,6 +101,10 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
       KNWalletStorage.shared.add(wallets: [walletObject])
       self.delegate?.addNewWalletCoordinator(add: wallet)
     }
+  }
+
+  func createWalletCoordinatorDidClose() {
+    self.navigationController.dismiss(animated: false, completion: nil)
   }
 }
 
