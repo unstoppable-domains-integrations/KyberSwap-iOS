@@ -6,16 +6,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
         </array>
-        <array key="SF-Pro-Text-Semibold.otf">
-            <string>SFProText-Semibold</string>
+        <array key="Montserrat-Regular.ttf">
+            <string>Montserrat-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -24,8 +23,10 @@
                 <outlet property="descLabel" destination="WhK-I2-j2i" id="yS3-eD-pSd"/>
                 <outlet property="nextButton" destination="F1b-jf-zFf" id="e4a-Tj-fzb"/>
                 <outlet property="recoverSeedsLabel" destination="vYN-r3-AGA" id="kto-oO-YzR"/>
-                <outlet property="seedsTextView" destination="ohb-22-VVl" id="CcS-ix-Fy9"/>
+                <outlet property="seedsTextField" destination="Ij9-VL-InI" id="WiC-tJ-Z0A"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletNameTextField" destination="0HB-xF-UpI" id="n2H-bA-yW5"/>
+                <outlet property="wordsCountLabel" destination="bcy-tK-EEx" id="Af9-HG-Vwl"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -34,58 +35,96 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recover with seeds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYN-r3-AGA">
-                    <rect key="frame" x="107" y="36" width="162.5" height="20"/>
-                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <rect key="frame" x="99" y="36" width="177" height="22"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WhK-I2-j2i">
-                    <rect key="frame" x="45" y="68" width="285" height="101.5"/>
-                    <string key="text">Only for wallets created with
- Kyber  Mobile App. Please use seed, the 12 random words assigned when you create the wallet.</string>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WhK-I2-j2i">
+                    <rect key="frame" x="30" y="70" width="315" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ohb-22-VVl">
-                    <rect key="frame" x="45" y="189.5" width="285" height="142.5"/>
-                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="ohb-22-VVl" secondAttribute="height" multiplier="2:1" id="qdo-z0-TVo"/>
-                    </constraints>
-                    <string key="text">this is just a test for your reference my code is awesome if it has any bugs then it is my hidden features and thank you for discovering it</string>
-                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1b-jf-zFf">
                     <rect key="frame" x="35" y="589" width="305" height="48"/>
-                    <color key="backgroundColor" red="0.36862745099999999" green="0.76078431369999999" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="78q-ON-jDJ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="16"/>
-                    <state key="normal" title="NEXT">
+                    <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="IMPORT WALLET">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="9ux-CD-CCU"/>
                     </connections>
                 </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter your seeds" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ij9-VL-InI">
+                    <rect key="frame" x="24" y="119.5" width="327" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="tu1-Wj-Xq1"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" textContentType="password"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAo-9A-uFg">
+                    <rect key="frame" x="24" y="152.5" width="327" height="1"/>
+                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="xvn-YL-8cb"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of your wallet (optional)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0HB-xF-UpI">
+                    <rect key="frame" x="24" y="208.5" width="327" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="5cA-mP-dtQ"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ARF-7r-f6v">
+                    <rect key="frame" x="24" y="241.5" width="327" height="1"/>
+                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="IRg-CB-P0M"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Words Count: 12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcy-tK-EEx">
+                    <rect key="frame" x="253.5" y="176.5" width="97.5" height="15"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                    <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="ohb-22-VVl" firstAttribute="top" secondItem="WhK-I2-j2i" secondAttribute="bottom" constant="20" id="4o6-9c-wMb"/>
+                <constraint firstItem="ARF-7r-f6v" firstAttribute="trailing" secondItem="0HB-xF-UpI" secondAttribute="trailing" id="1L6-eq-VzM"/>
+                <constraint firstItem="zAo-9A-uFg" firstAttribute="trailing" secondItem="ARF-7r-f6v" secondAttribute="trailing" id="8yf-wd-jt0"/>
+                <constraint firstItem="ARF-7r-f6v" firstAttribute="top" secondItem="0HB-xF-UpI" secondAttribute="bottom" constant="-12" id="AXG-FF-krC"/>
+                <constraint firstItem="bcy-tK-EEx" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" id="AhX-cx-hpN"/>
+                <constraint firstItem="Ij9-VL-InI" firstAttribute="top" secondItem="WhK-I2-j2i" secondAttribute="bottom" constant="32" id="BQU-aP-Syc"/>
                 <constraint firstAttribute="trailing" secondItem="F1b-jf-zFf" secondAttribute="trailing" constant="35" id="EsI-Xv-vCc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="F1b-jf-zFf" secondAttribute="bottom" constant="30" id="F1D-F9-fSy"/>
+                <constraint firstItem="ARF-7r-f6v" firstAttribute="leading" secondItem="0HB-xF-UpI" secondAttribute="leading" id="GyR-hG-J7A"/>
                 <constraint firstItem="WhK-I2-j2i" firstAttribute="top" secondItem="vYN-r3-AGA" secondAttribute="bottom" constant="12" id="JiU-E0-xys"/>
-                <constraint firstItem="WhK-I2-j2i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="MSp-x2-ECo"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ohb-22-VVl" secondAttribute="trailing" constant="45" id="P3h-Id-a9c"/>
+                <constraint firstItem="WhK-I2-j2i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="MSp-x2-ECo"/>
+                <constraint firstItem="0HB-xF-UpI" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" id="NbC-Fa-l1d"/>
                 <constraint firstItem="vYN-r3-AGA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="ReR-tT-V2G"/>
                 <constraint firstItem="F1b-jf-zFf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="ZQ4-z0-G1q"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WhK-I2-j2i" secondAttribute="trailing" constant="45" id="dUn-xo-SRW"/>
-                <constraint firstItem="ohb-22-VVl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="hU8-mz-fn0"/>
+                <constraint firstItem="zAo-9A-uFg" firstAttribute="leading" secondItem="Ij9-VL-InI" secondAttribute="leading" id="ZqJ-wr-2XM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WhK-I2-j2i" secondAttribute="trailing" constant="30" id="dUn-xo-SRW"/>
+                <constraint firstItem="0HB-xF-UpI" firstAttribute="leading" secondItem="Ij9-VL-InI" secondAttribute="leading" id="fJG-N6-wzN"/>
+                <constraint firstItem="zAo-9A-uFg" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="-12" id="hv7-lk-sno"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" constant="24" id="iwv-H8-gjQ"/>
+                <constraint firstItem="Ij9-VL-InI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="lS1-bV-e2r"/>
                 <constraint firstItem="vYN-r3-AGA" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="onZ-7s-Koy"/>
+                <constraint firstItem="bcy-tK-EEx" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="12" id="qFq-Yg-rVs"/>
+                <constraint firstItem="0HB-xF-UpI" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="44" id="xQG-Ws-qjp"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

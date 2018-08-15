@@ -84,7 +84,7 @@ extension KNBalanceTabCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     if resetRoot {
-      self.navigationController.popToRootViewController(animated: false)
+      self.navigationController.popToRootViewController(animated: true)
     }
 //    let viewModel: KNBalanceTabViewModel = {
 //      let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens

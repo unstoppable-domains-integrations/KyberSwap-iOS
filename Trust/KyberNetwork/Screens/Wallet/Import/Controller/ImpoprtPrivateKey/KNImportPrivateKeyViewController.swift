@@ -4,7 +4,7 @@ import UIKit
 import QRCodeReaderViewController
 
 protocol KNImportPrivateKeyViewControllerDelegate: class {
-  func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String)
+  func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String, name: String?)
 }
 
 class KNImportPrivateKeyViewController: KNBaseViewController {
@@ -14,6 +14,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   private var isSecureText: Bool = true
   @IBOutlet weak var secureTextButton: UIButton!
   @IBOutlet weak var enterPrivateKeyTextLabel: UILabel!
+  @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var enterPrivateKeyTextField: UITextField!
   @IBOutlet weak var privateKeyNoteLabel: UILabel!
 
@@ -24,35 +25,42 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.resetUI()
-  }
-
   fileprivate func setupUI() {
-    self.enterPrivateKeyTextLabel.text = "1. Enter your Private Key".toBeLocalised()
-    self.enterPrivateKeyTextField.rounded(radius: 4.0)
-    self.enterPrivateKeyTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    self.enterPrivateKeyTextField.leftViewMode = .always
-    self.enterPrivateKeyTextField.rightViewMode = .always
+    self.enterPrivateKeyTextLabel.text = "Your Private Key".toBeLocalised()
     self.enterPrivateKeyTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0))
+    self.enterPrivateKeyTextField.rightViewMode = .always
+    self.enterPrivateKeyTextField.delegate = self
 
-    self.nextButton.rounded(radius: 4.0)
     self.privateKeyNoteLabel.text = "Private key has to be 64 characaters".toBeLocalised()
 
+    self.nextButton.rounded(radius: self.nextButton.frame.height / 2.0)
+    self.nextButton.setBackgroundColor(UIColor(red: 237, green: 238, blue: 242), forState: .disabled)
+    self.nextButton.setBackgroundColor(UIColor.Kyber.shamrock, forState: .normal)
+
     self.resetUI()
   }
 
-  fileprivate func resetUI() {
+  func resetUI() {
     self.enterPrivateKeyTextField.text = ""
+    self.walletNameTextField.text = ""
     self.isSecureText = true
     self.updateSecureTextEntry()
+
+    self.updateNextButton()
   }
 
   fileprivate func updateSecureTextEntry() {
     let secureTextImage = UIImage(named: self.isSecureText ? "hide_secure_text" : "show_secure_text")
     self.secureTextButton.setImage(secureTextImage, for: .normal)
     self.enterPrivateKeyTextField.isSecureTextEntry = self.isSecureText
+  }
+
+  fileprivate func updateNextButton() {
+    let enabled: Bool = {
+      if let text = self.enterPrivateKeyTextField.text, !text.isEmpty { return true }
+      return false
+    }()
+    self.nextButton.isEnabled = enabled
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {
@@ -68,17 +76,22 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 
   @IBAction func nextButtonPressed(_ sender: Any) {
     let privateKey: String = self.enterPrivateKeyTextField.text ?? ""
-    guard privateKey.count == 64 else {
-      self.showErrorTopBannerMessage(
-        with: "Invalid input".toBeLocalised(),
-        message: "Private key should have 64 characters".toBeLocalised()
-      )
-      return
-    }
     self.delegate?.importPrivateKeyViewControllerDidPressNext(
       sender: self,
-      privateKey: privateKey
+      privateKey: privateKey,
+      name: self.walletNameTextField.text
     )
+  }
+}
+
+extension KNImportPrivateKeyViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text
+    if textField == self.enterPrivateKeyTextField {
+      self.updateNextButton()
+    }
+    return false
   }
 }
 
@@ -90,6 +103,7 @@ extension KNImportPrivateKeyViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.enterPrivateKeyTextField.text = result
+      self.updateNextButton()
     }
   }
 }

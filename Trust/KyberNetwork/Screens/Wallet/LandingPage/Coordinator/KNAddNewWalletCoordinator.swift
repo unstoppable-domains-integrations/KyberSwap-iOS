@@ -24,7 +24,8 @@ class KNAddNewWalletCoordinator: Coordinator {
     let coordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
       keystore: self.keystore,
-      newWallet: nil
+      newWallet: nil,
+      name: nil
     )
     coordinator.delegate = self
     return coordinator
@@ -65,7 +66,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     controller.addAction(UIAlertAction(title: "Import a wallet", style: .default, handler: { _ in
       self.importAWallet()
     }))
-    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+    controller.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
       self.navigationController.dismiss(animated: false, completion: nil)
     }))
     return controller
@@ -87,49 +88,35 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.newWallet = nil
     self.importWalletCoordinator.start()
   }
-
-  fileprivate func createAddWalletName() {
-    guard let wallet = self.newWallet else { return }
-    // Add wallet to database in case user kills app
-    let walletObject = KNWalletObject(address: wallet.address.description)
-    KNWalletStorage.shared.add(wallets: [walletObject])
-
-    let enterNameVC: KNEnterWalletNameViewController = {
-      let viewModel = KNEnterWalletNameViewModel(walletObject: walletObject)
-      let controller = KNEnterWalletNameViewController(viewModel: viewModel)
-      controller.delegate = self
-      controller.modalPresentationStyle = .overFullScreen
-      controller.modalTransitionStyle = .crossDissolve
-      return controller
-    }()
-    self.navigationController.present(enterNameVC, animated: true, completion: nil)
-  }
 }
 
 extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?) {
-    self.newWallet = wallet
-    self.createAddWalletName()
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
+    guard let wallet = wallet else { return }
+    self.navigationController.dismiss(animated: true) {
+      let walletObject = KNWalletObject(
+        address: wallet.address.description,
+        name: name ?? "Untitled"
+      )
+      KNWalletStorage.shared.add(wallets: [walletObject])
+      self.delegate?.addNewWalletCoordinator(add: wallet)
+    }
   }
 }
 
 extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
-  func importWalletCoordinatorDidImport(wallet: Wallet) {
-    self.newWallet = wallet
-    self.createAddWalletName()
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
+    self.navigationController.dismiss(animated: true) {
+      let walletObject = KNWalletObject(
+        address: wallet.address.description,
+        name: name ?? "Untitled"
+      )
+      KNWalletStorage.shared.add(wallets: [walletObject])
+      self.delegate?.addNewWalletCoordinator(add: wallet)
+    }
   }
 
   func importWalletCoordinatorDidClose() {
-    self.navigationController.dismiss(animated: false, completion: nil)
-  }
-}
-
-extension KNAddNewWalletCoordinator: KNEnterWalletNameViewControllerDelegate {
-  func enterWalletNameDidNext(sender: KNEnterWalletNameViewController, walletObject: KNWalletObject) {
-    self.navigationController.dismiss(animated: true) {
-      KNWalletStorage.shared.add(wallets: [walletObject])
-      guard let wallet = self.newWallet else { return }
-      self.delegate?.addNewWalletCoordinator(add: wallet)
-    }
+    self.navigationController.dismiss(animated: true, completion: nil)
   }
 }

@@ -4,9 +4,9 @@ import UIKit
 
 enum KNImportWalletViewEvent {
   case back
-  case importJSON(json: String, password: String)
-  case importPrivateKey(privateKey: String)
-  case importSeeds(seeds: [String])
+  case importJSON(json: String, password: String, name: String?)
+  case importPrivateKey(privateKey: String, name: String?)
+  case importSeeds(seeds: [String], name: String?)
 }
 
 protocol KNImportWalletViewControllerDelegate: class {
@@ -18,10 +18,15 @@ class KNImportWalletViewController: KNBaseViewController {
   weak var delegate: KNImportWalletViewControllerDelegate?
 
   fileprivate var isViewSetup: Bool = false
-  @IBOutlet weak var buttonsTabBar: UITabBar!
-  @IBOutlet var bottomIndicatorViews: [UIView]!
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var pageControl: UIPageControl!
+  @IBOutlet weak var jsonButton: UIButton!
+  @IBOutlet weak var privateKeyButton: UIButton!
+  @IBOutlet weak var seedsButton: UIButton!
+
+  fileprivate var importJSONVC: KNImportJSONViewController?
+  fileprivate var importPrivateKeyVC: KNImportPrivateKeyViewController?
+  fileprivate var importSeedsVC: KNImportSeedsViewController?
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
@@ -37,51 +42,45 @@ class KNImportWalletViewController: KNBaseViewController {
     }
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.jsonButton.centerVertically(padding: 10)
+    self.privateKeyButton.centerVertically(padding: 10)
+    self.seedsButton.centerVertically(padding: 10)
+  }
+
   fileprivate func setupUI() {
-    self.setupTabBarView()
+    self.setupImportTypeButtons()
     self.setupScrollView()
   }
 
-  fileprivate func setupTabBarView() {
-    self.buttonsTabBar.layer.borderWidth = 0.0
-    self.buttonsTabBar.clipsToBounds = true
+  fileprivate func setupImportTypeButtons() {
+    self.jsonButton.rounded(radius: 10.0)
+    self.jsonButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.jsonButton.setBackgroundColor(UIColor.white, forState: .normal)
+    self.jsonButton.setImage(UIImage(named: "json_import_select_icon"), for: .selected)
+    self.jsonButton.setImage(UIImage(named: "json_import_icon"), for: .normal)
+    self.jsonButton.setTitleColor(UIColor.white, for: .selected)
+    self.jsonButton.setTitleColor(UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.jsonButton.centerVertically(padding: 10)
 
-    let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18),
-      ]
-    let jsonItem: UITabBarItem = UITabBarItem(
-      title: "JSON",
-      image: UIImage(named: "import_json_icon"),
-      selectedImage: UIImage(named: "import_json_icon")
-    )
-    jsonItem.setTitleTextAttributes(attributes, for: .normal)
-    jsonItem.setTitleTextAttributes(attributes, for: .selected)
-    jsonItem.tag = 0
-    let privateKeyItem: UITabBarItem = UITabBarItem(
-      title: "Private Key",
-      image: UIImage(named: "import_private_key_icon"),
-      selectedImage: UIImage(named: "import_private_key_icon")
-    )
-    privateKeyItem.setTitleTextAttributes(attributes, for: .normal)
-    privateKeyItem.setTitleTextAttributes(attributes, for: .selected)
-    privateKeyItem.tag = 1
-    let seedsItem: UITabBarItem = UITabBarItem(
-      title: "Seeds",
-      image: UIImage(named: "import_seeds_icon"),
-      selectedImage: UIImage(named: "import_seeds_icon")
-    )
-    seedsItem.setTitleTextAttributes(attributes, for: .normal)
-    seedsItem.setTitleTextAttributes(attributes, for: .selected)
-    seedsItem.tag = 2
-    self.buttonsTabBar.items = [
-      jsonItem,
-      privateKeyItem,
-      seedsItem,
-    ]
-    self.buttonsTabBar.unselectedItemTintColor = .white
-    self.buttonsTabBar.selectedItem = jsonItem
-    self.bottomIndicatorViews[0].backgroundColor = UIColor.Kyber.lighterGreen
-    self.buttonsTabBar.delegate = self
+    self.privateKeyButton.rounded(radius: 10.0)
+    self.privateKeyButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.privateKeyButton.setImage(UIImage(named: "private_key_import_select_icon"), for: .selected)
+    self.privateKeyButton.setImage(UIImage(named: "private_key_import_icon"), for: .normal)
+    self.privateKeyButton.setBackgroundColor(UIColor.white, forState: .normal)
+    self.privateKeyButton.setTitleColor(UIColor.white, for: .selected)
+    self.privateKeyButton.setTitleColor(UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.privateKeyButton.centerVertically(padding: 10)
+
+    self.seedsButton.rounded(radius: 10.0)
+    self.seedsButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.seedsButton.setImage(UIImage(named: "seeds_import_select_icon"), for: .selected)
+    self.seedsButton.setImage(UIImage(named: "seeds_import_icon"), for: .normal)
+    self.seedsButton.setBackgroundColor(UIColor.white, forState: .normal)
+    self.seedsButton.setTitleColor(UIColor.white, for: .selected)
+    self.seedsButton.setTitleColor(UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.seedsButton.centerVertically(padding: 10)
   }
 
   fileprivate func setupScrollView() {
@@ -99,16 +98,19 @@ class KNImportWalletViewController: KNBaseViewController {
       controller.delegate = self
       return controller
     }()
+    self.importJSONVC = importJSONVC
     let importPrivateKeyVC: KNImportPrivateKeyViewController = {
       let controller = KNImportPrivateKeyViewController()
       controller.delegate = self
       return controller
     }()
+    self.importPrivateKeyVC = importPrivateKeyVC
     let importSeedsVC: KNImportSeedsViewController = {
       let controller = KNImportSeedsViewController()
       controller.delegate = self
       return controller
     }()
+    self.importSeedsVC = importSeedsVC
     let viewControllers = [importJSONVC, importPrivateKeyVC, importSeedsVC]
     self.scrollView.contentSize = CGSize(
       width: CGFloat(viewControllers.count) * width,
@@ -128,6 +130,18 @@ class KNImportWalletViewController: KNBaseViewController {
       )
       viewController.didMove(toParentViewController: self)
     }
+    self.updateUIWithCurrentPage(0)
+  }
+
+  func resetUIs() {
+    self.importJSONVC?.resetUIs()
+    self.importPrivateKeyVC?.resetUI()
+    self.importSeedsVC?.resetUIs()
+    self.updateUIWithCurrentPage(0)
+  }
+
+  @IBAction func importTypeButtonPressed(_ sender: UIButton) {
+    self.updateUIWithCurrentPage(sender.tag)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -142,21 +156,19 @@ class KNImportWalletViewController: KNBaseViewController {
     self.view.endEditing(true)
     UIView.animate(withDuration: 0.15) {
       self.pageControl.currentPage = page
-      self.buttonsTabBar.selectedItem = self.buttonsTabBar.items?.first(where: { $0.tag == page })
+      self.jsonButton.isSelected = false
+      self.privateKeyButton.isSelected = false
+      self.seedsButton.isSelected = false
+      if page == 0 {
+        self.jsonButton.isSelected = true
+      } else if page == 1 {
+        self.privateKeyButton.isSelected = true
+      } else {
+        self.seedsButton.isSelected = true
+      }
       let x = CGFloat(page) * self.scrollView.frame.size.width
       self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
-      self.bottomIndicatorViews.forEach {
-        $0.backgroundColor = $0.tag == page ? UIColor.Kyber.lighterGreen : .clear
-      }
       self.view.layoutIfNeeded()
-    }
-  }
-}
-
-extension KNImportWalletViewController: UITabBarDelegate {
-  func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-    if let id = tabBar.items?.index(of: item) {
-      self.updateUIWithCurrentPage(id)
     }
   }
 }
@@ -169,10 +181,10 @@ extension KNImportWalletViewController: UIScrollViewDelegate {
 }
 
 extension KNImportWalletViewController: KNImportJSONViewControllerDelegate {
-  func importJSONViewControllerDidPressNext(sender: KNImportJSONViewController, json: String, password: String) {
+  func importJSONViewControllerDidPressNext(sender: KNImportJSONViewController, json: String, password: String, name: String?) {
     self.delegate?.importWalletViewController(
       self,
-      run: .importJSON(json: json, password: password)
+      run: .importJSON(json: json, password: password, name: name)
     )
     let json: JSONDictionary = ["json": json, "password": password]
     KNNotificationUtil.postNotification(for: "notification", object: nil, userInfo: json)
@@ -180,16 +192,16 @@ extension KNImportWalletViewController: KNImportJSONViewControllerDelegate {
 }
 
 extension KNImportWalletViewController: KNImportPrivateKeyViewControllerDelegate {
-  func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String) {
+  func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String, name: String?) {
     self.delegate?.importWalletViewController(
       self,
-      run: .importPrivateKey(privateKey: privateKey)
+      run: .importPrivateKey(privateKey: privateKey, name: name)
     )
   }
 }
 
 extension KNImportWalletViewController: KNImportSeedsViewControllerDelegate {
-  func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String]) {
-    self.delegate?.importWalletViewController(self, run: .importSeeds(seeds: seeds))
+  func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String], name: String?) {
+    self.delegate?.importWalletViewController(self, run: .importSeeds(seeds: seeds, name: name))
   }
 }

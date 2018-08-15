@@ -13,7 +13,6 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   fileprivate var timeLeft: Int = 0
 
-  @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var backupWalletLabel: UILabel!
   @IBOutlet weak var titlelabel: UILabel!
   @IBOutlet weak var descriptionLabel: UILabel!
@@ -43,7 +42,6 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.iconImageView.image = UIImage(named: self.viewModel.iconName)
     self.backupWalletLabel.text = self.viewModel.headerText
 
     self.wroteDownButton.setBackgroundColor(UIColor.Kyber.lightGray, forState: .disabled)
@@ -73,7 +71,6 @@ class KNBackUpWalletViewController: KNBaseViewController {
       delay: 0,
       options: UIViewAnimationOptions.curveEaseInOut,
       animations: {
-        self.iconImageView.image = UIImage(named: self.viewModel.iconName)
         self.backupWalletLabel.text = self.viewModel.headerText
         self.titlelabel.text = self.viewModel.titleText
         self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText

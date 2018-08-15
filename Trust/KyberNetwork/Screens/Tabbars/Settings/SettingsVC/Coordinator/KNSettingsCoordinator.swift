@@ -62,7 +62,7 @@ class KNSettingsCoordinator: Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     if resetRoot {
-      self.navigationController.popToRootViewController(animated: false)
+      self.navigationController.popToRootViewController(animated: true)
     }
     self.listWalletsCoordinator.updateNewSession(self.session)
     self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)

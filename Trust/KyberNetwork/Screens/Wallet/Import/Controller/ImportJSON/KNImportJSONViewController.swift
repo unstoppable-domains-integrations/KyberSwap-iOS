@@ -3,7 +3,7 @@
 import UIKit
 
 protocol KNImportJSONViewControllerDelegate: class {
-  func importJSONViewControllerDidPressNext(sender: KNImportJSONViewController, json: String, password: String)
+  func importJSONViewControllerDidPressNext(sender: KNImportJSONViewController, json: String, password: String, name: String?)
 }
 
 class KNImportJSONViewController: KNBaseViewController {
@@ -18,11 +18,10 @@ class KNImportJSONViewController: KNBaseViewController {
     ]
   }()
 
-  @IBOutlet weak var importJSONTextLabel: UILabel!
+  @IBOutlet weak var nameWalletTextField: UITextField!
   @IBOutlet weak var importJSONButton: UIButton!
-
-  @IBOutlet weak var enterPasswordTextLabel: UILabel!
   @IBOutlet weak var enterPasswordTextField: UITextField!
+  @IBOutlet weak var secureTextButton: UIButton!
 
   @IBOutlet weak var nextButton: UIButton!
   override func viewDidLoad() {
@@ -32,55 +31,64 @@ class KNImportJSONViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+  }
+
+  func resetUIs() {
     let attributedString: NSAttributedString = {
       return NSAttributedString(
-        string: "Import from Files/Dropbox/etc".toBeLocalised(),
+        string: "Import your JSON file".toBeLocalised(),
         attributes: self.buttonAttributes
       )
     }()
+    self.jsonData = ""
     self.importJSONButton.setAttributedTitle(attributedString, for: .normal)
+    self.nameWalletTextField.text = ""
     self.enterPasswordTextField.text = ""
+    self.secureTextButton.setImage(UIImage(named: "hide_secure_text"), for: .normal)
+    self.enterPasswordTextField.isSecureTextEntry = true
+
+    self.updateNextButton()
   }
 
   fileprivate func setupUI() {
-    self.importJSONTextLabel.text = "1. Import your JSON file".toBeLocalised()
-    self.importJSONButton.rounded(radius: 4.0)
-    let attributedString: NSAttributedString = {
-      return NSAttributedString(
-        string: "Import from Files/Dropbox/etc".toBeLocalised(),
-        attributes: self.buttonAttributes
-      )
+    self.importJSONButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1,
+      radius: self.importJSONButton.frame.height / 2.0
+    )
+    self.enterPasswordTextField.delegate = self
+
+    self.nextButton.rounded(radius: self.nextButton.frame.height / 2.0)
+    self.nextButton.setBackgroundColor(UIColor(red: 237, green: 238, blue: 242), forState: .disabled)
+    self.nextButton.setBackgroundColor(UIColor.Kyber.shamrock, forState: .normal)
+    self.resetUIs()
+  }
+
+  fileprivate func updateNextButton() {
+    let enabled: Bool = {
+      guard let password = self.enterPasswordTextField.text else { return false }
+      return !password.isEmpty && !self.jsonData.isEmpty
     }()
-    self.importJSONButton.setAttributedTitle(attributedString, for: .normal)
-
-    let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    self.enterPasswordTextLabel.text = "2. Enter Password to Decrypt".toBeLocalised()
-    self.enterPasswordTextField.rounded(radius: 4.0)
-    self.enterPasswordTextField.leftViewMode = .always
-    self.enterPasswordTextField.leftView = paddingView
-    self.enterPasswordTextField.rightView = paddingView
-
-    self.nextButton.rounded(radius: 4.0)
+    self.nextButton.isEnabled = enabled
   }
 
   @IBAction func importJSONButtonPressed(_ sender: Any) {
     self.showDocumentPicker()
   }
 
+  @IBAction func secureTextButtonPressed(_ sender: Any) {
+    self.enterPasswordTextField.isSecureTextEntry = !self.enterPasswordTextField.isSecureTextEntry
+    self.secureTextButton.setImage(UIImage(named: self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+  }
+
   @IBAction func nextButtonPressed(_ sender: Any) {
     let password: String = self.enterPasswordTextField.text ?? ""
-    if password.isEmpty || jsonData.isEmpty {
-      self.showWarningTopBannerMessage(
-        with: "Field Required".toBeLocalised(),
-        message: "Please check your input data again.".toBeLocalised()
-      )
-    } else {
-      self.delegate?.importJSONViewControllerDidPressNext(
-        sender: self,
-        json: self.jsonData,
-        password: self.enterPasswordTextField.text ?? ""
-      )
-    }
+    self.delegate?.importJSONViewControllerDidPressNext(
+      sender: self,
+      json: self.jsonData,
+      password: password,
+      name: self.nameWalletTextField.text
+    )
   }
 }
 
@@ -119,6 +127,7 @@ extension KNImportJSONViewController: UIDocumentPickerDelegate {
               )
             }()
             self.importJSONButton.setAttributedTitle(attributedString, for: .normal)
+            self.updateNextButton()
           }, completion: nil
         )
       } else {
@@ -128,5 +137,16 @@ extension KNImportJSONViewController: UIDocumentPickerDelegate {
         )
       }
     }
+  }
+}
+
+extension KNImportJSONViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text
+    if textField == self.enterPasswordTextField {
+      self.updateNextButton()
+    }
+    return false
   }
 }

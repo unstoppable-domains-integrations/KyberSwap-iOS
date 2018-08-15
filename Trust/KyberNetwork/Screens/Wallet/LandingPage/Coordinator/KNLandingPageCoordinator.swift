@@ -43,7 +43,8 @@ class KNLandingPageCoordinator: Coordinator {
     let coordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
       keystore: self.keystore,
-      newWallet: self.newWallet
+      newWallet: self.newWallet,
+      name: nil
     )
     coordinator.delegate = self
     return coordinator
@@ -101,28 +102,20 @@ class KNLandingPageCoordinator: Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool) {
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?) {
     // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description)
+    let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled")
     KNWalletStorage.shared.add(wallets: [walletObject])
     self.newWallet = wallet
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
-    self.openEnterWalletName(walletObject: walletObject)
-  }
 
-  // Enter wallet name (optional) for each imported/created wallet
-  // After name will be settings passcode if it is the first added wallet
-  fileprivate func openEnterWalletName(walletObject: KNWalletObject) {
-    let enterNameVC: KNEnterWalletNameViewController = {
-      let viewModel = KNEnterWalletNameViewModel(walletObject: walletObject)
-      let controller = KNEnterWalletNameViewController(viewModel: viewModel)
-      controller.delegate = self
-      controller.modalPresentationStyle = .overFullScreen
-      controller.modalTransitionStyle = .crossDissolve
-      return controller
-    }()
-    self.navigationController.topViewController?.present(enterNameVC, animated: true, completion: nil)
+    if self.keystore.wallets.count == 1 {
+      KNPasscodeUtil.shared.deletePasscode()
+      self.passcodeCoordinator.start()
+    } else {
+      self.delegate?.landingPageCoordinator(import: wallet)
+    }
   }
 }
 
@@ -141,8 +134,8 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
 }
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
-  func importWalletCoordinatorDidImport(wallet: Wallet) {
-    self.addNewWallet(wallet, isCreate: false)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
+    self.addNewWallet(wallet, isCreate: false, name: name)
   }
 
   func importWalletCoordinatorDidClose() {
@@ -165,21 +158,8 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
 }
 
 extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?) {
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
     guard let wallet = wallet else { return }
-    self.addNewWallet(wallet, isCreate: true)
-  }
-}
-
-extension KNLandingPageCoordinator: KNEnterWalletNameViewControllerDelegate {
-  func enterWalletNameDidNext(sender: KNEnterWalletNameViewController, walletObject: KNWalletObject) {
-    KNWalletStorage.shared.update(wallets: [walletObject])
-    guard let wallet = self.newWallet else { return }
-    if self.keystore.wallets.count == 1 {
-      KNPasscodeUtil.shared.deletePasscode()
-      self.passcodeCoordinator.start()
-    } else {
-      self.delegate?.landingPageCoordinator(import: wallet)
-    }
+    self.addNewWallet(wallet, isCreate: true, name: name)
   }
 }

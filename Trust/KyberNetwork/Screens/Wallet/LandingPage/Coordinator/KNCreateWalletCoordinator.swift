@@ -5,7 +5,7 @@ import TrustKeystore
 import TrustCore
 
 protocol KNCreateWalletCoordinatorDelegate: class {
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?)
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?)
 }
 
 class KNCreateWalletCoordinator: Coordinator {
@@ -15,27 +15,30 @@ class KNCreateWalletCoordinator: Coordinator {
   var keystore: Keystore
 
   fileprivate var newWallet: Wallet?
+  fileprivate var name: String?
   weak var delegate: KNCreateWalletCoordinatorDelegate?
 
   init(
     navigationController: UINavigationController,
     keystore: Keystore,
-    newWallet: Wallet?
+    newWallet: Wallet?,
+    name: String?
     ) {
     self.navigationController = navigationController
     self.keystore = keystore
     self.newWallet = newWallet
+    self.name = name
   }
 
   func start() {
     if let wallet = self.newWallet {
-      self.openBackUpWallet(wallet)
+      self.openBackUpWallet(wallet, name: self.name)
     } else {
       DispatchQueue.global(qos: .userInitiated).async {
         let account = self.keystore.create12wordsAccount(with: "")
         DispatchQueue.main.async {
           let wallet = Wallet(type: WalletType.real(account))
-          self.openBackUpWallet(wallet)
+          self.openBackUpWallet(wallet, name: self.name)
         }
       }
     }
@@ -49,7 +52,7 @@ class KNCreateWalletCoordinator: Coordinator {
    Open back up wallet view for new wallet created from the app
    Always using 12 words seeds to back up the wallet
    */
-  fileprivate func openBackUpWallet(_ wallet: Wallet) {
+  fileprivate func openBackUpWallet(_ wallet: Wallet, name: String?) {
     let walletObject: KNWalletObject = {
       if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
         return walletObject
@@ -63,11 +66,12 @@ class KNCreateWalletCoordinator: Coordinator {
     let account: Account! = {
       if case .real(let acc) = wallet.type { return acc }
       // Failed to get account from wallet, show enter name
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet)
+      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name)
       fatalError("Wallet type is not real wallet")
     }()
 
     self.newWallet = wallet
+    self.name = name
     self.keystore.recentlyUsedWallet = wallet
     KNWalletStorage.shared.add(wallets: [walletObject])
 
@@ -83,7 +87,7 @@ class KNCreateWalletCoordinator: Coordinator {
       self.navigationController.pushViewController(backUpVC, animated: true)
     } else {
       // Failed to get seeds result, temporary open create name for wallet
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet)
+      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name)
       fatalError("Can not get seeds from account")
     }
   }
@@ -94,9 +98,10 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.address.description,
+      name: self.name ?? "Untitled",
       isBackedUp: true
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet)
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)
   }
 }
