@@ -29,6 +29,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
 
+  @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
 
@@ -88,7 +89,6 @@ class KSwapViewController: KNBaseViewController {
     if !self.isViewSetup {
       self.isViewSetup = true
       self.setupUI()
-//      self.fromAmountTextField.becomeFirstResponder()
     }
   }
 
@@ -135,6 +135,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.walletNameLabel.text = self.viewModel.walletNameString
     self.setupTokensView()
     self.setupHamburgerMenu()
     self.setupAdvancedSettingsView()
@@ -377,6 +378,7 @@ extension KSwapViewController {
    */
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
+    self.walletNameLabel.text = self.viewModel.walletNameString
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
@@ -392,6 +394,7 @@ extension KSwapViewController {
 
   func coordinatorUpdateWalletObjects() {
     self.viewModel.updateWalletObject()
+    self.walletNameLabel.text = self.viewModel.walletNameString
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.walletObject

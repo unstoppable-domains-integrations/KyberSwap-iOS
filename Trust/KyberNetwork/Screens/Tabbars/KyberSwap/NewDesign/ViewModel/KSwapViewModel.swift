@@ -45,6 +45,9 @@ class KSwapViewModel {
     self.supportedTokens = supportedTokens
   }
 
+  // MARK: Wallet name
+  var walletNameString: String { return "| \(self.walletObject.name)" }
+
   // MARK: From Token
   var allFromTokenBalanceString: String {
     return self.balance?.value.string(
