@@ -128,12 +128,12 @@ struct KNHistoryViewModel {
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.shamrock,
+    NSAttributedStringKey.foregroundColor: UIColor.white,
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.white,
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.blueGreen,
   ]
 }
 
@@ -270,11 +270,11 @@ extension KNHistoryViewController: UICollectionViewDelegate {
 
 extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 5
+    return 0
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -309,7 +309,8 @@ extension KNHistoryViewController: UICollectionViewDataSource {
       let model = KNHistoryTransactionCollectionViewModel(
         transaction: tx,
         ownerAddress: self.viewModel.currentWallet.address,
-        ownerWalletName: self.viewModel.currentWallet.name
+        ownerWalletName: self.viewModel.currentWallet.name,
+        index: indexPath.row
       )
       cell.updateCell(with: model)
     } else {
@@ -317,7 +318,8 @@ extension KNHistoryViewController: UICollectionViewDataSource {
       let model = KNHistoryTransactionCollectionViewModel(
         transaction: tx,
         ownerAddress: self.viewModel.currentWallet.address,
-        ownerWalletName: self.viewModel.currentWallet.name
+        ownerWalletName: self.viewModel.currentWallet.name,
+        index: indexPath.row
       )
       cell.updateCell(with: model)
     }

@@ -10,11 +10,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
-        </array>
-        <array key="SF-Pro-Text-Semibold.otf">
-            <string>SFProText-Semibold</string>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -34,14 +31,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nN-NM-xeF">
-                    <rect key="frame" x="67.5" y="498.5" width="240" height="55"/>
+                    <rect key="frame" x="35" y="498.5" width="305" height="45"/>
                     <color key="backgroundColor" red="0.19215686274509802" green="0.79607843137254897" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="55" id="6mu-2u-eOF"/>
-                        <constraint firstAttribute="width" constant="240" id="dQZ-63-8PA"/>
+                        <constraint firstAttribute="height" constant="45" id="6mu-2u-eOF"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="20"/>
-                    <state key="normal" title="Create Wallet">
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="CREATE WALLET">
                         <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -49,25 +45,24 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSF-ar-Svx">
-                    <rect key="frame" x="67" y="563.5" width="240" height="55"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="34.5" y="559.5" width="305" height="45"/>
+                    <color key="backgroundColor" red="0.5450980392" green="0.80784313730000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="55" id="DjG-tf-vi0"/>
-                        <constraint firstAttribute="width" constant="240" id="SwM-oq-fCi"/>
+                        <constraint firstAttribute="height" constant="45" id="DjG-tf-vi0"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="20"/>
-                    <state key="normal" title="Import Wallet">
-                        <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="IMPORT WALLET">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="importWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="VSM-qD-bU9"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2C-Xx-uQV">
-                    <rect key="frame" x="115.5" y="628.5" width="144" height="29"/>
-                    <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
+                    <rect key="frame" x="109.5" y="614.5" width="156" height="30"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                     <state key="normal" title="Terms and Conditions">
-                        <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="termAndConditionButtonPressed:" destination="-1" eventType="touchUpInside" id="bFH-li-6Cc"/>
@@ -84,14 +79,14 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tFk-DS-wvQ" customClass="KNWelcomeScreenCollectionView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="33.5" width="374" height="420"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="0.0" y="33.5" width="375" height="420"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="420" id="DOl-rp-h6x"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="1Oj-gl-3BQ"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="23k-02-WgT"/>
@@ -100,8 +95,10 @@
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="top" secondItem="tFk-DS-wvQ" secondAttribute="bottom" constant="45" id="M0s-bS-VxY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0di-8l-vR4" secondAttribute="trailing" constant="20" id="RP4-xf-y34"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="XMu-FQ-vgN"/>
+                <constraint firstItem="7nN-NM-xeF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="Zw5-M0-db4"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="crj-sf-UWc"/>
-                <constraint firstItem="hSF-ar-Svx" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="10" id="czi-Ho-ydb"/>
+                <constraint firstItem="hSF-ar-Svx" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="16" id="czi-Ho-ydb"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7nN-NM-xeF" secondAttribute="trailing" constant="35" id="fC0-YG-Cwe"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0di-8l-vR4" secondAttribute="bottom" constant="10" id="ji3-dn-2C2"/>
                 <constraint firstItem="y2C-Xx-uQV" firstAttribute="top" secondItem="hSF-ar-Svx" secondAttribute="bottom" constant="10" id="ks2-I0-iHf"/>
                 <constraint firstItem="y2C-Xx-uQV" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="yWW-ia-7GG"/>

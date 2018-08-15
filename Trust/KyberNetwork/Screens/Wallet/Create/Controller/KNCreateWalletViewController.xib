@@ -58,7 +58,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-JK-yXd">
-                    <rect key="frame" x="35" y="359" width="305" height="48"/>
+                    <rect key="frame" x="35" y="319" width="305" height="48"/>
                     <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="mNG-4C-43C"/>
@@ -99,7 +99,7 @@
                 <constraint firstItem="jce-zd-CUD" firstAttribute="top" secondItem="RqY-TQ-uft" secondAttribute="bottom" constant="-12" id="YUX-kr-M7k"/>
                 <constraint firstItem="RqY-TQ-uft" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="aR3-0W-DHt"/>
                 <constraint firstItem="pey-7Y-GES" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bVj-Hh-aDO"/>
-                <constraint firstItem="I6g-JK-yXd" firstAttribute="top" secondItem="RqY-TQ-uft" secondAttribute="bottom" constant="200" id="fNT-27-5LG"/>
+                <constraint firstItem="I6g-JK-yXd" firstAttribute="top" secondItem="RqY-TQ-uft" secondAttribute="bottom" constant="160" id="fNT-27-5LG"/>
                 <constraint firstItem="pey-7Y-GES" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fu1-Sn-DY8"/>
                 <constraint firstItem="I6g-JK-yXd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="jMy-dR-UUl"/>
                 <constraint firstItem="RqY-TQ-uft" firstAttribute="top" secondItem="pey-7Y-GES" secondAttribute="bottom" constant="32" id="kGa-qi-zes"/>

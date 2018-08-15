@@ -40,7 +40,8 @@ class KNImportSeedsViewController: KNBaseViewController {
   fileprivate func updateNextButton() {
     let enabled: Bool = {
       guard let seeds = self.seedsTextField.text?.trimmed else { return false }
-      let words = seeds.components(separatedBy: " ").map({ $0.trimmed })
+      var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
+      words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
       return words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
@@ -55,7 +56,8 @@ class KNImportSeedsViewController: KNBaseViewController {
         )
         return
       }
-      let words = seeds.components(separatedBy: " ").map({ $0.trimmed })
+      var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
+      words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
       if words.count == self.numberWords {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
@@ -76,11 +78,21 @@ class KNImportSeedsViewController: KNBaseViewController {
 }
 
 extension KNImportSeedsViewController: UITextFieldDelegate {
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    textField.text = ""
+    if textField == self.seedsTextField {
+      self.wordsCountLabel.text = "Words Count: 0"
+      self.updateNextButton()
+    }
+    return false
+  }
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     if textField == self.seedsTextField {
-      self.wordsCountLabel.text = "Words Count: \(text.components(separatedBy: " ").map({ $0.trimmed }).count)"
+      var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+      words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+      self.wordsCountLabel.text = "Words Count: \(words.count)"
       self.updateNextButton()
     }
     return false

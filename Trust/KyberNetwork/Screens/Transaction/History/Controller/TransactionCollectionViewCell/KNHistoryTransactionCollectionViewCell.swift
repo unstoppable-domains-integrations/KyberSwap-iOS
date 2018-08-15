@@ -7,6 +7,7 @@ protocol KNHistoryTransactionCollectionViewCellDelegate: class {
 }
 
 struct KNHistoryTransactionCollectionViewModel {
+  let index: Int
   let transaction: Transaction
   let ownerAddress: String
   let ownerWalletName: String
@@ -14,12 +15,16 @@ struct KNHistoryTransactionCollectionViewModel {
   init(
     transaction: Transaction,
     ownerAddress: String,
-    ownerWalletName: String
+    ownerWalletName: String,
+    index: Int
     ) {
     self.transaction = transaction
     self.ownerAddress = ownerAddress
     self.ownerWalletName = ownerWalletName
+    self.index = index
   }
+
+  var backgroundColor: UIColor { return self.index % 2 == 0 ? UIColor.white : UIColor.clear }
 
   var isSwap: Bool { return self.transaction.localizedOperations.first?.type == "exchange" }
   var isSent: Bool {
@@ -125,6 +130,7 @@ class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
 
   func updateCell(with model: KNHistoryTransactionCollectionViewModel) {
     self.viewModel = model
+    self.backgroundColor = model.backgroundColor
     self.stateImageView.image = UIImage(named: model.iconName)
     self.transactionStateTitleLabel.text = model.transactionTitleString
     self.transactionDescLabel.attributedText = model.descriptionLabelAttributedString

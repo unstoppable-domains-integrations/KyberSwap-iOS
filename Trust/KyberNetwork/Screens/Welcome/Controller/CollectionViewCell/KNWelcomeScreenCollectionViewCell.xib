@@ -6,16 +6,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Medium.otf">
-            <string>SFProText-Medium</string>
-        </array>
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -28,36 +24,33 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8v5-dI-w9v">
-                        <rect key="frame" x="67.5" y="16" width="240" height="240"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_kyberswap" translatesAutoresizingMaskIntoConstraints="NO" id="8v5-dI-w9v">
+                        <rect key="frame" x="137" y="84" width="101" height="92"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="240" id="6sJ-H5-9b9"/>
-                            <constraint firstAttribute="width" secondItem="8v5-dI-w9v" secondAttribute="height" multiplier="1:1" id="o8D-cp-bUf"/>
-                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberDeveloper: Powering Decentralized Liquidity" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n2K-hw-Me4">
-                        <rect key="frame" x="30" y="276" width="315" height="53"/>
-                        <fontDescription key="fontDescription" name="SFProText-Medium" family="SF Pro Text" pointSize="22"/>
-                        <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="35" y="227" width="305" height="44"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instant, Secure and Friendly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lg7-lM-55N">
-                        <rect key="frame" x="30" y="339" width="315" height="17"/>
-                        <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="14"/>
-                        <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify account just once and participate to all token sales hosted on KyberGO." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lg7-lM-55N">
+                        <rect key="frame" x="20" y="289" width="335" height="34.5"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <color key="textColor" red="0.5450980392" green="0.80784313730000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
+            <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="n2K-hw-Me4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="7LW-DQ-xye"/>
-                <constraint firstItem="n2K-hw-Me4" firstAttribute="top" secondItem="8v5-dI-w9v" secondAttribute="bottom" constant="20" id="FKY-LR-wQL"/>
-                <constraint firstItem="8v5-dI-w9v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="16" id="I6K-kS-kwJ"/>
+                <constraint firstItem="n2K-hw-Me4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="35" id="7LW-DQ-xye"/>
+                <constraint firstItem="n2K-hw-Me4" firstAttribute="top" secondItem="8v5-dI-w9v" secondAttribute="bottom" constant="51" id="FKY-LR-wQL"/>
+                <constraint firstItem="8v5-dI-w9v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="84" id="I6K-kS-kwJ"/>
                 <constraint firstItem="n2K-hw-Me4" firstAttribute="centerX" secondItem="8v5-dI-w9v" secondAttribute="centerX" id="TO1-VJ-xyk"/>
                 <constraint firstItem="8v5-dI-w9v" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Vdu-Gv-GLL"/>
-                <constraint firstItem="lg7-lM-55N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="YSd-dt-Urf"/>
-                <constraint firstItem="lg7-lM-55N" firstAttribute="top" secondItem="n2K-hw-Me4" secondAttribute="bottom" constant="10" id="oAP-kw-uer"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="YSd-dt-Urf"/>
+                <constraint firstItem="lg7-lM-55N" firstAttribute="top" secondItem="n2K-hw-Me4" secondAttribute="bottom" constant="18" id="oAP-kw-uer"/>
                 <constraint firstItem="lg7-lM-55N" firstAttribute="centerX" secondItem="n2K-hw-Me4" secondAttribute="centerX" id="wdG-0e-ksT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -68,4 +61,7 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="welcome_kyberswap" width="101" height="92"/>
+    </resources>
 </document>

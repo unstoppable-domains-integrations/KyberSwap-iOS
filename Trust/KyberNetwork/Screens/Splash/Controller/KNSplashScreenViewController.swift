@@ -5,10 +5,16 @@ import UIKit
 class KNSplashScreenViewController: UIViewController {
 
   @IBOutlet weak var splashLogoImageView: UIImageView!
+  @IBOutlet weak var debugInfoView: UIView!
+  @IBOutlet weak var versionLabel: UILabel!
+  @IBOutlet weak var networkLabel: UILabel!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.backgroundColor = UIColor.white
+    //TODO: Remove in prod build
+    //self.debugInfoView.isHidden = isDebug
+    self.versionLabel.text = "Version: \(Bundle.main.versionNumber ?? "")"
+    self.networkLabel.text = "Network: \(KNEnvironment.default.displayName)"
   }
 
   override func viewDidDisappear(_ animated: Bool) {
