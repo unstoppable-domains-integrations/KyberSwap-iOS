@@ -127,12 +127,12 @@ struct KNHistoryViewModel {
   }
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 13)!,
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.green,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.shamrock,
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 13)!,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
     NSAttributedStringKey.foregroundColor: UIColor.white,
   ]
 }
@@ -287,7 +287,7 @@ extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     return CGSize(
       width: collectionView.frame.width,
-      height: 32
+      height: 44
     )
   }
 }

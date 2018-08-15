@@ -48,12 +48,12 @@ struct KNHistoryTransactionCollectionViewModel {
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.lightGray,
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
   ]
 
   var descriptionLabelAttributedString: NSAttributedString {
@@ -69,7 +69,9 @@ struct KNHistoryTransactionCollectionViewModel {
       return "\(self.transaction.from.prefix(8))....\(self.transaction.from.suffix(6))"
     }()
     let toText: String = {
-      if self.isSent { return "\(self.transaction.to.prefix(8))....\(self.transaction.to.suffix(6))" }
+      if self.isSent {
+        return "\(self.transaction.to.prefix(8))....\(self.transaction.to.suffix(6))"
+      }
       return self.ownerWalletName
     }()
     attributedString.append(NSAttributedString(string: "From ", attributes: normalTextAttributes))
