@@ -17,7 +17,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="addContactButton" destination="CLT-QW-LlX" id="m1b-0x-u8Q"/>
+                <outlet property="contactEmptyLabel" destination="APl-2d-Lg3" id="r60-mV-FOn"/>
                 <outlet property="contactTableView" destination="0eJ-nQ-IR7" id="Kii-ul-jFu"/>
+                <outlet property="emptyStateView" destination="O1V-Us-qFQ" id="VLa-Fr-5Wf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -62,25 +65,64 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="Trust" customModuleProvider="target">
-                    <rect key="frame" x="20" y="84" width="335" height="583"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1V-Us-qFQ">
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your contact is empty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APl-2d-Lg3">
+                            <rect key="frame" x="20" y="100" width="335" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLT-QW-LlX">
+                            <rect key="frame" x="72" y="187" width="231" height="45"/>
+                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="JGi-40-gbu"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="ADD CONTACT">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="ynT-Me-YRh"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="APl-2d-Lg3" firstAttribute="leading" secondItem="O1V-Us-qFQ" secondAttribute="leading" constant="20" id="6PX-Vk-24Z"/>
+                        <constraint firstAttribute="trailing" secondItem="CLT-QW-LlX" secondAttribute="trailing" constant="72" id="JSe-iS-lGA"/>
+                        <constraint firstAttribute="trailing" secondItem="APl-2d-Lg3" secondAttribute="trailing" constant="20" id="gtz-Cs-UQf"/>
+                        <constraint firstItem="APl-2d-Lg3" firstAttribute="top" secondItem="O1V-Us-qFQ" secondAttribute="top" constant="100" id="oKM-vK-jgL"/>
+                        <constraint firstItem="CLT-QW-LlX" firstAttribute="leading" secondItem="O1V-Us-qFQ" secondAttribute="leading" constant="72" id="rrK-YB-7by"/>
+                        <constraint firstItem="CLT-QW-LlX" firstAttribute="top" secondItem="APl-2d-Lg3" secondAttribute="bottom" constant="65" id="u92-EX-Pn2"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="O1V-Us-qFQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3Ch-Vu-Dr8"/>
                 <constraint firstItem="6Nx-3L-1U6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DuY-ql-7gd"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0eJ-nQ-IR7" secondAttribute="bottom" id="KoO-dy-EQH"/>
-                <constraint firstItem="0eJ-nQ-IR7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Lgr-Zb-axb"/>
+                <constraint firstItem="0eJ-nQ-IR7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Lgr-Zb-axb"/>
+                <constraint firstItem="O1V-Us-qFQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="N7s-O6-5AF"/>
                 <constraint firstItem="0eJ-nQ-IR7" firstAttribute="top" secondItem="6Nx-3L-1U6" secondAttribute="bottom" id="a2b-HW-UT0"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0eJ-nQ-IR7" secondAttribute="trailing" constant="20" id="i3V-6j-0oh"/>
+                <constraint firstItem="O1V-Us-qFQ" firstAttribute="top" secondItem="6Nx-3L-1U6" secondAttribute="bottom" id="hD1-Yc-ARg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0eJ-nQ-IR7" secondAttribute="trailing" id="i3V-6j-0oh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6Nx-3L-1U6" secondAttribute="trailing" id="mXL-aT-jGs"/>
                 <constraint firstItem="6Nx-3L-1U6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pWb-JZ-tFw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="O1V-Us-qFQ" secondAttribute="bottom" id="vPm-vT-5y6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="HH1-PQ-gRm" appends="YES" id="Vbp-lZ-5Wa"/>
             </connections>
+            <point key="canvasLocation" x="24.5" y="51.5"/>
         </view>
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="HH1-PQ-gRm">
             <rectEdge key="edges" left="YES"/>

@@ -410,6 +410,13 @@ extension KNSendTokenViewController: KNContactTableViewDelegate {
       self.delegate?.sendTokenViewController(self, run: .addContact(address: contact.address))
     case .delete(let contact):
       self.contactTableView(delete: contact)
+    case .send(let address):
+      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+        self.contactTableView(select: contact)
+      } else {
+        self.viewModel.updateAddress(address)
+        self.updateUIAddressQRCode()
+      }
     }
   }
 

@@ -21,6 +21,7 @@
                 <outlet property="deleteButton" destination="sgh-cw-bBf" id="RQE-hw-ZYa"/>
                 <outlet property="nameTextField" destination="0ca-fd-JG1" id="3lL-Rk-yNb"/>
                 <outlet property="saveButton" destination="xoQ-1Q-KRG" id="uSP-df-hu3"/>
+                <outlet property="sendButton" destination="UgQ-zj-c6L" id="d05-Y1-8Pd"/>
                 <outlet property="titleLabel" destination="3Rs-OX-FDh" id="cOs-Ro-FoH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -68,7 +69,7 @@
                         <constraint firstAttribute="height" constant="84" id="wi6-zz-A3t"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-fd-JG1">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-fd-JG1">
                     <rect key="frame" x="20" y="144" width="335" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="lyy-65-r1L"/>
@@ -84,7 +85,7 @@
                         <constraint firstAttribute="height" constant="1" id="d6S-vv-ORI"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s16-ZQ-yPb">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="s16-ZQ-yPb">
                     <rect key="frame" x="20" y="226" width="303" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Tmm-nE-GuY"/>
@@ -100,8 +101,30 @@
                         <constraint firstAttribute="height" constant="1" id="roz-Rl-63G"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vl5-9Y-Ubp">
+                    <rect key="frame" x="333" y="237" width="22" height="22"/>
+                    <state key="normal" image="qr_code_icon"/>
+                    <connections>
+                        <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="NWW-Zt-WpF"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UgQ-zj-c6L">
+                    <rect key="frame" x="20" y="308" width="160" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="K8l-9u-ej9"/>
+                        <constraint firstAttribute="width" constant="160" id="Mp7-s0-pU6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Send" image="delete_icon">
+                        <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="sendButtonPressed:" destination="-1" eventType="touchUpInside" id="2A8-Oz-2n8"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-cw-bBf">
-                    <rect key="frame" x="20" y="320" width="160" height="44"/>
+                    <rect key="frame" x="20" y="360" width="160" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="160" id="DR2-zZ-i7X"/>
                         <constraint firstAttribute="height" constant="44" id="bDy-Tz-OUz"/>
@@ -115,25 +138,18 @@
                         <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="dlX-us-x8m"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vl5-9Y-Ubp">
-                    <rect key="frame" x="333" y="237" width="22" height="22"/>
-                    <state key="normal" image="qr_code_icon"/>
-                    <connections>
-                        <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="NWW-Zt-WpF"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="20" id="1AV-OW-TCO"/>
+                <constraint firstItem="UgQ-zj-c6L" firstAttribute="leading" secondItem="sgh-cw-bBf" secondAttribute="leading" id="42D-4F-QYt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BZJ-op-odJ" secondAttribute="trailing" id="5o8-sW-WiB"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="top" secondItem="0ca-fd-JG1" secondAttribute="bottom" constant="5" id="BZD-Cv-j8r"/>
                 <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D88-EM-4l3"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="F6h-np-jp8"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="Hn5-fV-8hs"/>
                 <constraint firstItem="sgh-cw-bBf" firstAttribute="leading" secondItem="4SF-HT-RtA" secondAttribute="leading" id="J46-O0-6aD"/>
-                <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="44" id="OYr-TV-T3q"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="top" secondItem="BZJ-op-odJ" secondAttribute="bottom" constant="60" id="Rfh-03-fTj"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Rmf-BA-2Vl"/>
                 <constraint firstItem="vl5-9Y-Ubp" firstAttribute="centerY" secondItem="s16-ZQ-yPb" secondAttribute="centerY" id="UY4-4g-YpT"/>
@@ -142,7 +158,9 @@
                 <constraint firstItem="s16-ZQ-yPb" firstAttribute="top" secondItem="GH5-LD-QK8" secondAttribute="bottom" constant="32" id="dWt-kU-9kL"/>
                 <constraint firstItem="s16-ZQ-yPb" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="-32" id="iO8-UA-pAj"/>
                 <constraint firstItem="4SF-HT-RtA" firstAttribute="leading" secondItem="s16-ZQ-yPb" secondAttribute="leading" id="lv7-1K-wY4"/>
+                <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="UgQ-zj-c6L" secondAttribute="bottom" constant="8" id="prq-6p-g0c"/>
                 <constraint firstItem="4SF-HT-RtA" firstAttribute="trailing" secondItem="s16-ZQ-yPb" secondAttribute="trailing" constant="32" id="rAp-TZ-1iv"/>
+                <constraint firstItem="UgQ-zj-c6L" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="32" id="sXo-3y-WZW"/>
                 <constraint firstItem="vl5-9Y-Ubp" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="vzu-Wm-myP"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="xj1-lX-Y25"/>
                 <constraint firstItem="4SF-HT-RtA" firstAttribute="top" secondItem="s16-ZQ-yPb" secondAttribute="bottom" constant="5" id="yFB-If-riZ"/>

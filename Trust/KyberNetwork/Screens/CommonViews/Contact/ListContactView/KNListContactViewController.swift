@@ -5,6 +5,7 @@ import UIKit
 enum KNListContactViewEvent {
   case back
   case select(contact: KNContact)
+  case send(address: String)
 }
 
 protocol KNListContactViewControllerDelegate: class {
@@ -14,24 +15,37 @@ protocol KNListContactViewControllerDelegate: class {
 class KNListContactViewController: KNBaseViewController {
 
   @IBOutlet weak var contactTableView: KNContactTableView!
+  @IBOutlet weak var emptyStateView: UIView!
+  @IBOutlet weak var contactEmptyLabel: UILabel!
+  @IBOutlet weak var addContactButton: UIButton!
+
   weak var delegate: KNListContactViewControllerDelegate?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    let contacts = KNContactStorage.shared.contacts
     self.contactTableView.delegate = self
     self.contactTableView.updateView(
-      with: KNContactStorage.shared.contacts,
+      with: contacts,
       isFull: true
     )
     self.contactTableView.updateScrolling(isEnabled: true)
+
+    self.contactTableView.isHidden = contacts.isEmpty
+    self.emptyStateView.isHidden = !contacts.isEmpty
+    self.contactEmptyLabel.text = "Your contact is empty".toBeLocalised()
+    self.addContactButton.rounded(radius: self.addContactButton.frame.height / 2.0)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    let contacts = KNContactStorage.shared.contacts
     self.contactTableView.updateView(
-      with: KNContactStorage.shared.contacts,
+      with: contacts,
       isFull: true
     )
+    self.emptyStateView.isHidden = !contacts.isEmpty
+    self.contactTableView.isHidden = contacts.isEmpty
   }
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -75,13 +89,22 @@ extension KNListContactViewController: KNContactTableViewDelegate {
       self.present(alertController, animated: true, completion: nil)
     case .edit(let contact):
       self.openNewContact(address: contact.address)
-    default: break
+    case .send(let address):
+      self.delegate?.listContactViewController(self, run: .send(address: address))
+    default:
+      let contacts = KNContactStorage.shared.contacts
+      self.emptyStateView.isHidden = !contacts.isEmpty
+      self.contactTableView.isHidden = contacts.isEmpty
     }
   }
 }
 
 extension KNListContactViewController: KNNewContactViewControllerDelegate {
   func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
-    self.navigationController?.popViewController(animated: true)
+    self.navigationController?.popViewController(animated: true, completion: {
+      if case .send(let address) = event {
+        self.delegate?.listContactViewController(self, run: .send(address: address))
+      }
+    })
   }
 }

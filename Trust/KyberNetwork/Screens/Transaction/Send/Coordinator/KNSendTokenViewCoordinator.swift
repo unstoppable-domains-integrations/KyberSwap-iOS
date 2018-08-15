@@ -205,9 +205,10 @@ extension KNSendTokenViewCoordinator {
 
 extension KNSendTokenViewCoordinator: KNNewContactViewControllerDelegate {
   func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
-    switch event {
-    case .dismiss:
-      self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true) {
+      if case .send(let address) = event {
+        self.rootViewController.coordinatorSend(to: address)
+      }
     }
   }
 }
@@ -217,6 +218,8 @@ extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
     self.navigationController.popViewController(animated: true) {
       if case .select(let contact) = event {
         self.rootViewController.coordinatorDidSelectContact(contact)
+      } else if case .send(let address) = event {
+        self.rootViewController.coordinatorSend(to: address)
       }
     }
   }

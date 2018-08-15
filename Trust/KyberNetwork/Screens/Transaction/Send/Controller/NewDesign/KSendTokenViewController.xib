@@ -165,7 +165,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4v-g5-jbI" customClass="KNContactTableView" customModule="Trust" customModuleProvider="target">
-                                    <rect key="frame" x="24" y="35" width="327" height="84"/>
+                                    <rect key="frame" x="0.0" y="35" width="375" height="84"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="84" id="VQf-Tv-b2s"/>
@@ -184,9 +184,9 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="y4v-g5-jbI" firstAttribute="leading" secondItem="7gF-Dg-ljr" secondAttribute="leading" constant="24" id="29G-ve-tav"/>
+                                <constraint firstItem="y4v-g5-jbI" firstAttribute="leading" secondItem="7gF-Dg-ljr" secondAttribute="leading" id="29G-ve-tav"/>
                                 <constraint firstItem="g41-Md-Us4" firstAttribute="top" secondItem="7gF-Dg-ljr" secondAttribute="top" constant="6" id="2Rw-yJ-P6C"/>
-                                <constraint firstAttribute="trailing" secondItem="y4v-g5-jbI" secondAttribute="trailing" constant="24" id="WKu-gl-iir"/>
+                                <constraint firstAttribute="trailing" secondItem="y4v-g5-jbI" secondAttribute="trailing" id="WKu-gl-iir"/>
                                 <constraint firstItem="91X-aA-Iix" firstAttribute="centerY" secondItem="g41-Md-Us4" secondAttribute="centerY" id="cKD-9F-iXm"/>
                                 <constraint firstItem="g41-Md-Us4" firstAttribute="leading" secondItem="7gF-Dg-ljr" secondAttribute="leading" constant="24" id="ci4-Tz-EQg"/>
                                 <constraint firstAttribute="trailing" secondItem="91X-aA-Iix" secondAttribute="trailing" constant="24" id="dyn-vQ-jQc"/>

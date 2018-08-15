@@ -4,6 +4,7 @@ import UIKit
 
 enum KNContactTableViewEvent {
   case select(contact: KNContact)
+  case send(address: String)
   case delete(contact: KNContact)
   case edit(contact: KNContact)
   case update(height: CGFloat)
@@ -94,7 +95,10 @@ extension KNContactTableView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kContactTableViewCellID, for: indexPath) as! KNContactTableViewCell
     let contact: KNContact = self.contacts[indexPath.row]
-    let viewModel = KNContactTableViewCellModel(contact: contact)
+    let viewModel = KNContactTableViewCellModel(
+      contact: contact,
+      index: isFull ? indexPath.row : 0
+    )
     cell.update(with: viewModel)
     return cell
   }
@@ -104,20 +108,27 @@ extension KNContactTableView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    let send = UITableViewRowAction(style: .normal, title: "Send") { (_, _) in
+      self.delegate?.contactTableView(
+        tableView,
+        run: .send(address: self.contacts[indexPath.row].address)
+      )
+    }
+    send.backgroundColor = UIColor.Kyber.shamrock
     let edit = UITableViewRowAction(style: .normal, title: "Edit") { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .edit(contact: self.contacts[indexPath.row])
       )
     }
-    edit.backgroundColor = .blue
+    edit.backgroundColor = UIColor.Kyber.blueGreen
     let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .delete(contact: self.contacts[indexPath.row])
       )
     }
-    delete.backgroundColor = .red
-    return [delete, edit]
+    delete.backgroundColor = UIColor.Kyber.fire
+    return [delete, edit, send]
   }
 }

@@ -315,6 +315,11 @@ extension KSendTokenViewController {
     self.viewModel.updateAddress(contact.address)
     self.updateUIAddressQRCode()
   }
+
+  func coordinatorSend(to address: String) {
+    self.viewModel.updateAddress(address)
+    self.updateUIAddressQRCode()
+  }
 }
 
 // MARK: UITextFieldDelegate
@@ -383,6 +388,13 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address))
     case .delete(let contact):
       self.contactTableView(delete: contact)
+    case .send(let address):
+      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+        self.contactTableView(select: contact)
+      } else {
+        self.viewModel.updateAddress(address)
+        self.updateUIAddressQRCode()
+      }
     }
   }
 

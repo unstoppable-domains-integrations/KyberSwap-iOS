@@ -5,22 +5,41 @@ import TrustCore
 
 struct KNContactTableViewCellModel {
   let contact: KNContact
+  let index: Int
 
-  init(contact: KNContact) { self.contact = contact }
+  init(
+    contact: KNContact,
+    index: Int
+    ) {
+    self.contact = contact
+    self.index = index
+  }
 
   var addressImage: UIImage? {
     guard let data = Address(string: self.contact.address)?.data else { return nil }
     return UIImage.generateImage(with: 32, hash: data)
   }
+
   var displayedName: String { return self.contact.name }
+
+  var nameAndAddressAttributedString: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+
+    return attributedString
+  }
+
   var displayedAddress: String {
-    return "\(self.contact.address.prefix(7))...\(self.contact.address.suffix(4))"
+    return "\(self.contact.address.prefix(20))...\(self.contact.address.suffix(6))"
+  }
+
+  var backgroundColor: UIColor {
+    return self.index % 2 == 0 ? UIColor.clear : UIColor.white
   }
 }
 
 class KNContactTableViewCell: UITableViewCell {
 
-  static let height: CGFloat = 60
+  static let height: CGFloat = 68
 
   @IBOutlet weak var addressImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!
@@ -37,6 +56,7 @@ class KNContactTableViewCell: UITableViewCell {
     self.addressImageView.image = viewModel.addressImage
     self.contactNameLabel.text = viewModel.displayedName
     self.contactAddressLabel.text = viewModel.displayedAddress
+    self.backgroundColor = viewModel.backgroundColor
     self.layoutIfNeeded()
   }
 }

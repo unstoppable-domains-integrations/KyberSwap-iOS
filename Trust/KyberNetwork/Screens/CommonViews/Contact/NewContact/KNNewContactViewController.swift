@@ -7,6 +7,7 @@ import QRCodeReaderViewController
 
 enum KNNewContactViewEvent {
   case dismiss
+  case send(address: String)
 }
 
 protocol KNNewContactViewControllerDelegate: class {
@@ -53,6 +54,7 @@ class KNNewContactViewController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var saveButton: UIButton!
   @IBOutlet weak var deleteButton: UIButton!
+  @IBOutlet weak var sendButton: UIButton!
   @IBOutlet weak var nameTextField: UITextField!
   @IBOutlet weak var addressTextField: UITextField!
 
@@ -78,6 +80,8 @@ class KNNewContactViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
     self.deleteButton.setTitle("Delete Contact".toBeLocalised(), for: .normal)
+    self.sendButton.setTitle("Send", for: .normal)
+    self.addressTextField.delegate = self
     self.updateUI()
   }
 
@@ -85,6 +89,17 @@ class KNNewContactViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.title
     self.nameTextField.text = self.viewModel.contact.name
     self.addressTextField.text = self.viewModel.contact.address
+    self.deleteButton.isHidden = !self.viewModel.isEditing
+  }
+
+  fileprivate func addressTextFieldDidChange() {
+    let text = self.addressTextField.text ?? ""
+    self.viewModel.updateViewModel(address: text)
+
+    if self.nameTextField.text == nil || self.nameTextField.text?.isEmpty == true {
+      self.nameTextField.text = self.viewModel.contact.name
+    }
+    self.titleLabel.text = self.viewModel.title
     self.deleteButton.isHidden = !self.viewModel.isEditing
   }
 
@@ -127,6 +142,18 @@ class KNNewContactViewController: KNBaseViewController {
     self.present(alertController, animated: true, completion: nil)
   }
 
+  @IBAction func sendButtonPressed(_ sender: Any) {
+    guard let address = Address(string: self.addressTextField.text ?? "") else {
+      self.showErrorTopBannerMessage(
+        with: "Invalid address".toBeLocalised(),
+        message: "Please enter a valid address to continue".toBeLocalised(),
+        time: 2.0
+      )
+      return
+    }
+    self.delegate?.newContactViewController(self, run: .send(address: address.description))
+  }
+
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
     let qrcodeVC = QRCodeReaderViewController()
     qrcodeVC.delegate = self
@@ -140,6 +167,17 @@ class KNNewContactViewController: KNBaseViewController {
   }
 }
 
+extension KNNewContactViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text
+    if textField == self.addressTextField {
+      self.addressTextFieldDidChange()
+    }
+    return false
+  }
+}
+
 extension KNNewContactViewController: QRCodeReaderDelegate {
   func readerDidCancel(_ reader: QRCodeReaderViewController!) {
     reader.dismiss(animated: true, completion: nil)
@@ -148,6 +186,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.addressTextField.text = result
+      self.addressTextFieldDidChange()
     }
   }
 }

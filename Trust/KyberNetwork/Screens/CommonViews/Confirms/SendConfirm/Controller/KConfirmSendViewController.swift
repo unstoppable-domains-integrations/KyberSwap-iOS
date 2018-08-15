@@ -83,4 +83,10 @@ class KConfirmSendViewController: KNBaseViewController {
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.kConfirmSendViewController(self, run: .cancel)
   }
+
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.kConfirmSendViewController(self, run: .cancel)
+    }
+  }
 }
