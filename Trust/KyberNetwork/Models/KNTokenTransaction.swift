@@ -55,6 +55,33 @@ class KNTokenTransaction: Object {
     self.compoundKey = "\(id)\(from)\(to)\(tokenSymbol)"
   }
 
+  convenience init(internalDict: JSONDictionary, eth: TokenObject) {
+    self.init()
+    self.id = internalDict["hash"] as? String ?? ""
+    let blockNumberString: String = internalDict["blockNumber"] as? String ?? ""
+    self.blockNumber = Int(blockNumberString) ?? 0
+    let timeStamp: String = internalDict["timeStamp"]  as? String ?? ""
+    self.date = Date(timeIntervalSince1970: Double(timeStamp) ?? 0.0)
+    self.nonce = internalDict["nonce"] as? String ?? ""
+    self.from = internalDict["from"] as? String ?? ""
+    self.to = internalDict["to"] as? String ?? ""
+    self.contractAddress = internalDict["contractAddress"] as? String ?? ""
+    if contractAddress.isEmpty {
+      // ETH Transfer
+      self.value = internalDict["value"] as? String ?? ""
+      self.tokenName = eth.name
+      self.tokenSymbol = eth.symbol
+      self.tokenDecimal = "\(eth.decimals)"
+      self.gas = internalDict["gas"] as? String ?? ""
+      self.gasPrice = internalDict["gasPrice"] as? String ?? ""
+      self.gasUsed = internalDict["gasUsed"] as? String ?? ""
+      self.cumulativeGasUsed = internalDict["cumulativeGasUsed"] as? String ?? ""
+      self.input = internalDict["input"] as? String ?? ""
+      self.confirmations = internalDict["confirmations"] as? String ?? ""
+      self.compoundKey = "\(id)\(from)\(to)\(tokenSymbol)"
+    }
+  }
+
   override static func primaryKey() -> String? {
     return "compoundKey"
   }

@@ -171,7 +171,7 @@ extension KNTransactionCoordinator {
 
   func forceFetchTokenTransactions() {
     let startBlock: Int = {
-      guard let transaction = self.transactionStorage.objects.first else {
+      guard let transaction = self.transactionStorage.objects.first(where: { !$0.isETHTransfer }) else {
         return 0
       }
       return max(0, transaction.blockNumber - 200)
@@ -179,6 +179,20 @@ extension KNTransactionCoordinator {
     self.fetchListERC20TokenTransactions(
       forAddress: self.wallet.address.description,
       startBlock: startBlock,
+      page: 1,
+      sort: "asc",
+      completion: nil
+    )
+
+    let internalStartBlock: Int = {
+      guard let transaction = self.transactionStorage.objects.first(where: { $0.isETHTransfer }) else {
+        return 0
+      }
+      return max(0, transaction.blockNumber - 200)
+    }()
+    self.fetchListInternalTokenTransactions(
+      forAddress: self.wallet.address.description,
+      startBlock: internalStartBlock,
       page: 1,
       sort: "asc",
       completion: nil
@@ -259,6 +273,48 @@ extension KNTransactionCoordinator {
           )
         })
         completion?(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func fetchListInternalTokenTransactions(
+    forAddress address: String,
+    startBlock: Int,
+    page: Int,
+    sort: String,
+    completion: ((Result<[Transaction], AnyError>) -> Void)?
+    ) {
+    print("---- ERC20 Token Transactions: Fetching ----")
+    let provider = MoyaProvider<KNEtherScanService>()
+    let service = KNEtherScanService.getListInternalTransactions(
+      address: address,
+      startBlock: startBlock,
+      page: page,
+      sort: sort
+    )
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
+              let eth = KNSupportedTokenStorage.shared.ethToken
+              let transactions = data.map({ return KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
+              self.updateListTokenTransactions(transactions)
+              print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
+              completion?(.success(transactions))
+            } catch let error {
+              print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            completion?(.failure(AnyError(error)))
+          }
+        }
       }
     }
   }

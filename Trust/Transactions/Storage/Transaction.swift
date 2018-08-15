@@ -93,6 +93,11 @@ extension Transaction {
       guard let object = self.localizedOperations.first else { return false }
       return object.type == "transfer"
     }
+
+    var isETHTransfer: Bool {
+      guard let token = self.getTokenObject() else { return false }
+      return token.isETH
+    }
 }
 
 extension Transaction {
