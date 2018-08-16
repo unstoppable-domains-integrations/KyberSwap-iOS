@@ -128,7 +128,7 @@ struct KNHistoryViewModel {
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.white,
+    NSAttributedStringKey.foregroundColor: UIColor(red: 222, green: 242, blue: 253),
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
@@ -143,7 +143,6 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate var viewModel: KNHistoryViewModel
 
   @IBOutlet weak var emptyStateContainerView: UIView!
-  @IBOutlet weak var emptyStateImageView: UIImageView!
   @IBOutlet weak var emptyStateTitleLabel: UILabel!
   @IBOutlet weak var emptyStateDescLabel: UILabel!
 
@@ -201,7 +200,6 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func updateUIWhenDataDidChange() {
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
-    self.emptyStateImageView.image = UIImage(named: self.viewModel.emptyStateIconName)
     self.emptyStateTitleLabel.text = self.viewModel.emptyStateTitleLabelString
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
