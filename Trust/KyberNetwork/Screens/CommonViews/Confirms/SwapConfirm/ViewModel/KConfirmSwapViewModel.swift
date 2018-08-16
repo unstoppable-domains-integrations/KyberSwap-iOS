@@ -19,7 +19,7 @@ struct KConfirmSwapViewModel {
     let amountString = self.transaction.amount.string(
       decimals: self.transaction.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: 4
+      maxFractionDigits: 6
     )
     return "\(amountString.prefix(12)) \(self.transaction.from.symbol)"
   }
@@ -57,7 +57,7 @@ struct KConfirmSwapViewModel {
   }
 
   var feeETHString: String {
-    let string: String = self.transactionFee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 9)
+    let string: String = self.transactionFee.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
     return "\(string.prefix(12)) ETH"
   }
 

@@ -61,5 +61,7 @@ extension UIColor {
     static var dashLine = UIColor(red: 172, green: 179, blue: 198)
     static var border = UIColor(red: 202, green: 208, blue: 223)
     static var importRed = UIColor(red: 249, green: 99, blue: 99)
+
+    static var passcode = UIColor(red: 213, green: 217, blue: 225)
   }
 }

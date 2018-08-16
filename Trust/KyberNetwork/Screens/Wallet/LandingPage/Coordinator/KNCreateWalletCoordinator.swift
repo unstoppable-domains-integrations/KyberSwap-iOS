@@ -120,7 +120,7 @@ extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
           self.navigationController.hideLoading()
           self.navigationController.showSuccessTopBannerMessage(
             with: "Wallet Created".toBeLocalised(),
-            message: "Successfully created a new wallet".toBeLocalised(),
+            message: "You have successfully created a new wallet!".toBeLocalised(),
             time: 1.5
           )
           DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {

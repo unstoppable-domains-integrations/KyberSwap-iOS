@@ -80,16 +80,22 @@ class KNPasscodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.passcodeViews.forEach({ $0.rounded(color: .white, width: 1.0, radius: $0.frame.width / 2.0) })
-    self.digitButtons.forEach({ $0.rounded(color: .white, width: 1.0, radius: $0.frame.width / 2.0) })
+    self.passcodeViews.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
+    self.digitButtons.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
+    self.digitButtons.forEach({
+      $0.setBackgroundColor(.white, forState: .normal)
+      $0.setBackgroundColor(UIColor.Kyber.blueGreen, forState: .highlighted)
+      $0.setTitleColor(UIColor.Kyber.blueGreen, for: .normal)
+      $0.setTitleColor(.white, for: .highlighted)
+    })
     self.updateUI()
   }
 
   fileprivate func updateUI() {
     self.titleLabel.text = self.titleText
     self.errorLabel.text = self.errorText
-    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? .white : .clear })
+    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.blueGreen : UIColor.Kyber.passcode })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.view.layoutIfNeeded()
   }

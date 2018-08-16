@@ -59,6 +59,7 @@ class KGOHomePageCoordinator: Coordinator {
     self.navigationController.viewControllers = [self.rootViewController]
     self.timerLoadIEOList()
     self.timerLoadDataFromNode()
+    self.reloadKyberGOTransactionList()
     self.timerLoadKyberGOTxList()
     self.timerAccessTokenExpired()
 
@@ -130,11 +131,17 @@ class KGOHomePageCoordinator: Coordinator {
   }
 
   fileprivate func timerLoadKyberGOTxList() {
+    let timeInterval: TimeInterval = {
+      // If no pending tx, load every 60 seconds, otherwise load every 10 seconds
+      if IEOTransactionStorage.shared.objects.first(where: { $0.txStatus == .pending }) != nil {
+        return KNLoadingInterval.defaultLoadingInterval
+      }
+      return 60.0
+    }()
     self.kyberGOTxListTimer?.invalidate()
-    self.reloadKyberGOTransactionList()
     self.kyberGOTxListTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-      repeats: true,
+      withTimeInterval: timeInterval,
+      repeats: false,
       block: { [weak self] _ in
         self?.reloadKyberGOTransactionList()
     })
@@ -604,6 +611,7 @@ extension KGOHomePageCoordinator {
         self?.rootViewController.coordinatorUpdateListKyberGOTx(trans)
         self?.ieoListViewController?.coordinatorDidUpdateListKyberGoTx(trans)
       }
+      self?.timerLoadKyberGOTxList()
       completion?(result)
     }
   }

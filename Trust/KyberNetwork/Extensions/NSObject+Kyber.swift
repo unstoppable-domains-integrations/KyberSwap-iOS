@@ -19,11 +19,11 @@ extension NSObject {
   func showTopBannerView(with title: String = "", message: String = "", theme: Theme, layout: MessageView.Layout = .cardView, time: TimeInterval = 1.5) {
     let view: MessageView = {
       let view = MessageView.viewFromNib(layout: layout)
-      view.configureTheme(theme)
+      view.configureTheme(backgroundColor: UIColor.white, foregroundColor: UIColor.black.withAlphaComponent(0.6), iconImage: nil, iconText: nil)
       view.configureDropShadow()
       view.button?.isHidden = true
       if theme == .success {
-        let iconText = ""//["😁", "😄", "😆", "😉", "😎", "😍"].sm_random()!
+        let iconText = Icon.success.rawValue//["😁", "😄", "😆", "😉", "😎", "😍"].sm_random()!
         view.configureContent(title: title, body: message, iconText: iconText)
       } else {
         let iconText = ""//["🤔", "😳", "🙄", "😶", "😰", "😢", "😥"].sm_random()!
