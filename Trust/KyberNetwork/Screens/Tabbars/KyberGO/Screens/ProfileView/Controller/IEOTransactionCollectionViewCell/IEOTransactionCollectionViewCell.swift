@@ -25,12 +25,12 @@ struct IEOTransactionCollectionViewModel {
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.grey,
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-    NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
   ]
 
   var detailsLabelText: NSAttributedString {

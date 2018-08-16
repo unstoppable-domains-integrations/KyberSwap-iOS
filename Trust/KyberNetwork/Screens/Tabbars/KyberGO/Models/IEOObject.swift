@@ -4,10 +4,10 @@ import UIKit
 import RealmSwift
 import BigInt
 
-enum IEOObjectType {
-  case past
-  case active
-  case upcoming
+enum IEOObjectType: Int {
+  case active = 0
+  case upcoming = 1
+  case past = 2
 }
 
 class IEOObject: Object {

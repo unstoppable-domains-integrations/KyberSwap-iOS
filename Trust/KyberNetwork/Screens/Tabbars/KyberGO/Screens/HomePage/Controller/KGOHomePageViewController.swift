@@ -22,8 +22,9 @@ class KGOHomePageViewController: KNBaseViewController {
   @IBOutlet weak var topContainerView: UIView!
   @IBOutlet weak var kyberGOLabel: UILabel!
   @IBOutlet weak var userAccountImageView: UIImageView!
-  @IBOutlet weak var userStatusLabel: UILabel!
   @IBOutlet weak var pendingTxNotiView: UIView!
+
+  @IBOutlet var bottomSeparators: [UIView]!
 
   @IBOutlet weak var ieoTableView: UITableView!
   @IBOutlet weak var noTokenSalesFoundLabel: UILabel!
@@ -63,12 +64,14 @@ class KGOHomePageViewController: KNBaseViewController {
 
   fileprivate func setupTopView() {
     self.kyberGOLabel.text = "KyberGO"
-    self.userAccountImageView.rounded(radius: self.userAccountImageView.frame.width / 2.0)
-    self.userAccountImageView.backgroundColor = UIColor.Kyber.lighter
+    self.userAccountImageView.rounded(
+      color: .white,
+      width: 2,
+      radius: self.userAccountImageView.frame.width / 2.0
+    )
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.accountImageViewDidTap(_:)))
     self.userAccountImageView.addGestureRecognizer(tapGesture)
     self.userAccountImageView.isUserInteractionEnabled = true
-    self.userStatusLabel.text = IEOUserStorage.shared.user?.name ?? "Unknown"
     self.pendingTxNotiView.rounded(radius: self.pendingTxNotiView.frame.width / 2.0)
     self.pendingTxNotiView.isHidden = true
     self.coordinatorUpdateListKyberGOTx(IEOTransactionStorage.shared.objects)
@@ -81,20 +84,23 @@ class KGOHomePageViewController: KNBaseViewController {
     self.ieoTableView.dataSource = self
     self.ieoTableView.rowHeight = 115
     self.ieoTableView.sectionHeaderHeight = 44
-    self.ieoTableView.isHidden = !self.viewModel.hasTokenSales
-    self.noTokenSalesFoundLabel.isHidden = self.viewModel.hasTokenSales
+    self.ieoTableView.reloadData()
+  }
+
+  fileprivate func updateUIs() {
+    self.ieoTableView.isHidden = self.viewModel.isTokenSalesListHidden
+    self.noTokenSalesFoundLabel.isHidden = self.viewModel.isEmptyStateHidden
+    self.bottomSeparators.forEach({ $0.backgroundColor = $0.tag == self.viewModel.displayType.rawValue ? UIColor.Kyber.shamrock : UIColor.clear })
     self.ieoTableView.reloadData()
   }
 
   func coordinatorDidUpdateListKGO(_ objects: [IEOObject]) {
     self.viewModel.updateObjects(objects)
-    self.ieoTableView.isHidden = !self.viewModel.hasTokenSales
-    self.noTokenSalesFoundLabel.isHidden = self.viewModel.hasTokenSales
-    self.ieoTableView.reloadData()
+    self.updateUIs()
   }
 
   func coordinatorUserDidSignInSuccessfully() {
-    self.userStatusLabel.text = IEOUserStorage.shared.user?.name ?? "Unknown"
+    // TODO: Update status
   }
 
   func coordinatorDidUpdateIsHalted(_ halted: Bool, object: IEOObject) {
@@ -103,7 +109,6 @@ class KGOHomePageViewController: KNBaseViewController {
   }
 
   func coordinatorDidSignOut() {
-    self.userStatusLabel.text = "Unknown"
     self.pendingTxNotiView.isHidden = true
     self.showSuccessTopBannerMessage(
       with: "Logged out successfully".toBeLocalised(),
@@ -119,52 +124,49 @@ class KGOHomePageViewController: KNBaseViewController {
   @objc func accountImageViewDidTap(_ sender: UITapGestureRecognizer) {
     self.delegate?.kyberGOHomePageViewController(self, run: .selectAccount)
   }
+
+  @IBAction func tokenSaleListTypePressed(_ sender: UIButton) {
+    let type = IEOObjectType(rawValue: sender.tag) ?? .active
+    self.viewModel.updateDisplayType(type)
+    UIView.animate(withDuration: 0.32) {
+      self.updateUIs()
+      if !self.viewModel.isTokenSalesListHidden {
+        self.ieoTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+      }
+      self.view.layoutIfNeeded()
+    }
+  }
 }
 
 extension KGOHomePageViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: false)
-    let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
-    let listObjects: [IEOObject] = {
-      switch object.type {
-      case .active: return self.viewModel.activeObjects
-      case .upcoming: return self.viewModel.upcomingObjects
-      case .past: return self.viewModel.pastObjects
-      }
-    }()
+    guard let object = self.viewModel.displayObject(at: indexPath.row) else { return }
+    let listObjects: [IEOObject] = self.viewModel.displayObjects
     self.delegate?.kyberGOHomePageViewController(self, run: .select(object: object, listObjects: listObjects))
   }
 }
 
 extension KGOHomePageViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return self.viewModel.numberSections
+    return 1
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.numberRows(for: section)
+    return self.viewModel.numberRows
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
-    view.backgroundColor = UIColor.Kyber.lighter
-    let label = UILabel(frame: CGRect(x: 20.0, y: 0, width: tableView.frame.width - 40.0, height: 44))
-    label.text = self.viewModel.headerTitle(for: section)
-    label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.medium)
-    view.addSubview(label)
-    return view
-  }
-
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kIEOTableViewCellID, for: indexPath) as! KGOIEOTableViewCell
-    let object = self.viewModel.object(for: indexPath.row, in: indexPath.section)
+    guard let object = self.viewModel.displayObject(at: indexPath.row) else { return cell }
     let model = KGOIEOTableViewCellModel(
       object: object,
-      isHalted: self.viewModel.isHalted(for: object)
+      isHalted: self.viewModel.isHalted(for: object),
+      index: indexPath.row
     )
     cell.updateView(with: model)
     cell.delegate = self

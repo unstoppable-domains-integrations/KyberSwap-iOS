@@ -18,53 +18,56 @@ struct KGOIEOTableViewCellModel {
 
   fileprivate let object: IEOObject
   fileprivate let isHalted: Bool
+  fileprivate let index: Int
 
-  init(object: IEOObject, isHalted: Bool) {
+  init(object: IEOObject, isHalted: Bool, index: Int) {
     self.object = object
     self.isHalted = isHalted
+    self.index = index
   }
 
+  var backgroundColor: UIColor { return .clear }//return self.index % 2 == 0 ? .clear : .white }
   var highlightText: String? {
-    // check sold out
     if self.object.type != .active { return "" }
-    if self.object.isSoldOut { return " Sold Out ".toBeLocalised() }
-    if self.isHalted { return nil }
+    if self.object.isSoldOut || self.isHalted { return "" }
     // check bonus
     if let bonus = self.object.getAmountBonus { return " Bonus \(bonus)% " }
     return nil
   }
 
   var highlightTextBackgroundColor: UIColor {
-    // check sold out
-    if self.object.isSoldOut { return UIColor.Kyber.orange }
-    if self.isHalted { return UIColor.Kyber.darkBlue }
+    if self.object.type != .active { return .clear }
+    if self.object.isSoldOut || self.isHalted { return .clear }
     // check bonus
-    if self.object.getAmountBonus != nil { return UIColor.Kyber.green }
+    if self.object.getAmountBonus != nil { return UIColor.Kyber.shamrock }
     return UIColor.white
   }
 
   var buyButtonTitle: String {
-    if self.object.isSoldOut { return "Sold Out" }
-    if self.isHalted { return "Halted" }
-    return self.object.type == .active ? "Buy" : ""
+    if self.object.isSoldOut { return "SOLD OUT" }
+    if self.isHalted { return "HALTED" }
+    return self.object.type == .active ? "BUY" : ""
   }
 
   var isBuyButtonEnabled: Bool {
-    if self.object.isSoldOut { return false }
-    if self.isHalted { return false }
+    if self.object.isSoldOut || self.isHalted { return false }
     return self.object.type == .active
   }
 
   var buyButtonBackgroundColor: UIColor {
-    if self.object.isSoldOut { return UIColor.Kyber.orange }
-    if self.isHalted { return UIColor.Kyber.darkBlue }
-    return UIColor.Kyber.green
+    if self.object.isSoldOut || self.isHalted { return UIColor.Kyber.passcode }
+    return UIColor.Kyber.shamrock
   }
 
   var displayedName: String { return object.name }
   var displayedTime: String { return  previewTime() }
   var iconURL: String { return object.icon }
   var progress: Float { return object.progress }
+  var progressColor: UIColor {
+    if self.progress <= 0.33 { return UIColor.Kyber.shamrock }
+    if self.progress <= 0.66 { return UIColor.Kyber.fire }
+    return UIColor.Kyber.strawberry
+  }
   var raisedAmountText: String { return object.raisedText }
   var raisedAmountPercentText: String { return object.raisedPercent }
 
@@ -78,7 +81,7 @@ struct KGOIEOTableViewCellModel {
       let hour = (timeInt % timeDay) / timeHour
       let min = (timeInt % timeHour) / timeMin
       let sec = timeInt % timeMin
-      return "\(day)d \(hour)h \(min)m \(sec)s"
+      return "\(day)D \(hour)H \(min)M \(sec)S"
     }
     let staticDateFormatter: DateFormatter = {
       let formatter = DateFormatter()
@@ -87,11 +90,11 @@ struct KGOIEOTableViewCellModel {
     }()
     switch object.type {
     case .past:
-      return "End at: \(staticDateFormatter.string(from: object.endDate))"
+      return "END AT: \(staticDateFormatter.string(from: object.endDate))"
     case .active:
-      return "End In: \(displayDynamicTime(for: object.endDate.timeIntervalSince(Date())))"
+      return "END IN: \(displayDynamicTime(for: object.endDate.timeIntervalSince(Date())))"
     case .upcoming:
-      return "Start In: \(displayDynamicTime(for: object.startDate.timeIntervalSince(Date())))"
+      return "START IN: \(displayDynamicTime(for: object.startDate.timeIntervalSince(Date())))"
     }
   }
 }
@@ -143,6 +146,7 @@ class KGOIEOTableViewCell: UITableViewCell {
   }
 
   func updateView(with model: KGOIEOTableViewCellModel) {
+    self.backgroundColor = model.backgroundColor
     let placeholderImg: UIImage? = {
       if let curModel = self.model, curModel.object.id == model.object.id {
         return self.tokenIconImageView.image
@@ -158,6 +162,7 @@ class KGOIEOTableViewCell: UITableViewCell {
     self.nameLabel.text = model.displayedName
     self.timeLabel.text = model.displayedTime
     self.progressView.progress = model.progress
+    self.progressView.progressTintColor = model.progressColor
     self.raisedAmountLabel.text = model.raisedAmountText
     self.raisedPercentLabel.text = model.raisedAmountPercentText
 

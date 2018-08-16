@@ -79,6 +79,7 @@ class IEOProfileViewController: KNBaseViewController {
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var userImageView: UIImageView!
   @IBOutlet weak var userNameLabel: UILabel!
+  @IBOutlet weak var emailLabel: UILabel!
 
   @IBOutlet weak var transactionListCollectionView: UICollectionView!
   @IBOutlet weak var emptyStateLabel: UILabel!
@@ -114,6 +115,7 @@ class IEOProfileViewController: KNBaseViewController {
       radius: self.userImageView.frame.width / 2.0
     )
     self.userNameLabel.text = "\(self.viewModel.user.name)"
+    self.emailLabel.text = "\(self.viewModel.user.contactID)"
 
     self.emptyStateLabel.text = "Nothing in here yet.".toBeLocalised()
     let cellNib = UINib(nibName: IEOTransactionCollectionViewCell.className, bundle: nil)
@@ -236,7 +238,7 @@ extension IEOProfileViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     return CGSize(
       width: collectionView.frame.width,
-      height: 32
+      height: 44
     )
   }
 
