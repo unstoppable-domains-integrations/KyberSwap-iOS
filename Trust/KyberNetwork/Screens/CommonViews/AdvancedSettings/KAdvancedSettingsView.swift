@@ -57,7 +57,7 @@ class KAdvancedSettingsViewModel: NSObject {
       return " (~\(string.prefix(12)) ETH)"
     }()
     let gasPriceAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.migrate,
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [

@@ -308,7 +308,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
         let attributedString = NSMutableAttributedString()
         let nameAttributes: [NSAttributedStringKey: Any] = [
           NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-          NSAttributedStringKey.foregroundColor: UIColor.Kyber.migrate,
+          NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
           NSAttributedStringKey.kern: 1.0,
         ]
         let addressAttributes: [NSAttributedStringKey: Any] = [
@@ -335,7 +335,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     let transaction = self.viewModel.transaction(at: indexPath.row)
     cell.imageView?.startRotating()
     cell.textLabel?.text = transaction?.shortDesc
-    cell.textLabel?.tintColor = UIColor.Kyber.migrate
+    cell.textLabel?.tintColor = UIColor.Kyber.mirage
     cell.textLabel?.font = UIFont.Kyber.medium(with: 14)
     cell.backgroundColor = {
       return indexPath.row % 2 == 0 ? UIColor.white : UIColor.Kyber.whisper

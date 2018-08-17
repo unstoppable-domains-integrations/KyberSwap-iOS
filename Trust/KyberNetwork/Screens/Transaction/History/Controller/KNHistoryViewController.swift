@@ -181,7 +181,11 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = "History".toBeLocalised()
-    self.segmentedControl.rounded(color: .clear, width: 0, radius: 5.0)
+    self.segmentedControl.rounded(
+      color: .white,
+      width: 1,
+      radius: self.segmentedControl.frame.height / 2.0
+    )
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
   }

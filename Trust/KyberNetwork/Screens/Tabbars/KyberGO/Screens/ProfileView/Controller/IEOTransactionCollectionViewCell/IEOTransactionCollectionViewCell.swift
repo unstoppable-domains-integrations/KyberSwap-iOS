@@ -24,12 +24,12 @@ struct IEOTransactionCollectionViewModel {
   }
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.migrate,
+    NSAttributedStringKey.foregroundColor: UIColor(red: 182, green: 186, blue: 185),
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
+    NSAttributedStringKey.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
   ]
 
@@ -41,8 +41,10 @@ struct IEOTransactionCollectionViewModel {
       )
     }
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "Buy \(ieo.name)", attributes: highlightedTextAttributes))
-    attributedString.append(NSAttributedString(string: "\nFrom: \(transaction.srcAddress.prefix(8))....\(transaction.srcAddress.suffix(6))", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: "Buy ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: ieo.name, attributes: highlightedTextAttributes))
+    attributedString.append(NSAttributedString(string: "\nFrom ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: "\(transaction.srcAddress.prefix(8))....\(transaction.srcAddress.suffix(6))", attributes: highlightedTextAttributes))
     return attributedString
   }
 
@@ -65,11 +67,10 @@ struct IEOTransactionCollectionViewModel {
       return distributedAmount.string(
         decimals: ieo.tokenDecimals,
         minFractionDigits: 0,
-        maxFractionDigits: 4
+        maxFractionDigits: 6
       )
     }()
-    //return "\(fromText) -> \(toText)"
-    return "+\(toText) \(ieo.tokenSymbol)"
+    return "+\(toText.prefix(12)) \(ieo.tokenSymbol)"
   }
 
   var amountLabelTextColor: UIColor {
@@ -95,6 +96,9 @@ class IEOTransactionCollectionViewCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
+    self.txStatusLabel.text = ""
+    self.txDetailsLabel.text = ""
+    self.txAmountLabel.text = ""
   }
 
   func updateCell(with viewModel: IEOTransactionCollectionViewModel) {

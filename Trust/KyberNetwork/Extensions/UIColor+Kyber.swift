@@ -46,7 +46,7 @@ extension UIColor {
     static var danger = UIColor(hex: "dc3545")
 
     static var shamrock = UIColor(red: 49, green: 203, blue: 158)
-    static var migrate = UIColor(red: 20, green: 25, blue: 39)
+    static var mirage = UIColor(red: 20, green: 25, blue: 39)
     static var blueGreen = UIColor(red: 30, green: 137, blue: 193)
     static var lightSeaGreen = UIColor(red: 15, green: 170, blue: 162)
     static var grayChateau = UIColor(red: 158, green: 161, blue: 171)

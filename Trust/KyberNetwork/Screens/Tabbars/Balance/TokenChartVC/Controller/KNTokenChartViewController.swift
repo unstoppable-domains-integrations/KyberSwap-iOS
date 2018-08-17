@@ -316,7 +316,7 @@ class KNTokenChartViewController: KNBaseViewController {
     self.noDataLabel.isHidden = false
 
     self.priceChart.isHidden = true
-    self.priceChart.labelColor = UIColor.Kyber.lightSeaGreen
+    self.priceChart.labelColor = UIColor.Kyber.mirage
     self.priceChart.labelFont = UIFont.Kyber.medium(with: 12)
 
     self.sendButton.rounded(
