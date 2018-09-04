@@ -13,6 +13,7 @@ protocol KMarketViewControllerDelegate: class {
 
 class KMarketViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var kyberListedButton: UIButton!
   @IBOutlet weak var otherButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
@@ -38,6 +39,8 @@ class KMarketViewController: KNBaseViewController {
 
   // MARK: Set up UIs
   fileprivate func setupUIs() {
+    self.view.backgroundColor = KNAppStyleType.current.mainBackgroundColor
+    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     self.setupDisplayKyberListed()
     self.setupDisplayTypeView()
     self.setupTokensCollectionView()

@@ -108,11 +108,17 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    let style = KNAppStyleType.current
+
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     self.view.isUserInteractionEnabled = true
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backgroundViewTap(_:)))
     self.tabToDismissView.addGestureRecognizer(tapGesture)
 
+    self.allTransactionButton.setTitleColor(
+      style.walletFlowHeaderColor,
+      for: .normal
+    )
     self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletListTableView.rowHeight = self.viewModel.walletCellRowHeight
     self.walletListTableView.delegate = self
@@ -123,6 +129,23 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.pendingTableView.rowHeight = 44
     self.pendingTableView.delegate = self
     self.pendingTableView.dataSource = self
+
+    self.addWalletButton.setTitle(
+      style.buttonTitle(with: "Add Wallet"),
+      for: .normal
+    )
+    self.addWalletButton.setTitleColor(
+      style.walletFlowHeaderColor,
+      for: .normal
+    )
+    self.sendTokenButton.setTitle(
+      style.buttonTitle(with: "Send Token"),
+      for: .normal
+    )
+    self.sendTokenButton.setTitleColor(
+      style.walletFlowHeaderColor,
+      for: .normal
+    )
 
     self.update(transactions: self.viewModel.pendingTransactions)
 

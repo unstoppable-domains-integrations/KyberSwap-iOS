@@ -35,10 +35,10 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_kyber_logo" translatesAutoresizingMaskIntoConstraints="NO" id="CIL-wK-q9N">
                     <rect key="frame" x="141" y="257" width="93" height="133"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kyber Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00e-qT-rhs">
-                    <rect key="frame" x="96" y="408" width="182" height="29.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberNetwork" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00e-qT-rhs">
+                    <rect key="frame" x="99.5" y="408" width="175.5" height="29.5"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="24"/>
-                    <color key="textColor" white="1" alpha="0.29852552816901406" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMc-CX-IYy">
@@ -75,7 +75,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="CIL-wK-q9N" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-20" id="Beh-nl-rTs"/>
                 <constraint firstItem="00e-qT-rhs" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="FM6-bD-5jg"/>

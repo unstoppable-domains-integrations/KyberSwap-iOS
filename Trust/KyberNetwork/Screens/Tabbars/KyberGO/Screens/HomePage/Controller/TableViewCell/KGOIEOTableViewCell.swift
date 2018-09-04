@@ -55,7 +55,7 @@ struct KGOIEOTableViewCellModel {
   }
 
   var buyButtonBackgroundColor: UIColor {
-    if self.object.isSoldOut || self.isHalted { return UIColor.Kyber.passcode }
+    if self.object.isSoldOut || self.isHalted { return UIColor.Kyber.passcodeInactive }
     return UIColor.Kyber.shamrock
   }
 

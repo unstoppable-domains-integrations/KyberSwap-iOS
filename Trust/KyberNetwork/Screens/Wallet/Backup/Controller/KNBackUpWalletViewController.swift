@@ -11,6 +11,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
   weak var delegate: KNBackUpWalletViewControllerDelegate?
   fileprivate var viewModel: KNBackUpWalletViewModel
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var backButton: UIButton!
   @IBOutlet weak var backupWalletLabel: UILabel!
   @IBOutlet weak var titlelabel: UILabel!
@@ -43,8 +44,20 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.nextButton.rounded(radius: self.nextButton.frame.height / 2.0)
-    self.completeButton.rounded(radius: self.completeButton.frame.height / 2.0)
+    let style = KNAppStyleType.current
+    self.view.backgroundColor = style.mainBackgroundColor
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+
+    self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
+    self.nextButton.setTitle(
+      style.buttonTitle(with: "Next".toBeLocalised()),
+      for: .normal
+    )
+    self.completeButton.rounded(radius: style.buttonRadius(for: self.completeButton.frame.height))
+    self.completeButton.setTitle(
+      style.buttonTitle(with: "Complete".toBeLocalised()),
+      for: .normal
+    )
     self.backupWalletLabel.text = self.viewModel.headerText
 
     self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
@@ -58,8 +71,14 @@ class KNBackUpWalletViewController: KNBaseViewController {
     self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
     self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
-    self.completeButton.setBackgroundColor(UIColor(red: 237, green: 238, blue: 242), forState: .disabled)
-    self.completeButton.setBackgroundColor(UIColor.Kyber.shamrock, forState: .normal)
+    self.completeButton.setBackgroundColor(
+      style.createWalletButtonDisabledColor,
+      forState: .disabled
+    )
+    self.completeButton.setBackgroundColor(
+      style.createWalletButtonEnabledColor,
+      forState: .normal
+    )
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
 
     self.updateUI()

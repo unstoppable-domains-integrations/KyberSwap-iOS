@@ -15,6 +15,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var navTitleLabel: UILabel!
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var tokenContainerView: UIView!
   @IBOutlet weak var tokenButton: UIButton!
   @IBOutlet weak var amountTextField: UITextField!
@@ -25,6 +26,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
   @IBOutlet weak var heightConstraintAdvancedSettingsView: NSLayoutConstraint!
 
+  @IBOutlet weak var moreContactButton: UIButton!
   @IBOutlet weak var recentContactView: UIView!
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
@@ -42,6 +44,10 @@ class KSendTokenViewController: KNBaseViewController {
       rightBtnTitle: "Done",
       delegate: self
     )
+  }()
+
+  lazy var style: KNAppStyleType = {
+    return KNAppStyleType.current
   }()
 
   weak var delegate: KSendTokenViewControllerDelegate?
@@ -104,6 +110,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationView() {
+    self.headerContainerView.backgroundColor = self.style.walletFlowHeaderColor
     self.navTitleLabel.text = self.viewModel.navTitle
   }
 
@@ -132,6 +139,14 @@ class KSendTokenViewController: KNBaseViewController {
     self.recentContactTableView.delegate = self
     self.recentContactTableView.updateScrolling(isEnabled: false)
     self.recentContactTableView.shouldUpdateContacts(nil)
+    self.moreContactButton.setTitleColor(
+      self.style.walletFlowHeaderColor,
+      for: .normal
+    )
+    self.moreContactButton.setTitle(
+      self.style.buttonTitle(with: "More"),
+      for: .normal
+    )
   }
 
   fileprivate func setupAdvancedSettingsView() {
@@ -158,11 +173,23 @@ class KSendTokenViewController: KNBaseViewController {
     self.addressTextField.rightViewMode = .always
     self.addressTextField.delegate = self
     self.addressTextField.text = self.viewModel.displayAddress
-    self.newContactButton.setTitle("Add Contact".toBeLocalised(), for: .normal)
+    self.newContactButton.setTitle(
+      self.style.buttonTitle(with: "Add Contact".toBeLocalised()),
+      for: .normal
+    )
+    self.newContactButton.setTitleColor(
+      self.style.walletFlowHeaderColor,
+      for: .normal
+    )
   }
 
   fileprivate func setupSendButton() {
-    self.sendButton.rounded(radius: self.sendButton.frame.height / 2.0)
+    self.sendButton.rounded(radius: self.style.buttonRadius(for: self.sendButton.frame.height))
+    self.sendButton.backgroundColor = self.style.walletFlowHeaderColor
+    self.sendButton.setTitle(
+      self.style.buttonTitle(with: "Send".toBeLocalised()),
+      for: .normal
+    )
   }
 
   fileprivate func updateAdvancedSettingsView() {

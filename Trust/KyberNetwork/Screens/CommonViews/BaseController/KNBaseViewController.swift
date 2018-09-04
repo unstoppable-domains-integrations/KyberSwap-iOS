@@ -23,7 +23,7 @@ class KNTabBarController: UITabBarController {
   override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
     if item.tag == 0 {
       // Balance tab
-      tabBar.tintColor = UIColor.Kyber.shamrock
+      tabBar.tintColor = UIColor.Kyber.lightSeaGreen
     } else if item.tag == 1 {
       // KyberSwap tab
       tabBar.tintColor = UIColor.Kyber.fire

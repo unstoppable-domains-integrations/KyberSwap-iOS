@@ -13,6 +13,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNLandingPageViewController" customModule="Trust" customModuleProvider="target">
@@ -32,13 +35,13 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nN-NM-xeF">
                     <rect key="frame" x="35" y="498.5" width="305" height="45"/>
-                    <color key="backgroundColor" red="0.19215686274509802" green="0.79607843137254897" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="6mu-2u-eOF"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="CREATE WALLET">
-                        <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Create Wallet">
+                        <color key="titleColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="createWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="GeJ-aC-c1g"/>
@@ -46,12 +49,12 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSF-ar-Svx">
                     <rect key="frame" x="34.5" y="559.5" width="305" height="45"/>
-                    <color key="backgroundColor" red="0.5450980392" green="0.80784313730000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="DjG-tf-vi0"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="IMPORT WALLET">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Import Wallet">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -86,7 +89,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="1Oj-gl-3BQ"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="23k-02-WgT"/>

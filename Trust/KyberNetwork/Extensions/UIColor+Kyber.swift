@@ -45,15 +45,16 @@ extension UIColor {
     static var warning = UIColor(hex: "ffc107")
     static var danger = UIColor(hex: "dc3545")
 
-    static var shamrock = UIColor(red: 49, green: 203, blue: 158)
-    static var mirage = UIColor(red: 20, green: 25, blue: 39)
-    static var blueGreen = UIColor(red: 30, green: 137, blue: 193)
-    static var lightSeaGreen = UIColor(red: 15, green: 170, blue: 162)
-    static var grayChateau = UIColor(red: 158, green: 161, blue: 171)
+    static var shamrock = UIColor(red: 49, green: 203, blue: 158) // green
+    static var mirage = UIColor(red: 20, green: 25, blue: 39) //
+    static var blueGreen = UIColor(red: 30, green: 137, blue: 193) // blue
+    static var lightSeaGreen = UIColor(red: 15, green: 170, blue: 162) // darker green
+    static var grayChateau = UIColor(red: 158, green: 161, blue: 170) // gray
+    static var merigold = UIColor(red: 237, green: 171, blue: 47) // orange
+    static var strawberry = UIColor(red: 249, green: 99, blue: 99) // red
+
     static var whisper = UIColor(red: 246, green: 247, blue: 250)
-    static var strawberry = UIColor(red: 249, green: 99, blue: 99)
     static var fire = UIColor(red: 248, green: 158, blue: 80)
-    static var merigold = UIColor(red: 237, green: 171, blue: 47)
     static var sapphire = UIColor(red: 0, green: 189, blue: 212)
     static var cyanLight = UIColor(red: 222, green: 242, blue: 253)
     static var denim = UIColor(red: 29, green: 38, blue: 62)
@@ -62,6 +63,8 @@ extension UIColor {
     static var border = UIColor(red: 202, green: 208, blue: 223)
     static var importRed = UIColor(red: 249, green: 99, blue: 99)
 
-    static var passcode = UIColor(red: 213, green: 217, blue: 225)
+    static var passcodeInactive = UIColor(red: 213, green: 217, blue: 225)
+
+    static var firstTheme = UIColor(red: 15, green: 170, blue: 162)
   }
 }

@@ -21,7 +21,9 @@
                 <outlet property="advancedSettingsView" destination="BwD-ua-ExG" id="uqI-ob-jHs"/>
                 <outlet property="amountTextField" destination="W0L-lr-Mjz" id="30q-Tt-kpk"/>
                 <outlet property="balanceTextLabel" destination="djb-R5-aB5" id="Gs5-fi-f0X"/>
+                <outlet property="headerContainerView" destination="2bX-gH-E8o" id="QYZ-MU-pAa"/>
                 <outlet property="heightConstraintAdvancedSettingsView" destination="jsQ-38-DP2" id="GhW-ZI-yvA"/>
+                <outlet property="moreContactButton" destination="91X-aA-Iix" id="h8s-Ze-abG"/>
                 <outlet property="navTitleLabel" destination="3JI-9Y-K6Q" id="zkT-3L-ri1"/>
                 <outlet property="newContactButton" destination="ufh-Wh-g1B" id="YAn-2X-Smf"/>
                 <outlet property="recentContactHeightConstraint" destination="kob-sl-Qa3" id="d5U-x3-e6D"/>

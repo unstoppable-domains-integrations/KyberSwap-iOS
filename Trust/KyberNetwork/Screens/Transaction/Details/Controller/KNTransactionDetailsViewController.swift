@@ -17,6 +17,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   weak var delegate: KNTransactionDetailsViewControllerDelegate?
   fileprivate var viewModel: KNTransactionDetailsViewModel
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
   @IBOutlet weak var fromLabel: UILabel!
@@ -44,6 +45,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     let fromTapGes = UITapGestureRecognizer(target: self, action: #selector(self.fromAddressTapped(_:)))
     self.fromLabel.addGestureRecognizer(fromTapGes)
 

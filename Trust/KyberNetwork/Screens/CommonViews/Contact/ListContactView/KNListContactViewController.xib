@@ -21,6 +21,7 @@
                 <outlet property="contactEmptyLabel" destination="APl-2d-Lg3" id="r60-mV-FOn"/>
                 <outlet property="contactTableView" destination="0eJ-nQ-IR7" id="Kii-ul-jFu"/>
                 <outlet property="emptyStateView" destination="O1V-Us-qFQ" id="VLa-Fr-5Wf"/>
+                <outlet property="headerContainerView" destination="6Nx-3L-1U6" id="2Kq-fh-3G2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -16,6 +16,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBackUpWalletViewController" customModule="Trust" customModuleProvider="target">
@@ -26,6 +29,7 @@
                 <outlet property="descriptionLabel" destination="n4M-eJ-doh" id="1JI-ID-oab"/>
                 <outlet property="firstSeparatorView" destination="8M2-i7-D42" id="JtI-vh-45c"/>
                 <outlet property="firstWordTextField" destination="JWS-hb-jfT" id="NeE-vH-CV7"/>
+                <outlet property="headerContainerView" destination="EFQ-zS-3p3" id="nUz-iG-Ylz"/>
                 <outlet property="nextButton" destination="wMz-jJ-yOj" id="Qqk-Z8-d4E"/>
                 <outlet property="secondSeparatorView" destination="DC3-gH-rKU" id="SdU-6S-nXr"/>
                 <outlet property="secondWordTextField" destination="aiG-8k-JAO" id="m4o-Jw-sni"/>
@@ -60,7 +64,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="ohM-N6-z0S" firstAttribute="leading" secondItem="EFQ-zS-3p3" secondAttribute="leading" constant="16" id="6SV-FI-Vsk"/>
                         <constraint firstAttribute="height" constant="82" id="GCv-Np-ZsN"/>
@@ -116,14 +120,14 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMz-jJ-yOj">
                     <rect key="frame" x="35" y="558" width="305" height="45"/>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="alC-CA-biv"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
                     <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
                     <inset key="titleEdgeInsets" minX="-12" minY="0.0" maxX="12" maxY="0.0"/>
-                    <state key="normal" title="NEXT">
+                    <state key="normal" title="Next">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -159,12 +163,12 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeI-Ev-WnN">
                     <rect key="frame" x="35" y="413.5" width="305" height="44"/>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="7if-Up-o9h"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="COMPLETE">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Complete">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>

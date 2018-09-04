@@ -17,6 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KMarketViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="headerContainerView" destination="XSu-1w-opm" id="RgQ-N0-V8g"/>
                 <outlet property="kyberListedButton" destination="KFI-9f-Z6U" id="BRr-ie-H06"/>
                 <outlet property="otherButton" destination="hYA-so-Jwu" id="phJ-F1-JPQ"/>
                 <outlet property="searchTextField" destination="Wuz-mr-nsn" id="QlZ-nM-yEg"/>

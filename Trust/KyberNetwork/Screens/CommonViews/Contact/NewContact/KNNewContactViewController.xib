@@ -19,6 +19,7 @@
             <connections>
                 <outlet property="addressTextField" destination="s16-ZQ-yPb" id="C46-iz-CEA"/>
                 <outlet property="deleteButton" destination="sgh-cw-bBf" id="RQE-hw-ZYa"/>
+                <outlet property="headerContainerView" destination="BZJ-op-odJ" id="mD9-QW-0Lm"/>
                 <outlet property="nameTextField" destination="0ca-fd-JG1" id="3lL-Rk-yNb"/>
                 <outlet property="saveButton" destination="xoQ-1Q-KRG" id="uSP-df-hu3"/>
                 <outlet property="sendButton" destination="UgQ-zj-c6L" id="d05-Y1-8Pd"/>

@@ -29,6 +29,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
@@ -90,6 +91,7 @@ class KSwapViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+    self.headerContainerView.backgroundColor = self.viewModel.headerBackgroundColor
   }
 
   override func viewDidLayoutSubviews() {
@@ -191,7 +193,14 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupContinueButton() {
-    self.continueButton.rounded(radius: self.continueButton.frame.height / 2.0)
+    let style = KNAppStyleType.current
+    let radius = style.buttonRadius(for: self.continueButton.frame.height)
+    self.continueButton.rounded(radius: radius)
+    self.continueButton.backgroundColor = style.swapActionButtonBackgroundColor
+    self.continueButton.setTitle(
+      style.buttonTitle(with: "Continue"),
+      for: .normal
+    )
   }
 
   @IBAction func hamburgerMenuPressed(_ sender: Any) {

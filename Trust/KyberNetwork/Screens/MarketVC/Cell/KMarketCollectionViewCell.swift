@@ -41,14 +41,14 @@ struct KMarketCollectionViewCellModel {
     let rate = KNRate.rateETH(from: trackerRate).rate
     let rateString = rate.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6).prefix(11)
     return "\(rateString.prefix(11)) ETH"
-   }
+  }
 
   var displayUSDRateString: String {
     guard let trackerRate = self.trackerRate else { return "--- USD" }
     let rate = KNRate.rateUSD(from: trackerRate).rate
     let rateString = rate.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6).prefix(11)
     return "\(rateString.prefix(11)) USD"
-   }
+  }
 
   var colorChange24h: UIColor {
     guard let tracker = self.trackerRate else { return UIColor.Kyber.shamrock }

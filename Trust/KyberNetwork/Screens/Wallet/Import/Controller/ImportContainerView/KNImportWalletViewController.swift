@@ -17,6 +17,7 @@ class KNImportWalletViewController: KNBaseViewController {
 
   weak var delegate: KNImportWalletViewControllerDelegate?
 
+  @IBOutlet weak var headerContainerView: UIView!
   fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var pageControl: UIPageControl!
@@ -55,8 +56,11 @@ class KNImportWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupImportTypeButtons() {
+    let style = KNAppStyleType.current
+    self.view.backgroundColor = style.importWalletBackgroundColor
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     self.jsonButton.rounded(radius: 10.0)
-    self.jsonButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.jsonButton.setBackgroundColor(style.importButtonColor, forState: .selected)
     self.jsonButton.setBackgroundColor(UIColor.white, forState: .normal)
     self.jsonButton.setImage(UIImage(named: "json_import_select_icon"), for: .selected)
     self.jsonButton.setImage(UIImage(named: "json_import_icon"), for: .normal)
@@ -65,7 +69,7 @@ class KNImportWalletViewController: KNBaseViewController {
     self.jsonButton.centerVertically(padding: 10)
 
     self.privateKeyButton.rounded(radius: 10.0)
-    self.privateKeyButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.privateKeyButton.setBackgroundColor(style.importButtonColor, forState: .selected)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_select_icon"), for: .selected)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_icon"), for: .normal)
     self.privateKeyButton.setBackgroundColor(UIColor.white, forState: .normal)
@@ -74,7 +78,7 @@ class KNImportWalletViewController: KNBaseViewController {
     self.privateKeyButton.centerVertically(padding: 10)
 
     self.seedsButton.rounded(radius: 10.0)
-    self.seedsButton.setBackgroundColor(UIColor.Kyber.importRed, forState: .selected)
+    self.seedsButton.setBackgroundColor(style.importButtonColor, forState: .selected)
     self.seedsButton.setImage(UIImage(named: "seeds_import_select_icon"), for: .selected)
     self.seedsButton.setImage(UIImage(named: "seeds_import_icon"), for: .normal)
     self.seedsButton.setBackgroundColor(UIColor.white, forState: .normal)

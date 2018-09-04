@@ -28,9 +28,10 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var emptyBalanceTextLabel: UILabel!
   @IBOutlet weak var receiveTokenButton: UIButton!
 
-  @IBOutlet weak var usdButton: UIButton!
-  @IBOutlet weak var ethButton: UIButton!
+  @IBOutlet weak var kyberListButton: UIButton!
+  @IBOutlet weak var otherButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
+  @IBOutlet weak var currencyButton: UIButton!
 
   @IBOutlet weak var tokensBalanceCollectionView: UICollectionView!
 
@@ -71,6 +72,7 @@ class KWalletBalanceViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+    self.headerContainerView.backgroundColor = self.viewModel.headerBackgroundColor
   }
 
   // MARK: Set up UIs
@@ -94,7 +96,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func setupDisplayDataType() {
-    self.updateCurrencyDisplayType()
+    self.updateDisplayedDataType()
     self.searchTextField.delegate = self
   }
 
@@ -109,7 +111,9 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.tokensBalanceCollectionView.reloadData()
 
     self.emptyBalanceTextLabel.text = self.viewModel.textBalanceIsEmpty
-    self.receiveTokenButton.rounded(radius: self.receiveTokenButton.frame.height / 2.0)
+    let style = KNAppStyleType.current
+    self.receiveTokenButton.backgroundColor = style.walletFlowHeaderColor
+    self.receiveTokenButton.rounded(radius: style.buttonRadius(for: self.receiveTokenButton.frame.height))
   }
 
   // MARK: Update UIs
@@ -125,9 +129,10 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  fileprivate func updateCurrencyDisplayType() {
-    self.usdButton.setTitleColor(self.viewModel.colorUSDButton, for: .normal)
-    self.ethButton.setTitleColor(self.viewModel.colorETHButton, for: .normal)
+  fileprivate func updateDisplayedDataType() {
+    self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
+    self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
+    self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
     self.updateWalletBalanceUI()
     self.tokensBalanceCollectionView.reloadData()
     self.view.layoutIfNeeded()
@@ -147,15 +152,15 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.delegate?.kWalletBalanceViewController(self, run: .openMarketView)
   }
 
-  @IBAction func usdButtonPressed(_ sender: Any) {
-    if self.viewModel.updateCurrencyType(.usd) {
-      self.updateCurrencyDisplayType()
+  @IBAction func kyberListButtonPressed(_ sender: Any) {
+    if self.viewModel.updateDisplayKyberList(true) {
+      self.updateDisplayedDataType()
     }
   }
 
-  @IBAction func ethButtonPressed(_ sender: Any) {
-    if self.viewModel.updateCurrencyType(.eth) {
-      self.updateCurrencyDisplayType()
+  @IBAction func otherButtonPressed(_ sender: Any) {
+    if self.viewModel.updateDisplayKyberList(false) {
+      self.updateDisplayedDataType()
     }
   }
 
@@ -164,12 +169,12 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   @IBAction func sortNameButtonPressed(_ sender: Any) {
-    self.viewModel.updateTokenDisplayType(nameClicked: true)
+    self.viewModel.updateTokenDisplayType(positionClicked: 1)
     self.tokensBalanceCollectionView.reloadData()
   }
 
-  @IBAction func sortBalanceButtonPressed(_ sender: Any) {
-    self.viewModel.updateTokenDisplayType(nameClicked: false)
+  @IBAction func changeButtonPressed(_ sender: Any) {
+    self.viewModel.updateTokenDisplayType(positionClicked: 3)
     self.tokensBalanceCollectionView.reloadData()
   }
 
@@ -179,6 +184,12 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func receiveTokenButtonPressed(_ sender: Any) {
     self.delegate?.kWalletBalanceViewController(self, run: .receiveToken)
+  }
+
+  @IBAction func currencyButtonPressed(_ sender: Any) {
+    let newType: KWalletCurrencyType = self.viewModel.currencyType == .usd ? .eth : .usd
+    _ = self.viewModel.updateCurrencyType(newType)
+    self.updateDisplayedDataType()
   }
 }
 

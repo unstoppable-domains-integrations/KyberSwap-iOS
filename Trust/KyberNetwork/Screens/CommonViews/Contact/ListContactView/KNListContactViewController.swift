@@ -14,6 +14,7 @@ protocol KNListContactViewControllerDelegate: class {
 
 class KNListContactViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var contactTableView: KNContactTableView!
   @IBOutlet weak var emptyStateView: UIView!
   @IBOutlet weak var contactEmptyLabel: UILabel!
@@ -23,6 +24,8 @@ class KNListContactViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    let style = KNAppStyleType.current
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     let contacts = KNContactStorage.shared.contacts
     self.contactTableView.delegate = self
     self.contactTableView.updateView(
@@ -34,7 +37,12 @@ class KNListContactViewController: KNBaseViewController {
     self.contactTableView.isHidden = contacts.isEmpty
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactEmptyLabel.text = "Your contact is empty".toBeLocalised()
-    self.addContactButton.rounded(radius: self.addContactButton.frame.height / 2.0)
+    self.addContactButton.rounded(radius: style.buttonRadius(for: self.addContactButton.frame.height))
+    self.addContactButton.backgroundColor = style.walletFlowHeaderColor
+    self.addContactButton.setTitle(
+      style.buttonTitle(with: "Add Contact".toBeLocalised()),
+      for: .normal
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -13,6 +13,7 @@ protocol KNCreateWalletViewControllerDelegate: class {
 
 class KNCreateWalletViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
 
   @IBOutlet weak var walletNameTextField: UITextField!
@@ -27,8 +28,16 @@ class KNCreateWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    let style = KNAppStyleType.current
+    self.view.backgroundColor = style.createWalletBackgroundColor
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     self.navTitleLabel.text = "Create your Wallet".toBeLocalised()
-    self.createWalletButton.rounded(radius: self.createWalletButton.frame.height / 2.0)
+    self.createWalletButton.rounded(radius: style.buttonRadius(for: self.createWalletButton.frame.height))
+    self.createWalletButton.backgroundColor = style.createWalletButtonEnabledColor
+    self.createWalletButton.setTitle(
+      style.buttonTitle(with: "Confirm".toBeLocalised()),
+      for: .normal
+    )
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

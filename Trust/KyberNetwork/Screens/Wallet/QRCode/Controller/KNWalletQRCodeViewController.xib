@@ -14,6 +14,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="Trust" customModuleProvider="target">
@@ -46,12 +49,12 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
                     <rect key="frame" x="24" y="585" width="155.5" height="42"/>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="BRe-wW-oV6"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="COPY">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Copy">
                         <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -61,8 +64,8 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
                     <rect key="frame" x="195.5" y="585" width="155.5" height="42"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="SHARE">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Share">
                         <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -89,7 +92,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="hYE-MU-J4V" secondAttribute="bottom" constant="16" id="2o4-65-RXf"/>
                         <constraint firstAttribute="height" constant="82" id="XY1-26-aan"/>

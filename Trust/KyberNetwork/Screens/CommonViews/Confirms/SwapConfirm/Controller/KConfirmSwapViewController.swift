@@ -7,7 +7,10 @@ protocol KConfirmSwapViewControllerDelegate: class {
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
+
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
+
   @IBOutlet weak var fromAmountLabel: UILabel!
   @IBOutlet weak var toAmountLabel: UILabel!
 
@@ -48,6 +51,9 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    let style = KNAppStyleType.current
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+
     self.titleLabel.text = self.viewModel.titleString
 
     self.fromAmountLabel.text = self.viewModel.leftAmountString
@@ -63,7 +69,16 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
-    self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
+    self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
+    self.confirmButton.setTitle(
+      style.buttonTitle(with: "Confirm".toBeLocalised()),
+      for: .normal
+    )
+    self.confirmButton.backgroundColor = style.swapActionButtonBackgroundColor
+    self.cancelButton.setTitle(
+      style.buttonTitle(with: "Cancel".toBeLocalised()),
+      for: .normal
+    )
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

@@ -45,6 +45,7 @@ class KSwapViewModel {
     self.supportedTokens = supportedTokens
   }
 
+  var headerBackgroundColor: UIColor { return KNAppStyleType.current.swapFlowHeaderColor }
   // MARK: Wallet name
   var walletNameString: String { return "| \(self.walletObject.name)" }
 

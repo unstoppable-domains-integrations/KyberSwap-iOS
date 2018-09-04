@@ -16,20 +16,24 @@
         <array key="Montserrat-Regular.ttf">
             <string>Montserrat-Regular</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KWalletBalanceViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="balanceTextLabel" destination="tNy-7j-Gt2" id="YYj-GO-LL8"/>
                 <outlet property="balanceValueLabel" destination="ztY-YM-0aU" id="mPu-J4-bRa"/>
+                <outlet property="currencyButton" destination="61z-Hi-1ah" id="sZV-uz-9GS"/>
                 <outlet property="emptyBalanceTextLabel" destination="6g5-Hf-gED" id="3Gk-qg-ib1"/>
                 <outlet property="emptyStateView" destination="xZA-fD-Wsm" id="eVR-RX-Cji"/>
-                <outlet property="ethButton" destination="bfz-k4-GjU" id="WeL-Pk-EH5"/>
                 <outlet property="headerContainerView" destination="iQw-Mq-Z8D" id="D9T-OX-seg"/>
+                <outlet property="kyberListButton" destination="IPs-kS-P1d" id="0Gi-gV-cng"/>
+                <outlet property="otherButton" destination="bfz-k4-GjU" id="pTY-mO-ycb"/>
                 <outlet property="receiveTokenButton" destination="JRV-cy-j9I" id="XO1-Ce-6oo"/>
                 <outlet property="searchTextField" destination="7gf-Oi-kKw" id="ehw-gh-DKG"/>
                 <outlet property="tokensBalanceCollectionView" destination="r4m-dS-Kt1" id="wuX-PP-64O"/>
-                <outlet property="usdButton" destination="IPs-kS-P1d" id="GSI-Rc-f9w"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletDataView" destination="6LI-U8-W7j" id="3qi-tE-iHb"/>
                 <outlet property="walletNameLabel" destination="qlW-Mm-bZf" id="uuu-I5-sby"/>
@@ -72,7 +76,7 @@
                                 <action selector="menuButtonPressed:" destination="-1" eventType="touchUpInside" id="eK7-rT-qzf"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHc-Ib-Wny">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHc-Ib-Wny">
                             <rect key="frame" x="328" y="105" width="27" height="33"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="27" id="WB3-9J-Hyc"/>
@@ -88,7 +92,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.11764705882352941" green="0.53725490196078429" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="160" id="5NU-lQ-IDx"/>
                         <constraint firstItem="uX4-lo-QAu" firstAttribute="centerY" secondItem="tNy-7j-Gt2" secondAttribute="centerY" id="8k0-jE-Bb5"/>
@@ -111,29 +115,23 @@
                     <rect key="frame" x="0.0" y="160" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPs-kS-P1d">
-                            <rect key="frame" x="20" y="5" width="36" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="36" id="2oc-bm-3gj"/>
-                            </constraints>
+                            <rect key="frame" x="20" y="5" width="88" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="USD">
-                                <color key="titleColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Kyber Listed">
+                                <color key="titleColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="usdButtonPressed:" destination="-1" eventType="touchUpInside" id="Zls-PO-WFi"/>
+                                <action selector="kyberListButtonPressed:" destination="-1" eventType="touchUpInside" id="Me7-lk-mXB"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfz-k4-GjU">
-                            <rect key="frame" x="72" y="5" width="36" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="36" id="BFV-Ta-3cW"/>
-                            </constraints>
+                            <rect key="frame" x="124" y="5" width="42" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="ETH">
-                                <color key="titleColor" red="0.11372549019607843" green="0.18823529411764706" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="Other">
+                                <color key="titleColor" red="0.1803921568627451" green="0.22352941176470587" blue="0.3411764705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="ethButtonPressed:" destination="-1" eventType="touchUpInside" id="cCy-XF-YcE"/>
+                                <action selector="otherButtonPressed:" destination="-1" eventType="touchUpInside" id="jH9-Ad-Z60"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Vm-hB-qUI">
@@ -175,33 +173,45 @@
                     <rect key="frame" x="0.0" y="200" width="375" height="36"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0q-wm-sdr">
-                            <rect key="frame" x="52" y="3" width="44" height="30"/>
+                            <rect key="frame" x="16" y="3" width="44" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <state key="normal" title="Name">
-                                <color key="titleColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="sortNameButtonPressed:" destination="-1" eventType="touchUpInside" id="ONo-a4-Ugx"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
-                            <rect key="frame" x="297" y="3" width="58" height="30"/>
+                            <rect key="frame" x="303" y="3" width="60" height="30"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="Balance">
-                                <color key="titleColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="24h ch%">
+                                <color key="titleColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="sortBalanceButtonPressed:" destination="-1" eventType="touchUpInside" id="zKp-gk-gfr"/>
+                                <action selector="changeButtonPressed:" destination="-1" eventType="touchUpInside" id="lhA-pb-cHF"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61z-Hi-1ah">
+                            <rect key="frame" x="251" y="10" width="32" height="17"/>
+                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="14"/>
+                            <state key="normal" title="ETH" image="balance_switch_white">
+                                <color key="titleColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="currencyButtonPressed:" destination="-1" eventType="touchUpInside" id="o17-4g-rjV"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.87058823529411766" green="0.94901960784313721" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="61z-Hi-1ah" secondAttribute="trailing" constant="92" id="FHL-yj-Okx"/>
                         <constraint firstItem="EY4-fd-g0P" firstAttribute="centerY" secondItem="G0q-wm-sdr" secondAttribute="centerY" id="QMI-AY-SSh"/>
-                        <constraint firstItem="G0q-wm-sdr" firstAttribute="leading" secondItem="ldd-eU-IaQ" secondAttribute="leading" constant="52" id="XLv-P7-9lR"/>
+                        <constraint firstItem="G0q-wm-sdr" firstAttribute="leading" secondItem="ldd-eU-IaQ" secondAttribute="leading" constant="16" id="XLv-P7-9lR"/>
                         <constraint firstAttribute="height" constant="36" id="XQa-0f-tCq"/>
                         <constraint firstItem="G0q-wm-sdr" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="b2y-V0-TBh"/>
-                        <constraint firstAttribute="trailing" secondItem="EY4-fd-g0P" secondAttribute="trailing" constant="20" id="s0f-ww-htC"/>
+                        <constraint firstItem="61z-Hi-1ah" firstAttribute="centerY" secondItem="EY4-fd-g0P" secondAttribute="centerY" id="enR-Px-HXk"/>
+                        <constraint firstAttribute="trailing" secondItem="EY4-fd-g0P" secondAttribute="trailing" constant="12" id="s0f-ww-htC"/>
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r4m-dS-Kt1">
@@ -225,13 +235,13 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-cy-j9I">
                             <rect key="frame" x="68" y="192.5" width="240" height="46"/>
-                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="neE-Zv-WQ2"/>
                                 <constraint firstAttribute="width" constant="240" id="sT2-Zr-2Ib"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="RECEIVE TOKEN">
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Receive Token">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
@@ -283,6 +293,7 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
+        <image name="balance_switch_white" width="6" height="11"/>
         <image name="market_white_icon" width="24" height="21"/>
         <image name="menu_white_icon" width="18" height="10"/>
         <image name="search_black_icon" width="15" height="16"/>

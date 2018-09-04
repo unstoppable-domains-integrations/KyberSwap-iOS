@@ -11,6 +11,7 @@ class KNSplashScreenViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.view.backgroundColor = KNAppStyleType.current.landingBackgroundColor
     //TODO: Remove in prod build
     //self.debugInfoView.isHidden = isDebug
     self.versionLabel.text = "Version: \(Bundle.main.versionNumber ?? "")"

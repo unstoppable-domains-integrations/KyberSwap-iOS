@@ -37,11 +37,11 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var firstButtonTitle: String {
-    return self.isFirstTime ? "TRY AGAIN".toBeLocalised() : "RETRY".toBeLocalised()
+    return self.isFirstTime ? "Try Again".toBeLocalised() : "Retry".toBeLocalised()
   }
 
   var firstButtonColor: UIColor {
-    return self.isFirstTime ? UIColor.Kyber.shamrock : UIColor.clear
+    return self.isFirstTime ? KNAppStyleType.current.walletFlowHeaderColor : UIColor.clear
   }
 
   var firstButtonTitleColor: UIColor {
@@ -53,11 +53,11 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var secondButtonTitle: String {
-    return "BACKUP AGAIN".toBeLocalised()
+    return "Backup Again".toBeLocalised()
   }
 
   var secondButtonColor: UIColor {
-    return UIColor.Kyber.shamrock
+    return KNAppStyleType.current.walletFlowHeaderColor
   }
 }
 
@@ -89,21 +89,24 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    let style = KNAppStyleType.current
+
     self.containerView.rounded(radius: 10.0)
     self.containerView.isHidden = self.viewModel.isContainerViewHidden
+
     self.titleLabel.text = self.viewModel.title
     self.messageLabel.text = self.viewModel.message
 
     self.firstButton.rounded(
       color: self.viewModel.firstButtonBorderColor,
       width: 1,
-      radius: self.firstButton.frame.height / 2.0
+      radius: style.buttonRadius(for: self.firstButton.frame.height)
     )
     self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
     self.firstButton.backgroundColor = self.viewModel.firstButtonColor
     self.firstButton.setTitleColor(self.viewModel.firstButtonTitleColor, for: .normal)
 
-    self.secondButton.rounded(radius: self.secondButton.frame.height / 2.0)
+    self.secondButton.rounded(radius: style.buttonRadius(for: self.secondButton.frame.height))
     self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
     self.secondButton.backgroundColor = self.viewModel.secondButtonColor
 

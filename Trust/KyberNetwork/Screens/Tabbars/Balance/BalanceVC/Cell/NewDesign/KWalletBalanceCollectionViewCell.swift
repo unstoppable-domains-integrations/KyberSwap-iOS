@@ -60,7 +60,7 @@ struct KWalletBalanceCollectionViewCellModel {
     }()
     guard let rateValue = rate else { return "---" }
     let rateString = rateValue.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6).prefix(11)
-    return "\(rateString.prefix(11)) \(self.currencyType.rawValue)"
+    return "\(rateString.prefix(11))"
   }
 
   var displayAmountHoldingsText: String {
@@ -75,7 +75,7 @@ struct KWalletBalanceCollectionViewCellModel {
     if let amount = self.balance?.value, let trackerRate = self.trackerRate {
       let rate = KNRate.rateUSD(from: trackerRate)
       let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6)
-      return "\(value.prefix(11)) \(self.currencyType.rawValue)"
+      return "~\(value.prefix(11)) \(self.currencyType.rawValue)"
     }
     return "---"
   }
@@ -84,9 +84,38 @@ struct KWalletBalanceCollectionViewCellModel {
     if let amount = self.balance?.value, let trackerRate = self.trackerRate {
       let rate = KNRate.rateETH(from: trackerRate)
       let value = (amount * rate.rate / BigInt(10).power(self.token.decimals)).string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
-      return "\(value.prefix(11)) \(self.currencyType.rawValue)"
+      return "~\(value.prefix(11)) \(self.currencyType.rawValue)"
     }
     return "---"
+  }
+
+  var colorChange24h: UIColor {
+    guard let tracker = self.trackerRate else { return UIColor.Kyber.shamrock }
+    let change: Double = {
+      if self.currencyType == .eth { return tracker.changeETH24h }
+      return tracker.changeUSD24h
+    }()
+    if change >= 0 { return UIColor.Kyber.shamrock }
+    return UIColor.Kyber.strawberry
+  }
+
+  var change24hString: String {
+    guard let tracker = self.trackerRate else { return "---" }
+    let change: Double = {
+      if self.currencyType == .eth { return tracker.changeETH24h }
+      return tracker.changeUSD24h
+    }()
+    return "\("\(change)".prefix(5))%"
+  }
+
+  var change24hImage: UIImage? {
+    guard let tracker = self.trackerRate else { return nil }
+    let change: Double = {
+      if self.currencyType == .eth { return tracker.changeETH24h }
+      return tracker.changeUSD24h
+    }()
+    if change >= 0 { return UIImage(named: "change_up") }
+    return UIImage(named: "change_down")
   }
 }
 
@@ -97,9 +126,10 @@ class KWalletBalanceCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var symbolLabel: UILabel!
-  @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var amountHoldingsLabel: UILabel!
+  @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
+  @IBOutlet weak var changePercentButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -123,5 +153,15 @@ class KWalletBalanceCollectionViewCell: UICollectionViewCell {
     self.amountHoldingsLabel.text = viewModel.displayAmountHoldingsText
     self.valueLabel.text = viewModel.displayBalanceValue
     self.backgroundColor = viewModel.backgroundColor
+
+    self.changePercentButton.setTitleColor(
+      viewModel.colorChange24h,
+      for: .normal
+    )
+    self.changePercentButton.setTitle(
+      viewModel.change24hString,
+      for: .normal
+    )
+    self.changePercentButton.setImage(viewModel.change24hImage, for: .normal)
   }
 }

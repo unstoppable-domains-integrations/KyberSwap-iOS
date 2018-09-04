@@ -26,13 +26,14 @@ class KNAppTracker {
   static let kCurrencyTypeKey: String = "kCurrencyTypeKey"
   static let kTokenListDisplayDataTypeKey: String = "kTokenListDisplayDataTypeKey"
 
+  static let kAppStyle: String = "kAppStyle"
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static func internalTrackerEndpoint() -> String {
-    if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
-      return value
-    }
-    return "https://tracker.kyber.network"//KNEnvironment.default == .ropsten ? "https://staging-tracker.knstats.com" : 
+//    if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
+//      return value
+//    }
+    return "https://tracker.kyber.network"//KNEnvironment.default == .ropsten ? "https://staging-tracker.knstats.com" :
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
@@ -42,9 +43,9 @@ class KNAppTracker {
 
   // MARK: Internal cache endpoint key
   static func internalCacheEndpoint() -> String {
-    if let value = userDefaults.object(forKey: kInternalCacheEndpointKey) as? String {
-      return value
-    }
+//    if let value = userDefaults.object(forKey: kInternalCacheEndpointKey) as? String {
+//      return value
+//    }
     return "https://production-cache.kyber.network"
   }
 
@@ -152,6 +153,17 @@ class KNAppTracker {
   // MARK: KyberGO base string
   static func getKyberGOBaseString() -> String {
     return KNEnvironment.default == .ropsten ? "https://dev-userdashboard.knstats.com" : "https://kyber.mangcut.vn"
+  }
+
+  // MARK: App style
+  static func updateAppStyleType(_ type: KNAppStyleType) {
+    userDefaults.set(type.rawValue, forKey: kAppStyle)
+    userDefaults.synchronize()
+  }
+
+  static func getAppStyleType() -> KNAppStyleType {
+    let type = userDefaults.object(forKey: kAppStyle) as? String ?? ""
+    return KNAppStyleType(rawValue: type) ?? .default
   }
 
   // MARK: Reset app tracker

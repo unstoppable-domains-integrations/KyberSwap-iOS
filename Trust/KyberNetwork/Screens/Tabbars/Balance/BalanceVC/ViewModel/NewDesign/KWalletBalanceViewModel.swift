@@ -6,7 +6,10 @@ import BigInt
 enum KWalletSortType {
   case nameAsc
   case nameDesc
-  case balanceAsc
+  case priceAsc
+  case priceDesc
+  case changeAsc
+  case changeDesc
   case balanceDesc
 }
 
@@ -17,6 +20,7 @@ enum KWalletCurrencyType: String {
 
 class KWalletBalanceViewModel: NSObject {
 
+  private(set) var isKyberList: Bool = true
   private(set) var wallet: KNWalletObject
   private(set) var tokenObjects: [TokenObject] = []
   private(set) var tokensDisplayType: KWalletSortType = .nameAsc
@@ -56,13 +60,17 @@ class KWalletBalanceViewModel: NSObject {
     return self.wallet.name
   }
 
+  var headerBackgroundColor: UIColor {
+    return KNAppStyleType.current.walletFlowHeaderColor
+  }
+
   // MARK: Balance data
   func updateCurrencyType(_ type: KWalletCurrencyType) -> Bool {
     if self.currencyType == type { return false }
     self.currencyType = type
     KNAppTracker.updateCurrencyType(type)
+    self.createDisplayedData()
     return true
-//    KNAppTracker.updateBalanceDisplayDataType(self.balanceDisplayType)
   }
 
   var balanceDisplayAttributedString: NSAttributedString {
@@ -94,29 +102,38 @@ class KWalletBalanceViewModel: NSObject {
     return attributedString
   }
 
-  var colorUSDButton: UIColor {
-    if self.currencyType == .usd { return UIColor.Kyber.blueGreen }
+  var colorKyberListedButton: UIColor {
+    if self.isKyberList { return self.headerBackgroundColor }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
-  var colorETHButton: UIColor {
-    if self.currencyType == .eth { return UIColor.Kyber.blueGreen }
+  var colorOthersButton: UIColor {
+    if !self.isKyberList { return self.headerBackgroundColor }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
   // MARK: Update display data
-  func updateTokenDisplayType(nameClicked: Bool) {
-    if nameClicked {
-      if self.tokensDisplayType == .balanceAsc || self.tokensDisplayType == .balanceDesc {
-        self.tokensDisplayType = .nameAsc
-      } else {
+  // 1: Click name
+  // 2: Click price
+  // 3: Click change 24h
+  func updateTokenDisplayType(positionClicked: Int) {
+    if positionClicked == 1 {
+      if self.tokensDisplayType == .nameAsc || self.tokensDisplayType == .nameDesc {
         self.tokensDisplayType = self.tokensDisplayType == .nameAsc ? .nameDesc : .nameAsc
+      } else {
+        self.tokensDisplayType = .nameAsc
+      }
+    } else if positionClicked == 2 {
+      if self.tokensDisplayType == .priceAsc || self.tokensDisplayType == .priceDesc {
+        self.tokensDisplayType = self.tokensDisplayType == .priceAsc ? .priceDesc : .priceAsc
+      } else {
+        self.tokensDisplayType = .priceAsc
       }
     } else {
-      if self.tokensDisplayType == .nameAsc || self.tokensDisplayType == .nameDesc {
-        self.tokensDisplayType = .balanceAsc
+      if self.tokensDisplayType == .changeAsc || self.tokensDisplayType == .changeDesc {
+        self.tokensDisplayType = self.tokensDisplayType == .changeAsc ? .changeDesc : .changeAsc
       } else {
-        self.tokensDisplayType = self.tokensDisplayType == .balanceAsc ? .balanceDesc : .balanceAsc
+        self.tokensDisplayType = .changeAsc
       }
     }
     self.createDisplayedData()
@@ -173,6 +190,13 @@ class KWalletBalanceViewModel: NSObject {
     return true
   }
 
+  func updateDisplayKyberList(_ isDisplayKyberList: Bool) -> Bool {
+    if self.isKyberList == isDisplayKyberList { return false }
+    self.isKyberList = isDisplayKyberList
+    self.createDisplayedData()
+    return true
+  }
+
   func updateTokenBalances(_ balances: [String: Balance]) -> Bool {
     var isDataChanged: Bool = false
     balances.forEach {
@@ -197,10 +221,7 @@ class KWalletBalanceViewModel: NSObject {
 
   fileprivate func createDisplayedData() {
     // Compute displayed token objects sorted by displayed type
-    let tokenObjects = self.tokenObjects.filter({ $0.contains(self.searchText) }).filter { token -> Bool in
-      guard let balance = self.balances[token.contract] else { return false }
-      return !balance.value.isZero
-    }
+    let tokenObjects = self.tokenObjects.filter({ $0.contains(self.searchText) }).filter({ $0.isSupported == self.isKyberList })
     self.displayedTokens = {
       return tokenObjects.sorted(by: {
         return self.displayedTokenComparator(left: $0, right: $1)
@@ -211,15 +232,45 @@ class KWalletBalanceViewModel: NSObject {
     })
   }
 
+//  fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
+//    if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
+//    if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
+//    guard let balance0 = self.balance(for: left) else { return false }
+//    guard let balance1 = self.balance(for: right) else { return true }
+//    // sort by balance holdings (number of coins)
+//    let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
+//    let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
+//    if self.tokensDisplayType == .balanceAsc { return value0 < value1 }
+//    return value0 > value1
+//  }
+
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
+    // sort by name
     if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
     if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
-    guard let balance0 = self.balance(for: left) else { return false }
-    guard let balance1 = self.balance(for: right) else { return true }
-    // sort by balance holdings (number of coins)
-    let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
-    let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
-    if self.tokensDisplayType == .balanceAsc { return value0 < value1 }
-    return value0 > value1
+
+    if self.tokensDisplayType == .balanceDesc {
+      // sort by balance
+      guard let balance0 = self.balance(for: left) else { return false }
+      guard let balance1 = self.balance(for: right) else { return true }
+      let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
+      let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
+      return value0 > value1
+    }
+    // sort by price or change
+    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
+    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
+    let change0: Double = {
+      return self.currencyType == .eth ? tracker0.changeETH24h : tracker0.changeUSD24h
+    }()
+    let change1: Double = {
+      return self.currencyType == .eth ? tracker1.changeETH24h : tracker1.changeUSD24h
+    }()
+    // sort by change 24h
+    if self.tokensDisplayType == .changeAsc { return change0 < change1 }
+    if self.tokensDisplayType == .changeDesc { return change0 > change1 }
+    // sort by price, rate ETH or rate USD are the same to compare
+    if self.tokensDisplayType == .priceAsc { return tracker0.rateETHNow < tracker1.rateETHNow }
+    return tracker0.rateETHNow > tracker1.rateETHNow
   }
 }

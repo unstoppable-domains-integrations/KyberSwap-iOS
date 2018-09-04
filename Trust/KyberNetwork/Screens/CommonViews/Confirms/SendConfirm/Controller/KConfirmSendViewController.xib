@@ -27,6 +27,7 @@
                 <outlet property="feeETHLabel" destination="KsS-2N-J67" id="Ka8-Rs-gr9"/>
                 <outlet property="feeUSDLabel" destination="jHX-M3-Kta" id="ysc-NB-plR"/>
                 <outlet property="firstSeparatorView" destination="rZg-Gu-XDk" id="vAw-N6-530"/>
+                <outlet property="headerContainerView" destination="gcb-Nk-Gww" id="8Xm-Qw-gXE"/>
                 <outlet property="secondSeparatorView" destination="hiL-ld-ucq" id="Mh7-YR-38p"/>
                 <outlet property="sendAddressLabel" destination="wsV-RK-NrS" id="f2h-Io-K39"/>
                 <outlet property="sendAmountLabel" destination="6bT-vz-8ub" id="gqM-5d-vgW"/>

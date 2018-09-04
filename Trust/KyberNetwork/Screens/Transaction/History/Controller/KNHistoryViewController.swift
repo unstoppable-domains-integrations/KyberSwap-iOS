@@ -133,7 +133,7 @@ struct KNHistoryViewModel {
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.blueGreen,
+    NSAttributedStringKey.foregroundColor: KNAppStyleType.current.walletFlowHeaderColor,
   ]
 }
 
@@ -141,6 +141,8 @@ class KNHistoryViewController: KNBaseViewController {
 
   weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate var viewModel: KNHistoryViewModel
+
+  @IBOutlet weak var headerContainerView: UIView!
 
   @IBOutlet weak var emptyStateContainerView: UIView!
   @IBOutlet weak var emptyStateTitleLabel: UILabel!
@@ -181,13 +183,17 @@ class KNHistoryViewController: KNBaseViewController {
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = "History".toBeLocalised()
+    let style = KNAppStyleType.current
+    self.view.backgroundColor = style.mainBackgroundColor
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     self.segmentedControl.rounded(
       color: .white,
       width: 1,
-      radius: self.segmentedControl.frame.height / 2.0
+      radius: style.buttonRadius(for: self.segmentedControl.frame.height)
     )
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
+    self.segmentedControl.backgroundColor = style.walletFlowHeaderColor
   }
 
   fileprivate func setupCollectionView() {

@@ -51,6 +51,7 @@ class KNNewContactViewController: KNBaseViewController {
   weak var delegate: KNNewContactViewControllerDelegate?
   fileprivate var viewModel: KNNewContactViewModel
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var saveButton: UIButton!
   @IBOutlet weak var deleteButton: UIButton!
@@ -78,6 +79,7 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
     self.deleteButton.setTitle("Delete Contact".toBeLocalised(), for: .normal)
     self.sendButton.setTitle("Send", for: .normal)

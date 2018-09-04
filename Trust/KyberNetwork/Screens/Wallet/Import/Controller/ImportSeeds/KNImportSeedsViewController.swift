@@ -24,9 +24,22 @@ class KNImportSeedsViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.seedsTextField.delegate = self
-    self.nextButton.rounded(radius: self.nextButton.frame.height / 2.0)
-    self.nextButton.setBackgroundColor(UIColor(red: 237, green: 238, blue: 242), forState: .disabled)
-    self.nextButton.setBackgroundColor(UIColor.Kyber.shamrock, forState: .normal)
+
+    let style = KNAppStyleType.current
+    self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
+    self.nextButton.setBackgroundColor(
+      style.importWalletButtonDisabledColor,
+      forState: .disabled
+    )
+    self.nextButton.setBackgroundColor(
+      style.importWalletButtonEnabledColor,
+      forState: .normal
+    )
+    self.nextButton.setTitle(
+      style.buttonTitle(with: "Import Wallet".toBeLocalised()),
+      for: .normal
+    )
+
     self.resetUIs()
   }
 

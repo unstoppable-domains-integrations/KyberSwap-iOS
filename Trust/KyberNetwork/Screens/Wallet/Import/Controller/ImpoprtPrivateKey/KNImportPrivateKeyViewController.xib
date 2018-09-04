@@ -13,6 +13,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportPrivateKeyViewController" customModule="Trust" customModuleProvider="target">
@@ -33,12 +36,12 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCx-Sw-ble">
                     <rect key="frame" x="35" y="584" width="305" height="48"/>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="8p5-Ic-Sxh"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="IMPORT WALLET">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Next">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>

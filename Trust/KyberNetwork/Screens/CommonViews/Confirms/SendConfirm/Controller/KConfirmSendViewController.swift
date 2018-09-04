@@ -13,6 +13,7 @@ protocol KConfirmSendViewControllerDelegate: class {
 
 class KConfirmSendViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
 
   @IBOutlet weak var contactImageView: UIImageView!
@@ -55,6 +56,8 @@ class KConfirmSendViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    let style = KNAppStyleType.current
+    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     self.titleLabel.text = self.viewModel.titleString
 
     self.contactImageView.rounded(radius: self.contactImageView.frame.height / 2.0)
@@ -69,7 +72,16 @@ class KConfirmSendViewController: KNBaseViewController {
     self.feeETHLabel.text = self.viewModel.transactionFeeETHString
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
 
-    self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
+    self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
+    self.confirmButton.setTitle(
+      style.buttonTitle(with: "Confirm".toBeLocalised()),
+      for: .normal
+    )
+    self.confirmButton.backgroundColor = style.walletFlowHeaderColor
+    self.cancelButton.setTitle(
+      style.buttonTitle(with: "Cancel".toBeLocalised()),
+      for: .normal
+    )
 
     self.firstSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
     self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)

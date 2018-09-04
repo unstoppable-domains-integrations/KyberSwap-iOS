@@ -13,6 +13,9 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    let style = KNAppStyleType.current
+    self.backgroundColor = style.landingBackgroundColor
+    self.subTitleLabel.textColor = style.landingWelcomeDetailTextColor
     // Initialization code
   }
 

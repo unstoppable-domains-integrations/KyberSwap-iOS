@@ -20,6 +20,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="headerContainerView" destination="0Kr-aI-vdA" id="xzQ-ff-1pd"/>
                 <outlet property="noMatchingTokensLabel" destination="qBW-cK-YSw" id="uxE-eq-zY5"/>
                 <outlet property="searchTextField" destination="vHA-YC-Rnd" id="T7P-2a-4uH"/>
                 <outlet property="tableViewBottomPaddingConstraint" destination="0k0-TK-3IM" id="cPH-Jc-LRh"/>

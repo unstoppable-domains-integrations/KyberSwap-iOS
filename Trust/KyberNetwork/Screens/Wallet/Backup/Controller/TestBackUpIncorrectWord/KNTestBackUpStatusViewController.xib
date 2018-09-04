@@ -13,6 +13,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTestBackUpStatusViewController" customModule="Trust" customModuleProvider="target">
@@ -53,8 +56,8 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Seo-tC-m3u"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="RETRY">
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Retry">
                                 <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -63,12 +66,12 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CL6-fZ-du6">
                             <rect key="frame" x="155.5" y="111.5" width="171.5" height="44"/>
-                            <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="172" id="msI-ml-s0g"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="BACKUP AGAIN">
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Backup Again">
                                 <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>

@@ -24,6 +24,7 @@
                 <outlet property="buyButton" destination="NQJ-aQ-heZ" id="uJF-gm-Fex"/>
                 <outlet property="dataTypeButtonContainerView" destination="YuN-fc-RDP" id="p15-Ad-le1"/>
                 <outlet property="ethRateLabel" destination="owX-jT-QfB" id="SXa-xc-Kvw"/>
+                <outlet property="headerContainerView" destination="RuW-OO-mGF" id="a9k-8M-Ntb"/>
                 <outlet property="iconImageView" destination="Dov-H8-AEE" id="kkc-WQ-WIO"/>
                 <outlet property="leftPaddingForTouchPriceLabelConstraint" destination="8gr-HH-ARI" id="OhY-Xu-sVX"/>
                 <outlet property="nameLabel" destination="pby-cn-L8Z" id="rRk-DT-eho"/>

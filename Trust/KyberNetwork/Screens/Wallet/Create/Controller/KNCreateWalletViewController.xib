@@ -13,14 +13,15 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
-        <array key="Montserrat-Regular.ttf">
-            <string>Montserrat-Regular</string>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNCreateWalletViewController" customModule="Trust" customModuleProvider="target">
             <connections>
                 <outlet property="createWalletButton" destination="I6g-JK-yXd" id="uXu-S2-VoN"/>
+                <outlet property="headerContainerView" destination="pey-7Y-GES" id="15k-rG-BU0"/>
                 <outlet property="navTitleLabel" destination="eoX-wf-GGd" id="sBA-FU-7fa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="RqY-TQ-uft" id="Q4e-bM-kYS"/>
@@ -48,7 +49,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="eoX-wf-GGd" secondAttribute="bottom" constant="16" id="46G-7r-Og8"/>
                         <constraint firstItem="mzM-f9-Wfx" firstAttribute="centerY" secondItem="eoX-wf-GGd" secondAttribute="centerY" id="520-Zb-uFO"/>
@@ -59,12 +60,12 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-JK-yXd">
                     <rect key="frame" x="35" y="319" width="305" height="48"/>
-                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="mNG-4C-43C"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="CREATE NEW WALLET">
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Confirm">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>

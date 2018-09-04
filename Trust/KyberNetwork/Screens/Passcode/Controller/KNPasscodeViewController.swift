@@ -85,8 +85,8 @@ class KNPasscodeViewController: KNBaseViewController {
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.digitButtons.forEach({
       $0.setBackgroundColor(.white, forState: .normal)
-      $0.setBackgroundColor(UIColor.Kyber.blueGreen, forState: .highlighted)
-      $0.setTitleColor(UIColor.Kyber.blueGreen, for: .normal)
+      $0.setBackgroundColor(KNAppStyleType.current.pinHighlightedColor, forState: .highlighted)
+      $0.setTitleColor(KNAppStyleType.current.pinHighlightedColor, for: .normal)
       $0.setTitleColor(.white, for: .highlighted)
     })
     self.updateUI()
@@ -95,7 +95,7 @@ class KNPasscodeViewController: KNBaseViewController {
   fileprivate func updateUI() {
     self.titleLabel.text = self.titleText
     self.errorLabel.text = self.errorText
-    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.blueGreen : UIColor.Kyber.passcode })
+    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? KNAppStyleType.current.pinHighlightedColor : UIColor.Kyber.passcodeInactive })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.view.layoutIfNeeded()
   }

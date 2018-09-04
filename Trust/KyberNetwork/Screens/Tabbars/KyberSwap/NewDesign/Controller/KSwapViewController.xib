@@ -25,6 +25,7 @@
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
+                <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="heightConstraintForAdvacedSettingsView" destination="wBz-ex-E7d" id="rJI-1Q-yr8"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
                 <outlet property="toAmountTextField" destination="2ue-dF-Sxj" id="dYw-AF-iPd"/>

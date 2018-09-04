@@ -20,6 +20,7 @@
                 <outlet property="emptyStateContainerView" destination="38H-s2-1f5" id="bfP-jC-EnZ"/>
                 <outlet property="emptyStateDescLabel" destination="bv9-ei-Ioj" id="w0I-rt-Qt3"/>
                 <outlet property="emptyStateTitleLabel" destination="6pp-oS-9os" id="MXf-qA-Udk"/>
+                <outlet property="headerContainerView" destination="gaQ-YO-jy8" id="h9d-J7-cNA"/>
                 <outlet property="rateMightChangeContainerView" destination="Cib-c5-K25" id="gqz-Jg-Jq7"/>
                 <outlet property="segmentedControl" destination="2QL-Po-GGO" id="vBa-Gm-mU8"/>
                 <outlet property="transactionCollectionView" destination="oeZ-dP-Rut" id="TzK-da-nmD"/>

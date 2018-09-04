@@ -14,6 +14,8 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   fileprivate var viewModel: KNWalletQRCodeViewModel
 
+  fileprivate let style = KNAppStyleType.current
+
   init(viewModel: KNWalletQRCodeViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNWalletQRCodeViewController.className, bundle: nil)
@@ -46,12 +48,13 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupButtons() {
-    self.copyWalletButton.rounded(radius: self.copyWalletButton.frame.height / 2.0)
+    self.copyWalletButton.rounded(radius: self.style.buttonRadius(for: self.copyWalletButton.frame.height))
     self.copyWalletButton.setTitle(self.viewModel.copyAddressBtnTitle, for: .normal)
+    self.copyWalletButton.backgroundColor = style.walletFlowHeaderColor
     self.shareButton.rounded(
-      color: UIColor(red: 202, green: 208, blue: 223),
+      color: UIColor.Kyber.border,
       width: 1.0,
-      radius: self.shareButton.frame.height / 2.0
+      radius: self.style.buttonRadius(for: self.shareButton.frame.height)
     )
     self.shareButton.setTitle(self.viewModel.shareBtnTitle, for: .normal)
   }

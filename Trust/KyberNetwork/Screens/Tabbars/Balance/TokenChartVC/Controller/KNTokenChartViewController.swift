@@ -94,10 +94,10 @@ class KNTokenChartViewModel {
       return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(12))
     }()
     let change24hString: String = {
-      return String("\(trackerRate.changeETH24h)".prefix(5)) + " %"
+      return String("\(trackerRate.changeETH24h)".prefix(5)) + "%"
     }()
     let changeColor: UIColor = {
-      return trackerRate.changeETH24h >= 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.fire
+      return trackerRate.changeETH24h >= 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
     }()
     let rateAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
@@ -134,7 +134,7 @@ class KNTokenChartViewModel {
       return trackerRate.rateETHBigInt * self.balance.value / BigInt(10).power(self.token.decimals)
     }()
     let valueString: String = value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: 6)
-    return "~ \(valueString.prefix(12)) ETH"
+    return "~\(valueString.prefix(12)) ETH"
   }
 
   func updateType(_ newType: KNTokenChartType) {
@@ -241,6 +241,7 @@ class KNTokenChartViewModel {
 
 class KNTokenChartViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navigationLabel: UILabel!
   @IBOutlet weak var symbolLabel: UILabel!
   @IBOutlet weak var nameLabel: UILabel!
@@ -295,6 +296,11 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+
+    let style = KNAppStyleType.current
+    self.view.backgroundColor = style.chartBackgroundColor
+    self.headerContainerView.backgroundColor = style.chartHeaderBackgroundColor
+
     self.iconImageView.setTokenImage(
       token: self.viewModel.token,
       size: self.iconImageView.frame.size
@@ -322,17 +328,29 @@ class KNTokenChartViewController: KNBaseViewController {
     self.sendButton.rounded(
       color: UIColor.Kyber.border,
       width: 1,
-      radius: self.sendButton.frame.height / 2.0
+      radius: style.buttonRadius(for: self.sendButton.frame.height)
+    )
+    self.sendButton.setTitle(
+      style.buttonTitle(with: "Send".toBeLocalised()),
+      for: .normal
     )
     self.buyButton.rounded(
       color: UIColor.Kyber.border,
       width: 1,
-      radius: self.buyButton.frame.height / 2.0
+      radius: style.buttonRadius(for: self.buyButton.frame.height)
+    )
+    self.buyButton.setTitle(
+      style.buttonTitle(with: "Buy".toBeLocalised()),
+      for: .normal
     )
     self.sellButton.rounded(
       color: UIColor.Kyber.border,
       width: 1,
-      radius: self.sellButton.frame.height / 2.0
+      radius: style.buttonRadius(for: self.sellButton.frame.height)
+    )
+    self.sellButton.setTitle(
+      style.buttonTitle(with: "Sell".toBeLocalised()),
+      for: .normal
     )
 
     if self.viewModel.isTokenSupported {
@@ -341,7 +359,10 @@ class KNTokenChartViewController: KNBaseViewController {
       self.dataTypeButtonContainerView.isHidden = true
       self.noDataLabel.text = "This token is not supported by Kyber Network".toBeLocalised()
       self.buyButton.isHidden = true
-      self.sellButton.setTitle("SEND", for: .normal)
+      self.sellButton.setTitle(
+        style.buttonTitle(with: "Send".toBeLocalised()),
+        for: .normal
+      )
       self.sendButton.isHidden = true
     }
   }

@@ -61,6 +61,7 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate let kSearchTokenTableViewCellID: String = "CellID"
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var noMatchingTokensLabel: UILabel!
@@ -112,6 +113,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     self.searchTextField.delegate = self
     self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
     self.searchTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: self.searchTextField.frame.height))
