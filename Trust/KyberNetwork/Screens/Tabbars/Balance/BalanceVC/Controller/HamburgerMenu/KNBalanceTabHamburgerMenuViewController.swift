@@ -75,15 +75,13 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
   @IBOutlet weak var tabToDismissView: UIView!
   @IBOutlet weak var pendingTransactionContainerView: UIView!
-  @IBOutlet weak var noPendingTransactionLabel: UILabel!
-  @IBOutlet weak var pendingTableView: UITableView!
   @IBOutlet weak var allTransactionButton: UIButton!
+  @IBOutlet weak var numberPendingTxLabel: UILabel!
 
   @IBOutlet weak var hamburgerView: UIView!
   @IBOutlet weak var walletListTableView: UITableView!
   @IBOutlet weak var walletListTableViewHeightConstraint: NSLayoutConstraint!
 
-  @IBOutlet weak var addWalletButton: UIButton!
   @IBOutlet weak var sendTokenButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
@@ -115,29 +113,15 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backgroundViewTap(_:)))
     self.tabToDismissView.addGestureRecognizer(tapGesture)
 
-    self.allTransactionButton.setTitleColor(
-      style.walletFlowHeaderColor,
-      for: .normal
-    )
     self.walletListTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletListTableView.rowHeight = self.viewModel.walletCellRowHeight
     self.walletListTableView.delegate = self
     self.walletListTableView.dataSource = self
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
 
-    self.pendingTableView.register(UITableViewCell.self, forCellReuseIdentifier: kPendingTableViewCellID)
-    self.pendingTableView.rowHeight = 44
-    self.pendingTableView.delegate = self
-    self.pendingTableView.dataSource = self
+    self.numberPendingTxLabel.rounded(radius: self.numberPendingTxLabel.frame.height / 2.0)
+    self.numberPendingTxLabel.text = "0"
 
-    self.addWalletButton.setTitle(
-      style.buttonTitle(with: "Add Wallet"),
-      for: .normal
-    )
-    self.addWalletButton.setTitleColor(
-      style.walletFlowHeaderColor,
-      for: .normal
-    )
     self.sendTokenButton.setTitle(
       style.buttonTitle(with: "Send Token"),
       for: .normal
@@ -164,15 +148,12 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.viewModel.update(wallets: walletObjects, currentWallet: currentWallet)
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
     self.walletListTableView.reloadData()
-    self.pendingTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
   func update(transactions: [KNTransaction]) {
     self.viewModel.update(transactions: transactions)
-    self.pendingTableView.isHidden = self.viewModel.isTransactionTableHidden
-    self.noPendingTransactionLabel.isHidden = !self.viewModel.isTransactionTableHidden
-    if !self.pendingTableView.isHidden { self.pendingTableView.reloadData() }
+    self.numberPendingTxLabel.text = "\(transactions.count)"
   }
 
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {
@@ -186,7 +167,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.screenEdgePanRecognizer?.isEnabled = false
       self.panGestureRecognizer.isEnabled = true
       self.walletListTableView.reloadData()
-      self.pendingTableView.reloadData()
       completion?()
     })
   }
@@ -291,16 +271,11 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 extension KNBalanceTabHamburgerMenuViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    if tableView == self.walletListTableView {
-      let wallet = self.viewModel.wallet(at: indexPath.row)
-      self.hideMenu(animated: true) {
-        if wallet != self.viewModel.currentWallet {
-          self.delegate?.balanceTabHamburgerMenuViewController(self, run: .select(wallet: wallet))
-        }
+    let wallet = self.viewModel.wallet(at: indexPath.row)
+    self.hideMenu(animated: true) {
+      if wallet != self.viewModel.currentWallet {
+        self.delegate?.balanceTabHamburgerMenuViewController(self, run: .select(wallet: wallet))
       }
-    } else {
-      let tx = self.viewModel.transaction(at: indexPath.row)?.id ?? ""
-      self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "tx/\(tx)")
     }
   }
 }
@@ -311,10 +286,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if tableView == self.walletListTableView {
-      return self.viewModel.numberWalletRows
-    }
-    return self.viewModel.numberTransactions
+    return self.viewModel.numberWalletRows
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -322,47 +294,32 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if tableView == self.walletListTableView {
-      let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
-      cell.textLabel?.isUserInteractionEnabled = false
-      let wallet = self.viewModel.wallet(at: indexPath.row)
-      cell.tintColor = UIColor.Kyber.shamrock
-      cell.textLabel?.attributedText = {
-        let attributedString = NSMutableAttributedString()
-        let nameAttributes: [NSAttributedStringKey: Any] = [
-          NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-          NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-          NSAttributedStringKey.kern: 1.0,
+    let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
+    cell.textLabel?.isUserInteractionEnabled = false
+    let wallet = self.viewModel.wallet(at: indexPath.row)
+    cell.tintColor = UIColor.Kyber.shamrock
+    cell.textLabel?.attributedText = {
+      let attributedString = NSMutableAttributedString()
+      let nameAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
+        NSAttributedStringKey.kern: 1.0,
         ]
-        let addressAttributes: [NSAttributedStringKey: Any] = [
-          NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-          NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
-          NSAttributedStringKey.kern: 1.0,
+      let addressAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
+        NSAttributedStringKey.kern: 1.0,
         ]
-        attributedString.append(NSAttributedString(string: wallet.name, attributes: nameAttributes))
-        let address: String = "\(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
-        attributedString.append(NSAttributedString(string: "\n\(address)", attributes: addressAttributes))
-        return attributedString
-      }()
-      cell.textLabel?.numberOfLines = 2
-      cell.backgroundColor = {
-        return indexPath.row % 2 == 0 ? UIColor.white : UIColor.Kyber.whisper
-      }()
-      cell.accessoryType = wallet == self.viewModel.currentWallet ? .checkmark : .none
-      return cell
-    }
-    let cell = tableView.dequeueReusableCell(withIdentifier: kPendingTableViewCellID, for: indexPath)
-    cell.imageView?.isUserInteractionEnabled = true
-    cell.textLabel?.isUserInteractionEnabled = true
-    cell.imageView?.image = UIImage(named: "loading_icon")
-    let transaction = self.viewModel.transaction(at: indexPath.row)
-    cell.imageView?.startRotating()
-    cell.textLabel?.text = transaction?.shortDesc
-    cell.textLabel?.tintColor = UIColor.Kyber.mirage
-    cell.textLabel?.font = UIFont.Kyber.medium(with: 14)
-    cell.backgroundColor = {
-      return indexPath.row % 2 == 0 ? UIColor.white : UIColor.Kyber.whisper
+      attributedString.append(NSAttributedString(string: wallet.name, attributes: nameAttributes))
+      let address: String = "\(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
+      attributedString.append(NSAttributedString(string: "\n\(address)", attributes: addressAttributes))
+      return attributedString
     }()
+    cell.textLabel?.numberOfLines = 2
+    cell.backgroundColor = {
+      return indexPath.row % 2 == 0 ? UIColor(red: 242, green: 243, blue: 246) : UIColor.Kyber.whisper
+    }()
+    cell.accessoryType = wallet == self.viewModel.currentWallet ? .checkmark : .none
     return cell
   }
 }

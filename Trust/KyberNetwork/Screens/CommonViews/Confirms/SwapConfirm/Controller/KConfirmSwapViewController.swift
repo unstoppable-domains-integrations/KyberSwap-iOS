@@ -52,7 +52,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     let style = KNAppStyleType.current
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+    self.headerContainerView.backgroundColor = style.swapHeaderBackgroundColor
 
     self.titleLabel.text = self.viewModel.titleString
 

@@ -71,7 +71,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var balanceText: String {
-    return "\(self.from.symbol) Balance"
+    return "\(self.from.symbol) Balance".uppercased()
   }
 
   var displayBalance: String {

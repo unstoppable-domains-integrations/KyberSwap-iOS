@@ -69,6 +69,7 @@ class KSwapViewController: KNBaseViewController {
     return KNCustomToolbar(
       leftBtnTitle: "Swap All",
       rightBtnTitle: "Done",
+      barTintColor: KNAppStyleType.current.swapHeaderBackgroundColor,
       delegate: self)
   }()
 

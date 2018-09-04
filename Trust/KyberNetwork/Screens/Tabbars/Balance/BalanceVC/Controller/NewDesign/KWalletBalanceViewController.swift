@@ -130,6 +130,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func updateDisplayedDataType() {
+    self.currencyButton.semanticContentAttribute = .forceRightToLeft
     self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
     self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
     self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)

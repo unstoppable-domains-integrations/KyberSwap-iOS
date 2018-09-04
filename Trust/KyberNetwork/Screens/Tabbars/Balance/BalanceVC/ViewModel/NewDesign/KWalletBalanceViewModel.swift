@@ -69,6 +69,7 @@ class KWalletBalanceViewModel: NSObject {
     if self.currencyType == type { return false }
     self.currencyType = type
     KNAppTracker.updateCurrencyType(type)
+    self.tokensDisplayType = .priceDesc
     self.createDisplayedData()
     return true
   }
@@ -231,18 +232,6 @@ class KWalletBalanceViewModel: NSObject {
       return self.trackerRateData[$0.identifier()]
     })
   }
-
-//  fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
-//    if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
-//    if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
-//    guard let balance0 = self.balance(for: left) else { return false }
-//    guard let balance1 = self.balance(for: right) else { return true }
-//    // sort by balance holdings (number of coins)
-//    let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
-//    let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
-//    if self.tokensDisplayType == .balanceAsc { return value0 < value1 }
-//    return value0 > value1
-//  }
 
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
     // sort by name
