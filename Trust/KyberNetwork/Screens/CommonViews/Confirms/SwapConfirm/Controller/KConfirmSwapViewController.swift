@@ -91,6 +91,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
+    self.updateActionButtonsSendingSwap()
     self.delegate?.kConfirmSwapViewController(self, run: event)
   }
 

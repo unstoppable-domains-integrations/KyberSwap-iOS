@@ -89,6 +89,7 @@ class KConfirmSendViewController: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction))
+    self.updateActionButtonsSendingTransfer()
     self.delegate?.kConfirmSendViewController(self, run: event)
   }
 

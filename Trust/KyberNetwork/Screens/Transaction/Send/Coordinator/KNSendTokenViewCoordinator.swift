@@ -174,6 +174,10 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
     if case .confirm(let type) = event, case .transfer(let transaction) = type {
       self.didConfirmTransfer(transaction)
+    } else {
+      self.navigationController.popViewController(animated: true) {
+        self.confirmVC = nil
+      }
     }
   }
 }
@@ -182,8 +186,6 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 extension KNSendTokenViewCoordinator {
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
     self.rootViewController.coordinatorSendTokenUserDidConfirmTransaction()
-    self.confirmVC?.updateActionButtonsSendingTransfer()
-//    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     // send transaction request
     self.session.externalProvider.transfer(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }

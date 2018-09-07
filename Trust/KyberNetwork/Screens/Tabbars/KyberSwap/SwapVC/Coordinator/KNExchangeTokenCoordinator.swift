@@ -164,9 +164,7 @@ extension KNExchangeTokenCoordinator {
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-//    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
     self.newRootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
-    self.confirmSwapVC?.updateActionButtonsSendingSwap()
     KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
@@ -234,11 +232,13 @@ extension KNExchangeTokenCoordinator {
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent) {
-//    self.navigationController.popViewController(animated: true) {
-      if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
-        self.didConfirmSendExchangeTransaction(exchangeTransaction)
+    if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
+      self.didConfirmSendExchangeTransaction(exchangeTransaction)
+    } else {
+      self.navigationController.popViewController(animated: true) {
+        self.confirmSwapVC = nil
       }
-//    }
+    }
   }
 }
 
