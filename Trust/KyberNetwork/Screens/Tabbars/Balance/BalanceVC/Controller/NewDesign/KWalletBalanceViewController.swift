@@ -6,6 +6,9 @@ import BigInt
 enum KWalletBalanceViewEvent {
   case openQRCode
   case selectToken(token: TokenObject)
+  case buy(token: TokenObject)
+  case sell(token: TokenObject)
+  case send(token: TokenObject)
   case openMarketView
   case receiveToken
 }
@@ -33,7 +36,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var currencyButton: UIButton!
 
-  @IBOutlet weak var tokensBalanceCollectionView: UICollectionView!
+  @IBOutlet weak var tokensBalanceTableView: UITableView!
 
   fileprivate var viewModel: KWalletBalanceViewModel
   weak var delegate: KWalletBalanceViewControllerDelegate?
@@ -80,7 +83,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.setupHamburgerMenu()
     self.setupWalletBalanceHeaderView()
     self.setupDisplayDataType()
-    self.setupTokensBalanceCollectionView()
+    self.setupTokensBalanceTableView()
   }
 
   fileprivate func setupWalletBalanceHeaderView() {
@@ -100,15 +103,16 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.searchTextField.delegate = self
   }
 
-  fileprivate func setupTokensBalanceCollectionView() {
-    let nib = UINib(nibName: KWalletBalanceCollectionViewCell.className, bundle: nil)
-    self.tokensBalanceCollectionView.register(
+  fileprivate func setupTokensBalanceTableView() {
+    let nib = UINib(nibName: KNBalanceTokenTableViewCell.className, bundle: nil)
+    self.tokensBalanceTableView.register(
       nib,
-      forCellWithReuseIdentifier: KWalletBalanceCollectionViewCell.cellID
+      forCellReuseIdentifier: KNBalanceTokenTableViewCell.kCellID
     )
-    self.tokensBalanceCollectionView.delegate = self
-    self.tokensBalanceCollectionView.dataSource = self
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.delegate = self
+    self.tokensBalanceTableView.dataSource = self
+    self.tokensBalanceTableView.rowHeight = KNBalanceTokenTableViewCell.kCellHeight
+    self.tokensBalanceTableView.reloadData()
 
     self.emptyBalanceTextLabel.text = self.viewModel.textBalanceIsEmpty
     let style = KNAppStyleType.current
@@ -124,7 +128,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   fileprivate func updateWalletBalanceUI() {
     self.balanceValueLabel.attributedText = self.viewModel.balanceDisplayAttributedString
-    self.tokensBalanceCollectionView.isHidden = !self.viewModel.hasTokens
+    self.tokensBalanceTableView.isHidden = !self.viewModel.hasTokens
     self.emptyStateView.isHidden = self.viewModel.hasTokens
     self.view.layoutIfNeeded()
   }
@@ -135,7 +139,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
     self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
     self.updateWalletBalanceUI()
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
@@ -171,12 +175,12 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func sortNameButtonPressed(_ sender: Any) {
     self.viewModel.updateTokenDisplayType(positionClicked: 1)
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
   }
 
   @IBAction func changeButtonPressed(_ sender: Any) {
     self.viewModel.updateTokenDisplayType(positionClicked: 3)
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -200,7 +204,7 @@ extension KWalletBalanceViewController {
     self.viewModel = viewModel
     self.updateWalletBalanceUI()
     self.updateWalletInfoUI()
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.wallet
@@ -219,14 +223,14 @@ extension KWalletBalanceViewController {
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
     if self.viewModel.updateTokenObjects(tokenObjects) {
       self.updateWalletBalanceUI()
-      self.tokensBalanceCollectionView.reloadData()
+      self.tokensBalanceTableView.reloadData()
     }
   }
 
   func coordinatorUpdateTokenBalances(_ balances: [String: Balance]) {
     if self.viewModel.updateTokenBalances(balances) {
       self.updateWalletBalanceUI()
-      self.tokensBalanceCollectionView.reloadData()
+      self.tokensBalanceTableView.reloadData()
     }
   }
 
@@ -237,7 +241,7 @@ extension KWalletBalanceViewController {
     )
     self.updateWalletBalanceUI()
     self.viewModel.exchangeRatesDataUpdated()
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
   }
 
   func coordinatorUpdatePendingTransactions(_ transactions: [KNTransaction]) {
@@ -252,44 +256,29 @@ extension KWalletBalanceViewController: KNBalanceTabHamburgerMenuViewControllerD
   }
 }
 
-// MARK: Collection view delegate, datasource
-extension KWalletBalanceViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+// MARK: Table view delegate, datasource
+extension KWalletBalanceViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: false)
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
     self.delegate?.kWalletBalanceViewController(self, run: .selectToken(token: tokenObject))
   }
 }
 
-extension KWalletBalanceViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 0
-  }
-
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
-  }
-
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(
-      width: collectionView.frame.width,
-      height: KWalletBalanceCollectionViewCell.cellHeight
-    )
-  }
-}
-
-extension KWalletBalanceViewController: UICollectionViewDataSource {
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
+extension KWalletBalanceViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
 
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.viewModel.numberRows
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: KWalletBalanceCollectionViewCell.cellID,
-      for: indexPath) as! KWalletBalanceCollectionViewCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: KNBalanceTokenTableViewCell.kCellID,
+      for: indexPath
+    ) as! KNBalanceTokenTableViewCell
     let row: Int = indexPath.row
 
     // Data for cell
@@ -297,7 +286,7 @@ extension KWalletBalanceViewController: UICollectionViewDataSource {
     let trackerRate: KNTrackerRate? = self.viewModel.trackerRate(for: row)
     let balance: Balance? = self.viewModel.balance(for: tokenObject)
 
-    let cellModel = KWalletBalanceCollectionViewCellModel(
+    let cellModel = KNBalanceTokenTableViewCellModel(
       token: tokenObject,
       trackerRate: trackerRate,
       balance: balance,
@@ -306,6 +295,27 @@ extension KWalletBalanceViewController: UICollectionViewDataSource {
     )
     cell.updateCellView(with: cellModel)
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
+    let sendAction = UITableViewRowAction(style: .default, title: "Send") { _, _ in
+      self.delegate?.kWalletBalanceViewController(self, run: .send(token: tokenObject))
+    }
+    sendAction.backgroundColor = UIColor.Kyber.merigold
+    let sellAction = UITableViewRowAction(style: .default, title: "Sell") { _, _ in
+      self.delegate?.kWalletBalanceViewController(self, run: .sell(token: tokenObject))
+    }
+    sellAction.backgroundColor = UIColor.Kyber.blueGreen
+    let buyAction = UITableViewRowAction(style: .default, title: "Buy") { _, _ in
+      self.delegate?.kWalletBalanceViewController(self, run: .buy(token: tokenObject))
+    }
+    buyAction.backgroundColor = UIColor.Kyber.shamrock
+    return tokenObject.isSupported ? [sendAction, sellAction, buyAction] : [sendAction]
   }
 }
 
@@ -329,6 +339,6 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
 
   fileprivate func searchAmountTextFieldChanged() {
     self.viewModel.updateSearchText(self.searchTextField.text ?? "")
-    self.tokensBalanceCollectionView.reloadData()
+    self.tokensBalanceTableView.reloadData()
   }
 }

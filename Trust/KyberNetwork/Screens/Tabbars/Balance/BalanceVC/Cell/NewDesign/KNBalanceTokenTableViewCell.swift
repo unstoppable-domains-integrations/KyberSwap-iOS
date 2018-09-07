@@ -3,7 +3,7 @@
 import UIKit
 import BigInt
 
-struct KWalletBalanceCollectionViewCellModel {
+struct KNBalanceTokenTableViewCellModel {
   let token: TokenObject
   let trackerRate: KNTrackerRate?
   let balance: Balance?
@@ -34,12 +34,12 @@ struct KWalletBalanceCollectionViewCellModel {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
       NSAttributedStringKey.kern: 1.0,
-    ]
+      ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
       NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
       NSAttributedStringKey.kern: 1.0,
-    ]
+      ]
     attributedString.append(NSAttributedString(string: self.token.symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: " - \(self.token.name)", attributes: nameAttributes))
     return attributedString
@@ -119,17 +119,17 @@ struct KWalletBalanceCollectionViewCellModel {
   }
 }
 
-class KWalletBalanceCollectionViewCell: UICollectionViewCell {
+class KNBalanceTokenTableViewCell: UITableViewCell {
 
-  static let cellID: String = "KWalletBalanceCollectionViewCell"
-  static let cellHeight: CGFloat = 64
+  static let kCellID: String = "KNBalanceTokenTableViewCell"
+  static let kCellHeight: CGFloat = 64
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var symbolLabel: UILabel!
   @IBOutlet weak var amountHoldingsLabel: UILabel!
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
-  @IBOutlet weak var changePercentButton: UIButton!
+  @IBOutlet weak var change24h: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -142,26 +142,25 @@ class KWalletBalanceCollectionViewCell: UICollectionViewCell {
     self.iconImageView.rounded(radius: self.iconImageView.frame.width / 2.0)
   }
 
-  func updateCellView(with viewModel: KWalletBalanceCollectionViewCellModel) {
+  func updateCellView(with viewModel: KNBalanceTokenTableViewCellModel) {
     self.iconImageView.setTokenImage(
       token: viewModel.token,
       size: self.iconImageView.frame.size
     )
-//    self.symbolLabel.text = viewModel.token.symbol
     self.symbolLabel.attributedText = viewModel.displaySymbolAndNameAttributedString
     self.rateLabel.text = viewModel.displayRateString
     self.amountHoldingsLabel.text = viewModel.displayAmountHoldingsText
     self.valueLabel.text = viewModel.displayBalanceValue
     self.backgroundColor = viewModel.backgroundColor
 
-    self.changePercentButton.setTitleColor(
+    self.change24h.setTitleColor(
       viewModel.colorChange24h,
       for: .normal
     )
-    self.changePercentButton.setTitle(
+    self.change24h.setTitle(
       viewModel.change24hString,
       for: .normal
     )
-    self.changePercentButton.setImage(viewModel.change24hImage, for: .normal)
+    self.change24h.setImage(viewModel.change24hImage, for: .normal)
   }
 }

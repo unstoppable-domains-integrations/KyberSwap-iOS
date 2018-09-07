@@ -305,7 +305,10 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
-      let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
+      let viewModel = KNSearchTokenViewModel(
+        headerColor: KNAppStyleType.current.swapHeaderBackgroundColor,
+        supportedTokens: self.tokens
+      )
       let controller = KNSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
@@ -327,6 +330,17 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
   }
 
   fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {
+    if from == to {
+      let rate = BigInt(10).power(from.decimals)
+      self.newRootViewController.coordinatorDidUpdateEstimateRate(
+        from: from,
+        to: to,
+        amount: amount,
+        rate: rate,
+        slippageRate: rate * BigInt(97) / BigInt(100)
+      )
+      return
+    }
     self.session.externalProvider.getExpectedRate(
       from: from,
       to: to,
@@ -339,7 +353,7 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
           estRate /= BigInt(10).power(18 - to.decimals)
           slippageRate /= BigInt(10).power(18 - to.decimals)
         } else {
-          // fallback to rate from CMC
+          // fallback to rate from tracker
           if estRate.isZero, let cmcRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
             estRate = cmcRate.rate
             slippageRate = cmcRate.minRate

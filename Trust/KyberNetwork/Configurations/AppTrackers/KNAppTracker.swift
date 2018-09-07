@@ -33,7 +33,7 @@ class KNAppTracker {
 //    if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
 //      return value
 //    }
-    return "https://tracker.kyber.network"//KNEnvironment.default == .ropsten ? "https://staging-tracker.knstats.com" :
+    return KNEnvironment.default == .ropsten ? "https://dev-tracker.knstats.com" : "https://tracker.kyber.network"
   }
 
   static func updateInternalTrackerEndpoint(value: String) {

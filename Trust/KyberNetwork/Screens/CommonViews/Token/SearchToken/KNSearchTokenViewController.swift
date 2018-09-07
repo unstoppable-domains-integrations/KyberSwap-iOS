@@ -14,6 +14,7 @@ protocol KNSearchTokenViewControllerDelegate: class {
 
 class KNSearchTokenViewModel {
 
+  let headerColor: UIColor
   var supportedTokens: [TokenObject] = []
   var balances: [String: Balance] = [:]
   var searchedText: String = "" {
@@ -23,7 +24,8 @@ class KNSearchTokenViewModel {
   }
   var displayedTokens: [TokenObject] = []
 
-  init(supportedTokens: [TokenObject]) {
+  init(headerColor: UIColor, supportedTokens: [TokenObject]) {
+    self.headerColor = headerColor
     self.supportedTokens = supportedTokens.sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
@@ -113,7 +115,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.headerContainerView.backgroundColor = self.viewModel.headerColor
     self.searchTextField.delegate = self
     self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
     self.searchTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: self.searchTextField.frame.height))

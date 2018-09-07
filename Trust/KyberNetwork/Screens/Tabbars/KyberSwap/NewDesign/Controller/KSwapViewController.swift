@@ -244,21 +244,41 @@ class KSwapViewController: KNBaseViewController {
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
     // Check data
+    guard self.viewModel.from != self.viewModel.to else {
+      self.showWarningTopBannerMessage(
+        with: "Not supported".toBeLocalised(),
+        message: "Can not swap the same token".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
     guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too small to perform exchange, minimum equivalent to 0.001 ETH")
+      self.showWarningTopBannerMessage(
+        with: "Invalid amount".toBeLocalised(),
+        message: "Amount too small to perform exchange, minimum equivalent to 0.001 ETH".toBeLocalised()
+      )
       return
     }
     guard !self.viewModel.isAmountTooBig else {
-      self.showWarningTopBannerMessage(with: "Invalid amount", message: "Amount too big to perform exchange")
+      self.showWarningTopBannerMessage(
+        with: "Invalid amount".toBeLocalised(),
+        message: "Amount too big to perform exchange".toBeLocalised()
+      )
       return
     }
     guard let rate = self.viewModel.estRate, self.viewModel.isRateValid else {
-      self.showWarningTopBannerMessage(with: "Invalid rate", message: "Please wait for estimated rate to exchange")
+      self.showWarningTopBannerMessage(
+        with: "Invalid rate".toBeLocalised(),
+        message: "Please wait for estimated rate to exchange".toBeLocalised()
+      )
       return
     }
     // TODO: This is not true in case we could exchange token/token
     guard self.viewModel.from != self.viewModel.to else {
-      self.showWarningTopBannerMessage(with: "Invalid tokens", message: "Can not exchange the same token")
+      self.showWarningTopBannerMessage(
+        with: "Invalid tokens".toBeLocalised(),
+        message: "Can not exchange the same token".toBeLocalised()
+      )
       return
     }
     let amount: BigInt = {
@@ -482,6 +502,13 @@ extension KSwapViewController {
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
     self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
+    if self.viewModel.from == self.viewModel.to {
+      self.showWarningTopBannerMessage(
+        with: "Not supported".toBeLocalised(),
+        message: "Can not swap the same token".toBeLocalised(),
+        time: 1.5
+      )
+    }
   }
 
   /*

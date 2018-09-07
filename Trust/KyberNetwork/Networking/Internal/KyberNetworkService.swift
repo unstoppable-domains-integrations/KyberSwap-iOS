@@ -49,7 +49,7 @@ enum KNTrackerService {
   case getTrades(fromDate: Date?, toDate: Date?, address: String)
   case getSupportedTokens()
   case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
-  case getRates()
+  case getRates
 }
 
 extension KNTrackerService: TargetType {

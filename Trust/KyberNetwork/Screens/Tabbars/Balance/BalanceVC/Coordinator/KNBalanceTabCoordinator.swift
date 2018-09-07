@@ -208,6 +208,12 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
       self.qrcodeCoordinator?.start()
     case .selectToken(let token):
       self.openTokenChartView(for: token)
+    case .send(let token):
+      self.openSendTokenView(with: token)
+    case .sell(let token):
+      self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
+    case .buy(let token):
+      self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
     case .openMarketView:
       self.openMarketView()
     case .receiveToken:
@@ -222,7 +228,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .selectAddWallet:
       self.hamburgerMenuSelectAddWallet()
     case .selectSendToken:
-      self.openSendTokenView()
+      self.openSendTokenView(with: self.session.tokenStorage.ethToken)
     case .selectAllTransactions:
       self.openHistoryTransactionView()
     }
@@ -248,7 +254,7 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     case .selectAddWallet:
       self.hamburgerMenuSelectAddWallet()
     case .selectSendToken:
-      self.openSendTokenView()
+      self.openSendTokenView(with: self.session.tokenStorage.ethToken)
     case .selectAllTransactions:
       self.openHistoryTransactionView()
     }
@@ -283,12 +289,12 @@ extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
     self.delegate?.balancetabCoordinatorDidSelectAddWallet()
   }
 
-  func openSendTokenView() {
+  func openSendTokenView(with token: TokenObject) {
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,
       balances: self.balances,
-      from: self.session.tokenStorage.ethToken
+      from: token
     )
     self.sendTokenCoordinator?.start()
   }

@@ -325,7 +325,10 @@ extension IEOBuyTokenCoordinator: IEOBuyTokenViewControllerDelegate {
       self.tokens = KNSupportedTokenStorage.shared.supportedTokens
       //TODO: Update balance from storage here
       self.searchTokensViewController = {
-        let viewModel = KNSearchTokenViewModel(supportedTokens: self.tokens)
+        let viewModel = KNSearchTokenViewModel(
+          headerColor: KNAppStyleType.current.walletFlowHeaderColor,
+          supportedTokens: self.tokens
+        )
         let controller = KNSearchTokenViewController(viewModel: viewModel)
         controller.loadViewIfNeeded()
         controller.delegate = self

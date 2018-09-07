@@ -7,8 +7,18 @@ import TrustCore
 import Result
 import QRCodeReaderViewController
 
+enum KSendTokenViewEvent {
+  case back
+  case searchToken(selectedToken: TokenObject)
+  case estimateGas(transaction: UnconfirmedTransaction)
+  case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
+  case send(transaction: UnconfirmedTransaction)
+  case addContact(address: String)
+  case contactSelectMore
+}
+
 protocol KSendTokenViewControllerDelegate: class {
-  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KNSendTokenViewEvent)
+  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent)
 }
 
 class KSendTokenViewController: KNBaseViewController {
@@ -40,8 +50,8 @@ class KSendTokenViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: "Send All",
-      rightBtnTitle: "Done",
+      leftBtnTitle: "Send All".toBeLocalised(),
+      rightBtnTitle: "Done".toBeLocalised(),
       delegate: self
     )
   }()
@@ -211,16 +221,18 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too small to perform send, minimum equivalent to 0.001 ETH")
-      return
-    }
     guard !self.viewModel.isAmountTooBig else {
-      self.showWarningTopBannerMessage(with: "Invalid Amount", message: "Amount too big to perform send")
+      self.showWarningTopBannerMessage(
+        with: "Invalid Amount".toBeLocalised(),
+        message: "Amount too big to perform send".toBeLocalised()
+      )
       return
     }
     guard self.viewModel.isAddressValid else {
-      self.showWarningTopBannerMessage(with: "Invalid Address", message: "Please enter a valid address to send")
+      self.showWarningTopBannerMessage(
+        with: "Invalid Address".toBeLocalised(),
+        message: "Please enter a valid address to send".toBeLocalised()
+      )
       return
     }
     self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
@@ -261,7 +273,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
-    let event = KNSendTokenViewEvent.estimateGas(transaction: self.viewModel.unconfirmTransaction)
+    let event = KSendTokenViewEvent.estimateGas(transaction: self.viewModel.unconfirmTransaction)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
 }

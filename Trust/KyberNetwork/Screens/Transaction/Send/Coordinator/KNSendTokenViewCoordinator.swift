@@ -83,7 +83,7 @@ extension KNSendTokenViewCoordinator {
 
 // MARK: Send Token View Controller Delegate
 extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
-  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KNSendTokenViewEvent) {
+  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent) {
     switch event {
     case .back: self.stop()
     case .setGasPrice:
@@ -117,7 +117,10 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   fileprivate func openSearchToken(selectedToken: TokenObject) {
     let tokens = self.session.tokenStorage.tokens
     self.searchTokensVC = {
-      let viewModel = KNSearchTokenViewModel(supportedTokens: tokens)
+      let viewModel = KNSearchTokenViewModel(
+        headerColor: KNAppStyleType.current.walletFlowHeaderColor,
+        supportedTokens: tokens
+      )
       let controller = KNSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self

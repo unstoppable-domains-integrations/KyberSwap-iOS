@@ -99,27 +99,13 @@ class KNSendTokenViewModel: NSObject {
     return "Add Contact".toBeLocalised()
   }
 
-  var isAmountTooSmall: Bool {
-    if amountBigInt <= BigInt(0) { return true }
-    let ethRate: BigInt = {
-      if self.from.isETH { return BigInt(EthereumUnit.ether.rawValue) }
-      if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
-        return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
-      }
-      return BigInt(0)
-    }()
-    let valueInETH = ethRate * self.amountBigInt
-    let valueMin = BigInt(0.001 * Double(EthereumUnit.ether.rawValue)) * BigInt(10).power(self.from.decimals)
-    return valueInETH < valueMin
-  }
-
   var isAmountTooBig: Bool {
     let balanceVal = balance?.value ?? BigInt(0)
     return amountBigInt > balanceVal
   }
 
   var isAmountValid: Bool {
-    return !isAmountTooSmall && !isAmountTooBig
+    return !isAmountTooBig
   }
 
   var isAddressValid: Bool {

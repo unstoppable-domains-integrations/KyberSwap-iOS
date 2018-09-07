@@ -33,7 +33,7 @@
                 <outlet property="otherButton" destination="bfz-k4-GjU" id="pTY-mO-ycb"/>
                 <outlet property="receiveTokenButton" destination="JRV-cy-j9I" id="XO1-Ce-6oo"/>
                 <outlet property="searchTextField" destination="7gf-Oi-kKw" id="ehw-gh-DKG"/>
-                <outlet property="tokensBalanceCollectionView" destination="r4m-dS-Kt1" id="wuX-PP-64O"/>
+                <outlet property="tokensBalanceTableView" destination="FVh-O1-fs1" id="MZw-SE-s1W"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletDataView" destination="6LI-U8-W7j" id="3qi-tE-iHb"/>
                 <outlet property="walletNameLabel" destination="qlW-Mm-bZf" id="uuu-I5-sby"/>
@@ -218,16 +218,10 @@
                         <constraint firstAttribute="trailing" secondItem="EY4-fd-g0P" secondAttribute="trailing" constant="12" id="s0f-ww-htC"/>
                     </constraints>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r4m-dS-Kt1">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FVh-O1-fs1">
                     <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="scw-P6-NAB">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                </collectionView>
+                </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZA-fD-Wsm">
                     <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <subviews>
@@ -266,21 +260,21 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xZA-fD-Wsm" secondAttribute="trailing" id="0iR-Gj-KpW"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r4m-dS-Kt1" secondAttribute="trailing" id="0mE-hd-Zf3"/>
+                <constraint firstItem="FVh-O1-fs1" firstAttribute="top" secondItem="xZA-fD-Wsm" secondAttribute="top" id="3Kk-TA-lfT"/>
+                <constraint firstItem="FVh-O1-fs1" firstAttribute="trailing" secondItem="xZA-fD-Wsm" secondAttribute="trailing" id="6eU-3m-UVL"/>
                 <constraint firstAttribute="trailing" secondItem="iQw-Mq-Z8D" secondAttribute="trailing" id="7ss-Wt-wpa"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ei3-S9-EbQ" secondAttribute="trailing" id="GVw-QN-PGV"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="r4m-dS-Kt1" secondAttribute="bottom" id="Kt3-iq-dFh"/>
                 <constraint firstItem="ldd-eU-IaQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Tp7-eH-qsL"/>
                 <constraint firstItem="iQw-Mq-Z8D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U4Q-fn-a9i"/>
                 <constraint firstItem="iQw-Mq-Z8D" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Udh-ve-g8f"/>
                 <constraint firstItem="Ei3-S9-EbQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WVw-nn-gaH"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="xZA-fD-Wsm" secondAttribute="bottom" id="X3N-3J-Mg6"/>
-                <constraint firstItem="r4m-dS-Kt1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="a4y-s9-CKw"/>
+                <constraint firstItem="FVh-O1-fs1" firstAttribute="leading" secondItem="xZA-fD-Wsm" secondAttribute="leading" id="b2J-1Y-Dcc"/>
                 <constraint firstItem="Ei3-S9-EbQ" firstAttribute="top" secondItem="iQw-Mq-Z8D" secondAttribute="bottom" id="etr-Af-Fkb"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ldd-eU-IaQ" secondAttribute="trailing" id="hol-4O-gS1"/>
                 <constraint firstItem="ldd-eU-IaQ" firstAttribute="top" secondItem="Ei3-S9-EbQ" secondAttribute="bottom" id="lBT-OQ-5Ot"/>
                 <constraint firstItem="xZA-fD-Wsm" firstAttribute="top" secondItem="ldd-eU-IaQ" secondAttribute="bottom" id="oco-6T-FOE"/>
-                <constraint firstItem="r4m-dS-Kt1" firstAttribute="top" secondItem="ldd-eU-IaQ" secondAttribute="bottom" id="pZW-oF-Zn3"/>
+                <constraint firstItem="FVh-O1-fs1" firstAttribute="bottom" secondItem="xZA-fD-Wsm" secondAttribute="bottom" id="tV7-nV-jqJ"/>
                 <constraint firstItem="xZA-fD-Wsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="upr-mT-u0y"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

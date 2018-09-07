@@ -80,7 +80,7 @@ class KNRateCoordinator {
     isLoadingExchangeTokenRates = true
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KNTrackerService>()
-      provider.request(.getRates(), completion: { [weak self] result in
+      provider.request(.getRates, completion: { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           self.isLoadingExchangeTokenRates = false
