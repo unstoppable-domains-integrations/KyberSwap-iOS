@@ -97,4 +97,26 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func cancelButtonPressed(_ sender: Any) {
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
+
+  func updateActionButtonsSendingSwap() {
+    self.confirmButton.backgroundColor = UIColor.clear
+    self.confirmButton.setTitle("In Progress ...".toBeLocalised(), for: .normal)
+    self.confirmButton.setTitleColor(
+      KNAppStyleType.current.swapActionButtonBackgroundColor,
+      for: .normal
+    )
+    self.confirmButton.isEnabled = false
+    self.cancelButton.isHidden = true
+  }
+
+  func resetActionButtons() {
+    self.confirmButton.setTitle(
+      KNAppStyleType.current.buttonTitle(with: "Confirm".toBeLocalised()),
+      for: .normal
+    )
+    self.confirmButton.setTitleColor(UIColor.white, for: .normal)
+    self.confirmButton.backgroundColor = KNAppStyleType.current.swapActionButtonBackgroundColor
+    self.confirmButton.isEnabled = true
+    self.cancelButton.isHidden = false
+  }
 }

@@ -200,23 +200,51 @@ extension KNAppCoordinator {
       }
       return nil
     }()
-    let error: AnyError? = sender.object as? AnyError
-    if self.transactionStatusCoordinator == nil {
-      self.transactionStatusCoordinator = KNTransactionStatusCoordinator(
-        navigationController: self.navigationController,
-        transaction: transaction,
-        delegate: self
+    if let error = sender.object as? AnyError {
+      KNNotificationUtil.localPushNotification(
+        title: "Failed",
+        body: error.prettyError,
+        userInfo: ["transaction_hash": ""]
       )
-      self.transactionStatusCoordinator.start()
+      self.navigationController.showErrorTopBannerMessage(
+        with: "Failed".toBeLocalised(),
+        message: error.prettyError,
+        time: 3.0
+      )
+      return
     }
-    self.transactionStatusCoordinator.updateTransaction(transaction, error: error?.prettyError)
-    // Force load new token transactions to faster updating history view
-    if let tran = transaction, tran.state == .completed {
-      self.session.transacionCoordinator?.forceFetchTokenTransactions()
-    }
-    if let state = transaction?.state, state != .pending, state != .unknown {
-      // update history transaction
-      self.tokenTransactionListDidUpdate(nil)
+    guard let trans = transaction else { return }
+    // TODO: More meaningfull message here
+    let details = trans.getDetails()
+    if trans.state == .pending {
+      // just sent
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Broadcasted".toBeLocalised(),
+        message: details,
+        time: 3.0
+      )
+    } else if trans.state == .completed {
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Success",
+        message: details,
+        time: 3.0
+      )
+      KNNotificationUtil.localPushNotification(
+        title: "Success",
+        body: details,
+        userInfo: ["transaction_hash": trans.id]
+      )
+    } else if trans.state == .failed || trans.state == .error {
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Failed",
+        message: details,
+        time: 3.0
+      )
+      KNNotificationUtil.localPushNotification(
+        title: "Failed",
+        body: details,
+        userInfo: ["transaction_hash": trans.id]
+      )
     }
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)

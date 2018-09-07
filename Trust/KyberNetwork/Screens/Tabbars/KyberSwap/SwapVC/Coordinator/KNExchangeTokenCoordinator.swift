@@ -24,6 +24,7 @@ class KNExchangeTokenCoordinator: Coordinator {
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
+  fileprivate var confirmSwapVC: KConfirmSwapViewController?
 
   lazy var rootViewController: KNExchangeTabViewController = {
     let viewModel = KNExchangeTabViewModel(
@@ -165,6 +166,7 @@ extension KNExchangeTokenCoordinator {
   fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
 //    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
     self.newRootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
+    self.confirmSwapVC?.updateActionButtonsSendingSwap()
     KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
@@ -176,6 +178,7 @@ extension KNExchangeTokenCoordinator {
           self.sendApproveForExchangeTransaction(exchangeTransaction)
         }
       case .failure(let error):
+        self.confirmSwapVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: error,
@@ -190,14 +193,18 @@ extension KNExchangeTokenCoordinator {
       guard let `self` = self else { return }
       switch result {
       case .success(let txHash):
-        let transaction = exchage.toTransaction(
-          hash: txHash,
-          fromAddr: self.session.wallet.address,
-          toAddr: self.session.externalProvider.networkAddress,
-          nounce: self.session.externalProvider.minTxCount
-        )
-        self.session.addNewPendingTransaction(transaction)
+        self.navigationController.popViewController(animated: true, completion: {
+          self.confirmSwapVC = nil
+          let transaction = exchage.toTransaction(
+            hash: txHash,
+            fromAddr: self.session.wallet.address,
+            toAddr: self.session.externalProvider.networkAddress,
+            nounce: self.session.externalProvider.minTxCount
+          )
+          self.session.addNewPendingTransaction(transaction)
+        })
       case .failure(let error):
+        self.confirmSwapVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: error,
@@ -213,6 +220,7 @@ extension KNExchangeTokenCoordinator {
       case .success:
         self?.sendExchangeTransaction(exchangeTransaction)
       case .failure(let error):
+        self?.confirmSwapVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: error,
@@ -226,11 +234,11 @@ extension KNExchangeTokenCoordinator {
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent) {
-    self.navigationController.popViewController(animated: true) {
+//    self.navigationController.popViewController(animated: true) {
       if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
         self.didConfirmSendExchangeTransaction(exchangeTransaction)
       }
-    }
+//    }
   }
 }
 
@@ -319,14 +327,14 @@ extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
   }
 
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
-    let confirmSwapVC: KConfirmSwapViewController = {
+    self.confirmSwapVC = {
       let viewModel = KConfirmSwapViewModel(transaction: data)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
       return controller
     }()
-    self.navigationController.pushViewController(confirmSwapVC, animated: true)
+    self.navigationController.pushViewController(self.confirmSwapVC!, animated: true)
   }
 
   fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {

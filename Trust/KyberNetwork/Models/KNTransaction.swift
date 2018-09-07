@@ -150,6 +150,32 @@ extension KNTransaction {
       state: self.state
     )
   }
+
+  func getDetails() -> String {
+    let status: KNTransactionStatus = {
+      if self.state == .pending { return .pending }
+      if self.state == .failed { return .failed }
+      if self.state == .completed { return .success }
+      return .unknown
+    }()
+    let details: String = {
+      if status == .pending {
+        return "Your transaction has been broadcasted!".toBeLocalised()
+      }
+      guard let object = self.localizedOperations.first, status == .failed || status == .success else { return "" }
+      guard let from = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.from) else { return "" }
+      guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return "" }
+      let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
+      if object.type.lowercased() == "transfer" {
+        return "\(status.rawValue) sent \(amountFrom) \(from.symbol) to \n\(self.to)"
+      }
+      guard let to = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.to) else { return "" }
+      guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return "" }
+      let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
+      return "\(status.rawValue) \(amountFrom) \(from.symbol) converted to \(amountTo) \(to.symbol)"
+    }()
+    return details
+  }
 }
 
 extension TransactionsStorage {

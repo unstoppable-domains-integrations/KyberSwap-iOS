@@ -101,4 +101,26 @@ class KConfirmSendViewController: KNBaseViewController {
       self.delegate?.kConfirmSendViewController(self, run: .cancel)
     }
   }
+
+  func updateActionButtonsSendingTransfer() {
+    self.confirmButton.backgroundColor = UIColor.clear
+    self.confirmButton.setTitle("In Progress ...".toBeLocalised(), for: .normal)
+    self.confirmButton.setTitleColor(
+      KNAppStyleType.current.walletFlowHeaderColor,
+      for: .normal
+    )
+    self.confirmButton.isEnabled = false
+    self.cancelButton.isHidden = true
+  }
+
+  func resetActionButtons() {
+    self.confirmButton.setTitle(
+      KNAppStyleType.current.buttonTitle(with: "Confirm".toBeLocalised()),
+      for: .normal
+    )
+    self.confirmButton.setTitleColor(UIColor.white, for: .normal)
+    self.confirmButton.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.confirmButton.isEnabled = true
+    self.cancelButton.isHidden = false
+  }
 }

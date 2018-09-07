@@ -23,6 +23,7 @@ class KNSendTokenViewCoordinator: Coordinator {
   }()
 
   fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
+  fileprivate(set) var confirmVC: KConfirmSendViewController?
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -131,14 +132,14 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func send(transaction: UnconfirmedTransaction) {
-    let confirmSendViewController: KConfirmSendViewController = {
+    self.confirmVC = {
       let viewModel = KConfirmSendViewModel(transaction: transaction)
       let controller = KConfirmSendViewController(viewModel: viewModel)
       controller.delegate = self
       controller.loadViewIfNeeded()
       return controller
     }()
-    self.navigationController.pushViewController(confirmSendViewController, animated: true)
+    self.navigationController.pushViewController(self.confirmVC!, animated: true)
   }
 
   fileprivate func openNewContact(address: String) {
@@ -171,10 +172,8 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 // MARK: Confirm Transaction Delegate
 extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
-    self.navigationController.popViewController(animated: true) {
-      if case .confirm(let type) = event, case .transfer(let transaction) = type {
-        self.didConfirmTransfer(transaction)
-      }
+    if case .confirm(let type) = event, case .transfer(let transaction) = type {
+      self.didConfirmTransfer(transaction)
     }
   }
 }
@@ -183,19 +182,24 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 extension KNSendTokenViewCoordinator {
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
     self.rootViewController.coordinatorSendTokenUserDidConfirmTransaction()
-    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
+    self.confirmVC?.updateActionButtonsSendingTransfer()
+//    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
     // send transaction request
     self.session.externalProvider.transfer(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
-        let tx: Transaction = transaction.toTransaction(
-          wallet: self.session.wallet,
-          hash: txHash,
-          nounce: self.session.externalProvider.minTxCount
-        )
-        self.session.addNewPendingTransaction(tx)
+        self.navigationController.popViewController(animated: true, completion: {
+          self.confirmVC = nil
+          let tx: Transaction = transaction.toTransaction(
+            wallet: self.session.wallet,
+            hash: txHash,
+            nounce: self.session.externalProvider.minTxCount
+          )
+          self.session.addNewPendingTransaction(tx)
+        })
       case .failure(let error):
+        self.confirmVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: error,
