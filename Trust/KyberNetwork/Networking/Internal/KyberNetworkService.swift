@@ -116,7 +116,7 @@ enum KyberGOService {
 
 extension KyberGOService: TargetType {
   var baseURL: URL {
-    let baseString = KNAppTracker.getKyberGOBaseString()
+    let baseString = KNAppTracker.getKyberProfileBaseString()
     switch self {
     case .listIEOs:
       return URL(string: "\(baseString)/api/ieos")!

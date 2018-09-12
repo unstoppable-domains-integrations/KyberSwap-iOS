@@ -6,12 +6,15 @@ import WebKit
 class KGOInAppSignInViewController: KNBaseViewController {
 
   fileprivate let url: URL
+  fileprivate let isSignIn: Bool
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerView: UIView!
   @IBOutlet weak var webView: UIWebView!
 
-  init(with url: URL) {
+  init(with url: URL, isSignIn: Bool) {
     self.url = url
+    self.isSignIn = isSignIn
     super.init(nibName: KGOInAppSignInViewController.className, bundle: nil)
   }
 
@@ -21,6 +24,7 @@ class KGOInAppSignInViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.navTitleLabel.text = self.isSignIn ? "Sign In".toBeLocalised() : "Sign Up".toBeLocalised()
     self.webView.loadRequest(URLRequest(url: self.url))
     self.webView.delegate = self
   }

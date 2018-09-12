@@ -47,7 +47,7 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidUpdateWalletObjects() {
     self.balanceTabCoordinator.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.kyberGOCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.profileCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
   func settingsCoordinatorUserDidSelectExit() {

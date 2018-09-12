@@ -19,7 +19,7 @@ class IEOSignInWebViewViewController: KNBaseViewController, WKUIDelegate, WKScri
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let myURL = URL(string: KNAppTracker.getKyberGOBaseString() + "/users/sign_in")
+    let myURL = URL(string: KNAppTracker.getKyberProfileBaseString() + "/users/sign_in")
     let myRequest = URLRequest(url: myURL!)
     self.webView.load(myRequest)
   }

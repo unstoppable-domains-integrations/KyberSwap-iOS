@@ -38,11 +38,11 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.start()
 
     // KyberGO Tab
-    self.kyberGOCoordinator = {
-      return KGOHomePageCoordinator(session: self.session)
+    self.profileCoordinator = {
+      return KNProfileHomeCoordinator(session: self.session)
     }()
-    self.addCoordinator(self.kyberGOCoordinator!)
-    self.kyberGOCoordinator?.start()
+    self.addCoordinator(self.profileCoordinator!)
+    self.profileCoordinator?.start()
 
     // Settings tab
     self.settingsCoordinator = {
@@ -58,7 +58,7 @@ extension KNAppCoordinator {
     self.tabbarController.viewControllers = [
       self.balanceTabCoordinator.navigationController,
       self.exchangeCoordinator!.navigationController,
-      self.kyberGOCoordinator!.navigationController,
+      self.profileCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.fire
@@ -74,12 +74,12 @@ extension KNAppCoordinator {
       selectedImage: UIImage(named: "tabbar_kyberswap_icon")
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
-    self.kyberGOCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: "KyberGO".toBeLocalised(),
-      image: UIImage(named: "tabbar_kybergo_icon"),
-      selectedImage: UIImage(named: "tabbar_kybergo_icon")
+    self.profileCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: "Profile".toBeLocalised(),
+      image: UIImage(named: "tabbar_profile_icon"),
+      selectedImage: UIImage(named: "tabbar_profile_icon")
     )
-    self.kyberGOCoordinator?.navigationController.tabBarItem.tag = 2
+    self.profileCoordinator?.navigationController.tabBarItem.tag = 2
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
       title: "Settings".toBeLocalised(),
       image: UIImage(named: "tabbar_settings_icon"),
@@ -122,8 +122,8 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator.stop()
     self.balanceTabCoordinator = nil
-    self.kyberGOCoordinator?.stop()
-    self.kyberGOCoordinator = nil
+    self.profileCoordinator?.stop()
+    self.profileCoordinator = nil
     self.settingsCoordinator.stop()
     self.settingsCoordinator = nil
     IEOUserStorage.shared.signedOut()
@@ -140,7 +140,7 @@ extension KNAppCoordinator {
 
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.kyberGOCoordinator?.updateSession(self.session)
+    self.profileCoordinator?.updateSession(self.session)
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
 
     self.tabbarController.selectedIndex = 1
