@@ -175,7 +175,10 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    let viewModel = KAdvancedSettingsViewModel(hasMinRate: true)
+    let viewModel = KAdvancedSettingsViewModel(
+      hasMinRate: true,
+      brandColor: KNAppStyleType.current.swapHeaderBackgroundColor
+    )
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -572,7 +575,7 @@ extension KSwapViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
-    self.fromAmountTextField.textColor = UIColor.Kyber.green
+    self.fromAmountTextField.textColor = UIColor.Kyber.merigold
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

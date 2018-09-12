@@ -160,7 +160,10 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    let viewModel = KAdvancedSettingsViewModel(hasMinRate: false)
+    let viewModel = KAdvancedSettingsViewModel(
+      hasMinRate: false,
+      brandColor: KNAppStyleType.current.walletFlowHeaderColor
+    )
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -389,7 +392,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    self.amountTextField.textColor = UIColor.Kyber.green
+    self.amountTextField.textColor = UIColor.Kyber.lightSeaGreen
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.addressString
     }

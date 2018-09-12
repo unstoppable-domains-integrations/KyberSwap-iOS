@@ -29,11 +29,14 @@ class KAdvancedSettingsViewModel: NSObject {
   fileprivate(set) var isViewHidden: Bool = true
   fileprivate(set) var hasMinRate: Bool = true
 
+  let brandColor: UIColor
+
   fileprivate(set) var minRateString: String?
   fileprivate(set) var minRatePercent: CGFloat?
 
-  init(hasMinRate: Bool) {
+  init(hasMinRate: Bool, brandColor: UIColor) {
     self.hasMinRate = hasMinRate
+    self.brandColor = brandColor
   }
 
   var isGasPriceViewHidden: Bool { return self.isViewHidden }
@@ -165,6 +168,9 @@ class KAdvancedSettingsView: XibLoaderView {
     self.viewModel = viewModel
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
+    self.minRateValueLabel.textColor = viewModel.brandColor
+    self.minRateSlider.minimumTrackTintColor = viewModel.brandColor
+    self.minRateSlider.thumbTintColor = viewModel.brandColor
   }
 
   fileprivate func updateGasPriceUIs() {
@@ -176,7 +182,7 @@ class KAdvancedSettingsView: XibLoaderView {
     self.mediumGasValueLabel.attributedText = self.viewModel.mediumGasString
     self.slowGasValueLabel.attributedText = self.viewModel.slowGasString
 
-    let selectedColor = UIColor.Kyber.shamrock
+    let selectedColor = self.viewModel.brandColor
     let normalColor = UIColor.Kyber.dashLine
 
     let selectedWidth: CGFloat = 8.0

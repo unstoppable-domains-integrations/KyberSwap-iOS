@@ -26,7 +26,7 @@ class KNTabBarController: UITabBarController {
       tabBar.tintColor = UIColor.Kyber.lightSeaGreen
     } else if item.tag == 1 {
       // KyberSwap tab
-      tabBar.tintColor = UIColor.Kyber.fire
+      tabBar.tintColor = UIColor.Kyber.merigold
     } else if item.tag == 2 {
       // KyberGO tab
       tabBar.tintColor = UIColor.Kyber.sapphire
