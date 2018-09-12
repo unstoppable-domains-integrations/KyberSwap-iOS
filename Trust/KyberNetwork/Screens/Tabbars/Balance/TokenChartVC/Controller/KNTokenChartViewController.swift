@@ -80,7 +80,7 @@ class KNTokenChartViewModel {
   }
 
   var navigationTitle: String {
-    return "(WIP) \(self.token.symbol)"
+    return "\(self.token.symbol)"
   }
 
   var isTokenSupported: Bool { return self.token.isSupported }
@@ -354,6 +354,7 @@ class KNTokenChartViewController: KNBaseViewController {
     )
 
     if self.viewModel.isTokenSupported {
+      self.noDataLabel.text = "Updating data...".toBeLocalised()
       self.updateDisplayDataType(.day)
     } else {
       self.dataTypeButtonContainerView.isHidden = true
@@ -411,6 +412,7 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {
+    self.noDataLabel.text = "Updating data...".toBeLocalised()
     self.viewModel.fetchNewData(
       for: self.viewModel.token,
       type: self.viewModel.type) { [weak self] result in
@@ -418,8 +420,11 @@ class KNTokenChartViewController: KNBaseViewController {
         case .success(let isSuccess):
           if isSuccess {
             self?.reloadViewDataDidUpdate()
+          } else {
+            self?.noDataLabel.text = "Can not update data".toBeLocalised()
           }
         case .failure(let error):
+          self?.noDataLabel.text = "Can not update data".toBeLocalised()
           self?.displayError(error: error)
         }
     }
@@ -444,6 +449,7 @@ class KNTokenChartViewController: KNBaseViewController {
   fileprivate func reloadViewDataDidUpdate() {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
     if self.viewModel.data.isEmpty {
+      self.noDataLabel.text = "There is no data for this token".toBeLocalised()
       self.noDataLabel.isHidden = false
       self.priceChart.isHidden = true
     } else {
