@@ -45,9 +45,9 @@ struct KNTransactionDetailsViewModel {
     return "\(sign)\(transaction.value.prefix(6)) \(localObject.symbol ?? "")"
   }
 
-  var displayedAmountColorHex: String {
-    if self.isSwap { return "f89f50" }
-    return self.isSent ? "f87171" : "31cb9e"
+  var displayedAmountColor: UIColor {
+    if self.isSwap { return UIColor.Kyber.merigold }
+    return self.isSent ? UIColor.Kyber.merigold : UIColor.Kyber.shamrock
   }
 
   lazy var textAttachment: NSTextAttachment = {

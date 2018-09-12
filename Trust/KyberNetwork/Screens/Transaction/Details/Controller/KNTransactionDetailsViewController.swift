@@ -19,6 +19,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navigationTitleLabel: UILabel!
+  @IBOutlet weak var txStatusLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
   @IBOutlet weak var fromLabel: UILabel!
   @IBOutlet weak var toLabel: UILabel!
@@ -46,6 +47,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.txStatusLabel.rounded(radius: 4.0)
     let fromTapGes = UITapGestureRecognizer(target: self, action: #selector(self.fromAddressTapped(_:)))
     self.fromLabel.addGestureRecognizer(fromTapGes)
 
@@ -57,8 +59,26 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
+    if let state = self.viewModel.transaction?.state {
+      self.txStatusLabel.isHidden = false
+      switch state {
+      case .completed:
+        self.txStatusLabel.text = "Success".toBeLocalised()
+        self.txStatusLabel.backgroundColor = UIColor.Kyber.shamrock
+      case .failed, .error:
+        self.txStatusLabel.text = "Failed".toBeLocalised()
+        self.txStatusLabel.backgroundColor = UIColor.Kyber.strawberry
+      case .pending:
+        self.txStatusLabel.text = "Pending".toBeLocalised()
+        self.txStatusLabel.backgroundColor = UIColor.Kyber.merigold
+      default: break
+      }
+    } else {
+      self.txStatusLabel.isHidden = true
+    }
+
     self.amountLabel.text = self.viewModel.displayedAmountString
-    self.amountLabel.textColor = UIColor(hex: self.viewModel.displayedAmountColorHex)
+    self.amountLabel.textColor = self.viewModel.displayedAmountColor
 
     self.fromLabel.attributedText = self.viewModel.fromAttributedString()
     self.toLabel.attributedText = self.viewModel.toAttributedString()
