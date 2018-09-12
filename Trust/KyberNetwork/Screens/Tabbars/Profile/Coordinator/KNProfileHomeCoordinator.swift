@@ -88,7 +88,8 @@ class KNProfileHomeCoordinator: Coordinator {
 // MARK: Callbacks, networking
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
-    IEOUserStorage.shared.signedOut()
+    guard let user = IEOUserStorage.shared.user else { return }
+    IEOUserStorage.shared.delete(objects: [user])
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
   }

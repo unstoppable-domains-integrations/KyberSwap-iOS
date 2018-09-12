@@ -32,8 +32,10 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var userEmailLabel: UILabel!
   @IBOutlet weak var userKYCStatusLabel: UILabel!
 
+  @IBOutlet weak var userKYCStatusContainerView: UIView!
   @IBOutlet weak var userKYCStatusDescLabel: UILabel!
   @IBOutlet weak var userKYCActionButton: UIButton!
+  @IBOutlet weak var heightConstraintUserKYCStatusView: NSLayoutConstraint!
 
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
@@ -96,6 +98,7 @@ class KNProfileHomeViewController: KNBaseViewController {
       width: 1.0,
       radius: 4.0
     )
+    self.userKYCStatusLabel.rounded(radius: 2.0)
 
     self.noWalletTextLabel.text = "You haven't added any wallets yet.".toBeLocalised()
 
@@ -103,6 +106,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.walletsTableView.rowHeight = kWalletCellRowHeight
     self.walletsTableView.delegate = self
     self.walletsTableView.dataSource = self
+
     self.updateUIUserDidSignedIn()
   }
 
@@ -110,7 +114,17 @@ class KNProfileHomeViewController: KNBaseViewController {
     guard let user = self.viewModel.currentUser else { return }
     self.userNameLabel.text = user.name
     self.userEmailLabel.text = user.contactID
-    self.userKYCStatusLabel.text = "  \(user.kycStatus)  "
+    self.userKYCStatusLabel.text = "\(user.kycStatus)  "
+
+    if user.kycStatus.lowercased() == "approved" {
+      self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
+      self.heightConstraintUserKYCStatusView.constant = 0.0
+      self.userKYCStatusContainerView.isHidden = true
+    } else {
+      self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
+      self.userKYCStatusContainerView.isHidden = false
+      self.heightConstraintUserKYCStatusView.constant = 160.0
+    }
 
     if user.registeredAddress.isEmpty {
       self.noWalletTextLabel.isHidden = false
