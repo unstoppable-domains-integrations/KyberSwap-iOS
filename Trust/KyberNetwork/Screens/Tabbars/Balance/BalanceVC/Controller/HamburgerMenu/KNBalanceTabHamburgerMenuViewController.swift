@@ -310,8 +310,8 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
         NSAttributedStringKey.kern: 1.0,
         ]
-      attributedString.append(NSAttributedString(string: wallet.name, attributes: nameAttributes))
-      let address: String = "\(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
+      attributedString.append(NSAttributedString(string: "    \(wallet.name)", attributes: nameAttributes))
+      let address: String = "         \(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
       attributedString.append(NSAttributedString(string: "\n\(address)", attributes: addressAttributes))
       return attributedString
     }()
