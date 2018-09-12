@@ -326,35 +326,38 @@ class KNTokenChartViewController: KNBaseViewController {
     self.priceChart.labelFont = UIFont.Kyber.medium(with: 12)
 
     self.sendButton.rounded(
-      color: UIColor.Kyber.border,
+      color: .clear,
       width: 1,
       radius: style.buttonRadius(for: self.sendButton.frame.height)
     )
+    self.sendButton.backgroundColor = UIColor.Kyber.merigold
     self.sendButton.setTitle(
       style.buttonTitle(with: "Send".toBeLocalised()),
       for: .normal
     )
     self.buyButton.rounded(
-      color: UIColor.Kyber.border,
+      color: .clear,
       width: 1,
       radius: style.buttonRadius(for: self.buyButton.frame.height)
     )
+    self.buyButton.backgroundColor = UIColor.Kyber.shamrock
     self.buyButton.setTitle(
       style.buttonTitle(with: "Buy".toBeLocalised()),
       for: .normal
     )
     self.sellButton.rounded(
-      color: UIColor.Kyber.border,
+      color: .clear,
       width: 1,
       radius: style.buttonRadius(for: self.sellButton.frame.height)
     )
+    self.sellButton.backgroundColor = UIColor.Kyber.blueGreen
     self.sellButton.setTitle(
       style.buttonTitle(with: "Sell".toBeLocalised()),
       for: .normal
     )
 
     if self.viewModel.isTokenSupported {
-      self.noDataLabel.text = "Updating data...".toBeLocalised()
+      self.noDataLabel.text = "Updating data ...".toBeLocalised()
       self.updateDisplayDataType(.day)
     } else {
       self.dataTypeButtonContainerView.isHidden = true
@@ -364,6 +367,7 @@ class KNTokenChartViewController: KNBaseViewController {
         style.buttonTitle(with: "Send".toBeLocalised()),
         for: .normal
       )
+      self.sellButton.backgroundColor = UIColor.Kyber.merigold
       self.sendButton.isHidden = true
     }
   }
@@ -412,7 +416,7 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {
-    self.noDataLabel.text = "Updating data...".toBeLocalised()
+    self.noDataLabel.text = "Updating data ...".toBeLocalised()
     self.viewModel.fetchNewData(
       for: self.viewModel.token,
       type: self.viewModel.type) { [weak self] result in
