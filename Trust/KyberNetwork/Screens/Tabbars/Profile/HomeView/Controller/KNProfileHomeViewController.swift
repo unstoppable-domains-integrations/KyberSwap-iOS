@@ -118,10 +118,16 @@ class KNProfileHomeViewController: KNBaseViewController {
 
     if user.kycStatus.lowercased() == "approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
+    } else if user.kycStatus.lowercased() == "pending" {
+      self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.merigold
+    } else {
+      self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
+    }
+
+    if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" {
       self.heightConstraintUserKYCStatusView.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {
-      self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
       self.userKYCStatusContainerView.isHidden = false
       self.heightConstraintUserKYCStatusView.constant = 160.0
     }

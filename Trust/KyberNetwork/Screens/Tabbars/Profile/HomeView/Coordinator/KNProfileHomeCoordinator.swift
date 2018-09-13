@@ -22,6 +22,8 @@ class KNProfileHomeCoordinator: Coordinator {
     return controller
   }()
 
+  fileprivate var kycCoordinator: KYCCoordinator?
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -89,6 +91,7 @@ class KNProfileHomeCoordinator: Coordinator {
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
     guard let user = IEOUserStorage.shared.user else { return }
+    IEOUserStorage.shared.signedOut()
     IEOUserStorage.shared.delete(objects: [user])
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
@@ -287,11 +290,18 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
     case .logOut:
       self.handleUserSignOut()
     case .openVerification:
-      //TODO:
-      print("Open verification")
+      self.openVerificationView()
     case .addWallet:
-      //TODO:
-      print("Add wallet")
+      self.openAddWallet()
     }
+  }
+
+  fileprivate func openVerificationView() {
+    let user = IEOUserStorage.shared.user!
+    self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+    self.kycCoordinator?.start()
+  }
+
+  fileprivate func openAddWallet() {
   }
 }
