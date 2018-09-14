@@ -24,6 +24,8 @@ class KNProfileHomeCoordinator: Coordinator {
 
   fileprivate var kycCoordinator: KYCCoordinator?
 
+  fileprivate var loadUserInfoTimer: Timer?
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -46,6 +48,9 @@ class KNProfileHomeCoordinator: Coordinator {
       name: callbackName,
       object: nil
     )
+    if IEOUserStorage.shared.user != nil {
+      self.timerLoadUserInfo()
+    }
   }
 
   func stop() {
@@ -58,6 +63,9 @@ class KNProfileHomeCoordinator: Coordinator {
       name: NSNotification.Name(kIEODidReceiveCallbackNotificationKey),
       object: nil
     )
+
+    self.loadUserInfoTimer?.invalidate()
+    self.loadUserInfoTimer = nil
   }
 
   fileprivate func timerAccessTokenExpired() {
@@ -77,6 +85,35 @@ class KNProfileHomeCoordinator: Coordinator {
     }
   }
 
+  fileprivate func timerLoadUserInfo() {
+    guard let user = IEOUserStorage.shared.user else { return }
+    self.getUserInfo(
+      type: user.tokenType,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      expireTime: user.expireTime) { success in
+        if success {
+          self.rootViewController.coordinatorUserDidSignInSuccessfully()
+        }
+    }
+
+    self.loadUserInfoTimer?.invalidate()
+    self.loadUserInfoTimer = Timer.scheduledTimer(
+      withTimeInterval: 60.0,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.getUserInfo(
+          type: user.tokenType,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          expireTime: user.expireTime) { success in
+            if success {
+              self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+            }
+        }
+    })
+  }
+
   // MARK: Update from app coordinator
   func updateSession(_ session: KNSession) {
     self.session = session
@@ -90,7 +127,6 @@ class KNProfileHomeCoordinator: Coordinator {
 // MARK: Callbacks, networking
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
-    guard let user = IEOUserStorage.shared.user else { return }
     IEOUserStorage.shared.signedOut()
     IEOUserStorage.shared.delete(objects: IEOUserStorage.shared.objects)
     Branch.getInstance().logout()
