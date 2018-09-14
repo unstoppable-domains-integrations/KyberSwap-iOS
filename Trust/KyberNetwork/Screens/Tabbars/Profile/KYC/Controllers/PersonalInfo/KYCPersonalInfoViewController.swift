@@ -3,7 +3,7 @@
 import UIKit
 
 enum KYCPersonalInfoViewEvent {
-  case next
+  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, country: String)
 }
 
 class KYCPersonalInfoViewModel {
@@ -277,7 +277,15 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    self.delegate?.kycPersonalInfoViewController(self, run: .next)
+    let nextEvent = KYCPersonalInfoViewEvent.next(
+      firstName: firstName,
+      lastName: lastName,
+      gender: self.viewModel.gender,
+      dob: self.viewModel.dob,
+      nationality: nationality,
+      country: country
+    )
+    self.delegate?.kycPersonalInfoViewController(self, run: nextEvent)
   }
 
   @objc func dateOfBirthDidChange(_ sender: Any) {

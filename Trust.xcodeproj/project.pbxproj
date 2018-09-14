@@ -160,6 +160,8 @@
 		256BD3F3214A22900085DE55 /* KYCFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256BD3F1214A22900085DE55 /* KYCFlowViewController.swift */; };
 		256BD3F4214A22900085DE55 /* KYCFlowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256BD3F2214A22900085DE55 /* KYCFlowViewController.xib */; };
 		256BD3F7214A3F030085DE55 /* kyc_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 256BD3F6214A3F030085DE55 /* kyc_data.json */; };
+		256BD3FB214A57450085DE55 /* KYCIdentityInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256BD3F9214A57450085DE55 /* KYCIdentityInfoViewController.swift */; };
+		256BD3FC214A57450085DE55 /* KYCIdentityInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256BD3FA214A57450085DE55 /* KYCIdentityInfoViewController.xib */; };
 		256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */; };
 		256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */; };
 		25767B4F20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25767B4D20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift */; };
@@ -884,6 +886,8 @@
 		256BD3F1214A22900085DE55 /* KYCFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCFlowViewController.swift; sourceTree = "<group>"; };
 		256BD3F2214A22900085DE55 /* KYCFlowViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCFlowViewController.xib; sourceTree = "<group>"; };
 		256BD3F6214A3F030085DE55 /* kyc_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyc_data.json; sourceTree = "<group>"; };
+		256BD3F9214A57450085DE55 /* KYCIdentityInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCIdentityInfoViewController.swift; sourceTree = "<group>"; };
+		256BD3FA214A57450085DE55 /* KYCIdentityInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCIdentityInfoViewController.xib; sourceTree = "<group>"; };
 		256E61EB20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBalanceTabHamburgerMenuViewController.swift; sourceTree = "<group>"; };
 		256E61EC20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBalanceTabHamburgerMenuViewController.xib; sourceTree = "<group>"; };
 		25767B4D20FD9367004FF538 /* IEOTransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOTransactionCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2066,6 +2070,7 @@
 		254CD0F221492E210079EA7A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				256BD3F8214A571C0085DE55 /* IdentityInfo */,
 				254CD0F321492E270079EA7A /* PersonalInfo */,
 				256BD3F1214A22900085DE55 /* KYCFlowViewController.swift */,
 				256BD3F2214A22900085DE55 /* KYCFlowViewController.xib */,
@@ -2424,6 +2429,15 @@
 				256BD3F6214A3F030085DE55 /* kyc_data.json */,
 			);
 			path = Resouces;
+			sourceTree = "<group>";
+		};
+		256BD3F8214A571C0085DE55 /* IdentityInfo */ = {
+			isa = PBXGroup;
+			children = (
+				256BD3F9214A57450085DE55 /* KYCIdentityInfoViewController.swift */,
+				256BD3FA214A57450085DE55 /* KYCIdentityInfoViewController.xib */,
+			);
+			path = IdentityInfo;
 			sourceTree = "<group>";
 		};
 		256E61EA20B3C0650084CA3F /* HamburgerMenu */ = {
@@ -5082,6 +5096,7 @@
 				25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25A2940520CE8851008C6759 /* KGOHomePageViewController.xib in Resources */,
+				256BD3FC214A57450085DE55 /* KYCIdentityInfoViewController.xib in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				25929C6820DA5C760045CFA3 /* SF-Pro-Display-Light.otf in Resources */,
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
@@ -5747,6 +5762,7 @@
 				2521D20F20942AEC00A69AD7 /* KNNewCustomTokenCoordinator.swift in Sources */,
 				2963B6C11F9AE0E4003063C1 /* Data.swift in Sources */,
 				2932045E1F8EEE760095B7C1 /* BalanceCoordinator.swift in Sources */,
+				256BD3FB214A57450085DE55 /* KYCIdentityInfoViewController.swift in Sources */,
 				257740CB205794CE003323EB /* KNAppCoordinator.swift in Sources */,
 				2912CD321F6A83EE00C6CBE3 /* WelcomeViewController.swift in Sources */,
 				29F114F61FA8147300114A29 /* RequestCoordinator.swift in Sources */,
