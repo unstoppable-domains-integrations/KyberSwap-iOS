@@ -92,7 +92,7 @@ extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
     guard let user = IEOUserStorage.shared.user else { return }
     IEOUserStorage.shared.signedOut()
-    IEOUserStorage.shared.delete(objects: [user])
+    IEOUserStorage.shared.delete(objects: IEOUserStorage.shared.objects)
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
   }
@@ -177,7 +177,13 @@ extension KNProfileHomeCoordinator {
                 type: tokenType,
                 accessToken: accessToken,
                 refreshToken: refreshToken,
-                expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
+                expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970,
+                completion: { success in
+                  if success {
+                    let name = IEOUserStorage.shared.user?.name ?? ""
+                    self?.navigationController.showSuccessTopBannerMessage(with: "", message: "Welcome back, \(name)")
+                  }
+              }
               )
             } catch {
               self?.navigationController.hideLoading()
@@ -195,7 +201,7 @@ extension KNProfileHomeCoordinator {
     }
   }
 
-  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
+  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, completion: @escaping (Bool) -> Void) {
     // got access token, user access token to retrieve user information
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
@@ -223,12 +229,12 @@ extension KNProfileHomeCoordinator {
               expireTime: expireTime
             )
             self?.timerAccessTokenExpired()
-            IEOTransactionStorage.shared.userLoggedIn()
-            self?.navigationController.showSuccessTopBannerMessage(with: "", message: "Welcome back, \(user.name)")
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+            completion(true)
           // Already have user
           case .failure(let error):
             self?.navigationController.displayError(error: error)
+            completion(false)
           }
         }
       })
@@ -299,9 +305,28 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
   fileprivate func openVerificationView() {
     let user = IEOUserStorage.shared.user!
     self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+    self.kycCoordinator?.delegate = self
     self.kycCoordinator?.start()
   }
 
   fileprivate func openAddWallet() {
+  }
+}
+
+extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
+  func kycCoordinatorDidSubmitData() {
+    guard let user = IEOUserStorage.shared.user else { return }
+    self.navigationController.displayLoading()
+    self.getUserInfo(
+      type: user.tokenType,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      expireTime: user.expireTime,
+      completion: { success in
+        if success {
+          self.rootViewController.coordinatorUserDidSignInSuccessfully()
+        }
+      }
+    )
   }
 }

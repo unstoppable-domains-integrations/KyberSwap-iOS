@@ -90,12 +90,6 @@ extension KNAppCoordinator {
       self.tabbarController.selectedIndex = 1
     }
 
-    // Update badges for kyberGO tab
-    let values = IEOTransactionStorage.shared.objects.filter({ !$0.viewed }).count
-    if let items = self.tabbarController.tabBar.items {
-      items[2].badgeValue = values > 0 ? "\(values)" : nil
-    }
-
     self.addObserveNotificationFromSession()
     self.updateLocalData()
   }

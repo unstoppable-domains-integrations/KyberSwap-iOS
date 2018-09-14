@@ -2,8 +2,13 @@
 
 import UIKit
 
+protocol KYCCoordinatorDelegate: class {
+  func kycCoordinatorDidSubmitData()
+}
+
 class KYCCoordinator: Coordinator {
 
+  weak var delegate: KYCCoordinatorDelegate?
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   let user: IEOUser
@@ -37,6 +42,9 @@ extension KYCCoordinator: KYCFlowViewControllerDelegate {
   func kycFlowViewController(_ controller: KYCFlowViewController, run event: KYCFlowViewEvent) {
     switch event {
     case .back: self.stop()
+    case .submitted:
+      self.stop()
+      self.delegate?.kycCoordinatorDidSubmitData()
     }
   }
 }

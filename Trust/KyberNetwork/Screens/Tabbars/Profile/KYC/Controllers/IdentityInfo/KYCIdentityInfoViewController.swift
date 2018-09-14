@@ -103,34 +103,34 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate func updateDocumentTypeData() {
     self.idButton.rounded(
-      color: self.viewModel.documentType == "id" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "id" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "ID" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "ID" ? 6.0 : 1.0,
       radius: self.idButton.frame.height / 2.0
     )
     self.passportButton.rounded(
-      color: self.viewModel.documentType == "passport" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "passport" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "Passport" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "Passport" ? 6.0 : 1.0,
       radius: self.passportButton.frame.height / 2.0
     )
     self.driverLicenseButton.rounded(
-      color: self.viewModel.documentType == "driver_license" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "driver_license" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "DriverLicense" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "DriverLicense" ? 6.0 : 1.0,
       radius: self.driverLicenseButton.frame.height / 2.0
     )
   }
 
   @IBAction func idButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "id" ? "" : "id")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "ID" ? "" : "ID")
     self.updateDocumentTypeData()
   }
 
   @IBAction func passportButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "passport" ? "" : "passport")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "Passport" ? "" : "Passport")
     self.updateDocumentTypeData()
   }
 
   @IBAction func driverLicenseButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "driver_license" ? "" : "driver_license")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "DriverLicense" ? "" : "DriverLicense")
     self.updateDocumentTypeData()
   }
 

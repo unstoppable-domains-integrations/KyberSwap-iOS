@@ -168,6 +168,7 @@ extension KNProfileHomeViewController {
   func coordinatorUserDidSignInSuccessfully() {
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
+    self.updateUIUserDidSignedIn()
   }
 
   func coordinatorDidSignOut() {

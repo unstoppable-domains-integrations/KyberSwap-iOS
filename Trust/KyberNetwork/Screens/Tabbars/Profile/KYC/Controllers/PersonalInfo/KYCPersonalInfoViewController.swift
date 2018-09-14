@@ -179,24 +179,24 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func maleButtonPressed(_ sender: Any) {
-    self.viewModel.updateGender(self.viewModel.gender == "male" ? "" : "male")
+    self.viewModel.updateGender(self.viewModel.gender == "Male" ? "" : "Male")
     self.updateGenderUI()
   }
 
   @IBAction func femaleButtonPressed(_ sender: Any) {
-    self.viewModel.updateGender(self.viewModel.gender == "female" ? "" : "female")
+    self.viewModel.updateGender(self.viewModel.gender == "Female" ? "" : "Female")
     self.updateGenderUI()
   }
 
   fileprivate func updateGenderUI() {
     self.maleButton.rounded(
-      color: self.viewModel.gender == "male" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.gender == "male" ? 6.0 : 1.0,
+      color: self.viewModel.gender == "Male" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.gender == "Male" ? 6.0 : 1.0,
       radius: self.maleButton.frame.height / 2.0
     )
     self.femaleButton.rounded(
-      color: self.viewModel.gender == "female" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.gender == "female" ? 6.0 : 1.0,
+      color: self.viewModel.gender == "Female" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.gender == "Female" ? 6.0 : 1.0,
       radius: self.maleButton.frame.height / 2.0
     )
   }
@@ -226,8 +226,6 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
-    //TODO: Validate information here
-
     // Check first + last name
     let firstName = self.firstNameTextField.text ?? ""
     let lastName = self.lastNameTextField.text ?? ""

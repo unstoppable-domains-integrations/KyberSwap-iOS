@@ -7,6 +7,15 @@ enum KNKYCStepViewState: Int {
   case id = 1
   case submit = 2
   case done
+
+  var title: String {
+    switch self {
+    case .personalInfo: return "Personal Info".toBeLocalised()
+    case .id: return "Identity Info".toBeLocalised()
+    case .submit: return "Submit".toBeLocalised()
+    case .done: return "Profile Verification Status".toBeLocalised()
+    }
+  }
 }
 
 class KNKYCStepView: XibLoaderView {
