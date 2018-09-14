@@ -116,7 +116,7 @@
                                 <action selector="femaleButtonPressed:" destination="-1" eventType="touchUpInside" id="85a-pc-Vmn"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of birth (DD/MM/YY)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tQM-WS-Erv">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of birth (YYYY-MM-DD)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tQM-WS-Erv">
                             <rect key="frame" x="24" y="192" width="327" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="a4x-Lw-ddM"/>

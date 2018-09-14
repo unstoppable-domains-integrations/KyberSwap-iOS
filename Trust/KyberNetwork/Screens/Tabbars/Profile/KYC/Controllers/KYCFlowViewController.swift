@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Moya
 
 enum KYCFlowViewEvent {
   case back
@@ -221,7 +222,43 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
         nationality: nationality,
         residenceCountry: country
       )
-      self.updateViewState(newState: .id)
+      guard let user = IEOUserStorage.shared.user else { return }
+      let provider = MoyaProvider<ProfileKYCService>()
+      let service = ProfileKYCService.personalInfo(
+        accessToken: user.accessToken,
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender == "Male" ? true : false,
+        dob: dob,
+        nationality: nationality,
+        country: country
+      )
+      self.displayLoading()
+      provider.request(service) { [weak self] result in
+        self?.hideLoading()
+        switch result {
+        case .success(let resp):
+          do {
+            _ = try resp.filterSuccessfulStatusCodes()
+            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+            let success = json["success"] as? Bool ?? false
+            let reason = json["reason"] as? String ?? ""
+            if success {
+              self?.updateViewState(newState: .id)
+            } else {
+              self?.showWarningTopBannerMessage(
+                with: "Error",
+                message: reason,
+                time: 1.5
+              )
+            }
+          } catch let error {
+            self?.displayError(error: error)
+          }
+        case .failure(let error):
+          self?.displayError(error: error)
+        }
+      }
     }
   }
 }
@@ -236,7 +273,43 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
         docImage: docImage,
         docHoldingImage: docHoldingImage
       )
-      self.updateViewState(newState: .submit)
+      guard let user = IEOUserStorage.shared.user else { return }
+      guard let docImageData = UIImagePNGRepresentation(docImage),
+        let docHoldingImageData = UIImagePNGRepresentation(docHoldingImage) else { return }
+      let provider = MoyaProvider<ProfileKYCService>()
+      let service = ProfileKYCService.identityInfo(
+        accessToken: user.accessToken,
+        documentType: docType,
+        documentID: docNum,
+        docImage: docImageData,
+        docHoldingImage: docHoldingImageData
+      )
+      self.displayLoading()
+      provider.request(service) { [weak self] result in
+        self?.hideLoading()
+        switch result {
+        case .success(let resp):
+          do {
+            _ = try resp.filterSuccessfulStatusCodes()
+            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+            let success = json["success"] as? Bool ?? false
+            let reason = (json["reason"] as? [String] ?? []).description
+            if success {
+              self?.updateViewState(newState: .submit)
+            } else {
+              self?.showWarningTopBannerMessage(
+                with: "Error",
+                message: reason,
+                time: 1.5
+              )
+            }
+          } catch let error {
+            self?.displayError(error: error)
+          }
+        case .failure(let error):
+          self?.displayError(error: error)
+        }
+      }
     }
   }
 }
@@ -245,8 +318,35 @@ extension KYCFlowViewController: KYCSubmitInfoViewControllerDelegate {
   func submitInfoViewController(_ controller: KYCSubmitInfoViewController, run event: KYCSubmitInfoViewEvent) {
     switch event {
     case .submit:
-      self.updateViewState(newState: .done)
-      print("Sending submit request")
+      guard let user = IEOUserStorage.shared.user else { return }
+      let provider = MoyaProvider<ProfileKYCService>()
+      let service = ProfileKYCService.submitKYC(accessToken: user.accessToken)
+      self.displayLoading()
+      provider.request(service) { [weak self] result in
+        self?.hideLoading()
+        switch result {
+        case .success(let resp):
+          do {
+            _ = try resp.filterSuccessfulStatusCodes()
+            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+            let success = json["success"] as? Bool ?? false
+            let reason = json["reason"] as? String ?? ""
+            if success {
+              self?.updateViewState(newState: .done)
+            } else {
+              self?.showWarningTopBannerMessage(
+                with: "Error",
+                message: reason,
+                time: 1.5
+              )
+            }
+          } catch let error {
+            self?.displayError(error: error)
+          }
+        case .failure(let error):
+          self?.displayError(error: error)
+        }
+      }
     }
   }
 }

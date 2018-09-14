@@ -242,13 +242,13 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
       let height = image.size.height / image.size.width * width
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
       if self.isPickingDocumentPhoto {
-        self.documentImage = image
+        self.documentImage = image.resizeImage(to: CGSize(width: 2.0 * width, height: 2.0 * height))
         self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
         self.documentImageView.image = newImage
         self.documentImageContainerView.isHidden = false
         self.view.layoutIfNeeded()
       } else {
-        self.holdingDocumentImage = image
+        self.holdingDocumentImage = image.resizeImage(to: CGSize(width: 2.0 * width, height: 2.0 * height))
         self.heightConstraintForHoldingDocumentPhotoView.constant = height + 24.0 * 2.0 // image height + top/bottom padding
         self.holdingDocumentImageView.image = newImage
         self.holdingDocumentImageContainerView.isHidden = false

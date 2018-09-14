@@ -152,7 +152,7 @@ class KNAppTracker {
 
   // MARK: Profile base string
   static func getKyberProfileBaseString() -> String {
-    return KNEnvironment.default == .ropsten ? "https://dev-userdashboard.knstats.com" : "https://kyber.network/"//"https://kyber.mangcut.vn"
+    return KNEnvironment.default == .ropsten ? "https://dev-userdashboard.knstats.com" : "https://kyber.network"//"https://kyber.mangcut.vn"
   }
 
   // MARK: App style

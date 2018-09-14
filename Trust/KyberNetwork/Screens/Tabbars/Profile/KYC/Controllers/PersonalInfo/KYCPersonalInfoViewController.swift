@@ -288,7 +288,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   @objc func dateOfBirthDidChange(_ sender: Any) {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd/MM/yy"
+    dateFormatter.dateFormat = "yyyy-MM-dd"
     let dob = dateFormatter.string(from: self.datePicker.date)
     self.dateOfBirthTextField.text = dob
     self.viewModel.updateDoB(dob)

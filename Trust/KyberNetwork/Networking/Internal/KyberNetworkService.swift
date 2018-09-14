@@ -238,3 +238,81 @@ extension KyberGOService: TargetType {
     }
   }
 }
+
+enum ProfileKYCService {
+  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, country: String)
+  case identityInfo(accessToken: String, documentType: String, documentID: String, docImage: Data, docHoldingImage: Data)
+  case submitKYC(accessToken: String)
+  case userWallets(accessToken: String)
+  case checkWalletExist(accessToken: String, wallet: String)
+
+  var apiPath: String {
+    switch self {
+    case .personalInfo: return "/kyc_profile/personal_info"
+    case .identityInfo: return "/kyc_profile/identity_info"
+    case .submitKYC: return "/kyc_profile/submit_kyc"
+    case .userWallets: return "/user_wallets"
+    case .checkWalletExist: return "/check_wallet_exist"
+    }
+  }
+}
+
+extension ProfileKYCService: TargetType {
+  var baseURL: URL {
+    let baseString = KNAppTracker.getKyberProfileBaseString()
+    return URL(string: "\(baseString)/api")!
+  }
+
+  var path: String { return self.apiPath }
+  var method: Moya.Method { return .post }
+  var task: Task {
+    switch self {
+    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let country):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+        "first_name": firstName,
+        "last_name": lastName,
+        "gender": gender,
+        "dob": dob,
+        "nationality": nationality,
+        "country": country,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .identityInfo(let accessToken, let documentType, let documentID, let docImage, let docHoldingImage):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+        "document_type": documentType,
+        "document_id": documentID,
+        "photo_identity_doc": docImage.base64EncodedString(),
+        "photo_selfie": docHoldingImage.base64EncodedString(),
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .submitKYC(let accessToken):
+      let json: JSONDictionary = ["access_token": accessToken]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .userWallets(let accessToken):
+      let json: JSONDictionary = ["access_token": accessToken]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .checkWalletExist(let accessToken, let wallet):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+        "wallet": wallet,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    }
+  }
+
+  var sampleData: Data { return Data() }
+  var headers: [String: String]? {
+    return [
+      "content-type": "application/json",
+      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
+  }
+}
