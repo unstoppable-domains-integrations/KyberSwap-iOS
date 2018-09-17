@@ -7,6 +7,7 @@ protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func listWalletsCoordinatorDidUpdateWalletObjects()
+  func listWalletsCoordinatorDidSelectAddWallet()
 }
 
 class KNListWalletsCoordinator: Coordinator {
@@ -85,6 +86,8 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       controller.modalPresentationStyle = .overCurrentContext
       controller.delegate = self
       self.navigationController.present(controller, animated: true, completion: nil)
+    case .addWallet:
+      self.delegate?.listWalletsCoordinatorDidSelectAddWallet()
     }
   }
 

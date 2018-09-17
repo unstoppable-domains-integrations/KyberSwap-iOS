@@ -7,6 +7,7 @@ enum KNListWalletsViewEvent {
   case select(wallet: KNWalletObject)
   case remove(wallet: KNWalletObject)
   case edit(wallet: KNWalletObject)
+  case addWallet
 }
 
 protocol KNListWalletsViewControllerDelegate: class {
@@ -66,29 +67,26 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    self.navigationItem.title = "Wallets"
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_white_icon"), style: .plain, target: self, action: #selector(self.backButtonPressed(_:)))
-    self.navigationItem.leftBarButtonItem?.tintColor = .white
+    self.navigationItem.title = "Manage Wallet".toBeLocalised()
   }
 
   fileprivate func setupWalletTableView() {
     let nib = UINib(nibName: KNListWalletsTableViewCell.className, bundle: nil)
     self.walletTableView.register(nib, forCellReuseIdentifier: kCellID)
-    self.walletTableView.rowHeight = 60.0
+    self.walletTableView.rowHeight = 68.0
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
-    self.walletTableView.backgroundColor = .white
     self.heightConstraintForWalletTableView.constant = 0
   }
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: wallets, curWallet: currentWallet)
-    self.heightConstraintForWalletTableView.constant = CGFloat(wallets.count) * 60.0
+    self.heightConstraintForWalletTableView.constant = CGFloat(wallets.count) * 68.0
     self.walletTableView.reloadData()
     self.updateViewConstraints()
   }
 
-  @objc func backButtonPressed(_ sender: Any) {
+  @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.listWalletsViewController(self, run: .close)
   }
 
@@ -96,6 +94,10 @@ class KNListWalletsViewController: KNBaseViewController {
     if sender.state == .ended {
       self.delegate?.listWalletsViewController(self, run: .close)
     }
+  }
+
+  @IBAction func addButtonPressed(_ sender: Any) {
+    self.delegate?.listWalletsViewController(self, run: .addWallet)
   }
 }
 
@@ -128,20 +130,21 @@ extension KNListWalletsViewController: UITableViewDataSource {
     let edit = UITableViewRowAction(style: .normal, title: "Edit".toBeLocalised()) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }
-    edit.backgroundColor = .blue
+    edit.backgroundColor = UIColor.Kyber.lightSeaGreen
     let delete = UITableViewRowAction(style: .destructive, title: "Delete".toBeLocalised()) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }
-    delete.backgroundColor = .red
+    delete.backgroundColor = UIColor.Kyber.strawberry
     return [delete, edit]
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! KNListWalletsTableViewCell
     let wallet = self.viewModel.wallet(at: indexPath.row)
-    cell.updateCell(with: wallet)
+    cell.updateCell(with: wallet, id: indexPath.row)
     if self.viewModel.isCurrentWallet(row: indexPath.row) {
       cell.accessoryType = .checkmark
+      cell.tintColor = UIColor.Kyber.lightSeaGreen
     } else {
       cell.accessoryType = .none
     }

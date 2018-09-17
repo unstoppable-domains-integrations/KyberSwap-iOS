@@ -1,10 +1,10 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import TrustCore
 
 class KNListWalletsTableViewCell: UITableViewCell {
 
-  @IBOutlet weak var walletIconImageView: UIImageView!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var walletAddressLabel: UILabel!
 
@@ -14,14 +14,10 @@ class KNListWalletsTableViewCell: UITableViewCell {
     self.walletAddressLabel.text = ""
   }
 
-  func updateCell(with wallet: KNWalletObject) {
+  func updateCell(with wallet: KNWalletObject, id: Int) {
     self.walletNameLabel.text = wallet.name
     self.walletAddressLabel.text = wallet.address
-    if let image = UIImage(named: wallet.icon) {
-      self.walletIconImageView.image = image
-    } else {
-      self.walletIconImageView.image = UIImage(named: "settings-wallet")
-    }
+    self.backgroundColor = id % 2 == 0 ? UIColor.clear : UIColor.white
     self.layoutIfNeeded()
   }
 }

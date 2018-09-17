@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -25,33 +25,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-wallet" translatesAutoresizingMaskIntoConstraints="NO" id="qeV-XK-SzT">
-                        <rect key="frame" x="16" y="18" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="PTZ-ue-ggx"/>
-                            <constraint firstAttribute="height" constant="24" id="dWA-s7-o7V"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="bhG-uN-zik">
-                        <rect key="frame" x="50" y="11" width="234" height="19.5"/>
-                        <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="16" y="11" width="268" height="17.5"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x2262d4f6312805851e3b27c40db2c7282e6e4a49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="f3Q-dq-bf1">
-                        <rect key="frame" x="50" y="35.5" width="234" height="14.5"/>
-                        <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="12"/>
-                        <color key="textColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <rect key="frame" x="16" y="33.5" width="268" height="17.5"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="qeV-XK-SzT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="4HE-DZ-9k1"/>
                     <constraint firstAttribute="trailingMargin" secondItem="bhG-uN-zik" secondAttribute="trailing" constant="20" id="LHx-vv-fwD"/>
                     <constraint firstItem="f3Q-dq-bf1" firstAttribute="top" secondItem="bhG-uN-zik" secondAttribute="bottom" constant="5" id="Pdl-Fv-pLI"/>
-                    <constraint firstItem="qeV-XK-SzT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QOC-uh-DOj"/>
                     <constraint firstItem="f3Q-dq-bf1" firstAttribute="leading" secondItem="bhG-uN-zik" secondAttribute="leading" id="SnD-WF-2lG"/>
-                    <constraint firstItem="bhG-uN-zik" firstAttribute="leading" secondItem="qeV-XK-SzT" secondAttribute="trailing" constant="10" id="gth-ER-clw"/>
+                    <constraint firstItem="bhG-uN-zik" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="eHa-2v-jtp"/>
                     <constraint firstAttribute="trailingMargin" secondItem="f3Q-dq-bf1" secondAttribute="trailing" constant="20" id="io6-Id-I0T"/>
                     <constraint firstItem="bhG-uN-zik" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="mna-aa-eHW"/>
                 </constraints>
@@ -59,12 +51,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="walletAddressLabel" destination="f3Q-dq-bf1" id="64r-gS-WTk"/>
-                <outlet property="walletIconImageView" destination="qeV-XK-SzT" id="FP2-IU-XiW"/>
                 <outlet property="walletNameLabel" destination="bhG-uN-zik" id="oag-id-oDe"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="settings-wallet" width="21" height="21"/>
-    </resources>
 </document>
