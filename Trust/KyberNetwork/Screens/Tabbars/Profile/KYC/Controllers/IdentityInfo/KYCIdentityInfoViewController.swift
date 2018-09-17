@@ -103,34 +103,34 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate func updateDocumentTypeData() {
     self.idButton.rounded(
-      color: self.viewModel.documentType == "ID" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "ID" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "national_id" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "national_id" ? 6.0 : 1.0,
       radius: self.idButton.frame.height / 2.0
     )
     self.passportButton.rounded(
-      color: self.viewModel.documentType == "Passport" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "Passport" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "passport" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "passport" ? 6.0 : 1.0,
       radius: self.passportButton.frame.height / 2.0
     )
     self.driverLicenseButton.rounded(
-      color: self.viewModel.documentType == "DriverLicense" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "DriverLicense" ? 6.0 : 1.0,
+      color: self.viewModel.documentType == "driving_license" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      width: self.viewModel.documentType == "driving_license" ? 6.0 : 1.0,
       radius: self.driverLicenseButton.frame.height / 2.0
     )
   }
 
   @IBAction func idButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "ID" ? "" : "ID")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "national_id" ? "" : "national_id")
     self.updateDocumentTypeData()
   }
 
   @IBAction func passportButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "Passport" ? "" : "Passport")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "passport" ? "" : "passport")
     self.updateDocumentTypeData()
   }
 
   @IBAction func driverLicenseButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "DriverLicense" ? "" : "DriverLicense")
+    self.viewModel.updateDocumentType(self.viewModel.documentType == "driving_license" ? "" : "driving_license")
     self.updateDocumentTypeData()
   }
 
@@ -242,13 +242,15 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
       let height = image.size.height / image.size.width * width
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
       if self.isPickingDocumentPhoto {
-        self.documentImage = image.resizeImage(to: CGSize(width: 2.0 * width, height: 2.0 * height))
+        // maximum 1Mb
+        self.documentImage = image.compress(to: 0.99)
         self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
         self.documentImageView.image = newImage
         self.documentImageContainerView.isHidden = false
         self.view.layoutIfNeeded()
       } else {
-        self.holdingDocumentImage = image.resizeImage(to: CGSize(width: 2.0 * width, height: 2.0 * height))
+        // maximum 1Mb
+        self.holdingDocumentImage = image.compress(to: 0.99)
         self.heightConstraintForHoldingDocumentPhotoView.constant = height + 24.0 * 2.0 // image height + top/bottom padding
         self.holdingDocumentImageView.image = newImage
         self.holdingDocumentImageContainerView.isHidden = false

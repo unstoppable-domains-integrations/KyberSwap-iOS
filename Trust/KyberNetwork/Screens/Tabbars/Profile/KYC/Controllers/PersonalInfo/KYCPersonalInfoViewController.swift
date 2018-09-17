@@ -1,9 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Moya
+import Result
+import QRCodeReaderViewController
+import TrustCore
 
 enum KYCPersonalInfoViewEvent {
-  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, country: String)
+  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, country: String, wallets: [(String, String)])
 }
 
 class KYCPersonalInfoViewModel {
@@ -15,11 +19,12 @@ class KYCPersonalInfoViewModel {
   fileprivate(set) var gender: String = ""
   fileprivate(set) var dob: String = ""
 
-  fileprivate(set) var addresses: [String] = []
+  fileprivate(set) var wallets: [(String, String)] = []
+  fileprivate(set) var hasModifiedWallets: Bool = false
 
   init(user: IEOUser) {
     self.user = user
-    self.addresses = user.registeredAddress.map({ return $0 })
+    self.wallets = []
     let json = KNJSONLoaderUtil.jsonDataFromFile(with: "kyc_data") ?? [:]
     self.nationalities = json["nationalities"] as? [String] ?? []
     self.countries = json["countries"] as? [String] ?? []
@@ -27,17 +32,67 @@ class KYCPersonalInfoViewModel {
 
   func updateGender(_ gender: String) { self.gender = gender }
   func updateDoB(_ dob: String) { self.dob = dob }
-  func removeAddress(_ address: String) {
-    if let id = self.addresses.index(of: address) {
-      self.addresses.remove(at: id)
-    }
+  func removeAddress(at id: Int) {
+    self.wallets.remove(at: id)
+    self.hasModifiedWallets = true
+  }
+
+  func updateWallets(_ wallets: [(String, String)]) {
+    self.wallets = wallets
   }
 
   @discardableResult
-  func addAddress(_ address: String) -> Bool {
-    guard !self.addresses.contains(address) else { return false }
-    self.addresses.insert(address, at: 0)
+  func addAddress(_ address: String, label: String) -> Bool {
+    guard self.wallets.first(where: { $0.1 == address }) == nil else { return false }
+    self.wallets.append((label, address))
+    self.hasModifiedWallets = true
     return true
+  }
+
+  func getUserWallets(completion: @escaping (Result<[(String, String)], AnyError>) -> Void) {
+    let provider = MoyaProvider<ProfileKYCService>()
+    provider.request(.userWallets(accessToken: self.user.accessToken)) { result in
+      switch result {
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let dataArr = json["data"] as? [JSONDictionary] ?? []
+          let values = dataArr.map({ ($0["label"] as? String ?? "", $0["address"] as? String ?? "") })
+          if !self.hasModifiedWallets {
+            self.wallets = values
+          }
+          completion(.success(values))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func checkWalletExist(wallet: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard self.wallets.first(where: { $0.1.lowercased() == wallet.lowercased() }) == nil else {
+      completion(.success(true))
+      return
+    }
+    let provider = MoyaProvider<ProfileKYCService>()
+    provider.request(.checkWalletExist(accessToken: user.accessToken, wallet: wallet)) { result in
+      switch result {
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let existed: Bool = json["wallet_existed"] as? Bool ?? false
+          completion(.success(existed))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
   }
 }
 
@@ -63,6 +118,11 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var noWalletsTextLabel: UILabel!
   @IBOutlet weak var heightConstraintWalletsDataView: NSLayoutConstraint!
+  @IBOutlet weak var addWalletContainerView: UIView!
+  @IBOutlet weak var heightConstraintForAddWalletView: NSLayoutConstraint!
+  @IBOutlet weak var addWalletButton: UIButton!
+  @IBOutlet weak var walletLabelTextField: UITextField!
+  @IBOutlet weak var walletAddressTextField: UITextField!
 
   @IBOutlet weak var nextButton: UIButton!
 
@@ -144,6 +204,13 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.getUserWallets { _ in
+      self.updateWalletsData()
+    }
+  }
+
   fileprivate func setupUI() {
     self.setupDataContent()
     self.setupWalletsDataView()
@@ -166,6 +233,11 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   fileprivate func setupWalletsDataView() {
+    self.addWalletButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: 4.0
+    )
     self.noWalletsTextLabel.text = "You haven't added any wallets yet.".toBeLocalised()
 
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
@@ -221,8 +293,49 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.fakeTextField.becomeFirstResponder()
   }
 
+  @IBAction func qrcodeButtonPressed(_ sender: Any) {
+    let qrcodeReader = QRCodeReaderViewController()
+    qrcodeReader.delegate = self
+    self.present(qrcodeReader, animated: true, completion: nil)
+  }
+
   @IBAction func addWalletButtonPressed(_ sender: Any) {
-    //TODO: Open add wallet view
+    guard let label = self.walletLabelTextField.text, !label.isEmpty else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid input".toBeLocalised(),
+        message: "Please enter a valid wallet label".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    guard let address = self.walletAddressTextField.text, Address(string: address) != nil else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid input".toBeLocalised(),
+        message: "Please enter a valid address".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    self.displayLoading(text: "Checking...", animated: true)
+    self.viewModel.checkWalletExist(wallet: address) { [weak self] result in
+      guard let `self` = self else { return }
+      self.hideLoading()
+      switch result {
+      case .success(let ok):
+        if !ok {
+          self.viewModel.addAddress(address, label: label)
+          self.updateWalletsData()
+        } else {
+          self.showWarningTopBannerMessage(
+            with: "Address existed".toBeLocalised(),
+            message: "Your address has already added.".toBeLocalised(),
+            time: 1.5
+          )
+        }
+      case .failure(let error):
+        self.displayError(error: error)
+      }
+    }
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
@@ -281,7 +394,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       gender: self.viewModel.gender,
       dob: self.viewModel.dob,
       nationality: nationality,
-      country: country
+      country: country,
+      wallets: self.viewModel.wallets
     )
     self.delegate?.kycPersonalInfoViewController(self, run: nextEvent)
   }
@@ -308,14 +422,22 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   fileprivate func updateWalletsData() {
-    if self.viewModel.addresses.isEmpty {
+    if self.viewModel.wallets.isEmpty {
       self.noWalletsTextLabel.isHidden = false
       self.walletsTableView.isHidden = true
-      self.heightConstraintWalletsDataView.constant = 60.0
+      self.heightConstraintWalletsDataView.constant = 260.0
+      self.heightConstraintForAddWalletView.constant = 200.0
+      self.addWalletContainerView.isHidden = false
     } else {
-      self.heightConstraintWalletsDataView.constant = CGFloat(self.viewModel.addresses.count) * kWalletCellRowHeight
+      // Only allow add up to 3 wallets
+      let hasAddWallet: Bool = self.viewModel.wallets.count < 3
+      let addWalletHeight: CGFloat = hasAddWallet ? 200.0 : 0.0
+      self.heightConstraintWalletsDataView.constant = CGFloat(self.viewModel.wallets.count) * kWalletCellRowHeight + addWalletHeight
+      self.addWalletContainerView.isHidden = !hasAddWallet
+      self.heightConstraintForAddWalletView.constant = addWalletHeight
       self.noWalletsTextLabel.isHidden = true
       self.walletsTableView.isHidden = false
+      self.walletsTableView.reloadData()
     }
   }
 }
@@ -332,7 +454,7 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.addresses.count
+    return self.viewModel.wallets.count
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -345,7 +467,7 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let deleteAction = UITableViewRowAction(style: .destructive, title: "Remove") { (_, _) in
-      self.removeAddress(at: indexPath.row)
+      self.removeAddress(at: indexPath)
     }
     deleteAction.backgroundColor = UIColor.Kyber.fire
     return [deleteAction]
@@ -354,9 +476,9 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
     cell.textLabel?.isUserInteractionEnabled = false
-    let addresses = self.viewModel.addresses
+    let wallets = self.viewModel.wallets
     cell.tintColor = UIColor.Kyber.shamrock
-    let address = addresses[indexPath.row]
+    let wallet = wallets[indexPath.row]
     cell.textLabel?.attributedText = {
       let attributedString = NSMutableAttributedString()
       let nameAttributes: [NSAttributedStringKey: Any] = [
@@ -369,8 +491,8 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
         NSAttributedStringKey.kern: 1.0,
         ]
-      attributedString.append(NSAttributedString(string: "    Untitled", attributes: nameAttributes))
-      let addressString: String = "         \(address.prefix(8))...\(address.suffix(6))"
+      attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
+      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
       attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
       return attributedString
     }()
@@ -381,8 +503,10 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
     return cell
   }
 
-  fileprivate func removeAddress(at row: Int) {
-    //TODO: Remove addresses
+  fileprivate func removeAddress(at indexPath: IndexPath) {
+    self.viewModel.removeAddress(at: indexPath.row)
+    self.walletsTableView.deleteRows(at: [indexPath], with: .automatic)
+    self.updateWalletsData()
   }
 }
 
@@ -427,5 +551,17 @@ extension KYCPersonalInfoViewController: UIPickerViewDataSource {
       string: string,
       attributes: attributes
     )
+  }
+}
+
+extension KYCPersonalInfoViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      self.walletAddressTextField.text = result
+    }
   }
 }

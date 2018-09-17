@@ -86,7 +86,10 @@ class KNProfileHomeCoordinator: Coordinator {
   }
 
   fileprivate func timerLoadUserInfo() {
-    guard let user = IEOUserStorage.shared.user else { return }
+    guard let user = IEOUserStorage.shared.user else {
+      self.loadUserInfoTimer?.invalidate()
+      return
+    }
     self.getUserInfo(
       type: user.tokenType,
       accessToken: user.accessToken,
@@ -99,9 +102,13 @@ class KNProfileHomeCoordinator: Coordinator {
 
     self.loadUserInfoTimer?.invalidate()
     self.loadUserInfoTimer = Timer.scheduledTimer(
-      withTimeInterval: 60.0,
+      withTimeInterval: isDebug ? 10.0 : 60.0,
       repeats: true,
       block: { [weak self] _ in
+        guard let user = IEOUserStorage.shared.user else {
+          self?.loadUserInfoTimer?.invalidate()
+          return
+        }
         self?.getUserInfo(
           type: user.tokenType,
           accessToken: user.accessToken,
@@ -129,6 +136,7 @@ extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
     IEOUserStorage.shared.signedOut()
     IEOUserStorage.shared.delete(objects: IEOUserStorage.shared.objects)
+    self.loadUserInfoTimer?.invalidate()
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
   }
@@ -221,6 +229,7 @@ extension KNProfileHomeCoordinator {
                   }
               }
               )
+              self?.timerLoadUserInfo()
             } catch {
               self?.navigationController.hideLoading()
               self?.navigationController.showWarningTopBannerMessage(

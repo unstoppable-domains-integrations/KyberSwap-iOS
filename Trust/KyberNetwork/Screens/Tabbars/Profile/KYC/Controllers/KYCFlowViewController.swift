@@ -213,7 +213,7 @@ class KYCFlowViewController: KNBaseViewController {
 extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
   func kycPersonalInfoViewController(_ controller: KYCPersonalInfoViewController, run event: KYCPersonalInfoViewEvent) {
     switch event {
-    case .next(let firstName, let lastName, let gender, let dob, let nationality, let country):
+    case .next(let firstName, let lastName, let gender, let dob, let nationality, let country, let wallets):
       self.viewModel.updatePersonalInfo(
         firstName: firstName,
         lastName: lastName,
@@ -231,7 +231,8 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
         gender: gender == "Male" ? true : false,
         dob: dob,
         nationality: nationality,
-        country: country
+        country: country,
+        wallets: wallets
       )
       self.displayLoading()
       provider.request(service) { [weak self] result in
@@ -274,8 +275,8 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
         docHoldingImage: docHoldingImage
       )
       guard let user = IEOUserStorage.shared.user else { return }
-      guard let docImageData = UIImagePNGRepresentation(docImage),
-        let docHoldingImageData = UIImagePNGRepresentation(docHoldingImage) else { return }
+      guard let docImageData = UIImageJPEGRepresentation(docImage, 0.0),
+        let docHoldingImageData = UIImageJPEGRepresentation(docHoldingImage, 0.0) else { return }
       let provider = MoyaProvider<ProfileKYCService>()
       let service = ProfileKYCService.identityInfo(
         accessToken: user.accessToken,

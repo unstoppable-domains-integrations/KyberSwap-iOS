@@ -259,20 +259,11 @@ Increase KyberSwap's trade limits</string>
                                             <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kst-ds-nu1">
-                                            <rect key="frame" x="335" y="18" width="24" height="24"/>
-                                            <state key="normal" image="add_blue_button"/>
-                                            <connections>
-                                                <action selector="addWalletsButtonPressed:" destination="-1" eventType="touchUpInside" id="rWb-Ne-1v6"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstItem="kst-ds-nu1" firstAttribute="centerY" secondItem="QyU-pN-i8D" secondAttribute="centerY" id="4F7-at-Tp2"/>
                                         <constraint firstItem="QyU-pN-i8D" firstAttribute="centerY" secondItem="ksi-AX-JjD" secondAttribute="centerY" id="ODq-mX-mhn"/>
                                         <constraint firstItem="QyU-pN-i8D" firstAttribute="leading" secondItem="ksi-AX-JjD" secondAttribute="leading" constant="25" id="Z9S-ei-JD8"/>
-                                        <constraint firstAttribute="trailing" secondItem="kst-ds-nu1" secondAttribute="trailing" constant="16" id="p98-4X-tgj"/>
                                         <constraint firstAttribute="height" constant="60" id="wLg-pf-sb4"/>
                                     </constraints>
                                 </view>
@@ -285,7 +276,7 @@ Increase KyberSwap's trade limits</string>
                                             <color key="textColor" red="0.60392156860000001" green="0.6705882353" blue="0.70588235290000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JH1-tw-2kU">
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JH1-tw-2kU">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </tableView>
@@ -354,7 +345,6 @@ Increase KyberSwap's trade limits</string>
     </objects>
     <resources>
         <image name="account" width="24" height="24"/>
-        <image name="add_blue_button" width="24" height="24"/>
         <image name="avatar_big_icon" width="135" height="135"/>
     </resources>
 </document>

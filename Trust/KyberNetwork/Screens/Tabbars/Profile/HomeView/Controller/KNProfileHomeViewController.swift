@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Moya
 
 enum KNProfileHomeViewEvent {
   case signIn
@@ -44,6 +45,8 @@ class KNProfileHomeViewController: KNBaseViewController {
   weak var delegate: KNProfileHomeViewControllerDelegate?
   fileprivate var viewModel: KNProfileHomeViewModel
 
+  fileprivate var walletTimer: Timer?
+
   fileprivate let appStyle = KNAppStyleType.current
 
   init(viewModel: KNProfileHomeViewModel) {
@@ -58,6 +61,23 @@ class KNProfileHomeViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.fetchWalletList()
+    self.walletTimer?.invalidate()
+    self.walletTimer = Timer.scheduledTimer(
+      withTimeInterval: isDebug ? 10.0 : 60.0,
+      repeats: true,
+      block: { [weak self] _ in
+      self?.fetchWalletList()
+    })
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.walletTimer?.invalidate()
   }
 
   fileprivate func setupUI() {
@@ -110,37 +130,55 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.updateUIUserDidSignedIn()
   }
 
+  fileprivate func fetchWalletList() {
+    self.viewModel.getUserWallets { _ in
+      self.updateWalletsData()
+    }
+  }
+
   fileprivate func updateUIUserDidSignedIn() {
     guard let user = self.viewModel.currentUser else { return }
+    self.userImageView.setImage(
+      with: "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)",
+      placeholder: UIImage(named: "account"),
+      size: nil
+    )
     self.userNameLabel.text = user.name
     self.userEmailLabel.text = user.contactID
     self.userKYCStatusLabel.text = "\(user.kycStatus)  "
 
-    if user.kycStatus.lowercased() == "approved" {
+    if user.kycStatus.lowercased() == "approve" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
     } else if user.kycStatus.lowercased() == "pending" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.merigold
+    } else if user.kycStatus.lowercased() == "reject" {
+      self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.strawberry
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
 
-    if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" {
+    if user.kycStatus.lowercased() == "approve" || user.kycStatus.lowercased() == "pending" {
       self.heightConstraintUserKYCStatusView.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {
       self.userKYCStatusContainerView.isHidden = false
       self.heightConstraintUserKYCStatusView.constant = 160.0
     }
+    self.updateWalletsData()
+  }
 
-    if user.registeredAddress.isEmpty {
+  fileprivate func updateWalletsData() {
+    if self.viewModel.wallets.isEmpty {
       self.noWalletTextLabel.isHidden = false
       self.walletsTableView.isHidden = true
       self.heightConstraintWalletsTableView.constant = 60.0
     } else {
-      self.heightConstraintWalletsTableView.constant = CGFloat(user.registeredAddress.count) * kWalletCellRowHeight
+      self.heightConstraintWalletsTableView.constant = CGFloat(self.viewModel.wallets.count) * kWalletCellRowHeight
       self.noWalletTextLabel.isHidden = true
       self.walletsTableView.isHidden = false
+      self.walletsTableView.reloadData()
     }
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func signInButtonPressed(_ sender: Any) {
@@ -157,10 +195,6 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBAction func userKYCActionButtonPressed(_ sender: Any) {
     self.delegate?.profileHomeViewController(self, run: .openVerification)
-  }
-
-  @IBAction func addWalletsButtonPressed(_ sender: Any) {
-    self.delegate?.profileHomeViewController(self, run: .addWallet)
   }
 }
 
@@ -189,7 +223,7 @@ extension KNProfileHomeViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.currentUser?.registeredAddress.count ?? 0
+    return self.viewModel.wallets.count
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -199,9 +233,8 @@ extension KNProfileHomeViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
     cell.textLabel?.isUserInteractionEnabled = false
-    guard let addresses = self.viewModel.currentUser?.registeredAddress else { return cell }
     cell.tintColor = UIColor.Kyber.shamrock
-    let address = addresses[indexPath.row]
+    let wallet = self.viewModel.wallets[indexPath.row]
     cell.textLabel?.attributedText = {
       let attributedString = NSMutableAttributedString()
       let nameAttributes: [NSAttributedStringKey: Any] = [
@@ -214,8 +247,8 @@ extension KNProfileHomeViewController: UITableViewDataSource {
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
         NSAttributedStringKey.kern: 1.0,
       ]
-      attributedString.append(NSAttributedString(string: "    Untitled", attributes: nameAttributes))
-      let addressString: String = "         \(address.prefix(8))...\(address.suffix(6))"
+      attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
+      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
       attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
       return attributedString
     }()
