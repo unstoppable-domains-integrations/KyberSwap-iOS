@@ -61,6 +61,10 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet) {
     self.removeWallet(wallet)
   }
+
+  func settingsCoordinatorUserDidSelectAddWallet() {
+    self.addNewWallet()
+  }
 }
 
 // MARK: Balance Tab Coordinator Delegate

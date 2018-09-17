@@ -88,6 +88,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator.navigationController.tabBarItem.tag = 3
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
       self.tabbarController.selectedIndex = 1
+      self.tabbarController.tabBar.tintColor = UIColor.Kyber.merigold
     }
 
     self.addObserveNotificationFromSession()
@@ -138,6 +139,8 @@ extension KNAppCoordinator {
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
 
     self.tabbarController.selectedIndex = 1
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.merigold
+
     self.addObserveNotificationFromSession()
     self.updateLocalData()
   }
