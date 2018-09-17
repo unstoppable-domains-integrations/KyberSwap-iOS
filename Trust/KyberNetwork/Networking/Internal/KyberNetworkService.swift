@@ -240,7 +240,7 @@ extension KyberGOService: TargetType {
 }
 
 enum ProfileKYCService {
-  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, country: String)
+  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, country: String, wallets: [(String, String)])
   case identityInfo(accessToken: String, documentType: String, documentID: String, docImage: Data, docHoldingImage: Data)
   case submitKYC(accessToken: String)
   case userWallets(accessToken: String)
@@ -248,11 +248,11 @@ enum ProfileKYCService {
 
   var apiPath: String {
     switch self {
-    case .personalInfo: return "/kyc_profile/personal_info"
-    case .identityInfo: return "/kyc_profile/identity_info"
-    case .submitKYC: return "/kyc_profile/submit_kyc"
-    case .userWallets: return "/user_wallets"
-    case .checkWalletExist: return "/check_wallet_exist"
+    case .personalInfo: return KNSecret.personalInfoEndpoint
+    case .identityInfo: return KNSecret.identityInfoEndpoint
+    case .submitKYC: return KNSecret.submitKYCEndpoint
+    case .userWallets: return KNSecret.userWalletsEndpoint
+    case .checkWalletExist: return KNSecret.checkWalletsExistEndpoint
     }
   }
 }
@@ -267,7 +267,19 @@ extension ProfileKYCService: TargetType {
   var method: Moya.Method { return .post }
   var task: Task {
     switch self {
-    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let country):
+    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let country, let wallets):
+      let arrJSON: String = {
+        if wallets.isEmpty { return "[]" }
+        var string = "["
+        for id in 0..<wallets.count {
+          string += "{\"label\": \"\(wallets[id].0)\", \"address\":\"\(wallets[id].1)\"}"
+          if id < wallets.count - 1 {
+            string += ","
+          }
+        }
+        string += "]"
+        return string
+      }()
       let json: JSONDictionary = [
         "access_token": accessToken,
         "first_name": firstName,
@@ -276,6 +288,7 @@ extension ProfileKYCService: TargetType {
         "dob": dob,
         "nationality": nationality,
         "country": country,
+        "wallets": arrJSON,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
@@ -284,8 +297,8 @@ extension ProfileKYCService: TargetType {
         "access_token": accessToken,
         "document_type": documentType,
         "document_id": documentID,
-        "photo_identity_doc": docImage.base64EncodedString(),
-        "photo_selfie": docHoldingImage.base64EncodedString(),
+        "photo_identity_doc": "data:image/jpeg;base64,\(docImage.base64EncodedString())",
+        "photo_selfie": "data:image/jpeg;base64,\(docHoldingImage.base64EncodedString())",
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

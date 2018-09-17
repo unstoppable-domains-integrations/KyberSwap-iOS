@@ -30,10 +30,7 @@ class KNAppTracker {
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static func internalTrackerEndpoint() -> String {
-//    if let value = userDefaults.object(forKey: kInternalTrackerEndpointKey) as? String {
-//      return value
-//    }
-    return KNEnvironment.default == .ropsten ? "https://dev-tracker.knstats.com" : "https://tracker.kyber.network"
+    return KNEnvironment.default == .ropsten ? KNSecret.debugTrackerURL : KNSecret.trackerURL
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
@@ -43,9 +40,6 @@ class KNAppTracker {
 
   // MARK: Internal cache endpoint key
   static func internalCacheEndpoint() -> String {
-//    if let value = userDefaults.object(forKey: kInternalCacheEndpointKey) as? String {
-//      return value
-//    }
     return "https://production-cache.kyber.network"
   }
 
@@ -152,7 +146,7 @@ class KNAppTracker {
 
   // MARK: Profile base string
   static func getKyberProfileBaseString() -> String {
-    return KNEnvironment.default == .ropsten ? "https://dev-userdashboard.knstats.com" : "https://kyber.network"//"https://kyber.mangcut.vn"
+    return KNEnvironment.default == .ropsten ? KNSecret.debugProfileURL : KNSecret.profileURL
   }
 
   // MARK: App style

@@ -15,6 +15,7 @@ class IEOUser: Object {
   @objc dynamic var accessToken: String = ""
   @objc dynamic var refreshToken: String = ""
   @objc dynamic var isSignedIn: Bool = true
+  @objc dynamic var avatarURL: String = ""
   var registeredAddress: List<String> = List<String>()
 
   convenience init(dict: JSONDictionary) {
@@ -25,6 +26,7 @@ class IEOUser: Object {
     self.contactID = dict["contact_id"] as? String ?? ""
     self.kycStatus = dict["kyc_status"] as? String ?? ""
     self.registeredAddress = List<String>()
+    self.avatarURL = dict["avatar_url"] as? String ?? ""
     if let arr = dict["active_wallets"] as? [String] {
       arr.forEach { self.registeredAddress.append($0.lowercased()) }
     }
