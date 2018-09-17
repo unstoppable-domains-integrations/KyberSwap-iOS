@@ -7,6 +7,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidUpdateWalletObjects()
+  func settingsCoordinatorUserDidSelectAddWallet()
 }
 
 class KNSettingsCoordinator: Coordinator {
@@ -17,10 +18,8 @@ class KNSettingsCoordinator: Coordinator {
 
   weak var delegate: KNSettingsCoordinatorDelegate?
 
-  lazy var rootViewController: KNSettingsViewController = {
-    let controller = KNSettingsViewController(
-      address: self.session.wallet.address.description
-    )
+  lazy var rootViewController: KNSettingsTabViewController = {
+    let controller = KNSettingsTabViewController()
     controller.loadViewIfNeeded()
     controller.delegate = self
     return controller
@@ -32,6 +31,13 @@ class KNSettingsCoordinator: Coordinator {
       session: self.session,
       delegate: self
     )
+  }()
+
+  lazy var contactVC: KNListContactViewController = {
+    let controller = KNListContactViewController()
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    return controller
   }()
 
   lazy var passcodeCoordinator: KNPasscodeCoordinator = {
@@ -48,7 +54,7 @@ class KNSettingsCoordinator: Coordinator {
     session: KNSession
     ) {
     self.navigationController = navigationController
-    self.navigationController.applyStyle()
+    self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
 
@@ -65,26 +71,41 @@ class KNSettingsCoordinator: Coordinator {
       self.navigationController.popToRootViewController(animated: true)
     }
     self.listWalletsCoordinator.updateNewSession(self.session)
-    self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)
+//    self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)
   }
 }
 
-extension KNSettingsCoordinator: KNSettingsViewControllerDelegate {
-  func settingsViewController(_ controller: KNSettingsViewController, run event: KNSettingsViewEvent) {
+extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
+  func settingsTabViewController(_ controller: KNSettingsTabViewController, run event: KNSettingsTabViewEvent) {
     switch event {
-    case .exit:
-      self.settingsViewControllerDidClickExit()
-    case .clickWallets:
+    case .manageWallet:
       self.settingsViewControllerWalletsButtonPressed()
-    case .passcodeDidChange(let isOn):
-      self.settingsViewControllerPasscodeDidChange(isOn)
-    case .backUp:
-      self.settingsViewControllerBackUpButtonPressed()
-    case .selectEnvironment:
-      self.settingsViewControllerOpenDebug()
-    case .close:
-      self.navigationController.dismiss(animated: true, completion: nil)
+    case .contact:
+      self.navigationController.pushViewController(self.contactVC, animated: true)
+    case .about:
+      self.openCommunityURL("https://kyber.network/about/company")
+    case .telegram:
+      self.openCommunityURL("https://t.me/kybernetwork")
+    case .github:
+      self.openCommunityURL("https://github.com/KyberNetwork")
+    case .twitter:
+      self.openCommunityURL("https://twitter.com/KyberNetwork")
+    case .facebook:
+      self.openCommunityURL("https://www.facebook.com/kybernetwork")
+    case .medium:
+      self.openCommunityURL("https://blog.kyber.network")
+    case .reddit:
+      self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
+    case .linkedIn:
+      self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
+    case .google:
+      self.openCommunityURL("https://kyber.network")
+    default: break
     }
+  }
+
+  fileprivate func openCommunityURL(_ url: String) {
+    self.navigationController.openSafari(with: url)
   }
 
   func settingsViewControllerDidClickExit() {
@@ -191,12 +212,27 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
   }
 }
 
+extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
+  func listContactViewController(_ controller: KNListContactViewController, run event: KNListContactViewEvent) {
+    switch event {
+    case .back:
+      self.navigationController.popViewController(animated: true)
+    case .send(let address):
+      //TODO: Send address
+      print("Open send address: \(address)")
+    case .select(let contact):
+      //TODO: Send address
+      print("Select contact: \(contact.name)")
+    }
+  }
+}
+
 extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCreatePasscode() {
   }
 
   func passcodeCoordinatorDidCancel() {
-    self.rootViewController.userDidCancelCreatePasscode()
+//    self.rootViewController.userDidCancelCreatePasscode()
   }
 }
 
@@ -208,7 +244,6 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.listWalletsCoordinator.stop()
     if wallet == self.session.wallet { return }
-    self.rootViewController.userDidSelectNewWallet(with: wallet.address.description)
     self.delegate?.settingsCoordinatorUserDidSelectNewWallet(wallet)
   }
 
@@ -218,5 +253,9 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
 
   func listWalletsCoordinatorDidUpdateWalletObjects() {
     self.delegate?.settingsCoordinatorUserDidUpdateWalletObjects()
+  }
+
+  func listWalletsCoordinatorDidSelectAddWallet() {
+    self.delegate?.settingsCoordinatorUserDidSelectAddWallet()
   }
 }

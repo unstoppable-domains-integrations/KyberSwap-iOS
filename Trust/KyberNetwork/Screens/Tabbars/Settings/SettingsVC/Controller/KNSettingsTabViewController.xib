@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LAf-Nx-GiM">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BS7-Ut-PSh">
+                            <rect key="frame" x="150" y="46" width="76" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="BS7-Ut-PSh" secondAttribute="bottom" constant="16" id="3om-Qa-TuQ"/>
+                        <constraint firstAttribute="height" constant="84" id="XGd-Zo-BPF"/>
+                        <constraint firstItem="BS7-Ut-PSh" firstAttribute="centerX" secondItem="LAf-Nx-GiM" secondAttribute="centerX" id="teP-nv-fM3"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVZ-jU-hlZ">
+                    <rect key="frame" x="24" y="108" width="108" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="UT8-Ef-DBa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Manage Wallet">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="manageWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="JSQ-er-z2P"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDo-Po-iWz">
+                    <rect key="frame" x="24" y="144" width="57" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="uxN-7F-6cv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Contact">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="contactButtonPressed:" destination="-1" eventType="touchUpInside" id="y2z-qg-4o2"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N5S-5z-7Ii">
+                    <rect key="frame" x="24" y="180" width="58" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="JTo-XI-MHq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Support">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="supportButtonPressed:" destination="-1" eventType="touchUpInside" id="TpW-cG-Db5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9Z-ZK-Ucl">
+                    <rect key="frame" x="24" y="216" width="127" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="eCr-lg-9wf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Change Passcode">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="changePasscodeButtonPressed:" destination="-1" eventType="touchUpInside" id="J3Y-yX-hQu"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B8K-Uz-405">
+                    <rect key="frame" x="24" y="252" width="92" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="hOY-AW-sCh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Rate my App">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="rateMyAppButtonPressed:" destination="-1" eventType="touchUpInside" id="Yxw-xy-EmN"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wu-3X-xy0">
+                    <rect key="frame" x="24" y="288" width="44" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="5bn-5l-4ED"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="About">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="aboutButtonPressed:" destination="-1" eventType="touchUpInside" id="mha-5P-Lnr"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSk-u8-Y8q">
+                    <rect key="frame" x="24" y="324" width="85" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="5Yc-3G-Y8k"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Community">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pd0-VK-ek2">
+                    <rect key="frame" x="24" y="364" width="32" height="33"/>
+                    <state key="normal" image="telegram"/>
+                    <connections>
+                        <action selector="telegramButtonPressed:" destination="-1" eventType="touchUpInside" id="p4f-5L-GGt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-Nk-EbV">
+                    <rect key="frame" x="64" y="364.5" width="33" height="32"/>
+                    <state key="normal" image="github"/>
+                    <connections>
+                        <action selector="githubButtonPressed:" destination="-1" eventType="touchUpInside" id="9gv-8L-EJL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdX-Yv-Ujd">
+                    <rect key="frame" x="105" y="364" width="33" height="33"/>
+                    <state key="normal" image="twitter"/>
+                    <connections>
+                        <action selector="twitterButtonPressed:" destination="-1" eventType="touchUpInside" id="UVE-ys-1R6"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSF-Hs-lsq">
+                    <rect key="frame" x="146" y="364" width="33" height="33"/>
+                    <state key="normal" image="facebook"/>
+                    <connections>
+                        <action selector="facebookButtonPressed:" destination="-1" eventType="touchUpInside" id="WRG-lA-KWI"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlK-9e-kdZ">
+                    <rect key="frame" x="187" y="364" width="32" height="33"/>
+                    <state key="normal" image="medium"/>
+                    <connections>
+                        <action selector="mediumButtonPressed:" destination="-1" eventType="touchUpInside" id="Ksb-1Y-6lt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPD-eE-njQ">
+                    <rect key="frame" x="227" y="364" width="33" height="33"/>
+                    <state key="normal" image="reddit"/>
+                    <connections>
+                        <action selector="redditButtonPressed:" destination="-1" eventType="touchUpInside" id="kXc-54-myd"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYu-os-Pb3">
+                    <rect key="frame" x="268" y="364" width="33" height="33"/>
+                    <state key="normal" image="linkedin"/>
+                    <connections>
+                        <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dmw-1V-Iya">
+                    <rect key="frame" x="309" y="364.5" width="32" height="32"/>
+                    <state key="normal" image="google"/>
+                    <connections>
+                        <action selector="googleButtonPressed:" destination="-1" eventType="touchUpInside" id="p80-hm-9jZ"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
+                    <rect key="frame" x="24" y="405" width="131" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="Q4W-8X-DHG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Share with friends">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="shareWithFriendButtonPressed:" destination="-1" eventType="touchUpInside" id="x8f-72-BNt"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tdX-Yv-Ujd" firstAttribute="centerY" secondItem="P8S-Nk-EbV" secondAttribute="centerY" id="2Yy-dT-BJs"/>
+                <constraint firstItem="0Wu-3X-xy0" firstAttribute="top" secondItem="B8K-Uz-405" secondAttribute="bottom" constant="4" id="7Md-9n-06H"/>
+                <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="leading" secondItem="N5S-5z-7Ii" secondAttribute="leading" id="8bi-DU-dg9"/>
+                <constraint firstItem="P8S-Nk-EbV" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="8ns-Ya-Pg8"/>
+                <constraint firstItem="N5S-5z-7Ii" firstAttribute="top" secondItem="XDo-Po-iWz" secondAttribute="bottom" constant="4" id="APY-Ut-By2"/>
+                <constraint firstItem="tdX-Yv-Ujd" firstAttribute="leading" secondItem="P8S-Nk-EbV" secondAttribute="trailing" constant="8" id="BTn-Ua-GBZ"/>
+                <constraint firstItem="N5S-5z-7Ii" firstAttribute="leading" secondItem="XDo-Po-iWz" secondAttribute="leading" id="CYv-Hc-6Z8"/>
+                <constraint firstAttribute="trailing" secondItem="LAf-Nx-GiM" secondAttribute="trailing" id="ECK-0Y-Hux"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QPD-eE-njQ" secondAttribute="trailing" constant="8" id="GdZ-Ic-y9t"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="OVZ-jU-hlZ" secondAttribute="leading" id="JrF-tz-6Wh"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="KAx-Gb-p8P"/>
+                <constraint firstItem="P8S-Nk-EbV" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="8" id="MuI-d2-ETX"/>
+                <constraint firstItem="sSk-u8-Y8q" firstAttribute="top" secondItem="0Wu-3X-xy0" secondAttribute="bottom" constant="4" id="OEN-KH-Gaf"/>
+                <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
+                <constraint firstItem="Dmw-1V-Iya" firstAttribute="centerY" secondItem="cYu-os-Pb3" secondAttribute="centerY" id="Q7g-0u-JeB"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="4" id="Trp-EE-9QD"/>
+                <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
+                <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="B8K-Uz-405" secondAttribute="leading" id="WAN-Eg-Wu7"/>
+                <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
+                <constraint firstItem="Dmw-1V-Iya" firstAttribute="leading" secondItem="cYu-os-Pb3" secondAttribute="trailing" constant="8" id="YR0-Ek-i3Q"/>
+                <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
+                <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
+                <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
+                <constraint firstItem="QPD-eE-njQ" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="8" id="czA-ja-bKb"/>
+                <constraint firstItem="B8K-Uz-405" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="fOk-dQ-v46"/>
+                <constraint firstItem="dSF-Hs-lsq" firstAttribute="leading" secondItem="tdX-Yv-Ujd" secondAttribute="trailing" constant="8" id="jMz-at-VSR"/>
+                <constraint firstItem="Pd0-VK-ek2" firstAttribute="leading" secondItem="sSk-u8-Y8q" secondAttribute="leading" id="jPe-po-0Zf"/>
+                <constraint firstItem="B8K-Uz-405" firstAttribute="top" secondItem="c9Z-ZK-Ucl" secondAttribute="bottom" constant="4" id="k0t-mN-TSl"/>
+                <constraint firstItem="OVZ-jU-hlZ" firstAttribute="top" secondItem="LAf-Nx-GiM" secondAttribute="bottom" constant="24" id="lbc-Wh-kf2"/>
+                <constraint firstItem="QlK-9e-kdZ" firstAttribute="centerY" secondItem="dSF-Hs-lsq" secondAttribute="centerY" id="m0j-Lt-miy"/>
+                <constraint firstItem="dSF-Hs-lsq" firstAttribute="centerY" secondItem="tdX-Yv-Ujd" secondAttribute="centerY" id="ojW-qs-WkJ"/>
+                <constraint firstItem="LAf-Nx-GiM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="or9-IV-hJj"/>
+                <constraint firstItem="QlK-9e-kdZ" firstAttribute="leading" secondItem="dSF-Hs-lsq" secondAttribute="trailing" constant="8" id="vyO-U7-A4N"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="leading" id="yiS-GU-7WV"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="facebook" width="33" height="33"/>
+        <image name="github" width="33" height="32"/>
+        <image name="google" width="32" height="32"/>
+        <image name="linkedin" width="33" height="33"/>
+        <image name="medium" width="32" height="33"/>
+        <image name="reddit" width="33" height="33"/>
+        <image name="telegram" width="32" height="33"/>
+        <image name="twitter" width="33" height="33"/>
+    </resources>
+</document>
