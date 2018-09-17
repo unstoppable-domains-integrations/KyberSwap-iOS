@@ -70,4 +70,10 @@ class KNEditWalletViewController: KNBaseViewController {
     let wallet = self.viewModel.wallet.copy(withNewName: self.walletNameTextField.text ?? "")
     self.delegate?.editWalletViewController(self, run: .update(newWallet: wallet))
   }
+
+  @IBAction func edgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+    if sender.state == .ended {
+      self.delegate?.editWalletViewController(self, run: .back)
+    }
+  }
 }

@@ -119,6 +119,7 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="7aY-6e-4Tj" firstAttribute="top" secondItem="eV5-M1-8S1" secondAttribute="bottom" constant="24" id="5FQ-Rv-ys0"/>
                 <constraint firstAttribute="trailing" secondItem="eV5-M1-8S1" secondAttribute="trailing" id="8OB-3Y-6VI"/>
@@ -140,8 +141,17 @@
                 <constraint firstItem="DaD-mS-84w" firstAttribute="top" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="32" id="yQP-n0-Gdh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="V2O-Cy-8E0" appends="YES" id="g7y-tP-XF4"/>
+            </connections>
             <point key="canvasLocation" x="47.5" y="53.5"/>
         </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="V2O-Cy-8E0">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="edgePanGestureAction:" destination="-1" id="g7X-tw-IUP"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
         <image name="back_white_icon" width="38" height="19"/>

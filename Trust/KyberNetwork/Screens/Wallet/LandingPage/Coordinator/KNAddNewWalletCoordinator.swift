@@ -66,7 +66,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     controller.addAction(UIAlertAction(title: "Import a wallet", style: .default, handler: { _ in
       self.importAWallet()
     }))
-    controller.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
+    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
       self.navigationController.dismiss(animated: false, completion: nil)
     }))
     return controller
