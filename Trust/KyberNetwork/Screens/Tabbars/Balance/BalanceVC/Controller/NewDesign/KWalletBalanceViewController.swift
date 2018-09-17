@@ -218,6 +218,7 @@ extension KWalletBalanceViewController {
   func coordinatorUpdateWalletObjects() {
     guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: viewModel.wallet.address) else { return }
     self.viewModel.updateWalletObject(currentWallet)
+    self.updateWalletInfoUI()
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: currentWallet

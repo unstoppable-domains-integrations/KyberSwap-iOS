@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="deleteButton" destination="GHh-yr-vlk" id="KYN-gn-PSC"/>
+                <outlet property="nameWalletTextLabel" destination="7aY-6e-4Tj" id="Gsg-GL-cbh"/>
+                <outlet property="saveButton" destination="GmJ-Ck-u1A" id="Xil-22-qYw"/>
+                <outlet property="showBackupPhraseButton" destination="DaD-mS-84w" id="a3F-gA-hLK"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletNameTextField" destination="cyD-4H-2LB" id="Dab-cX-aOH"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-M1-8S1">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgD-62-9w1">
+                            <rect key="frame" x="118.5" y="46" width="138" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2hM-eU-a7S">
+                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                            <state key="normal" image="back_white_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="Ast-gk-q5C"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="2hM-eU-a7S" firstAttribute="centerY" secondItem="HgD-62-9w1" secondAttribute="centerY" id="7Ta-9c-nOR"/>
+                        <constraint firstAttribute="height" constant="84" id="jAV-Oc-DaV"/>
+                        <constraint firstAttribute="bottom" secondItem="HgD-62-9w1" secondAttribute="bottom" constant="16" id="lMX-xd-d1w"/>
+                        <constraint firstItem="HgD-62-9w1" firstAttribute="centerX" secondItem="eV5-M1-8S1" secondAttribute="centerX" id="msA-cJ-oAs"/>
+                        <constraint firstItem="2hM-eU-a7S" firstAttribute="leading" secondItem="eV5-M1-8S1" secondAttribute="leading" constant="16" id="wdU-dP-8yd"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of your wallet (optional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aY-6e-4Tj">
+                    <rect key="frame" x="24" y="108" width="215" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Satoshi Nakamoto" placeholder="Give your wallet a name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cyD-4H-2LB">
+                    <rect key="frame" x="24" y="141.5" width="327" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="7CR-8x-jo5"/>
+                    </constraints>
+                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DaD-mS-84w">
+                    <rect key="frame" x="24" y="217.5" width="173" height="24"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Show Backup Phrase" image="backup_phrase_icon">
+                        <color key="titleColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="showBackUpPhraseButtonPressed:" destination="-1" eventType="touchUpInside" id="iFf-zH-p6K"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHh-yr-vlk">
+                    <rect key="frame" x="24" y="265.5" width="118" height="24"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Delete Wallet" image="delete_icon">
+                        <color key="titleColor" red="0.97647058819999999" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="msk-gh-nNN"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="69G-Je-nPq">
+                    <rect key="frame" x="24" y="176.5" width="327" height="1"/>
+                    <color key="backgroundColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="sg2-G4-WNA"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmJ-Ck-u1A">
+                    <rect key="frame" x="24" y="590" width="327" height="45"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="E48-7K-jcJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Save">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="dUG-EI-xV4"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="7aY-6e-4Tj" firstAttribute="top" secondItem="eV5-M1-8S1" secondAttribute="bottom" constant="24" id="5FQ-Rv-ys0"/>
+                <constraint firstAttribute="trailing" secondItem="eV5-M1-8S1" secondAttribute="trailing" id="8OB-3Y-6VI"/>
+                <constraint firstItem="cyD-4H-2LB" firstAttribute="top" secondItem="7aY-6e-4Tj" secondAttribute="bottom" constant="16" id="BbU-Sz-br4"/>
+                <constraint firstItem="69G-Je-nPq" firstAttribute="bottom" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="-8" id="C0z-Gz-OJe"/>
+                <constraint firstItem="GHh-yr-vlk" firstAttribute="leading" secondItem="DaD-mS-84w" secondAttribute="leading" id="DCW-LJ-YzZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="GmJ-Ck-u1A" secondAttribute="trailing" constant="24" id="GIb-eo-w3x"/>
+                <constraint firstItem="GHh-yr-vlk" firstAttribute="top" secondItem="DaD-mS-84w" secondAttribute="bottom" constant="24" id="Jls-ru-1Fb"/>
+                <constraint firstItem="eV5-M1-8S1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KmJ-Xg-Z9p"/>
+                <constraint firstItem="cyD-4H-2LB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="MVf-bN-aKJ"/>
+                <constraint firstItem="DaD-mS-84w" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="Q02-J8-Vzu"/>
+                <constraint firstItem="7aY-6e-4Tj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="RQh-Nj-33b"/>
+                <constraint firstItem="GmJ-Ck-u1A" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="a38-Os-0V7"/>
+                <constraint firstItem="69G-Je-nPq" firstAttribute="trailing" secondItem="cyD-4H-2LB" secondAttribute="trailing" id="cTB-nD-oB3"/>
+                <constraint firstItem="eV5-M1-8S1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dIa-nG-kD4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cyD-4H-2LB" secondAttribute="trailing" constant="24" id="jUT-IK-O0H"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="GmJ-Ck-u1A" secondAttribute="bottom" constant="32" id="k3E-wn-Yny"/>
+                <constraint firstItem="69G-Je-nPq" firstAttribute="leading" secondItem="cyD-4H-2LB" secondAttribute="leading" id="xnE-IJ-Uqk"/>
+                <constraint firstItem="DaD-mS-84w" firstAttribute="top" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="32" id="yQP-n0-Gdh"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="47.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="38" height="19"/>
+        <image name="backup_phrase_icon" width="22" height="24"/>
+        <image name="delete_icon" width="21" height="24"/>
+    </resources>
+</document>

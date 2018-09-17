@@ -6,6 +6,7 @@ protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidClickBack()
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject)
   func listWalletsCoordinatorDidUpdateWalletObjects()
   func listWalletsCoordinatorDidSelectAddWallet()
 }
@@ -17,6 +18,8 @@ class KNListWalletsCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
 
   weak var delegate: KNListWalletsCoordinatorDelegate?
+
+  fileprivate var selectedWallet: KNWalletObject!
 
   lazy var rootViewController: KNListWalletsViewController = {
     let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
@@ -74,18 +77,14 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       }
       self.listWalletsViewControllerDidSelectWallet(wal)
     case .remove(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
-        return
-      }
-      self.listWalletsViewControllerDidSelectRemoveWallet(wal)
+      self.showDeleteWallet(wallet)
     case .edit(let wallet):
-      let viewModel = KNEnterWalletNameViewModel(walletObject: wallet, isEditing: true)
-      let controller = KNEnterWalletNameViewController(viewModel: viewModel)
+      self.selectedWallet = wallet
+      let viewModel = KNEditWalletViewModel(wallet: wallet)
+      let controller = KNEditWalletViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
-      controller.modalTransitionStyle = .crossDissolve
-      controller.modalPresentationStyle = .overCurrentContext
       controller.delegate = self
-      self.navigationController.present(controller, animated: true, completion: nil)
+      self.navigationController.pushViewController(controller, animated: true)
     case .addWallet:
       self.delegate?.listWalletsCoordinatorDidSelectAddWallet()
     }
@@ -103,9 +102,53 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
     let alert = UIAlertController(title: "", message: "Do you want to remove this wallet?", preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alert.addAction(UIAlertAction(title: "Remove", style: .default, handler: { [unowned self] _ in
-      self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
+      if self.navigationController.topViewController is KNEditWalletViewController {
+        self.navigationController.popViewController(animated: true, completion: {
+          self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
+        })
+      } else {
+        self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
+      }
     }))
     self.navigationController.topViewController?.present(alert, animated: true, completion: nil)
+  }
+}
+
+extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
+  func editWalletViewController(_ controller: KNEditWalletViewController, run event: KNEditWalletViewEvent) {
+    switch event {
+    case .back: self.navigationController.popViewController(animated: true)
+    case .update(let newWallet):
+      self.navigationController.popViewController(animated: true) {
+        self.shouldUpdateWallet(newWallet)
+      }
+    case .backup(let wallet):
+      self.showBackUpWallet(wallet)
+    case .delete(let wallet):
+      self.showDeleteWallet(wallet)
+    }
+  }
+
+  fileprivate func shouldUpdateWallet(_ walletObject: KNWalletObject) {
+    KNWalletStorage.shared.update(wallets: [walletObject])
+    let wallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = wallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
+    self.rootViewController.updateView(
+      with: KNWalletStorage.shared.wallets,
+      currentWallet: curWallet
+    )
+    self.delegate?.listWalletsCoordinatorDidUpdateWalletObjects()
+  }
+
+  fileprivate func showBackUpWallet(_ wallet: KNWalletObject) {
+    self.delegate?.listWalletsCoordinatorShouldBackUpWallet(wallet)
+  }
+
+  fileprivate func showDeleteWallet(_ wallet: KNWalletObject) {
+    guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      return
+    }
+    self.listWalletsViewControllerDidSelectRemoveWallet(wal)
   }
 }
 

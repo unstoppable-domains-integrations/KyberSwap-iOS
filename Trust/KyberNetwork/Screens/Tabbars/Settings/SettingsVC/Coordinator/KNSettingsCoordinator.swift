@@ -258,4 +258,8 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   func listWalletsCoordinatorDidSelectAddWallet() {
     self.delegate?.settingsCoordinatorUserDidSelectAddWallet()
   }
+
+  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject) {
+    self.settingsViewControllerBackUpButtonPressed()
+  }
 }
