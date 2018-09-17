@@ -34,6 +34,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
 
+  @IBOutlet weak var hasPendingTxView: UIView!
   @IBOutlet weak var balanceTextLabel: UILabel! // "\(symbol) balance"
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var toTokenButton: UIButton!
@@ -171,6 +172,8 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupHamburgerMenu() {
+    self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
+    self.hasPendingTxView.isHidden = true
     self.hamburgerMenu.hideMenu(animated: false)
   }
 
@@ -547,6 +550,7 @@ extension KSwapViewController {
 
   func coordinatorDidUpdatePendingTransactions(_ transactions: [KNTransaction]) {
     self.hamburgerMenu.update(transactions: transactions)
+    self.hasPendingTxView.isHidden = transactions.isEmpty
   }
 }
 

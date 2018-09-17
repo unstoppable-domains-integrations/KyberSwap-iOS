@@ -28,6 +28,7 @@
                 <outlet property="currencyButton" destination="61z-Hi-1ah" id="sZV-uz-9GS"/>
                 <outlet property="emptyBalanceTextLabel" destination="6g5-Hf-gED" id="3Gk-qg-ib1"/>
                 <outlet property="emptyStateView" destination="xZA-fD-Wsm" id="eVR-RX-Cji"/>
+                <outlet property="hasPendingTxView" destination="WJc-fq-iX6" id="YJu-c2-U8H"/>
                 <outlet property="headerContainerView" destination="iQw-Mq-Z8D" id="D9T-OX-seg"/>
                 <outlet property="kyberListButton" destination="IPs-kS-P1d" id="0Gi-gV-cng"/>
                 <outlet property="otherButton" destination="bfz-k4-GjU" id="pTY-mO-ycb"/>
@@ -91,11 +92,20 @@
                             <rect key="frame" x="20" y="44" width="195" height="94"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WJc-fq-iX6">
+                            <rect key="frame" x="353" y="61.5" width="10" height="10"/>
+                            <color key="backgroundColor" red="0.97647058819999999" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="N3t-VG-9JQ"/>
+                                <constraint firstAttribute="height" constant="10" id="yBO-6Y-aYL"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="160" id="5NU-lQ-IDx"/>
                         <constraint firstItem="uX4-lo-QAu" firstAttribute="centerY" secondItem="tNy-7j-Gt2" secondAttribute="centerY" id="8k0-jE-Bb5"/>
+                        <constraint firstItem="WJc-fq-iX6" firstAttribute="bottom" secondItem="uX4-lo-QAu" secondAttribute="bottom" id="A0K-gA-Cln"/>
                         <constraint firstItem="vHc-Ib-Wny" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="Deg-66-vGZ"/>
                         <constraint firstItem="6LI-U8-W7j" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="EvA-Hf-iuK"/>
                         <constraint firstItem="vHc-Ib-Wny" firstAttribute="trailing" secondItem="uX4-lo-QAu" secondAttribute="trailing" id="Ixj-J7-eRG"/>
@@ -107,6 +117,7 @@
                         <constraint firstItem="6LI-U8-W7j" firstAttribute="leading" secondItem="iQw-Mq-Z8D" secondAttribute="leading" constant="20" id="hrw-ti-pJ2"/>
                         <constraint firstItem="tNy-7j-Gt2" firstAttribute="top" secondItem="iQw-Mq-Z8D" secondAttribute="top" constant="44" id="pwK-ta-aHc"/>
                         <constraint firstItem="qlW-Mm-bZf" firstAttribute="top" secondItem="ztY-YM-0aU" secondAttribute="bottom" constant="4" id="qLl-E1-hLm"/>
+                        <constraint firstItem="WJc-fq-iX6" firstAttribute="trailing" secondItem="uX4-lo-QAu" secondAttribute="trailing" constant="8" id="rx9-fV-HPL"/>
                         <constraint firstItem="tNy-7j-Gt2" firstAttribute="leading" secondItem="iQw-Mq-Z8D" secondAttribute="leading" constant="20" id="xPq-ZF-grJ"/>
                         <constraint firstItem="6LI-U8-W7j" firstAttribute="top" secondItem="tNy-7j-Gt2" secondAttribute="top" id="zvu-hU-kGo"/>
                     </constraints>

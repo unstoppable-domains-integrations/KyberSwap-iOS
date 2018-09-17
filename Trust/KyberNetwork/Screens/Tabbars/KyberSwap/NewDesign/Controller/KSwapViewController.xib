@@ -28,6 +28,7 @@
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
+                <outlet property="hasPendingTxView" destination="fZ2-x6-Tfq" id="9Q5-HQ-HgX"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="heightConstraintForAdvacedSettingsView" destination="wBz-ex-E7d" id="rJI-1Q-yr8"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
@@ -68,16 +69,26 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fZ2-x6-Tfq">
+                            <rect key="frame" x="352" y="59" width="10" height="10"/>
+                            <color key="backgroundColor" red="0.97647058819999999" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="2T6-bl-k5a"/>
+                                <constraint firstAttribute="height" constant="10" id="lBS-OQ-aPV"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.92941176470588238" green="0.6705882352941176" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="13x-JS-xwV" firstAttribute="leading" secondItem="V4f-Nd-lmp" secondAttribute="trailing" constant="8" id="Fpr-l5-YXv"/>
+                        <constraint firstItem="fZ2-x6-Tfq" firstAttribute="centerX" secondItem="uHO-nX-aqo" secondAttribute="centerX" constant="10" id="IFF-bg-p2R"/>
                         <constraint firstItem="uHO-nX-aqo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="13x-JS-xwV" secondAttribute="trailing" constant="8" id="atu-jN-a42"/>
                         <constraint firstItem="V4f-Nd-lmp" firstAttribute="centerY" secondItem="uHO-nX-aqo" secondAttribute="centerY" id="bWN-9s-RTz"/>
                         <constraint firstItem="V4f-Nd-lmp" firstAttribute="leading" secondItem="vbp-fJ-pmC" secondAttribute="leading" constant="20" id="fYU-h9-MtD"/>
                         <constraint firstAttribute="height" constant="160" id="ftb-Ys-LFW"/>
                         <constraint firstItem="uHO-nX-aqo" firstAttribute="top" secondItem="vbp-fJ-pmC" secondAttribute="top" constant="30" id="l1E-KV-VoA"/>
                         <constraint firstItem="13x-JS-xwV" firstAttribute="centerY" secondItem="V4f-Nd-lmp" secondAttribute="centerY" id="qix-vD-Ukh"/>
+                        <constraint firstItem="fZ2-x6-Tfq" firstAttribute="centerY" secondItem="uHO-nX-aqo" secondAttribute="centerY" constant="10" id="swI-jq-QEh"/>
                         <constraint firstAttribute="trailing" secondItem="uHO-nX-aqo" secondAttribute="trailing" constant="4" id="x2U-M2-R8F"/>
                     </constraints>
                 </view>
@@ -243,6 +254,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="GWV-de-Wc1" appends="YES" id="xyg-fZ-aXA"/>
             </connections>
+            <point key="canvasLocation" x="66.5" y="53.5"/>
         </view>
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="GWV-de-Wc1">
             <rectEdge key="edges" right="YES"/>

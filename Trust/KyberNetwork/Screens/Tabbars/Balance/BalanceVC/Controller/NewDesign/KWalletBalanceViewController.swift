@@ -31,6 +31,8 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var emptyBalanceTextLabel: UILabel!
   @IBOutlet weak var receiveTokenButton: UIButton!
 
+  @IBOutlet weak var hasPendingTxView: UIView!
+
   @IBOutlet weak var kyberListButton: UIButton!
   @IBOutlet weak var otherButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
@@ -95,6 +97,8 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func setupHamburgerMenu() {
+    self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
+    self.hasPendingTxView.isHidden = true
     self.hamburgerMenu.hideMenu(animated: false)
   }
 
@@ -246,6 +250,7 @@ extension KWalletBalanceViewController {
 
   func coordinatorUpdatePendingTransactions(_ transactions: [KNTransaction]) {
     self.hamburgerMenu.update(transactions: transactions)
+    self.hasPendingTxView.isHidden = transactions.isEmpty
   }
 }
 
