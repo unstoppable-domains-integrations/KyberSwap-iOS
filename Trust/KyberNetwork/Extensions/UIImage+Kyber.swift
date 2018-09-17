@@ -37,4 +37,24 @@ extension UIImage {
     return newImage ?? self
   }
 
+  func compress(to expectedMb: CGFloat) -> UIImage? {
+    let sizeInBytes = expectedMb * 1024.0 * 1024.0
+    var needCompress: Bool = true
+    var compressingValue: CGFloat = 1.0
+    var imageData: Data?
+    while needCompress && compressingValue > 0.0 {
+      if let data = UIImageJPEGRepresentation(self, compressingValue) {
+        if CGFloat(data.count) < sizeInBytes {
+          needCompress = false
+          imageData = data
+        } else {
+          compressingValue -= 1.0
+        }
+      } else {
+        return self
+      }
+    }
+    guard let data = imageData else { return self }
+    return UIImage(data: data)
+  }
 }
