@@ -80,6 +80,10 @@ extension KNSendTokenViewCoordinator {
   func coordinatorGasPriceCachedDidUpdate() {
     self.rootViewController.coordinatorUpdateGasPriceCached()
   }
+
+  func coordinatorOpenSendView(to address: String) {
+    self.rootViewController.coordinatorSend(to: address)
+  }
 }
 
 // MARK: Send Token View Controller Delegate

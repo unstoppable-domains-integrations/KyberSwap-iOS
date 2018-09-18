@@ -124,6 +124,7 @@ class KNHistoryCoordinator: Coordinator {
       dates: dates,
       currentWallet: self.currentWallet
     )
+    self.txDetailsCoordinator.updatePendingTransactions(transactions, currentWallet: self.currentWallet)
   }
 }
 

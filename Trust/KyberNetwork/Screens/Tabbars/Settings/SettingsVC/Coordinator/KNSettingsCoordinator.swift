@@ -15,6 +15,7 @@ class KNSettingsCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   private(set) var session: KNSession
+  fileprivate(set) var balances: [String: Balance] = [:]
 
   weak var delegate: KNSettingsCoordinatorDelegate?
 
@@ -49,6 +50,8 @@ class KNSettingsCoordinator: Coordinator {
     return coordinator
   }()
 
+  fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -72,6 +75,21 @@ class KNSettingsCoordinator: Coordinator {
     }
     self.listWalletsCoordinator.updateNewSession(self.session)
 //    self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)
+  }
+
+  func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
+    balances.forEach { self.balances[$0.key] = $0.value }
+    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: balances)
+  }
+
+  func appCoordinatorETHBalanceDidUpdate(ethBalance: Balance) {
+    let eth = KNSupportedTokenStorage.shared.ethToken
+    self.balances[eth.contract] = ethBalance
+    self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
+  }
+
+  func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
+    self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 }
 
@@ -218,11 +236,38 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
     case .back:
       self.navigationController.popViewController(animated: true)
     case .send(let address):
-      //TODO: Send address
-      print("Open send address: \(address)")
+      self.openSendToken(address: address)
     case .select(let contact):
-      //TODO: Send address
-      print("Select contact: \(contact.name)")
+      self.openNewContact(address: contact.address)
+    }
+  }
+
+  fileprivate func openNewContact(address: String) {
+    let viewModel = KNNewContactViewModel(address: address)
+    let controller = KNNewContactViewController(viewModel: viewModel)
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    self.navigationController.pushViewController(controller, animated: true)
+  }
+
+  fileprivate func openSendToken(address: String) {
+    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      balances: self.balances,
+      from: self.session.tokenStorage.ethToken
+    )
+    self.sendTokenCoordinator?.start()
+    self.sendTokenCoordinator?.coordinatorOpenSendView(to: address)
+  }
+}
+
+extension KNSettingsCoordinator: KNNewContactViewControllerDelegate {
+  func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
+    switch event {
+    case .dismiss: self.navigationController.popViewController(animated: true)
+    case .send(let address):
+      self.openSendToken(address: address)
     }
   }
 }

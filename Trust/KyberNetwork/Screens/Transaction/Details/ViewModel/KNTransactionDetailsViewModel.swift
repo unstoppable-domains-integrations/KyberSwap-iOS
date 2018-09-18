@@ -57,7 +57,7 @@ struct KNTransactionDetailsViewModel {
   }()
 
   lazy var textAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
+    NSAttributedStringKey.foregroundColor: UIColor(red: 104, green: 116, blue: 143),
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
   ]
 

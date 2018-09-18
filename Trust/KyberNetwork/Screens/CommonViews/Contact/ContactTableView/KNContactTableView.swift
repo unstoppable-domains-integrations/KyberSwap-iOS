@@ -128,7 +128,7 @@ extension KNContactTableView: UITableViewDataSource {
         run: .delete(contact: self.contacts[indexPath.row])
       )
     }
-    delete.backgroundColor = UIColor.Kyber.fire
+    delete.backgroundColor = UIColor.Kyber.strawberry
     return [delete, edit, send]
   }
 }

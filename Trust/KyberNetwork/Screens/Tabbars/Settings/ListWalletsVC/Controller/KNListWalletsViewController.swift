@@ -130,7 +130,7 @@ extension KNListWalletsViewController: UITableViewDataSource {
     let edit = UITableViewRowAction(style: .normal, title: "Edit".toBeLocalised()) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }
-    edit.backgroundColor = UIColor.Kyber.lightSeaGreen
+    edit.backgroundColor = UIColor.Kyber.shamrock
     let delete = UITableViewRowAction(style: .destructive, title: "Delete".toBeLocalised()) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }

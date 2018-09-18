@@ -171,6 +171,7 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH,
       ethBalance: ethBalance
     )
+    self.settingsCoordinator.appCoordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
@@ -190,6 +191,7 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH,
       otherTokensBalance: otherTokensBalance
     )
+    self.settingsCoordinator.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
   }
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
@@ -263,6 +265,7 @@ extension KNAppCoordinator {
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
     self.balanceTabCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.settingsCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
   @objc func gasPriceCachedDidUpdate(_ sender: Any?) {
