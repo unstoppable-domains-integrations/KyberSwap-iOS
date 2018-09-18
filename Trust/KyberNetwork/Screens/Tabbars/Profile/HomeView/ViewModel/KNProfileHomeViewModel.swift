@@ -35,4 +35,32 @@ class KNProfileHomeViewModel: NSObject {
       }
     }
   }
+
+  func addWallet(label: String, address: String, completion: @escaping (Result<(Bool, String), AnyError>) -> Void) {
+    guard let accessToken = self.currentUser?.accessToken else {
+      completion(.success((false, "Can not find your user".toBeLocalised())))
+      return
+    }
+    let provider = MoyaProvider<ProfileKYCService>()
+    provider.request(.addWallet(accessToken: accessToken, label: label, address: address)) { result in
+      switch result {
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let isAdded: Bool = json["success"] as? Bool ?? false
+          let message: String = {
+            if isAdded { return json["message"] as? String ?? "" }
+            let reasons: [String] = json["reason"] as? [String] ?? []
+            return reasons.isEmpty ? "Unknown error" : reasons[0]
+          }()
+          completion(.success((isAdded, message)))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }

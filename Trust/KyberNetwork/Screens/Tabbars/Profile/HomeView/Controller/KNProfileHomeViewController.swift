@@ -2,6 +2,8 @@
 
 import UIKit
 import Moya
+import QRCodeReaderViewController
+import TrustCore
 
 enum KNProfileHomeViewEvent {
   case signIn
@@ -41,6 +43,11 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var heightConstraintWalletsTableView: NSLayoutConstraint!
+  @IBOutlet weak var addWalletContainer: UIView!
+  @IBOutlet weak var heightConstraintForAddWalletContainer: NSLayoutConstraint!
+  @IBOutlet weak var addWalletLabelTextField: UITextField!
+  @IBOutlet weak var addWalletAddressTextField: UITextField!
+  @IBOutlet weak var addWalletAddButton: UIButton!
 
   weak var delegate: KNProfileHomeViewControllerDelegate?
   fileprivate var viewModel: KNProfileHomeViewModel
@@ -127,6 +134,11 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.walletsTableView.delegate = self
     self.walletsTableView.dataSource = self
 
+    self.addWalletAddButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: 4.0
+    )
     self.updateUIUserDidSignedIn()
   }
 
@@ -171,11 +183,17 @@ class KNProfileHomeViewController: KNBaseViewController {
     if self.viewModel.wallets.isEmpty {
       self.noWalletTextLabel.isHidden = false
       self.walletsTableView.isHidden = true
-      self.heightConstraintWalletsTableView.constant = 60.0
+      self.heightConstraintWalletsTableView.constant = 260.0
+      self.addWalletContainer.isHidden = false
+      self.heightConstraintForAddWalletContainer.constant = 200.0
     } else {
-      self.heightConstraintWalletsTableView.constant = CGFloat(self.viewModel.wallets.count) * kWalletCellRowHeight
+      let hasAddWalletView: Bool = self.viewModel.wallets.count < 3
+      let addWalletViewHeight: CGFloat = hasAddWalletView ? 200.0 : 0.0
+      self.heightConstraintWalletsTableView.constant = CGFloat(self.viewModel.wallets.count) * kWalletCellRowHeight + addWalletViewHeight
       self.noWalletTextLabel.isHidden = true
       self.walletsTableView.isHidden = false
+      self.addWalletContainer.isHidden = !hasAddWalletView
+      self.heightConstraintForAddWalletContainer.constant = addWalletViewHeight
       self.walletsTableView.reloadData()
     }
     self.view.layoutIfNeeded()
@@ -195,6 +213,57 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBAction func userKYCActionButtonPressed(_ sender: Any) {
     self.delegate?.profileHomeViewController(self, run: .openVerification)
+  }
+
+  @IBAction func addWalletScanQRCodePressed(_ sender: Any) {
+    let qrcodeReader = QRCodeReaderViewController()
+    qrcodeReader.delegate = self
+    self.present(qrcodeReader, animated: true, completion: nil)
+  }
+
+  @IBAction func addWalletAddButtonPressed(_ sender: Any) {
+    guard let label = self.addWalletLabelTextField.text, !label.isEmpty else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid input".toBeLocalised(),
+        message: "Please enter a valid wallet label".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    guard let address = self.addWalletAddressTextField.text, Address(string: address) != nil else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid input".toBeLocalised(),
+        message: "Please enter a valid address".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    self.displayLoading(text: "Adding...", animated: true)
+    self.viewModel.addWallet(label: label, address: address) { [weak self] result in
+      guard let `self` = self else { return }
+      self.hideLoading()
+      switch result {
+      case .success(let resp):
+        let isAdded: Bool = resp.0
+        let message: String = resp.1
+        if isAdded {
+          self.showSuccessTopBannerMessage(
+            with: "Success".toBeLocalised(),
+            message: "Your wallet has been added successfully!".toBeLocalised(),
+            time: 1.5
+          )
+          self.fetchWalletList()
+        } else {
+          self.showErrorTopBannerMessage(
+            with: "Failed".toBeLocalised(),
+            message: message,
+            time: 1.5
+          )
+        }
+      case .failure(let error):
+        self.displayError(error: error)
+      }
+    }
   }
 }
 
@@ -257,5 +326,17 @@ extension KNProfileHomeViewController: UITableViewDataSource {
       return indexPath.row % 2 == 0 ? UIColor(red: 242, green: 243, blue: 246) : UIColor.Kyber.whisper
     }()
     return cell
+  }
+}
+
+extension KNProfileHomeViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      self.addWalletAddressTextField.text = result
+    }
   }
 }

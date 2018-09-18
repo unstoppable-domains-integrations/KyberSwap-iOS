@@ -20,6 +20,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNProfileHomeViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="addWalletAddButton" destination="Pmb-P8-1Ly" id="lwl-zU-Yre"/>
+                <outlet property="addWalletAddressTextField" destination="E0v-Ce-aaI" id="EQD-go-AA1"/>
+                <outlet property="addWalletContainer" destination="tA1-Wb-ixh" id="qtv-fm-qlG"/>
+                <outlet property="addWalletLabelTextField" destination="hNn-9h-bLI" id="nMy-38-zGE"/>
+                <outlet property="heightConstraintForAddWalletContainer" destination="dQ3-ox-zyw" id="5nC-Na-1aD"/>
                 <outlet property="heightConstraintUserKYCStatusView" destination="yjh-TT-VtN" id="4yG-wt-ZtR"/>
                 <outlet property="heightConstraintWalletsTableView" destination="nJj-FT-TKb" id="aGy-g1-1yA"/>
                 <outlet property="logOutButton" destination="2pd-lu-Yff" id="aZu-a3-iZh"/>
@@ -268,29 +273,113 @@ Increase KyberSwap's trade limits</string>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ler-uj-x7q">
-                                    <rect key="frame" x="0.0" y="373" width="375" height="168"/>
+                                    <rect key="frame" x="0.0" y="373" width="375" height="368"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Wb-ixh">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Label" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hNn-9h-bLI">
+                                                    <rect key="frame" x="24" y="16" width="327" height="46"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="46" id="jQl-u5-qA8"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tiq-Ik-p1Q">
+                                                    <rect key="frame" x="24" y="54" width="327" height="1"/>
+                                                    <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="Jl3-Kc-x6i"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSu-fF-IBQ">
+                                                    <rect key="frame" x="24" y="116" width="327" height="1"/>
+                                                    <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="LuR-ES-PrP"/>
+                                                    </constraints>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xUa-Kh-V3U">
+                                                    <rect key="frame" x="327" y="90" width="24" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="6Io-5W-8tc"/>
+                                                    </constraints>
+                                                    <state key="normal" image="qr_code_icon"/>
+                                                    <connections>
+                                                        <action selector="addWalletScanQRCodePressed:" destination="-1" eventType="touchUpInside" id="3ii-ic-27m"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmb-P8-1Ly">
+                                                    <rect key="frame" x="231" y="140" width="120" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="120" id="e9W-ru-evU"/>
+                                                        <constraint firstAttribute="height" constant="44" id="uzU-qS-CHW"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                                                    <state key="normal" title="Add">
+                                                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="addWalletAddButtonPressed:" destination="-1" eventType="touchUpInside" id="xN8-bU-XGO"/>
+                                                    </connections>
+                                                </button>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="E0v-Ce-aaI">
+                                                    <rect key="frame" x="24" y="78" width="287" height="46"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="46" id="kE3-KJ-tv6"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="Tiq-Ik-p1Q" firstAttribute="top" secondItem="hNn-9h-bLI" secondAttribute="bottom" constant="-8" id="1Rp-lE-Kg1"/>
+                                                <constraint firstItem="hNn-9h-bLI" firstAttribute="leading" secondItem="tA1-Wb-ixh" secondAttribute="leading" constant="24" id="1iq-Tl-ged"/>
+                                                <constraint firstItem="hNn-9h-bLI" firstAttribute="top" secondItem="tA1-Wb-ixh" secondAttribute="top" constant="16" id="1ys-qm-32e"/>
+                                                <constraint firstItem="E0v-Ce-aaI" firstAttribute="top" secondItem="hNn-9h-bLI" secondAttribute="bottom" constant="16" id="2Kw-vg-9ki"/>
+                                                <constraint firstItem="xUa-Kh-V3U" firstAttribute="centerY" secondItem="E0v-Ce-aaI" secondAttribute="centerY" id="3Pr-VA-1Ux"/>
+                                                <constraint firstItem="Tiq-Ik-p1Q" firstAttribute="leading" secondItem="hNn-9h-bLI" secondAttribute="leading" id="E2o-tS-cov"/>
+                                                <constraint firstItem="Pmb-P8-1Ly" firstAttribute="trailing" secondItem="hNn-9h-bLI" secondAttribute="trailing" id="FR3-jG-ZQm"/>
+                                                <constraint firstItem="xUa-Kh-V3U" firstAttribute="leading" secondItem="E0v-Ce-aaI" secondAttribute="trailing" constant="16" id="O8K-qp-UPe"/>
+                                                <constraint firstItem="YSu-fF-IBQ" firstAttribute="top" secondItem="E0v-Ce-aaI" secondAttribute="bottom" constant="-8" id="PnD-Uk-ceS"/>
+                                                <constraint firstItem="Tiq-Ik-p1Q" firstAttribute="trailing" secondItem="hNn-9h-bLI" secondAttribute="trailing" id="TsY-cD-l7D"/>
+                                                <constraint firstItem="Pmb-P8-1Ly" firstAttribute="top" secondItem="E0v-Ce-aaI" secondAttribute="bottom" constant="16" id="Zaw-IJ-SM9"/>
+                                                <constraint firstItem="E0v-Ce-aaI" firstAttribute="leading" secondItem="hNn-9h-bLI" secondAttribute="leading" id="bHM-y2-z6R"/>
+                                                <constraint firstAttribute="height" constant="200" id="dQ3-ox-zyw"/>
+                                                <constraint firstAttribute="trailing" secondItem="hNn-9h-bLI" secondAttribute="trailing" constant="24" id="dkg-xl-feK"/>
+                                                <constraint firstItem="YSu-fF-IBQ" firstAttribute="leading" secondItem="E0v-Ce-aaI" secondAttribute="leading" id="lVo-47-FhR"/>
+                                                <constraint firstItem="YSu-fF-IBQ" firstAttribute="trailing" secondItem="Tiq-Ik-p1Q" secondAttribute="trailing" id="mO8-uF-uXR"/>
+                                                <constraint firstItem="xUa-Kh-V3U" firstAttribute="trailing" secondItem="hNn-9h-bLI" secondAttribute="trailing" id="oq3-9n-LDu"/>
+                                            </constraints>
+                                        </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't added any wallets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBs-5h-Tri">
-                                            <rect key="frame" x="24" y="24" width="327" height="17.5"/>
+                                            <rect key="frame" x="24" y="224" width="327" height="17.5"/>
                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                             <color key="textColor" red="0.60392156860000001" green="0.6705882353" blue="0.70588235290000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JH1-tw-2kU">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
+                                            <rect key="frame" x="0.0" y="200" width="375" height="168"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </tableView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstItem="JH1-tw-2kU" firstAttribute="top" secondItem="tA1-Wb-ixh" secondAttribute="bottom" id="17Z-kc-THD"/>
                                         <constraint firstItem="JH1-tw-2kU" firstAttribute="leading" secondItem="Ler-uj-x7q" secondAttribute="leading" id="3zU-hr-PZl"/>
+                                        <constraint firstAttribute="trailing" secondItem="tA1-Wb-ixh" secondAttribute="trailing" id="6sj-Dj-U9n"/>
                                         <constraint firstItem="sBs-5h-Tri" firstAttribute="leading" secondItem="Ler-uj-x7q" secondAttribute="leading" constant="24" id="9cE-dd-etV"/>
                                         <constraint firstAttribute="trailing" secondItem="sBs-5h-Tri" secondAttribute="trailing" constant="24" id="CZa-Om-oX0"/>
-                                        <constraint firstItem="JH1-tw-2kU" firstAttribute="top" secondItem="Ler-uj-x7q" secondAttribute="top" id="LX9-8g-7Rn"/>
+                                        <constraint firstItem="sBs-5h-Tri" firstAttribute="top" secondItem="tA1-Wb-ixh" secondAttribute="bottom" constant="24" id="EiG-0d-aXd"/>
                                         <constraint firstAttribute="bottom" secondItem="JH1-tw-2kU" secondAttribute="bottom" id="Rfd-hu-gpx"/>
-                                        <constraint firstItem="sBs-5h-Tri" firstAttribute="top" secondItem="Ler-uj-x7q" secondAttribute="top" constant="24" id="Xlk-RO-d13"/>
-                                        <constraint firstAttribute="height" constant="168" id="nJj-FT-TKb"/>
+                                        <constraint firstItem="tA1-Wb-ixh" firstAttribute="leading" secondItem="Ler-uj-x7q" secondAttribute="leading" id="UKr-bd-kPO"/>
+                                        <constraint firstAttribute="height" constant="368" id="nJj-FT-TKb"/>
                                         <constraint firstAttribute="trailing" secondItem="JH1-tw-2kU" secondAttribute="trailing" id="nMO-zL-MqH"/>
+                                        <constraint firstItem="tA1-Wb-ixh" firstAttribute="top" secondItem="Ler-uj-x7q" secondAttribute="top" id="qV3-Lo-Bwj"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -346,5 +435,6 @@ Increase KyberSwap's trade limits</string>
     <resources>
         <image name="account" width="24" height="24"/>
         <image name="avatar_big_icon" width="135" height="135"/>
+        <image name="qr_code_icon" width="22" height="22"/>
     </resources>
 </document>
