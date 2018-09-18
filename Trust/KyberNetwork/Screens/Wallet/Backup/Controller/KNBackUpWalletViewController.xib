@@ -125,8 +125,6 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                         <constraint firstAttribute="height" constant="45" id="alC-CA-biv"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
-                    <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
-                    <inset key="titleEdgeInsets" minX="-12" minY="0.0" maxX="12" maxY="0.0"/>
                     <state key="normal" title="Next">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
