@@ -253,40 +253,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.historyCoordinator.start()
     }
   }
-}
-
-// MARK: Exchange tab (root view controller)
-extension KNExchangeTokenCoordinator: KNExchangeTabViewControllerDelegate {
-  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNExchangeTabViewEvent) {
-    switch event {
-    case .searchToken(let from, let to, let isSource):
-      self.openSearchToken(from: from, to: to, isSource: isSource)
-    case .estimateRate(let from, let to, let amount):
-      self.updateEstimatedRate(from: from, to: to, amount: amount)
-    case .estimateGas(let from, let to, let amount, let gasPrice):
-      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
-    case .showQRCode:
-      self.showWalletQRCode()
-    case .setGasPrice(let gasPrice, let gasLimit):
-      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
-    case .exchange(let data):
-      self.exchangeButtonPressed(data: data)
-    }
-  }
-
-  func exchangeTabViewController(_ controller: KNExchangeTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
-    switch event {
-    case .selectSendToken:
-      self.openSendTokenView()
-    case .selectAddWallet:
-      self.openAddWalletView()
-    case .select(let wallet):
-      self.updateCurrentWallet(wallet)
-    case .selectAllTransactions:
-      self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-      self.historyCoordinator.start()
-    }
-  }
 
   fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
     self.isSelectingSourceToken = isSource

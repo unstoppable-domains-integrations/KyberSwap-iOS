@@ -19,16 +19,6 @@ class KNBalanceTabCoordinator: Coordinator {
 
   weak var delegate: KNBalanceTabCoordinatorDelegate?
 
-  lazy var rootViewController: KNBalanceTabViewController = {
-    let address: String = self.session.wallet.address.description
-    let wallet: KNWalletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
-    let viewModel: KNBalanceTabViewModel = KNBalanceTabViewModel(wallet: wallet)
-    let controller: KNBalanceTabViewController = KNBalanceTabViewController(with: viewModel)
-    controller.delegate = self
-    controller.loadViewIfNeeded()
-    return controller
-  }()
-
   lazy var newRootViewController: KWalletBalanceViewController = {
     let address: String = self.session.wallet.address.description
     let wallet: KNWalletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -70,9 +60,7 @@ class KNBalanceTabCoordinator: Coordinator {
 
   func start() {
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-//    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.newRootViewController.coordinatorUpdateTokenObjects(tokenObjects)
-//    self.navigationController.viewControllers = [self.rootViewController]
     self.navigationController.viewControllers = [self.newRootViewController]
   }
 
@@ -86,14 +74,6 @@ extension KNBalanceTabCoordinator {
     if resetRoot {
       self.navigationController.popToRootViewController(animated: true)
     }
-//    let viewModel: KNBalanceTabViewModel = {
-//      let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-//      let address: String = session.wallet.address.description
-//      let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
-//      let viewModel = KNBalanceTabViewModel(wallet: walletObject)
-//      _ = viewModel.updateTokenObjects(tokenObjects)
-//      return viewModel
-//    }()
 
     let viewModel: KWalletBalanceViewModel = {
       let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
@@ -103,17 +83,14 @@ extension KNBalanceTabCoordinator {
       _ = viewModel.updateTokenObjects(tokenObjects)
       return viewModel
     }()
-//    self.rootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     self.newRootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     let pendingObjects = self.session.transactionStorage.kyberPendingTransactions
-//    self.rootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
     self.newRootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
     self.marketCoordinator?.coordinatorDidUpdateNewSession()
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
-//    self.rootViewController.coordinatorUpdateWalletObjects()
     self.newRootViewController.coordinatorUpdateWalletObjects()
     self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
   }
@@ -123,7 +100,6 @@ extension KNBalanceTabCoordinator {
     totalBalanceInETH: BigInt,
     otherTokensBalance: [String: Balance]
     ) {
-//    self.rootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
     self.newRootViewController.coordinatorUpdateTokenBalances(otherTokensBalance)
     self.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalBalanceInUSD,
@@ -140,7 +116,6 @@ extension KNBalanceTabCoordinator {
     ethBalance: Balance
     ) {
     if let ethToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.isETH }) {
-//      self.rootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
       self.newRootViewController.coordinatorUpdateTokenBalances([ethToken.contract: ethBalance])
       self.balances[ethToken.contract] = ethBalance
     }
@@ -157,10 +132,6 @@ extension KNBalanceTabCoordinator {
     totalBalanceInETH: BigInt
     ) {
     self.tokenChartCoordinator?.coordinatorExchangeRateDidUpdate()
-//    self.rootViewController.coordinatorUpdateBalanceInETHAndUSD(
-//      ethBalance: totalBalanceInETH,
-//      usdBalance: totalBalanceInUSD
-//    )
     self.newRootViewController.coordinatorUpdateBalanceInETHAndUSD(
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD
@@ -169,7 +140,6 @@ extension KNBalanceTabCoordinator {
   }
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
-//    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.newRootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
@@ -177,7 +147,6 @@ extension KNBalanceTabCoordinator {
   }
 
   func appCoordinatorSupportedTokensDidUpdate(tokenObjects: [TokenObject]) {
-//    self.rootViewController.coordinatorUpdateTokenObjects(tokenObjects)
     let tokens = self.session.tokenStorage.tokens
     self.newRootViewController.coordinatorUpdateTokenObjects(tokens)
     self.tokenChartCoordinator?.coordinatorTokenObjectListDidUpdate(tokens)
@@ -185,7 +154,6 @@ extension KNBalanceTabCoordinator {
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
-//    self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
     self.newRootViewController.coordinatorUpdatePendingTransactions(transactions)
     self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
@@ -223,32 +191,6 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
 
   func kWalletBalanceViewController(_ controller: KWalletBalanceViewController, run menuEvent: KNBalanceTabHamburgerMenuViewEvent) {
     switch menuEvent {
-    case .select(let wallet):
-      self.hamburgerMenu(select: wallet)
-    case .selectAddWallet:
-      self.hamburgerMenuSelectAddWallet()
-    case .selectSendToken:
-      self.openSendTokenView(with: self.session.tokenStorage.ethToken)
-    case .selectAllTransactions:
-      self.openHistoryTransactionView()
-    }
-  }
-}
-
-// TODO: Remove when done with new design
-extension KNBalanceTabCoordinator: KNBalanceTabViewControllerDelegate {
-
-  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabViewEvent) {
-    switch event {
-    case .selectQRCode:
-      self.qrcodeCoordinator?.start()
-    case .select(let token):
-      self.openTokenChartView(for: token)
-    }
-  }
-
-  func balanceTabViewController(_ controller: KNBalanceTabViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
-    switch event {
     case .select(let wallet):
       self.hamburgerMenu(select: wallet)
     case .selectAddWallet:
