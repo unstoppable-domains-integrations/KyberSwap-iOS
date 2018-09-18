@@ -330,6 +330,10 @@ class KSwapViewController: KNBaseViewController {
     self.delegate?.kSwapViewController(self, run: .getUserCapInWei)
   }
 
+  /*
+   Return true if data is invalid and a warning message is shown,
+   false otherwise
+  */
   fileprivate func showWarningDataInvalidIfNeeded() -> Bool {
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(

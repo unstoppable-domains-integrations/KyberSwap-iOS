@@ -16,6 +16,7 @@ class KNSendTokenViewModel: NSObject {
   let defaultTokenIconImg = UIImage(named: "default_token")
 
   fileprivate(set) var from: TokenObject
+  fileprivate(set) var balances: [String: Balance] = [:]
   fileprivate(set) var balance: Balance?
 
   fileprivate(set) var amount: String = ""
@@ -116,6 +117,13 @@ class KNSendTokenViewModel: NSObject {
     return self.address != nil
   }
 
+  var isHavingEnoughETHForFee: Bool {
+    let fee = self.gasPrice * self.gasLimit
+    let eth = KNSupportedTokenStorage.shared.ethToken
+    let ethBal = self.balances[eth.contract]?.value ?? BigInt(0)
+    return ethBal >= fee
+  }
+
   var unconfirmTransaction: UnconfirmedTransaction {
     let transferType: TransferType = {
       if self.from.isETH {
@@ -140,6 +148,15 @@ class KNSendTokenViewModel: NSObject {
     self.balance = balance
     self.amount = ""
     self.gasLimit = self.from.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+  }
+
+  func updateBalance(_ balances: [String: Balance]) {
+    balances.forEach { (key, value) in
+      self.balances[key] = value
+    }
+    if let bal = balances[self.from.contract] {
+      self.balance = bal
+    }
   }
 
   func updateBalance(_ balance: Balance?) {
