@@ -413,8 +413,10 @@ extension KSwapViewController {
     self.updateEstimatedRate()
     self.balanceLabel.text = self.viewModel.balanceText
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    if !self.fromAmountTextField.isEditing {
+    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
     self.updateAdvancedSettingsView()
     self.view.layoutIfNeeded()
@@ -467,8 +469,10 @@ extension KSwapViewController {
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.balanceLabel.text = self.viewModel.balanceText
-    if !self.fromAmountTextField.isEditing {
+    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
     self.view.layoutIfNeeded()
   }
@@ -493,8 +497,10 @@ extension KSwapViewController {
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
-    if !self.fromAmountTextField.isEditing {
+    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
 
     self.updateAdvancedSettingsView()
@@ -613,11 +619,21 @@ extension KSwapViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
-    self.fromAmountTextField.textColor = UIColor.Kyber.merigold
+    if self.viewModel.isFocusingFromAmount {
+      self.fromAmountTextField.textColor = UIColor.Kyber.merigold
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
+    } else {
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
+      self.toAmountTextField.textColor = UIColor.Kyber.merigold
+    }
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    if self.viewModel.isFocusingFromAmount {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    } else {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    }
     _ = self.showWarningDataInvalidIfNeeded()
   }
 
@@ -631,8 +647,10 @@ extension KSwapViewController: UITextFieldDelegate {
     }
     self.updateEstimatedRate()
     self.updateEstimatedGasLimit()
-    if !self.fromAmountTextField.isEditing {
+    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
   }
 }
