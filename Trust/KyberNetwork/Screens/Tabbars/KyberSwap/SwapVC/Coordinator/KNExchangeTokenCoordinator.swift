@@ -231,6 +231,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.updateEstimatedRate(from: from, to: to, amount: amount)
     case .estimateGas(let from, let to, let amount, let gasPrice):
       self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+    case .getUserCapInWei:
+      self.updateUserCapInWei()
     case .showQRCode:
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
@@ -342,6 +344,15 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           amount: amount,
           gasLimit: estimate
         )
+      }
+    }
+  }
+
+  fileprivate func updateUserCapInWei() {
+    let address = self.session.wallet.address
+    KNGeneralProvider.shared.getUserCapInWei(for: address) { [weak self] result in
+      if case .success(let data) = result {
+        self?.rootViewController.coordinatorUpdateUserCapInWei(cap: data)
       }
     }
   }

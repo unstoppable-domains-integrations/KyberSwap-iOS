@@ -23,6 +23,7 @@ class KSwapViewModel {
   fileprivate(set) var amountTo: String = ""
   fileprivate(set) var isFocusingFromAmount: Bool = true
 
+  fileprivate(set) var userCapInWei: BigInt?
   fileprivate(set) var estRate: BigInt?
   fileprivate var slippageRate: BigInt?
   fileprivate var minRatePercent: Double?
@@ -198,9 +199,30 @@ class KSwapViewModel {
     return valueInETH < valueMin
   }
 
+  var isBalanceEnough: Bool {
+    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return false }
+    return true
+  }
+
+  var isCapEnough: Bool {
+    let ethAmount: BigInt = {
+      if self.from.isETH { return self.amountFromBigInt }
+      if self.to.isETH { return self.amountToBigInt }
+      let ethRate: BigInt = {
+        if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
+          return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
+        }
+        return BigInt(0)
+      }()
+      return ethRate * self.amountFromBigInt
+    }()
+    guard let cap = self.userCapInWei else { return false }
+    return cap >= ethAmount
+  }
+
   var isAmountTooBig: Bool {
-    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return true }
-    if self.estRate?.isZero == true { return true }
+    if !self.isBalanceEnough { return true }
+    if !self.isCapEnough { return true }
     return false
   }
 
@@ -213,6 +235,12 @@ class KSwapViewModel {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
     if self.minRate == nil || self.minRate?.isZero == true { return false }
     return true
+  }
+
+  var isHavingEnoughETHForFee: Bool {
+    let fee = self.gasPrice * self.estimateGasLimit
+    let ethBal = self.balances[self.eth.contract]?.value ?? BigInt(0)
+    return ethBal >= fee
   }
 
   // MARK: Update data
@@ -336,5 +364,9 @@ class KSwapViewModel {
     if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estimateGasLimit = gasLimit
     }
+  }
+
+  func updateUserCapInWei(cap: BigInt) {
+    self.userCapInWei = cap
   }
 }

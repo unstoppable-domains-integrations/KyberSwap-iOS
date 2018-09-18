@@ -182,6 +182,42 @@ class KNGeneralProvider {
     }
   }
 
+  public func getUserCapInWei(for address: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    self.getUserCapInWeiEncode(for: address) { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let callReq = CallRequest(
+          to: self.networkAddress.description,
+          data: data
+        )
+        let ethService = EtherServiceRequest(batch: BatchFactory().create(callReq))
+        DispatchQueue.global(qos: .background).async {
+          Session.send(ethService) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let resp):
+                self.getUserCapInWeiDecode(from: resp, completion: { decodeResult in
+                  switch decodeResult {
+                  case .success(let value):
+                    completion(.success(value))
+                  case .failure(let error):
+                    completion(.failure(error))
+                  }
+                })
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
   func sendSignedTransactionData(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
     let request = EtherServiceRequest(batch: batch)
@@ -274,6 +310,18 @@ extension KNGeneralProvider {
       }
     }
   }
+
+  fileprivate func getUserCapInWeiEncode(for address: Address, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = KNGetUserCapInWeiEncode(address: address)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }
 
 // MARK: Web3Swift Decoding
@@ -335,5 +383,21 @@ extension KNGeneralProvider {
         completion(.failure(AnyError(error)))
       }
     })
+  }
+
+  fileprivate func getUserCapInWeiDecode(from balance: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if balance == "0x" {
+      completion(.success(BigInt(0)))
+      return
+    }
+    let request = KNGetUserCapInWeiDecode(data: balance)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(BigInt(res) ?? BigInt(0)))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
   }
 }

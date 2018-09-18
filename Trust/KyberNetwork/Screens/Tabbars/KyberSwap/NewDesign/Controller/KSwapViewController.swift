@@ -10,6 +10,7 @@ enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt)
   case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
+  case getUserCapInWei
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case swap(data: KNDraftExchangeTransaction)
   case showQRCode
@@ -51,6 +52,7 @@ class KSwapViewController: KNBaseViewController {
 
   fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
+  fileprivate var getUserCapTimer: Timer?
 
   lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
     let viewModel = KNBalanceTabHamburgerMenuViewModel(
@@ -127,6 +129,15 @@ class KSwapViewController: KNBaseViewController {
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimatedGasLimit()
+    })
+
+    self.getUserCapTimer?.invalidate()
+    self.updateUserCapInWei()
+    self.getUserCapTimer = Timer.scheduledTimer(
+      withTimeInterval: 30.0,
+      repeats: true,
+      block: { [weak self] _ in
+      self?.updateUserCapInWei()
     })
   }
 
@@ -249,44 +260,8 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    // Check data
-    guard self.viewModel.from != self.viewModel.to else {
-      self.showWarningTopBannerMessage(
-        with: "Not supported".toBeLocalised(),
-        message: "Can not swap the same token".toBeLocalised(),
-        time: 1.5
-      )
-      return
-    }
-    guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(
-        with: "Invalid amount".toBeLocalised(),
-        message: "Amount too small to perform exchange, minimum equivalent to 0.001 ETH".toBeLocalised()
-      )
-      return
-    }
-    guard !self.viewModel.isAmountTooBig else {
-      self.showWarningTopBannerMessage(
-        with: "Invalid amount".toBeLocalised(),
-        message: "Amount too big to perform exchange".toBeLocalised()
-      )
-      return
-    }
-    guard let rate = self.viewModel.estRate, self.viewModel.isRateValid else {
-      self.showWarningTopBannerMessage(
-        with: "Invalid rate".toBeLocalised(),
-        message: "Please wait for estimated rate to exchange".toBeLocalised()
-      )
-      return
-    }
-    // TODO: This is not true in case we could exchange token/token
-    guard self.viewModel.from != self.viewModel.to else {
-      self.showWarningTopBannerMessage(
-        with: "Invalid tokens".toBeLocalised(),
-        message: "Can not exchange the same token".toBeLocalised()
-      )
-      return
-    }
+    if self.showWarningDataInvalidIfNeeded() { return }
+    let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
       let expectedExchange: BigInt = {
@@ -349,6 +324,58 @@ class KSwapViewController: KNBaseViewController {
       gasPrice: self.viewModel.gasPrice
     )
     self.delegate?.kSwapViewController(self, run: event)
+  }
+
+  fileprivate func updateUserCapInWei() {
+    self.delegate?.kSwapViewController(self, run: .getUserCapInWei)
+  }
+
+  fileprivate func showWarningDataInvalidIfNeeded() -> Bool {
+    guard self.viewModel.from != self.viewModel.to else {
+      self.showWarningTopBannerMessage(
+        with: "Not supported".toBeLocalised(),
+        message: "Can not swap the same token".toBeLocalised(),
+        time: 1.5
+      )
+      return true
+    }
+    guard self.viewModel.isHavingEnoughETHForFee else {
+      self.showWarningTopBannerMessage(
+        with: "Insufficient ETH".toBeLocalised(),
+        message: "You do not have enough ETH to pay for transaction fee".toBeLocalised()
+      )
+      return true
+    }
+    guard !self.viewModel.isAmountTooSmall else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid amount".toBeLocalised(),
+        message: "Amount too small to perform exchange, minimum equivalent to 0.001 ETH".toBeLocalised()
+      )
+      return true
+    }
+    guard self.viewModel.isBalanceEnough else {
+      self.showWarningTopBannerMessage(
+        with: "Amount too big".toBeLocalised(),
+        message: "Your balance is not be enough to make the transaction.".toBeLocalised()
+      )
+      return true
+    }
+    guard self.viewModel.isCapEnough else {
+      self.showWarningTopBannerMessage(
+        with: "Amount too big".toBeLocalised(),
+        message: "Your cap has reached. You could increase your cap by completing KYC".toBeLocalised(),
+        time: 2.0
+      )
+      return true
+    }
+    guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
+      self.showWarningTopBannerMessage(
+        with: "Invalid rate".toBeLocalised(),
+        message: "Please wait for estimated rate to exchange".toBeLocalised()
+      )
+      return true
+    }
+    return false
   }
 }
 
@@ -488,6 +515,13 @@ extension KSwapViewController {
   }
 
   /*
+   Update user cap in wei
+   */
+
+  func coordinatorUpdateUserCapInWei(cap: BigInt) {
+    self.viewModel.updateUserCapInWei(cap: cap)
+  }
+  /*
    Update selected token
    - token: New selected token
    - isSource: true if selected token is from, otherwise it is to
@@ -584,6 +618,7 @@ extension KSwapViewController: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+    _ = self.showWarningDataInvalidIfNeeded()
   }
 
   fileprivate func updateViewAmountDidChange() {
