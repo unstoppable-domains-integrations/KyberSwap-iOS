@@ -102,7 +102,7 @@ class KNProfileHomeCoordinator: Coordinator {
 
     self.loadUserInfoTimer?.invalidate()
     self.loadUserInfoTimer = Timer.scheduledTimer(
-      withTimeInterval: isDebug ? 10.0 : 60.0,
+      withTimeInterval: KNEnvironment.default == .ropsten ? 10.0 : 60.0,
       repeats: true,
       block: { [weak self] _ in
         guard let user = IEOUserStorage.shared.user else {
