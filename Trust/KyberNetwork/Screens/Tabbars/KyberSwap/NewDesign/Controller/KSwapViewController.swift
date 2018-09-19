@@ -638,7 +638,9 @@ extension KSwapViewController: UITextFieldDelegate {
     } else {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
     }
-    _ = self.showWarningDataInvalidIfNeeded()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      _ = self.showWarningDataInvalidIfNeeded()
+    }
   }
 
   fileprivate func updateViewAmountDidChange() {

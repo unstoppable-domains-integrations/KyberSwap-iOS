@@ -214,7 +214,7 @@ class KSwapViewModel {
         }
         return BigInt(0)
       }()
-      return ethRate * self.amountFromBigInt
+      return ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     }()
     guard let cap = self.userCapInWei else { return false }
     return cap >= ethAmount
