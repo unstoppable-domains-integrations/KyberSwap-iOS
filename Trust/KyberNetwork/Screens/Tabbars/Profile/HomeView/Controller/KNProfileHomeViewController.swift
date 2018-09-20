@@ -150,8 +150,12 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func updateUIUserDidSignedIn() {
     guard let user = self.viewModel.currentUser else { return }
+    let url: String = {
+      if user.avatarURL.starts(with: "http") { return user.avatarURL }
+      return "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)"
+    }()
     self.userImageView.setImage(
-      with: "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)",
+      with: url,
       placeholder: UIImage(named: "account"),
       size: nil
     )

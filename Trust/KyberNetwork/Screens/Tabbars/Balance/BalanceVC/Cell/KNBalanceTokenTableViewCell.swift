@@ -95,7 +95,8 @@ struct KNBalanceTokenTableViewCellModel {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
     }()
-    if change >= 0 { return UIColor.Kyber.shamrock }
+    if change == 0 { return UIColor.Kyber.merigold }
+    if change > 0 { return UIColor.Kyber.shamrock }
     return UIColor.Kyber.strawberry
   }
 
@@ -114,7 +115,8 @@ struct KNBalanceTokenTableViewCellModel {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
     }()
-    if change >= 0 { return UIImage(named: "change_up") }
+    if change == 0 { return nil }
+    if change > 0 { return UIImage(named: "change_up") }
     return UIImage(named: "change_down")
   }
 }
