@@ -349,6 +349,8 @@
 		25EE4A7420C54F2F00E2282F /* KNAddNewWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */; };
 		25F96F7B215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F96F79215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift */; };
 		25F96F7C215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F96F7A215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib */; };
+		25F96F8021537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F96F7E21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift */; };
+		25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F96F7F21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib */; };
 		25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */; };
 		25FCB18F2100531900F030A8 /* IEOBuyTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB18E2100531900F030A8 /* IEOBuyTokenViewModel.swift */; };
 		25FCB1912100874F00F030A8 /* IEOCheckHaltedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB1902100874F00F030A8 /* IEOCheckHaltedRequest.swift */; };
@@ -1078,6 +1080,8 @@
 		25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAddNewWalletCoordinator.swift; sourceTree = "<group>"; };
 		25F96F79215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNDocumentPhotoInfoPopUp.swift; sourceTree = "<group>"; };
 		25F96F7A215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNDocumentPhotoInfoPopUp.xib; sourceTree = "<group>"; };
+		25F96F7E21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHoldingDocumentInfoPopUp.swift; sourceTree = "<group>"; };
+		25F96F7F21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNHoldingDocumentInfoPopUp.xib; sourceTree = "<group>"; };
 		25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGeneralProvider.swift; sourceTree = "<group>"; };
 		25FCB18E2100531900F030A8 /* IEOBuyTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOBuyTokenViewModel.swift; sourceTree = "<group>"; };
 		25FCB1902100874F00F030A8 /* IEOCheckHaltedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckHaltedRequest.swift; sourceTree = "<group>"; };
@@ -1883,6 +1887,7 @@
 		2542604B21218EBC0015ECC7 /* Popups */ = {
 			isa = PBXGroup;
 			children = (
+				25F96F7D21537B4A00D7F927 /* HoldingDocumentPhoto */,
 				25F96F78215373A000D7F927 /* DocumentPhoto */,
 				2542604C21218ED60015ECC7 /* MinAcceptableRate */,
 			);
@@ -3405,6 +3410,15 @@
 				25F96F7A215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib */,
 			);
 			path = DocumentPhoto;
+			sourceTree = "<group>";
+		};
+		25F96F7D21537B4A00D7F927 /* HoldingDocumentPhoto */ = {
+			isa = PBXGroup;
+			children = (
+				25F96F7E21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift */,
+				25F96F7F21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib */,
+			);
+			path = HoldingDocumentPhoto;
 			sourceTree = "<group>";
 		};
 		25FCB18D210052FD00F030A8 /* ViewModel */ = {
@@ -5119,6 +5133,7 @@
 				25929C9F20DA5CCC0045CFA3 /* SF Compact Font License.rtf in Resources */,
 				25682B7520EE06CD009738C4 /* KNTransactionDetailsViewController.xib in Resources */,
 				25929C9220DA5CC10045CFA3 /* SFCompactText-SemiboldItalic.otf in Resources */,
+				25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */,
 				25929C5620DA5C760045CFA3 /* SF-Pro-Text-HeavyItalic.otf in Resources */,
 				257A3798205BC99300E86794 /* KNTransactionDetailsTableViewCell.xib in Resources */,
 				257C9FC52078A9F800EE0128 /* KNTransactionCollectionReusableView.xib in Resources */,
@@ -5384,6 +5399,7 @@
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
+				25F96F8021537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift in Sources */,
 				290B2B5F1F9177860053C83E /* UIImage.swift in Sources */,
 				25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */,
 				255D93FF20D56EF9000F757C /* KGOSignInViewController.swift in Sources */,
