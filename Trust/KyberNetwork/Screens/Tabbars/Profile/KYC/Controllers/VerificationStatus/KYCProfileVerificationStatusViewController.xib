@@ -31,15 +31,23 @@
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kyc_status_pending" translatesAutoresizingMaskIntoConstraints="NO" id="3mk-Bp-BIR">
+                    <rect key="frame" x="160.5" y="263.5" width="54" height="54"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vHg-w6-sVe" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="1Au-d0-xBe"/>
                 <constraint firstItem="vHg-w6-sVe" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="5Qh-Xr-UQB"/>
+                <constraint firstItem="vHg-w6-sVe" firstAttribute="top" secondItem="3mk-Bp-BIR" secondAttribute="bottom" constant="16" id="OSb-7l-axp"/>
                 <constraint firstItem="vHg-w6-sVe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="c5d-Y8-hOo"/>
+                <constraint firstItem="3mk-Bp-BIR" firstAttribute="centerX" secondItem="vHg-w6-sVe" secondAttribute="centerX" id="mQn-yN-yYN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vHg-w6-sVe" secondAttribute="trailing" constant="24" id="ssq-8B-Klr"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
+    <resources>
+        <image name="kyc_status_pending" width="54" height="54"/>
+    </resources>
 </document>
