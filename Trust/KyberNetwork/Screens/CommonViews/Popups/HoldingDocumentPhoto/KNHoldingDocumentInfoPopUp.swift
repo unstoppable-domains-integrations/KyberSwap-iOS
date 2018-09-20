@@ -14,6 +14,7 @@ class KNHoldingDocumentInfoPopUp: KNBaseViewController {
 
   fileprivate func addGestureToDismiss() {
 
+    //swiftlint:disable line_length
     self.detailsLabel.text = "Please hold the Passport/ID/Driving License in your hand next to your face.\n\nYour face and the Passport/ID must be clearly visible and any text, numbers or photos on the passport must be readable and not covered by your fingers."
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewDidTap(_:)))

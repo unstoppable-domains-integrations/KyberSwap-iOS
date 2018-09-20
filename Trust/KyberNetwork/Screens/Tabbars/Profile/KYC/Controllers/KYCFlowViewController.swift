@@ -251,7 +251,10 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
             _ = try resp.filterSuccessfulStatusCodes()
             let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
             let success = json["success"] as? Bool ?? false
-            let reason = json["reason"] as? String ?? ""
+            let reason: String = {
+              let reasons = json["reason"] as? [String] ?? []
+              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+            }()
             if success {
               self?.updateViewState(newState: .id)
             } else {
@@ -302,7 +305,10 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
             _ = try resp.filterSuccessfulStatusCodes()
             let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
             let success = json["success"] as? Bool ?? false
-            let reason = (json["reason"] as? [String] ?? []).description
+            let reason: String = {
+              let reasons = json["reason"] as? [String] ?? []
+              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+            }()
             if success {
               self?.updateViewState(newState: .submit)
             } else {
@@ -339,7 +345,10 @@ extension KYCFlowViewController: KYCSubmitInfoViewControllerDelegate {
             _ = try resp.filterSuccessfulStatusCodes()
             let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
             let success = json["success"] as? Bool ?? false
-            let reason = json["reason"] as? String ?? ""
+            let reason: String = {
+              let reasons = json["reason"] as? [String] ?? []
+              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+            }()
             if success {
               self?.updateViewState(newState: .done)
             } else {

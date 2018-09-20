@@ -74,7 +74,6 @@ class KNSettingsCoordinator: Coordinator {
       self.navigationController.popToRootViewController(animated: true)
     }
     self.listWalletsCoordinator.updateNewSession(self.session)
-//    self.rootViewController.userDidSelectNewWallet(with: self.session.wallet.address.description)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
@@ -100,6 +99,8 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.settingsViewControllerWalletsButtonPressed()
     case .contact:
       self.navigationController.pushViewController(self.contactVC, animated: true)
+    case .support:
+      self.navigationController.openSafari(with: "https://kybernetwork.zendesk.com/hc/en-us/requests/new")
     case .about:
       self.openCommunityURL("https://kyber.network/about/company")
     case .telegram:
@@ -277,7 +278,6 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   }
 
   func passcodeCoordinatorDidCancel() {
-//    self.rootViewController.userDidCancelCreatePasscode()
   }
 }
 
