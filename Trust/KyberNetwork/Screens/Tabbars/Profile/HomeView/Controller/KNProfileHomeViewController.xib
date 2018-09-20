@@ -58,7 +58,7 @@
                             <rect key="frame" x="119.5" y="100" width="135" height="135"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Know Your Customer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9b-Vb-xfi">
-                            <rect key="frame" x="90.5" y="279" width="194" height="22"/>
+                            <rect key="frame" x="91" y="279" width="194" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -126,7 +126,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLX-sM-X5k">
-                                    <rect key="frame" x="157.5" y="46" width="60.5" height="22"/>
+                                    <rect key="frame" x="158" y="46" width="60.5" height="22"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -157,7 +157,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCa-T9-DFD">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account" translatesAutoresizingMaskIntoConstraints="NO" id="YjR-XA-Zz1">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account" translatesAutoresizingMaskIntoConstraints="NO" id="YjR-XA-Zz1">
                                             <rect key="frame" x="18" y="18" width="56" height="56"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="56" id="hTU-fv-Btw"/>
@@ -433,7 +433,7 @@ Increase KyberSwap's trade limits</string>
         </view>
     </objects>
     <resources>
-        <image name="account" width="24" height="24"/>
+        <image name="account" width="56" height="56"/>
         <image name="avatar_big_icon" width="135" height="135"/>
         <image name="qr_code_icon" width="22" height="22"/>
     </resources>

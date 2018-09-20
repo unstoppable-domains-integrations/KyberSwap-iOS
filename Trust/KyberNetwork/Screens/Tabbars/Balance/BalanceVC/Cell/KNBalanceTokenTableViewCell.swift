@@ -90,12 +90,12 @@ struct KNBalanceTokenTableViewCellModel {
   }
 
   var colorChange24h: UIColor {
-    guard let tracker = self.trackerRate else { return UIColor.Kyber.shamrock }
+    guard let tracker = self.trackerRate else { return UIColor.Kyber.grayChateau }
     let change: Double = {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
     }()
-    if change == 0 { return UIColor.Kyber.merigold }
+    if change == 0 { return UIColor.Kyber.grayChateau }
     if change > 0 { return UIColor.Kyber.shamrock }
     return UIColor.Kyber.strawberry
   }

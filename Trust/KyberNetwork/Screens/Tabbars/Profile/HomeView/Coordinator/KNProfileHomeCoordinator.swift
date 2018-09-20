@@ -86,6 +86,7 @@ class KNProfileHomeCoordinator: Coordinator {
   }
 
   fileprivate func timerLoadUserInfo() {
+    self.loadUserInfoTimer?.invalidate()
     guard let user = IEOUserStorage.shared.user else {
       self.loadUserInfoTimer?.invalidate()
       return
@@ -94,7 +95,8 @@ class KNProfileHomeCoordinator: Coordinator {
       type: user.tokenType,
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
-      expireTime: user.expireTime) { success in
+      expireTime: user.expireTime,
+      hasUser: true) { success in
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
         }
@@ -113,7 +115,8 @@ class KNProfileHomeCoordinator: Coordinator {
           type: user.tokenType,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
-          expireTime: user.expireTime) { success in
+          expireTime: user.expireTime,
+          hasUser: true) { success in
             if success {
               self?.rootViewController.coordinatorUserDidSignInSuccessfully()
             }
@@ -134,9 +137,8 @@ class KNProfileHomeCoordinator: Coordinator {
 // MARK: Callbacks, networking
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
-    IEOUserStorage.shared.signedOut()
-    IEOUserStorage.shared.delete(objects: IEOUserStorage.shared.objects)
     self.loadUserInfoTimer?.invalidate()
+    IEOUserStorage.shared.signedOut()
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
   }
@@ -222,6 +224,7 @@ extension KNProfileHomeCoordinator {
                 accessToken: accessToken,
                 refreshToken: refreshToken,
                 expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970,
+                hasUser: false,
                 completion: { success in
                   if success {
                     let name = IEOUserStorage.shared.user?.name ?? ""
@@ -229,7 +232,6 @@ extension KNProfileHomeCoordinator {
                   }
               }
               )
-              self?.timerLoadUserInfo()
             } catch {
               self?.navigationController.hideLoading()
               self?.navigationController.showWarningTopBannerMessage(
@@ -246,7 +248,7 @@ extension KNProfileHomeCoordinator {
     }
   }
 
-  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, completion: @escaping (Bool) -> Void) {
+  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, hasUser: Bool, completion: @escaping (Bool) -> Void) {
     // got access token, user access token  to retrieve user information
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
@@ -255,6 +257,10 @@ extension KNProfileHomeCoordinator {
         DispatchQueue.main.async {
           guard let _ = `self` else { return }
           self?.navigationController.hideLoading()
+          if hasUser && IEOUserStorage.shared.user == nil {
+            self?.loadUserInfoTimer?.invalidate()
+            return
+          }
           switch userInfoResult {
           case .success(let userInfo):
             guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
@@ -274,6 +280,7 @@ extension KNProfileHomeCoordinator {
               expireTime: expireTime
             )
             self?.timerAccessTokenExpired()
+            if !hasUser { self?.timerLoadUserInfo() }
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
             completion(true)
           // Already have user
@@ -367,6 +374,7 @@ extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       expireTime: user.expireTime,
+      hasUser: true,
       completion: { success in
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
