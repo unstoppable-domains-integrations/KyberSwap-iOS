@@ -135,7 +135,10 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   @IBAction func photoOfYourDocumentInfoButtonPressed(_ sender: Any) {
-    //TODO: Show info
+    let documentTipsVC = KNDocumentPhotoInfoPopUp()
+    documentTipsVC.modalPresentationStyle = .overFullScreen
+    documentTipsVC.modalTransitionStyle = .crossDissolve
+    self.present(documentTipsVC, animated: true, completion: nil)
   }
 
   @IBAction func browseDocumentPhotoButtonPressed(_ sender: Any) {

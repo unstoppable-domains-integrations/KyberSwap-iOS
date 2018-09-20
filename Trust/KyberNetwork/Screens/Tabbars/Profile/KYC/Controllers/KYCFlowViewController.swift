@@ -63,6 +63,7 @@ class KYCFlowViewController: KNBaseViewController {
 
   fileprivate var viewModel: KYCFlowViewModel
   weak var delegate: KYCFlowViewControllerDelegate?
+  fileprivate var isViewSetup: Bool = false
 
   init(viewModel: KYCFlowViewModel) {
     self.viewModel = viewModel
@@ -75,12 +76,19 @@ class KYCFlowViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
   }
 
   fileprivate func setupUI() {
     self.setupStepView()
-    self.setupPersonalInfoView()
+    self.setupControllers()
   }
 
   fileprivate func setupStepView() {
@@ -88,7 +96,7 @@ class KYCFlowViewController: KNBaseViewController {
     self.stepView.updateView(with: self.viewModel.stepState)
   }
 
-  fileprivate func setupPersonalInfoView() {
+  fileprivate func setupControllers() {
     let width = self.view.frame.width
     let height = self.view.frame.height - self.scrollView.frame.minY
 
