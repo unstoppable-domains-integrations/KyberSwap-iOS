@@ -176,7 +176,10 @@ extension KyberGOService: TargetType {
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .getUserInfo(let accessToken):
-      let json: JSONDictionary = [ "access_token": accessToken ]
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+        "internal_app_key": KNSecret.internalAPIKey,
+      ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .getTxList(let accessToken):

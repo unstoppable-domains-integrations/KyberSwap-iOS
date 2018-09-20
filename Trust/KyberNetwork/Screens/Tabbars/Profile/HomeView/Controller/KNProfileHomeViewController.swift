@@ -161,19 +161,28 @@ class KNProfileHomeViewController: KNBaseViewController {
     )
     self.userNameLabel.text = user.name
     self.userEmailLabel.text = user.contactID
-    self.userKYCStatusLabel.text = "\(user.kycStatus)  "
+    let status: String = {
+      switch user.kycStatus.lowercased() {
+      case "draft", "none": return "Unverified"
+      case "pending": return "Pending"
+      case "approved": return "Approved"
+      case "rejected": return "Rejected"
+      default: return "Unknown"
+      }
+    }()
+    self.userKYCStatusLabel.text = "\(status)  "
 
-    if user.kycStatus.lowercased() == "approve" {
+    if user.kycStatus.lowercased() == "approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
     } else if user.kycStatus.lowercased() == "pending" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.merigold
-    } else if user.kycStatus.lowercased() == "reject" {
+    } else if user.kycStatus.lowercased() == "rejected" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.strawberry
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
 
-    if user.kycStatus.lowercased() == "approve" || user.kycStatus.lowercased() == "pending" {
+    if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" {
       self.heightConstraintUserKYCStatusView.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {
