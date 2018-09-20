@@ -247,7 +247,7 @@ extension KNProfileHomeCoordinator {
   }
 
   fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, completion: @escaping (Bool) -> Void) {
-    // got access token, user access token to retrieve user information
+    // got access token, user access token  to retrieve user information
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
       let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
