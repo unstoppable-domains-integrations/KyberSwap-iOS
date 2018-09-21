@@ -224,7 +224,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    if self.showWarningInvalidAmountDataIfNeeded() { return }
+    if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
   }
@@ -272,13 +272,15 @@ class KSendTokenViewController: KNBaseViewController {
    Return true if amount is invalid and a warning message is shown,
    false otherwise
    */
-  fileprivate func showWarningInvalidAmountDataIfNeeded() -> Bool {
-    guard self.viewModel.isHavingEnoughETHForFee else {
-      self.showWarningTopBannerMessage(
-        with: "Insufficient ETH".toBeLocalised(),
-        message: "You do not have enough ETH to pay for transaction fee".toBeLocalised()
-      )
-      return true
+  fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
+    if isConfirming {
+      guard self.viewModel.isHavingEnoughETHForFee else {
+        self.showWarningTopBannerMessage(
+          with: "Insufficient ETH".toBeLocalised(),
+          message: "Not have enough ETH to pay for transaction fee".toBeLocalised()
+        )
+        return true
+      }
     }
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
@@ -290,7 +292,7 @@ class KSendTokenViewController: KNBaseViewController {
     guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(
         with: "Invalid Amount".toBeLocalised(),
-        message: "Your balance is not enough to perform the transaction".toBeLocalised()
+        message: "Balance is not enough to perform the transaction".toBeLocalised()
       )
       return true
     }

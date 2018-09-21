@@ -47,9 +47,10 @@ class KNSendTokenViewModel: NSObject {
     return Address(string: self.addressString)
   }
 
-  init(from: TokenObject, balance: Balance?) {
+  init(from: TokenObject, balances: [String: Balance]) {
     self.from = from
-    self.balance = balance
+    self.balances = balances
+    self.balance = balances[from.contract]
   }
 
   var navTitle: String {

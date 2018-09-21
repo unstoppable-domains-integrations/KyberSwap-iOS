@@ -14,7 +14,7 @@ class KNSendTokenViewCoordinator: Coordinator {
   lazy var rootViewController: KSendTokenViewController = {
     let viewModel = KNSendTokenViewModel(
       from: self.from,
-      balance: self.balances[self.from.contract]
+      balances: self.balances
     )
     let controller = KSendTokenViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
@@ -47,6 +47,7 @@ class KNSendTokenViewCoordinator: Coordinator {
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
+    self.rootViewController.coordinatorUpdateBalances(self.balances)
   }
 
   func stop() {

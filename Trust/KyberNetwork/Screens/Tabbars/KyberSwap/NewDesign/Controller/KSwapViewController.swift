@@ -260,7 +260,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    if self.showWarningDataInvalidIfNeeded() { return }
+    if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
@@ -334,10 +334,10 @@ class KSwapViewController: KNBaseViewController {
    Return true if data is invalid and a warning message is shown,
    false otherwise
   */
-  fileprivate func showWarningDataInvalidIfNeeded() -> Bool {
+  fileprivate func showWarningDataInvalidIfNeeded(isConfirming: Bool = false) -> Bool {
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
-        with: "Not supported".toBeLocalised(),
+        with: "Unsupported".toBeLocalised(),
         message: "Can not swap the same token".toBeLocalised(),
         time: 1.5
       )
@@ -346,7 +346,7 @@ class KSwapViewController: KNBaseViewController {
     guard self.viewModel.isHavingEnoughETHForFee else {
       self.showWarningTopBannerMessage(
         with: "Insufficient ETH".toBeLocalised(),
-        message: "You do not have enough ETH to pay for transaction fee".toBeLocalised()
+        message: "Not have enough ETH to pay for transaction fee".toBeLocalised()
       )
       return true
     }
@@ -360,24 +360,36 @@ class KSwapViewController: KNBaseViewController {
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
         with: "Amount too big".toBeLocalised(),
-        message: "Your balance is not be enough to make the transaction.".toBeLocalised()
+        message: "Balance is not be enough to make the transaction.".toBeLocalised()
       )
       return true
     }
-    guard self.viewModel.isCapEnough else {
-      self.showWarningTopBannerMessage(
-        with: "Amount too big".toBeLocalised(),
-        message: "Your cap has reached. You could increase your cap by completing KYC".toBeLocalised(),
-        time: 2.0
-      )
-      return true
+    if isConfirming {
+      guard self.viewModel.userCapInWei != nil else {
+        self.showWarningTopBannerMessage(
+          with: "".toBeLocalised(),
+          message: "We are updating your trade cap limit.".toBeLocalised(),
+          time: 2.0
+        )
+        return true
+      }
+      guard self.viewModel.isCapEnough else {
+        self.showWarningTopBannerMessage(
+          with: "Amount too big".toBeLocalised(),
+          message: "Your cap has reached. Increase your cap by completing KYC.".toBeLocalised(),
+          time: 2.0
+        )
+        return true
+      }
     }
-    guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
-      self.showWarningTopBannerMessage(
-        with: "Invalid rate".toBeLocalised(),
-        message: "Please wait for estimated rate to exchange".toBeLocalised()
-      )
-      return true
+    if isConfirming {
+      guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
+        self.showWarningTopBannerMessage(
+          with: "Rate might change".toBeLocalised(),
+          message: "Please wait for expected rate to be updated".toBeLocalised()
+        )
+        return true
+      }
     }
     return false
   }
