@@ -3,6 +3,7 @@
 import UIKit
 import Moya
 import Branch
+import Result
 
 class KNProfileHomeCoordinator: Coordinator {
 
@@ -268,6 +269,7 @@ extension KNProfileHomeCoordinator {
                 with: "Error",
                 message: "Can not get user info"
               )
+              completion(false)
               return
             }
             let user = IEOUser(dict: userJSON)
@@ -349,19 +351,92 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       self.handleUserSignOut()
     case .openVerification:
       self.openVerificationView()
-    case .addWallet:
-      self.openAddWallet()
     }
   }
 
   fileprivate func openVerificationView() {
-    let user = IEOUserStorage.shared.user!
-    self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
-    self.kycCoordinator?.delegate = self
-    self.kycCoordinator?.start()
+    guard let user = IEOUserStorage.shared.user else { return }
+    let status = user.kycStatus.lowercased()
+    if status == "approved" || status == "pending" { return }
+    if status == "rejected" {
+      // need to call remove first
+      let alert = UIAlertController(
+        title: "Remove old profile?".toBeLocalised(),
+        message: "To resubmit, you will need to remove your old profile first".toBeLocalised(),
+        preferredStyle: .alert
+      )
+      alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+        self.sendRemoveProfile(userID: user.userID, accessToken: user.accessToken)
+      }))
+      alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+      self.navigationController.present(alert, animated: true, completion: nil)
+    } else {
+      // draft or none, just open the verification
+      self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+      self.kycCoordinator?.delegate = self
+      self.kycCoordinator?.start()
+    }
   }
 
-  fileprivate func openAddWallet() {
+  fileprivate func sendRemoveProfile(userID: Int, accessToken: String) {
+    let provider = MoyaProvider<ProfileKYCService>()
+    let service = ProfileKYCService.removeProfile(accessToken: accessToken, userID: "\(userID)")
+    self.navigationController.displayLoading(text: "Removing...", animated: true)
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let success: Bool = json["success"] as? Bool ?? false
+              let message: String = {
+                if success { return json["message"] as? String ?? "" }
+                let reasons: [String] = json["reason"] as? [String] ?? []
+                return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+              }()
+              if !success {
+                // Unsuccessful remove profile
+                self.navigationController.showErrorTopBannerMessage(
+                  with: "Error",
+                  message: message,
+                  time: 1.5
+                )
+              } else {
+                // Success
+                self.navigationController.showSuccessTopBannerMessage(
+                  with: "Removed".toBeLocalised(),
+                  message: "Your profile has been removed. You can now resubmit your profile again".toBeLocalised(),
+                  time: 2.0
+                )
+                guard let user = IEOUserStorage.shared.user else { return }
+                self.navigationController.displayLoading(text: "Updating info...", animated: true)
+                self.getUserInfo(
+                  type: user.tokenType,
+                  accessToken: user.accessToken,
+                  refreshToken: user.refreshToken,
+                  expireTime: user.expireTime,
+                  hasUser: true,
+                  completion: { [weak self] success in
+                  if success {
+                    self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+                    // Open verification view again
+                    self?.openVerificationView()
+                  }
+                })
+              }
+            } catch let error {
+              self.navigationController.displayError(error: error)
+            }
+          case .failure(let error):
+            self.navigationController.displayError(error: error)
+          }
+        }
+      }
+    }
   }
 }
 

@@ -249,6 +249,7 @@ enum ProfileKYCService {
   case userWallets(accessToken: String)
   case checkWalletExist(accessToken: String, wallet: String)
   case addWallet(accessToken: String, label: String, address: String)
+  case removeProfile(accessToken: String, userID: String)
 
   var apiPath: String {
     switch self {
@@ -258,6 +259,7 @@ enum ProfileKYCService {
     case .userWallets: return KNSecret.userWalletsEndpoint
     case .checkWalletExist: return KNSecret.checkWalletsExistEndpoint
     case .addWallet: return KNSecret.addWallet
+    case .removeProfile: return KNSecret.removeProfile
     }
   }
 }
@@ -327,6 +329,13 @@ extension ProfileKYCService: TargetType {
         "access_token": accessToken,
         "label": label,
         "address": address,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .removeProfile(let accessToken, let userID):
+      let json: JSONDictionary = [
+        "uid": userID,
+        "access_token": accessToken,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

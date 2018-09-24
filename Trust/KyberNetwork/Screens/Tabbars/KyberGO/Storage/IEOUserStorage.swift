@@ -50,6 +50,7 @@ class IEOUserStorage {
 
   func delete(objects: [IEOUser]) {
     if self.realm == nil { return }
+    objects.forEach { $0.removeKYCStep() }
     try! self.realm.write {
       self.realm.delete(objects)
     }

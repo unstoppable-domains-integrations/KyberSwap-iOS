@@ -10,7 +10,6 @@ enum KNProfileHomeViewEvent {
   case signUp
   case logOut
   case openVerification
-  case addWallet
 }
 
 protocol KNProfileHomeViewControllerDelegate: class {
@@ -172,17 +171,20 @@ class KNProfileHomeViewController: KNBaseViewController {
     }()
     self.userKYCStatusLabel.text = "\(status)  "
 
-    if user.kycStatus.lowercased() == "approved" {
+    let actionTitle: String = status == "Rejected" ? "Re-submit" : "Verify"
+    self.userKYCActionButton.setTitle(actionTitle, for: .normal)
+
+    if status == "Approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
-    } else if user.kycStatus.lowercased() == "pending" {
+    } else if status == "Pending" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.merigold
-    } else if user.kycStatus.lowercased() == "rejected" {
+    } else if status == "Rejected" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.strawberry
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
 
-    if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" {
+    if status == "Approved" || status == "Pending" {
       self.heightConstraintUserKYCStatusView.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {

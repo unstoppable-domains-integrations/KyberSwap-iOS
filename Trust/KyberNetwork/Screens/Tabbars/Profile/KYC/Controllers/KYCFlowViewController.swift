@@ -2,6 +2,7 @@
 
 import UIKit
 import Moya
+import Result
 
 enum KYCFlowViewEvent {
   case back
@@ -29,7 +30,12 @@ class KYCFlowViewModel {
 
   init(user: IEOUser) {
     self.user = user
-    self.stepState = .personalInfo
+    self.stepState = {
+      let kycStatus = user.kycStatus.lowercased()
+      if kycStatus == "rejected" { return .personalInfo }
+      if kycStatus != "none" && kycStatus != "draft" { return .done }
+      return KNKYCStepViewState(rawValue: user.kycStep - 1) ?? .done
+    }()
   }
 
   func updateStepState(_ step: KNKYCStepViewState) {
@@ -166,6 +172,7 @@ class KYCFlowViewController: KNBaseViewController {
       width: self.scrollView.frame.width * 4.0,
       height: 1.0
     )
+    self.updateViewState(newState: self.viewModel.stepState)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -231,7 +238,6 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
         residenceCountry: country
       )
       guard let user = IEOUserStorage.shared.user else { return }
-      let provider = MoyaProvider<ProfileKYCService>()
       let service = ProfileKYCService.personalInfo(
         accessToken: user.accessToken,
         firstName: firstName,
@@ -243,29 +249,20 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
         wallets: wallets
       )
       self.displayLoading()
-      provider.request(service) { [weak self] result in
+      self.sendProfileServiceRequest(service: service) { [weak self] result in
         self?.hideLoading()
         switch result {
         case .success(let resp):
-          do {
-            _ = try resp.filterSuccessfulStatusCodes()
-            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-            let success = json["success"] as? Bool ?? false
-            let reason: String = {
-              let reasons = json["reason"] as? [String] ?? []
-              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
-            }()
-            if success {
-              self?.updateViewState(newState: .id)
-            } else {
-              self?.showWarningTopBannerMessage(
-                with: "Error",
-                message: reason,
-                time: 1.5
-              )
-            }
-          } catch let error {
-            self?.displayError(error: error)
+          let success: Bool = resp.0
+          let message: String = resp.1
+          if success {
+            self?.updateViewState(newState: .id)
+          } else {
+            self?.showWarningTopBannerMessage(
+              with: "Error",
+              message: message,
+              time: 1.5
+            )
           }
         case .failure(let error):
           self?.displayError(error: error)
@@ -288,7 +285,6 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
       guard let user = IEOUserStorage.shared.user else { return }
       guard let docImageData = UIImageJPEGRepresentation(docImage, 0.0),
         let docHoldingImageData = UIImageJPEGRepresentation(docHoldingImage, 0.0) else { return }
-      let provider = MoyaProvider<ProfileKYCService>()
       let service = ProfileKYCService.identityInfo(
         accessToken: user.accessToken,
         documentType: docType,
@@ -297,29 +293,20 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
         docHoldingImage: docHoldingImageData
       )
       self.displayLoading()
-      provider.request(service) { [weak self] result in
+      self.sendProfileServiceRequest(service: service) { [weak self] result in
         self?.hideLoading()
         switch result {
         case .success(let resp):
-          do {
-            _ = try resp.filterSuccessfulStatusCodes()
-            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-            let success = json["success"] as? Bool ?? false
-            let reason: String = {
-              let reasons = json["reason"] as? [String] ?? []
-              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
-            }()
-            if success {
-              self?.updateViewState(newState: .submit)
-            } else {
-              self?.showWarningTopBannerMessage(
-                with: "Error",
-                message: reason,
-                time: 1.5
-              )
-            }
-          } catch let error {
-            self?.displayError(error: error)
+          let success: Bool = resp.0
+          let message: String = resp.1
+          if success {
+            self?.updateViewState(newState: .submit)
+          } else {
+            self?.showWarningTopBannerMessage(
+              with: "Error",
+              message: message,
+              time: 1.5
+            )
           }
         case .failure(let error):
           self?.displayError(error: error)
@@ -334,37 +321,63 @@ extension KYCFlowViewController: KYCSubmitInfoViewControllerDelegate {
     switch event {
     case .submit:
       guard let user = IEOUserStorage.shared.user else { return }
-      let provider = MoyaProvider<ProfileKYCService>()
       let service = ProfileKYCService.submitKYC(accessToken: user.accessToken)
       self.displayLoading()
-      provider.request(service) { [weak self] result in
+      self.sendProfileServiceRequest(service: service) { [weak self] result in
         self?.hideLoading()
         switch result {
         case .success(let resp):
-          do {
-            _ = try resp.filterSuccessfulStatusCodes()
-            let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-            let success = json["success"] as? Bool ?? false
-            let reason: String = {
-              let reasons = json["reason"] as? [String] ?? []
-              return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
-            }()
-            if success {
-              self?.updateViewState(newState: .done)
-            } else {
-              self?.showWarningTopBannerMessage(
-                with: "Error",
-                message: reason,
-                time: 1.5
-              )
-            }
-          } catch let error {
-            self?.displayError(error: error)
+          let success: Bool = resp.0
+          let message: String = resp.1
+          if success {
+            self?.updateViewState(newState: .done)
+          } else {
+            self?.showWarningTopBannerMessage(
+              with: "Error",
+              message: message,
+              time: 1.5
+            )
           }
         case .failure(let error):
           self?.displayError(error: error)
         }
       }
+    }
+  }
+}
+
+// Sending ProfileKYCService requests
+extension KYCFlowViewController {
+  /*
+   Send Profile Service request
+   Return (bool, string): success and error message
+   */
+  fileprivate func sendProfileServiceRequest(service: ProfileKYCService, completion: @escaping (Result<(Bool, String), AnyError>) -> Void) {
+    let provider = MoyaProvider<ProfileKYCService>()
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service, completion: { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let success: Bool = json["success"] as? Bool ?? false
+              let message: String = {
+                if success { return json["message"] as? String ?? "" }
+                let reasons: [String] = json["reason"] as? [String] ?? []
+                return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+              }()
+              completion(.success((success, message)))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+      })
     }
   }
 }

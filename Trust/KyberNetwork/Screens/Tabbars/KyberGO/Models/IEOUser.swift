@@ -3,6 +3,12 @@
 import UIKit
 import RealmSwift
 
+enum IEOKYCStep: Int {
+  case personalInfo = 1
+  case identity = 2
+  case submit = 3
+}
+
 class IEOUser: Object {
 
   @objc dynamic var userID: Int = -1
@@ -30,6 +36,8 @@ class IEOUser: Object {
     if let arr = dict["active_wallets"] as? [String] {
       arr.forEach { self.registeredAddress.append($0.lowercased()) }
     }
+    let step = dict["kyc_step"] as? Int ?? 1
+    self.updateKYCStep(step)
   }
 
   func updateToken(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
@@ -37,6 +45,22 @@ class IEOUser: Object {
     self.accessToken = accessToken
     self.refreshToken = refreshToken
     self.expireTime = expireTime
+  }
+
+  fileprivate func updateKYCStep(_ step: Int) {
+    let userDefaults = UserDefaults.standard
+    userDefaults.set(step, forKey: "kUserKYCStepKey_\(self.userID)")
+    userDefaults.synchronize()
+  }
+
+  func removeKYCStep() {
+    let userDefaults = UserDefaults.standard
+    userDefaults.removeObject(forKey: "kUserKYCStepKey_\(self.userID)")
+    userDefaults.synchronize()
+  }
+
+  var kycStep: Int {
+    return UserDefaults.standard.object(forKey: "kUserKYCStepKey_\(self.userID)") as? Int ?? 1
   }
 
   override class func primaryKey() -> String? {
