@@ -52,7 +52,7 @@ class KNListWalletsCoordinator: Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: false)
+    self.navigationController.popViewController(animated: true)
   }
 
   func updateNewSession(_ session: KNSession) {

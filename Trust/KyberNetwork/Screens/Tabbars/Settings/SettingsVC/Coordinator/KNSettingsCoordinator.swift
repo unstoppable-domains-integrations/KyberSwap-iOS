@@ -103,6 +103,24 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.openSafari(with: "https://kybernetwork.zendesk.com/hc/en-us/requests/new")
     case .about:
       self.openCommunityURL("https://kyber.network/about/company")
+    case .rateMyApp:
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Unsupported",
+        message: "App needs to be on AppStore before users can rate",
+        time: 1.5
+      )
+    case .changePasscode:
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Unimplemented",
+        message: "This feature is not available yet",
+        time: 1.5
+      )
+    case .shareWithFriends:
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Unimplemented",
+        message: "Needs to thing what to share",
+        time: 1.5
+      )
     case .telegram:
       self.openCommunityURL("https://t.me/kybernetwork")
     case .github:
@@ -119,7 +137,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
     case .google:
       self.openCommunityURL("https://kyber.network")
-    default: break
     }
   }
 
