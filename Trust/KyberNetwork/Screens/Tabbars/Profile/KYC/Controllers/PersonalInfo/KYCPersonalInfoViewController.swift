@@ -440,6 +440,33 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       self.walletsTableView.reloadData()
     }
   }
+
+  func updatePersonalInfoView(with details: IEOUserKYCDetails) {
+    let dateFormatter: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy-MM-dd"
+      return formatter
+    }()
+    guard !details.firstName.isEmpty else { return }
+    self.firstNameTextField.text = details.firstName
+    self.lastNameTextField.text = details.lastName
+    self.viewModel.updateGender(details.gender ? "Male": "Female")
+    self.updateGenderUI()
+    self.viewModel.updateDoB(details.dob)
+    if let dob = dateFormatter.date(from: details.dob) {
+      self.dateOfBirthTextField.text = details.dob
+      self.datePicker.setDate(dob, animated: false)
+    }
+    if let nationalID = self.viewModel.nationalities.index(of: details.nationality) {
+      self.nationalityTextField.text = details.nationality
+      self.nationalityPickerView.selectRow(nationalID, inComponent: 0, animated: false)
+    }
+    if let countryID = self.viewModel.countries.index(of: details.country) {
+      self.countryOfResidenceTextField.text = details.country
+      self.countryPickerView.selectRow(countryID, inComponent: 0, animated: false)
+    }
+    self.view.layoutIfNeeded()
+  }
 }
 
 extension KYCPersonalInfoViewController: UITableViewDelegate {

@@ -173,6 +173,12 @@ class KYCFlowViewController: KNBaseViewController {
       height: 1.0
     )
     self.updateViewState(newState: self.viewModel.stepState)
+
+    if let details = self.viewModel.user.kycDetails {
+      personalInfoVC.updatePersonalInfoView(with: details)
+      identityInfoVC.updateIdentityInfo(with: details)
+      submitInfoVC.updateSubmitInfo(with: details)
+    }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

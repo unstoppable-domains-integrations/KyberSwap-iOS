@@ -82,3 +82,31 @@ class IEOUserStorage {
     self.delete(objects: removedUsers)
   }
 }
+
+// For IEOUserKYCDetails
+extension IEOUserStorage {
+  var kycDetailObjects: [IEOUserKYCDetails] {
+    return self.realm.objects(IEOUserKYCDetails.self)
+      .sorted(byKeyPath: "userID", ascending: true)
+      .filter { $0.userID != -1 }
+  }
+
+  func getKYCDetails(for userID: Int) -> IEOUserKYCDetails? {
+    return self.kycDetailObjects.first(where: { $0.userID == userID })
+  }
+
+  func deleteKYCDetails(for userID: Int) {
+    if self.realm == nil { return }
+    if let object = self.getKYCDetails(for: userID) {
+      try! self.realm.write {
+        self.realm.delete(object)
+      }
+    }
+  }
+
+  func updateKYCDetails(object: IEOUserKYCDetails) {
+    self.realm.beginWrite()
+    self.realm.add(object, update: true)
+    try! self.realm.commitWrite()
+  }
+}

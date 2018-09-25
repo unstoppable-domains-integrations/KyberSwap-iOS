@@ -26,6 +26,8 @@ class KNProfileHomeViewModel: NSObject {
           let dataArr = json["data"] as? [JSONDictionary] ?? []
           let values = dataArr.map({ ($0["label"] as? String ?? "", $0["address"] as? String ?? "") })
           self.wallets = values
+          let contacts = self.wallets.map({ return KNContact(address: $0.1, name: $0.0) })
+          KNContactStorage.shared.update(contacts: contacts)
           completion(.success(values))
         } catch let error {
           completion(.failure(AnyError(error)))

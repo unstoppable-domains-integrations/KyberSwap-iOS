@@ -96,4 +96,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   @IBAction func submitButonPressed(_ sender: Any) {
     self.delegate?.submitInfoViewController(self, run: .submit)
   }
+
+  func updateSubmitInfo(with details: IEOUserKYCDetails) {
+  }
 }
