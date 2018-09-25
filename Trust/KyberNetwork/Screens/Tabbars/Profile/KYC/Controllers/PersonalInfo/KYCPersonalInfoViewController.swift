@@ -1,5 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+//swiftlint:disable file_length
+
 import UIKit
 import Moya
 import Result
@@ -229,6 +231,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     )
 
     self.dateOfBirthTextField.inputView = self.datePicker
+    self.dateOfBirthTextField.delegate = self
     self.view.addSubview(self.fakeTextField)
   }
 
@@ -279,6 +282,11 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.nationalityTextField.text ?? ""
+    if let id = self.viewModel.nationalities.index(of: self.currentValue) {
+      self.currentValue = self.viewModel.nationalities[id]
+    } else {
+      self.currentValue = self.viewModel.nationalities[0]
+    }
 
     self.fakeTextField.becomeFirstResponder()
   }
@@ -289,6 +297,11 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.countryOfResidenceTextField.text ?? ""
+    if let id = self.viewModel.countries.index(of: self.currentValue) {
+      self.currentValue = self.viewModel.countries[id]
+    } else {
+      self.currentValue = self.viewModel.countries[0]
+    }
 
     self.fakeTextField.becomeFirstResponder()
   }
@@ -578,6 +591,14 @@ extension KYCPersonalInfoViewController: UIPickerViewDataSource {
       string: string,
       attributes: attributes
     )
+  }
+}
+
+extension KYCPersonalInfoViewController: UITextFieldDelegate {
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if textField == self.dateOfBirthTextField {
+      self.dateOfBirthDidChange(textField)
+    }
   }
 }
 
