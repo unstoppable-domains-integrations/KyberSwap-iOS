@@ -58,7 +58,7 @@ extension KNTrackerService: TargetType {
     switch self {
     case .getTrades(let fromDate, let toDate, let address):
       let path: String = {
-        var path = "/api/search?q=\(address)&exportData=true"
+        var path = "\(KNSecret.getTradeEndpoint)?q=\(address)&exportData=true"
         if let date = fromDate {
           path += "&fromDate=\(date.timeIntervalSince1970)"
         }
@@ -69,12 +69,12 @@ extension KNTrackerService: TargetType {
       }()
       return URL(string: baseURLString + path)!
     case .getSupportedTokens:
-      return URL(string: baseURLString + "/api/tokens/supported")!
+      return URL(string: baseURLString + KNSecret.getSupportedToken)!
     case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
-      let url = "/chart/history?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
+      let url = "\(KNSecret.getChartHistory)?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!
     case .getRates:
-      return URL(string: baseURLString + "/api/change24h?usd=1")!
+      return URL(string: baseURLString + KNSecret.getChange)!
     }
   }
 

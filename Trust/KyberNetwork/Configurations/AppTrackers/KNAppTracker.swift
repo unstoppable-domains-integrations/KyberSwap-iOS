@@ -13,7 +13,6 @@ enum KNTransactionLoadState: Int {
 class KNAppTracker {
 
   // Env
-  static let kInternalCacheEndpointKey: String = "kInternalCacheEndpointKey"
   static let kInternalTrackerEndpointKey: String = "kInternalTrackerEndpointKey"
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
@@ -29,22 +28,16 @@ class KNAppTracker {
   static let kAppStyle: String = "kAppStyle"
   static let userDefaults: UserDefaults = UserDefaults.standard
 
+  static func internCachedEnpoint() -> String {
+    return KNSecret.internalCachedEndpoint
+  }
+
   static func internalTrackerEndpoint() -> String {
     return KNEnvironment.default == .ropsten ? KNSecret.debugTrackerURL : KNSecret.trackerURL
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
     userDefaults.set(value, forKey: kInternalTrackerEndpointKey)
-    userDefaults.synchronize()
-  }
-
-  // MARK: Internal cache endpoint key
-  static func internalCacheEndpoint() -> String {
-    return "https://production-cache.kyber.network"
-  }
-
-  static func updateInternalCacheEndpoint(value: String) {
-    userDefaults.set(value, forKey: kInternalCacheEndpointKey)
     userDefaults.synchronize()
   }
 

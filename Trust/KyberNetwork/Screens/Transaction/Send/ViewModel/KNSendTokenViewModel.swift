@@ -30,7 +30,7 @@ class KNSendTokenViewModel: NSObject {
     let string = self.balance?.value.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 9)
+      maxFractionDigits: min(self.from.decimals, 6)
       ) ?? ""
     return "\(string.prefix(12))"
   }
@@ -43,9 +43,7 @@ class KNSendTokenViewModel: NSObject {
     return isAmountValid ? UIColor.Kyber.lightSeaGreen : UIColor.red
   }
 
-  var address: Address? {
-    return Address(string: self.addressString)
-  }
+  var address: Address? { return Address(string: self.addressString) }
 
   init(from: TokenObject, balances: [String: Balance]) {
     self.from = from
@@ -78,7 +76,11 @@ class KNSendTokenViewModel: NSObject {
 
   var displayBalance: String {
     guard let bal = self.balance else { return "---" }
-    let string = bal.value.string(decimals: self.from.decimals, minFractionDigits: 0, maxFractionDigits: 9)
+    let string = bal.value.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(self.from.decimals, 6)
+    )
     return "\(string.prefix(12))"
   }
 

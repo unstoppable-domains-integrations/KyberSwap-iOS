@@ -52,11 +52,7 @@ class KSwapViewModel {
 
   // MARK: From Token
   var allFromTokenBalanceString: String {
-    return self.balance?.value.string(
-      decimals: self.from.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
-    ) ?? ""
+    return self.balanceText
   }
 
   var amountFromBigInt: BigInt {
