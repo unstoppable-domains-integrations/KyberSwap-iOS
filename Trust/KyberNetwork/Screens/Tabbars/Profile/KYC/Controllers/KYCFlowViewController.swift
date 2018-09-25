@@ -177,7 +177,7 @@ class KYCFlowViewController: KNBaseViewController {
     if let details = self.viewModel.user.kycDetails {
       personalInfoVC.updatePersonalInfoView(with: details)
       identityInfoVC.updateIdentityInfo(with: details)
-      submitInfoVC.updateSubmitInfo(with: details)
+      self.submitInfoVC.updateSubmitInfo(with: details)
     }
   }
 

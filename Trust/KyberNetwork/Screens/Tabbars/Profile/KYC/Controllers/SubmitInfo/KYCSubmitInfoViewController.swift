@@ -98,5 +98,33 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   }
 
   func updateSubmitInfo(with details: IEOUserKYCDetails) {
+    let base64Prefix = "data:image/jpeg;base64,"
+    let docImage: UIImage? = {
+      if details.documentPhoto.starts(with: base64Prefix),
+        let data = Data(base64Encoded: details.documentPhoto.substring(from: base64Prefix.count)),
+        let image = UIImage(data: data) {
+        return image
+      }
+      return nil
+    }()
+    let docHoldingImage: UIImage? = {
+      if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+        return image
+      }
+      return nil
+    }()
+    let viewModel = KYCSubmitInfoViewModel(
+      firstName: details.firstName,
+      lastName: details.lastName,
+      gender: details.gender ? "Male" : "Female",
+      dob: details.dob,
+      nationality: details.nationality,
+      residenceCountry: details.country,
+      docType: details.documentType,
+      docNum: details.documentNumber,
+      docImage: docImage,
+      docHoldingImage: docHoldingImage
+    )
+    self.updateViewModel(viewModel)
   }
 }
