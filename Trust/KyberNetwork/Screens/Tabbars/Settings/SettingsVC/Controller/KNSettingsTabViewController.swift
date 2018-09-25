@@ -6,7 +6,7 @@ enum KNSettingsTabViewEvent {
   case manageWallet
   case contact
   case support
-  case changePasscode
+  case changePIN
   case rateMyApp
   case about
   case shareWithFriends
@@ -45,7 +45,7 @@ class KNSettingsTabViewController: KNBaseViewController {
   }
 
   @IBAction func changePasscodeButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .changePasscode)
+    self.delegate?.settingsTabViewController(self, run: .changePIN)
   }
 
   @IBAction func rateMyAppButtonPressed(_ sender: Any) {

@@ -103,3 +103,16 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
     }
   }
 }
+
+// MARK: Passcode coordinator delegate
+extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCancel() {
+    self.authenticationCoordinator.stop {}
+  }
+  func passcodeCoordinatorDidEvaluatePIN() {
+    self.authenticationCoordinator.stop {}
+  }
+  func passcodeCoordinatorDidCreatePasscode() {
+    self.authenticationCoordinator.stop {}
+  }
+}

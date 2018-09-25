@@ -62,7 +62,7 @@ class KNLandingPageCoordinator: Coordinator {
   lazy var passcodeCoordinator: KNPasscodeCoordinator = {
     let coordinator = KNPasscodeCoordinator(
       navigationController: self.navigationController,
-      type: .setPasscode
+      type: .setPasscode(cancellable: false)
     )
     coordinator.delegate = self
     return coordinator
@@ -145,6 +145,10 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
 
 extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCancel() {
+    self.passcodeCoordinator.stop { }
+  }
+
+  func passcodeCoordinatorDidEvaluatePIN() {
     self.passcodeCoordinator.stop { }
   }
 

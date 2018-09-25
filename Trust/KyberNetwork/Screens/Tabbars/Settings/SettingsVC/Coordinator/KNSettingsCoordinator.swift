@@ -44,7 +44,7 @@ class KNSettingsCoordinator: Coordinator {
   lazy var passcodeCoordinator: KNPasscodeCoordinator = {
     let coordinator = KNPasscodeCoordinator(
       navigationController: self.navigationController,
-      type: .setPasscode
+      type: .setPasscode(cancellable: true)
     )
     coordinator.delegate = self
     return coordinator
@@ -109,12 +109,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
         message: "App needs to be on AppStore before users can rate",
         time: 1.5
       )
-    case .changePasscode:
-      self.navigationController.showSuccessTopBannerMessage(
-        with: "Unimplemented",
-        message: "This feature is not available yet",
-        time: 1.5
+    case .changePIN:
+      self.passcodeCoordinator = KNPasscodeCoordinator(
+        navigationController: self.navigationController,
+        type: .authenticate(isUpdating: true)
       )
+      self.passcodeCoordinator.delegate = self
+      self.passcodeCoordinator.start()
     case .shareWithFriends:
       self.navigationController.showSuccessTopBannerMessage(
         with: "Unimplemented",
@@ -292,9 +293,28 @@ extension KNSettingsCoordinator: KNNewContactViewControllerDelegate {
 
 extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCreatePasscode() {
+    self.passcodeCoordinator.stop {
+      self.navigationController.showSuccessTopBannerMessage(
+        with: "Success".toBeLocalised(),
+        message: "Your PIN has been updated successfully!".toBeLocalised(),
+        time: 1.5
+      )
+    }
+  }
+
+  func passcodeCoordinatorDidEvaluatePIN() {
+    self.passcodeCoordinator.stop {
+      self.passcodeCoordinator = KNPasscodeCoordinator(
+        navigationController: self.navigationController,
+        type: .setPasscode(cancellable: true)
+      )
+      self.passcodeCoordinator.delegate = self
+      self.passcodeCoordinator.start()
+    }
   }
 
   func passcodeCoordinatorDidCancel() {
+    self.passcodeCoordinator.stop {}
   }
 }
 

@@ -29,7 +29,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var authenticationCoordinator: KNPasscodeCoordinator = {
-    return KNPasscodeCoordinator(type: .authenticate)
+    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false))
+    passcode.delegate = self
+    return passcode
   }()
 
   lazy var landingPageCoordinator: KNLandingPageCoordinator = {

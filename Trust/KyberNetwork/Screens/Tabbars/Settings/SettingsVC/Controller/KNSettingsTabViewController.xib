@@ -87,7 +87,7 @@
                         <constraint firstAttribute="height" constant="32" id="eCr-lg-9wf"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="Change Passcode">
+                    <state key="normal" title="Change PIN">
                         <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>

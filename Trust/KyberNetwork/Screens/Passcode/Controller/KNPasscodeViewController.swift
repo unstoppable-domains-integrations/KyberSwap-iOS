@@ -16,9 +16,9 @@ protocol KNPasscodeViewControllerDelegate: class {
 
 enum KNPasscodeViewType {
   // view to set new passcode
-  case setPasscode
+  case setPasscode(cancellable: Bool)
   // view to authenticate
-  case authenticate
+  case authenticate(isUpdating: Bool)
 }
 
 class KNPasscodeViewController: KNBaseViewController {
@@ -59,17 +59,8 @@ class KNPasscodeViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUI()
-    if self.viewType == .authenticate {
-      if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-          if KNPasscodeUtil.shared.timeToAllowNewAttempt() == 0 {
-            KNPasscodeUtil.shared.deleteNumberAttempts()
-            KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
-            self.timer?.invalidate()
-          }
-          self.updateUI()
-        })
-      }
+    if case .authenticate = self.viewType {
+      self.runTimerIfNeeded()
     }
   }
 
@@ -101,8 +92,11 @@ class KNPasscodeViewController: KNBaseViewController {
   }
 
   func showBioAuthenticationIfNeeded() {
-    if self.viewType == .setPasscode { return }
-    if KNPasscodeUtil.shared.timeToAllowNewAttempt() > 0 { return }
+    guard case .authenticate(let isUpdating) = self.viewType, !isUpdating else { return }
+    if KNPasscodeUtil.shared.timeToAllowNewAttempt() > 0 {
+      self.runTimerIfNeeded()
+      return
+    }
     var error: NSError?
     let context = LAContext()
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
@@ -130,6 +124,20 @@ class KNPasscodeViewController: KNBaseViewController {
     }
   }
 
+  func runTimerIfNeeded() {
+    self.timer?.invalidate()
+    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
+      self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+        if KNPasscodeUtil.shared.timeToAllowNewAttempt() == 0 {
+          KNPasscodeUtil.shared.deleteNumberAttempts()
+          KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
+          self.timer?.invalidate()
+        }
+        self.updateUI()
+      })
+    }
+  }
+
   func resetUI() {
     self.currentPasscode = ""
     self.firstPasscode = nil
@@ -150,16 +158,7 @@ class KNPasscodeViewController: KNBaseViewController {
     animation.toValue = NSValue(cgPoint: CGPoint(x: self.passcodeContainerView.center.x + 10, y: self.passcodeContainerView.center.y))
     self.passcodeContainerView.layer.add(animation, forKey: keypath)
 
-    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
-      self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-        if KNPasscodeUtil.shared.timeToAllowNewAttempt() == 0 {
-          KNPasscodeUtil.shared.deleteNumberAttempts()
-          KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
-          self.timer?.invalidate()
-        }
-        self.updateUI()
-      })
-    }
+    self.runTimerIfNeeded()
   }
 
   @IBAction func digitButtonPressed(_ sender: UIButton) {
@@ -175,11 +174,23 @@ class KNPasscodeViewController: KNBaseViewController {
     if !self.currentPasscode.isEmpty {
       self.currentPasscode = String(self.currentPasscode.prefix(self.currentPasscode.count - 1))
       self.updateUI()
+    } else {
+      if case .setPasscode(let cancellable) = self.viewType {
+        if self.firstPasscode != nil {
+          self.resetUI()
+          return
+        }
+        if cancellable {
+          self.delegate?.passcodeViewController(self, run: .cancel)
+        }
+      } else if case .authenticate(let isUpdating) = self.viewType, isUpdating {
+        self.delegate?.passcodeViewController(self, run: .cancel)
+      }
     }
   }
 
   fileprivate func userDidEnterPasscode() {
-    if self.viewType == .authenticate {
+    if case .authenticate = self.viewType {
       self.delegate?.passcodeViewController(self, run: .enterPasscode(passcode: self.currentPasscode))
     } else {
       guard let firstPass = self.firstPasscode else {
@@ -201,18 +212,18 @@ class KNPasscodeViewController: KNBaseViewController {
 extension KNPasscodeViewController {
   fileprivate var titleText: String {
     switch self.viewType {
-    case .authenticate:
-      return "Enter your PIN".toBeLocalised()
+    case .authenticate(let isUpdating):
+      return isUpdating ? "Enter your old PIN".toBeLocalised() : "Verify your access".toBeLocalised()
     case .setPasscode:
       if self.firstPasscode != nil {
         return "Repeat PIN".toBeLocalised()
       }
-      return "Set PIN".toBeLocalised()
+      return "Set a new PIN".toBeLocalised()
     }
   }
 
   fileprivate var errorText: String {
-    if self.viewType == .setPasscode {
+    if case .setPasscode = self.viewType {
       if self.firstPasscode == nil {
         return "Your PIN is used to access your wallets".toBeLocalised()
       }
@@ -228,6 +239,10 @@ extension KNPasscodeViewController {
 
   fileprivate var actionButtonTitle: String {
     if !self.currentPasscode.isEmpty { return "Delete".toBeLocalised() }
+    if case .setPasscode(let cancellable) = self.viewType {
+      if cancellable || self.firstPasscode != nil { return "Cancel".toBeLocalised() }
+    }
+    if case .authenticate(let isUpdating) = self.viewType, isUpdating { return "Cancel".toBeLocalised() }
     return ""
   }
 
@@ -235,7 +250,7 @@ extension KNPasscodeViewController {
     if #available(iOS 11.0, *) {
       switch errorCode {
       case LAError.biometryLockout.rawValue:
-        return "Too many failed attempts. Please try to use passcode".toBeLocalised()
+        return "Too many failed attempts. Please try to use PIN".toBeLocalised()
       case LAError.biometryNotAvailable.rawValue:
         return "TouchID/FaceID is not available on the device".toBeLocalised()
       default:
@@ -248,7 +263,7 @@ extension KNPasscodeViewController {
     case LAError.passcodeNotSet.rawValue:
       return "PIN is not set on the device".toBeLocalised()
     case LAError.touchIDLockout.rawValue:
-      return "Too many failed attempts. Please try to use passcode".toBeLocalised()
+      return "Too many failed attempts. Please try to use PIN".toBeLocalised()
     case LAError.touchIDNotAvailable.rawValue:
       return "TouchID/FaceID is not available on the device".toBeLocalised()
     case LAError.appCancel.rawValue, LAError.userCancel.rawValue, LAError.userFallback.rawValue:
