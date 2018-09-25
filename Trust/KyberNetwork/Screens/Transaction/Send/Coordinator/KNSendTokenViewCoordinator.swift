@@ -196,15 +196,19 @@ extension KNSendTokenViewCoordinator {
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
-        self.navigationController.popViewController(animated: true, completion: {
-          self.confirmVC = nil
-          let tx: Transaction = transaction.toTransaction(
-            wallet: self.session.wallet,
-            hash: txHash,
-            nounce: self.session.externalProvider.minTxCount
-          )
+        let tx: Transaction = transaction.toTransaction(
+          wallet: self.session.wallet,
+          hash: txHash,
+          nounce: self.session.externalProvider.minTxCount
+        )
+        if self.confirmVC == nil {
           self.session.addNewPendingTransaction(tx)
-        })
+        } else {
+          self.navigationController.popViewController(animated: true, completion: {
+            self.confirmVC = nil
+            self.session.addNewPendingTransaction(tx)
+          })
+        }
       case .failure(let error):
         self.confirmVC?.resetActionButtons()
         KNNotificationUtil.postNotification(

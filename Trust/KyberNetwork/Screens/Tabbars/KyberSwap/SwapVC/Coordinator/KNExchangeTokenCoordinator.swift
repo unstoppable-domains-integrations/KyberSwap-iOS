@@ -170,16 +170,20 @@ extension KNExchangeTokenCoordinator {
       guard let `self` = self else { return }
       switch result {
       case .success(let txHash):
-        self.navigationController.popViewController(animated: true, completion: {
-          self.confirmSwapVC = nil
-          let transaction = exchage.toTransaction(
-            hash: txHash,
-            fromAddr: self.session.wallet.address,
-            toAddr: self.session.externalProvider.networkAddress,
-            nounce: self.session.externalProvider.minTxCount
-          )
+        let transaction = exchage.toTransaction(
+          hash: txHash,
+          fromAddr: self.session.wallet.address,
+          toAddr: self.session.externalProvider.networkAddress,
+          nounce: self.session.externalProvider.minTxCount
+        )
+        if self.confirmSwapVC == nil {
           self.session.addNewPendingTransaction(transaction)
-        })
+        } else {
+          self.navigationController.popViewController(animated: true, completion: {
+            self.confirmSwapVC = nil
+            self.session.addNewPendingTransaction(transaction)
+          })
+        }
       case .failure(let error):
         self.confirmSwapVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
