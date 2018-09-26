@@ -9,7 +9,6 @@ enum KWalletBalanceViewEvent {
   case buy(token: TokenObject)
   case sell(token: TokenObject)
   case send(token: TokenObject)
-  case openMarketView
   case receiveToken
 }
 
@@ -155,10 +154,6 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func menuButtonPressed(_ sender: Any) {
     self.hamburgerMenu.openMenu(animated: true)
-  }
-
-  @IBAction func marketButtonPressed(_ sender: Any) {
-    self.delegate?.kWalletBalanceViewController(self, run: .openMarketView)
   }
 
   @IBAction func kyberListButtonPressed(_ sender: Any) {

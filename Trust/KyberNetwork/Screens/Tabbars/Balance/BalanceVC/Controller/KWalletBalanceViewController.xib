@@ -77,17 +77,6 @@
                                 <action selector="menuButtonPressed:" destination="-1" eventType="touchUpInside" id="eK7-rT-qzf"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHc-Ib-Wny">
-                            <rect key="frame" x="328" y="105" width="27" height="33"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="27" id="WB3-9J-Hyc"/>
-                                <constraint firstAttribute="height" constant="33" id="ruB-Wb-yUh"/>
-                            </constraints>
-                            <state key="normal" image="market_white_icon"/>
-                            <connections>
-                                <action selector="marketButtonPressed:" destination="-1" eventType="touchUpInside" id="S4k-L9-WTt"/>
-                            </connections>
-                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LI-U8-W7j">
                             <rect key="frame" x="20" y="44" width="195" height="94"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -106,9 +95,7 @@
                         <constraint firstAttribute="height" constant="160" id="5NU-lQ-IDx"/>
                         <constraint firstItem="uX4-lo-QAu" firstAttribute="centerY" secondItem="tNy-7j-Gt2" secondAttribute="centerY" id="8k0-jE-Bb5"/>
                         <constraint firstItem="WJc-fq-iX6" firstAttribute="bottom" secondItem="uX4-lo-QAu" secondAttribute="bottom" id="A0K-gA-Cln"/>
-                        <constraint firstItem="vHc-Ib-Wny" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="Deg-66-vGZ"/>
                         <constraint firstItem="6LI-U8-W7j" firstAttribute="bottom" secondItem="qlW-Mm-bZf" secondAttribute="bottom" id="EvA-Hf-iuK"/>
-                        <constraint firstItem="vHc-Ib-Wny" firstAttribute="trailing" secondItem="uX4-lo-QAu" secondAttribute="trailing" id="Ixj-J7-eRG"/>
                         <constraint firstItem="6LI-U8-W7j" firstAttribute="trailing" secondItem="ztY-YM-0aU" secondAttribute="trailing" id="P5D-zl-cRn"/>
                         <constraint firstItem="ztY-YM-0aU" firstAttribute="top" secondItem="tNy-7j-Gt2" secondAttribute="bottom" constant="16" id="cT3-hR-YfF"/>
                         <constraint firstItem="ztY-YM-0aU" firstAttribute="leading" secondItem="tNy-7j-Gt2" secondAttribute="leading" id="dJb-xr-4hn"/>
@@ -303,7 +290,6 @@
     </objects>
     <resources>
         <image name="arrow_down_gray" width="12" height="9"/>
-        <image name="market_white_icon" width="24" height="21"/>
         <image name="menu_white_icon" width="18" height="10"/>
         <image name="search_black_icon" width="15" height="16"/>
     </resources>

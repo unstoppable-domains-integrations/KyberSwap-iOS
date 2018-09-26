@@ -21,9 +21,7 @@ class KNAppTracker {
 
   static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
 
-  static let kBalanceDisplayDataTypeKey: String = "kBalanceDisplayDataTypeKey"
   static let kCurrencyTypeKey: String = "kCurrencyTypeKey"
-  static let kTokenListDisplayDataTypeKey: String = "kTokenListDisplayDataTypeKey"
 
   static let kAppStyle: String = "kAppStyle"
   static let userDefaults: UserDefaults = UserDefaults.standard
@@ -98,19 +96,6 @@ class KNAppTracker {
     return Date(timeIntervalSince1970: time)
   }
 
-  // MARK: Balance currency (USD or ETH)
-  static func updateBalanceDisplayDataType(_ type: KNBalanceDisplayDataType) {
-    userDefaults.set(type.rawValue, forKey: kBalanceDisplayDataTypeKey)
-    userDefaults.synchronize()
-  }
-
-  static func getBalanceDisplayDataType() -> KNBalanceDisplayDataType {
-    if let type = userDefaults.object(forKey: kBalanceDisplayDataTypeKey) as? String {
-      return KNBalanceDisplayDataType(rawValue: type) ?? .usd
-    }
-    return .usd
-  }
-
   // MARK: Currency used (USD, ETH)
   static func updateCurrencyType(_ type: KWalletCurrencyType) {
     userDefaults.set(type.rawValue, forKey: kCurrencyTypeKey)
@@ -122,19 +107,6 @@ class KNAppTracker {
       return KWalletCurrencyType(rawValue: type) ?? .usd
     }
     return .usd
-  }
-
-  // MARK: Token display type
-  static func updateTokenListDisplayDataType(_ type: KNTokensDisplayType) {
-    userDefaults.set(type.rawValue, forKey: kTokenListDisplayDataTypeKey)
-    userDefaults.synchronize()
-  }
-
-  static func getTokenListDisplayDataType() -> KNTokensDisplayType {
-    if let type = userDefaults.object(forKey: kTokenListDisplayDataTypeKey) as? String {
-      return KNTokensDisplayType(rawValue: type) ?? .change24h
-    }
-    return .change24h
   }
 
   // MARK: Profile base string
@@ -161,7 +133,6 @@ class KNAppTracker {
 
   static func resetAllAppTrackerData() {
     userDefaults.removeObject(forKey: kSupportedLoadingTimeKey)
-    userDefaults.removeObject(forKey: kBalanceDisplayDataTypeKey)
-    userDefaults.removeObject(forKey: kTokenListDisplayDataTypeKey)
+    userDefaults.removeObject(forKey: kCurrencyTypeKey)
   }
 }
