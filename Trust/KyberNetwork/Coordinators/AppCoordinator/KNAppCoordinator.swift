@@ -119,11 +119,12 @@ extension KNAppCoordinator {
   }
 
   func appDidReceiveLocalNotification(transactionHash: String) {
-    let url = KNEnvironment.default.etherScanIOURLString + "tx/\(transactionHash)"
+    let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(transactionHash)"
     if self.transactionStatusCoordinator != nil {
-      self.transactionStatusCoordinator.rootViewController?.openSafari(with: url)
+      self.transactionStatusCoordinator.rootViewController?.openSafari(with: urlString)
     } else {
-      self.navigationController.topViewController?.openSafari(with: url)
+      guard let url = URL(string: urlString) else { return }
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
   }
 }

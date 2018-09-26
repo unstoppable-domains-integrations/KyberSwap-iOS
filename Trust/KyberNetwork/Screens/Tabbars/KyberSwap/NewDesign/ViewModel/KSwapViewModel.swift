@@ -227,6 +227,11 @@ class KSwapViewModel {
   }
 
   // rate should not be nil and greater than zero
+  var isMinRateValid: Bool {
+    if self.minRate == nil || self.minRate?.isZero == true { return false }
+    return true
+  }
+
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
     if self.minRate == nil || self.minRate?.isZero == true { return false }

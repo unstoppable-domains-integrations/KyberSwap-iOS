@@ -383,6 +383,13 @@ class KSwapViewController: KNBaseViewController {
       }
     }
     if isConfirming {
+      guard self.viewModel.isMinRateValid else {
+        self.showWarningTopBannerMessage(
+          with: "Invalid min rate".toBeLocalised(),
+          message: "Your min rate should be greater than zero".toBeLocalised()
+        )
+        return true
+      }
       guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
         self.showWarningTopBannerMessage(
           with: "Rate might change".toBeLocalised(),
