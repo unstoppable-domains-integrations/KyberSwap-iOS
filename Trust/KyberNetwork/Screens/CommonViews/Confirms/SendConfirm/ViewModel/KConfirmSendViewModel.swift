@@ -36,7 +36,7 @@ struct KConfirmSendViewModel {
     let string = self.transaction.value.string(
       decimals: self.token.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: 6
+      maxFractionDigits: min(self.token.decimals, 6)
     )
     return "\(string.prefix(12)) \(self.token.symbol)"
   }

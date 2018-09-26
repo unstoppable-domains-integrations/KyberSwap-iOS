@@ -64,13 +64,13 @@ class KNTransactionStatusViewController: KNBaseViewController {
       guard let object = transaction?.localizedOperations.first, status == .failed || status == .success else { return nil }
       guard let from = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.from) else { return nil }
       guard let amount = transaction?.value.fullBigInt(decimals: from.decimals) else { return nil }
-      let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
+      let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: min(from.decimals, 9)).prefix(10))"
       if object.type.lowercased() == "transfer" {
         return "\(status.rawValue) sent \(amountFrom) \(from.symbol) to \n\(transaction?.to ?? "")"
       }
       guard let to = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.to) else { return nil }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return nil }
-      let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
+      let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: min(object.decimals, 9)).prefix(10))"
       return "\(status.rawValue) \(amountFrom) \(from.symbol) converted to \(amountTo) \(to.symbol)"
     }()
     self.transactionStatusView.updateView(with: status, txHash: transaction?.id, details: details)

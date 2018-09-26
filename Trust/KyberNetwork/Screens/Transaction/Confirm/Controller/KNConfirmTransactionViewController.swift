@@ -37,14 +37,22 @@ struct KNConfirmTransactionViewModel {
     switch type {
     case .transfer(let tx):
       let token = tx.transferType.tokenObject()
-      return tx.value.string(decimals: token.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(token.symbol)"
+      return tx.value.string(
+        decimals: token.decimals,
+        minFractionDigits: min(token.decimals, 4),
+        maxFractionDigits: min(token.decimals, 4)
+      ) + " \(token.symbol)"
     case .exchange(let trans):
-      return trans.amount.string(decimals: trans.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " \(trans.from.symbol)"
+      return trans.amount.string(
+        decimals: trans.from.decimals,
+        minFractionDigits: min(trans.from.decimals, 4),
+        maxFractionDigits: min(trans.from.decimals, 4)
+      ) + " \(trans.from.symbol)"
     case .buyTokenSale(let trans):
       return trans.amount.string(
         decimals: trans.token.decimals,
-        minFractionDigits: 4,
-        maxFractionDigits: 4
+        minFractionDigits: min(trans.token.decimals, 4),
+        maxFractionDigits: min(trans.token.decimals, 4)
       ) + " \(trans.token.symbol)"
     }
   }
@@ -85,10 +93,18 @@ struct KNConfirmTransactionViewModel {
   var displayEstimatedRate: String {
     switch self.type {
     case .exchange(let trans):
-      let rateString = trans.expectedRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+      let rateString = trans.expectedRate.string(
+        decimals: trans.to.decimals,
+        minFractionDigits: min(trans.to.decimals, 6),
+        maxFractionDigits: min(trans.to.decimals, 6)
+      )
       return "1 \(trans.from.symbol) = \(rateString.prefix(10)) \(trans.to.symbol)"
     case .buyTokenSale(let trans):
-      let rateString = trans.estRate?.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6) ?? "0"
+      let rateString = trans.estRate?.string(
+        decimals: trans.ieo.tokenDecimals,
+        minFractionDigits: min(trans.ieo.tokenDecimals, 6),
+        maxFractionDigits: min(trans.ieo.tokenDecimals, 6)
+        ) ?? "0"
       return "1 \(trans.token.symbol) = \(rateString.prefix(10)) \(trans.ieo.tokenSymbol)"
     default: return ""
     }
@@ -102,9 +118,17 @@ struct KNConfirmTransactionViewModel {
   var slippageRateString: String {
     let rate: String = {
       if case .exchange(let trans) = type, let minRate = trans.minRate {
-        return minRate.string(decimals: trans.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+        return minRate.string(
+          decimals: trans.to.decimals,
+          minFractionDigits: min(trans.to.decimals, 6),
+          maxFractionDigits: min(trans.to.decimals, 6)
+        )
       } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
-        return minRate.string(decimals: trans.ieo.tokenDecimals, minFractionDigits: 6, maxFractionDigits: 6)
+        return minRate.string(
+          decimals: trans.ieo.tokenDecimals,
+          minFractionDigits: min(trans.ieo.tokenDecimals, 6),
+          maxFractionDigits: min(trans.ieo.tokenDecimals, 6)
+        )
       }
       return ""
     }()

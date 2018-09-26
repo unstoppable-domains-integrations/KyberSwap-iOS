@@ -31,7 +31,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     let balText: String = balance?.value.string(
       decimals: token.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: 6
+      maxFractionDigits: min(token.decimals, 6)
       ) ?? ""
     self.balanceLabel.text = "\(balText.prefix(12))"
     self.layoutIfNeeded()

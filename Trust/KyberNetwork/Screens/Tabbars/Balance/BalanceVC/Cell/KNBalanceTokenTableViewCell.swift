@@ -64,7 +64,7 @@ struct KNBalanceTokenTableViewCellModel {
   }
 
   var displayAmountHoldingsText: String {
-    return self.balance?.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: 6) ?? "---"
+    return self.balance?.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) ?? "---"
   }
 
   fileprivate var displayBalanceValue: String {

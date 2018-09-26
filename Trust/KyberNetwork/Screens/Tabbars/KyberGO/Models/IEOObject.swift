@@ -119,7 +119,7 @@ class IEOObject: Object {
     self.needsUpdateRate = true
     self.needsUpdateRaised = true
     if let value = Double(self.standardRate) {
-      self.standardRate = BigInt(value * pow(10.0, Double(self.tokenDecimals))).string(decimals: self.tokenDecimals, minFractionDigits: 0, maxFractionDigits: 4)
+      self.standardRate = BigInt(value * pow(10.0, Double(self.tokenDecimals))).string(decimals: self.tokenDecimals, minFractionDigits: 0, maxFractionDigits: min(self.tokenDecimals, 4))
     }
   }
 

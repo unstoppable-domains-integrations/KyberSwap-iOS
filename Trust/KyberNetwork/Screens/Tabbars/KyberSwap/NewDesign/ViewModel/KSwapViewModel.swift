@@ -105,7 +105,7 @@ class KSwapViewModel {
       let amount = self.amountFromBigInt
       return rate * amount / BigInt(10).power(self.from.decimals)
     }()
-    return expectedAmount.string(decimals: self.to.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+    return expectedAmount.string(decimals: self.to.decimals, minFractionDigits: min(self.to.decimals, 6), maxFractionDigits: min(self.to.decimals, 6))
   }
 
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
@@ -142,7 +142,7 @@ class KSwapViewModel {
 
   // MARK: Rate
   var exchangeRateText: String {
-    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: 9) ?? "---"
+    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9)) ?? "---"
     return "\(rateString)"
   }
 
@@ -155,7 +155,7 @@ class KSwapViewModel {
   }
 
   var minRateText: String? {
-    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: 9)
+    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
   }
 
   var currentMinRatePercentValue: Float {
