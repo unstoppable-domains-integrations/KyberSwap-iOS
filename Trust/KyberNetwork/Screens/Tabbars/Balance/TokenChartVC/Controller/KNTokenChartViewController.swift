@@ -97,7 +97,8 @@ class KNTokenChartViewModel {
       return String("\(trackerRate.changeETH24h)".prefix(5)) + "%"
     }()
     let changeColor: UIColor = {
-      return trackerRate.changeETH24h >= 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
+      if trackerRate.changeETH24h == 0.0 { return UIColor.Kyber.grayChateau }
+      return trackerRate.changeETH24h > 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
     }()
     let rateAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
@@ -117,7 +118,7 @@ class KNTokenChartViewModel {
     let balance: String = self.balance.value.string(
       decimals: self.token.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: 6
+      maxFractionDigits: min(self.token.decimals, 6)
     )
     let balanceAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
@@ -133,7 +134,7 @@ class KNTokenChartViewModel {
     let value: BigInt = {
       return trackerRate.rateETHBigInt * self.balance.value / BigInt(10).power(self.token.decimals)
     }()
-    let valueString: String = value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    let valueString: String = value.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
     return "~\(valueString.prefix(12)) ETH"
   }
 
@@ -462,7 +463,16 @@ class KNTokenChartViewController: KNBaseViewController {
       self.priceChart.removeAllSeries()
       self.priceChart.add(self.viewModel.displayDataSeries)
       self.priceChart.yLabels = self.viewModel.yDoubleLables
-      self.priceChart.yLabelsFormatter = { (_, value) in return String("\(value)".prefix(8)) }
+      let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = min(9, self.viewModel.token.decimals)
+        formatter.minimumFractionDigits = 2
+        formatter.minimumIntegerDigits = 1
+        return formatter
+      }()
+      self.priceChart.yLabelsFormatter = { (_, value) in
+        return numberFormatter.string(from: NSNumber(value: value)) ?? ""
+      }
       self.priceChart.xLabels = []
     }
   }
