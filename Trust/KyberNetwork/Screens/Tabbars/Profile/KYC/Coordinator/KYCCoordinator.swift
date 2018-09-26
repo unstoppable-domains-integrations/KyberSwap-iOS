@@ -41,7 +41,6 @@ class KYCCoordinator: Coordinator {
 extension KYCCoordinator: KYCFlowViewControllerDelegate {
   func kycFlowViewController(_ controller: KYCFlowViewController, run event: KYCFlowViewEvent) {
     switch event {
-    case .back: self.stop()
     case .submitted:
       self.stop()
       self.delegate?.kycCoordinatorDidSubmitData()

@@ -5,7 +5,6 @@ import Moya
 import Result
 
 enum KYCFlowViewEvent {
-  case back
   case submitted
 }
 
@@ -193,7 +192,7 @@ class KYCFlowViewController: KNBaseViewController {
       }()
       self.updateViewState(newState: newState)
     } else {
-      let event: KYCFlowViewEvent = self.viewModel.stepState == .personalInfo ? .back : .submitted
+      let event: KYCFlowViewEvent = .submitted
       self.delegate?.kycFlowViewController(self, run: event)
     }
   }
