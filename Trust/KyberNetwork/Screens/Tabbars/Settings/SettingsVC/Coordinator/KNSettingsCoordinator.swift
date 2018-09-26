@@ -103,12 +103,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.openSafari(with: "https://kybernetwork.zendesk.com/hc/en-us/requests/new")
     case .about:
       self.openCommunityURL("https://kyber.network/about/company")
-    case .rateMyApp:
-      self.navigationController.showSuccessTopBannerMessage(
-        with: "Unsupported",
-        message: "App needs to be on AppStore before users can rate",
-        time: 1.5
-      )
     case .changePIN:
       self.passcodeCoordinator = KNPasscodeCoordinator(
         navigationController: self.navigationController,
