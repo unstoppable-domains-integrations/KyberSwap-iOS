@@ -48,6 +48,8 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var newContactButton: UIButton!
 
+  fileprivate var isViewSetup: Bool = false
+
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
       leftBtnTitle: "Send All".toBeLocalised(),
@@ -75,7 +77,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupUI()
   }
 
   override func viewDidLayoutSubviews() {
@@ -90,6 +91,10 @@ class KSendTokenViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
     self.updateUIAddressQRCode()
   }
 
