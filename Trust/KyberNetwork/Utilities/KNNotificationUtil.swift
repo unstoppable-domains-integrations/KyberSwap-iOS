@@ -53,7 +53,11 @@ class KNNotificationUtil {
     content.title = title
     content.body = body
     content.userInfo = userInfo
-    content.setValue("YES", forKey: "shouldAlwaysAlertWhileAppIsForeground")
+    if #available(iOS 12, *) {
+      print("Using iOS 12")
+    } else {
+      content.setValue("YES", forKey: "shouldAlwaysAlertWhileAppIsForeground")
+    }
     let request = UNNotificationRequest(identifier: "localPushNotification", content: content, trigger: nil)
     UNUserNotificationCenter.current().add(request) { error in
       NSLog("Error \(error.debugDescription)")

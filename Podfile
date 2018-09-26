@@ -16,7 +16,7 @@ target 'Trust' do
   pod 'KeychainSwift'
   pod 'SwiftLint', '~> 0.25.1'
   pod 'SeedStackViewController'
-  pod 'RealmSwift'
+  pod 'RealmSwift', '~> 3.10.0'
   pod 'Lokalise'
   pod 'Moya', '~> 10.0.1'
   pod 'JavaScriptKit'
