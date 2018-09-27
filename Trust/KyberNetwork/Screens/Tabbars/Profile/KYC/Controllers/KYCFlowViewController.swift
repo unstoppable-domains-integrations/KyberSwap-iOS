@@ -41,6 +41,30 @@ class KYCFlowViewModel {
     self.stepState = step
   }
 
+  func updateData(with details: IEOUserKYCDetails) {
+    guard !details.firstName.isEmpty else { return }
+    self.updatePersonalInfo(
+      firstName: details.firstName,
+      lastName: details.lastName,
+      gender: details.gender ? "Male" : "Female",
+      dob: details.dob,
+      nationality: details.nationality,
+      residenceCountry: details.country
+    )
+    guard !details.documentType.isEmpty else { return }
+    self.docType = details.documentType
+    self.docNumber = details.documentNumber
+    let base64Prefix = "data:image/jpeg;base64,"
+    if details.documentPhoto.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.documentPhoto.substring(from: base64Prefix.count)),
+      let image = UIImage(data: data) {
+      self.docImage = image
+    }
+    if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+      self.docHoldingImage = image
+    }
+  }
+
   func updatePersonalInfo(firstName: String, lastName: String, gender: String, dob: String, nationality: String, residenceCountry: String) {
     self.firstName = firstName
     self.lastName = lastName
@@ -70,6 +94,8 @@ class KYCFlowViewController: KNBaseViewController {
   weak var delegate: KYCFlowViewControllerDelegate?
   fileprivate var isViewSetup: Bool = false
 
+  fileprivate var doneTimer: Timer?
+
   init(viewModel: KYCFlowViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KYCFlowViewController.className, bundle: nil)
@@ -89,6 +115,12 @@ class KYCFlowViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.doneTimer?.invalidate()
+    self.doneTimer = nil
   }
 
   fileprivate func setupUI() {
@@ -174,6 +206,7 @@ class KYCFlowViewController: KNBaseViewController {
     self.updateViewState(newState: self.viewModel.stepState)
 
     if let details = self.viewModel.user.kycDetails {
+      self.viewModel.updateData(with: details)
       personalInfoVC.updatePersonalInfoView(with: details)
       identityInfoVC.updateIdentityInfo(with: details)
       self.submitInfoVC.updateSubmitInfo(with: details)
@@ -227,6 +260,13 @@ class KYCFlowViewController: KNBaseViewController {
       self.submitInfoVC.updateViewModel(viewModel)
     }
     self.scrollView.scrollRectToVisible(rect, animated: true)
+
+    if newState == .done {
+      self.doneTimer?.invalidate()
+      self.doneTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { [weak self] timer in
+        self?.backButtonPressed(timer)
+      })
+    }
   }
 }
 
