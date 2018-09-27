@@ -97,7 +97,9 @@ class KNProfileHomeCoordinator: Coordinator {
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       expireTime: user.expireTime,
-      hasUser: true) { success in
+      hasUser: true,
+      showError: true
+    ) { success in
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
         }
@@ -117,7 +119,9 @@ class KNProfileHomeCoordinator: Coordinator {
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           expireTime: user.expireTime,
-          hasUser: true) { success in
+          hasUser: true,
+          showError: false
+        ) { success in
             if success {
               self?.rootViewController.coordinatorUserDidSignInSuccessfully()
             }
@@ -224,8 +228,10 @@ extension KNProfileHomeCoordinator {
                 type: tokenType,
                 accessToken: accessToken,
                 refreshToken: refreshToken,
-                expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970,
+                expireTime:
+                Date().addingTimeInterval(expireTime).timeIntervalSince1970,
                 hasUser: false,
+                showError: true,
                 completion: { success in
                   if success {
                     let name = IEOUserStorage.shared.user?.name ?? ""
@@ -249,7 +255,7 @@ extension KNProfileHomeCoordinator {
     }
   }
 
-  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, hasUser: Bool, completion: @escaping (Bool) -> Void) {
+  fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, hasUser: Bool, showError: Bool = false, completion: @escaping (Bool) -> Void) {
     // got access token, user access token  to retrieve user information
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
@@ -265,10 +271,12 @@ extension KNProfileHomeCoordinator {
           switch userInfoResult {
           case .success(let userInfo):
             guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
-              self?.navigationController.showWarningTopBannerMessage(
-                with: "Error",
-                message: "Can not get user info"
-              )
+              if showError {
+                self?.navigationController.showWarningTopBannerMessage(
+                  with: "Error",
+                  message: "Can not get user info"
+                )
+              }
               completion(false)
               return
             }
@@ -356,25 +364,38 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
-    let status = user.kycStatus.lowercased()
-    if status == "approved" || status == "pending" { return }
-    if status == "rejected" {
-      // need to call remove first
-      let alert = UIAlertController(
-        title: "Remove old profile?".toBeLocalised(),
-        message: "To resubmit, you will need to remove your old profile first".toBeLocalised(),
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
-        self.sendRemoveProfile(userID: user.userID, accessToken: user.accessToken)
-      }))
-      alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-      self.navigationController.present(alert, animated: true, completion: nil)
-    } else {
-      // draft or none, just open the verification
-      self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
-      self.kycCoordinator?.delegate = self
-      self.kycCoordinator?.start()
+    self.navigationController.displayLoading(text: "Checking...", animated: true)
+    self.getUserInfo(
+      type: user.tokenType,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      expireTime: user.expireTime,
+      hasUser: true,
+      showError: true) { [weak self] success in
+        guard let `self` = self, let user = IEOUserStorage.shared.user else { return }
+        if success {
+          self.rootViewController.coordinatorUserDidSignInSuccessfully()
+          let status = user.kycStatus.lowercased()
+          if status == "approved" || status == "pending" { return }
+          if status == "rejected" {
+            // need to call remove first
+            let alert = UIAlertController(
+              title: "Remove old profile?".toBeLocalised(),
+              message: "To resubmit, you will need to remove your old profile first".toBeLocalised(),
+              preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+              self.sendRemoveProfile(userID: user.userID, accessToken: user.accessToken)
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.navigationController.present(alert, animated: true, completion: nil)
+          } else {
+            // draft or none, just open the verification
+            self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+            self.kycCoordinator?.delegate = self
+            self.kycCoordinator?.start()
+          }
+        }
     }
   }
 
@@ -420,6 +441,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
                   refreshToken: user.refreshToken,
                   expireTime: user.expireTime,
                   hasUser: true,
+                  showError: true,
                   completion: { [weak self] success in
                   if success {
                     self?.rootViewController.coordinatorUserDidSignInSuccessfully()
@@ -450,6 +472,7 @@ extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
       refreshToken: user.refreshToken,
       expireTime: user.expireTime,
       hasUser: true,
+      showError: true,
       completion: { success in
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
