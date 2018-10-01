@@ -38,7 +38,9 @@ class KNCreateWalletCoordinator: Coordinator {
       let createWalletVC = KNCreateWalletViewController()
       createWalletVC.loadViewIfNeeded()
       createWalletVC.delegate = self
-      self.navigationController.pushViewController(createWalletVC, animated: true)
+      createWalletVC.modalTransitionStyle = .crossDissolve
+      createWalletVC.modalPresentationStyle = .overCurrentContext
+      self.navigationController.present(createWalletVC, animated: true, completion: nil)
     }
   }
 
@@ -109,25 +111,27 @@ extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
   func createWalletViewController(_ controller: KNCreateWalletViewController, run event: KNCreateWalletViewEvent) {
     switch event {
     case .back:
-      self.navigationController.popViewController(animated: true) {
+      self.navigationController.dismiss(animated: true) {
         self.delegate?.createWalletCoordinatorDidClose()
       }
     case .next(let name):
-      self.navigationController.displayLoading(text: "Creating...", animated: true)
-      DispatchQueue.global(qos: .userInitiated).async {
-        let account = self.keystore.create12wordsAccount(with: "")
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-          self.navigationController.showSuccessTopBannerMessage(
-            with: "Wallet Created".toBeLocalised(),
-            message: "You have successfully created a new wallet!".toBeLocalised(),
-            time: 1.5
-          )
-          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-            let wallet = Wallet(type: WalletType.real(account))
-            self.name = name
-            self.openBackUpWallet(wallet, name: name)
-          })
+      self.navigationController.dismiss(animated: true) {
+        self.navigationController.displayLoading(text: "Creating...", animated: true)
+        DispatchQueue.global(qos: .userInitiated).async {
+          let account = self.keystore.create12wordsAccount(with: "")
+          DispatchQueue.main.async {
+            self.navigationController.hideLoading()
+            self.navigationController.showSuccessTopBannerMessage(
+              with: "Wallet Created".toBeLocalised(),
+              message: "You have successfully created a new wallet!".toBeLocalised(),
+              time: 1.5
+            )
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+              let wallet = Wallet(type: WalletType.real(account))
+              self.name = name
+              self.openBackUpWallet(wallet, name: name)
+            })
+          }
         }
       }
     }

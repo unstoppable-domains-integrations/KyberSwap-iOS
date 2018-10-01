@@ -4,6 +4,7 @@ import UIKit
 
 protocol KNCreatePasswordViewControllerDelegate: class {
   func createPasswordUserDidFinish(_ password: String)
+  func createPasswordDidCancel(sender: KNCreatePasswordViewController)
 }
 
 class KNCreatePasswordViewController: UIViewController {
@@ -38,8 +39,8 @@ class KNCreatePasswordViewController: UIViewController {
   }
 
   fileprivate func setupUI() {
-    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-    self.containerView.rounded(color: .clear, width: 0, radius: 5.0)
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+    self.containerView.rounded(radius: 5.0)
 
     self.passwordTextField.text = ""
     self.confirmPasswordTextField.text = ""
@@ -52,6 +53,16 @@ class KNCreatePasswordViewController: UIViewController {
     self.errorConfirmPasswordLabel.isHidden = true
 
     self.doneButton.rounded(color: .clear, width: 0, radius: 5.0)
+  }
+
+  @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {
+    let touchedPoint = sender.location(in: self.view)
+    if touchedPoint.x < self.containerView.frame.minX
+      || touchedPoint.x > self.containerView.frame.maxX
+      || touchedPoint.y < self.containerView.frame.minY
+      || touchedPoint.y > self.containerView.frame.maxY {
+      self.delegate?.createPasswordDidCancel(sender: self)
+    }
   }
 
   @IBAction func doneButtonPressed(_ sender: Any) {

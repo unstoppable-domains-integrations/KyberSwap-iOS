@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,105 +20,74 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNCreateWalletViewController" customModule="Trust" customModuleProvider="target">
             <connections>
-                <outlet property="createWalletButton" destination="I6g-JK-yXd" id="uXu-S2-VoN"/>
-                <outlet property="headerContainerView" destination="pey-7Y-GES" id="15k-rG-BU0"/>
-                <outlet property="navTitleLabel" destination="eoX-wf-GGd" id="sBA-FU-7fa"/>
+                <outlet property="confirmButton" destination="I6g-JK-yXd" id="e9y-Uk-DtP"/>
+                <outlet property="confirmLabel" destination="mkX-Uy-4zc" id="6fk-UA-WcS"/>
+                <outlet property="containerView" destination="UUg-NH-uqh" id="VDR-NV-fxV"/>
+                <outlet property="descLabel" destination="Rv2-pO-lJc" id="XSH-y7-lVi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="walletNameTextField" destination="RqY-TQ-uft" id="Q4e-bM-kYS"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+        <view clearsContextBeforeDrawing="NO" alpha="0.69999999999999996" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pey-7Y-GES">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUg-NH-uqh">
+                    <rect key="frame" x="24" y="226.5" width="327" height="234.5"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoX-wf-GGd">
-                            <rect key="frame" x="103" y="44" width="169" height="22"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mkX-Uy-4zc">
+                            <rect key="frame" x="32" y="32" width="263" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mzM-f9-Wfx">
-                            <rect key="frame" x="16" y="44" width="38" height="22"/>
-                            <state key="normal" image="back_white_icon"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-JK-yXd">
+                            <rect key="frame" x="52" y="154.5" width="223" height="48"/>
+                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="mNG-4C-43C"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Confirm">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
                             <connections>
-                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="0FC-do-LZ9"/>
+                                <action selector="confirmButtonPressed:" destination="-1" eventType="touchUpInside" id="GST-Kg-Ooa"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will create a new wallet. It can not be undone, but you could abandon it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rv2-pO-lJc">
+                            <rect key="frame" x="24" y="76" width="279" height="34.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="eoX-wf-GGd" secondAttribute="bottom" constant="16" id="46G-7r-Og8"/>
-                        <constraint firstItem="mzM-f9-Wfx" firstAttribute="centerY" secondItem="eoX-wf-GGd" secondAttribute="centerY" id="520-Zb-uFO"/>
-                        <constraint firstItem="mzM-f9-Wfx" firstAttribute="leading" secondItem="pey-7Y-GES" secondAttribute="leading" constant="16" id="6QJ-Jg-6L6"/>
-                        <constraint firstAttribute="height" constant="82" id="9Mp-tD-HaG"/>
-                        <constraint firstItem="eoX-wf-GGd" firstAttribute="centerX" secondItem="pey-7Y-GES" secondAttribute="centerX" id="bx4-IL-NpP"/>
-                    </constraints>
-                </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-JK-yXd">
-                    <rect key="frame" x="35" y="319" width="305" height="48"/>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="48" id="mNG-4C-43C"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
-                    <state key="normal" title="Confirm">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="createWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="pg1-iT-bqA"/>
-                    </connections>
-                </button>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of your wallet (optional)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RqY-TQ-uft">
-                    <rect key="frame" x="24" y="114" width="327" height="45"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="45" id="3ih-9f-7Dq"/>
-                    </constraints>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
-                </textField>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jce-zd-CUD">
-                    <rect key="frame" x="24" y="147" width="327" height="1"/>
-                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="C01-GY-EiT"/>
+                        <constraint firstAttribute="trailing" secondItem="mkX-Uy-4zc" secondAttribute="trailing" constant="32" id="0ps-t0-f9y"/>
+                        <constraint firstItem="I6g-JK-yXd" firstAttribute="leading" secondItem="UUg-NH-uqh" secondAttribute="leading" constant="52" id="1i4-J4-sO5"/>
+                        <constraint firstItem="mkX-Uy-4zc" firstAttribute="leading" secondItem="UUg-NH-uqh" secondAttribute="leading" constant="32" id="3TK-bz-dqI"/>
+                        <constraint firstAttribute="trailing" secondItem="I6g-JK-yXd" secondAttribute="trailing" constant="52" id="9mH-pA-ffJ"/>
+                        <constraint firstItem="mkX-Uy-4zc" firstAttribute="centerX" secondItem="UUg-NH-uqh" secondAttribute="centerX" id="P1P-t2-2DA"/>
+                        <constraint firstItem="mkX-Uy-4zc" firstAttribute="top" secondItem="UUg-NH-uqh" secondAttribute="top" constant="32" id="PYF-QE-oah"/>
+                        <constraint firstItem="Rv2-pO-lJc" firstAttribute="top" secondItem="mkX-Uy-4zc" secondAttribute="bottom" constant="22" id="WuQ-BK-7nW"/>
+                        <constraint firstItem="Rv2-pO-lJc" firstAttribute="leading" secondItem="UUg-NH-uqh" secondAttribute="leading" constant="24" id="be8-vV-L2O"/>
+                        <constraint firstItem="I6g-JK-yXd" firstAttribute="top" secondItem="Rv2-pO-lJc" secondAttribute="bottom" constant="44" id="hLC-nO-WS2"/>
+                        <constraint firstAttribute="bottom" secondItem="I6g-JK-yXd" secondAttribute="bottom" constant="32" id="hpV-00-noH"/>
+                        <constraint firstAttribute="trailing" secondItem="Rv2-pO-lJc" secondAttribute="trailing" constant="24" id="moe-kf-msk"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="jce-zd-CUD" firstAttribute="leading" secondItem="RqY-TQ-uft" secondAttribute="leading" id="AkM-6C-Wdb"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pey-7Y-GES" secondAttribute="trailing" id="FdT-tg-f6T"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RqY-TQ-uft" secondAttribute="trailing" constant="24" id="I9T-Cu-8UU"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="I6g-JK-yXd" secondAttribute="trailing" constant="35" id="SXs-Nw-EEx"/>
-                <constraint firstItem="jce-zd-CUD" firstAttribute="top" secondItem="RqY-TQ-uft" secondAttribute="bottom" constant="-12" id="YUX-kr-M7k"/>
-                <constraint firstItem="RqY-TQ-uft" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="aR3-0W-DHt"/>
-                <constraint firstItem="pey-7Y-GES" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bVj-Hh-aDO"/>
-                <constraint firstItem="I6g-JK-yXd" firstAttribute="top" secondItem="RqY-TQ-uft" secondAttribute="bottom" constant="160" id="fNT-27-5LG"/>
-                <constraint firstItem="pey-7Y-GES" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fu1-Sn-DY8"/>
-                <constraint firstItem="I6g-JK-yXd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="jMy-dR-UUl"/>
-                <constraint firstItem="RqY-TQ-uft" firstAttribute="top" secondItem="pey-7Y-GES" secondAttribute="bottom" constant="32" id="kGa-qi-zes"/>
-                <constraint firstItem="jce-zd-CUD" firstAttribute="trailing" secondItem="RqY-TQ-uft" secondAttribute="trailing" id="mQm-Ow-bto"/>
+                <constraint firstItem="UUg-NH-uqh" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4wX-oE-VM8"/>
+                <constraint firstItem="UUg-NH-uqh" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="YQ9-ES-KEt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UUg-NH-uqh" secondAttribute="trailing" constant="24" id="sSC-Po-LGy"/>
+                <constraint firstItem="UUg-NH-uqh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="vEU-jz-YEN"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="3Xm-BW-bjp" appends="YES" id="wHK-xR-IaF"/>
-            </connections>
+            <point key="canvasLocation" x="82.400000000000006" y="48.125937031484263"/>
         </view>
-        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="3Xm-BW-bjp">
-            <rectEdge key="edges" left="YES"/>
-            <connections>
-                <action selector="screenEdgePanGestureAction:" destination="-1" id="bPU-go-e4n"/>
-            </connections>
-        </screenEdgePanGestureRecognizer>
     </objects>
-    <resources>
-        <image name="back_white_icon" width="38" height="19"/>
-    </resources>
 </document>

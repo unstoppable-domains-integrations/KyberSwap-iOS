@@ -241,6 +241,10 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
       }
     }
   }
+
+  func createPasswordDidCancel(sender: KNCreatePasswordViewController) {
+    sender.dismiss(animated: true, completion: nil)
+  }
 }
 
 extension KNSettingsCoordinator: KNListContactViewControllerDelegate {

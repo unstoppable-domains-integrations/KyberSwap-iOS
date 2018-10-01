@@ -13,48 +13,45 @@ protocol KNCreateWalletViewControllerDelegate: class {
 
 class KNCreateWalletViewController: KNBaseViewController {
 
-  @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var navTitleLabel: UILabel!
-
-  @IBOutlet weak var walletNameTextField: UITextField!
-  @IBOutlet weak var createWalletButton: UIButton!
+  @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var confirmLabel: UILabel!
+  @IBOutlet weak var descLabel: UILabel!
+  @IBOutlet weak var confirmButton: UIButton!
 
   weak var delegate: KNCreateWalletViewControllerDelegate?
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
-    self.walletNameTextField.becomeFirstResponder()
   }
 
   fileprivate func setupUI() {
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+    self.containerView.rounded(radius: 5.0)
     let style = KNAppStyleType.current
-    self.view.backgroundColor = style.createWalletBackgroundColor
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
-    self.navTitleLabel.text = "Create your Wallet".toBeLocalised()
-    self.createWalletButton.rounded(radius: style.buttonRadius(for: self.createWalletButton.frame.height))
-    self.createWalletButton.backgroundColor = style.createWalletButtonEnabledColor
-    self.createWalletButton.setTitle(
+    self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
+    self.confirmButton.backgroundColor = style.createWalletButtonEnabledColor
+    self.confirmButton.setTitle(
       style.buttonTitle(with: "Confirm".toBeLocalised()),
       for: .normal
     )
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
+    self.view.addGestureRecognizer(tapGesture)
+    self.view.isUserInteractionEnabled = true
   }
 
-  @IBAction func backButtonPressed(_ sender: Any) {
-    self.delegate?.createWalletViewController(self, run: .back)
-  }
-
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
+  @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {
+    let touchedPoint = sender.location(in: self.view)
+    if touchedPoint.x < self.containerView.frame.minX
+      || touchedPoint.x > self.containerView.frame.maxX
+      || touchedPoint.y < self.containerView.frame.minY
+      || touchedPoint.y > self.containerView.frame.maxY {
       self.delegate?.createWalletViewController(self, run: .back)
     }
   }
 
-  @IBAction func createWalletButtonPressed(_ sender: Any) {
-    let name: String = {
-      if let text = self.walletNameTextField.text, !text.isEmpty { return text }
-      return "Untitled"
-    }()
-    self.delegate?.createWalletViewController(self, run: .next(name: name))
+  @IBAction func confirmButtonPressed(_ sender: Any) {
+    self.delegate?.createWalletViewController(self, run: .next(name: "Untitled"))
   }
 }
