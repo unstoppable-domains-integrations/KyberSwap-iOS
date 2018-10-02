@@ -69,7 +69,11 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           time: 1.5
         )
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-          self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: name)
+          let walletName: String = {
+            if name == nil || name?.isEmpty == true { return "Untitled" }
+            return name ?? "Untitled"
+          }()
+          self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
         })
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
