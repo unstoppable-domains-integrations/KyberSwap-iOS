@@ -412,7 +412,7 @@ extension KYCFlowViewController {
               let message: String = {
                 if success { return json["message"] as? String ?? "" }
                 let reasons: [String] = json["reason"] as? [String] ?? []
-                return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
+                return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason with status code \(resp.statusCode)") : reasons[0]
               }()
               completion(.success((success, message)))
             } catch let error {

@@ -48,7 +48,7 @@ extension UIImage {
           needCompress = false
           imageData = data
         } else {
-          compressingValue -= 1.0
+          compressingValue -= 0.1
         }
       } else {
         return self
