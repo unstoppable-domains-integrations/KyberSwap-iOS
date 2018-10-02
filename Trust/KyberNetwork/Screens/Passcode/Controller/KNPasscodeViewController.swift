@@ -117,7 +117,7 @@ class KNPasscodeViewController: KNBaseViewController {
           alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
             self.showBioAuthenticationIfNeeded()
           }))
-          alert.addAction(UIAlertAction(title: "Enter passcode".toBeLocalised(), style: .default, handler: nil))
+          alert.addAction(UIAlertAction(title: "Enter PIN".toBeLocalised(), style: .default, handler: nil))
           self.present(alert, animated: true, completion: nil)
         }
       }

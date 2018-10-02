@@ -353,7 +353,7 @@ class KSwapViewController: KNBaseViewController {
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
         with: "Invalid amount".toBeLocalised(),
-        message: "Amount too small to perform exchange, minimum equivalent to 0.001 ETH".toBeLocalised()
+        message: "Amount too small to perform swap, minimum equivalent to 0.001 ETH".toBeLocalised()
       )
       return true
     }
@@ -573,7 +573,7 @@ extension KSwapViewController {
     self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
     if self.viewModel.from == self.viewModel.to {
       self.showWarningTopBannerMessage(
-        with: "Not supported".toBeLocalised(),
+        with: "Unsupported".toBeLocalised(),
         message: "Can not swap the same token".toBeLocalised(),
         time: 1.5
       )

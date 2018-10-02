@@ -31,7 +31,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextField.rightViewMode = .always
     self.enterPrivateKeyTextField.delegate = self
 
-    self.privateKeyNoteLabel.text = "Private key has to be 64 characaters".toBeLocalised()
+    self.privateKeyNoteLabel.text = "Private key has to be 64 characters".toBeLocalised()
 
     let style = KNAppStyleType.current
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))

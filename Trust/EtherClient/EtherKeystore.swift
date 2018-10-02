@@ -137,7 +137,11 @@ open class EtherKeystore: Keystore {
             _ = setPassword(newPassword, for: account)
             completion(.success(Wallet(type: .real(account))))
           } catch let error {
-            completion(.failure(KeystoreError.failedToImport(error)))
+            if case KeyStore.Error.accountAlreadyExists = error {
+              completion(.failure(.duplicateAccount))
+            } else {
+              completion(.failure(.failedToImport(error)))
+            }
           }
         case .watch(let address):
             let addressString = address.description
