@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,9 +15,6 @@
         </array>
         <array key="Montserrat-Regular.ttf">
             <string>Montserrat-Regular</string>
-        </array>
-        <array key="Montserrat-SemiBold.ttf">
-            <string>Montserrat-SemiBold</string>
         </array>
     </customFonts>
     <objects>
@@ -31,8 +28,8 @@
                 <outlet property="hasPendingTxView" destination="WJc-fq-iX6" id="YJu-c2-U8H"/>
                 <outlet property="headerContainerView" destination="iQw-Mq-Z8D" id="D9T-OX-seg"/>
                 <outlet property="kyberListButton" destination="IPs-kS-P1d" id="0Gi-gV-cng"/>
+                <outlet property="nameTextButton" destination="G0q-wm-sdr" id="8jl-dW-pbi"/>
                 <outlet property="otherButton" destination="bfz-k4-GjU" id="pTY-mO-ycb"/>
-                <outlet property="receiveTokenButton" destination="JRV-cy-j9I" id="XO1-Ce-6oo"/>
                 <outlet property="searchTextField" destination="7gf-Oi-kKw" id="ehw-gh-DKG"/>
                 <outlet property="tokensBalanceTableView" destination="FVh-O1-fs1" id="MZw-SE-s1W"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -191,7 +188,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61z-Hi-1ah">
-                            <rect key="frame" x="237" y="10" width="46" height="17"/>
+                            <rect key="frame" x="237" y="9.5" width="46" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="24B-7G-Hym"/>
                             </constraints>
@@ -223,34 +220,16 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZA-fD-Wsm">
                     <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your balance is empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g5-Hf-gED">
-                            <rect key="frame" x="87" y="106.5" width="202" height="22"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g5-Hf-gED">
+                            <rect key="frame" x="111.5" y="106.5" width="152" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-cy-j9I">
-                            <rect key="frame" x="68" y="192.5" width="240" height="46"/>
-                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="46" id="neE-Zv-WQ2"/>
-                                <constraint firstAttribute="width" constant="240" id="sT2-Zr-2Ib"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
-                            <state key="normal" title="Receive Token">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
-                            <connections>
-                                <action selector="receiveTokenButtonPressed:" destination="-1" eventType="touchUpInside" id="XWj-wJ-vpe"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="6g5-Hf-gED" firstAttribute="centerX" secondItem="xZA-fD-Wsm" secondAttribute="centerX" id="5t5-Yd-FuP"/>
-                        <constraint firstItem="JRV-cy-j9I" firstAttribute="top" secondItem="6g5-Hf-gED" secondAttribute="bottom" constant="64" id="5zX-AB-1kr"/>
-                        <constraint firstItem="JRV-cy-j9I" firstAttribute="centerX" secondItem="xZA-fD-Wsm" secondAttribute="centerX" id="TJH-rB-8r9"/>
-                        <constraint firstItem="JRV-cy-j9I" firstAttribute="centerY" secondItem="xZA-fD-Wsm" secondAttribute="centerY" id="pfm-O1-guA"/>
                     </constraints>
                 </view>
             </subviews>
@@ -272,6 +251,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ldd-eU-IaQ" secondAttribute="trailing" id="hol-4O-gS1"/>
                 <constraint firstItem="ldd-eU-IaQ" firstAttribute="top" secondItem="Ei3-S9-EbQ" secondAttribute="bottom" id="lBT-OQ-5Ot"/>
                 <constraint firstItem="xZA-fD-Wsm" firstAttribute="top" secondItem="ldd-eU-IaQ" secondAttribute="bottom" id="oco-6T-FOE"/>
+                <constraint firstItem="6g5-Hf-gED" firstAttribute="top" secondItem="Ei3-S9-EbQ" secondAttribute="bottom" constant="142.5" id="pXE-im-G9L"/>
                 <constraint firstItem="FVh-O1-fs1" firstAttribute="bottom" secondItem="xZA-fD-Wsm" secondAttribute="bottom" id="tV7-nV-jqJ"/>
                 <constraint firstItem="xZA-fD-Wsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="upr-mT-u0y"/>
             </constraints>

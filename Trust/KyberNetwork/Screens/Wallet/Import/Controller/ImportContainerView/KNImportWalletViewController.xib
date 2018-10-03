@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +19,7 @@
             <connections>
                 <outlet property="headerContainerView" destination="qw3-JL-nXK" id="GnU-ap-5gR"/>
                 <outlet property="jsonButton" destination="kob-xN-pmG" id="RKV-5R-RN9"/>
+                <outlet property="navTitleLabel" destination="7QT-CL-yPl" id="7Ke-Oc-Pdn"/>
                 <outlet property="pageControl" destination="YJG-zg-uNF" id="PM9-he-h55"/>
                 <outlet property="privateKeyButton" destination="TYq-lc-2ub" id="sN4-UT-UUw"/>
                 <outlet property="scrollView" destination="Kke-yj-k62" id="vPf-S7-R2L"/>
@@ -89,7 +89,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYq-lc-2ub">
-                    <rect key="frame" x="134.5" y="97.5" width="106.5" height="106.5"/>
+                    <rect key="frame" x="134.5" y="98" width="106" height="106.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                     <state key="normal" title="Private Key" image="private_key_import_icon">
@@ -101,7 +101,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9U-mU-xnN">
-                    <rect key="frame" x="253" y="98.5" width="106" height="106"/>
+                    <rect key="frame" x="252.5" y="98" width="106.5" height="106.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                     <state key="normal" title="Seeds" image="seeds_import_icon">

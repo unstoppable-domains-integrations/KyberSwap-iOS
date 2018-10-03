@@ -78,11 +78,11 @@ class KNBackUpWalletViewModel {
   }
 
   lazy var backUpWalletText: String = {
-    return "Backup Your Wallet".toBeLocalised()
+    return NSLocalizedString("backup.your.wallet", value: "Backup Your Wallet", comment: "")
   }()
 
   var backUpTitleText: String {
-    return self.currentWordIndex == 0 ? "Paper Only".toBeLocalised() : ""
+    return self.currentWordIndex == 0 ? NSLocalizedString("paper.only", value: "Paper Only", comment: "") : ""
   }
 
   var backUpDescAttributedString: NSMutableAttributedString {
@@ -94,24 +94,31 @@ class KNBackUpWalletViewModel {
       NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
     ]
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "We will give you a list of 12 random words. Please ".toBeLocalised(), attributes: regularttributes))
-    attributedString.append(NSAttributedString(string: "write them down on paper ".toBeLocalised(), attributes: boldAttributes))
-    attributedString.append(NSAttributedString(string: "and keep safe.\n\nThis paper key is ".toBeLocalised(), attributes: regularttributes))
-    attributedString.append(NSAttributedString(string: "the only way ".toBeLocalised(), attributes: boldAttributes))
-    attributedString.append(NSAttributedString(string: "to restore your Kyber Wallet if you lose your phone or forget your password.".toBeLocalised(), attributes: regularttributes))
+    let listOfWords = NSLocalizedString("we.will.give.you.a.list.of.random.words", value: "We will give you a list of 12 random words. Please", comment: "")
+    attributedString.append(NSAttributedString(string: "\(listOfWords) ", attributes: regularttributes))
+    let writeDownOnPaper = NSLocalizedString("write.them.down.on.paper", value: "write them down on paper", comment: "")
+    attributedString.append(NSAttributedString(string: "\(writeDownOnPaper) ", attributes: boldAttributes))
+    let keepSafe = NSLocalizedString("and.keep.safe.this.paper.key", value: "and keep safe.\n\nThis paper key is", comment: "")
+    attributedString.append(NSAttributedString(string: "\(keepSafe) ", attributes: regularttributes))
+    let theOnlyWay = NSLocalizedString("the.only.way", value: "the only way", comment: "")
+    attributedString.append(NSAttributedString(string: "\(theOnlyWay) ", attributes: boldAttributes))
+    let restoreText = NSLocalizedString("restore.your.kyber.wallet.if.you.lose.your.phone", value: "to restore your Kyber Wallet if you lose your phone or forget your password.", comment: "")
+    attributedString.append(NSAttributedString(string: restoreText, attributes: regularttributes))
     return attributedString
   }
 
   var writeDownWordsText: String {
-    return "Write down the words from \(self.currentWordIndex + 1)-\(self.currentWordIndex + self.numberWords)".toBeLocalised()
+    let text = NSLocalizedString("write.down.the.words.from", value: "Write down the words from", comment: "")
+    return "\(text) \(self.currentWordIndex + 1)-\(self.currentWordIndex + self.numberWords)"
   }
 
   var wroteDownButtonTitle: String {
-    return "I wrote down the words from \(self.currentWordIndex + 1) to \(self.currentWordIndex + self.numberWords)".toBeLocalised()
+    let text = NSLocalizedString("i.wrote.down.the.words.from", value: "I wrote down the words from", comment: "")
+    return "\(text) \(self.currentWordIndex + 1) \(NSLocalizedString("to", value: "To", comment: "")) \(self.currentWordIndex + self.numberWords)"
   }
 
   lazy var testingBackUpText: String = {
-    return "Test your Backup".toBeLocalised()
+    return NSLocalizedString("test.your.backup", value: "Test your Backup", comment: "")
   }()
 
   lazy var testingBackUpDescText: NSMutableAttributedString = {
@@ -119,15 +126,17 @@ class KNBackUpWalletViewModel {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
       ]
     let attributedString = NSMutableAttributedString()
+    let key = "make.sure.you.have.written.down.all.your.backup.words"
+    let text = "To make sure you have written down all of your backup words. Please enter the following."
     attributedString.append(NSAttributedString(
-      string: "To make sure you have written down all of your backup words. Please enter the following.".toBeLocalised(),
+      string: NSLocalizedString(key, value: text, comment: ""),
       attributes: regularttributes
     ))
     return attributedString
   }()
 
   lazy var completeButtonText: String = {
-    return "Complete".toBeLocalised().uppercased()
+    return NSLocalizedString("complete", value: "Complete", comment: "")
   }()
 
   var iconName: String {
@@ -167,11 +176,11 @@ class KNBackUpWalletViewModel {
   }
 
   var firstWordTextFieldPlaceholder: String {
-    return "Word #\(self.firstWordID)".toBeLocalised()
+    return "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.firstWordID)"
   }
 
   var secondWordTextFieldPlaceholder: String {
-    return "Word #\(self.secondWordID)".toBeLocalised()
+    return "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.secondWordID)"
   }
 
   var isCompleteButtonHidden: Bool {

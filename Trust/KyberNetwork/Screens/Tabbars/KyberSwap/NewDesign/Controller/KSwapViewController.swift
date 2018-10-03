@@ -43,6 +43,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var fromAmountTextField: UITextField!
   @IBOutlet weak var toAmountTextField: UITextField!
 
+  @IBOutlet weak var rateTextLabel: UILabel!
   @IBOutlet weak var exchangeRateLabel: UILabel!
 
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
@@ -70,8 +71,8 @@ class KSwapViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: "Swap All",
-      rightBtnTitle: "Done",
+      leftBtnTitle: NSLocalizedString("swap.all", value: "Swap All", comment: ""),
+      rightBtnTitle: NSLocalizedString("done", value: "Done", comment: ""),
       barTintColor: KNAppStyleType.current.swapHeaderBackgroundColor,
       delegate: self)
   }()
@@ -143,6 +144,7 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    self.view.endEditing(true)
     self.estRateTimer?.invalidate()
     self.estRateTimer = nil
     self.estGasLimitTimer?.invalidate()
@@ -172,6 +174,7 @@ class KSwapViewController: KNBaseViewController {
 
     self.viewModel.updateAmount("", isSource: true)
     self.balanceTextLabel.text = self.viewModel.balanceTextString
+    self.rateTextLabel.text = NSLocalizedString("rate", value: "Rate", comment: "").uppercased()
 
     self.toAmountTextField.text = ""
     self.toAmountTextField.adjustsFontSizeToFitWidth = true
@@ -216,7 +219,7 @@ class KSwapViewController: KNBaseViewController {
     self.continueButton.rounded(radius: radius)
     self.continueButton.backgroundColor = style.swapActionButtonBackgroundColor
     self.continueButton.setTitle(
-      style.buttonTitle(with: "Continue"),
+      NSLocalizedString("continue", value: "Continue", comment: ""),
       for: .normal
     )
   }
@@ -337,46 +340,46 @@ class KSwapViewController: KNBaseViewController {
   fileprivate func showWarningDataInvalidIfNeeded(isConfirming: Bool = false) -> Bool {
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
-        with: "Unsupported".toBeLocalised(),
-        message: "Can not swap the same token".toBeLocalised(),
+        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
+        message: NSLocalizedString("can.not.swap.same.token", value: "Can not swap the same token", comment: ""),
         time: 1.5
       )
       return true
     }
     guard self.viewModel.isHavingEnoughETHForFee else {
       self.showWarningTopBannerMessage(
-        with: "Insufficient ETH".toBeLocalised(),
-        message: "Not have enough ETH to pay for transaction fee".toBeLocalised()
+        with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
+        message: NSLocalizedString("not.have.enought.eth.to.pay.transaction.fee", value: "Not have enough ETH to pay for transaction fee", comment: "")
       )
       return true
     }
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
-        with: "Invalid amount".toBeLocalised(),
-        message: "Amount too small to perform swap, minimum equivalent to 0.001 ETH".toBeLocalised()
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: NSLocalizedString("amount.too.small.to.perform.swap", value: "Amount too small to perform swap, minimum equivalent to 0.001 ETH", comment: "")
       )
       return true
     }
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
-        with: "Amount too big".toBeLocalised(),
-        message: "Balance is not be enough to make the transaction.".toBeLocalised()
+        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
+        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
       )
       return true
     }
     if isConfirming {
       guard self.viewModel.userCapInWei != nil else {
         self.showWarningTopBannerMessage(
-          with: "".toBeLocalised(),
-          message: "We are updating your trade cap limit.".toBeLocalised(),
+          with: "",
+          message: NSLocalizedString("updating.trade.cap.limit", value: "We are updating your trade cap limit.", comment: ""),
           time: 2.0
         )
         return true
       }
       guard self.viewModel.isCapEnough else {
         self.showWarningTopBannerMessage(
-          with: "Amount too big".toBeLocalised(),
-          message: "Your cap has reached. Increase your cap by completing KYC.".toBeLocalised(),
+          with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
+          message: NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: ""),
           time: 2.0
         )
         return true
@@ -385,15 +388,15 @@ class KSwapViewController: KNBaseViewController {
     if isConfirming {
       guard self.viewModel.isMinRateValid else {
         self.showWarningTopBannerMessage(
-          with: "Invalid min rate".toBeLocalised(),
-          message: "Your min rate should be greater than zero".toBeLocalised()
+          with: NSLocalizedString("invalid.min.rate", value: "Invalid min rate", comment: ""),
+          message: NSLocalizedString("your.min.rate.should.be.greater.than.zero", value: "Your min rate should be greater than zero", comment: "")
         )
         return true
       }
       guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
         self.showWarningTopBannerMessage(
-          with: "Rate might change".toBeLocalised(),
-          message: "Please wait for expected rate to be updated".toBeLocalised()
+          with: NSLocalizedString("rate.might.change", value: "Rate might change", comment: ""),
+          message: NSLocalizedString("please.wait.for.expected.rate.updated", value: "Please wait for expected rate to be updated", comment: "")
         )
         return true
       }
@@ -573,8 +576,8 @@ extension KSwapViewController {
     self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
     if self.viewModel.from == self.viewModel.to {
       self.showWarningTopBannerMessage(
-        with: "Unsupported".toBeLocalised(),
-        message: "Can not swap the same token".toBeLocalised(),
+        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
+        message: NSLocalizedString("can.not.swap.same.token", value: "Can not swap the same token", comment: ""),
         time: 1.5
       )
     }
@@ -631,7 +634,7 @@ extension KSwapViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
     if textField == self.fromAmountTextField && text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.fullBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
-    if text.isEmpty || Double(text) != nil {
+    if !text.isEmpty {
       textField.text = text
       self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
       self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
@@ -709,7 +712,7 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
     case .infoPressed:
       let minRateDescVC: KMinAcceptableRatePopupViewController = {
         let viewModel = KMinAcceptableRatePopupViewModel(
-          minRate: self.viewModel.minRateText ?? "0.0",
+          minRate: self.viewModel.slippageRateText ?? "0.0",
           symbol: self.viewModel.to.symbol
         )
         return KMinAcceptableRatePopupViewController(viewModel: viewModel)

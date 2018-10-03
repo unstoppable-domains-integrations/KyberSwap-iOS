@@ -25,6 +25,7 @@ class KNImportSeedsViewController: KNBaseViewController {
     super.viewDidLoad()
     self.seedsTextField.delegate = self
 
+    self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
     let style = KNAppStyleType.current
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
     self.nextButton.setBackgroundColor(
@@ -36,16 +37,18 @@ class KNImportSeedsViewController: KNBaseViewController {
       forState: .normal
     )
     self.nextButton.setTitle(
-      style.buttonTitle(with: "Import Wallet".toBeLocalised()),
+      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.seedsTextField.placeholder = NSLocalizedString("enter.your.seeds", value: "Enter your seeds", comment: "")
+    self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
 
     self.resetUIs()
   }
 
   func resetUIs() {
     self.seedsTextField.text = ""
-    self.wordsCountLabel.text = "Words Count: 0"
+    self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
     self.walletNameTextField.text = ""
     self.updateNextButton()
   }
@@ -64,8 +67,8 @@ class KNImportSeedsViewController: KNBaseViewController {
     if let seeds = self.seedsTextField.text?.trimmed {
       guard Mnemonic.isValid(seeds) else {
         self.parent?.showErrorTopBannerMessage(
-          with: "Invalid Seeds".toBeLocalised(),
-          message: "Please check your seeds again.".toBeLocalised()
+          with: NSLocalizedString("invalid.seeds", value: "Invalid Seeds", comment: ""),
+          message: NSLocalizedString("please.check.your.seeds.again", value: "Please check your seeds again", comment: "")
         )
         return
       }
@@ -79,13 +82,14 @@ class KNImportSeedsViewController: KNBaseViewController {
         )
       } else {
         self.parent?.showErrorTopBannerMessage(
-          with: "Invalid seeds".toBeLocalised(),
-          message: "Seeds should have exactly 12 words".toBeLocalised())
+          with: NSLocalizedString("invalid.seeds", value: "Invalid Seeds", comment: ""),
+          message: NSLocalizedString("seeds.should.have.exactly.12.words", value: "Seeds should have exactly 12 words", comment: "")
+        )
       }
     } else {
       self.parent?.showErrorTopBannerMessage(
-        with: "Field Required".toBeLocalised(),
-        message: "Please check your input data".toBeLocalised())
+        with: NSLocalizedString("field.required", value: "Field Required", comment: ""),
+        message: NSLocalizedString("please.check.your.input.data", value: "Please check your input data", comment: ""))
     }
   }
 }
@@ -94,7 +98,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
     if textField == self.seedsTextField {
-      self.wordsCountLabel.text = "Words Count: 0"
+      self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
       self.updateNextButton()
     }
     return false
@@ -105,7 +109,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     if textField == self.seedsTextField {
       var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      self.wordsCountLabel.text = "Words Count: \(words.count)"
+      self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
       self.updateNextButton()
     }
     return false

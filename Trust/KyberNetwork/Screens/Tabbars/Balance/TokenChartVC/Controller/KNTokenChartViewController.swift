@@ -333,7 +333,7 @@ class KNTokenChartViewController: KNBaseViewController {
     )
     self.sendButton.backgroundColor = UIColor.Kyber.merigold
     self.sendButton.setTitle(
-      style.buttonTitle(with: "Send".toBeLocalised()),
+      NSLocalizedString("send", value: "Send", comment: ""),
       for: .normal
     )
     self.buyButton.rounded(
@@ -343,7 +343,7 @@ class KNTokenChartViewController: KNBaseViewController {
     )
     self.buyButton.backgroundColor = UIColor.Kyber.shamrock
     self.buyButton.setTitle(
-      style.buttonTitle(with: "Buy".toBeLocalised()),
+      NSLocalizedString("buy", value: "Buy", comment: ""),
       for: .normal
     )
     self.sellButton.rounded(
@@ -353,19 +353,33 @@ class KNTokenChartViewController: KNBaseViewController {
     )
     self.sellButton.backgroundColor = UIColor.Kyber.blueGreen
     self.sellButton.setTitle(
-      style.buttonTitle(with: "Sell".toBeLocalised()),
+      NSLocalizedString("sell", value: "Sell", comment: ""),
       for: .normal
     )
 
+    self.dataTypeButtons.forEach { button in
+      let title: String = {
+        switch button.tag {
+        case 0: return "24H"
+        case 1: return "7 \(NSLocalizedString("days", value: "Days", comment: ""))"
+        case 2: return "\(NSLocalizedString("month", value: "Month", comment: ""))"
+        case 3: return "\(NSLocalizedString("year", value: "Year", comment: ""))"
+        case 4: return "\(NSLocalizedString("all", value: "All", comment: ""))"
+        default: return ""
+        }
+      }()
+      button.setTitle(title, for: .normal)
+    }
+
     if self.viewModel.isTokenSupported {
-      self.noDataLabel.text = "Updating data ...".toBeLocalised()
+      self.noDataLabel.text = "\(NSLocalizedString("updating.data", value: "Updating data", comment: "")) ..."
       self.updateDisplayDataType(.day)
     } else {
       self.dataTypeButtonContainerView.isHidden = true
-      self.noDataLabel.text = "This token is not supported by Kyber Network".toBeLocalised()
+      self.noDataLabel.text = NSLocalizedString("this.token.is.not.supported", value: "This token is not supported by Kyber Network", comment: "")
       self.buyButton.isHidden = true
       self.sellButton.setTitle(
-        style.buttonTitle(with: "Send".toBeLocalised()),
+        NSLocalizedString("send", value: "Send", comment: ""),
         for: .normal
       )
       self.sellButton.backgroundColor = UIColor.Kyber.merigold
@@ -417,7 +431,7 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {
-    self.noDataLabel.text = "Updating data ...".toBeLocalised()
+    self.noDataLabel.text = "\(NSLocalizedString("updating.data", value: "Updating data", comment: ""))..."
     self.viewModel.fetchNewData(
       for: self.viewModel.token,
       type: self.viewModel.type) { [weak self] result in
@@ -426,10 +440,10 @@ class KNTokenChartViewController: KNBaseViewController {
           if isSuccess {
             self?.reloadViewDataDidUpdate()
           } else {
-            self?.noDataLabel.text = "Can not update data".toBeLocalised()
+            self?.noDataLabel.text = NSLocalizedString("can.not.update.data", value: "Can not update data", comment: "")
           }
         case .failure(let error):
-          self?.noDataLabel.text = "Can not update data".toBeLocalised()
+          self?.noDataLabel.text = NSLocalizedString("can.not.update.data", value: "Can not update data", comment: "")
           self?.displayError(error: error)
         }
     }
@@ -454,7 +468,7 @@ class KNTokenChartViewController: KNBaseViewController {
   fileprivate func reloadViewDataDidUpdate() {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
     if self.viewModel.data.isEmpty {
-      self.noDataLabel.text = "There is no data for this token".toBeLocalised()
+      self.noDataLabel.text = NSLocalizedString("no.data.for.this.token", value: "There is no data for this token", comment: "")
       self.noDataLabel.isHidden = false
       self.priceChart.isHidden = true
     } else {

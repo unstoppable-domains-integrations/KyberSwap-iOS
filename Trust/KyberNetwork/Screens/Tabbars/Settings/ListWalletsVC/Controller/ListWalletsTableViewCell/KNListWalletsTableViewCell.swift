@@ -10,7 +10,7 @@ class KNListWalletsTableViewCell: UITableViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.walletNameLabel.text = "Untitled".toBeLocalised()
+    self.walletNameLabel.text = "Untitled"
     self.walletAddressLabel.text = ""
   }
 

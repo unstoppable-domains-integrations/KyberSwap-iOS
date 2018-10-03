@@ -34,10 +34,14 @@ struct KMinAcceptableRatePopupViewModel {
 
   var attributedString: NSAttributedString {
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "Min Acceptable Rate".toBeLocalised(), attributes: self.titleAttributes))
-    attributedString.append(NSAttributedString(string: "\n\nGuard yourself during volatile times by setting the lowest conversion rate you would accept for this transaction.\n".toBeLocalised(), attributes: self.descAttributes))
-    attributedString.append(NSAttributedString(string: "Setting a high value may result in a failed transaction and you would be charged gas fees.\n\n", attributes: self.descAttributes))
-    attributedString.append(NSAttributedString(string: "Our recommended Min Acceptable Rate is ".toBeLocalised(), attributes: self.descAttributes))
+    let localisedMinAcceptablRate = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
+    attributedString.append(NSAttributedString(string: localisedMinAcceptablRate, attributes: self.titleAttributes))
+    let localisedVolatileTime = NSLocalizedString("guard.yourself.during.volatile.times.by.settings.lowest.conversion.rate", value: "Guard yourself during volatile times by setting the lowest conversion rate you would accept for this transaction.", comment: "")
+    attributedString.append(NSAttributedString(string: "\n\n\(localisedVolatileTime)\n", attributes: self.descAttributes))
+    let localisedSettingsHighValue = NSLocalizedString("setting.a.high.value.may.result.in.a.failed.transaction", value: "Setting a high value may result in a failed transaction and you would be charged gas fees.", comment: "")
+    attributedString.append(NSAttributedString(string: "\(localisedSettingsHighValue)\n\n", attributes: self.descAttributes))
+    let localisedRecommendRate = NSLocalizedString("our.recommended.min.acceptable.rate", value: "Our recommended Min Acceptable Rate is", comment: "")
+    attributedString.append(NSAttributedString(string: "\(localisedRecommendRate) ", attributes: self.descAttributes))
     attributedString.append(NSAttributedString(string: minRate, attributes: self.highlightedAttributes))
     attributedString.append(NSAttributedString(string: " \(symbol)", attributes: self.descAttributes))
     return attributedString

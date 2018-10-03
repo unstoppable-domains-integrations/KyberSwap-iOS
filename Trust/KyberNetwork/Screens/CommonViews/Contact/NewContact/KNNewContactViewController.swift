@@ -32,7 +32,7 @@ class KNNewContactViewModel {
   }
 
   var title: String {
-    return isEditing ? "Edit Contact".toBeLocalised() : "Add Contact".toBeLocalised()
+    return isEditing ? NSLocalizedString("edit.contact", value: "Edit Contact", comment: "") : NSLocalizedString("add.contact", value: "Add Contact", comment: "")
   }
 
   func updateViewModel(address: String) {
@@ -80,10 +80,12 @@ class KNNewContactViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
-    self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
-    self.deleteButton.setTitle("Delete Contact".toBeLocalised(), for: .normal)
-    self.sendButton.setTitle("Send", for: .normal)
+    self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
+    self.deleteButton.setTitle(NSLocalizedString("delete.contact", value: "Delete Contact", comment: ""), for: .normal)
+    self.sendButton.setTitle(NSLocalizedString("send", value: "Send", comment: ""), for: .normal)
     self.addressTextField.delegate = self
+    self.nameTextField.placeholder = NSLocalizedString("name", value: "Name", comment: "")
+    self.addressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
     self.updateUI()
   }
 
@@ -115,12 +117,15 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    guard let name = self.nameTextField.text else {
-      self.showWarningTopBannerMessage(with: "", message: "Contact should have a name".toBeLocalised())
+    guard let name = self.nameTextField.text, !name.isEmpty else {
+      self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
     }
     guard let address = self.addressTextField.text, Address(string: address) != nil else {
-      self.showWarningTopBannerMessage(with: "Invalid address".toBeLocalised(), message: "Please enter a valid address".toBeLocalised())
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: "")
+      )
       return
     }
     let contact = KNContact(address: address.lowercased(), name: name)
@@ -132,11 +137,11 @@ class KNNewContactViewController: KNBaseViewController {
   @IBAction func deleteButtonPressed(_ sender: Any) {
     let alertController = UIAlertController(
       title: "",
-      message: "Do you want to delete this contact?".toBeLocalised(),
+      message: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
       preferredStyle: .actionSheet
     )
-    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
       KNContactStorage.shared.delete(contacts: [self.viewModel.contact])
       KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
       self.delegate?.newContactViewController(self, run: .dismiss)
@@ -147,8 +152,8 @@ class KNNewContactViewController: KNBaseViewController {
   @IBAction func sendButtonPressed(_ sender: Any) {
     guard let address = Address(string: self.addressTextField.text ?? "") else {
       self.showErrorTopBannerMessage(
-        with: "Invalid address".toBeLocalised(),
-        message: "Please enter a valid address to continue".toBeLocalised(),
+        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
         time: 2.0
       )
       return

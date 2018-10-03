@@ -47,9 +47,9 @@ class KNCreatePasswordViewController: UIViewController {
     self.passwordTextField.delegate = self
     self.confirmPasswordTextField.delegate = self
 
-    self.errorPasswordLabel.text = "Field required".toBeLocalised()
+    self.errorPasswordLabel.text = NSLocalizedString("field.required", value: "Field required", comment: "")
     self.errorPasswordLabel.isHidden = true
-    self.errorConfirmPasswordLabel.text = "Passwords mismatch".toBeLocalised()
+    self.errorConfirmPasswordLabel.text = NSLocalizedString("passwords.mismatch", value: "Passwords mismatch", comment: "")
     self.errorConfirmPasswordLabel.isHidden = true
 
     self.doneButton.rounded(color: .clear, width: 0, radius: 5.0)

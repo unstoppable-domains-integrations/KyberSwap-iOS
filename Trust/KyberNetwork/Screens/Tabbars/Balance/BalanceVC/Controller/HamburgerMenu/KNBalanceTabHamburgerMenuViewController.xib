@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +20,7 @@
                 <outlet property="allTransactionButton" destination="f9M-BC-Uae" id="iRL-OY-7pJ"/>
                 <outlet property="hamburgerMenuViewTrailingConstraint" destination="md2-TE-yB9" id="309-qb-7aO"/>
                 <outlet property="hamburgerView" destination="cBS-qe-UMl" id="8LU-Qd-IMM"/>
+                <outlet property="mywalletsTextLabel" destination="jM8-51-5zC" id="zUt-sC-sSN"/>
                 <outlet property="numberPendingTxLabel" destination="S4v-Ng-FRf" id="blp-6h-tcu"/>
                 <outlet property="panGestureRecognizer" destination="0Ip-B4-Knc" id="uUT-MX-DDw"/>
                 <outlet property="pendingTransactionContainerView" destination="sad-Rt-dMF" id="syv-Sc-NbX"/>
@@ -126,7 +127,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY WALLET(S)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jM8-51-5zC">
-                                    <rect key="frame" x="20" y="18" width="104" height="17.5"/>
+                                    <rect key="frame" x="20" y="17.5" width="104" height="17.5"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>

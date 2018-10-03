@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,11 +25,15 @@
                 <outlet property="countryOfResidenceTextField" destination="NjX-0Q-AM5" id="8Fr-co-5Ye"/>
                 <outlet property="dateOfBirthTextField" destination="tQM-WS-Erv" id="Apf-V1-chM"/>
                 <outlet property="femaleButton" destination="Xkz-KB-eNT" id="Isx-ix-eXa"/>
+                <outlet property="femaleTextLabel" destination="2ft-En-NTM" id="1Hy-sg-wFA"/>
                 <outlet property="firstNameTextField" destination="bsN-z4-zCD" id="Fbr-wW-eas"/>
+                <outlet property="genderTextLabel" destination="aHq-Tt-gii" id="pPH-Yu-TNW"/>
                 <outlet property="heightConstraintForAddWalletView" destination="pLj-4Y-M2l" id="kHl-rX-Ism"/>
                 <outlet property="heightConstraintWalletsDataView" destination="slq-dP-fht" id="nRM-Xs-aFb"/>
                 <outlet property="lastNameTextField" destination="eTl-88-zAV" id="bKl-Hc-JoH"/>
                 <outlet property="maleButton" destination="lFU-Jg-AEV" id="oK7-Bv-Wla"/>
+                <outlet property="maleTextLabel" destination="EcT-d1-9Q6" id="SUp-FQ-ql4"/>
+                <outlet property="mywalletsLabel" destination="Gms-8I-i03" id="19m-Lv-hyn"/>
                 <outlet property="nationalityTextField" destination="KEP-8I-BZN" id="QMa-Je-1Sr"/>
                 <outlet property="nextButton" destination="yTF-Eq-Hoz" id="hU0-YL-ot2"/>
                 <outlet property="noWalletsTextLabel" destination="4Xg-Xa-CwB" id="KBJ-Vo-Qeh"/>
@@ -88,7 +92,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFU-Jg-AEV">
-                            <rect key="frame" x="127.5" y="152" width="24" height="24"/>
+                            <rect key="frame" x="127.5" y="153" width="24" height="24"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="SEX-UQ-kr1"/>
@@ -99,19 +103,19 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Male" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EcT-d1-9Q6">
-                            <rect key="frame" x="163.5" y="155.5" width="34.5" height="17.5"/>
+                            <rect key="frame" x="163.5" y="156" width="34.5" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Female" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ft-En-NTM">
-                            <rect key="frame" x="298" y="155.5" width="53" height="17.5"/>
+                            <rect key="frame" x="298" y="156" width="53" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xkz-KB-eNT">
-                            <rect key="frame" x="262" y="152" width="24" height="24"/>
+                            <rect key="frame" x="262" y="153" width="24" height="24"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="JCr-Rk-VER"/>
@@ -122,7 +126,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of birth (YYYY-MM-DD)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tQM-WS-Erv">
-                            <rect key="frame" x="24" y="192" width="327" height="46"/>
+                            <rect key="frame" x="24" y="193" width="327" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="a4x-Lw-ddM"/>
                             </constraints>
@@ -131,14 +135,14 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ewG-GU-IRc">
-                            <rect key="frame" x="24" y="228" width="327" height="1"/>
+                            <rect key="frame" x="24" y="229" width="327" height="1"/>
                             <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="FtK-M7-lfM"/>
                             </constraints>
                         </view>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nationality" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KEP-8I-BZN">
-                            <rect key="frame" x="24" y="254" width="295" height="46"/>
+                            <rect key="frame" x="24" y="255" width="295" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="2W3-fQ-QSj"/>
                             </constraints>
@@ -147,14 +151,14 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" textContentType="country-name"/>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dE2-bC-3MX">
-                            <rect key="frame" x="24" y="290" width="327" height="1"/>
+                            <rect key="frame" x="24" y="291" width="327" height="1"/>
                             <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="fHi-AV-anO"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kAL-xL-9HK">
-                            <rect key="frame" x="327" y="265" width="24" height="24"/>
+                            <rect key="frame" x="327" y="266" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="mTp-yh-AEo"/>
                                 <constraint firstAttribute="height" constant="24" id="xoE-og-bkI"/>
@@ -165,7 +169,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country of Residence" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NjX-0Q-AM5">
-                            <rect key="frame" x="24" y="316" width="295" height="46"/>
+                            <rect key="frame" x="24" y="317" width="295" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="cKD-qf-xiD"/>
                             </constraints>
@@ -174,14 +178,14 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" textContentType="country-name"/>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I43-AR-LC0">
-                            <rect key="frame" x="24" y="352" width="327" height="1"/>
+                            <rect key="frame" x="24" y="353" width="327" height="1"/>
                             <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="gyd-mw-00A"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6c-CU-Any">
-                            <rect key="frame" x="327" y="327" width="24" height="24"/>
+                            <rect key="frame" x="327" y="328" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="21Q-s7-s3h"/>
                                 <constraint firstAttribute="width" constant="24" id="3Xp-i4-TJg"/>
@@ -192,7 +196,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lu7-Ha-oYe">
-                            <rect key="frame" x="0.0" y="386" width="375" height="60"/>
+                            <rect key="frame" x="0.0" y="387" width="375" height="60"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY WALLET(S)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gms-8I-i03">
                                     <rect key="frame" x="24" y="22" width="104" height="17.5"/>
@@ -209,7 +213,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-u7-9BY">
-                            <rect key="frame" x="0.0" y="446" width="375" height="300"/>
+                            <rect key="frame" x="0.0" y="447" width="375" height="300"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't added any wallets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xg-Xa-CwB">
                                     <rect key="frame" x="24" y="224" width="327" height="17.5"/>
@@ -319,7 +323,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTF-Eq-Hoz">
-                            <rect key="frame" x="24" y="782" width="327" height="44"/>
+                            <rect key="frame" x="24" y="783" width="327" height="44"/>
                             <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Ypp-85-pcs"/>

@@ -21,10 +21,13 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var txStatusLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
+  @IBOutlet weak var fromTextLabel: UILabel!
   @IBOutlet weak var fromLabel: UILabel!
   @IBOutlet weak var toLabel: UILabel!
+  @IBOutlet weak var toTextLabel: UILabel!
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
+  @IBOutlet weak var dateTextLabel: UILabel!
 
   init(viewModel: KNTransactionDetailsViewModel) {
     self.viewModel = viewModel
@@ -46,6 +49,10 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.fromTextLabel.text = NSLocalizedString("from", value: "From", comment: "")
+    self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")
+    self.dateTextLabel.text = NSLocalizedString("date", value: "Date", comment: "")
+    self.navigationTitleLabel.text = NSLocalizedString("transaction.details", value: "Transaction Details", comment: "")
     self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     self.txStatusLabel.rounded(radius: 4.0)
     let fromTapGes = UITapGestureRecognizer(target: self, action: #selector(self.fromAddressTapped(_:)))
@@ -63,13 +70,13 @@ class KNTransactionDetailsViewController: KNBaseViewController {
       self.txStatusLabel.isHidden = false
       switch state {
       case .completed:
-        self.txStatusLabel.text = "Success".toBeLocalised()
+        self.txStatusLabel.text = "\(NSLocalizedString("success", value: "Success", comment: ""))  "
         self.txStatusLabel.backgroundColor = UIColor.Kyber.shamrock
       case .failed, .error:
-        self.txStatusLabel.text = "Failed".toBeLocalised()
+        self.txStatusLabel.text = "\(NSLocalizedString("failed", value: "Failed", comment: ""))  "
         self.txStatusLabel.backgroundColor = UIColor.Kyber.strawberry
       case .pending:
-        self.txStatusLabel.text = "Pending".toBeLocalised()
+        self.txStatusLabel.text = "\(NSLocalizedString("pending", value: "Pending", comment: ""))  "
         self.txStatusLabel.backgroundColor = UIColor.Kyber.merigold
       default: break
       }
@@ -106,7 +113,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
-    hud.label.text = "Copied".toBeLocalised()
+    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
   }
 

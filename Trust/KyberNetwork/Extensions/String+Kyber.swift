@@ -22,41 +22,41 @@ extension String {
   }
 
   func shortBigInt(decimals: Int) -> BigInt? {
-    if let double = Double(self.removeGroupSeparator()) {
+    if let double = Double(self) {
       return BigInt(double * pow(10.0, Double(decimals)))
     }
     return EtherNumberFormatter.short.number(
-      from: self.removeGroupSeparator(),
+      from: self,
       decimals: decimals
     )
   }
 
   func shortBigInt(units: EthereumUnit) -> BigInt? {
-    if let double = Double(self.removeGroupSeparator()) {
+    if let double = Double(self) {
       return BigInt(double * Double(units.rawValue))
     }
     return EtherNumberFormatter.short.number(
-      from: self.removeGroupSeparator(),
+      from: self,
       units: units
     )
   }
 
   func fullBigInt(decimals: Int) -> BigInt? {
-    if let double = Double(self.removeGroupSeparator()) {
+    if let double = Double(self) {
       return BigInt(double * pow(10.0, Double(decimals)))
     }
     return EtherNumberFormatter.full.number(
-      from: self.removeGroupSeparator(),
+      from: self,
       decimals: decimals
     )
   }
 
   func fullBigInt(units: EthereumUnit) -> BigInt? {
-    if let double = Double(self.removeGroupSeparator()) {
+    if let double = Double(self) {
       return BigInt(double * Double(units.rawValue))
     }
     return EtherNumberFormatter.full.number(
-      from: self.removeGroupSeparator(),
+      from: self,
       units: units
     )
   }

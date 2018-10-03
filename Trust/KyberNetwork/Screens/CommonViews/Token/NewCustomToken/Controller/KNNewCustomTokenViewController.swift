@@ -15,7 +15,7 @@ class KNNewCustomTokenViewModel {
   }
 
   var title: String {
-    return self.token == nil ? "Add Custom Token".toBeLocalised() : "Edit Custom Token".toBeLocalised()
+    return self.token == nil ? NSLocalizedString("add.custom.token", value: "Add Custom Token", comment: "") : NSLocalizedString("edit.custom.token", value: "Edit Custom Token", comment: "")
   }
   var contract: String? {
     return self.token?.contract.description
@@ -63,9 +63,9 @@ class KNNewCustomTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationBar() {
     self.navigationItem.title = self.viewModel.title
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(self.addButtonPressed(_:)))
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("add", value: "Add", comment: ""), style: .plain, target: self, action: #selector(self.addButtonPressed(_:)))
     self.navigationItem.rightBarButtonItem?.tintColor = .white
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelButtonPressed(_:)))
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .plain, target: self, action: #selector(self.cancelButtonPressed(_:)))
     self.navigationItem.leftBarButtonItem?.tintColor = .white
   }
 

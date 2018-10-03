@@ -13,6 +13,9 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var fromAmountLabel: UILabel!
   @IBOutlet weak var toAmountLabel: UILabel!
+  @IBOutlet weak var toTextLabel: UILabel!
+  @IBOutlet weak var minAcceptableRateTextLabel: UILabel!
+  @IBOutlet weak var transactionFeeTextLabel: UILabel!
 
   @IBOutlet weak var firstSeparatorView: UIView!
 
@@ -71,14 +74,19 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
     self.confirmButton.setTitle(
-      style.buttonTitle(with: "Confirm".toBeLocalised()),
+      NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
     self.confirmButton.backgroundColor = style.swapActionButtonBackgroundColor
     self.cancelButton.setTitle(
-      style.buttonTitle(with: "Cancel".toBeLocalised()),
+      NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
+
+    self.toTextLabel.text = NSLocalizedString("transaction.to.text", value: "To", comment: "")
+    self.minAcceptableRateTextLabel.text = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
+    self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -101,7 +109,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   func updateActionButtonsSendingSwap() {
     self.confirmButton.backgroundColor = UIColor.clear
-    self.confirmButton.setTitle("In Progress ...".toBeLocalised(), for: .normal)
+    self.confirmButton.setTitle("\(NSLocalizedString("in.progress", value: "In Progress", comment: "")) ...", for: .normal)
     self.confirmButton.setTitleColor(
       KNAppStyleType.current.swapActionButtonBackgroundColor,
       for: .normal
@@ -112,12 +120,16 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   func resetActionButtons() {
     self.confirmButton.setTitle(
-      KNAppStyleType.current.buttonTitle(with: "Confirm".toBeLocalised()),
+      NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
     self.confirmButton.setTitleColor(UIColor.white, for: .normal)
     self.confirmButton.backgroundColor = KNAppStyleType.current.swapActionButtonBackgroundColor
     self.confirmButton.isEnabled = true
     self.cancelButton.isHidden = false
+    self.cancelButton.setTitle(
+      NSLocalizedString("cancel", value: "Cancel", comment: ""),
+      for: .normal
+    )
   }
 }

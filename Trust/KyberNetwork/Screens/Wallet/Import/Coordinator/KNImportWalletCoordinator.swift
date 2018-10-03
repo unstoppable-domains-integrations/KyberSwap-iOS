@@ -57,15 +57,15 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   }
 
   fileprivate func importWallet(with type: ImportType, name: String?) {
-    self.navigationController.topViewController?.displayLoading(text: "Importing Wallet...", animated: true)
+    self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     self.keystore.importWallet(type: type) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.topViewController?.hideLoading()
       switch result {
       case .success(let wallet):
         self.navigationController.showSuccessTopBannerMessage(
-          with: "Wallet Imported".toBeLocalised(),
-          message: "You have successfully imported a wallet".toBeLocalised(),
+          with: NSLocalizedString("wallet.imported", value: "Wallet Imported", comment: ""),
+          message: NSLocalizedString("you.have.successfully.imported.a.wallet", value: "You have successfully imported a wallet", comment: ""),
           time: 1.5
         )
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {

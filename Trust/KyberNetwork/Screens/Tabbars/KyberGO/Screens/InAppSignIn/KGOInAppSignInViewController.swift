@@ -24,7 +24,7 @@ class KGOInAppSignInViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navTitleLabel.text = self.isSignIn ? "Sign In".toBeLocalised() : "Sign Up".toBeLocalised()
+    self.navTitleLabel.text = self.isSignIn ? NSLocalizedString("sign.in", value: "Sign In", comment: "") : NSLocalizedString("sign.up", value: "Sign Up", comment: "")
     self.webView.loadRequest(URLRequest(url: self.url))
     self.webView.delegate = self
   }
@@ -36,7 +36,7 @@ class KGOInAppSignInViewController: KNBaseViewController {
 
 extension KGOInAppSignInViewController: UIWebViewDelegate {
   func webViewDidStartLoad(_ webView: UIWebView) {
-    self.displayLoading()
+    self.displayLoading(text: "\(NSLocalizedString("loading", value: "Loading", comment: ""))...", animated: true)
   }
 
   func webViewDidFinishLoad(_ webView: UIWebView) {

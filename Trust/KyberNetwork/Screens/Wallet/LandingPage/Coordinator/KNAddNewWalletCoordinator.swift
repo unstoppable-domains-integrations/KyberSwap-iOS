@@ -57,16 +57,18 @@ class KNAddNewWalletCoordinator: Coordinator {
   lazy var alertController: UIAlertController = {
     let controller = UIAlertController(
       title: nil,
-      message: "Add new wallet?",
+      message: NSLocalizedString("add.new.wallet", value: "Add new wallet?", comment: ""),
       preferredStyle: .actionSheet
     )
-    controller.addAction(UIAlertAction(title: "Create a new wallet", style: .default, handler: { _ in
+    let createWallet = NSLocalizedString("create.a.new.wallet", value: "Create a new wallet", comment: "")
+    controller.addAction(UIAlertAction(title: createWallet, style: .default, handler: { _ in
       self.createNewWallet()
     }))
-    controller.addAction(UIAlertAction(title: "Import a wallet", style: .default, handler: { _ in
+    let importWallet = NSLocalizedString("import.a.wallet", value: "Import a wallet", comment: "")
+    controller.addAction(UIAlertAction(title: importWallet, style: .default, handler: { _ in
       self.importAWallet()
     }))
-    controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+    controller.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in
       self.navigationController.dismiss(animated: false, completion: nil)
     }))
     return controller

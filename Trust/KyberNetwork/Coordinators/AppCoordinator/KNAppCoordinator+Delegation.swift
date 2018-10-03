@@ -17,11 +17,11 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
 extension KNAppCoordinator: KNSessionDelegate {
   func userDidClickExitSession() {
     let alertController = UIAlertController(
-      title: "Exit".toBeLocalised(),
-      message: "Do you want to exit and remove all wallets from the app?".toBeLocalised(),
+      title: NSLocalizedString("exit", value: "Exit", comment: ""),
+      message: NSLocalizedString("do.you.want.to.exit.and.remove.all.wallets", value: "Do you want to exit and remove all wallets from the app?", comment: ""),
       preferredStyle: .alert
     )
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
       self.stopAllSessions()
     }))

@@ -438,7 +438,7 @@ extension IEOBuyTokenViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
     if textField == self.buyAmountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.receivedAmountTextField, text.fullBigInt(decimals: self.viewModel.to.tokenDecimals) == nil { return false }
-    if text.isEmpty || Double(text) != nil {
+    if text.isEmpty {
       textField.text = text
       self.viewModel.updateFocusingField(textField == self.buyAmountTextField)
       self.viewModel.updateAmount(text, isSource: textField == self.buyAmountTextField)

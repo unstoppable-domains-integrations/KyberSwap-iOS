@@ -17,6 +17,7 @@ class KNImportWalletViewController: KNBaseViewController {
 
   weak var delegate: KNImportWalletViewControllerDelegate?
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerContainerView: UIView!
   fileprivate var isViewSetup: Bool = false
   @IBOutlet weak var scrollView: UIScrollView!
@@ -56,6 +57,7 @@ class KNImportWalletViewController: KNBaseViewController {
   }
 
   fileprivate func setupImportTypeButtons() {
+    self.navTitleLabel.text = NSLocalizedString("import.wallet", value: "Import Wallet", comment: "")
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.importWalletBackgroundColor
     self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
@@ -72,6 +74,10 @@ class KNImportWalletViewController: KNBaseViewController {
     self.privateKeyButton.setBackgroundColor(style.importButtonColor, forState: .selected)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_select_icon"), for: .selected)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_icon"), for: .normal)
+    self.privateKeyButton.setTitle(
+      NSLocalizedString("private.key", value: "Private Key", comment: ""),
+      for: .normal
+    )
     self.privateKeyButton.setBackgroundColor(UIColor.white, forState: .normal)
     self.privateKeyButton.setTitleColor(UIColor.white, for: .selected)
     self.privateKeyButton.setTitleColor(UIColor(red: 46, green: 57, blue: 87), for: .normal)

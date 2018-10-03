@@ -32,15 +32,27 @@ class KNLandingPageViewController: KNBaseViewController {
       style.landingCreateWalletTitleColor,
       for: .normal
     )
+    self.createWalletButton.setTitle(
+      NSLocalizedString("create.wallet", value: "Create Wallet", comment: ""),
+      for: .normal
+    )
     self.importWalletButton.backgroundColor = style.landingImportWalletBackgroundColor
     self.importWalletButton.setTitleColor(
       style.landingImmportWalletTitleColor,
+      for: .normal
+    )
+    self.importWalletButton.setTitle(
+      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
 
     let radius = style.buttonRadius(for: self.createWalletButton.frame.height)
     self.createWalletButton.rounded(radius: radius)
     self.importWalletButton.rounded(radius: radius)
+    self.termAndConditionButton.setTitle(
+      NSLocalizedString("terms.and.conditions", value: "Terms and Conditions", comment: ""),
+      for: .normal
+    )
     self.debugButton.isHidden = false
   }
 

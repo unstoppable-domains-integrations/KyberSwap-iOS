@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,14 +33,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o1D-Nj-WTy">
-                    <rect key="frame" x="51" y="54" width="121" height="4"/>
+                    <rect key="frame" x="51" y="54" width="120.5" height="4"/>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="4" id="8uG-4e-Ga5"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUI-e1-BPc">
-                    <rect key="frame" x="203.5" y="54" width="119" height="4"/>
+                    <rect key="frame" x="203.5" y="54" width="119.5" height="4"/>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="4" id="QTn-Co-tIi"/>
@@ -77,13 +77,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID/ Passport" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iSU-T2-Mvt">
-                    <rect key="frame" x="151" y="76" width="74.5" height="15"/>
+                    <rect key="frame" x="150.5" y="76" width="74.5" height="15"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                     <color key="textColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Submit" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dn4-FC-sgi">
-                    <rect key="frame" x="318" y="76" width="45" height="15"/>
+                    <rect key="frame" x="310" y="76" width="45" height="15"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                     <color key="textColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -95,7 +95,7 @@
                 <constraint firstItem="mNv-bJ-n5Q" firstAttribute="centerY" secondItem="iCD-lU-Owq" secondAttribute="centerY" id="10o-8x-hnG"/>
                 <constraint firstItem="Q7Y-Fy-kkH" firstAttribute="top" secondItem="SLl-M3-vhW" secondAttribute="bottom" constant="4" id="28C-OP-Fac"/>
                 <constraint firstItem="UUI-e1-BPc" firstAttribute="leading" secondItem="iCD-lU-Owq" secondAttribute="trailing" id="3Tc-bU-a08"/>
-                <constraint firstItem="Dn4-FC-sgi" firstAttribute="trailing" secondItem="mNv-bJ-n5Q" secondAttribute="trailing" constant="8" id="5MW-DP-DSV"/>
+                <constraint firstItem="Dn4-FC-sgi" firstAttribute="trailing" secondItem="mNv-bJ-n5Q" secondAttribute="trailing" id="5MW-DP-DSV"/>
                 <constraint firstItem="UUI-e1-BPc" firstAttribute="centerY" secondItem="iCD-lU-Owq" secondAttribute="centerY" id="8N3-sb-iwN"/>
                 <constraint firstItem="iSU-T2-Mvt" firstAttribute="centerY" secondItem="Q7Y-Fy-kkH" secondAttribute="centerY" id="95h-MB-xC3"/>
                 <constraint firstItem="iCD-lU-Owq" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="EEP-kc-zxC"/>

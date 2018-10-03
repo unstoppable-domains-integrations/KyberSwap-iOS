@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,6 +27,7 @@
                 <outlet property="documentNumberTextField" destination="rVU-JM-4L9" id="l6j-RC-Wit"/>
                 <outlet property="documentTypeTextLabel" destination="h2r-ES-7Z7" id="Mj3-L6-FKI"/>
                 <outlet property="driverLicenseButton" destination="7KZ-IH-bJ6" id="OXC-Us-Jim"/>
+                <outlet property="driverLicenseTextLabel" destination="rFJ-Gc-00Q" id="VLo-JS-Q0w"/>
                 <outlet property="heightConstraintForDocumentPhotoView" destination="3U3-6M-CPK" id="5IN-7N-nnT"/>
                 <outlet property="heightConstraintForHoldingDocumentPhotoView" destination="UDt-hK-aBH" id="oir-Cx-tmq"/>
                 <outlet property="holdingDocumentImageContainerView" destination="tlT-HC-EX7" id="qYD-e5-6PP"/>
@@ -34,6 +35,9 @@
                 <outlet property="idButton" destination="rTO-b5-3ta" id="3hJ-2u-pza"/>
                 <outlet property="nextButton" destination="dIa-Tk-b8H" id="pUs-Xq-DUx"/>
                 <outlet property="passportButton" destination="HBy-QR-90j" id="ldL-PE-GX4"/>
+                <outlet property="passportTextLabel" destination="MaL-F4-kGC" id="vAB-JY-Ftw"/>
+                <outlet property="photoHoldingDocumentTextLabel" destination="5qp-GO-dos" id="Iyi-Uu-Yif"/>
+                <outlet property="photoOfYourDocumentTextLabel" destination="1ea-bP-5O7" id="1ai-Z0-VgZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -74,7 +78,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Driver License" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFJ-Gc-00Q">
-                            <rect key="frame" x="250" y="76.5" width="101" height="17.5"/>
+                            <rect key="frame" x="250" y="77" width="101" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -87,7 +91,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAt-Hb-QHY">
-                            <rect key="frame" x="60" y="76.5" width="16" height="17.5"/>
+                            <rect key="frame" x="60" y="77" width="16" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -102,7 +106,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBy-QR-90j">
-                            <rect key="frame" x="105" y="73.5" width="24" height="24"/>
+                            <rect key="frame" x="104.5" y="73.5" width="24" height="24"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="YYF-hL-5AK"/>
@@ -113,7 +117,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MaL-F4-kGC">
-                            <rect key="frame" x="141" y="76.5" width="62.5" height="17.5"/>
+                            <rect key="frame" x="140.5" y="77" width="62.5" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -145,7 +149,7 @@
                                     <rect key="frame" x="24" y="125.5" width="327" height="96"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test_back_up_icon" translatesAutoresizingMaskIntoConstraints="NO" id="gde-bg-Qk1">
-                                            <rect key="frame" x="139" y="24" width="48" height="48"/>
+                                            <rect key="frame" x="139.5" y="24" width="48" height="48"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -202,7 +206,7 @@
                             <rect key="frame" x="24" y="575.5" width="327" height="96"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test_back_up_icon" translatesAutoresizingMaskIntoConstraints="NO" id="irW-cp-YS8">
-                                    <rect key="frame" x="139" y="24" width="48" height="48"/>
+                                    <rect key="frame" x="139.5" y="24" width="48" height="48"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

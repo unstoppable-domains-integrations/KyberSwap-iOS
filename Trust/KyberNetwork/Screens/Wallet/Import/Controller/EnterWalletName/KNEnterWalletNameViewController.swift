@@ -48,7 +48,7 @@ class KNEnterWalletNameViewController: KNBaseViewController {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     self.containerView.rounded(radius: 4.0)
-    self.nameLabel.text = "Give your wallet a name (optional)".toBeLocalised()
+    self.nameLabel.text = NSLocalizedString("give.your.wallet.a.name", value: "Give your wallet a name (optional)", comment: "")
     self.nameTextField.rounded(radius: 4.0)
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
     self.nameTextField.leftView = paddingView

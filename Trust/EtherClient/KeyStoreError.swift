@@ -20,31 +20,31 @@ enum KeystoreError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .failedToDeleteAccount:
-            return "Failed to delete account"
+            return NSLocalizedString("failed.to.delete.account", value: "Failed to delete account", comment: "")
         case .failedToDecryptKey:
-            return "Could not decrypt key with given passphrase"
+            return NSLocalizedString("could.not.decrypt.key.with.given.passphrase", value: "Could not decrypt key with given passphrase", comment: "")
         case .failedToImport:
-            return "Can not import your wallet"
+            return NSLocalizedString("can.not.import.your.wallet", value: "Can not import your wallet", comment: "")
         case .duplicateAccount:
-            return "You already added this address to wallets"
+            return NSLocalizedString("you.already.added.this.address.to.wallets", value: "You already added this address to wallets", comment: "")
         case .failedToSignTransaction:
-            return "Failed to sign transaction"
+            return NSLocalizedString("failed.to.sign.transaction", value: "Failed to sign transaction", comment: "")
         case .failedToUpdatePassword:
-            return "Failed to update password"
+            return NSLocalizedString("failed.to.update.password", value: "Failed to update password", comment: "")
         case .failedToCreateWallet:
-            return "Failed to create wallet"
+            return NSLocalizedString("failed.to.create.wallet", value: "Failed to create wallet", comment: "")
         case .failedToImportPrivateKey:
-            return "Failed to import private key"
+            return NSLocalizedString("failed.to.import.private.key", value: "Failed to import private key", comment: "")
         case .failedToParseJSON:
-            return "Failed to parse key JSON"
+            return NSLocalizedString("failed.to.parse.key.json", value: "Failed to parse key JSON", comment: "")
         case .accountNotFound:
-            return "Account not found"
+            return NSLocalizedString("account.not.found", value: "Account not found", comment: "")
         case .failedToSignMessage:
-            return "Failed to sign message"
+            return NSLocalizedString("failed.to.sign.message", value: "Failed to sign message", comment: "")
         case .failedToExportPrivateKey:
-            return "Failed to export private key"
+            return NSLocalizedString("failed.to.export.private.key", value: "Failed to export private key", comment: "")
         case .failedToExportMnemonics:
-            return "Failed to export mnemonics"
+            return NSLocalizedString("failed.to.export.mnemonics", value: "Failed to export mnemonics", comment: "")
         }
     }
 }

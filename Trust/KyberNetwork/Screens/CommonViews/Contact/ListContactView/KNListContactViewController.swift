@@ -15,6 +15,7 @@ protocol KNListContactViewControllerDelegate: class {
 class KNListContactViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var contactTableView: KNContactTableView!
   @IBOutlet weak var emptyStateView: UIView!
   @IBOutlet weak var contactEmptyLabel: UILabel!
@@ -33,14 +34,15 @@ class KNListContactViewController: KNBaseViewController {
       isFull: true
     )
     self.contactTableView.updateScrolling(isEnabled: true)
+    self.navTitleLabel.text = NSLocalizedString("contact", value: "Contact", comment: "")
 
     self.contactTableView.isHidden = contacts.isEmpty
     self.emptyStateView.isHidden = !contacts.isEmpty
-    self.contactEmptyLabel.text = "Your contact is empty".toBeLocalised()
+    self.contactEmptyLabel.text = NSLocalizedString("your.contact.is.empty", value: "Your contact is empty", comment: "")
     self.addContactButton.rounded(radius: style.buttonRadius(for: self.addContactButton.frame.height))
     self.addContactButton.backgroundColor = style.walletFlowHeaderColor
     self.addContactButton.setTitle(
-      style.buttonTitle(with: "Add Contact".toBeLocalised()),
+      NSLocalizedString("add.contact", value: "Add Contact", comment: ""),
       for: .normal
     )
   }
@@ -86,14 +88,14 @@ extension KNListContactViewController: KNContactTableViewDelegate {
       self.delegate?.listContactViewController(self, run: .select(contact: contact))
     case .delete(let contact):
       let alertController = UIAlertController(
-        title: "Do you want to delete this contact?".toBeLocalised(),
+        title: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
         message: "",
         preferredStyle: .actionSheet
       )
-      alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
         KNContactStorage.shared.delete(contacts: [contact])
       }))
-      alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
       self.present(alertController, animated: true, completion: nil)
     case .edit(let contact):
       self.openNewContact(address: contact.address)

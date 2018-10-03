@@ -50,12 +50,12 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
     self.nextButton.setTitle(
-      style.buttonTitle(with: "Next".toBeLocalised()),
+      NSLocalizedString("next", value: "Next", comment: ""),
       for: .normal
     )
     self.completeButton.rounded(radius: style.buttonRadius(for: self.completeButton.frame.height))
     self.completeButton.setTitle(
-      style.buttonTitle(with: "Complete".toBeLocalised()),
+      NSLocalizedString("complete", value: "Complete", comment: ""),
       for: .normal
     )
     self.backupWalletLabel.text = self.viewModel.headerText

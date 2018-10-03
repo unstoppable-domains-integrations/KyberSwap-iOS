@@ -33,7 +33,7 @@ struct KNSetGasPriceViewModel {
   }
 
   var navTitleText: String {
-    return "Gas Price".toBeLocalised()
+    return NSLocalizedString("gas.price", value: "Gas Price", comment: "")
   }
 
   var gasPriceText: String {
@@ -64,7 +64,7 @@ struct KNSetGasPriceViewModel {
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
     ]
     let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(string: "Transaction Fee  ", attributes: textAttributes))
+    attributedString.append(NSAttributedString(string: "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: ""))  ", attributes: textAttributes))
     attributedString.append(NSAttributedString(string: self.feeText, attributes: feeAttributes))
     return attributedString
   }
@@ -149,8 +149,8 @@ class KNSetGasPriceViewController: KNBaseViewController {
   @IBAction func doneButtonPressed(_ sender: Any) {
     guard !self.viewModel.gasPrice.isZero else {
       self.showWarningTopBannerMessage(
-        with: "Invalid Gas Price".toBeLocalised(),
-        message: "Gas price should not be zero".toBeLocalised()
+        with: NSLocalizedString("invalid.gas.price", value: "Invalid Gas Price", comment: ""),
+        message: NSLocalizedString("gas.price.should.not.be.zero", value: "Gas price should not be zero", comment: "")
       )
       return
     }

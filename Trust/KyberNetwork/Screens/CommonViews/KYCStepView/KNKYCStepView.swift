@@ -10,10 +10,10 @@ enum KNKYCStepViewState: Int {
 
   var title: String {
     switch self {
-    case .personalInfo: return "Personal Info".toBeLocalised()
-    case .id: return "Identity Info".toBeLocalised()
-    case .submit: return "Submit".toBeLocalised()
-    case .done: return "Profile Verification Status".toBeLocalised()
+    case .personalInfo: return NSLocalizedString("personal.info", value: "Personal Info", comment: "")
+    case .id: return NSLocalizedString("identity.info", value: "Identity Info", comment: "")
+    case .submit: return NSLocalizedString("submit", value: "Submit", comment: "")
+    case .done: return NSLocalizedString("profile.verification.status", value: "Profile Verification Status", comment: "")
     }
   }
 }
@@ -81,6 +81,10 @@ class KNKYCStepView: XibLoaderView {
     )
     self.idImageView.backgroundColor = kInActiveBackgroundColor
     self.submitImageView.backgroundColor = kInActiveBackgroundColor
+
+    self.personalInfoLabel.text = KNKYCStepViewState.personalInfo.title
+    self.idLabel.text = NSLocalizedString("id.passport", value: "ID/ Passport", comment: "")
+    self.submitLabel.text = KNKYCStepViewState.submit.title
   }
 
   func updateView(with state: KNKYCStepViewState) {

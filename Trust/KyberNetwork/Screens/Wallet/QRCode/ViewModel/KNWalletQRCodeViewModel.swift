@@ -20,11 +20,11 @@ struct KNWalletQRCodeViewModel {
   }
 
   var copyAddressBtnTitle: String {
-    return "Copy".toBeLocalised()
+    return NSLocalizedString("copy", value: "Copy", comment: "")
   }
 
   var shareBtnTitle: String {
-    return "Share".toBeLocalised()
+    return NSLocalizedString("share", value: "Share", comment: "")
   }
 
   var navigationTitle: String {

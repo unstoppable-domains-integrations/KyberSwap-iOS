@@ -108,21 +108,21 @@ extension KNContactTableView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    let send = UITableViewRowAction(style: .normal, title: "Send") { (_, _) in
+    let send = UITableViewRowAction(style: .normal, title: NSLocalizedString("send", value: "Send", comment: "")) { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .send(address: self.contacts[indexPath.row].address)
       )
     }
     send.backgroundColor = UIColor.Kyber.shamrock
-    let edit = UITableViewRowAction(style: .normal, title: "Edit") { (_, _) in
+    let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .edit(contact: self.contacts[indexPath.row])
       )
     }
     edit.backgroundColor = UIColor.Kyber.blueGreen
-    let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (_, _) in
+    let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .delete(contact: self.contacts[indexPath.row])

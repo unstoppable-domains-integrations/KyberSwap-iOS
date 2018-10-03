@@ -20,9 +20,9 @@ struct KNConfirmTransactionViewModel {
 
   var leftButtonTitle: String {
     switch self.type {
-    case .transfer: return "SEND"
-    case .exchange: return "SWAP"
-    case .buyTokenSale: return "CONTRIBUTE"
+    case .transfer: return NSLocalizedString("send", value: "Send", comment: "").uppercased()
+    case .exchange: return NSLocalizedString("swap", value: "Swap", comment: "").uppercased()
+    case .buyTokenSale: return NSLocalizedString("contribute", value: "Contribute", comment: "").uppercased()
     }
   }
 
@@ -30,7 +30,7 @@ struct KNConfirmTransactionViewModel {
     return type.isTransfer ? "" : "kyber_icon_black"
   }
 
-  var rightButtonTitle: String { return "Cancel".toBeLocalised() }
+  var rightButtonTitle: String { return NSLocalizedString("cancel", value: "Cancel", comment: "") }
 
   var transactionDataTopPadding: CGFloat { return type.isTransfer ? 38.0 : 56.0 }
   var leftAmountLabelText: String {
@@ -60,11 +60,11 @@ struct KNConfirmTransactionViewModel {
   var rightLabelAttributedText: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     let highlightedAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 20)!,
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20),
       NSAttributedStringKey.foregroundColor: UIColor.black,
     ]
     let normalAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont(name: "SFProText-Regular", size: 17)!,
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     ]
     switch type {

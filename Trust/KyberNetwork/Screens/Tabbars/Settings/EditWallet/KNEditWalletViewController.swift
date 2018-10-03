@@ -23,6 +23,7 @@ struct KNEditWalletViewModel {
 
 class KNEditWalletViewController: KNBaseViewController {
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var nameWalletTextLabel: UILabel!
   @IBOutlet weak var walletNameTextField: UITextField!
 
@@ -45,13 +46,14 @@ class KNEditWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.nameWalletTextLabel.text = "Name of your wallet (optional)".toBeLocalised()
-    self.walletNameTextField.placeholder = "Give your wallet a name".toBeLocalised()
+    self.navTitleLabel.text = NSLocalizedString("edit.wallet", value: "Edit Wallet", comment: "")
+    self.nameWalletTextLabel.text = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
+    self.walletNameTextField.placeholder = NSLocalizedString("give.your.wallet.a.name", value: "Give your wallet a name", comment: "")
     self.walletNameTextField.text = self.viewModel.wallet.name
-    self.showBackupPhraseButton.setTitle("Show Backup Phrase".toBeLocalised(), for: .normal)
-    self.deleteButton.setTitle("Delete Wallet".toBeLocalised(), for: .normal)
+    self.showBackupPhraseButton.setTitle(NSLocalizedString("show.backup.phrase", value: "Show Backup Phrase", comment: ""), for: .normal)
+    self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
     self.saveButton.rounded(radius: 4.0)
-    self.saveButton.setTitle("Save".toBeLocalised(), for: .normal)
+    self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

@@ -43,10 +43,12 @@ struct KNHistoryTransactionCollectionViewModel {
   }
 
   var transactionTitleString: String {
-    if self.transaction.state == .error || self.transaction.state == .failed { return "[Error]".toBeLocalised() }
+    if self.transaction.state == .error || self.transaction.state == .failed {
+      return "[\(NSLocalizedString("error", value: "Error", comment: ""))]"
+    }
     let typeString: String = {
-      if self.isSwap { return "Swap".toBeLocalised() }
-      return self.isSent ? "Send".toBeLocalised() : "Receive".toBeLocalised()
+      if self.isSwap { return NSLocalizedString("swap", value: "Swap", comment: "") }
+      return self.isSent ? NSLocalizedString("send", value: "Send", comment: "") : NSLocalizedString("receive", value: "Receive", comment: "")
     }()
     return typeString
   }
@@ -79,9 +81,9 @@ struct KNHistoryTransactionCollectionViewModel {
       }
       return self.ownerWalletName
     }()
-    attributedString.append(NSAttributedString(string: "From ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: "\(NSLocalizedString("from", value: "From", comment: "")) ", attributes: normalTextAttributes))
     attributedString.append(NSAttributedString(string: fromText, attributes: highlightedTextAttributes))
-    attributedString.append(NSAttributedString(string: "\nTo ", attributes: normalTextAttributes))
+    attributedString.append(NSAttributedString(string: "\n\(NSLocalizedString("to", value: "To", comment: "")) ", attributes: normalTextAttributes))
     attributedString.append(NSAttributedString(string: toText, attributes: highlightedTextAttributes))
     return attributedString
   }

@@ -49,14 +49,20 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   fileprivate func setupButtons() {
     self.copyWalletButton.rounded(radius: self.style.buttonRadius(for: self.copyWalletButton.frame.height))
-    self.copyWalletButton.setTitle(self.viewModel.copyAddressBtnTitle, for: .normal)
     self.copyWalletButton.backgroundColor = style.walletFlowHeaderColor
     self.shareButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
       radius: self.style.buttonRadius(for: self.shareButton.frame.height)
     )
-    self.shareButton.setTitle(self.viewModel.shareBtnTitle, for: .normal)
+    self.copyWalletButton.setTitle(
+      NSLocalizedString("copy", value: "Copy", comment: ""),
+      for: .normal
+    )
+    self.shareButton.setTitle(
+      NSLocalizedString("share", value: "Share", comment: ""),
+      for: .normal
+    )
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -68,7 +74,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
-    hud.label.text = "Address copied".toBeLocalised()
+    hud.label.text = NSLocalizedString("address.copied", value: "Address copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
   }
 

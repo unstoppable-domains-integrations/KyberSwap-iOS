@@ -67,7 +67,7 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    self.navigationItem.title = "Manage Wallet".toBeLocalised()
+    self.navigationItem.title = NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: "")
   }
 
   fileprivate func setupWalletTableView() {
@@ -127,11 +127,11 @@ extension KNListWalletsViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let wallet = self.viewModel.wallet(at: indexPath.row)
-    let edit = UITableViewRowAction(style: .normal, title: "Edit".toBeLocalised()) { (_, _) in
+    let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }
     edit.backgroundColor = UIColor.Kyber.shamrock
-    let delete = UITableViewRowAction(style: .destructive, title: "Delete".toBeLocalised()) { (_, _) in
+    let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }
     delete.backgroundColor = UIColor.Kyber.strawberry

@@ -52,8 +52,8 @@ class KSendTokenViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: "Send All".toBeLocalised(),
-      rightBtnTitle: "Done".toBeLocalised(),
+      leftBtnTitle: NSLocalizedString("send.all", value: "Send All", comment: ""),
+      rightBtnTitle: NSLocalizedString("done", value: "Done", comment: ""),
       delegate: self
     )
   }()
@@ -159,7 +159,7 @@ class KSendTokenViewController: KNBaseViewController {
       for: .normal
     )
     self.moreContactButton.setTitle(
-      self.style.buttonTitle(with: "More"),
+      NSLocalizedString("more", value: "More", comment: ""),
       for: .normal
     )
   }
@@ -184,6 +184,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupAddressTextField() {
+    self.recentContactLabel.text = NSLocalizedString("recent.contact", value: "Recent Contact", comment: "")
     self.addressTextField.placeholder = self.viewModel.placeHolderEnterAddress
     self.addressTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
     self.addressTextField.leftViewMode = .always
@@ -192,7 +193,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.addressTextField.delegate = self
     self.addressTextField.text = self.viewModel.displayAddress
     self.newContactButton.setTitle(
-      self.style.buttonTitle(with: "Add Contact".toBeLocalised()),
+      NSLocalizedString("add.contact", value: "Add contact", comment: ""),
       for: .normal
     )
     self.newContactButton.setTitleColor(
@@ -205,7 +206,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.sendButton.rounded(radius: self.style.buttonRadius(for: self.sendButton.frame.height))
     self.sendButton.backgroundColor = self.style.walletFlowHeaderColor
     self.sendButton.setTitle(
-      self.style.buttonTitle(with: "Send".toBeLocalised()),
+      NSLocalizedString("send", value: "Send", comment: ""),
       for: .normal
     )
   }
@@ -281,23 +282,23 @@ class KSendTokenViewController: KNBaseViewController {
     if isConfirming {
       guard self.viewModel.isHavingEnoughETHForFee else {
         self.showWarningTopBannerMessage(
-          with: "Insufficient ETH".toBeLocalised(),
-          message: "Not have enough ETH to pay for transaction fee".toBeLocalised()
+          with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
+          message: NSLocalizedString("not.have.enought.eth.to.pay.transaction.fee", value: "Not have enough ETH to pay for transaction fee", comment: "")
         )
         return true
       }
     }
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
-        with: "Invalid Amount".toBeLocalised(),
-        message: "Amount too small to perform send".toBeLocalised()
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: NSLocalizedString("amount.to.send.greater.than.zero", value: "Amount to send should be greater than zero", comment: "")
       )
       return true
     }
     guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(
-        with: "Invalid Amount".toBeLocalised(),
-        message: "Balance is not enough to perform the transaction".toBeLocalised()
+        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
+        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
       )
       return true
     }
@@ -311,8 +312,8 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func showWarningInvalidAddressIfNeeded() -> Bool {
     guard self.viewModel.isAddressValid else {
       self.showWarningTopBannerMessage(
-        with: "Invalid Address".toBeLocalised(),
-        message: "Please enter a valid address to send".toBeLocalised()
+        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.address.to.send", value: "Please enter a valid address to send", comment: "")
       )
       return true
     }
@@ -500,14 +501,14 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
 
   fileprivate func contactTableView(delete contact: KNContact) {
     let alertController = UIAlertController(
-      title: "Do you want to delete this contact?".toBeLocalised(),
+      title: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
       message: "",
       preferredStyle: .actionSheet
     )
-    alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
       KNContactStorage.shared.delete(contacts: [contact])
     }))
-    alertController.addAction(UIAlertAction(title: "Cancel".toBeLocalised(), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
     self.present(alertController, animated: true, completion: nil)
   }
 }

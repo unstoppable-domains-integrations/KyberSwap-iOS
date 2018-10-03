@@ -72,12 +72,10 @@ struct KNHistoryViewModel {
     return self.isShowingPending ? "no_pending_tx_icon" : "no_mined_tx_icon"
   }
 
-  var emptyStateTitleLabelString: String {
-    return self.isShowingPending ? "You are all set".toBeLocalised() : "None completed".toBeLocalised()
-  }
-
   var emptyStateDescLabelString: String {
-    return self.isShowingPending ? "You do not have any pending transactions.".toBeLocalised() : "You do not have any completed transactions.".toBeLocalised()
+    let noPendingTx = NSLocalizedString("you.do.not.have.any.pending.transactions", value: "You do not have any pending transactions.", comment: "")
+    let noCompletedTx = NSLocalizedString("you.do.not.have.any.completed.transactions", value: "You do not have any completed transactions.", comment: "")
+    return self.isShowingPending ? noPendingTx : noCompletedTx
   }
 
   var isRateMightChangeHidden: Bool {
@@ -143,12 +141,14 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate var viewModel: KNHistoryViewModel
 
   @IBOutlet weak var headerContainerView: UIView!
+  @IBOutlet weak var transactionsTextLabel: UILabel!
 
   @IBOutlet weak var emptyStateContainerView: UIView!
-  @IBOutlet weak var emptyStateTitleLabel: UILabel!
   @IBOutlet weak var emptyStateDescLabel: UILabel!
 
   @IBOutlet weak var rateMightChangeContainerView: UIView!
+  @IBOutlet weak var ratesMightChangeTextLabel: UILabel!
+  @IBOutlet weak var ratesMightChangeDescTextLabel: UILabel!
 
   @IBOutlet weak var segmentedControl: UISegmentedControl!
 
@@ -182,8 +182,8 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    self.navigationItem.title = "History".toBeLocalised()
     let style = KNAppStyleType.current
+    self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
     self.view.backgroundColor = style.mainBackgroundColor
     self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
     self.segmentedControl.rounded(
@@ -191,6 +191,8 @@ class KNHistoryViewController: KNBaseViewController {
       width: 1,
       radius: style.buttonRadius(for: self.segmentedControl.frame.height)
     )
+    self.segmentedControl.setTitle(NSLocalizedString("pending", value: "Pending", comment: ""), forSegmentAt: 0)
+    self.segmentedControl.setTitle(NSLocalizedString("mined", value: "Mined", comment: ""), forSegmentAt: 1)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
     self.segmentedControl.backgroundColor = style.walletFlowHeaderColor
@@ -205,12 +207,13 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
 
+    self.ratesMightChangeTextLabel.text = NSLocalizedString("rates.might.change", value: "Rates might change", comment: "")
+    self.ratesMightChangeDescTextLabel.text = NSLocalizedString("rates.for.token.swap.are.not.final.until.mined", value: "Rates for token swap are not final until swapping transactions are completed (mined)", comment: "")
     self.updateUIWhenDataDidChange()
   }
 
   fileprivate func updateUIWhenDataDidChange() {
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
-    self.emptyStateTitleLabel.text = self.viewModel.emptyStateTitleLabelString
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden

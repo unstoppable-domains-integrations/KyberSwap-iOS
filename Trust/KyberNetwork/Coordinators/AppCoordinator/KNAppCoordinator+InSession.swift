@@ -63,25 +63,25 @@ extension KNAppCoordinator {
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.fire
     self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
-      title: "Balance".toBeLocalised(),
+      title: NSLocalizedString("balance", comment: ""),
       image: UIImage(named: "tabbar_balance_icon"),
       selectedImage: UIImage(named: "tabbar_balance_icon")
     )
     self.balanceTabCoordinator.navigationController.tabBarItem.tag = 0
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: "KyberSwap".toBeLocalised(),
+      title: NSLocalizedString("kyberswap", comment: ""),
       image: UIImage(named: "tabbar_kyberswap_icon"),
       selectedImage: UIImage(named: "tabbar_kyberswap_icon")
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
     self.profileCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: "Profile".toBeLocalised(),
+      title: NSLocalizedString("profile", comment: ""),
       image: UIImage(named: "tabbar_profile_icon"),
       selectedImage: UIImage(named: "tabbar_profile_icon")
     )
     self.profileCoordinator?.navigationController.tabBarItem.tag = 2
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
-      title: "Settings".toBeLocalised(),
+      title: NSLocalizedString("settings", comment: ""),
       image: UIImage(named: "tabbar_settings_icon"),
       selectedImage: UIImage(named: "tabbar_settings_icon")
     )
@@ -174,19 +174,14 @@ extension KNAppCoordinator {
       )
     } else {
       self.balanceCoordinator?.restartNewSession(self.session)
-      self.navigationController.showErrorTopBannerMessage(with: "Error", message: "Something went wrong. Can not remove the wallet")
+      self.navigationController.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", comment: ""),
+        message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", comment: "")
+      )
     }
   }
 
   func addNewWallet() {
-//    if self.session.keystore.wallets.count == 3 {
-//      self.navigationController.showWarningTopBannerMessage(
-//        with: "",
-//        message: "You can only add at most 3 wallets".toBeLocalised(),
-//        time: 2.5
-//      )
-//      return
-//    }
     let addWalletCoordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
     addWalletCoordinator.delegate = self
     self.navigationController.present(

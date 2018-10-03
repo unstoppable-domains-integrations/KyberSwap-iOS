@@ -102,7 +102,7 @@ class KNPasscodeViewController: KNBaseViewController {
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
       return
     }
-    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Use touchID/faceID to secure your account".toBeLocalised()) { [weak self] (success, error) in
+    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("use.touchid/faceid.to.secure.your.account", comment: "")) { [weak self] (success, error) in
       guard let `self` = self else { return }
       DispatchQueue.main.async {
         if success {
@@ -113,11 +113,11 @@ class KNPasscodeViewController: KNBaseViewController {
             // User cancelled using bio
             return
           }
-          let alert = UIAlertController(title: "Try Again".toBeLocalised(), message: message, preferredStyle: .alert)
-          alert.addAction(UIAlertAction(title: "Try Again".toBeLocalised(), style: .default, handler: { _ in
+          let alert = UIAlertController(title: NSLocalizedString("try.again", comment: ""), message: message, preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: NSLocalizedString("try.again", comment: ""), style: .default, handler: { _ in
             self.showBioAuthenticationIfNeeded()
           }))
-          alert.addAction(UIAlertAction(title: "Enter PIN".toBeLocalised(), style: .default, handler: nil))
+          alert.addAction(UIAlertAction(title: NSLocalizedString("enter.pin", comment: ""), style: .default, handler: nil))
           self.present(alert, animated: true, completion: nil)
         }
       }
@@ -203,7 +203,11 @@ class KNPasscodeViewController: KNBaseViewController {
       } else {
         self.firstPasscode = nil
         self.currentPasscode = ""
-        self.updateUI()
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: NSLocalizedString("your.password.and.confirm.password.do.not.match", value: "Your password and confirm password do not match", comment: ""),
+          time: 1.5
+        )
       }
     }
   }
@@ -213,21 +217,21 @@ extension KNPasscodeViewController {
   fileprivate var titleText: String {
     switch self.viewType {
     case .authenticate(let isUpdating):
-      return isUpdating ? "Enter your old PIN".toBeLocalised() : "Verify your access".toBeLocalised()
+      return isUpdating ? NSLocalizedString("enter.your.old.pin", comment: "") : NSLocalizedString("verify.your.access", comment: "")
     case .setPasscode:
       if self.firstPasscode != nil {
-        return "Repeat PIN".toBeLocalised()
+        return NSLocalizedString("repeat.pin", comment: "")
       }
-      return "Set a new PIN".toBeLocalised()
+      return NSLocalizedString("set.a.new.pin", comment: "")
     }
   }
 
   fileprivate var errorText: String {
     if case .setPasscode = self.viewType {
       if self.firstPasscode == nil {
-        return "Your PIN is used to access your wallets".toBeLocalised()
+        return NSLocalizedString("your.pin.is.used.to.access.your.wallets", comment: "")
       }
-      return "Remember this code to access your wallets".toBeLocalised()
+      return NSLocalizedString("remember.this.code.to.access.your.wallets", comment: "")
     }
     if KNPasscodeUtil.shared.currentNumberAttempts() == 0 { return "" }
     if KNPasscodeUtil.shared.isExceedNumberAttempt() {
@@ -238,11 +242,11 @@ extension KNPasscodeViewController {
   }
 
   fileprivate var actionButtonTitle: String {
-    if !self.currentPasscode.isEmpty { return "Delete".toBeLocalised() }
+    if !self.currentPasscode.isEmpty { return NSLocalizedString("delete", comment: "") }
     if case .setPasscode(let cancellable) = self.viewType {
-      if cancellable || self.firstPasscode != nil { return "Cancel".toBeLocalised() }
+      if cancellable || self.firstPasscode != nil { return NSLocalizedString("cancel", comment: "") }
     }
-    if case .authenticate(let isUpdating) = self.viewType, isUpdating { return "Cancel".toBeLocalised() }
+    if case .authenticate(let isUpdating) = self.viewType, isUpdating { return NSLocalizedString("cancel", comment: "") }
     return ""
   }
 
@@ -250,26 +254,26 @@ extension KNPasscodeViewController {
     if #available(iOS 11.0, *) {
       switch errorCode {
       case LAError.biometryLockout.rawValue:
-        return "Too many failed attempts. Please try to use PIN".toBeLocalised()
+        return NSLocalizedString("too.many.failed.attempts", comment: "")
       case LAError.biometryNotAvailable.rawValue:
-        return "TouchID/FaceID is not available on the device".toBeLocalised()
+        return NSLocalizedString("touchid.faceid.is.not.available", comment: "")
       default:
         break
       }
     }
     switch errorCode {
     case LAError.authenticationFailed.rawValue:
-      return "Invalid authentication.".toBeLocalised()
+      return NSLocalizedString("invalid.authentication", comment: "")
     case LAError.passcodeNotSet.rawValue:
-      return "PIN is not set on the device".toBeLocalised()
+      return NSLocalizedString("pin.is.not.set.on.the.device", comment: "")
     case LAError.touchIDLockout.rawValue:
-      return "Too many failed attempts. Please try to use PIN".toBeLocalised()
+      return NSLocalizedString("too.many.failed.attempts", comment: "")
     case LAError.touchIDNotAvailable.rawValue:
-      return "TouchID/FaceID is not available on the device".toBeLocalised()
+      return NSLocalizedString("touchid.faceid.is.not.available", comment: "")
     case LAError.appCancel.rawValue, LAError.userCancel.rawValue, LAError.userFallback.rawValue:
       return nil
     default:
-      return "Something went wrong. Try to use PIN".toBeLocalised()
+      return NSLocalizedString("something.went.wrong.try.to.use.pin", comment: "")
     }
   }
 }

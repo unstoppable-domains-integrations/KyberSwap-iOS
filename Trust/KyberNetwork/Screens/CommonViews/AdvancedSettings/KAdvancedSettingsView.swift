@@ -116,15 +116,19 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBOutlet weak var gasPriceContainerView: UIView!
   @IBOutlet weak var fasGasValueLabel: UILabel!
   @IBOutlet weak var fasGasButton: UIButton!
+  @IBOutlet weak var fastTextLabel: UILabel!
 
   @IBOutlet weak var mediumGasValueLabel: UILabel!
   @IBOutlet weak var mediumGasButton: UIButton!
+  @IBOutlet weak var mediumTextLabel: UILabel!
 
   @IBOutlet weak var slowGasValueLabel: UILabel!
   @IBOutlet weak var slowGasButton: UIButton!
+  @IBOutlet weak var slowTextLabel: UILabel!
   @IBOutlet weak var gasPriceSeparatorView: UIView!
 
   @IBOutlet weak var minRateContainerView: UIView!
+  @IBOutlet weak var minAcceptableRateTextLabel: UILabel!
   @IBOutlet weak var heightConstraintMinRateContainerView: NSLayoutConstraint!
   @IBOutlet weak var minRateValueLabel: UILabel!
 
@@ -149,12 +153,16 @@ class KAdvancedSettingsView: XibLoaderView {
     self.gasPriceSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.minRateSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
+    self.minAcceptableRateTextLabel.text = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
     self.leadingConstraintForMinRatePercentLabel.constant = 0.0
     self.minRateValueLabel.text = "0"
     self.minRatePercentLabel.text = "0 %"
     self.minRateSlider.value = 0.0
 
     self.minRateSlider.addTarget(self, action: #selector(self.minRateSliderDidChange(_:)), for: .valueChanged)
+    self.fastTextLabel.text = NSLocalizedString("fast", value: "Fast", comment: "").uppercased()
+    self.mediumTextLabel.text = NSLocalizedString("standard", value: "Standard", comment: "").uppercased()
+    self.slowTextLabel.text = NSLocalizedString("slow", value: "Slow", comment: "").uppercased()
   }
 
   override func layoutSubviews() {

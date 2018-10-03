@@ -78,6 +78,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var allTransactionButton: UIButton!
   @IBOutlet weak var numberPendingTxLabel: UILabel!
 
+  @IBOutlet weak var mywalletsTextLabel: UILabel!
   @IBOutlet weak var hamburgerView: UIView!
   @IBOutlet weak var walletListTableView: UITableView!
   @IBOutlet weak var walletListTableViewHeightConstraint: NSLayoutConstraint!
@@ -123,7 +124,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.numberPendingTxLabel.text = "0"
 
     self.sendTokenButton.setTitle(
-      style.buttonTitle(with: "Send Token"),
+      NSLocalizedString("send.token", value: "Send token", comment: ""),
       for: .normal
     )
     self.sendTokenButton.setTitleColor(
@@ -131,6 +132,11 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       for: .normal
     )
 
+    self.allTransactionButton.setTitle(
+      NSLocalizedString("transactions", value: "Transactions", comment: "").uppercased(),
+      for: .normal
+    )
+    self.mywalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My wallet(s)", comment: "").uppercased()
     self.update(transactions: self.viewModel.pendingTransactions)
 
     self.view.layoutIfNeeded()

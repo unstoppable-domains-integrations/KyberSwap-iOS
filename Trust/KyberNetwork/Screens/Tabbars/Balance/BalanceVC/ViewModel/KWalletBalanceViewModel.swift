@@ -48,7 +48,9 @@ class KWalletBalanceViewModel: NSObject {
     return !self.tokenObjects.isEmpty
   }
 
-  var textBalanceIsEmpty: String { return "Your balance is empty" }
+  var textNoMatchingTokens: String {
+    return NSLocalizedString("no.matching.tokens", value: "No matching tokens", comment: "")
+  }
 
   fileprivate func setupTrackerRateData() {
     KNTrackerRateStorage.shared.rates.forEach { rate in

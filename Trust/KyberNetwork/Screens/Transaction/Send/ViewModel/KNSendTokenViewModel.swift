@@ -52,7 +52,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var navTitle: String {
-    return "Send \(self.from.symbol)" // "Send Token"
+    return "\(NSLocalizedString("send", value: "Send", comment: "")) \(self.from.symbol)" // "Send Token"
   }
 
   var tokenButtonAttributedText: NSAttributedString {
@@ -71,7 +71,8 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var balanceText: String {
-    return "\(self.from.symbol) Balance".uppercased()
+    let balanceText = NSLocalizedString("balance", comment: "")
+    return "\(self.from.symbol) \(balanceText)".uppercased()
   }
 
   var displayBalance: String {
@@ -85,7 +86,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var placeHolderEnterAddress: String {
-    return "Recipient address".toBeLocalised()
+    return NSLocalizedString("recipient.address", comment: "")
   }
 
   var displayAddress: String? {
@@ -98,9 +99,9 @@ class KNSendTokenViewModel: NSObject {
 
   var newContactTitle: String {
     if KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) != nil {
-      return "Edit Contact".toBeLocalised()
+      return NSLocalizedString("edit.contact", comment: "")
     }
-    return "Add Contact".toBeLocalised()
+    return NSLocalizedString("add.contact", comment: "")
   }
 
   var isAmountTooSmall: Bool {

@@ -36,7 +36,7 @@ class KNImportJSONViewController: KNBaseViewController {
   func resetUIs() {
     let attributedString: NSAttributedString = {
       return NSAttributedString(
-        string: "Import your JSON file".toBeLocalised(),
+        string: NSLocalizedString("import.your.json.file", value: "Import your JSON file", comment: ""),
         attributes: self.buttonAttributes
       )
     }()
@@ -69,9 +69,11 @@ class KNImportJSONViewController: KNBaseViewController {
       forState: .normal
     )
     self.nextButton.setTitle(
-      style.buttonTitle(with: "Import Wallet".toBeLocalised()),
+      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.enterPasswordTextField.placeholder = NSLocalizedString("enter.password.to.decrypt", value: "Enter Password to Decrypt", comment: "")
+    self.nameWalletTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
 
     self.resetUIs()
   }
@@ -134,7 +136,7 @@ extension KNImportJSONViewController: UIDocumentPickerDelegate {
           animations: {
             let attributedString: NSAttributedString = {
               return NSAttributedString(
-                string: name.toBeLocalised(),
+                string: name,
                 attributes: self.buttonAttributes
               )
             }()
@@ -145,7 +147,7 @@ extension KNImportJSONViewController: UIDocumentPickerDelegate {
       } else {
         self.parent?.showErrorTopBannerMessage(
           with: "",
-          message: "Can not get data from your file.".toBeLocalised()
+          message: NSLocalizedString("can.not.get.data.from.your.file", value: "Can not get data from your file.", comment: "")
         )
       }
     }

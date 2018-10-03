@@ -25,11 +25,11 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var title: String {
-    return self.isFirstTime ? "Wrong Backup".toBeLocalised() : "Wrong Again".toBeLocalised()
+    return self.isFirstTime ? NSLocalizedString("wrong.backup", comment: "") : NSLocalizedString("wrong.again", comment: "")
   }
 
   var message: String {
-    return self.isFirstTime ? "Your backup words are incorrect. Please try again.".toBeLocalised() : "You entered the wrong backup words for another time. Want to backup again?".toBeLocalised()
+    return self.isFirstTime ? NSLocalizedString("your.backup.words.are.incorrect", comment: "") : NSLocalizedString("you.entered.the.wrong.backup.words.another.time", comment: "")
   }
 
   var numberButtons: Int {
@@ -37,7 +37,7 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var firstButtonTitle: String {
-    return self.isFirstTime ? "Try Again".toBeLocalised() : "Retry".toBeLocalised()
+    return self.isFirstTime ? NSLocalizedString("try.again", value: "Try Again", comment: "") : NSLocalizedString("retry", value: "Retry", comment: "")
   }
 
   var firstButtonColor: UIColor {
@@ -53,7 +53,7 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var secondButtonTitle: String {
-    return "Backup Again".toBeLocalised()
+    return NSLocalizedString("backup.again", value: "Backup Again", comment: "")
   }
 
   var secondButtonColor: UIColor {
@@ -121,7 +121,7 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     if self.viewModel.isSuccess {
       self.showSuccessTopBannerMessage(
         with: "",
-        message: "You have successfully backed up your wallet".toBeLocalised(),
+        message: NSLocalizedString("you.have.successfully.backed.up.your.wallet", value: "You have successfully backed up your wallet", comment: ""),
         time: 1.5
       )
       Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { [weak self] _ in

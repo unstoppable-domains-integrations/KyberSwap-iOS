@@ -228,7 +228,7 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
   func createPasswordUserDidFinish(_ password: String) {
     if case .real(let account) = self.session.wallet.type {
       if let currentPassword = self.session.keystore.getPassword(for: account) {
-        self.navigationController.topViewController?.displayLoading(text: "Preparing data...", animated: true)
+        self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
         self.session.keystore.export(account: account, password: currentPassword, newPassword: password, completion: { [weak self] result in
           self?.navigationController.topViewController?.hideLoading()
           switch result {
@@ -293,8 +293,8 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCreatePasscode() {
     self.passcodeCoordinator.stop {
       self.navigationController.showSuccessTopBannerMessage(
-        with: "Success".toBeLocalised(),
-        message: "Your PIN has been updated successfully!".toBeLocalised(),
+        with: NSLocalizedString("success", value: "Success", comment: ""),
+        message: NSLocalizedString("your.pin.has.been.update.successfully", value: "Your PIN has been updated successfully!", comment: ""),
         time: 1.5
       )
     }

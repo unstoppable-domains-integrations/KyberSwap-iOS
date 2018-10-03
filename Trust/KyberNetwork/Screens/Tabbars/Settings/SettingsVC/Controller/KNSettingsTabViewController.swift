@@ -27,8 +27,48 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   weak var delegate: KNSettingsTabViewControllerDelegate?
 
+  @IBOutlet weak var manageWalletButton: UIButton!
+  @IBOutlet weak var contactButton: UIButton!
+  @IBOutlet weak var supportButton: UIButton!
+  @IBOutlet weak var changePINButton: UIButton!
+  @IBOutlet weak var aboutButton: UIButton!
+  @IBOutlet weak var community: UIButton!
+  @IBOutlet weak var shareWithFriendsButton: UIButton!
+  @IBOutlet weak var versionLabel: UILabel!
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.navigationItem.title = NSLocalizedString("settings", value: "Settings", comment: "")
+    self.manageWalletButton.setTitle(
+      NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: ""),
+      for: .normal
+    )
+    self.contactButton.setTitle(
+      NSLocalizedString("contact", value: "Contact", comment: ""),
+      for: .normal
+    )
+    self.supportButton.setTitle(
+      NSLocalizedString("support", value: "Support", comment: ""),
+      for: .normal
+    )
+    self.changePINButton.setTitle(
+      NSLocalizedString("change.pin", value: "Change PIN", comment: ""),
+      for: .normal
+    )
+    self.aboutButton.setTitle(
+      NSLocalizedString("about", value: "About", comment: ""),
+      for: .normal
+    )
+    self.community.setTitle(
+      NSLocalizedString("community", value: "Community", comment: ""),
+      for: .normal
+    )
+    self.shareWithFriendsButton.setTitle(
+      NSLocalizedString("share.with.friends", value: "Share with friends", comment: ""),
+      for: .normal
+    )
+    let version = Bundle.main.versionNumber ?? ""
+    self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
   }
 
   @IBAction func manageWalletButtonPressed(_ sender: Any) {

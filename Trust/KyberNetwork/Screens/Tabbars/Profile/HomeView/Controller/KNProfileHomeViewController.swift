@@ -21,12 +21,15 @@ class KNProfileHomeViewController: KNBaseViewController {
   let kWalletTableViewCellID: String = "kWalletTableViewCellID"
   let kWalletCellRowHeight: CGFloat = 84.0
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var notSignInView: UIView!
   @IBOutlet weak var notSignInTitleLabel: UILabel!
   @IBOutlet weak var notSignInDescLabel: UILabel!
   @IBOutlet weak var signUpButton: UIButton!
   @IBOutlet weak var signInButton: UIButton!
 
+  @IBOutlet weak var myProfileTextLabel: UILabel!
+  @IBOutlet weak var myWalletsTextLabel: UILabel!
   @IBOutlet weak var signedInView: UIView!
   @IBOutlet weak var logOutButton: UIButton!
   @IBOutlet weak var userImageView: UIImageView!
@@ -87,6 +90,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.navTitleLabel.text = NSLocalizedString("profile", value: "Profile", comment: "")
     self.setupNotSignInView()
     self.setupUserSignedInView()
   }
@@ -96,14 +100,14 @@ class KNProfileHomeViewController: KNBaseViewController {
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
     self.signInButton.setTitle(
-      self.appStyle.buttonTitle(with: "Sign In".toBeLocalised()),
+      NSLocalizedString("sign.in", value: "Sign In", comment: ""),
       for: .normal
     )
     self.signUpButton.rounded(
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
     self.signUpButton.setTitle(
-      self.appStyle.buttonTitle(with: "Sign Up".toBeLocalised()),
+      NSLocalizedString("sign.up", value: "Sign Up", comment: ""),
       for: .normal
     )
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
@@ -111,7 +115,14 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func setupUserSignedInView() {
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
-    self.logOutButton.setTitle("Log Out".toBeLocalised(), for: .normal)
+    self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")
+    self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My Wallet(s)", comment: "")
+    self.logOutButton.setTitle(NSLocalizedString("log.out", value: "Log Out", comment: ""), for: .normal)
+    self.userKYCStatusDescLabel.text = NSLocalizedString(
+      "complete.your.profile.verfication.increase.trade.limits",
+      value: "Complete Your Profile Verification\nIncrease KyberSwap's trade limits",
+      comment: ""
+    )
 
     self.userImageView.rounded(
       color: UIColor.Kyber.border,
@@ -126,17 +137,23 @@ class KNProfileHomeViewController: KNBaseViewController {
     )
     self.userKYCStatusLabel.rounded(radius: 2.0)
 
-    self.noWalletTextLabel.text = "You haven't added any wallets yet.".toBeLocalised()
+    self.noWalletTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
 
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
     self.walletsTableView.delegate = self
     self.walletsTableView.dataSource = self
 
+    self.addWalletLabelTextField.placeholder = NSLocalizedString("label", value: "Label", comment: "")
+    self.addWalletAddressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
     self.addWalletAddButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
       radius: 4.0
+    )
+    self.addWalletAddButton.setTitle(
+      NSLocalizedString("add", value: "Add", comment: ""),
+      for: .normal
     )
     self.updateUIUserDidSignedIn()
   }
@@ -169,9 +186,9 @@ class KNProfileHomeViewController: KNBaseViewController {
       default: return "Unknown"
       }
     }()
-    self.userKYCStatusLabel.text = "\(status)  "
+    self.userKYCStatusLabel.text = "\(NSLocalizedString(status.lowercased(), value: status, comment: ""))  "
 
-    let actionTitle: String = status == "Rejected" ? "Re-submit" : "Verify"
+    let actionTitle: String = status == "Rejected" ? NSLocalizedString("resubmit", value: "Re-submit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
     self.userKYCActionButton.setTitle(actionTitle, for: .normal)
 
     if status == "Approved" {
@@ -239,21 +256,21 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBAction func addWalletAddButtonPressed(_ sender: Any) {
     guard let label = self.addWalletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: "Invalid input".toBeLocalised(),
-        message: "Please enter a valid wallet label".toBeLocalised(),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.wallet.label", value: "Please enter a valid wallet label", comment: ""),
         time: 1.5
       )
       return
     }
     guard let address = self.addWalletAddressTextField.text, Address(string: address) != nil else {
       self.showWarningTopBannerMessage(
-        with: "Invalid input".toBeLocalised(),
-        message: "Please enter a valid address".toBeLocalised(),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.address", value: "Please enter a valid address", comment: ""),
         time: 1.5
       )
       return
     }
-    self.displayLoading(text: "Adding...", animated: true)
+    self.displayLoading(text: "\(NSLocalizedString("adding", value: "Invalid Adding", comment: ""))...", animated: true)
     self.viewModel.addWallet(label: label, address: address) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
@@ -263,14 +280,14 @@ class KNProfileHomeViewController: KNBaseViewController {
         let message: String = resp.1
         if isAdded {
           self.showSuccessTopBannerMessage(
-            with: "Success".toBeLocalised(),
-            message: "Your wallet has been added successfully!".toBeLocalised(),
+            with: NSLocalizedString("success", value: "Success", comment: ""),
+            message: NSLocalizedString("your.wallet.has.been.added.successfully", value: "Your wallet has been added successfully!", comment: ""),
             time: 1.5
           )
           self.fetchWalletList()
         } else {
           self.showErrorTopBannerMessage(
-            with: "Failed".toBeLocalised(),
+            with: NSLocalizedString("failed", value: "Failed", comment: ""),
             message: message,
             time: 1.5
           )

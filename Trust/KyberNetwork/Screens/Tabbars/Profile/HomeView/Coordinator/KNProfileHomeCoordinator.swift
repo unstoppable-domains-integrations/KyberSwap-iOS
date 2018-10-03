@@ -151,7 +151,9 @@ extension KNProfileHomeCoordinator {
   fileprivate func openSignInView() {
     if let user = IEOUserStorage.shared.user {
       // User already signed in
-      self.navigationController.showSuccessTopBannerMessage(with: "", message: "Welcome back, \(user.name)")
+      let text = NSLocalizedString("welcome.back.user", comment: "")
+      let message = String(format: text, user.name)
+      self.navigationController.showSuccessTopBannerMessage(with: "", message: message)
       return
     }
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
@@ -200,7 +202,7 @@ extension KNProfileHomeCoordinator {
     }
     // got authentication code from KyberGO
     // use the code to get access token for user
-    self.navigationController.displayLoading(text: "Initial Session...", animated: true)
+    self.navigationController.displayLoading(text: "\(NSLocalizedString("initializing.session", value: "Initializing Session", comment: ""))...", animated: true)
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
       let accessToken = KyberGOService.getAccessToken(code: code, isRefresh: false)
@@ -219,8 +221,8 @@ extension KNProfileHomeCoordinator {
                 else {
                   self?.navigationController.hideLoading()
                   self?.navigationController.showWarningTopBannerMessage(
-                    with: "Error",
-                    message: "Can not get access token".toBeLocalised()
+                    with: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("can.not.get.access.token", comment: "")
                   )
                   return
               }
@@ -235,15 +237,17 @@ extension KNProfileHomeCoordinator {
                 completion: { success in
                   if success {
                     let name = IEOUserStorage.shared.user?.name ?? ""
-                    self?.navigationController.showSuccessTopBannerMessage(with: "", message: "Welcome back, \(name)")
+                    let text = NSLocalizedString("welcome.back.user", comment: "")
+                    let message = String(format: text, name)
+                    self?.navigationController.showSuccessTopBannerMessage(with: "", message: message)
                   }
               }
               )
             } catch {
               self?.navigationController.hideLoading()
               self?.navigationController.showWarningTopBannerMessage(
-                with: "Error",
-                message: "Can not get access token".toBeLocalised()
+                with: NSLocalizedString("error", comment: ""),
+                message: NSLocalizedString("can.not.get.access.token", comment: "")
               )
             }
           case .failure(let error):
@@ -273,8 +277,8 @@ extension KNProfileHomeCoordinator {
             guard let userDataJSON = try? userInfo.mapJSON(failsOnEmptyData: false) as? JSONDictionary, let userJSON = userDataJSON else {
               if showError {
                 self?.navigationController.showWarningTopBannerMessage(
-                  with: "Error",
-                  message: "Can not get user info"
+                  with: NSLocalizedString("error", comment: ""),
+                  message: NSLocalizedString("can.not.get.user.info", comment: "")
                 )
               }
               completion(false)
@@ -336,8 +340,8 @@ extension KNProfileHomeCoordinator {
           }
           // Error for some reason
           KNNotificationUtil.localPushNotification(
-            title: "Session expired",
-            body: "Your session has expired, please sign in again to continue"
+            title: NSLocalizedString("session.expired", comment: ""),
+            body: NSLocalizedString("your.session.has.expired.sign.in.to.continue", comment: "")
           )
           IEOUserStorage.shared.signedOut()
           self?.navigationController.popToRootViewController(animated: true)
@@ -364,7 +368,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
-    self.navigationController.displayLoading(text: "Checking...", animated: true)
+    self.navigationController.displayLoading(text: "\(NSLocalizedString("checking", value: "Checking", comment: ""))...", animated: true)
     self.getUserInfo(
       type: user.tokenType,
       accessToken: user.accessToken,
@@ -380,14 +384,14 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
           if status == "rejected" {
             // need to call remove first
             let alert = UIAlertController(
-              title: "Remove old profile?".toBeLocalised(),
-              message: "To resubmit, you will need to remove your old profile first".toBeLocalised(),
+              title: NSLocalizedString("remove.old.profile", comment: ""),
+              message: NSLocalizedString("remove.your.old.profile.to.resubmit", comment: ""),
               preferredStyle: .alert
             )
-            alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("remove", comment: ""), style: .destructive, handler: { _ in
               self.sendRemoveProfile(userID: user.userID, accessToken: user.accessToken)
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
             self.navigationController.present(alert, animated: true, completion: nil)
           } else {
             // draft or none, just open the verification
@@ -402,7 +406,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
   fileprivate func sendRemoveProfile(userID: Int, accessToken: String) {
     let provider = MoyaProvider<ProfileKYCService>()
     let service = ProfileKYCService.removeProfile(accessToken: accessToken, userID: "\(userID)")
-    self.navigationController.displayLoading(text: "Removing...", animated: true)
+    self.navigationController.displayLoading(text: "\(NSLocalizedString("removing", comment: ""))...", animated: true)
     DispatchQueue.global(qos: .background).async {
       provider.request(service) { [weak self] result in
         guard let `self` = self else { return }
@@ -422,19 +426,19 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
               if !success {
                 // Unsuccessful remove profile
                 self.navigationController.showErrorTopBannerMessage(
-                  with: "Error",
+                  with: NSLocalizedString("error", comment: ""),
                   message: message,
                   time: 1.5
                 )
               } else {
                 // Success
                 self.navigationController.showSuccessTopBannerMessage(
-                  with: "Removed".toBeLocalised(),
-                  message: "Your profile has been removed. You can now resubmit your profile again".toBeLocalised(),
+                  with: NSLocalizedString("removed", comment: ""),
+                  message: NSLocalizedString("your.profile.has.been.removed.can.resubmit.now", comment: ""),
                   time: 2.0
                 )
                 guard let user = IEOUserStorage.shared.user else { return }
-                self.navigationController.displayLoading(text: "Updating info...", animated: true)
+                self.navigationController.displayLoading(text: "\(NSLocalizedString("updating.info", comment: ""))...", animated: true)
                 self.getUserInfo(
                   type: user.tokenType,
                   accessToken: user.accessToken,

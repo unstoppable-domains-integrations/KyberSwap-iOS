@@ -26,12 +26,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.enterPrivateKeyTextLabel.text = "Your Private Key".toBeLocalised()
+    self.enterPrivateKeyTextLabel.text = NSLocalizedString("your.private.key", value: "Your Private Key", comment: "")
     self.enterPrivateKeyTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0))
     self.enterPrivateKeyTextField.rightViewMode = .always
     self.enterPrivateKeyTextField.delegate = self
 
-    self.privateKeyNoteLabel.text = "Private key has to be 64 characters".toBeLocalised()
+    self.privateKeyNoteLabel.text = NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: "")
 
     let style = KNAppStyleType.current
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
@@ -44,9 +44,11 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       forState: .normal
     )
     self.nextButton.setTitle(
-      style.buttonTitle(with: "Import Wallet".toBeLocalised()),
+      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.enterPrivateKeyTextField.placeholder = NSLocalizedString("enter.or.scan.private.key", value: "Enter or scan private key", comment: "")
+    self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
 
     self.resetUI()
   }

@@ -62,6 +62,7 @@
 		252DB13620D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13520D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift */; };
 		252DB13820D12D0D00D10FF7 /* IEOGetRateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */; };
 		252DB13C20D2481100D10FF7 /* IEOSignInWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252DB13A20D2481100D10FF7 /* IEOSignInWebViewViewController.swift */; };
+		252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 252EBD7F21636D9900609101 /* Localizable.stringsdict */; };
 		2531119F20FFA386004440F0 /* IEOContributeWithTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2531119E20FFA386004440F0 /* IEOContributeWithTokenRequest.swift */; };
 		2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */; };
 		25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */; };
@@ -75,6 +76,7 @@
 		25369F1A20FCB062007231FE /* IEOProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25369F1820FCB062007231FE /* IEOProfileViewController.swift */; };
 		25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1920FCB062007231FE /* IEOProfileViewController.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
+		253B044B21647C6F002153B6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B044A21647C6F002153B6 /* R.generated.swift */; };
 		2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604321215C120015ECC7 /* KSwapViewController.swift */; };
 		2542604621215C120015ECC7 /* KSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2542604421215C120015ECC7 /* KSwapViewController.xib */; };
 		2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604921215C360015ECC7 /* KSwapViewModel.swift */; };
@@ -467,7 +469,6 @@
 		297800521F71FDCF003185C1 /* FormAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297800511F71FDCF003185C1 /* FormAppearance.swift */; };
 		2981C29C1FC18F7700537E43 /* ChangellyBuyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2981C29B1FC18F7700537E43 /* ChangellyBuyWidget.swift */; };
 		2981F4731F8303E600CA6590 /* TransactionCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2981F4721F8303E600CA6590 /* TransactionCoordinatorTests.swift */; };
-		29850D251F6B27A800791A49 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29850D241F6B27A800791A49 /* R.generated.swift */; };
 		29850D2B1F6B30FF00791A49 /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29850D2A1F6B30FF00791A49 /* TransactionViewController.swift */; };
 		298542E31FBA722F00CB5081 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298542E21FBA722F00CB5081 /* ContainerView.swift */; };
 		298542E51FBA9B0700CB5081 /* ShapeShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298542E41FBA9B0700CB5081 /* ShapeShift.swift */; };
@@ -786,6 +787,8 @@
 		252DB13520D10E1B00D10FF7 /* IEODistributedTokensWeiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEODistributedTokensWeiRequest.swift; sourceTree = "<group>"; };
 		252DB13720D12D0D00D10FF7 /* IEOGetRateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOGetRateRequest.swift; sourceTree = "<group>"; };
 		252DB13A20D2481100D10FF7 /* IEOSignInWebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOSignInWebViewViewController.swift; sourceTree = "<group>"; };
+		252EBD8021636D9900609101 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = vi; path = vi.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		252EBD8221636DA200609101 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		2531119E20FFA386004440F0 /* IEOContributeWithTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOContributeWithTokenRequest.swift; sourceTree = "<group>"; };
 		2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Kyber.swift"; sourceTree = "<group>"; };
 		25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenViewModel.swift; sourceTree = "<group>"; };
@@ -799,6 +802,7 @@
 		25369F1820FCB062007231FE /* IEOProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOProfileViewController.swift; sourceTree = "<group>"; };
 		25369F1920FCB062007231FE /* IEOProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOProfileViewController.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
+		253B044A21647C6F002153B6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		2542604321215C120015ECC7 /* KSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewController.swift; sourceTree = "<group>"; };
 		2542604421215C120015ECC7 /* KSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KSwapViewController.xib; sourceTree = "<group>"; };
 		2542604921215C360015ECC7 /* KSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewModel.swift; sourceTree = "<group>"; };
@@ -1196,7 +1200,6 @@
 		297800511F71FDCF003185C1 /* FormAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppearance.swift; sourceTree = "<group>"; };
 		2981C29B1FC18F7700537E43 /* ChangellyBuyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangellyBuyWidget.swift; sourceTree = "<group>"; };
 		2981F4721F8303E600CA6590 /* TransactionCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCoordinatorTests.swift; sourceTree = "<group>"; };
-		29850D241F6B27A800791A49 /* R.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		29850D2A1F6B30FF00791A49 /* TransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
 		298542E21FBA722F00CB5081 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		298542E41FBA9B0700CB5081 /* ShapeShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeShift.swift; sourceTree = "<group>"; };
@@ -3352,6 +3355,7 @@
 		290B2B511F8F4F840053C83E /* Localization */ = {
 			isa = PBXGroup;
 			children = (
+				252EBD7F21636D9900609101 /* Localizable.stringsdict */,
 				290B2B561F8F50030053C83E /* Localizable.strings */,
 			);
 			path = Localization;
@@ -3417,9 +3421,9 @@
 				2996F14B1F6CA725005C33AE /* Extensions */,
 				257B84AE2074D7B8003DD40E /* Assets.xcassets */,
 				2912CCF81F6A830700C6CBE3 /* AppDelegate.swift */,
+				253B044A21647C6F002153B6 /* R.generated.swift */,
 				29D72A291F6A8D1500CE9209 /* AppCoordinator.swift */,
 				293E626E1FA2ED1400CB0A66 /* InCoordinator.swift */,
-				29850D241F6B27A800791A49 /* R.generated.swift */,
 				2912CD061F6A830700C6CBE3 /* Info.plist */,
 				29AD8A071F93E1F0008E10E7 /* Trust.entitlements */,
 				613D04881FDE15F8008DE72E /* COMODO ECC Domain Validation Secure Server CA 2.cer */,
@@ -4779,7 +4783,6 @@
 			buildConfigurationList = 2912CD1F1F6A830700C6CBE3 /* Build configuration list for PBXNativeTarget "Trust" */;
 			buildPhases = (
 				F48CC1C9F6D4FAE6EF587C03 /* [CP] Check Pods Manifest.lock */,
-				29336FE81F6B24FF005E3BFC /* R.Swift */,
 				2912CCF11F6A830700C6CBE3 /* Sources */,
 				2912CCF21F6A830700C6CBE3 /* Frameworks */,
 				2912CCF31F6A830700C6CBE3 /* Resources */,
@@ -5066,6 +5069,7 @@
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
 				29F1C8481FEB6664003780D8 /* EditTokenTableViewCell.xib in Resources */,
 			);
@@ -5119,21 +5123,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
-		};
-		29336FE81F6B24FF005E3BFC /* R.Swift */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = R.Swift;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/Trust\"";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		294DFB961FDF8C6A004CEB56 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5146,7 +5136,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" d18f567bc4750619445ba2db3a764e3a2a77b416 afd96e85dcc3f40aed42d7e935267c6eb039c841fbeb0cc8352c5fe65a5646bf";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" d18f567bc4750619445ba2db3a764e3a2a77b416 afd96e85dcc3f40aed42d7e935267c6eb039c841fbeb0cc8352c5fe65a5646bf\n";
 		};
 		558B94C30BF51EDC00493AF8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5417,7 +5407,6 @@
 				29F114F01FA6D53700114A29 /* ImportSelectionType.swift in Sources */,
 				254BB33C211C20E200B8E75D /* UIFont+Kyber.swift in Sources */,
 				25E3D3A220D7D83B005D506B /* IEOUserStorage.swift in Sources */,
-				29850D251F6B27A800791A49 /* R.generated.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
 				296105951FA2DEF000292494 /* TransactionDirection.swift in Sources */,
@@ -5625,6 +5614,7 @@
 				29E6E06E1FE897EE0079265A /* BrowserViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
 				2561455420C696C800FB00CF /* KNTokenChartViewController.swift in Sources */,
+				253B044B21647C6F002153B6 /* R.generated.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				615F105D1FCBF55E008A45AF /* OnboardingCollectionViewController.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
@@ -5861,6 +5851,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		252EBD7F21636D9900609101 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				252EBD8021636D9900609101 /* vi */,
+				252EBD8221636DA200609101 /* en */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		290B2B561F8F50030053C83E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -28,7 +28,6 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var emptyStateView: UIView!
   @IBOutlet weak var emptyBalanceTextLabel: UILabel!
-  @IBOutlet weak var receiveTokenButton: UIButton!
 
   @IBOutlet weak var hasPendingTxView: UIView!
 
@@ -36,6 +35,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var otherButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var currencyButton: UIButton!
+  @IBOutlet weak var nameTextButton: UIButton!
 
   @IBOutlet weak var tokensBalanceTableView: UITableView!
 
@@ -88,7 +88,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func setupWalletBalanceHeaderView() {
-    self.balanceTextLabel.text = "Balance".toBeLocalised()
+    self.balanceTextLabel.text = NSLocalizedString("balance", comment: "")
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openQRCodeViewPressed(_:)))
     self.walletDataView.addGestureRecognizer(tapGesture)
     self.updateWalletBalanceUI()
@@ -102,6 +102,10 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func setupDisplayDataType() {
+    self.nameTextButton.setTitle(
+      NSLocalizedString("name", value: "Name", comment: ""),
+      for: .normal
+    )
     self.updateDisplayedDataType()
     self.searchTextField.delegate = self
   }
@@ -117,10 +121,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.tokensBalanceTableView.rowHeight = KNBalanceTokenTableViewCell.kCellHeight
     self.tokensBalanceTableView.reloadData()
 
-    self.emptyBalanceTextLabel.text = self.viewModel.textBalanceIsEmpty
-    let style = KNAppStyleType.current
-    self.receiveTokenButton.backgroundColor = style.walletFlowHeaderColor
-    self.receiveTokenButton.rounded(radius: style.buttonRadius(for: self.receiveTokenButton.frame.height))
+    self.emptyBalanceTextLabel.text = self.viewModel.textNoMatchingTokens
   }
 
   // MARK: Update UIs
@@ -131,8 +132,8 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   fileprivate func updateWalletBalanceUI() {
     self.balanceValueLabel.attributedText = self.viewModel.balanceDisplayAttributedString
-    self.tokensBalanceTableView.isHidden = !self.viewModel.hasTokens
-    self.emptyStateView.isHidden = self.viewModel.hasTokens
+    self.tokensBalanceTableView.isHidden = self.viewModel.displayedTokens.isEmpty
+    self.emptyStateView.isHidden = !self.viewModel.displayedTokens.isEmpty
     self.view.layoutIfNeeded()
   }
 
@@ -140,7 +141,15 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.currencyButton.semanticContentAttribute = .forceRightToLeft
     self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
     self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
+    self.kyberListButton.setTitle(
+      NSLocalizedString("kyber.listed", value: "Kyber Listed", comment: ""),
+      for: .normal
+    )
     self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
+    self.otherButton.setTitle(
+      NSLocalizedString("other", value: "Other", comment: ""),
+      for: .normal
+    )
     self.updateWalletBalanceUI()
     self.tokensBalanceTableView.reloadData()
     self.view.layoutIfNeeded()
@@ -304,15 +313,18 @@ extension KWalletBalanceViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
-    let sendAction = UITableViewRowAction(style: .default, title: "Send") { _, _ in
+    let sendText = NSLocalizedString("send", value: "Send", comment: "")
+    let sendAction = UITableViewRowAction(style: .default, title: sendText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .send(token: tokenObject))
     }
     sendAction.backgroundColor = UIColor.Kyber.merigold
-    let sellAction = UITableViewRowAction(style: .default, title: "Sell") { _, _ in
+    let sellText = NSLocalizedString("sell", value: "Sell", comment: "")
+    let sellAction = UITableViewRowAction(style: .default, title: sellText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .sell(token: tokenObject))
     }
     sellAction.backgroundColor = UIColor.Kyber.blueGreen
-    let buyAction = UITableViewRowAction(style: .default, title: "Buy") { _, _ in
+    let buyText = NSLocalizedString("buy", value: "Buy", comment: "")
+    let buyAction = UITableViewRowAction(style: .default, title: buyText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .buy(token: tokenObject))
     }
     buyAction.backgroundColor = UIColor.Kyber.shamrock
@@ -341,5 +353,6 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
   fileprivate func searchAmountTextFieldChanged() {
     self.viewModel.updateSearchText(self.searchTextField.text ?? "")
     self.tokensBalanceTableView.reloadData()
+    self.updateWalletBalanceUI()
   }
 }

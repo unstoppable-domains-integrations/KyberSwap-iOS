@@ -64,6 +64,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   fileprivate let kSearchTokenTableViewCellID: String = "CellID"
 
   @IBOutlet weak var headerContainerView: UIView!
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var noMatchingTokensLabel: UILabel!
@@ -115,6 +116,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.navTitleLabel.text = NSLocalizedString("search", value: "Search", comment: "")
     self.headerContainerView.backgroundColor = self.viewModel.headerColor
     self.searchTextField.delegate = self
     self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
@@ -131,6 +133,7 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.tokensTableView.delegate = self
     self.tokensTableView.dataSource = self
 
+    self.noMatchingTokensLabel.text = NSLocalizedString("no.matching.tokens", value: "No matching tokens", comment: "")
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.keyboardDidShow(_:)),

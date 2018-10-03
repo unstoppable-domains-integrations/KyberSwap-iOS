@@ -233,8 +233,8 @@ class IEOBuyTokenCoordinator: Coordinator {
 
   fileprivate func didFinishBuyTokenWithHash(_ hash: String, draftTx: IEODraftTransaction) {
     self.navigationController.showSuccessTopBannerMessage(
-      with: "Broadcasted".toBeLocalised(),
-      message: "Transaction has been successfully broadcasted".toBeLocalised()
+      with: NSLocalizedString("broadcasted", comment: ""),
+      message: NSLocalizedString("your.transaction.has.been.broadcasted", comment: "")
     )
     self.addTransactionRequest(draftTx: draftTx, hash: hash)
   }

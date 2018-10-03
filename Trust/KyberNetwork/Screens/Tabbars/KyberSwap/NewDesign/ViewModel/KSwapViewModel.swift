@@ -137,7 +137,8 @@ class KSwapViewModel {
   }
 
   var balanceTextString: String {
-    return "\(self.from.symbol) Balance"
+    let balanceText = NSLocalizedString("balance", comment: "")
+    return "\(self.from.symbol) \(balanceText)"
   }
 
   // MARK: Rate
@@ -156,6 +157,10 @@ class KSwapViewModel {
 
   var minRateText: String? {
     return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
+  }
+
+  var slippageRateText: String? {
+    return self.slippageRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
   }
 
   var currentMinRatePercentValue: Float {

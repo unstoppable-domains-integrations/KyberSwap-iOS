@@ -99,9 +99,9 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
   }
 
   fileprivate func listWalletsViewControllerDidSelectRemoveWallet(_ wallet: Wallet) {
-    let alert = UIAlertController(title: "", message: "Do you want to remove this wallet?", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+    let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
       if self.navigationController.topViewController is KNEditWalletViewController {
         self.navigationController.popViewController(animated: true, completion: {
           self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)

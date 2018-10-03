@@ -32,6 +32,9 @@ class KConfirmSendViewController: KNBaseViewController {
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
 
+  @IBOutlet weak var amountToSendTextLabel: UILabel!
+  @IBOutlet weak var transactionFeeTextLabel: UILabel!
+
   fileprivate let viewModel: KConfirmSendViewModel
   weak var delegate: KConfirmSendViewControllerDelegate?
 
@@ -74,17 +77,20 @@ class KConfirmSendViewController: KNBaseViewController {
 
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
     self.confirmButton.setTitle(
-      style.buttonTitle(with: "Confirm".toBeLocalised()),
+      NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
     self.confirmButton.backgroundColor = style.walletFlowHeaderColor
     self.cancelButton.setTitle(
-      style.buttonTitle(with: "Cancel".toBeLocalised()),
+      NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
 
     self.firstSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
     self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
+
+    self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Send", comment: "").uppercased()
+    self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
@@ -105,7 +111,7 @@ class KConfirmSendViewController: KNBaseViewController {
 
   func updateActionButtonsSendingTransfer() {
     self.confirmButton.backgroundColor = UIColor.clear
-    self.confirmButton.setTitle("In Progress ...".toBeLocalised(), for: .normal)
+    self.confirmButton.setTitle("\(NSLocalizedString("in.progress", value: "In Progress", comment: "")) ...", for: .normal)
     self.confirmButton.setTitleColor(
       KNAppStyleType.current.walletFlowHeaderColor,
       for: .normal
@@ -116,12 +122,16 @@ class KConfirmSendViewController: KNBaseViewController {
 
   func resetActionButtons() {
     self.confirmButton.setTitle(
-      KNAppStyleType.current.buttonTitle(with: "Confirm".toBeLocalised()),
+      NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
     self.confirmButton.setTitleColor(UIColor.white, for: .normal)
     self.confirmButton.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
     self.confirmButton.isEnabled = true
     self.cancelButton.isHidden = false
+    self.cancelButton.setTitle(
+      NSLocalizedString("cancel", value: "Cancel", comment: ""),
+      for: .normal
+    )
   }
 }

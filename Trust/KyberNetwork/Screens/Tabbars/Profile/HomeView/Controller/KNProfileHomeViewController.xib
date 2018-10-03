@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,6 +28,9 @@
                 <outlet property="heightConstraintUserKYCStatusView" destination="yjh-TT-VtN" id="4yG-wt-ZtR"/>
                 <outlet property="heightConstraintWalletsTableView" destination="nJj-FT-TKb" id="aGy-g1-1yA"/>
                 <outlet property="logOutButton" destination="2pd-lu-Yff" id="aZu-a3-iZh"/>
+                <outlet property="myProfileTextLabel" destination="IKe-v2-0WJ" id="pgc-I8-2aq"/>
+                <outlet property="myWalletsTextLabel" destination="QyU-pN-i8D" id="5ir-e2-Qne"/>
+                <outlet property="navTitleLabel" destination="BLX-sM-X5k" id="eqx-Co-SWd"/>
                 <outlet property="noWalletTextLabel" destination="sBs-5h-Tri" id="7uD-gM-37c"/>
                 <outlet property="notSignInDescLabel" destination="zOn-is-adv" id="s2b-zh-G0D"/>
                 <outlet property="notSignInTitleLabel" destination="f9b-Vb-xfi" id="1lR-qh-rCP"/>
@@ -55,10 +58,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_big_icon" translatesAutoresizingMaskIntoConstraints="NO" id="8a5-2v-PR3">
-                            <rect key="frame" x="119.5" y="100" width="135" height="135"/>
+                            <rect key="frame" x="120" y="100" width="135" height="135"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Know Your Customer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9b-Vb-xfi">
-                            <rect key="frame" x="91" y="279" width="194" height="22"/>
+                            <rect key="frame" x="90.5" y="279" width="194" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -126,7 +129,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLX-sM-X5k">
-                                    <rect key="frame" x="158" y="46" width="60.5" height="22"/>
+                                    <rect key="frame" x="157.5" y="46" width="60.5" height="22"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -170,7 +173,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mike@kyber.network" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kTw-hp-avF">
-                                            <rect key="frame" x="92" y="47" width="265" height="15"/>
+                                            <rect key="frame" x="92" y="46.5" width="265" height="15"/>
                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                             <color key="textColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -200,7 +203,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unverified  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vv0-Qj-VoP">
-                                            <rect key="frame" x="298.5" y="22.5" width="58.5" height="16"/>
+                                            <rect key="frame" x="298.5" y="22" width="58.5" height="16"/>
                                             <color key="backgroundColor" red="0.60392156862745094" green="0.6705882352941176" blue="0.70588235294117641" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="qrg-qp-cUc"/>

@@ -204,12 +204,12 @@ extension KNAppCoordinator {
     }()
     if let error = sender.object as? AnyError {
       KNNotificationUtil.localPushNotification(
-        title: "Failed",
+        title: NSLocalizedString("failed", comment: ""),
         body: error.prettyError,
         userInfo: ["transaction_hash": ""]
       )
       self.navigationController.showErrorTopBannerMessage(
-        with: "Failed".toBeLocalised(),
+        with: NSLocalizedString("failed", comment: ""),
         message: error.prettyError,
         time: 3.0
       )
@@ -221,29 +221,29 @@ extension KNAppCoordinator {
     if trans.state == .pending {
       // just sent
       self.navigationController.showSuccessTopBannerMessage(
-        with: "Broadcasted".toBeLocalised(),
+        with: NSLocalizedString("broadcasted", comment: ""),
         message: details,
         time: 3.0
       )
     } else if trans.state == .completed {
       self.navigationController.showSuccessTopBannerMessage(
-        with: "Success",
+        with: NSLocalizedString("success", comment: ""),
         message: details,
         time: 3.0
       )
       KNNotificationUtil.localPushNotification(
-        title: "Success",
+        title: NSLocalizedString("success", comment: ""),
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )
     } else if trans.state == .failed || trans.state == .error {
       self.navigationController.showSuccessTopBannerMessage(
-        with: "Failed",
+        with: NSLocalizedString("failed", comment: ""),
         message: details,
         time: 3.0
       )
       KNNotificationUtil.localPushNotification(
-        title: "Failed",
+        title: NSLocalizedString("failed", comment: ""),
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )

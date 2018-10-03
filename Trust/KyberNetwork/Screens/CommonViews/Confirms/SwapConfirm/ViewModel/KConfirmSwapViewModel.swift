@@ -12,7 +12,7 @@ struct KConfirmSwapViewModel {
   }
 
   var titleString: String {
-    return "\(self.transaction.from.symbol) to \(self.transaction.to.symbol)"
+    return "\(self.transaction.from.symbol) -> \(self.transaction.to.symbol)"
   }
 
   var leftAmountString: String {

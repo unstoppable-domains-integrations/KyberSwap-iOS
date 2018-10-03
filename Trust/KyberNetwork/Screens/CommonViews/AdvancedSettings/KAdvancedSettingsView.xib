@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +20,7 @@
                 <outlet property="displayViewButton" destination="kC4-al-Lim" id="eNx-qY-2k3"/>
                 <outlet property="fasGasButton" destination="Ahe-Qz-IPa" id="s9D-GY-neN"/>
                 <outlet property="fasGasValueLabel" destination="d9b-Jz-K2d" id="2Se-Kc-tXa"/>
+                <outlet property="fastTextLabel" destination="662-rx-Ymk" id="JLZ-k2-aEX"/>
                 <outlet property="gasPriceContainerView" destination="Zbn-RB-OWZ" id="FMb-yA-yXo"/>
                 <outlet property="gasPriceSeparatorView" destination="0yr-4C-pIU" id="PNT-j6-1Ej"/>
                 <outlet property="heightConstraintGasPriceContainerView" destination="2DO-Ek-7Hd" id="FTC-h9-drn"/>
@@ -27,6 +28,8 @@
                 <outlet property="leadingConstraintForMinRatePercentLabel" destination="KfN-kz-Gdv" id="CdC-VL-TGB"/>
                 <outlet property="mediumGasButton" destination="wZP-sm-2R4" id="JIX-M1-Xra"/>
                 <outlet property="mediumGasValueLabel" destination="1fK-58-HXP" id="2fi-42-SII"/>
+                <outlet property="mediumTextLabel" destination="FMy-y8-igd" id="8c2-aR-vVl"/>
+                <outlet property="minAcceptableRateTextLabel" destination="m11-tO-aa1" id="U9n-gI-M7b"/>
                 <outlet property="minRateContainerView" destination="gEr-dE-MA3" id="ePQ-Er-TWX"/>
                 <outlet property="minRatePercentLabel" destination="ITi-W3-I3B" id="Mxv-bo-2B8"/>
                 <outlet property="minRateSeparatorView" destination="UIu-HK-gHd" id="Pcd-ew-kZw"/>
@@ -34,6 +37,7 @@
                 <outlet property="minRateValueLabel" destination="M5a-TC-C0g" id="sI6-3A-1Of"/>
                 <outlet property="slowGasButton" destination="8TX-Uf-qV9" id="GWF-dg-UJx"/>
                 <outlet property="slowGasValueLabel" destination="ZCp-KP-Uqz" id="gXJ-zV-7UE"/>
+                <outlet property="slowTextLabel" destination="yd2-sj-OJW" id="ZJH-ic-BSB"/>
                 <outlet property="topSeparatorView" destination="f7B-64-7Pq" id="cb2-P8-opo"/>
             </connections>
         </placeholder>
@@ -177,14 +181,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gEr-dE-MA3">
                     <rect key="frame" x="20" y="264" width="335" height="160"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min Acceptable Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m11-tO-aa1">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Min Acceptable Rate" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m11-tO-aa1">
                             <rect key="frame" x="0.0" y="16" width="147.5" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n9W-He-ZHp">
-                            <rect key="frame" x="155.5" y="15.5" width="19" height="20"/>
+                            <rect key="frame" x="155.5" y="15" width="19" height="20"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <state key="normal" image="info_blue_icon">
                                 <color key="titleColor" red="0.11372549019607843" green="0.69411764705882351" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -194,7 +198,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,132,323.38" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5a-TC-C0g">
-                            <rect key="frame" x="235.5" y="14.5" width="99.5" height="22"/>
+                            <rect key="frame" x="235.5" y="14" width="99.5" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -207,13 +211,13 @@
                             <color key="thumbTintColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </slider>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ruq-iY-nHZ">
-                            <rect key="frame" x="299.5" y="120.5" width="36" height="17.5"/>
+                            <rect key="frame" x="299" y="120.5" width="36" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZSD-dG-Fgl">
-                            <rect key="frame" x="0.0" y="121" width="22" height="17.5"/>
+                            <rect key="frame" x="0.0" y="120.5" width="22" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>

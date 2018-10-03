@@ -17,6 +17,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="Trust" customModuleProvider="target">
             <connections>
+                <outlet property="aboutButton" destination="0Wu-3X-xy0" id="yur-6n-epM"/>
+                <outlet property="changePINButton" destination="c9Z-ZK-Ucl" id="Y2q-9i-4VJ"/>
+                <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
+                <outlet property="contactButton" destination="XDo-Po-iWz" id="gEu-eC-2gh"/>
+                <outlet property="manageWalletButton" destination="OVZ-jU-hlZ" id="yMe-nI-3CH"/>
+                <outlet property="shareWithFriendsButton" destination="Z6O-Km-0S7" id="Ug8-Xt-Krq"/>
+                <outlet property="supportButton" destination="N5S-5z-7Ii" id="yoL-lw-iBU"/>
+                <outlet property="versionLabel" destination="rGf-Ii-F5o" id="TGu-U8-69f"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -186,10 +194,17 @@
                         <action selector="shareWithFriendButtonPressed:" destination="-1" eventType="touchUpInside" id="x8f-72-BNt"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 1.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGf-Ii-F5o">
+                    <rect key="frame" x="144.5" y="625.5" width="86.5" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="tdX-Yv-Ujd" firstAttribute="centerY" secondItem="P8S-Nk-EbV" secondAttribute="centerY" id="2Yy-dT-BJs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="rGf-Ii-F5o" secondAttribute="bottom" constant="24" id="5pD-cH-Lq6"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="leading" secondItem="N5S-5z-7Ii" secondAttribute="leading" id="8bi-DU-dg9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OVZ-jU-hlZ" secondAttribute="trailing" constant="24" id="8hZ-R1-B5K"/>
                 <constraint firstItem="P8S-Nk-EbV" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="8ns-Ya-Pg8"/>
@@ -220,6 +235,7 @@
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="8" id="czA-ja-bKb"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="trailing" secondItem="N5S-5z-7Ii" secondAttribute="trailing" id="eac-HY-dQQ"/>
+                <constraint firstItem="rGf-Ii-F5o" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="g6i-zV-3Ht"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="trailing" secondItem="0Wu-3X-xy0" secondAttribute="trailing" id="iAl-hq-TaO"/>
                 <constraint firstItem="dSF-Hs-lsq" firstAttribute="leading" secondItem="tdX-Yv-Ujd" secondAttribute="trailing" constant="8" id="jMz-at-VSR"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="leading" secondItem="sSk-u8-Y8q" secondAttribute="leading" id="jPe-po-0Zf"/>
