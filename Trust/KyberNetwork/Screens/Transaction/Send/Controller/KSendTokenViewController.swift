@@ -49,6 +49,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var newContactButton: UIButton!
 
   fileprivate var isViewSetup: Bool = false
+  fileprivate var isViewDisappeared: Bool = false
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -95,6 +96,7 @@ class KSendTokenViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+    self.isViewDisappeared = false
     self.updateUIAddressQRCode()
   }
 
@@ -109,10 +111,15 @@ class KSendTokenViewController: KNBaseViewController {
     })
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.isViewDisappeared = true
+    self.view.endEditing(true)
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.estGasTimer?.invalidate()
-    self.amountTextField.resignFirstResponder()
   }
 
   fileprivate func setupUI() {
@@ -225,7 +232,6 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
-    self.amountTextField.resignFirstResponder()
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
   }
 
@@ -279,6 +285,7 @@ class KSendTokenViewController: KNBaseViewController {
    false otherwise
    */
   fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
+    if !isConfirming && self.isViewDisappeared { return false }
     if isConfirming {
       guard self.viewModel.isHavingEnoughETHForFee else {
         self.showWarningTopBannerMessage(
@@ -310,6 +317,7 @@ class KSendTokenViewController: KNBaseViewController {
    false otherwise
    */
   fileprivate func showWarningInvalidAddressIfNeeded() -> Bool {
+    if self.isViewDisappeared { return false }
     guard self.viewModel.isAddressValid else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),

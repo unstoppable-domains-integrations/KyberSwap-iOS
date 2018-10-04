@@ -24,6 +24,7 @@ protocol KSwapViewControllerDelegate: class {
 class KSwapViewController: KNBaseViewController {
 
   fileprivate var isViewSetup: Bool = false
+  fileprivate var isViewDisappeared: Bool = false
 
   fileprivate var viewModel: KSwapViewModel
   weak var delegate: KSwapViewControllerDelegate?
@@ -112,6 +113,7 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
+    self.isViewDisappeared = false
     // start update est rate
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate()
@@ -142,9 +144,14 @@ class KSwapViewController: KNBaseViewController {
     })
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.isViewDisappeared = true
+    self.view.endEditing(true)
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.view.endEditing(true)
     self.estRateTimer?.invalidate()
     self.estRateTimer = nil
     self.estGasLimitTimer?.invalidate()
@@ -338,6 +345,8 @@ class KSwapViewController: KNBaseViewController {
    false otherwise
   */
   fileprivate func showWarningDataInvalidIfNeeded(isConfirming: Bool = false) -> Bool {
+    if !isConfirming && self.isViewDisappeared { return false }
+    if !isConfirming && (self.fromAmountTextField.isEditing || self.toAmountTextField.isEditing) { return false }
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
