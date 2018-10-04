@@ -134,49 +134,49 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-Nk-EbV">
-                    <rect key="frame" x="64" y="328.5" width="33" height="32"/>
+                    <rect key="frame" x="104" y="328.5" width="32" height="32"/>
                     <state key="normal" image="github"/>
                     <connections>
                         <action selector="githubButtonPressed:" destination="-1" eventType="touchUpInside" id="9gv-8L-EJL"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdX-Yv-Ujd">
-                    <rect key="frame" x="105" y="328" width="33" height="33"/>
+                    <rect key="frame" x="144" y="328" width="32" height="33"/>
                     <state key="normal" image="twitter"/>
                     <connections>
                         <action selector="twitterButtonPressed:" destination="-1" eventType="touchUpInside" id="UVE-ys-1R6"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSF-Hs-lsq">
-                    <rect key="frame" x="146" y="328" width="33" height="33"/>
+                    <rect key="frame" x="184" y="328" width="32" height="33"/>
                     <state key="normal" image="facebook"/>
                     <connections>
                         <action selector="facebookButtonPressed:" destination="-1" eventType="touchUpInside" id="WRG-lA-KWI"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlK-9e-kdZ">
-                    <rect key="frame" x="187" y="328" width="32" height="33"/>
+                    <rect key="frame" x="224" y="328" width="32" height="33"/>
                     <state key="normal" image="medium"/>
                     <connections>
                         <action selector="mediumButtonPressed:" destination="-1" eventType="touchUpInside" id="Ksb-1Y-6lt"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPD-eE-njQ">
-                    <rect key="frame" x="227" y="328" width="33" height="33"/>
+                    <rect key="frame" x="264" y="328" width="32" height="33"/>
                     <state key="normal" image="reddit"/>
                     <connections>
                         <action selector="redditButtonPressed:" destination="-1" eventType="touchUpInside" id="kXc-54-myd"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYu-os-Pb3">
-                    <rect key="frame" x="268" y="328" width="33" height="33"/>
+                    <rect key="frame" x="304" y="328" width="32" height="33"/>
                     <state key="normal" image="linkedin"/>
                     <connections>
                         <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
-                    <rect key="frame" x="24" y="369" width="327" height="32"/>
+                    <rect key="frame" x="24" y="409" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Q4W-8X-DHG"/>
                     </constraints>
@@ -194,6 +194,20 @@
                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80r-ho-KCH">
+                    <rect key="frame" x="64" y="328.5" width="32" height="32"/>
+                    <state key="normal" image="tele_dev_group"/>
+                    <connections>
+                        <action selector="telegramDevButtonPressed:" destination="-1" eventType="touchUpInside" id="0ze-VG-Xif"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpT-lc-n0P">
+                    <rect key="frame" x="23.5" y="369" width="33" height="33"/>
+                    <state key="normal" image="youtube"/>
+                    <connections>
+                        <action selector="youtubeButtonPressed:" destination="-1" eventType="touchUpInside" id="7hl-hm-bVd"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -211,8 +225,8 @@
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QPD-eE-njQ" secondAttribute="trailing" constant="8" id="GdZ-Ic-y9t"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="OVZ-jU-hlZ" secondAttribute="leading" id="JrF-tz-6Wh"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="trailing" secondItem="c9Z-ZK-Ucl" secondAttribute="trailing" id="JyF-Mh-lTr"/>
-                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="KAx-Gb-p8P"/>
-                <constraint firstItem="P8S-Nk-EbV" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="8" id="MuI-d2-ETX"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="48" id="KAx-Gb-p8P"/>
+                <constraint firstItem="P8S-Nk-EbV" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="48" id="MuI-d2-ETX"/>
                 <constraint firstItem="N5S-5z-7Ii" firstAttribute="trailing" secondItem="XDo-Po-iWz" secondAttribute="trailing" id="Nlb-ey-zwt"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="top" secondItem="0Wu-3X-xy0" secondAttribute="bottom" constant="4" id="OEN-KH-Gaf"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
@@ -220,14 +234,17 @@
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="4" id="Trp-EE-9QD"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
+                <constraint firstItem="lpT-lc-n0P" firstAttribute="centerX" secondItem="Pd0-VK-ek2" secondAttribute="centerX" id="VeP-dl-4Qo"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="Wwf-N9-2mk"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
+                <constraint firstItem="80r-ho-KCH" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="cO0-Wt-ivJ"/>
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="8" id="czA-ja-bKb"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="trailing" secondItem="N5S-5z-7Ii" secondAttribute="trailing" id="eac-HY-dQQ"/>
                 <constraint firstItem="rGf-Ii-F5o" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="g6i-zV-3Ht"/>
+                <constraint firstItem="80r-ho-KCH" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="8" id="gvn-9c-87f"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="trailing" secondItem="0Wu-3X-xy0" secondAttribute="trailing" id="iAl-hq-TaO"/>
                 <constraint firstItem="dSF-Hs-lsq" firstAttribute="leading" secondItem="tdX-Yv-Ujd" secondAttribute="trailing" constant="8" id="jMz-at-VSR"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="leading" secondItem="sSk-u8-Y8q" secondAttribute="leading" id="jPe-po-0Zf"/>
@@ -236,18 +253,21 @@
                 <constraint firstItem="dSF-Hs-lsq" firstAttribute="centerY" secondItem="tdX-Yv-Ujd" secondAttribute="centerY" id="ojW-qs-WkJ"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="or9-IV-hJj"/>
                 <constraint firstItem="QlK-9e-kdZ" firstAttribute="leading" secondItem="dSF-Hs-lsq" secondAttribute="trailing" constant="8" id="vyO-U7-A4N"/>
+                <constraint firstItem="lpT-lc-n0P" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="xU4-FW-THG"/>
                 <constraint firstItem="Z6O-Km-0S7" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="leading" id="yiS-GU-7WV"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
     <resources>
-        <image name="facebook" width="33" height="33"/>
-        <image name="github" width="33" height="32"/>
-        <image name="linkedin" width="33" height="33"/>
+        <image name="facebook" width="32" height="33"/>
+        <image name="github" width="32" height="32"/>
+        <image name="linkedin" width="32" height="33"/>
         <image name="medium" width="32" height="33"/>
-        <image name="reddit" width="33" height="33"/>
+        <image name="reddit" width="32" height="33"/>
+        <image name="tele_dev_group" width="32" height="32"/>
         <image name="telegram" width="32" height="33"/>
-        <image name="twitter" width="33" height="33"/>
+        <image name="twitter" width="32" height="33"/>
+        <image name="youtube" width="33" height="33"/>
     </resources>
 </document>

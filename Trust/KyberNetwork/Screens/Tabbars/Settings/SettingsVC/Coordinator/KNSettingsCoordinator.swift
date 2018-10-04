@@ -114,6 +114,8 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openShareWithFriends()
     case .telegram:
       self.openCommunityURL("https://t.me/kybernetwork")
+    case .telegramDev:
+      self.openCommunityURL("https://t.me/KyberDeveloper")
     case .github:
       self.openCommunityURL("https://github.com/KyberNetwork")
     case .twitter:
@@ -126,6 +128,8 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
     case .linkedIn:
       self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
+    case .youtube:
+      self.openCommunityURL("https://www.youtube.com/channel/UCQ-8mEqsKM3x9dTT6rrqgJw")
     }
   }
 

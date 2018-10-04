@@ -10,12 +10,14 @@ enum KNSettingsTabViewEvent {
   case about
   case shareWithFriends
   case telegram
+  case telegramDev
   case github
   case twitter
   case facebook
   case medium
   case reddit
   case linkedIn
+  case youtube
 }
 
 protocol KNSettingsTabViewControllerDelegate: class {
@@ -100,6 +102,10 @@ class KNSettingsTabViewController: KNBaseViewController {
     self.delegate?.settingsTabViewController(self, run: .telegram)
   }
 
+  @IBAction func telegramDevButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .telegramDev)
+  }
+  
   @IBAction func githubButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .github)
   }
@@ -122,5 +128,9 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func linkedInButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .linkedIn)
+  }
+
+  @IBAction func youtubeButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .youtube)
   }
 }
