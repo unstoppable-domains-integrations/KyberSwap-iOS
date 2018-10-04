@@ -47,7 +47,7 @@ struct KNTransactionDetailsViewModel {
 
   var displayedAmountColor: UIColor {
     if self.isSwap { return UIColor.Kyber.merigold }
-    return self.isSent ? UIColor.Kyber.merigold : UIColor.Kyber.shamrock
+    return self.isSent ? UIColor.Kyber.strawberry : UIColor.Kyber.shamrock
   }
 
   lazy var textAttachment: NSTextAttachment = {

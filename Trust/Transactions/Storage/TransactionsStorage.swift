@@ -88,6 +88,7 @@ class TransactionsStorage {
       self.deleteAllTransactions()
       self.deleteAllTokenTransactions()
       self.deleteAllHistoryTransactions()
+      self.deleteAllKyberTransactions()
     }
 
     func deleteAllTransactions() {

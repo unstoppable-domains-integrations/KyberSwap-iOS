@@ -154,7 +154,7 @@ extension KNTransaction {
   func getDetails() -> String {
     let status: KNTransactionStatus = {
       if self.state == .pending { return .pending }
-      if self.state == .failed { return .failed }
+      if self.state == .failed || self.state == .error { return .failed }
       if self.state == .completed { return .success }
       return .unknown
     }()
@@ -163,7 +163,19 @@ extension KNTransaction {
         return NSLocalizedString("your.transaction.has.been.broadcasted", comment: "")
       }
       guard let object = self.localizedOperations.first, status == .failed || status == .success else { return "" }
-      guard let from = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.from) else { return "" }
+      let storage: KNTokenStorage? = {
+        do {
+          let keystore = try EtherKeystore()
+          guard let wallet = keystore.recentlyUsedWallet else { return nil }
+          let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+          do {
+            let realm = try Realm(configuration: config)
+            return KNTokenStorage(realm: realm)
+          } catch { }
+        } catch { }
+        return nil
+      }()
+      guard let from = storage?.get(forPrimaryKey: object.from) else { return "" }
       guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return "" }
       let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       if object.type.lowercased() == "transfer" {
@@ -171,7 +183,7 @@ extension KNTransaction {
         let toLocalised = NSLocalizedString("to", value: "to", comment: "")
         return "\(status.rawValue) \(sentLocalised) \(amountFrom) \(from.symbol) \(toLocalised) \n\(self.to)"
       }
-      guard let to = KNSupportedTokenStorage.shared.get(forPrimaryKey: object.to) else { return "" }
+      guard let to = storage?.get(forPrimaryKey: object.to) else { return "" }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return "" }
       let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       let statusLocalised = NSLocalizedString(status.rawValue.lowercased(), value: status.rawValue, comment: "")
@@ -191,6 +203,10 @@ extension TransactionsStorage {
 
   var kyberPendingTransactions: [KNTransaction] {
     return self.kyberTransactions.filter { $0.state == TransactionState.pending }
+  }
+
+  var kyberMinedTransactions: [KNTransaction] {
+    return self.kyberTransactions.filter { $0.state != .pending || $0.state != .unknown }
   }
 
   func getKyberTransaction(forPrimaryKey: String) -> KNTransaction? {

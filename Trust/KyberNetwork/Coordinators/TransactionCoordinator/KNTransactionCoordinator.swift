@@ -402,6 +402,9 @@ extension KNTransactionCoordinator {
           return
         }
         self?.transactionStorage.addKyberTransactions([newTx])
+        if newTx.state == .error || newTx.state == .failed {
+          self?.transactionStorage.add([newTx.toTransaction()])
+        }
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: newTx.id,
@@ -416,7 +419,10 @@ extension KNTransactionCoordinator {
 
   fileprivate func updateTransactionStateIfNeeded(_ transaction: KNTransaction, state: TransactionState) {
     if let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state != .pending { return }
-    self.transactionStorage.update(state: state, for: transaction)
+    let tx = self.transactionStorage.update(state: state, for: transaction)
+    if tx.state == .error || tx.state == .failed {
+      self.transactionStorage.add([tx.toTransaction()])
+    }
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,
