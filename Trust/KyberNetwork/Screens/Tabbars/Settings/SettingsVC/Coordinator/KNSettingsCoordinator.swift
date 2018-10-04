@@ -111,11 +111,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.passcodeCoordinator.delegate = self
       self.passcodeCoordinator.start()
     case .shareWithFriends:
-      self.navigationController.showSuccessTopBannerMessage(
-        with: "Unimplemented",
-        message: "Needs to thing what to share",
-        time: 1.5
-      )
+      self.openShareWithFriends()
     case .telegram:
       self.openCommunityURL("https://t.me/kybernetwork")
     case .github:
@@ -137,6 +133,18 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
+  }
+
+  fileprivate func openShareWithFriends() {
+    let text = NSLocalizedString(
+      "share.with.friends.text",
+      value: "I just found an awesome wallet app. Check out here https://kyber.network/",
+      comment: ""
+    )
+    let activitiy = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
+    activitiy.popoverPresentationController?.sourceView = self.rootViewController.shareWithFriendsButton
+    self.navigationController.present(activitiy, animated: true, completion: nil)
   }
 
   func settingsViewControllerDidClickExit() {
@@ -161,17 +169,34 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerBackUpButtonPressed() {
-    let alertController = UIAlertController(title: "Backup", message: nil, preferredStyle: .actionSheet)
-    alertController.addAction(UIAlertAction(title: "Backup Keystore", style: .default, handler: { _ in
+    let alertController = UIAlertController(
+      title: NSLocalizedString("backup", value: "Backup", comment: ""),
+      message: nil,
+      preferredStyle: .actionSheet
+    )
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
+      style: .default,
+      handler: { _ in
       self.backupKeystore()
     }))
-    alertController.addAction(UIAlertAction(title: "Backup Private Key", style: .default, handler: { _ in
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+      style: .default,
+      handler: { _ in
       self.backupPrivateKey()
     }))
-    alertController.addAction(UIAlertAction(title: "Copy Address", style: .default, handler: { _ in
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("copy.address", value: "Copy Address", comment: ""),
+      style: .default,
+      handler: { _ in
       self.copyAddress()
     }))
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
+      style: .cancel,
+      handler: nil)
+    )
     self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
   }
 

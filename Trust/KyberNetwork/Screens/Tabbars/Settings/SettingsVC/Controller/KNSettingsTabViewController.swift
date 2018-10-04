@@ -67,7 +67,8 @@ class KNSettingsTabViewController: KNBaseViewController {
       NSLocalizedString("share.with.friends", value: "Share with friends", comment: ""),
       for: .normal
     )
-    let version = Bundle.main.versionNumber ?? ""
+    var version = Bundle.main.versionNumber ?? ""
+    if isDebug { version += " \(Bundle.main.buildNumber ?? "")" }
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
   }
 

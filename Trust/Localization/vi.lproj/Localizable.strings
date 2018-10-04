@@ -301,3 +301,8 @@
 "recover.with.seeds" = "Phục hồi bằng seeds";
 "create.new.wallet.desc" = "Điều này sẽ tạo ra một ví mới. Nó không thể hoàn tác, nhưng bạn có thể từ bỏ nó";
 "edit.wallet" = "Chỉnh sử ví";
+"backup.keystore" = "Sao lưu Keystore";
+"backup.private.key" = "Sao lưu khoá cá nhân";
+"copy.address" = "Sao chép địa chỉ";
+"backup" = "Sao lưu";
+"share.with.friends.text" = "Tôi vừa tìm thấy một ứng dụng ví tuyệt vời. Kiểm tra ở đây https://kyber.network/";

@@ -13,7 +13,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>li</string>
         <key>other</key>
-        <string>Quá nhiều lần thử, xin vui lòng chờ %@ giây.</string>
+        <string>Quá nhiều lần thử, xin vui lòng chờ %li giây.</string>
       </dict>
     </dict>
     <key>you.have.attempt</key>
@@ -27,7 +27,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>li</string>
         <key>other</key>
-        <string>Bạn có %@ lần thử</string>
+        <string>Bạn có %li lần thử</string>
       </dict>
     </dict>
   </dict>

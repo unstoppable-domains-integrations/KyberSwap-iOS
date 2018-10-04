@@ -235,10 +235,12 @@ extension KNPasscodeViewController {
     }
     if KNPasscodeUtil.shared.currentNumberAttempts() == 0 { return "" }
     if KNPasscodeUtil.shared.isExceedNumberAttempt() {
-      return "Too many attempts, please try in \(KNPasscodeUtil.shared.timeToAllowNewAttempt()) second(s).".toBeLocalised()
+      let text = NSLocalizedString("too.many.attempts.please.try.in.second", comment: "")
+      return String.localizedStringWithFormat(text, KNPasscodeUtil.shared.timeToAllowNewAttempt())
     }
     let numberAttemptsLeft = KNPasscodeUtil.shared.numberAttemptsLeft()
-    return "You have \(numberAttemptsLeft) attempt(s).".toBeLocalised()
+    let text = NSLocalizedString("you.have.attempt", comment: "")
+    return String.localizedStringWithFormat(text, numberAttemptsLeft)
   }
 
   fileprivate var actionButtonTitle: String {
