@@ -16,7 +16,6 @@ enum KNSettingsTabViewEvent {
   case medium
   case reddit
   case linkedIn
-  case google
 }
 
 protocol KNSettingsTabViewControllerDelegate: class {
@@ -27,6 +26,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   weak var delegate: KNSettingsTabViewControllerDelegate?
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var manageWalletButton: UIButton!
   @IBOutlet weak var contactButton: UIButton!
   @IBOutlet weak var supportButton: UIButton!
@@ -38,7 +38,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navigationItem.title = NSLocalizedString("settings", value: "Settings", comment: "")
+    self.navTitleLabel.text = NSLocalizedString("settings", value: "Settings", comment: "")
     self.manageWalletButton.setTitle(
       NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: ""),
       for: .normal
@@ -68,7 +68,7 @@ class KNSettingsTabViewController: KNBaseViewController {
       for: .normal
     )
     var version = Bundle.main.versionNumber ?? ""
-    if isDebug { version += " \(Bundle.main.buildNumber ?? "")" }
+    if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
   }
 
@@ -122,9 +122,5 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func linkedInButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .linkedIn)
-  }
-
-  @IBAction func googleButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .google)
   }
 }

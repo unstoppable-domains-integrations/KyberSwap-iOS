@@ -22,6 +22,7 @@
                 <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
                 <outlet property="contactButton" destination="XDo-Po-iWz" id="gEu-eC-2gh"/>
                 <outlet property="manageWalletButton" destination="OVZ-jU-hlZ" id="yMe-nI-3CH"/>
+                <outlet property="navTitleLabel" destination="BS7-Ut-PSh" id="Czb-hZ-Lfr"/>
                 <outlet property="shareWithFriendsButton" destination="Z6O-Km-0S7" id="Ug8-Xt-Krq"/>
                 <outlet property="supportButton" destination="N5S-5z-7Ii" id="yoL-lw-iBU"/>
                 <outlet property="versionLabel" destination="rGf-Ii-F5o" id="TGu-U8-69f"/>
@@ -174,13 +175,6 @@
                         <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dmw-1V-Iya">
-                    <rect key="frame" x="309" y="328.5" width="32" height="32"/>
-                    <state key="normal" image="google"/>
-                    <connections>
-                        <action selector="googleButtonPressed:" destination="-1" eventType="touchUpInside" id="p80-hm-9jZ"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
                     <rect key="frame" x="24" y="369" width="327" height="32"/>
                     <constraints>
@@ -222,14 +216,12 @@
                 <constraint firstItem="N5S-5z-7Ii" firstAttribute="trailing" secondItem="XDo-Po-iWz" secondAttribute="trailing" id="Nlb-ey-zwt"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="top" secondItem="0Wu-3X-xy0" secondAttribute="bottom" constant="4" id="OEN-KH-Gaf"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
-                <constraint firstItem="Dmw-1V-Iya" firstAttribute="centerY" secondItem="cYu-os-Pb3" secondAttribute="centerY" id="Q7g-0u-JeB"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="top" secondItem="c9Z-ZK-Ucl" secondAttribute="bottom" constant="4" id="Q9G-MX-kME"/>
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="4" id="Trp-EE-9QD"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="Wwf-N9-2mk"/>
-                <constraint firstItem="Dmw-1V-Iya" firstAttribute="leading" secondItem="cYu-os-Pb3" secondAttribute="trailing" constant="8" id="YR0-Ek-i3Q"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
@@ -252,7 +244,6 @@
     <resources>
         <image name="facebook" width="33" height="33"/>
         <image name="github" width="33" height="32"/>
-        <image name="google" width="32" height="32"/>
         <image name="linkedin" width="33" height="33"/>
         <image name="medium" width="32" height="33"/>
         <image name="reddit" width="33" height="33"/>
