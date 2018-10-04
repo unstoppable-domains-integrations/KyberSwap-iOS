@@ -306,3 +306,9 @@
 "copy.address" = "Sao chép địa chỉ";
 "backup" = "Sao lưu";
 "share.with.friends.text" = "Tôi vừa tìm thấy một ứng dụng ví tuyệt vời. Kiểm tra ở đây https://kyber.network/";
+"transaction.being.broadcasted" = "Giao dịch đang được thực hiện";
+"can.not.create.transaction" = "Không thể tạo giao dịch";
+"transaction.being.mined" = "Giao dịch được mine";
+"transaction.failed" = "Giao dịch thất bại";
+"transaction.success" = "Giao dịch thành công";
+"no.transaction.found" = "Không tìm thấy giao dịch";

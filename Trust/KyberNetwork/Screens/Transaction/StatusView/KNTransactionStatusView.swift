@@ -13,17 +13,17 @@ enum KNTransactionStatus: String {
   var statusDetails: String {
     switch self {
     case .broadcasting:
-      return "Transaction being broadcast"
+      return NSLocalizedString("transaction.being.broadcasted", value: "Transaction being broadcasted", comment: "")
     case .broadcastingError:
-      return "Can not create transaction"
+      return NSLocalizedString("can.not.create.transaction", value: "Can not create transaction", comment: "")
     case .pending:
-      return "Transaction being mined"
+      return NSLocalizedString("transaction.being.mined", value: "Transaction being mined", comment: "")
     case .failed:
-      return "Transaction failed"
+      return NSLocalizedString("transaction.failed", value: "Transaction failed", comment: "")
     case .success:
-      return "Transaction success"
+      return NSLocalizedString("transaction.success", value: "Transaction success", comment: "")
     default:
-      return "No transaction"
+      return NSLocalizedString("no.transaction.found", value: "No transaction found", comment: "")
     }
   }
 

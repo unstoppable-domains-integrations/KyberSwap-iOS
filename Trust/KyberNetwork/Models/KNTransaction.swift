@@ -162,7 +162,7 @@ extension KNTransaction {
       if status == .pending {
         return NSLocalizedString("your.transaction.has.been.broadcasted", comment: "")
       }
-      guard let object = self.localizedOperations.first, status == .failed || status == .success else { return "" }
+      guard let object = self.localizedOperations.first, status == .failed || status == .success else { return status.statusDetails }
       let storage: KNTokenStorage? = {
         do {
           let keystore = try EtherKeystore()
@@ -175,16 +175,16 @@ extension KNTransaction {
         } catch { }
         return nil
       }()
-      guard let from = storage?.get(forPrimaryKey: object.from) else { return "" }
-      guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return "" }
+      guard let from = storage?.get(forPrimaryKey: object.from) else { return status.statusDetails }
+      guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return status.statusDetails }
       let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       if object.type.lowercased() == "transfer" {
         let sentLocalised = NSLocalizedString("sent", value: "sent", comment: "")
         let toLocalised = NSLocalizedString("to", value: "to", comment: "")
         return "\(status.rawValue) \(sentLocalised) \(amountFrom) \(from.symbol) \(toLocalised) \n\(self.to)"
       }
-      guard let to = storage?.get(forPrimaryKey: object.to) else { return "" }
-      guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return "" }
+      guard let to = storage?.get(forPrimaryKey: object.to) else { return status.statusDetails }
+      guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return status.statusDetails }
       let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       let statusLocalised = NSLocalizedString(status.rawValue.lowercased(), value: status.rawValue, comment: "")
       let convertedToLocalised = NSLocalizedString("converted.to", value: "converted to", comment: "")
