@@ -643,12 +643,10 @@ extension KSwapViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
     if textField == self.fromAmountTextField && text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.fullBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
-    if !text.isEmpty {
-      textField.text = text
-      self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
-      self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-      self.updateViewAmountDidChange()
-    }
+    textField.text = text
+    self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
+    self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
+    self.updateViewAmountDidChange()
     return false
   }
 
