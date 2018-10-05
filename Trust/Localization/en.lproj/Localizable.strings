@@ -314,3 +314,4 @@
 "no.transaction.found" = "No transaction found";
 "please.enter.an.amount.to.continue" = "Please enter an amount to continue";
 "view.on.etherscan" = "View on Etherscan";
+"gas.fee.gwei" = "GAS fee (Gwei)";

@@ -114,6 +114,7 @@ class KAdvancedSettingsView: XibLoaderView {
 
   @IBOutlet weak var heightConstraintGasPriceContainerView: NSLayoutConstraint!
   @IBOutlet weak var gasPriceContainerView: UIView!
+  @IBOutlet weak var gasFeeGweiTextLabel: UILabel!
   @IBOutlet weak var fasGasValueLabel: UILabel!
   @IBOutlet weak var fasGasButton: UIButton!
   @IBOutlet weak var fastTextLabel: UILabel!
@@ -153,6 +154,7 @@ class KAdvancedSettingsView: XibLoaderView {
   override func commonInit() {
     super.commonInit()
     self.topSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.gasPriceSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.minRateSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 

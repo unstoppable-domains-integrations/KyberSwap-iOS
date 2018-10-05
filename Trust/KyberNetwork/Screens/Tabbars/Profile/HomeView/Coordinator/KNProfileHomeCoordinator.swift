@@ -98,7 +98,7 @@ class KNProfileHomeCoordinator: Coordinator {
       refreshToken: user.refreshToken,
       expireTime: user.expireTime,
       hasUser: true,
-      showError: true
+      showError: false
     ) { success in
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
@@ -299,7 +299,9 @@ extension KNProfileHomeCoordinator {
             completion(true)
           // Already have user
           case .failure(let error):
-            self?.navigationController.displayError(error: error)
+            if showError {
+              self?.navigationController.displayError(error: error)
+            }
             completion(false)
           }
         }

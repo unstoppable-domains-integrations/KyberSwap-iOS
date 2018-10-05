@@ -314,3 +314,4 @@
 "no.transaction.found" = "Không tìm thấy giao dịch";
 "please.enter.an.amount.to.continue" = "Vui lòng nhập một số để tiếp tục";
 "view.on.etherscan" = "Xem trên Etherscan";
+"gas.fee.gwei" = "Phí GAS (Gwei)";

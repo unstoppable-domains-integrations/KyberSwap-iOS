@@ -2,6 +2,7 @@
 
 import UIKit
 import RealmSwift
+import TrustCore
 
 class KNContact: Object {
 
@@ -12,7 +13,10 @@ class KNContact: Object {
   convenience init(address: String, name: String) {
     self.init()
     self.name = name
-    self.address = address
+    self.address = {
+      guard let addr = Address(string: address) else { return address }
+      return addr.description
+    }()
     self.lastUsed = Date()
   }
 

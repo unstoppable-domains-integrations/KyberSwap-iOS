@@ -22,6 +22,7 @@
                 <outlet property="fasGasValueLabel" destination="d9b-Jz-K2d" id="2Se-Kc-tXa"/>
                 <outlet property="fastGasFeeTapView" destination="vXd-tj-URJ" id="JKF-OR-IeC"/>
                 <outlet property="fastTextLabel" destination="662-rx-Ymk" id="JLZ-k2-aEX"/>
+                <outlet property="gasFeeGweiTextLabel" destination="IDi-5G-O3I" id="1sT-6N-hbf"/>
                 <outlet property="gasPriceContainerView" destination="Zbn-RB-OWZ" id="FMb-yA-yXo"/>
                 <outlet property="gasPriceSeparatorView" destination="0yr-4C-pIU" id="PNT-j6-1Ej"/>
                 <outlet property="heightConstraintGasPriceContainerView" destination="2DO-Ek-7Hd" id="FTC-h9-drn"/>
