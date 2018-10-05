@@ -95,7 +95,7 @@
 "invalid.amount" = "Invalid amount";
 "amount.too.small.to.perform.swap" = "Amount too small to perform swap, minimum equivalent to 0.001 ETH";
 "amount.too.big" = "Amount too big";
-"balance.not.enough.to.make.transaction" = "Balance is not be enough to make the transaction.";
+"balance.not.enough.to.make.transaction" = "Balance is not enough to make the transaction.";
 "updating.trade.cap.limit" = "We are updating your trade cap limit.";
 "your.cap.has.reached.increase.by.completing.kyc" = "Your cap has reached. Increase your cap by completing KYC.";
 "invalid.min.rate" = "Invalid min rate";
@@ -312,3 +312,5 @@
 "transaction.failed" = "Transaction failed";
 "transaction.success" = "Transaction success";
 "no.transaction.found" = "No transaction found";
+"please.enter.an.amount.to.continue" = "Please enter an amount to continue";
+"view.on.etherscan" = "View on Etherscan";

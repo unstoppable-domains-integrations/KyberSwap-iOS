@@ -312,3 +312,5 @@
 "transaction.failed" = "Giao dịch thất bại";
 "transaction.success" = "Giao dịch thành công";
 "no.transaction.found" = "Không tìm thấy giao dịch";
+"please.enter.an.amount.to.continue" = "Vui lòng nhập một số để tiếp tục";
+"view.on.etherscan" = "Xem trên Etherscan";

@@ -295,6 +295,13 @@ class KSendTokenViewController: KNBaseViewController {
         return true
       }
     }
+    guard !self.viewModel.amount.isEmpty else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
+        message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
+      )
+      return true
+    }
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),

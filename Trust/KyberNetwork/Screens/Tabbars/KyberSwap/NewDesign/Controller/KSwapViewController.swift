@@ -24,7 +24,7 @@ protocol KSwapViewControllerDelegate: class {
 class KSwapViewController: KNBaseViewController {
 
   fileprivate var isViewSetup: Bool = false
-  fileprivate var isViewDisappeared: Bool = false
+  fileprivate var isErrorMessageEnabled: Bool = false
 
   fileprivate var viewModel: KSwapViewModel
   weak var delegate: KSwapViewControllerDelegate?
@@ -113,7 +113,7 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    self.isViewDisappeared = false
+    self.isErrorMessageEnabled = true
     // start update est rate
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate()
@@ -146,7 +146,7 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    self.isViewDisappeared = true
+    self.isErrorMessageEnabled = false
     self.view.endEditing(true)
   }
 
@@ -232,6 +232,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func hamburgerMenuPressed(_ sender: Any) {
+    self.view.endEditing(true)
     self.hamburgerMenu.openMenu(animated: true)
   }
 
@@ -345,7 +346,7 @@ class KSwapViewController: KNBaseViewController {
    false otherwise
   */
   fileprivate func showWarningDataInvalidIfNeeded(isConfirming: Bool = false) -> Bool {
-    if !isConfirming && self.isViewDisappeared { return false }
+    if !isConfirming && !self.isErrorMessageEnabled || !self.hamburgerMenu.view.isHidden { return false }
     if !isConfirming && (self.fromAmountTextField.isEditing || self.toAmountTextField.isEditing) { return false }
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
@@ -355,10 +356,17 @@ class KSwapViewController: KNBaseViewController {
       )
       return true
     }
-    guard self.viewModel.isHavingEnoughETHForFee else {
+    guard !self.viewModel.amountFrom.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
-        message: NSLocalizedString("not.have.enought.eth.to.pay.transaction.fee", value: "Not have enough ETH to pay for transaction fee", comment: "")
+        with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
+        message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
+      )
+      return true
+    }
+    guard self.viewModel.isBalanceEnough else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
+        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
       )
       return true
     }
@@ -369,14 +377,14 @@ class KSwapViewController: KNBaseViewController {
       )
       return true
     }
-    guard self.viewModel.isBalanceEnough else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
-      )
-      return true
-    }
     if isConfirming {
+      guard self.viewModel.isHavingEnoughETHForFee else {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
+          message: NSLocalizedString("not.have.enought.eth.to.pay.transaction.fee", value: "Not have enough ETH to pay for transaction fee", comment: "")
+        )
+        return true
+      }
       guard self.viewModel.userCapInWei != nil else {
         self.showWarningTopBannerMessage(
           with: "",
@@ -393,8 +401,6 @@ class KSwapViewController: KNBaseViewController {
         )
         return true
       }
-    }
-    if isConfirming {
       guard self.viewModel.isMinRateValid else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("invalid.min.rate", value: "Invalid min rate", comment: ""),
