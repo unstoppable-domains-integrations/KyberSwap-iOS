@@ -101,6 +101,11 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
         name: name ?? "Untitled"
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
+      let contact = KNContact(
+        address: wallet.address.description,
+        name: name ?? "Untitled"
+      )
+      KNContactStorage.shared.update(contacts: [contact])
       self.delegate?.addNewWalletCoordinator(add: wallet)
     }
   }
@@ -118,6 +123,11 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         name: name ?? "Untitled"
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
+      let contact = KNContact(
+        address: wallet.address.description,
+        name: name ?? "Untitled"
+      )
+      KNContactStorage.shared.update(contacts: [contact])
       self.delegate?.addNewWalletCoordinator(add: wallet)
     }
   }

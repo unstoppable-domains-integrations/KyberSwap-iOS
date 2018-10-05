@@ -130,6 +130,11 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
   }
 
   fileprivate func shouldUpdateWallet(_ walletObject: KNWalletObject) {
+    let contact = KNContact(
+      address: walletObject.address,
+      name: walletObject.name
+    )
+    KNContactStorage.shared.update(contacts: [contact])
     KNWalletStorage.shared.update(wallets: [walletObject])
     let wallets: [KNWalletObject] = KNWalletStorage.shared.wallets
     let curWallet: KNWalletObject = wallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
