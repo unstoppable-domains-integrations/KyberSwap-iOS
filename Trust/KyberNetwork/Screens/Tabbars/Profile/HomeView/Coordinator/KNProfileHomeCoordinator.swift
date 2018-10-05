@@ -26,6 +26,7 @@ class KNProfileHomeCoordinator: Coordinator {
   fileprivate var kycCoordinator: KYCCoordinator?
 
   fileprivate var loadUserInfoTimer: Timer?
+  fileprivate var lastUpdatedUserInfo: Date?
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -143,6 +144,7 @@ class KNProfileHomeCoordinator: Coordinator {
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
     self.loadUserInfoTimer?.invalidate()
+    self.lastUpdatedUserInfo = nil
     IEOUserStorage.shared.signedOut()
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
@@ -296,6 +298,7 @@ extension KNProfileHomeCoordinator {
             self?.timerAccessTokenExpired()
             if !hasUser { self?.timerLoadUserInfo() }
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
+            self?.lastUpdatedUserInfo = Date()
             completion(true)
           // Already have user
           case .failure(let error):
@@ -370,6 +373,13 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
+    if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0 {
+      // draft or none, just open the verification
+      self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+      self.kycCoordinator?.delegate = self
+      self.kycCoordinator?.start()
+      return
+    }
     self.navigationController.displayLoading(text: "\(NSLocalizedString("checking", value: "Checking", comment: ""))...", animated: true)
     self.getUserInfo(
       type: user.tokenType,
@@ -471,7 +481,10 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
   func kycCoordinatorDidSubmitData() {
     guard let user = IEOUserStorage.shared.user else { return }
-    self.navigationController.displayLoading()
+    self.navigationController.displayLoading(
+      text: NSLocalizedString("updating.data", value: "Updating data", comment: ""),
+      animated: true
+    )
     self.getUserInfo(
       type: user.tokenType,
       accessToken: user.accessToken,

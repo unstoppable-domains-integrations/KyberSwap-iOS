@@ -5,6 +5,7 @@ import Moya
 import Result
 
 enum KYCFlowViewEvent {
+  case back
   case submitted
 }
 
@@ -36,6 +37,27 @@ class KYCFlowViewModel {
       return KNKYCStepViewState(rawValue: user.kycStep - 1) ?? .done
     }()
   }
+
+  lazy var localisedGender: String = {
+    if self.gender.lowercased() == "male" {
+      return NSLocalizedString("male", value: "Male", comment: "")
+    }
+    if self.gender.lowercased() == "female" {
+      return NSLocalizedString("female", value: "Female", comment: "")
+    }
+    return self.gender
+  }()
+
+  lazy var localisedDocType: String = {
+    if self.docType.lowercased() == "national_id" { return "ID" }
+    if self.docType.lowercased() == "passport" {
+      return NSLocalizedString("passport", value: "Passport", comment: "")
+    }
+    if self.docType.lowercased() == "driving_license" {
+      return NSLocalizedString("driving.license", value: "Driving License", comment: "")
+    }
+    return self.docType
+  }()
 
   func updateStepState(_ step: KNKYCStepViewState) {
     self.stepState = step
@@ -95,6 +117,7 @@ class KYCFlowViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
 
   fileprivate var doneTimer: Timer?
+  fileprivate var isUpdatingData: Bool = false
 
   init(viewModel: KYCFlowViewModel) {
     self.viewModel = viewModel
@@ -172,11 +195,11 @@ class KYCFlowViewController: KNBaseViewController {
       let viewModel = KYCSubmitInfoViewModel(
         firstName: self.viewModel.firstName,
         lastName: self.viewModel.lastName,
-        gender: self.viewModel.gender,
+        gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
         residenceCountry: self.viewModel.residenceCountry,
-        docType: self.viewModel.docType,
+        docType: self.viewModel.localisedDocType,
         docNum: self.viewModel.docNumber,
         docImage: self.viewModel.docImage,
         docHoldingImage: self.viewModel.docHoldingImage
@@ -225,7 +248,7 @@ class KYCFlowViewController: KNBaseViewController {
       }()
       self.updateViewState(newState: newState)
     } else {
-      let event: KYCFlowViewEvent = .submitted
+      let event: KYCFlowViewEvent = self.isUpdatingData ? .submitted : .back
       self.delegate?.kycFlowViewController(self, run: event)
     }
   }
@@ -248,11 +271,11 @@ class KYCFlowViewController: KNBaseViewController {
       let viewModel = KYCSubmitInfoViewModel(
         firstName: self.viewModel.firstName,
         lastName: self.viewModel.lastName,
-        gender: self.viewModel.gender,
+        gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
         residenceCountry: self.viewModel.residenceCountry,
-        docType: self.viewModel.docType,
+        docType: self.viewModel.localisedDocType,
         docNum: self.viewModel.docNumber,
         docImage: self.viewModel.docImage,
         docHoldingImage: self.viewModel.docHoldingImage
@@ -398,6 +421,7 @@ extension KYCFlowViewController {
    Return (bool, string): success and error message
    */
   fileprivate func sendProfileServiceRequest(service: ProfileKYCService, completion: @escaping (Result<(Bool, String), AnyError>) -> Void) {
+    self.isUpdatingData = true
     let provider = MoyaProvider<ProfileKYCService>()
     DispatchQueue.global(qos: .background).async {
       provider.request(service, completion: { [weak self] result in
