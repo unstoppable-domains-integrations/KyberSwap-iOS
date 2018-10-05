@@ -28,6 +28,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var dateTextLabel: UILabel!
+  @IBOutlet weak var viewOnEtherscanButton: UIButton!
 
   init(viewModel: KNTransactionDetailsViewModel) {
     self.viewModel = viewModel
@@ -63,6 +64,11 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
     let txHashTapGes = UITapGestureRecognizer(target: self, action: #selector(self.txHashTapped(_:)))
     self.txHashLabel.addGestureRecognizer(txHashTapGes)
+    self.viewOnEtherscanButton.rounded(radius: 5.0)
+    self.viewOnEtherscanButton.setTitle(
+      NSLocalizedString("view.on.etherscan", value: "View on Etherscan", comment: ""),
+      for: .normal
+    )
   }
 
   fileprivate func updateUI() {
@@ -130,5 +136,9 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     if sender.state == .ended {
       self.delegate?.transactionDetailsViewController(self, run: .back)
     }
+  }
+
+  @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
+    self.delegate?.transactionDetailsViewController(self, run: .openEtherScan)
   }
 }

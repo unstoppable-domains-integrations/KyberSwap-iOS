@@ -32,17 +32,18 @@ struct KNTransactionDetailsViewModel {
 
   var displayedAmountString: String {
     guard let transaction = self.transaction, let localObject = transaction.localizedOperations.first else { return "" }
+    if transaction.state == .error || transaction.state == .failed { return "" }
     if self.isSwap {
-      let amountFrom: String = String(transaction.value.prefix(6))
+      let amountFrom: String = String(transaction.value.prefix(9))
       let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
 
-      let amountTo: String = String(localObject.value.prefix(6))
+      let amountTo: String = String(localObject.value.prefix(9))
       let toText = "\(amountTo) \(localObject.name ?? "")"
 
       return "\(fromText) -> \(toText)"
     }
     let sign: String = self.isSent ? "-" : "+"
-    return "\(sign)\(transaction.value.prefix(6)) \(localObject.symbol ?? "")"
+    return "\(sign)\(transaction.value.prefix(9)) \(localObject.symbol ?? "")"
   }
 
   var displayedAmountColor: UIColor {

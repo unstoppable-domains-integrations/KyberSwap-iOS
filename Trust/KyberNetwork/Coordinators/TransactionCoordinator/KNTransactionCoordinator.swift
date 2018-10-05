@@ -40,6 +40,14 @@ class KNTransactionCoordinator {
     self.startUpdatingAllTransactions()
     self.startUpdatingListERC20TokenTransactions()
     self.startUpdatingPendingTransactions()
+
+    // remove completed kyber transaction if needed
+    let kyberTx = self.transactionStorage.kyberMinedTransactions.sorted(by: { return $0.date < $1.date })
+    if kyberTx.count > 10 {
+      // keep <= 10 transactions for safe
+      let trans = Array(kyberTx.prefix(kyberTx.count - 10)) as [KNTransaction]
+      self.transactionStorage.delete(trans)
+    }
   }
 
   func stop() {
@@ -284,7 +292,7 @@ extension KNTransactionCoordinator {
     sort: String,
     completion: ((Result<[Transaction], AnyError>) -> Void)?
     ) {
-    print("---- ERC20 Token Transactions: Fetching ----")
+    print("---- Internal Token Transactions: Fetching ----")
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListInternalTransactions(
       address: address,
@@ -304,14 +312,14 @@ extension KNTransactionCoordinator {
               let eth = KNSupportedTokenStorage.shared.ethToken
               let transactions = data.map({ return KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
               self.updateListTokenTransactions(transactions)
-              print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
+              print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
               completion?(.success(transactions))
             } catch let error {
-              print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----")
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
             completion?(.failure(AnyError(error)))
           }
         }
