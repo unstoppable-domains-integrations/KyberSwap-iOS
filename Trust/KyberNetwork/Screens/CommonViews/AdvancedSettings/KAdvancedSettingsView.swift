@@ -117,14 +117,17 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBOutlet weak var fasGasValueLabel: UILabel!
   @IBOutlet weak var fasGasButton: UIButton!
   @IBOutlet weak var fastTextLabel: UILabel!
+  @IBOutlet weak var fastGasFeeTapView: UIView!
 
   @IBOutlet weak var mediumGasValueLabel: UILabel!
   @IBOutlet weak var mediumGasButton: UIButton!
   @IBOutlet weak var mediumTextLabel: UILabel!
+  @IBOutlet weak var mediumGasFeeTapView: UIView!
 
   @IBOutlet weak var slowGasValueLabel: UILabel!
   @IBOutlet weak var slowGasButton: UIButton!
   @IBOutlet weak var slowTextLabel: UILabel!
+  @IBOutlet weak var slowGasFeeTapView: UIView!
   @IBOutlet weak var gasPriceSeparatorView: UIView!
 
   @IBOutlet weak var minRateContainerView: UIView!
@@ -213,6 +216,16 @@ class KAdvancedSettingsView: XibLoaderView {
       width: self.viewModel.selectedType == .slow ? selectedWidth : normalWidth,
       radius: self.slowGasButton.frame.height / 2.0
     )
+
+    let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedFastFee(_:)))
+    self.fastGasFeeTapView.addGestureRecognizer(tapFast)
+
+    let tapMedium = UITapGestureRecognizer(target: self, action: #selector(self.userTappedMediumFee(_:)))
+    self.mediumGasFeeTapView.addGestureRecognizer(tapMedium)
+
+    let tapSlow = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSlowFee(_:)))
+    self.slowGasFeeTapView.addGestureRecognizer(tapSlow)
+
     self.layoutIfNeeded()
   }
 
@@ -283,6 +296,21 @@ class KAdvancedSettingsView: XibLoaderView {
   }
 
   @IBAction func slowGasButtonPressed(_ sender: Any) {
+    self.viewModel.updateSelectedType(.slow)
+    self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow))
+  }
+
+  @objc func userTappedFastFee(_ sender: Any) {
+    self.viewModel.updateSelectedType(.fast)
+    self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast))
+  }
+
+  @objc func userTappedMediumFee(_ sender: Any) {
+    self.viewModel.updateSelectedType(.medium)
+    self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium))
+  }
+
+  @objc func userTappedSlowFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow))
   }
