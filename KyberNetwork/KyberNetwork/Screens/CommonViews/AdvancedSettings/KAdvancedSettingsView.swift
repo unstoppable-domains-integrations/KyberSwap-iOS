@@ -24,7 +24,7 @@ class KAdvancedSettingsViewModel: NSObject {
   fileprivate(set) var slow: BigInt = KNGasCoordinator.shared.lowKNGas
   fileprivate(set) var gasLimit: BigInt = BigInt(0)
 
-  fileprivate(set) var selectedType: KNSelectedGasPriceType = .fast
+  fileprivate(set) var selectedType: KNSelectedGasPriceType = .medium
 
   fileprivate(set) var isViewHidden: Bool = true
   fileprivate(set) var hasMinRate: Bool = true

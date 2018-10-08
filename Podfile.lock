@@ -44,9 +44,9 @@ PODS:
   - StatefulViewController (3.0)
   - SwiftChart (1.0.1)
   - SwiftLint (0.27.0)
-  - SwiftMessages (6.0.0):
-    - SwiftMessages/App (= 6.0.0)
-  - SwiftMessages/App (6.0.0)
+  - SwiftMessages (5.0.1):
+    - SwiftMessages/App (= 5.0.1)
+  - SwiftMessages/App (5.0.1)
   - TrezorCrypto (0.0.8)
   - TrustCore (0.0.7):
     - BigInt
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - StatefulViewController
   - SwiftChart
   - SwiftLint (~> 0.27)
-  - SwiftMessages
+  - SwiftMessages (~> 5.0.1)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
 
@@ -168,11 +168,11 @@ SPEC CHECKSUMS:
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
   SwiftChart: ba767a678d568a5ee22d419e146a0582865e1aff
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
-  SwiftMessages: da7c981256a65b3e58022d9027a36584cf4eccf5
+  SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
   TrezorCrypto: 938c4b715fff7824a9c891a105e65ee0e4e81662
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
 
-PODFILE CHECKSUM: 6ca63ceb724bd86a9be47a1986c74cec09cdced6
+PODFILE CHECKSUM: e6d93a6626ef2614dbb72e0e608770f9c2bc2bbd
 
 COCOAPODS: 1.5.3

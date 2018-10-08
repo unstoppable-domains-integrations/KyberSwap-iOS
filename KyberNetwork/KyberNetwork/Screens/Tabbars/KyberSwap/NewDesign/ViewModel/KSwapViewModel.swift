@@ -28,7 +28,7 @@ class KSwapViewModel {
   fileprivate var slippageRate: BigInt?
   fileprivate var minRatePercent: Double?
 
-  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
 
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
@@ -52,6 +52,17 @@ class KSwapViewModel {
 
   // MARK: From Token
   var allFromTokenBalanceString: String {
+    if self.from.isETH {
+      let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
+      if balance <= self.feeBigInt { return "0" }
+      let availableToSwap = max(BigInt(0), balance - self.feeBigInt)
+      let string = availableToSwap.string(
+        decimals: self.from.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(self.from.decimals, 6)
+      )
+      return "\(string.prefix(12))"
+    }
     return self.balanceText
   }
 
@@ -227,6 +238,13 @@ class KSwapViewModel {
     return false
   }
 
+  var isETHSwapAmountAndFeeTooBig: Bool {
+    if !self.from.isETH { return false } // not ETH
+    let totalValue = self.feeBigInt + self.amountFromBigInt
+    let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
+    return balance < totalValue
+  }
+
   var isAmountValid: Bool {
     return !self.isAmountTooSmall && !self.isAmountTooBig
   }
@@ -243,8 +261,13 @@ class KSwapViewModel {
     return true
   }
 
+  var feeBigInt: BigInt {
+    return self.gasPrice * self.estimateGasLimit
+  }
+
   var isHavingEnoughETHForFee: Bool {
-    let fee = self.gasPrice * self.estimateGasLimit
+    var fee = self.gasPrice * self.estimateGasLimit
+    if self.from.isETH { fee += self.amountFromBigInt }
     let ethBal = self.balances[self.eth.contract]?.value ?? BigInt(0)
     return ethBal >= fee
   }
@@ -356,7 +379,8 @@ class KSwapViewModel {
       if rate.isZero {
         self.slippageRate = slippageRate
       } else {
-        let percent = Double(slippageRate * BigInt(100) / rate)
+        var percent = Double(slippageRate * BigInt(100) / rate)
+        if percent == 0 { percent = 97.0 } // fixed: if slippage rate = 0 -> set as 97 %
         self.slippageRate = rate * BigInt(Int(floor(percent))) / BigInt(100)
       }
     }

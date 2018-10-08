@@ -226,6 +226,7 @@ class KSendTokenViewController: KNBaseViewController {
       slow: KNGasCoordinator.shared.lowKNGas,
       gasLimit: self.viewModel.gasLimit
     )
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -270,6 +271,14 @@ class KSendTokenViewController: KNBaseViewController {
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
     self.amountTextField.resignFirstResponder()
     self.shouldUpdateEstimatedGasLimit(nil)
+    if self.viewModel.from.isETH {
+      self.showSuccessTopBannerMessage(
+        with: "",
+        message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+        time: 1.5
+      )
+    }
+    self.view.layoutIfNeeded()
   }
 
   @objc func keyboardDoneButtonPressed(_ sender: Any) {
@@ -395,6 +404,7 @@ extension KSendTokenViewController {
     self.amountTextField.text = ""
     self.viewModel.updateAmount("")
     self.shouldUpdateEstimatedGasLimit(nil)
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
@@ -424,6 +434,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     textField.text = ""
     if self.amountTextField == textField {
       self.viewModel.updateAmount("")
+      self.view.layoutIfNeeded()
     } else {
       self.viewModel.updateAddress("")
       self.updateUIAddressQRCode()
@@ -442,6 +453,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAddress(text)
     }
     self.shouldUpdateEstimatedGasLimit(nil)
+    self.view.layoutIfNeeded()
     return false
   }
 

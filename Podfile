@@ -30,7 +30,7 @@ target 'KyberNetwork' do
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'SAMKeychain'
   pod 'IQKeyboardManager'
-  pod 'SwiftMessages'
+  pod 'SwiftMessages', '~> 5.0.1'
   pod 'SwiftChart'
   pod 'JdenticonSwift'
   pod 'MSCircularSlider'

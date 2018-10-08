@@ -304,15 +304,25 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
+    self.view.endEditing(true)
+    self.viewModel.updateFocusingField(true)
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.updateTokensView()
     self.updateViewAmountDidChange()
-    self.view.endEditing(true)
+    if self.viewModel.from.isETH {
+      self.showSuccessTopBannerMessage(
+        with: "",
+        message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+        time: 1.5
+      )
+    }
+    self.view.layoutIfNeeded()
   }
 
   @objc func keyboardDoneButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateGasPriceCached() {
@@ -458,8 +468,11 @@ extension KSwapViewController {
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
+    }
+    if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     self.updateAdvancedSettingsView()
     self.view.layoutIfNeeded()
@@ -476,6 +489,7 @@ extension KSwapViewController {
       slow: KNGasCoordinator.shared.lowKNGas,
       gasLimit: self.viewModel.estimateGasLimit
     )
+    self.view.layoutIfNeeded()
   }
 }
 
@@ -498,6 +512,7 @@ extension KSwapViewController {
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.walletObject
     )
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateWalletObjects() {
@@ -507,6 +522,7 @@ extension KSwapViewController {
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.walletObject
     )
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
@@ -514,8 +530,10 @@ extension KSwapViewController {
     self.balanceLabel.text = self.viewModel.balanceText
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
     } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     self.view.layoutIfNeeded()
   }
@@ -542,8 +560,10 @@ extension KSwapViewController {
     }
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
     } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
 
     self.updateAdvancedSettingsView()
@@ -569,6 +589,7 @@ extension KSwapViewController {
 
   func coordinatorUpdateUserCapInWei(cap: BigInt) {
     self.viewModel.updateUserCapInWei(cap: cap)
+    self.view.layoutIfNeeded()
   }
   /*
    Update selected token
@@ -598,6 +619,7 @@ extension KSwapViewController {
         time: 1.5
       )
     }
+    self.view.layoutIfNeeded()
   }
 
   /*
@@ -619,6 +641,7 @@ extension KSwapViewController {
     self.viewModel.updateFocusingField(true)
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
+    self.view.layoutIfNeeded()
   }
 
   /*
@@ -634,6 +657,7 @@ extension KSwapViewController {
   func coordinatorDidUpdatePendingTransactions(_ transactions: [KNTransaction]) {
     self.hamburgerMenu.update(transactions: transactions)
     self.hasPendingTxView.isHidden = transactions.isEmpty
+    self.view.layoutIfNeeded()
   }
 }
 
@@ -672,8 +696,10 @@ extension KSwapViewController: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     if self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
     } else {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
@@ -692,10 +718,13 @@ extension KSwapViewController: UITextFieldDelegate {
     self.updateEstimatedGasLimit()
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
     }
     if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
+    self.view.layoutIfNeeded()
   }
 }
 

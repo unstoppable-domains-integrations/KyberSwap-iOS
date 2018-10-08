@@ -2,7 +2,7 @@
 "profile" = "Hồ sơ";
 "settings" = "Cài đặt";
 "failed" = "Thất bại";
-"broadcasted" = "Broadcasted";
+"broadcasted" = "Đã gửi";
 "try.again" = "Thử lại";
 "enter.pin" = "Nhập PIN";
 "use.touchid/faceid.to.secure.your.account" = "Sử dụng touchID / faceID để bảo vệ tài khoản của bạn";
@@ -180,7 +180,7 @@
 "edit.custom.token" = "Chỉnh sửa token";
 "add" = "Thêm";
 "passwords.mismatch" = "Mật khẩu không khớp";
-"your.transaction.has.been.broadcasted" = "Giao dịch đã được chuyển đi!";
+"your.transaction.has.been.broadcasted" = "Giao dịch đã được gửi!";
 "converted.to" = "chuyển đổi thành";
 "failed.to.delete.account" = "Không thể xoá tài khoản";
 "could.not.decrypt.key.with.given.passphrase" = "Không thể giải mã khoá với mật khẩu đã cho";
@@ -306,7 +306,7 @@
 "copy.address" = "Sao chép địa chỉ";
 "backup" = "Sao lưu";
 "share.with.friends.text" = "Tôi vừa tìm thấy một ứng dụng ví tuyệt vời. Kiểm tra ở đây https://kyber.network/";
-"transaction.being.broadcasted" = "Giao dịch đang được thực hiện";
+"transaction.being.broadcasted" = "Giao dịch đang được gửi";
 "can.not.create.transaction" = "Không thể tạo giao dịch";
 "transaction.being.mined" = "Giao dịch được mine";
 "transaction.failed" = "Giao dịch thất bại";
@@ -315,3 +315,4 @@
 "please.enter.an.amount.to.continue" = "Vui lòng nhập một số để tiếp tục";
 "view.on.etherscan" = "Xem trên Etherscan";
 "gas.fee.gwei" = "Phí GAS (Gwei)";
+"a.small.amount.of.eth.is.used.for.transaction.fee" = "Một lượng nhỏ ETH sẽ được sử dụng cho phí giao dịch";

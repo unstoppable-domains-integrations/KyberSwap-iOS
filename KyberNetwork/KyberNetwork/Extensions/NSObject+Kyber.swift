@@ -33,7 +33,7 @@ extension NSObject {
     }()
     let config: SwiftMessages.Config = {
       var config = SwiftMessages.Config()
-      config.presentationStyle = .top
+      config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
       config.duration = .seconds(seconds: time)
       config.dimMode = .gray(interactive: true)
       config.interactiveHide = true

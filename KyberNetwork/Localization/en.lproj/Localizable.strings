@@ -315,3 +315,4 @@
 "please.enter.an.amount.to.continue" = "Please enter an amount to continue";
 "view.on.etherscan" = "View on Etherscan";
 "gas.fee.gwei" = "GAS fee (Gwei)";
+"a.small.amount.of.eth.is.used.for.transaction.fee" = "A small amount of ETH will be used for transaction fee";

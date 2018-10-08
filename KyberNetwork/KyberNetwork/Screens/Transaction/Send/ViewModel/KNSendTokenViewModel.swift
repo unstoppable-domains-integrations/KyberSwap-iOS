@@ -20,19 +20,25 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var balance: Balance?
 
   fileprivate(set) var amount: String = ""
-  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .fast
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
   fileprivate(set) var addressString: String = ""
 
   var allTokenBalanceString: String {
-    let string = self.balance?.value.string(
-      decimals: self.from.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
-      ) ?? ""
-    return "\(string.prefix(12))"
+    if self.from.isETH {
+      let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
+      let fee = self.gasPrice * self.gasLimit
+      let availableValue = max(BigInt(0), balance - fee)
+      let string = availableValue.string(
+        decimals: self.from.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(self.from.decimals, 6)
+      )
+      return "\(string.prefix(12))"
+    }
+    return self.displayBalance
   }
 
   var amountBigInt: BigInt {
@@ -76,7 +82,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayBalance: String {
-    guard let bal = self.balance else { return "---" }
+    guard let bal = self.balance else { return "0" }
     let string = bal.value.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
@@ -122,7 +128,8 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isHavingEnoughETHForFee: Bool {
-    let fee = self.gasPrice * self.gasLimit
+    var fee = self.gasPrice * self.gasLimit
+    if self.from.isETH { fee += self.amountBigInt }
     let eth = KNSupportedTokenStorage.shared.ethToken
     let ethBal = self.balances[eth.contract]?.value ?? BigInt(0)
     return ethBal >= fee
