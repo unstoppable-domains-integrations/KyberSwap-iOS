@@ -860,6 +860,7 @@
 		2561455A20C795AF00FB00CF /* KNChartObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNChartObject.swift; sourceTree = "<group>"; };
 		2563678D2119B20B0034BA47 /* KGOInAppSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KGOInAppSignInViewController.swift; sourceTree = "<group>"; };
 		2563678E2119B20B0034BA47 /* KGOInAppSignInViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KGOInAppSignInViewController.xib; sourceTree = "<group>"; };
+		2567B3EB216AE0C90006D963 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		25682B7220EE06CD009738C4 /* KNTransactionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionDetailsViewController.swift; sourceTree = "<group>"; };
 		25682B7320EE06CD009738C4 /* KNTransactionDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionDetailsViewController.xib; sourceTree = "<group>"; };
 		25682B7920EE09C8009738C4 /* KNTransactionDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -5856,6 +5857,7 @@
 			children = (
 				252EBD8021636D9900609101 /* vi */,
 				252EBD8221636DA200609101 /* en */,
+				2567B3EB216AE0C90006D963 /* zh-Hans */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
