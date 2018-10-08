@@ -2,7 +2,7 @@ platform :ios, '10.0'
 inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'Trust' do
+target 'KyberNetwork' do
   use_frameworks!
 
   pod 'BigInt', '~> 3.0'
@@ -14,7 +14,7 @@ target 'Trust' do
   pod 'StatefulViewController'
   pod 'QRCodeReaderViewController', :git=>'https://github.com/yannickl/QRCodeReaderViewController.git', :branch=>'master'
   pod 'KeychainSwift'
-  pod 'SwiftLint', '~> 0.25.1'
+  pod 'SwiftLint', '~> 0.27'
   pod 'SeedStackViewController'
   pod 'RealmSwift', '~> 3.10.0'
   pod 'Lokalise'
@@ -25,24 +25,22 @@ target 'Trust' do
   pod 'Crashlytics'
   pod 'Kingfisher', '~> 4.0'
   pod 'TrustCore', '~> 0.0.7'
-  pod 'TrustKeystore', :git=>'https://github.com/TrustWallet/trust-keystore', :branch=>'master'
+  pod 'TrustKeystore', '~> 0.4.2'
   pod 'Branch'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'SAMKeychain'
-  pod 'TrustWeb3Provider', :git=>'https://github.com/TrustWallet/trust-web3-provider', :commit=>'f4e0ebb1b8fa4812637babe85ef975d116543dfd'
   pod 'IQKeyboardManager'
   pod 'SwiftMessages'
   pod 'SwiftChart'
   pod 'JdenticonSwift'
   pod 'MSCircularSlider'
-  pod 'TrustWalletSDK', :git=>'https://github.com/TrustWallet/TrustSDK-iOS', :branch=>'master'
 
-  target 'TrustTests' do
+  target 'KyberNetworkTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'TrustUITests' do
+  target 'KyberNetworkUITests' do
     inherit! :search_paths
     # Pods for testing
   end

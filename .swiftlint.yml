@@ -1,4 +1,4 @@
-swiftlint_version: 0.21.0
+swiftlint_version: 0.27.0
 disabled_rules:
   - cyclomatic_complexity
   - force_cast
@@ -18,10 +18,10 @@ opt_in_rules:
   - multiline_parameters
   - vertical_parameter_alignment_on_call
 included:
-  - Trust
+  - KyberNetwork
 excluded:
-  - Trust/Vendors
-  - Trust/R.generated.swift
+  - KyberNetwork/Vendors
+  - KyberNetwork/R.generated.swift
 function_parameter_count:
   warning: 20
   error: 25
