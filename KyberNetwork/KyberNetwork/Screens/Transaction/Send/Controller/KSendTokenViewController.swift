@@ -449,10 +449,11 @@ extension KSendTokenViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    if textField == self.amountTextField, text.cleanStringToNumber().fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    let cleanedText = text.cleanStringToNumber()
+    if textField == self.amountTextField, cleanedText.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.amountTextField {
-      textField.text = text.cleanStringToNumber()
-      self.viewModel.updateAmount(text.cleanStringToNumber())
+      textField.text = cleanedText
+      self.viewModel.updateAmount(cleanedText)
     } else {
       textField.text = text
       self.viewModel.updateAddress(text)
