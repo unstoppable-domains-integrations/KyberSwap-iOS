@@ -474,7 +474,9 @@ extension KSendTokenViewController: UITextFieldDelegate {
     self.amountTextField.textColor = self.viewModel.amountTextColor
     if textField == self.addressTextField {
       self.updateUIAddressQRCode()
-      _ = self.showWarningInvalidAddressIfNeeded()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        _ = self.showWarningInvalidAddressIfNeeded()
+      }
     } else {
       _ = self.showWarningInvalidAmountDataIfNeeded()
     }
