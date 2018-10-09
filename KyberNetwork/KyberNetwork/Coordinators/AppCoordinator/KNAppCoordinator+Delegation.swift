@@ -72,6 +72,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isReceived)
     self.tabbarController.selectedIndex = 1
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.merigold
   }
 
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject) {
