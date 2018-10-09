@@ -315,4 +315,5 @@
 "please.enter.an.amount.to.continue" = "请输入要继续的数量";
 "view.on.etherscan" = "在Etherscan上查看";
 "gas.fee.gwei" = "燃料费用（Gwei）";
+"a.small.amount.of.eth.is.used.for.transaction.fee" = "少量的ETH将用于交易费用";
 "not.in.contact" = "不联系";

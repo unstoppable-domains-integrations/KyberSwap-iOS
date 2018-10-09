@@ -181,7 +181,8 @@ extension KNTransaction {
       if object.type.lowercased() == "transfer" {
         let sentLocalised = NSLocalizedString("sent", value: "sent", comment: "")
         let toLocalised = NSLocalizedString("to", value: "to", comment: "")
-        return "\(status.rawValue) \(sentLocalised) \(amountFrom) \(from.symbol) \(toLocalised) \n\(self.to)"
+        let statusLocalised = NSLocalizedString(status.rawValue.lowercased(), value: status.rawValue, comment: "")
+        return "\(statusLocalised) \(sentLocalised) \(amountFrom) \(from.symbol) \(toLocalised) \n\(self.to)"
       }
       guard let to = storage?.get(forPrimaryKey: object.to) else { return status.statusDetails }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return status.statusDetails }

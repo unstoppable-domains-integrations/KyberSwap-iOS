@@ -129,7 +129,7 @@
 "import.your.json.file" = "Nhập tệp JSON của bạn";
 "can.not.get.data.from.your.file" = "Không thể lấy dữ liệu từ tệp.";
 "backup.your.wallet" = "Sao Lưu Ví";
-"paper.only" = "Chỉ giấy";
+"paper.only" = "Ghi vào giấy";
 "we.will.give.you.a.list.of.random.words" = "Chúng tôi sẽ cung cấp cho bạn một danh sách 12 từ ngẫu nhiên. Xin vui lòng";
 "write.them.down.on.paper" = "viết chúng xuống giấy";
 "and.keep.safe.this.paper.key" = "và giữ an toàn. \n\nKhoá giấy này là";
@@ -227,7 +227,7 @@
 "create.wallet" = "Tạo Ví";
 "terms.and.conditions" = "Điều khoản và điều kiện";
 "name" = "Tên";
-"kyber.listed" = "Kyber liệt kê";
+"kyber.listed" = "Có trên Kyber";
 "other" = "Khác";
 "your.balance.is.empty" = "Số dư của bạn trống";
 "receive.token" = "Nhận token";
