@@ -448,9 +448,13 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
-    if textField == self.amountTextField, text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
-    textField.text = text
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    if textField == self.amountTextField, text.cleanStringToNumber().fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    if textField == self.amountTextField {
+      textField.text = text.cleanStringToNumber()
+    } else {
+      textField.text = text
+    }
     if self.amountTextField == textField {
       self.viewModel.updateAmount(text)
     } else {
