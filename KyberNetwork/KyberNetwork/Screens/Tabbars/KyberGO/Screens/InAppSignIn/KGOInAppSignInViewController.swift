@@ -30,7 +30,11 @@ class KGOInAppSignInViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
+    if self.webView.canGoBack {
+      self.webView.goBack()
+    } else {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }
 
@@ -45,5 +49,9 @@ extension KGOInAppSignInViewController: UIWebViewDelegate {
 
   func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
     return true
+  }
+
+  func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    self.hideLoading()
   }
 }
