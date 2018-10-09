@@ -149,6 +149,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var rateMightChangeContainerView: UIView!
   @IBOutlet weak var ratesMightChangeTextLabel: UILabel!
   @IBOutlet weak var ratesMightChangeDescTextLabel: UILabel!
+  @IBOutlet weak var bottomPaddingConstraintForRateMightChange: NSLayoutConstraint!
 
   @IBOutlet weak var segmentedControl: UISegmentedControl!
 
@@ -199,7 +200,6 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupCollectionView() {
-
     let nib = UINib(nibName: KNHistoryTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID)
     let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
@@ -209,6 +209,7 @@ class KNHistoryViewController: KNBaseViewController {
 
     self.ratesMightChangeTextLabel.text = NSLocalizedString("rates.might.change", value: "Rates might change", comment: "")
     self.ratesMightChangeDescTextLabel.text = NSLocalizedString("rates.for.token.swap.are.not.final.until.mined", value: "Rates for token swap are not final until swapping transactions are completed (mined)", comment: "")
+    self.bottomPaddingConstraintForRateMightChange.constant = self.bottomPaddingSafeArea()
     self.updateUIWhenDataDidChange()
   }
 
@@ -217,8 +218,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
-    self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint
+    self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
     self.transactionCollectionView.reloadData()
+    self.view.setNeedsUpdateConstraints()
     self.view.updateConstraintsIfNeeded()
     self.view.layoutIfNeeded()
   }

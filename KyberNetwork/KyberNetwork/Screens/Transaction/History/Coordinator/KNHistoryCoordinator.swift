@@ -51,9 +51,10 @@ class KNHistoryCoordinator: Coordinator {
 
   func start() {
     self.appCoordinatorTokensTransactionsDidUpdate()
-    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-    self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
-    self.navigationController.pushViewController(self.rootViewController, animated: true)
+    self.navigationController.pushViewController(self.rootViewController, animated: true) {
+      let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
+      self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+    }
   }
 
   func stop() {

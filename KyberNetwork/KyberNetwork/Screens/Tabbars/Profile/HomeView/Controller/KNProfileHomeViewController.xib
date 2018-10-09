@@ -18,12 +18,13 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNProfileHomeViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNProfileHomeViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="addWalletAddButton" destination="Pmb-P8-1Ly" id="lwl-zU-Yre"/>
                 <outlet property="addWalletAddressTextField" destination="E0v-Ce-aaI" id="EQD-go-AA1"/>
                 <outlet property="addWalletContainer" destination="tA1-Wb-ixh" id="qtv-fm-qlG"/>
                 <outlet property="addWalletLabelTextField" destination="hNn-9h-bLI" id="nMy-38-zGE"/>
+                <outlet property="bottomPaddingConstraintForSignedInView" destination="9Oa-YN-ifD" id="AWh-gx-SAb"/>
                 <outlet property="heightConstraintForAddWalletContainer" destination="dQ3-ox-zyw" id="5nC-Na-1aD"/>
                 <outlet property="heightConstraintUserKYCStatusView" destination="yjh-TT-VtN" id="4yG-wt-ZtR"/>
                 <outlet property="heightConstraintWalletsTableView" destination="nJj-FT-TKb" id="aGy-g1-1yA"/>
@@ -154,7 +155,7 @@
                                 <constraint firstItem="BLX-sM-X5k" firstAttribute="centerX" secondItem="UH0-5f-Ssg" secondAttribute="centerX" id="mm2-R5-WHD"/>
                             </constraints>
                         </view>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bg6-Uo-kRt">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bg6-Uo-kRt">
                             <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCa-T9-DFD">

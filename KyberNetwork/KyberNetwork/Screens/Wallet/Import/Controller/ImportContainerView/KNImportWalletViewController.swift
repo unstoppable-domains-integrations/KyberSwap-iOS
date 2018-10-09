@@ -49,6 +49,38 @@ class KNImportWalletViewController: KNBaseViewController {
     self.jsonButton.centerVertically(padding: 10)
     self.privateKeyButton.centerVertically(padding: 10)
     self.seedsButton.centerVertically(padding: 10)
+
+    let width: CGFloat = self.view.frame.width
+    let height: CGFloat = self.view.frame.height - self.scrollView.frame.minY
+
+    self.scrollView.contentSize = CGSize(
+      width: CGFloat(3) * width,
+      height: height
+    )
+    self.scrollView.frame = CGRect(
+      x: 0,
+      y: self.scrollView.frame.minY,
+      width: width,
+      height: height
+    )
+    self.importJSONVC?.view.frame = CGRect(
+      x: 0,
+      y: 0,
+      width: width,
+      height: height
+    )
+    self.importPrivateKeyVC?.view.frame = CGRect(
+      x: width,
+      y: 0,
+      width: width,
+      height: height
+    )
+    self.importSeedsVC?.view.frame = CGRect(
+      x: 2.0 * width,
+      y: 0,
+      width: width,
+      height: height
+    )
   }
 
   fileprivate func setupUI() {

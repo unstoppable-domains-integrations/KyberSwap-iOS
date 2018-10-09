@@ -19,11 +19,12 @@ struct KConfirmSendViewModel {
     return UIImage.generateImage(with: 75, hash: data)
   }
 
-  var titleString: String { return "Send \(self.token.symbol)" }
+  var titleString: String {
+    return "\(NSLocalizedString("send", value: "Send", comment: "")) \(self.token.symbol)" }
 
   var contactName: String {
-    let address = transaction.to?.description ?? "Not In Contact"
-    guard let contact = KNContactStorage.shared.get(forPrimaryKey: address.lowercased()) else { return "Not In Contact" }
+    let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
+    guard let contact = KNContactStorage.shared.contacts.first(where: { address.lowercased() == $0.address.lowercased() }) else { return NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "") }
     return contact.name
   }
 
@@ -54,7 +55,7 @@ struct KConfirmSendViewModel {
     return "~ \(displayString) USD"
   }
 
-  var transactionFeeText: String { return "Transaction Fee: " }
+  var transactionFeeText: String { return "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")): " }
   var transactionFeeETHString: String {
     let fee: BigInt? = {
       guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }

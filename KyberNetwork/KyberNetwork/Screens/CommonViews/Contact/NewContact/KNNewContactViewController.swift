@@ -22,7 +22,7 @@ class KNNewContactViewModel {
   init(
     address: String
   ) {
-    if let contact = KNContactStorage.shared.get(forPrimaryKey: address.lowercased()) {
+    if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
       self.contact = contact
       self.isEditing = true
     } else {
@@ -36,7 +36,7 @@ class KNNewContactViewModel {
   }
 
   func updateViewModel(address: String) {
-    if let contact = KNContactStorage.shared.get(forPrimaryKey: address.lowercased()) {
+    if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
       self.contact = contact
       self.isEditing = true
     } else {

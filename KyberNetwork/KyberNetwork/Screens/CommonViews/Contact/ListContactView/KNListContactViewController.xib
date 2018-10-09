@@ -18,9 +18,10 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="addContactButton" destination="CLT-QW-LlX" id="m1b-0x-u8Q"/>
+                <outlet property="bottomPaddingConstraintForTableView" destination="KoO-dy-EQH" id="blq-MO-xKe"/>
                 <outlet property="contactEmptyLabel" destination="APl-2d-Lg3" id="r60-mV-FOn"/>
                 <outlet property="contactTableView" destination="0eJ-nQ-IR7" id="Kii-ul-jFu"/>
                 <outlet property="emptyStateView" destination="O1V-Us-qFQ" id="VLa-Fr-5Wf"/>
@@ -69,7 +70,7 @@
                         <constraint firstAttribute="trailing" secondItem="hEr-kh-NAw" secondAttribute="trailing" constant="16" id="t8I-Zg-vbK"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="Trust" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="KyberNetwork" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>

@@ -11,6 +11,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   @IBOutlet weak var copyWalletButton: UIButton!
   @IBOutlet weak var shareButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
 
   fileprivate var viewModel: KNWalletQRCodeViewModel
 
@@ -31,6 +32,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.setupWalletData()
     self.setupButtons()
   }

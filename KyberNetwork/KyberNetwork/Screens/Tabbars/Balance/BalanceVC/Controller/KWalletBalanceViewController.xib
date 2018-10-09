@@ -18,10 +18,11 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KWalletBalanceViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KWalletBalanceViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="balanceTextLabel" destination="tNy-7j-Gt2" id="YYj-GO-LL8"/>
                 <outlet property="balanceValueLabel" destination="ztY-YM-0aU" id="mPu-J4-bRa"/>
+                <outlet property="bottomPaddingConstraintForTableView" destination="X3N-3J-Mg6" id="awZ-7P-hyp"/>
                 <outlet property="currencyButton" destination="61z-Hi-1ah" id="sZV-uz-9GS"/>
                 <outlet property="emptyBalanceTextLabel" destination="6g5-Hf-gED" id="3Gk-qg-ib1"/>
                 <outlet property="emptyStateView" destination="xZA-fD-Wsm" id="eVR-RX-Cji"/>

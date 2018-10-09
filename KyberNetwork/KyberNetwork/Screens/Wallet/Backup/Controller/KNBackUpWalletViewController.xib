@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +21,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBackUpWalletViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBackUpWalletViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="backButton" destination="ohM-N6-z0S" id="hXQ-fb-jah"/>
                 <outlet property="backupWalletLabel" destination="v9Q-P1-pUP" id="wHn-vN-68j"/>
@@ -119,7 +119,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMz-jJ-yOj">
-                    <rect key="frame" x="35" y="558" width="305" height="45"/>
+                    <rect key="frame" x="35" y="542" width="305" height="45"/>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="alC-CA-biv"/>
@@ -206,7 +206,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 <constraint firstItem="E4K-Cp-0tn" firstAttribute="leading" secondItem="qfr-Pf-WLO" secondAttribute="leading" id="QyB-tx-80R"/>
                 <constraint firstItem="gxk-M0-lif" firstAttribute="top" secondItem="E4K-Cp-0tn" secondAttribute="bottom" constant="5" id="RLf-Qm-YgB"/>
                 <constraint firstItem="jjI-kU-ibR" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="TA4-Ok-cDC"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="wMz-jJ-yOj" secondAttribute="bottom" constant="64" id="TpS-xz-ynM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="wMz-jJ-yOj" secondAttribute="bottom" constant="80" id="TpS-xz-ynM"/>
                 <constraint firstItem="n4M-eJ-doh" firstAttribute="top" secondItem="jjI-kU-ibR" secondAttribute="bottom" constant="12" id="Tvl-UE-KTj"/>
                 <constraint firstItem="wMz-jJ-yOj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="U2q-ES-kcQ"/>
                 <constraint firstItem="8M2-i7-D42" firstAttribute="leading" secondItem="JWS-hb-jfT" secondAttribute="leading" id="UYe-cx-Veo"/>

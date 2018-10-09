@@ -31,6 +31,7 @@ class KNEditWalletViewController: KNBaseViewController {
   @IBOutlet weak var deleteButton: UIButton!
 
   @IBOutlet weak var saveButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
 
   fileprivate let viewModel: KNEditWalletViewModel
   weak var delegate: KNEditWalletViewControllerDelegate?
@@ -54,6 +55,8 @@ class KNEditWalletViewController: KNBaseViewController {
     self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
     self.saveButton.rounded(radius: 4.0)
     self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
+    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

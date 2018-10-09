@@ -132,6 +132,7 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.tokensTableView.rowHeight = 46
     self.tokensTableView.delegate = self
     self.tokensTableView.dataSource = self
+    self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
 
     self.noMatchingTokensLabel.text = NSLocalizedString("no.matching.tokens", value: "No matching tokens", comment: "")
     NotificationCenter.default.addObserver(
@@ -186,7 +187,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   @objc func keyboardDidHide(_ sender: Notification) {
     UIView.animate(
     withDuration: 0.25) {
-      self.tableViewBottomPaddingConstraint.constant = 0
+      self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
       self.view.updateConstraints()
     }
   }

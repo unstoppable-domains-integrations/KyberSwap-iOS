@@ -97,14 +97,14 @@ class KNSendTokenViewModel: NSObject {
 
   var displayAddress: String? {
     if self.address == nil { return self.addressString }
-    if let contact = KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) {
+    if let contact = KNContactStorage.shared.contacts.first(where: { self.addressString.lowercased() == $0.address.lowercased() }) {
       return "\(contact.name) - \(self.addressString)"
     }
     return self.addressString
   }
 
   var newContactTitle: String {
-    if KNContactStorage.shared.get(forPrimaryKey: self.addressString.lowercased()) != nil {
+    if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == self.addressString.lowercased() }) != nil {
       return NSLocalizedString("edit.contact", comment: "")
     }
     return NSLocalizedString("add.contact", comment: "")

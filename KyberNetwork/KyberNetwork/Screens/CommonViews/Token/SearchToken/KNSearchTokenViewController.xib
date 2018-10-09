@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="headerContainerView" destination="0Kr-aI-vdA" id="xzQ-ff-1pd"/>
                 <outlet property="navTitleLabel" destination="9cH-h9-D9l" id="P94-pL-6sX"/>
@@ -60,7 +60,7 @@
                         <constraint firstAttribute="height" constant="82" id="rxX-SB-Qth"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tvR-nt-YdR">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tvR-nt-YdR">
                     <rect key="frame" x="0.0" y="146" width="375" height="521"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
@@ -78,7 +78,7 @@
                     </constraints>
                     <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search_black_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2Yj-ML-p46">
                     <rect key="frame" x="336" y="106" width="15" height="16"/>
@@ -87,7 +87,7 @@
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="0k0-TK-3IM"/>
+                <constraint firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="0k0-TK-3IM"/>
                 <constraint firstItem="2Yj-ML-p46" firstAttribute="centerY" secondItem="vHA-YC-Rnd" secondAttribute="centerY" id="2AR-KM-t1J"/>
                 <constraint firstItem="vHA-YC-Rnd" firstAttribute="top" secondItem="0Kr-aI-vdA" secondAttribute="bottom" constant="12" id="Jyi-oP-eVF"/>
                 <constraint firstItem="tvR-nt-YdR" firstAttribute="top" secondItem="0Kr-aI-vdA" secondAttribute="bottom" constant="64" id="MfU-xg-I7A"/>

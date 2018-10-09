@@ -20,6 +20,7 @@ class KNListContactViewController: KNBaseViewController {
   @IBOutlet weak var emptyStateView: UIView!
   @IBOutlet weak var contactEmptyLabel: UILabel!
   @IBOutlet weak var addContactButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
 
   weak var delegate: KNListContactViewControllerDelegate?
 
@@ -49,6 +50,7 @@ class KNListContactViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
     let contacts = KNContactStorage.shared.contacts
     self.contactTableView.updateView(
       with: contacts,

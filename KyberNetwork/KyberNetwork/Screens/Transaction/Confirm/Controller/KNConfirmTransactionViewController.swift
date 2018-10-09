@@ -71,7 +71,7 @@ struct KNConfirmTransactionViewModel {
     case .transfer(let tx):
       let address = tx.to?.description.lowercased() ?? ""
       let displayedAddress = "\(address.prefix(7))..\(address.suffix(5))"
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+      if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         attributedString.append(NSAttributedString(string: contact.name, attributes: highlightedAttributes))
         attributedString.append(NSAttributedString(string: "\n\(displayedAddress)", attributes: normalAttributes))
       } else {

@@ -38,7 +38,7 @@ class KYCFlowViewModel {
     }()
   }
 
-  lazy var localisedGender: String = {
+  var localisedGender: String {
     if self.gender.lowercased() == "male" {
       return NSLocalizedString("male", value: "Male", comment: "")
     }
@@ -46,9 +46,9 @@ class KYCFlowViewModel {
       return NSLocalizedString("female", value: "Female", comment: "")
     }
     return self.gender
-  }()
+  }
 
-  lazy var localisedDocType: String = {
+  var localisedDocType: String {
     if self.docType.lowercased() == "national_id" { return "ID" }
     if self.docType.lowercased() == "passport" {
       return NSLocalizedString("passport", value: "Passport", comment: "")
@@ -57,7 +57,7 @@ class KYCFlowViewModel {
       return NSLocalizedString("driving.license", value: "Driving License", comment: "")
     }
     return self.docType
-  }()
+  }
 
   func updateStepState(_ step: KNKYCStepViewState) {
     self.stepState = step
@@ -109,6 +109,10 @@ class KYCFlowViewController: KNBaseViewController {
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var stepView: KNKYCStepView!
   @IBOutlet weak var scrollView: UIScrollView!
+  @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
+  fileprivate var personalInfoVC: KYCPersonalInfoViewController?
+  fileprivate var identityInfoVC: KYCIdentityInfoViewController?
+  fileprivate var statusInfoVC: KYCProfileVerificationStatusViewController?
 
   fileprivate var submitInfoVC: KYCSubmitInfoViewController!
 
@@ -146,6 +150,28 @@ class KYCFlowViewController: KNBaseViewController {
     self.doneTimer = nil
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    let padding = self.bottomPaddingSafeArea()
+    let width = UIScreen.main.bounds.width
+    let height = self.view.frame.height - self.scrollView.frame.minY - padding
+
+    self.scrollView.frame = CGRect(
+      x: 0,
+      y: self.scrollView.frame.minY,
+      width: width,
+      height: height
+    )
+    self.personalInfoVC?.view.frame = CGRect(x: 0, y: 0, width: width, height: height)
+    self.identityInfoVC?.view.frame = CGRect(x: width, y: 0, width: width, height: height)
+    self.submitInfoVC.view.frame = CGRect(x: 2.0 * width, y: 0, width: width, height: height)
+    self.statusInfoVC?.view.frame = CGRect(x: 3.0 * width, y: 0, width: width, height: height)
+    self.scrollView.contentSize = CGSize(
+      width: width * 4.0,
+      height: 1.0
+    )
+  }
+
   fileprivate func setupUI() {
     self.setupStepView()
     self.setupControllers()
@@ -157,8 +183,10 @@ class KYCFlowViewController: KNBaseViewController {
   }
 
   fileprivate func setupControllers() {
-    let width = self.view.frame.width
-    let height = self.view.frame.height - self.scrollView.frame.minY
+    let padding = self.bottomPaddingSafeArea()
+    self.bottomPaddingConstraintForScrollView.constant = padding
+    let width = UIScreen.main.bounds.width
+    let height = self.view.frame.height - self.scrollView.frame.minY - padding
 
     self.scrollView.frame = CGRect(
       x: 0,
@@ -178,6 +206,7 @@ class KYCFlowViewController: KNBaseViewController {
     personalInfoVC.view.frame = CGRect(x: 0, y: 0, width: width, height: height)
     self.scrollView.addSubview(personalInfoVC.view)
     personalInfoVC.didMove(toParentViewController: self)
+    self.personalInfoVC = personalInfoVC
 
     let identityInfoVC: KYCIdentityInfoViewController = {
       let viewModel = KYCIdentityInfoViewModel()
@@ -190,6 +219,7 @@ class KYCFlowViewController: KNBaseViewController {
     identityInfoVC.view.frame = CGRect(x: width, y: 0, width: width, height: height)
     self.scrollView.addSubview(identityInfoVC.view)
     identityInfoVC.didMove(toParentViewController: self)
+    self.identityInfoVC = identityInfoVC
 
     self.submitInfoVC = {
       let viewModel = KYCSubmitInfoViewModel(
@@ -221,6 +251,7 @@ class KYCFlowViewController: KNBaseViewController {
     statusVC.view.frame = CGRect(x: 3.0 * width, y: 0, width: width, height: height)
     self.scrollView.addSubview(statusVC.view)
     statusVC.didMove(toParentViewController: self)
+    self.statusInfoVC = statusVC
 
     self.scrollView.contentSize = CGSize(
       width: self.scrollView.frame.width * 4.0,
@@ -254,8 +285,9 @@ class KYCFlowViewController: KNBaseViewController {
   }
 
   fileprivate func updateViewState(newState: KNKYCStepViewState) {
-    let width = self.view.frame.width
-    let height = self.view.frame.height - self.scrollView.frame.minY
+    let padding = self.bottomPaddingSafeArea()
+    let width = UIScreen.main.bounds.width
+    let height = self.view.frame.height - self.scrollView.frame.minY - padding
 
     self.viewModel.updateStepState(newState)
     self.stepView.updateView(with: self.viewModel.stepState)

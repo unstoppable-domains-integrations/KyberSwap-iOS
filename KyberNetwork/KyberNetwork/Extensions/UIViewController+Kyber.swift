@@ -36,4 +36,9 @@ extension UIViewController {
     guard let url = URL(string: string) else { return }
     self.openSafari(with: url)
   }
+
+  func bottomPaddingSafeArea() -> CGFloat {
+    if #available(iOS 11, *) { return 0.0 }
+    return 50.0
+  }
 }

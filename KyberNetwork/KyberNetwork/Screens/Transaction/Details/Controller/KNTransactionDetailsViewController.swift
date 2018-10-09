@@ -29,6 +29,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var dateTextLabel: UILabel!
   @IBOutlet weak var viewOnEtherscanButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
 
   init(viewModel: KNTransactionDetailsViewModel) {
     self.viewModel = viewModel
@@ -50,6 +51,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.fromTextLabel.text = NSLocalizedString("from", value: "From", comment: "")
     self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")
     self.dateTextLabel.text = NSLocalizedString("date", value: "Date", comment: "")

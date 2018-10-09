@@ -40,9 +40,10 @@ class KNListWalletsViewController: KNBaseViewController {
   weak var delegate: KNListWalletsViewControllerDelegate?
   fileprivate var viewModel: KNListWalletsViewModel
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var walletTableView: UITableView!
+  @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
 
-  @IBOutlet weak var heightConstraintForWalletTableView: NSLayoutConstraint!
   init(viewModel: KNListWalletsViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNListWalletsViewController.className, bundle: nil)
@@ -57,17 +58,13 @@ class KNListWalletsViewController: KNBaseViewController {
     self.setupUI()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.setupNavigationBar()
-  }
-
   fileprivate func setupUI() {
+    self.setupNavigationBar()
     self.setupWalletTableView()
   }
 
   fileprivate func setupNavigationBar() {
-    self.navigationItem.title = NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: "")
+    self.navTitleLabel.text = NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: "")
   }
 
   fileprivate func setupWalletTableView() {
@@ -76,14 +73,14 @@ class KNListWalletsViewController: KNBaseViewController {
     self.walletTableView.rowHeight = 68.0
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
-    self.heightConstraintForWalletTableView.constant = 0
+    self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
+    self.view.layoutIfNeeded()
   }
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: wallets, curWallet: currentWallet)
-    self.heightConstraintForWalletTableView.constant = CGFloat(wallets.count) * 68.0
     self.walletTableView.reloadData()
-    self.updateViewConstraints()
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

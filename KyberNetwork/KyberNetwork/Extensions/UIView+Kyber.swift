@@ -164,6 +164,7 @@ extension UIView {
     let end = CGPoint(x: self.frame.width, y: self.frame.height / 2.0)
     path.addLines(between: [start, end])
     shapeLayer.path = path
+    self.removeSublayer(at: 0)
     self.layer.insertSublayer(shapeLayer, at: 0)
   }
 }

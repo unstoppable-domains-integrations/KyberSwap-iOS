@@ -261,6 +261,7 @@ class KNTokenChartViewController: KNBaseViewController {
   @IBOutlet weak var dataTypeButtonContainerView: UIView!
   @IBOutlet var dataTypeButtons: [UIButton]!
 
+  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
   weak var delegate: KNTokenChartViewControllerDelegate?
   fileprivate var viewModel: KNTokenChartViewModel
 
@@ -298,6 +299,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
 
+    self.bottomPaddingConstraintForButton.constant = 16.0 + self.bottomPaddingSafeArea()
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.chartBackgroundColor
     self.headerContainerView.backgroundColor = style.chartHeaderBackgroundColor

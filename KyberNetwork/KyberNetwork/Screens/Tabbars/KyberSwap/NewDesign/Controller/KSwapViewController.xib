@@ -18,11 +18,12 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KSwapViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KSwapViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="advancedSettingsView" destination="16U-yR-n8d" id="rg9-Zc-Zey"/>
                 <outlet property="balanceLabel" destination="fk0-fr-Th3" id="gYr-4c-t3e"/>
                 <outlet property="balanceTextLabel" destination="LN8-3r-cFX" id="Npn-Hx-FAC"/>
+                <outlet property="bottomPaddingConstraintForScrollView" destination="oxA-wg-TwX" id="ooe-8a-ZBl"/>
                 <outlet property="continueButton" destination="YJW-Oi-0g6" id="8t8-Bj-5r4"/>
                 <outlet property="dataContainerView" destination="69i-TU-qqK" id="k2T-VA-QzQ"/>
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
@@ -166,7 +167,7 @@
                         <constraint firstAttribute="trailing" secondItem="FRx-Np-XK9" secondAttribute="trailing" constant="16" id="tRY-E2-eB7"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-OW-m6C">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-OW-m6C">
                     <rect key="frame" x="0.0" y="254" width="375" height="413"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EOS Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LN8-3r-cFX">
@@ -207,7 +208,7 @@
                                 <action selector="continueButtonPressed:" destination="-1" eventType="touchUpInside" id="5vp-Na-2UH"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="16U-yR-n8d" customClass="KAdvancedSettingsView" customModule="Trust" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="16U-yR-n8d" customClass="KAdvancedSettingsView" customModule="KyberNetwork" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="71" width="375" height="128"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>

@@ -18,8 +18,9 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
+                <outlet property="bottomPaddingConstraintForButton" destination="k3E-wn-Yny" id="rmC-Pd-KhU"/>
                 <outlet property="deleteButton" destination="GHh-yr-vlk" id="KYN-gn-PSC"/>
                 <outlet property="nameWalletTextLabel" destination="7aY-6e-4Tj" id="Gsg-GL-cbh"/>
                 <outlet property="navTitleLabel" destination="HgD-62-9w1" id="15e-JD-ICk"/>

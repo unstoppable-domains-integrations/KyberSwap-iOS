@@ -38,6 +38,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var nameTextButton: UIButton!
 
   @IBOutlet weak var tokensBalanceTableView: UITableView!
+  @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
 
   fileprivate var viewModel: KWalletBalanceViewModel
   weak var delegate: KWalletBalanceViewControllerDelegate?
@@ -81,6 +82,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   // MARK: Set up UIs
   fileprivate func setupUI() {
+    self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
     self.setupHamburgerMenu()
     self.setupWalletBalanceHeaderView()
     self.setupDisplayDataType()

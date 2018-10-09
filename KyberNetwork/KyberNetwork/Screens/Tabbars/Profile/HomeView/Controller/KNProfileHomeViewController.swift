@@ -50,6 +50,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var addWalletLabelTextField: UITextField!
   @IBOutlet weak var addWalletAddressTextField: UITextField!
   @IBOutlet weak var addWalletAddButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForSignedInView: NSLayoutConstraint!
 
   weak var delegate: KNProfileHomeViewControllerDelegate?
   fileprivate var viewModel: KNProfileHomeViewModel
@@ -115,6 +116,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUserSignedInView() {
+    self.bottomPaddingConstraintForSignedInView.constant = self.bottomPaddingSafeArea()
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")
     self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My Wallet(s)", comment: "")

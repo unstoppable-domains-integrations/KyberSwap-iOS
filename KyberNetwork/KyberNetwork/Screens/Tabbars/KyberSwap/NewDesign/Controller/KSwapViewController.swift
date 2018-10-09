@@ -50,6 +50,8 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
   @IBOutlet weak var heightConstraintForAdvacedSettingsView: NSLayoutConstraint!
 
+  @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
+
   @IBOutlet weak var continueButton: UIButton!
 
   fileprivate var estRateTimer: Timer?
@@ -108,6 +110,7 @@ class KSwapViewController: KNBaseViewController {
       opacity: 0.32,
       radius: 32
     )
+    self.advancedSettingsView.layoutSubviews()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -162,6 +165,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.walletNameLabel.text = self.viewModel.walletNameString
     self.setupTokensView()
     self.setupHamburgerMenu()

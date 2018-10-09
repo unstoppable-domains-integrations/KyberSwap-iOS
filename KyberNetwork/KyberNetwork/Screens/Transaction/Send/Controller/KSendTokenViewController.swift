@@ -47,6 +47,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var sendButton: UIButton!
 
   @IBOutlet weak var newContactButton: UIButton!
+  @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
@@ -88,6 +89,7 @@ class KSendTokenViewController: KNBaseViewController {
       opacity: 0.32,
       radius: 32
     )
+    self.advancedSettingsView.layoutSubviews()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -130,6 +132,8 @@ class KSendTokenViewController: KNBaseViewController {
     self.setupRecentContact()
     self.setupAddressTextField()
     self.setupSendButton()
+
+    self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
   }
 
   fileprivate func setupNavigationView() {
@@ -501,7 +505,7 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     case .delete(let contact):
       self.contactTableView(delete: contact)
     case .send(let address):
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+      if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
         self.viewModel.updateAddress(address)

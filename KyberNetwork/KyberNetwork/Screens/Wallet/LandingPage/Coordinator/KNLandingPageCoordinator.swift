@@ -107,6 +107,11 @@ class KNLandingPageCoordinator: Coordinator {
     // add new wallet into database in case user exits app
     let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled")
     KNWalletStorage.shared.add(wallets: [walletObject])
+    let contact = KNContact(
+      address: wallet.address.description,
+      name: name ?? "Untitled"
+    )
+    KNContactStorage.shared.update(contacts: [contact])
     self.newWallet = wallet
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
