@@ -260,7 +260,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       NSLocalizedString("add", value: "Add", comment: ""),
       for: .normal
     )
-    self.noWalletsTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", comment: "")
+    self.noWalletsTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
 
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
@@ -268,7 +268,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.walletsTableView.dataSource = self
     self.updateWalletsData()
 
-    self.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: .normal)
+    self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
     self.nextButton.rounded(radius: 4.0)
   }
 
@@ -334,21 +334,21 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   @IBAction func addWalletButtonPressed(_ sender: Any) {
     guard let label = self.walletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.input", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.wallet.label", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.wallet.label", value: "Please enter a valid wallet label", comment: ""),
         time: 1.5
       )
       return
     }
     guard let address = self.walletAddressTextField.text, Address(string: address) != nil else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.input", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.address", value: "Please enter a valid address", comment: ""),
         time: 1.5
       )
       return
     }
-    self.displayLoading(text: NSLocalizedString("checking", comment: ""), animated: true)
+    self.displayLoading(text: NSLocalizedString("checking", value: "Checking", comment: ""), animated: true)
     self.viewModel.checkWalletExist(wallet: address) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
@@ -359,8 +359,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
           self.updateWalletsData()
         } else {
           self.showWarningTopBannerMessage(
-            with: NSLocalizedString("address.existed", comment: ""),
-            message: NSLocalizedString("your.addres.has.already.added", comment: ""),
+            with: NSLocalizedString("address.existed", value: "Address existed", comment: ""),
+            message: NSLocalizedString("your.addres.has.already.added", value: "Your address has already added.", comment: ""),
             time: 1.5
           )
         }
@@ -376,8 +376,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let lastName = self.lastNameTextField.text ?? ""
     guard !firstName.isEmpty && !lastName.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.name", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.name", comment: ""),
+        with: NSLocalizedString("invalid.name", value: "Invalid name", comment: ""),
+        message: NSLocalizedString("please.enter.a.valid.name", value: "Please enter a valid name", comment: ""),
         time: 1.5
       )
       return
@@ -385,8 +385,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     // Check gender selected
     guard !self.viewModel.gender.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.gender", comment: ""),
-        message: NSLocalizedString("please.select.your.gender.to.continue", comment: ""),
+        with: NSLocalizedString("invalid.gender", value: "Invalid gender", comment: ""),
+        message: NSLocalizedString("please.select.your.gender.to.continue", value: "Please select your gender to continue", comment: ""),
         time: 1.5
       )
       return
@@ -394,8 +394,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     // Check date of birth
     guard !self.viewModel.dob.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.date.of.birth", comment: ""),
-        message: NSLocalizedString("please.select.your.date.of.birth.to.continue", comment: ""),
+        with: NSLocalizedString("invalid.date.of.birth", value: "Invalid date of birth", comment: ""),
+        message: NSLocalizedString("please.select.your.date.of.birth.to.continue", value: "Please select your date of birth to continue", comment: ""),
         time: 1.5
       )
       return
@@ -404,8 +404,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let nationality = self.nationalityTextField.text ?? ""
     guard self.viewModel.nationalities.contains(nationality) else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.nationality", comment: ""),
-        message: NSLocalizedString("please.enter.select.a.valid.nationality.to.continue", comment: ""),
+        with: NSLocalizedString("invalid.nationality", value: "Invalid nationality", comment: ""),
+        message: NSLocalizedString("please.enter.select.a.valid.nationality.to.continue", value: "Please enter/select a valid nationality to continue", comment: ""),
         time: 1.5
       )
       return
@@ -414,8 +414,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let country = self.countryOfResidenceTextField.text ?? ""
     guard self.viewModel.countries.contains(country) else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.country", comment: ""),
-        message: NSLocalizedString("please.enter.select.a.valid.country.to.continue", comment: ""),
+        with: NSLocalizedString("invalid.country", value: "Invalid country", comment: ""),
+        message: NSLocalizedString("please.enter.select.a.valid.country.to.continue", value: "Please enter/select a valid country to continue", comment: ""),
         time: 1.5
       )
       return
@@ -525,7 +525,7 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("remove", comment: "")) { (_, _) in
+    let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("remove", value: "Remove", comment: "")) { (_, _) in
       self.removeAddress(at: indexPath)
     }
     deleteAction.backgroundColor = UIColor.Kyber.fire

@@ -63,25 +63,25 @@ extension KNAppCoordinator {
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.fire
     self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("balance", comment: ""),
+      title: NSLocalizedString("balance", value: "Balance", comment: ""),
       image: UIImage(named: "tabbar_balance_icon"),
       selectedImage: UIImage(named: "tabbar_balance_icon")
     )
     self.balanceTabCoordinator.navigationController.tabBarItem.tag = 0
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("kyberswap", comment: ""),
+      title: NSLocalizedString("kyberswap", value: "KyberSwap", comment: ""),
       image: UIImage(named: "tabbar_kyberswap_icon"),
       selectedImage: UIImage(named: "tabbar_kyberswap_icon")
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
     self.profileCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("profile", comment: ""),
+      title: NSLocalizedString("profile", value: "Profile", comment: ""),
       image: UIImage(named: "tabbar_profile_icon"),
       selectedImage: UIImage(named: "tabbar_profile_icon")
     )
     self.profileCoordinator?.navigationController.tabBarItem.tag = 2
     self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("settings", comment: ""),
+      title: NSLocalizedString("settings", value: "Settings", comment: ""),
       image: UIImage(named: "tabbar_settings_icon"),
       selectedImage: UIImage(named: "tabbar_settings_icon")
     )
@@ -175,8 +175,8 @@ extension KNAppCoordinator {
     } else {
       self.balanceCoordinator?.restartNewSession(self.session)
       self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", comment: ""),
-        message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", comment: "")
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
       )
     }
   }

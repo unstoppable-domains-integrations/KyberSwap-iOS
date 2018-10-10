@@ -179,8 +179,8 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBAction func nextButtonPressed(_ sender: Any) {
     guard !self.viewModel.documentType.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.document.type", comment: ""),
-        message: NSLocalizedString("please.select.a.document.type", comment: ""),
+        with: NSLocalizedString("invalid.document.type", value: "Invalid document type", comment: ""),
+        message: NSLocalizedString("please.select.a.document.type", value: "Please select a document type", comment: ""),
         time: 1.5
       )
       return
@@ -188,24 +188,24 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let documentNumber = self.documentNumberTextField.text ?? ""
     guard !documentNumber.isEmpty else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.document.number", comment: ""),
-        message: NSLocalizedString("please.enter.your.document.number", comment: ""),
+        with: NSLocalizedString("invalid.document.number", value: "Invalid document number", comment: ""),
+        message: NSLocalizedString("please.enter.your.document.number", value: "Please enter your document number", comment: ""),
         time: 1.5
       )
       return
     }
     guard let docImage = self.documentImage else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("photo.not.found", comment: ""),
-        message: NSLocalizedString("please.provide.your.document.photo", comment: ""),
+        with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
+        message: NSLocalizedString("please.provide.your.document.photo", value: "Please provide your document photo for verification", comment: ""),
         time: 2.5
       )
       return
     }
     guard let docHoldingImage = self.holdingDocumentImage else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("photo.not.found", comment: ""),
-        message: NSLocalizedString("please.provide.a.photo.of.you.holding.your.document", comment: ""),
+        with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
+        message: NSLocalizedString("please.provide.a.photo.of.you.holding.your.document", value: "Please provide your document photo for verification", comment: ""),
         time: 2.5
       )
       return
@@ -221,17 +221,17 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate func openImagePickerController() {
     let alertController = UIAlertController(
-      title: NSLocalizedString("choose.method", comment: ""),
-      message: NSLocalizedString("where.do.you.want.to.get.your.image", comment: ""),
+      title: NSLocalizedString("choose.method", value: "Choose Method", comment: ""),
+      message: NSLocalizedString("where.do.you.want.to.get.your.image", value: "Where do you want to get your image?", comment: ""),
       preferredStyle: .alert
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("camera", comment: ""), style: .default, handler: { _ in
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("camera", value: "Camera", comment: ""), style: .default, handler: { _ in
       self.openImagePickerCamera()
     }))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("photo.library", comment: ""), style: .default, handler: { _ in
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("photo.library", value: "Photo Library", comment: ""), style: .default, handler: { _ in
       self.openImagePickerPhotoLibrary()
     }))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .destructive, handler: nil))
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .destructive, handler: nil))
     self.present(alertController, animated: true, completion: nil)
   }
 

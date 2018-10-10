@@ -359,7 +359,7 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
             self?.updateViewState(newState: .id)
           } else {
             self?.showWarningTopBannerMessage(
-              with: NSLocalizedString("error", comment: ""),
+              with: NSLocalizedString("error", value: "Error", comment: ""),
               message: message,
               time: 1.5
             )
@@ -403,7 +403,7 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
             self?.updateViewState(newState: .submit)
           } else {
             self?.showWarningTopBannerMessage(
-              with: NSLocalizedString("error", comment: ""),
+              with: NSLocalizedString("error", value: "Error", comment: ""),
               message: message,
               time: 1.5
             )
@@ -433,7 +433,7 @@ extension KYCFlowViewController: KYCSubmitInfoViewControllerDelegate {
             self?.updateViewState(newState: .done)
           } else {
             self?.showWarningTopBannerMessage(
-              with: NSLocalizedString("error", comment: ""),
+              with: NSLocalizedString("error", value: "Error", comment: ""),
               message: message,
               time: 1.5
             )

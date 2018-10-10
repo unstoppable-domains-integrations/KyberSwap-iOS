@@ -204,12 +204,12 @@ extension KNAppCoordinator {
     }()
     if let error = sender.object as? AnyError {
       KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("failed", comment: ""),
+        title: NSLocalizedString("failed", value: "Failed", comment: ""),
         body: error.prettyError,
         userInfo: ["transaction_hash": ""]
       )
       self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("failed", comment: ""),
+        with: NSLocalizedString("failed", value: "Failed", comment: ""),
         message: error.prettyError,
         time: 3.0
       )
@@ -221,29 +221,29 @@ extension KNAppCoordinator {
     if trans.state == .pending {
       // just sent
       self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("broadcasted", comment: ""),
+        with: NSLocalizedString("broadcasted", value: "Broadcasted", comment: ""),
         message: details,
         time: 3.0
       )
     } else if trans.state == .completed {
       self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("success", comment: ""),
+        with: NSLocalizedString("success", value: "Success", comment: ""),
         message: details,
         time: 3.0
       )
       KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("success", comment: ""),
+        title: NSLocalizedString("success", value: "Success", comment: ""),
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )
     } else if trans.state == .failed || trans.state == .error {
       self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("failed", comment: ""),
+        with: NSLocalizedString("failed", value: "Failed", comment: ""),
         message: details,
         time: 3.0
       )
       KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("failed", comment: ""),
+        title: NSLocalizedString("failed", value: "Failed", comment: ""),
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )

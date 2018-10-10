@@ -40,7 +40,7 @@ class KNProfileHomeViewModel: NSObject {
 
   func addWallet(label: String, address: String, completion: @escaping (Result<(Bool, String), AnyError>) -> Void) {
     guard let accessToken = self.currentUser?.accessToken else {
-      completion(.success((false, NSLocalizedString("can.not.find.your.user", comment: ""))))
+      completion(.success((false, NSLocalizedString("can.not.find.your.user", value: "Can not find your user", comment: ""))))
       return
     }
     let provider = MoyaProvider<ProfileKYCService>()

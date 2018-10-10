@@ -77,7 +77,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var balanceText: String {
-    let balanceText = NSLocalizedString("balance", comment: "")
+    let balanceText = NSLocalizedString("balance", value: "balance", comment: "")
     return "\(self.from.symbol) \(balanceText)".uppercased()
   }
 
@@ -92,7 +92,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var placeHolderEnterAddress: String {
-    return NSLocalizedString("recipient.address", comment: "")
+    return NSLocalizedString("recipient.address", value: "Recipient Address", comment: "")
   }
 
   var displayAddress: String? {
