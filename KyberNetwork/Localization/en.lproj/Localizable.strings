@@ -317,3 +317,5 @@
 "gas.fee.gwei" = "GAS fee (Gwei)";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "A small amount of ETH will be used for transaction fee";
 "not.in.contact" = "Not in contact";
+"time" = "Time";
+"price" = "Price";

@@ -10,6 +10,7 @@ PODS:
   - Crashlytics (3.10.9):
     - Fabric (~> 1.7.13)
   - CryptoSwift (0.10.0)
+  - EasyTipView (2.0.0)
   - Eureka (4.1.1)
   - Fabric (1.7.13)
   - IQKeyboardManager (6.1.1)
@@ -63,6 +64,7 @@ DEPENDENCIES:
   - Branch
   - Crashlytics
   - CryptoSwift (~> 0.10.0)
+  - EasyTipView (~> 2.0.0)
   - Eureka (~> 4.1.1)
   - Fabric
   - IQKeyboardManager
@@ -95,6 +97,7 @@ SPEC REPOS:
     - Branch
     - Crashlytics
     - CryptoSwift
+    - EasyTipView
     - Eureka
     - Fabric
     - IQKeyboardManager
@@ -144,6 +147,7 @@ SPEC CHECKSUMS:
   Branch: 65a078d26d6e546c9928d1e4d952e899cb3e0053
   Crashlytics: 55e24fc23989680285a21cb1146578d9d18e432c
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  EasyTipView: f24313ded34b20c6e63811e218016ee3baaa7ee5
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
   Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
@@ -173,6 +177,6 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
 
-PODFILE CHECKSUM: e6d93a6626ef2614dbb72e0e608770f9c2bc2bbd
+PODFILE CHECKSUM: 602008434b7a76552938d677088c0000758ee5cd
 
 COCOAPODS: 1.5.3

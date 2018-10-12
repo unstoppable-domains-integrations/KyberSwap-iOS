@@ -5,6 +5,7 @@ import Moya
 import Result
 import BigInt
 import SwiftChart
+import EasyTipView
 
 enum KNTokenChartType: Int {
   case day = 0
@@ -156,6 +157,13 @@ class KNTokenChartViewModel {
     if self.token.symbol == symbol && self.type.resolution == resolution {
       self.data.append(contentsOf: objects)
       self.data = self.data.sorted(by: { $0.time < $1.time })
+      let fromTime = self.type.fromTime(for: Int64(floor(Date().timeIntervalSince1970)))
+      for id in 0..<self.data.count where self.data[id].time >= fromTime {
+        self.data = Array(self.data.suffix(from: id)) as [KNChartObject]
+        return
+      }
+      // no data between from and to time to display
+      self.data = []
     }
   }
 
@@ -269,6 +277,30 @@ class KNTokenChartViewController: KNBaseViewController {
   @IBOutlet weak var touchPriceLabel: UILabel!
   @IBOutlet weak var leftPaddingForTouchPriceLabelConstraint: NSLayoutConstraint!
 
+  lazy var preferences: EasyTipView.Preferences = {
+    var preferences = EasyTipView.Preferences()
+    preferences.drawing.font = UIFont.Kyber.medium(with: 14)
+    preferences.drawing.textAlignment = .left
+    preferences.drawing.foregroundColor = UIColor.Kyber.mirage
+    preferences.drawing.backgroundColor = UIColor.white
+    preferences.animating.dismissDuration = 0
+    return preferences
+  }()
+
+  fileprivate var dataTipView: EasyTipView!
+  fileprivate var sourceTipView: UIView!
+  fileprivate func tipView(with value: Double, at index: Int) -> EasyTipView {
+    let formatter: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "HH:mm dd MMM yyyy"
+      return formatter
+    }()
+    let timeString = formatter.string(from: self.viewModel.data[index].date)
+    let timeText = NSLocalizedString("time", value: "Time", comment: "")
+    let priceText = NSLocalizedString("price", value: "Price", comment: "")
+    return EasyTipView(text: "\(timeText): \(timeString)\n\(priceText): \(value)")
+  }
+
   init(viewModel: KNTokenChartViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNTokenChartViewController.className, bundle: nil)
@@ -292,12 +324,11 @@ class KNTokenChartViewController: KNBaseViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if self.viewModel.isTokenSupported {
-      self.stopTimer()
-    }
+    self.stopTimer()
   }
 
   fileprivate func setupUI() {
+    self.touchPriceLabel.isHidden = true
 
     self.bottomPaddingConstraintForButton.constant = 16.0 + self.bottomPaddingSafeArea()
     let style = KNAppStyleType.current
@@ -321,7 +352,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
     self.touchPriceLabel.isHidden = true
 
-//    self.priceChart.delegate = self
+    self.priceChart.delegate = self
     self.noDataLabel.isHidden = false
 
     self.priceChart.isHidden = true
@@ -387,11 +418,12 @@ class KNTokenChartViewController: KNBaseViewController {
       self.sellButton.backgroundColor = UIColor.Kyber.merigold
       self.sendButton.isHidden = true
     }
+
+    EasyTipView.globalPreferences = self.preferences
   }
 
   fileprivate func updateDisplayDataType(_ type: KNTokenChartType) {
     self.viewModel.updateType(type)
-    self.touchPriceLabel.isHidden = true
     for button in self.dataTypeButtons {
       button.rounded(
         color: button.tag == type.rawValue ? UIColor.Kyber.shamrock : UIColor.clear,
@@ -399,6 +431,7 @@ class KNTokenChartViewController: KNBaseViewController {
         radius: 4.0
       )
     }
+    if self.dataTipView != nil { self.dataTipView.dismiss() }
     self.reloadViewDataDidUpdate()
     self.startTimer()
   }
@@ -427,9 +460,6 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
-      self.delegate?.tokenChartViewController(self, run: .back)
-    }
   }
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {
@@ -444,20 +474,20 @@ class KNTokenChartViewController: KNBaseViewController {
           } else {
             self?.noDataLabel.text = NSLocalizedString("can.not.update.data", value: "Can not update data", comment: "")
           }
-        case .failure(let error):
+        case .failure:
           self?.noDataLabel.text = NSLocalizedString("can.not.update.data", value: "Can not update data", comment: "")
-          self?.displayError(error: error)
         }
     }
   }
 
   fileprivate func startTimer() {
-    self.timer?.invalidate()
+    self.stopTimer()
     // Immediately call fetch data
     self.shouldUpdateData(for: self.viewModel.type, token: self.viewModel.token)
     self.timer = Timer.scheduledTimer(
       withTimeInterval: 60,
-      repeats: true, block: { [weak self] _ in
+      repeats: true,
+      block: { [weak self] _ in
         guard let `self` = self else { return }
         self.shouldUpdateData(for: self.viewModel.type, token: self.viewModel.token)
       }
@@ -474,11 +504,12 @@ class KNTokenChartViewController: KNBaseViewController {
       self.noDataLabel.text = NSLocalizedString("no.data.for.this.token", value: "There is no data for this token", comment: "")
       self.noDataLabel.isHidden = false
       self.priceChart.isHidden = true
+      if self.dataTipView != nil { self.dataTipView.dismiss() }
     } else {
       self.noDataLabel.isHidden = true
       self.priceChart.isHidden = false
       self.priceChart.removeAllSeries()
-      self.priceChart.add(self.viewModel.displayDataSeries)
+      self.priceChart.series = [self.viewModel.displayDataSeries]
       self.priceChart.yLabels = self.viewModel.yDoubleLables
       let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -491,6 +522,7 @@ class KNTokenChartViewController: KNBaseViewController {
         return numberFormatter.string(from: NSNumber(value: value)) ?? ""
       }
       self.priceChart.xLabels = []
+      self.priceChart.setNeedsDisplay()
     }
   }
 
@@ -517,9 +549,19 @@ extension KNTokenChartViewController: ChartDelegate {
   func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
     for (seriesId, dataId) in indexes.enumerated() {
       if let id = dataId, let value = chart.valueForSeries(seriesId, atIndex: id) {
-        self.touchPriceLabel.text = String("\(value)".prefix(10))
-        self.touchPriceLabel.isHidden = false
-        self.leftPaddingForTouchPriceLabelConstraint.constant = left
+        let minMaxValues = self.viewModel.yDoubleLables
+        let topPadding = chart.frame.height * CGFloat((minMaxValues[0] == minMaxValues[1] ? 0.0 : (minMaxValues[1] - value) / (minMaxValues[1] - minMaxValues[0])))
+        if self.dataTipView != nil { self.dataTipView.dismiss() }
+        if self.sourceTipView != nil {
+          self.sourceTipView.frame = CGRect(x: left, y: chart.frame.minY + topPadding, width: 1, height: 1)
+          self.sourceTipView.removeFromSuperview()
+        } else {
+          self.sourceTipView = UIView(frame: CGRect(x: left, y: chart.frame.minY + topPadding, width: 1, height: 1))
+          self.sourceTipView.backgroundColor = UIColor.clear
+        }
+        self.view.addSubview(self.sourceTipView)
+        self.dataTipView = self.tipView(with: value, at: id)
+        self.dataTipView.show(animated: false, forView: self.sourceTipView, withinSuperview: self.view)
         self.view.layoutIfNeeded()
       }
     }

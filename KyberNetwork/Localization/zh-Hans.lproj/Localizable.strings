@@ -317,3 +317,5 @@
 "gas.fee.gwei" = "燃料费用（Gwei）";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "少量的ETH将用于交易费用";
 "not.in.contact" = "不联系";
+"time" = "时间";
+"price" = "价钱";

@@ -56,7 +56,7 @@ class TokenObject: Object {
       self.init()
       self.name = trackerDict["name"] as? String ?? ""
       self.symbol = trackerDict["symbol"] as? String ?? ""
-      self.icon = (trackerDict["iconID"] as? String ?? "").lowercased()
+      self.icon = (trackerDict["symbol"] as? String ?? "").lowercased()
       self.contract = (trackerDict["contractAddress"] as? String ?? "").lowercased()
       self.decimals = trackerDict["decimals"] as? Int ?? 0
       self.isSupported = true
@@ -130,8 +130,7 @@ extension TokenObject {
   }
 
   var iconURL: String {
-    // Token image from Trust public repo
-    return "https://raw.githubusercontent.com/TrustWallet/tokens/master/images/\(self.contract.lowercased()).png"
+    return "https://github.com/KyberNetwork/KyberNetwork.github.io/tree/master/DesignAssets/tokens/iOS/\(self.icon).png"
   }
 
   func contains(_ text: String) -> Bool {

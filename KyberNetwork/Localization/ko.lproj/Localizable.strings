@@ -1,7 +1,7 @@
 "balance" = "Balance";
 "profile" = "Profile";
 "settings" = "Settings";
-"failed" = "Failed";
+"failed" = "실패";
 "broadcasted" = "Broadcasted";
 "try.again" = "Try Again";
 "enter.pin" = "Enter PIN";
@@ -71,10 +71,10 @@
 "sign.in" = "Sign In";
 "sign.up" = "Sign Up";
 "log.out" = "Log Out";
-"unverified" = "Unverified";
-"pending" = "Pending";
-"rejected" = "Rejected";
-"approved" = "Approved";
+"unverified" = "확인되지 않습니다";
+"pending" = "보류";
+"rejected" = "거부되었습니다";
+"approved" = "승인되었습니다";
 "unknown" = "Unknown";
 "resubmit" = "Re-submit";
 "verify" = "Verify";
@@ -317,3 +317,5 @@
 "gas.fee.gwei" = "GAS fee (Gwei)";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "A small amount of ETH will be used for transaction fee";
 "not.in.contact" = "Not in contact";
+"time" = "시각";
+"price" = "가격";
