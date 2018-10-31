@@ -21,9 +21,9 @@ platform :ios do
 
   lane :tests do
     cocoapods(use_bundle_exec: false)
-    run_tests(workspace: "Trust.xcworkspace",
+    run_tests(workspace: "KyberNetwork.xcworkspace",
               devices: ["iPhone 6s", "iPhone 6s Plus"],
-              scheme: "TrustTests",
+              scheme: "KyberNetworkTests",
               clean: false)
   end
 
@@ -39,9 +39,9 @@ platform :ios do
     git_pull
     increment_build_number()
     git_add
-    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
-    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
+    version_number = get_version_number(xcodeproj: "KyberNetwork.xcodeproj")
+    build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+    git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
@@ -59,9 +59,9 @@ platform :ios do
     increment_build_number()
     increment_version_number()
     git_add
-    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
-    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase version and build number " + build_number + " version " + version_number)
+    version_number = get_version_number(xcodeproj: "KyberNetwork.xcodeproj")
+    build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+    git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "Increase version and build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
@@ -78,7 +78,7 @@ platform :ios do
     git_pull
     cocoapods(use_bundle_exec: false)
     build_app(
-      scheme: "Trust",
+      scheme: "KyberNetwork",
       export_method: "app-store",
       export_options: {
         iCloudContainerEnvironment: "Production",
@@ -88,7 +88,7 @@ platform :ios do
         }
       }
     )
-    old_build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
+    old_build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
     notification(subtitle: "Built Successfully!", message: "Start uploading build " + old_build_number + " to TestFlight.")
     upload_to_testflight(
 	skip_waiting_for_build_processing: true,
@@ -96,9 +96,9 @@ platform :ios do
     notification(subtitle: "Uploaded Successfully!", message: "New build (" + old_build_number + ") has been uploaded successfully to TestFlight. Waiting for processing.")
     increment_build_number()
     git_add
-    version_number = get_version_number(xcodeproj: "Trust.xcodeproj")
-    build_number = get_build_number(xcodeproj: "Trust.xcodeproj")
-    git_commit(path: ["./*.plist", "Trust.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
+    version_number = get_version_number(xcodeproj: "KyberNetwork.xcodeproj")
+    build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+    git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
     push_to_git_remote(
       remote: "origin",
       local_branch: "wallet_1.0_dev",
@@ -115,7 +115,7 @@ platform :ios do
     increment_version_number(bump_type: "patch")
     cert
     match(type: "appstore", readonly: true)
-    gym(scheme: "Trust")
+    gym(scheme: "KyberNetwork")
     commit_version_bump(message: "Version Bump", force: true)
     deliver(force: true)
     push_to_git_remote
