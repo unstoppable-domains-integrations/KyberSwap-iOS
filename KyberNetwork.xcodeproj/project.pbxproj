@@ -77,6 +77,8 @@
 		25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1920FCB062007231FE /* IEOProfileViewController.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
 		253B044B21647C6F002153B6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B044A21647C6F002153B6 /* R.generated.swift */; };
+		253FD59C219048DF00CACDEB /* KYCPersonalOptionalDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FD59B219048DF00CACDEB /* KYCPersonalOptionalDataView.swift */; };
+		253FD59E219048F800CACDEB /* KYCPersonalOptionalDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253FD59D219048F800CACDEB /* KYCPersonalOptionalDataView.xib */; };
 		2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604321215C120015ECC7 /* KSwapViewController.swift */; };
 		2542604621215C120015ECC7 /* KSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2542604421215C120015ECC7 /* KSwapViewController.xib */; };
 		2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604921215C360015ECC7 /* KSwapViewModel.swift */; };
@@ -262,6 +264,10 @@
 		259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259925B220EF286500CCF2D6 /* KNListContactViewController.xib */; };
 		259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */; };
 		259925BA20EF2D4900CCF2D6 /* KNContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259925B820EF2D4900CCF2D6 /* KNContactTableViewCell.xib */; };
+		259BF5C121918B0D004D70F9 /* kyc_industry_code.json in Resources */ = {isa = PBXBuildFile; fileRef = 259BF5C021918B0D004D70F9 /* kyc_industry_code.json */; };
+		259BF5C321918B50004D70F9 /* kyc_occupation_code.json in Resources */ = {isa = PBXBuildFile; fileRef = 259BF5C221918B50004D70F9 /* kyc_occupation_code.json */; };
+		259BF5C721919491004D70F9 /* KYCSelectOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259BF5C521919491004D70F9 /* KYCSelectOptionViewController.swift */; };
+		259BF5C821919492004D70F9 /* KYCSelectOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259BF5C621919491004D70F9 /* KYCSelectOptionViewController.xib */; };
 		259EC46920E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259EC46720E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift */; };
 		259EC46A20E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259EC46820E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib */; };
 		25A293FE20CE7B5B008C6759 /* KGOHomePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A293FD20CE7B5B008C6759 /* KGOHomePageViewModel.swift */; };
@@ -807,6 +813,8 @@
 		25369F1920FCB062007231FE /* IEOProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IEOProfileViewController.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
 		253B044A21647C6F002153B6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		253FD59B219048DF00CACDEB /* KYCPersonalOptionalDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCPersonalOptionalDataView.swift; sourceTree = "<group>"; };
+		253FD59D219048F800CACDEB /* KYCPersonalOptionalDataView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCPersonalOptionalDataView.xib; sourceTree = "<group>"; };
 		2542604321215C120015ECC7 /* KSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewController.swift; sourceTree = "<group>"; };
 		2542604421215C120015ECC7 /* KSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KSwapViewController.xib; sourceTree = "<group>"; };
 		2542604921215C360015ECC7 /* KSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewModel.swift; sourceTree = "<group>"; };
@@ -994,6 +1002,10 @@
 		259925B220EF286500CCF2D6 /* KNListContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListContactViewController.xib; sourceTree = "<group>"; };
 		259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableViewCell.swift; sourceTree = "<group>"; };
 		259925B820EF2D4900CCF2D6 /* KNContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNContactTableViewCell.xib; sourceTree = "<group>"; };
+		259BF5C021918B0D004D70F9 /* kyc_industry_code.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyc_industry_code.json; sourceTree = "<group>"; };
+		259BF5C221918B50004D70F9 /* kyc_occupation_code.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyc_occupation_code.json; sourceTree = "<group>"; };
+		259BF5C521919491004D70F9 /* KYCSelectOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCSelectOptionViewController.swift; sourceTree = "<group>"; };
+		259BF5C621919491004D70F9 /* KYCSelectOptionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCSelectOptionViewController.xib; sourceTree = "<group>"; };
 		259EC46720E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHistoryTransactionCollectionViewCell.swift; sourceTree = "<group>"; };
 		259EC46820E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNHistoryTransactionCollectionViewCell.xib; sourceTree = "<group>"; };
 		25A293FD20CE7B5B008C6759 /* KGOHomePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KGOHomePageViewModel.swift; sourceTree = "<group>"; };
@@ -1864,6 +1876,15 @@
 			path = Secret;
 			sourceTree = "<group>";
 		};
+		253FD59A219048B400CACDEB /* OptionalData */ = {
+			isa = PBXGroup;
+			children = (
+				253FD59B219048DF00CACDEB /* KYCPersonalOptionalDataView.swift */,
+				253FD59D219048F800CACDEB /* KYCPersonalOptionalDataView.xib */,
+			);
+			path = OptionalData;
+			sourceTree = "<group>";
+		};
 		2542604721215C190015ECC7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2003,6 +2024,8 @@
 		254CD0F221492E210079EA7A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				259BF5C421919475004D70F9 /* SelectOption */,
+				253FD59A219048B400CACDEB /* OptionalData */,
 				25AAE7DB214BA2C200231A85 /* VerificationStatus */,
 				25AAE7D6214B8C1800231A85 /* SubmitInfo */,
 				256BD3F8214A571C0085DE55 /* IdentityInfo */,
@@ -2372,6 +2395,8 @@
 			isa = PBXGroup;
 			children = (
 				256BD3F6214A3F030085DE55 /* kyc_data.json */,
+				259BF5C021918B0D004D70F9 /* kyc_industry_code.json */,
+				259BF5C221918B50004D70F9 /* kyc_occupation_code.json */,
 			);
 			path = Resouces;
 			sourceTree = "<group>";
@@ -2768,6 +2793,15 @@
 				259925B820EF2D4900CCF2D6 /* KNContactTableViewCell.xib */,
 			);
 			path = ContactTableViewCell;
+			sourceTree = "<group>";
+		};
+		259BF5C421919475004D70F9 /* SelectOption */ = {
+			isa = PBXGroup;
+			children = (
+				259BF5C521919491004D70F9 /* KYCSelectOptionViewController.swift */,
+				259BF5C621919491004D70F9 /* KYCSelectOptionViewController.xib */,
+			);
+			path = SelectOption;
 			sourceTree = "<group>";
 		};
 		25A293F620CE7AD4008C6759 /* KyberGO */ = {
@@ -4929,6 +4963,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				259BF5C121918B0D004D70F9 /* kyc_industry_code.json in Resources */,
 				613D04891FDE15F8008DE72E /* COMODO ECC Domain Validation Secure Server CA 2.cer in Resources */,
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
@@ -4974,6 +5009,7 @@
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
+				259BF5C321918B50004D70F9 /* kyc_occupation_code.json in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */,
 				771AA966200D5F1900D25403 /* WordCollectionViewCell.xib in Resources */,
@@ -4982,6 +5018,7 @@
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
 				25369F1B20FCB062007231FE /* IEOProfileViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
+				259BF5C821919492004D70F9 /* KYCSelectOptionViewController.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
 				259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */,
@@ -5001,6 +5038,7 @@
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
+				253FD59E219048F800CACDEB /* KYCPersonalOptionalDataView.xib in Resources */,
 				25073D24211AF20D00833C92 /* Montserrat-Thin.ttf in Resources */,
 				25073D1D211AF20D00833C92 /* Montserrat-MediumItalic.ttf in Resources */,
 				25073D1C211AF20D00833C92 /* Montserrat-SemiBoldItalic.ttf in Resources */,
@@ -5501,6 +5539,7 @@
 				252B174B20D3A0CE005B282D /* KNCustomToolbar.swift in Sources */,
 				29E14FD11F7F457D00185568 /* TransactionsStorage.swift in Sources */,
 				299B5E451FD22FB40051361C /* ConfigureTransactionViewModel.swift in Sources */,
+				253FD59C219048DF00CACDEB /* KYCPersonalOptionalDataView.swift in Sources */,
 				25CC0A912057D7340009D0D5 /* KNBalanceCoordinator.swift in Sources */,
 				29F114EE1FA65DEF00114A29 /* ImportType.swift in Sources */,
 				29BDF1981FEE4DB00023A45F /* GasPriceConfiguration.swift in Sources */,
@@ -5736,6 +5775,7 @@
 				256E61ED20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.swift in Sources */,
 				255F6F2020BBC49800EF808F /* KNWalletQRCodeViewModel.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
+				259BF5C721919491004D70F9 /* KYCSelectOptionViewController.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
 				25696F6820BE9EB6002CC53F /* KNSearchTokenViewController.swift in Sources */,
 				2996F1431F6C96FF005C33AE /* ImportWalletViewModel.swift in Sources */,

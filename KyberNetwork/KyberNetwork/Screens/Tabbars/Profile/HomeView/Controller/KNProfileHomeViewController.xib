@@ -29,6 +29,7 @@
                 <outlet property="heightConstraintUserKYCStatusView" destination="yjh-TT-VtN" id="4yG-wt-ZtR"/>
                 <outlet property="heightConstraintWalletsTableView" destination="nJj-FT-TKb" id="aGy-g1-1yA"/>
                 <outlet property="logOutButton" destination="2pd-lu-Yff" id="aZu-a3-iZh"/>
+                <outlet property="maximumWalletsTextLabel" destination="K5c-EV-cl4" id="rRK-rq-wg6"/>
                 <outlet property="myProfileTextLabel" destination="IKe-v2-0WJ" id="pgc-I8-2aq"/>
                 <outlet property="myWalletsTextLabel" destination="QyU-pN-i8D" id="5ir-e2-Qne"/>
                 <outlet property="navTitleLabel" destination="BLX-sM-X5k" id="eqx-Co-SWd"/>
@@ -268,12 +269,20 @@ Increase KyberSwap's trade limits</string>
                                             <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum 3 wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5c-EV-cl4">
+                                            <rect key="frame" x="213" y="21.5" width="138" height="17.5"/>
+                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                            <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="QyU-pN-i8D" firstAttribute="centerY" secondItem="ksi-AX-JjD" secondAttribute="centerY" id="ODq-mX-mhn"/>
+                                        <constraint firstItem="K5c-EV-cl4" firstAttribute="centerY" secondItem="QyU-pN-i8D" secondAttribute="centerY" id="STV-YV-bIA"/>
                                         <constraint firstItem="QyU-pN-i8D" firstAttribute="leading" secondItem="ksi-AX-JjD" secondAttribute="leading" constant="25" id="Z9S-ei-JD8"/>
                                         <constraint firstAttribute="height" constant="60" id="wLg-pf-sb4"/>
+                                        <constraint firstAttribute="trailing" secondItem="K5c-EV-cl4" secondAttribute="trailing" constant="24" id="y56-ig-Tig"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ler-uj-x7q">

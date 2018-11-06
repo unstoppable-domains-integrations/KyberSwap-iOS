@@ -44,6 +44,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
+  @IBOutlet weak var maximumWalletsTextLabel: UILabel!
   @IBOutlet weak var heightConstraintWalletsTableView: NSLayoutConstraint!
   @IBOutlet weak var addWalletContainer: UIView!
   @IBOutlet weak var heightConstraintForAddWalletContainer: NSLayoutConstraint!
@@ -141,7 +142,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.userKYCStatusLabel.rounded(radius: 2.0)
 
     self.noWalletTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
-
+    self.maximumWalletsTextLabel.text = NSLocalizedString("maximum.three.wallets", value: "Maximum 3 wallets", comment: "")
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
     self.walletsTableView.delegate = self

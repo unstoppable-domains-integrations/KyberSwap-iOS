@@ -554,5 +554,22 @@
                 "YEMEN",
                 "ZAMBIA",
                 "ZIMBABWE"
+  ],
+  "proof_address": [
+    "Bank statement",
+    "Correspondences from Bank",
+    "Polling vote",
+    "Tax return",
+    "Singapore National Registration Identity Card (NRIC)",
+    "Correspondence from a government agency",
+    "National Identity Card with residential address"
+  ],
+  "source_funds": [
+    "Salary",
+    "Inheritance",
+    "Loan",
+    "Lottery / Windfall",
+    "Rental Income",
+    "Business Revenue"
   ]
 }

@@ -162,7 +162,8 @@ extension KNProfileHomeCoordinator {
     }
     let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
     let redirectLink = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
-    if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?lang=\(Locale.current.kyberSupportedLang)&client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
+    //lang=\(Locale.current.kyberSupportedLang)&
+    if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
       // Clear old session
       URLCache.shared.removeAllCachedResponses()
       URLCache.shared.diskCapacity = 0
