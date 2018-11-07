@@ -12,7 +12,19 @@ import MobileCoreServices
 import AVFoundation
 
 enum KYCPersonalInfoViewEvent {
-  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, country: String, wallets: [(String, String)])
+  //swiftlint:disable line_length
+  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, wallets: [(String, String)], residentAddr: String, countryOfResidence: String, city: String, postalCode: String, proofAddrType: String, proofAddrImage: UIImage, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?)
+}
+
+enum KYCPersonalPickerType {
+  case unknown
+  case nationality
+  case countryOfResidence
+  case proofOfAddressType
+  case sourceFund
+  case occupationCode
+  case industryCode
+  case taxCountry
 }
 
 class KYCPersonalInfoViewModel {
@@ -121,6 +133,7 @@ protocol KYCPersonalInfoViewControllerDelegate: class {
   func kycPersonalInfoViewController(_ controller: KYCPersonalInfoViewController, run event: KYCPersonalInfoViewEvent)
 }
 
+//swiftlint:disable type_body_length
 class KYCPersonalInfoViewController: KNBaseViewController {
 
   let kWalletTableViewCellID = "kWalletTableViewCellID"
@@ -176,7 +189,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   fileprivate var fakeTextField: UITextField = UITextField(frame: CGRect.zero)
   fileprivate var currentValue: String = ""
-  fileprivate var dataPickerType: Int = 0
+  fileprivate var dataPickerType: KYCPersonalPickerType = .unknown
   fileprivate var pickerViewController: KYCSelectOptionViewController?
 
   lazy var datePicker: UIDatePicker = {
@@ -195,23 +208,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     return picker
   }()
 
-  lazy var nationalityPickerView: UIPickerView = {
-    let pickerView = UIPickerView(frame: CGRect.zero)
-    pickerView.showsSelectionIndicator = true
-    pickerView.dataSource = self
-    pickerView.delegate = self
-    return pickerView
-  }()
-
-  lazy var countryPickerView: UIPickerView = {
-    let pickerView = UIPickerView(frame: CGRect.zero)
-    pickerView.showsSelectionIndicator = true
-    pickerView.dataSource = self
-    pickerView.delegate = self
-    return pickerView
-  }()
-
-  lazy var proofAddressDocTypePickerView: UIPickerView = {
+  lazy var pickerView: UIPickerView = {
     let pickerView = UIPickerView(frame: CGRect.zero)
     pickerView.showsSelectionIndicator = true
     pickerView.dataSource = self
@@ -407,38 +404,28 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func nationalityButtonPressed(_ sender: Any) {
-    self.dataPickerType = 0
-    self.fakeTextField.inputView = self.countryPickerView
-
-    self.fakeTextField.inputAccessoryView = self.toolBar
-    self.currentValue = self.nationalityTextField.text ?? ""
-    if let id = self.viewModel.nationalities.index(of: self.currentValue) {
-      self.currentValue = self.viewModel.nationalities[id]
-    } else {
-      self.currentValue = self.viewModel.nationalities[0]
-    }
-
-    self.fakeTextField.becomeFirstResponder()
+    self.dataPickerType = .nationality
+    self.pickerViewController = nil
+    self.pickerViewController = KYCSelectOptionViewController(
+      title: NSLocalizedString("nationality", value: "Nationality", comment: ""), dataSources: self.viewModel.nationalities
+    )
+    self.pickerViewController?.delegate = self
+    self.parent?.navigationController?.pushViewController(self.pickerViewController!, animated: true)
   }
 
   @IBAction func countryOfResidenceButtonPressed(_ sender: Any) {
-    self.dataPickerType = 1
-    self.fakeTextField.inputView = self.countryPickerView
-
-    self.fakeTextField.inputAccessoryView = self.toolBar
-    self.currentValue = self.countryOfResidenceTextField.text ?? ""
-    if let id = self.viewModel.countries.index(of: self.currentValue) {
-      self.currentValue = self.viewModel.countries[id]
-    } else {
-      self.currentValue = self.viewModel.countries[0]
-    }
-
-    self.fakeTextField.becomeFirstResponder()
+    self.dataPickerType = .countryOfResidence
+    self.pickerViewController = nil
+    self.pickerViewController = KYCSelectOptionViewController(
+      title: NSLocalizedString("country.of.residence", value: "Country of Residence", comment: ""), dataSources: self.viewModel.countries
+    )
+    self.pickerViewController?.delegate = self
+    self.parent?.navigationController?.pushViewController(self.pickerViewController!, animated: true)
   }
 
   @IBAction func proofAddressChooseDocumentTypeButtonPressed(_ sender: Any) {
-    self.dataPickerType = 2
-    self.fakeTextField.inputView = self.countryPickerView
+    self.dataPickerType = .proofOfAddressType
+    self.fakeTextField.inputView = self.pickerView
 
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.proofAddressDocTypeTextField.text ?? ""
@@ -501,6 +488,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
   }
 
+  //swiftlint:disable function_body_length
   @IBAction func nextButtonPressed(_ sender: Any) {
     // Check first + last name
     let firstName = self.firstNameTextField.text ?? ""
@@ -542,11 +530,97 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       return
     }
     // Check country of residences
-    let country = self.countryOfResidenceTextField.text ?? ""
-    guard self.viewModel.countries.contains(country) else {
+    let residenceAddr: String = self.residentialAddressTextField.text ?? ""
+    let countryOfResidence = self.countryOfResidenceTextField.text ?? ""
+    guard self.viewModel.countries.contains(countryOfResidence) else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.country", value: "Invalid country", comment: ""),
         message: NSLocalizedString("please.enter.select.a.valid.country.to.continue", value: "Please enter/select a valid country to continue", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let city: String = self.cityTextField.text ?? ""
+    if city.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.city", value: "Invalid city", comment: ""),
+        message: NSLocalizedString("please.enter.your.city", value: "Please enter your city", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let postalCode: String = self.postalCodeTextField.text ?? ""
+    if postalCode.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.postal.code", value: "Invalid Postal / Zip Code", comment: ""),
+        message: NSLocalizedString("please.enter.postal.zip.code", value: "Please enter your Postal/Zip Code", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let proofAddressType = self.proofAddressDocTypeTextField.text ?? ""
+    if !self.viewModel.proofOfAddressTypes.contains(proofAddressType) {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.proof.of.address.type", value: "Invalid proof of address type", comment: ""),
+        message: NSLocalizedString("please.enter.select.a.valid.proof.of.address.type", value: "Please enter/select a valid proof of address type", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    guard let proofAddressImage = self.proofAddressImage else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.proof.address.photo", value: "Invalid proof of address photo", comment: ""),
+        message: NSLocalizedString("please.provide.your.proof.of.address.photo", value: "Please provide your proof of address photo", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let sourceFund = self.primarySourceOfFundTextField.text ?? ""
+    if sourceFund.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.source.of.funds", value: "Invalid Source of Funds", comment: ""),
+        message: NSLocalizedString("please.provide.a.valid.source.of.funds", value: "Please provide a valid Source of Funds", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let occupationCode = self.optionalDataView.getOccupationCode()
+    if !occupationCode.isEmpty && self.viewModel.occupationCodes[occupationCode] == nil {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.occupation.code", value: "Invalid occupation code", comment: ""),
+        message: NSLocalizedString("please.check.your.occupation.code", value: "Please check your occupation code", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let industryCode = self.optionalDataView.getIndustryCode()
+    if !industryCode.isEmpty && self.viewModel.industryCodes[industryCode] == nil {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.industry.code", value: "Invalid industry code", comment: ""),
+        message: NSLocalizedString("please.check.your.industry.code", value: "Please check your industry code", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let taxCountry = self.optionalDataView.getTaxCountry()
+    if !taxCountry.isEmpty && !self.viewModel.countries.contains(taxCountry) {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.tax.residency.country", value: "Invalid Tax Residency country", comment: ""),
+        message: NSLocalizedString("please.check.your.tax.residency.country", value: "Please check your Tax Residency country", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    let taxIDNumber: String? = {
+      if !self.optionalDataView.getHasTaxIDNumber() {
+        return nil
+      }
+      return self.optionalDataView.getTaxIDNumber()
+    }()
+    if let taxID = taxIDNumber, taxID.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.tax.id.number", value: "Invalid Tax ID Number", comment: ""),
+        message: NSLocalizedString("please.provide.your.tax.id.number", value: "Please provide your Tax ID Number", comment: ""),
         time: 1.5
       )
       return
@@ -557,8 +631,18 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       gender: self.viewModel.gender,
       dob: self.viewModel.dob,
       nationality: nationality,
-      country: country,
-      wallets: self.viewModel.wallets
+      wallets: self.viewModel.wallets,
+      residentAddr: residenceAddr,
+      countryOfResidence: countryOfResidence,
+      city: city,
+      postalCode: postalCode,
+      proofAddrType: proofAddressType,
+      proofAddrImage: proofAddressImage,
+      sourceFund: sourceFund,
+      occupationCode: occupationCode.isEmpty ? nil : occupationCode,
+      industryCode: industryCode.isEmpty ? nil : industryCode,
+      taxCountry: taxCountry.isEmpty ? nil : taxCountry,
+      taxIDNumber: taxIDNumber
     )
     self.delegate?.kycPersonalInfoViewController(self, run: nextEvent)
   }
@@ -573,13 +657,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   @objc func countryPickerDonePressed(_ sender: Any) {
     self.fakeTextField.resignFirstResponder()
-    if self.dataPickerType == 0 {
-      self.nationalityTextField.text = self.currentValue
-    } else if self.dataPickerType == 1 {
-      self.countryOfResidenceTextField.text = self.currentValue
-    } else if self.dataPickerType == 2 {
+    if self.dataPickerType == .proofOfAddressType {
       self.proofAddressDocTypeTextField.text = self.currentValue
-    } else if self.dataPickerType == 3 {
+    } else if self.dataPickerType == .sourceFund {
       self.primarySourceOfFundTextField.text = self.currentValue
     }
   }
@@ -589,8 +669,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func primarySourceOfFundButtonPressed(_ sender: Any) {
-    self.dataPickerType = 3
-    self.fakeTextField.inputView = self.countryPickerView
+    self.dataPickerType = .sourceFund
+    self.fakeTextField.inputView = self.pickerView
 
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.primarySourceOfFundTextField.text ?? ""
@@ -624,7 +704,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
   }
 
-  func updatePersonalInfoView(with details: IEOUserKYCDetails) {
+  func updatePersonalInfoView(with details: IEOUserKYCDetails2) {
     let dateFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd"
@@ -640,14 +720,22 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       self.dateOfBirthTextField.text = details.dob
       self.datePicker.setDate(dob, animated: false)
     }
-    if let nationalID = self.viewModel.nationalities.index(of: details.nationality) {
-      self.nationalityTextField.text = details.nationality
-      self.nationalityPickerView.selectRow(nationalID, inComponent: 0, animated: false)
+    self.nationalityTextField.text = details.nationality
+    self.residentialAddressTextField.text = details.residentialAddress
+    self.countryOfResidenceTextField.text = details.country
+    self.cityTextField.text = details.city
+    self.postalCodeTextField.text = details.zipCode
+    self.proofAddressDocTypeTextField.text = details.documentProofAddress
+
+    let base64Prefix = "data:image/jpeg;base64,"
+    if details.photoProofAddress.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)),
+      let image = UIImage(data: data) {
+      self.updateProofAddressDocumentType(with: image)
     }
-    if let countryID = self.viewModel.countries.index(of: details.country) {
-      self.countryOfResidenceTextField.text = details.country
-      self.countryPickerView.selectRow(countryID, inComponent: 0, animated: false)
-    }
+
+    self.primarySourceOfFundTextField.text = details.sourceFund
+    self.optionalDataView.updateOptionalData(with: details)
     self.view.layoutIfNeeded()
   }
 
@@ -755,13 +843,9 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
 
 extension KYCPersonalInfoViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    if self.dataPickerType == 0 {
-      self.currentValue = self.viewModel.nationalities[row]
-    } else if self.dataPickerType == 1 {
-      self.currentValue = self.viewModel.countries[row]
-    } else if self.dataPickerType == 2 {
+    if self.dataPickerType == .proofOfAddressType {
       self.currentValue = self.viewModel.proofOfAddressTypes[row]
-    } else if self.dataPickerType == 3 {
+    } else if self.dataPickerType == .sourceFund {
       self.currentValue = self.viewModel.sourceFunds[row]
     }
   }
@@ -773,13 +857,9 @@ extension KYCPersonalInfoViewController: UIPickerViewDataSource {
   }
 
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    if self.dataPickerType == 0 {
-      return self.viewModel.nationalities.count
-    } else if self.dataPickerType == 1 {
-      return self.viewModel.countries.count
-    } else if self.dataPickerType == 2 {
+    if self.dataPickerType == .proofOfAddressType {
       return self.viewModel.proofOfAddressTypes.count
-    } else if self.dataPickerType == 3 {
+    } else if self.dataPickerType == .sourceFund {
       return self.viewModel.sourceFunds.count
     }
     return 0
@@ -795,13 +875,9 @@ extension KYCPersonalInfoViewController: UIPickerViewDataSource {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
     ]
     let string: String = {
-      if self.dataPickerType == 0 {
-        return self.viewModel.nationalities[row]
-      } else if self.dataPickerType == 1 {
-        return self.viewModel.countries[row]
-      } else if self.dataPickerType == 2 {
+      if self.dataPickerType == .proofOfAddressType {
         return self.viewModel.proofOfAddressTypes[row]
-      } else if self.dataPickerType == 3 {
+      } else if self.dataPickerType == .sourceFund {
         return self.viewModel.sourceFunds[row]
       }
       return ""
@@ -870,7 +946,8 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
   }
 
   func kycPersonalOptionalDataViewOccupationPressed(current: String) {
-    self.dataPickerType = 5
+    self.dataPickerType = .occupationCode
+    self.pickerViewController = nil
     self.pickerViewController = KYCSelectOptionViewController(
       title: NSLocalizedString("occupation.code", value: "Occupation code", comment: ""), dataSources: Array(self.viewModel.occupationCodes.values)
     )
@@ -879,7 +956,8 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
   }
 
   func kycPersonalOptionalDataViewIndustryPressed(current: String) {
-    self.dataPickerType = 6
+    self.dataPickerType = .industryCode
+    self.pickerViewController = nil
     self.pickerViewController = KYCSelectOptionViewController(
       title: NSLocalizedString("industry.code", value: "Industry code", comment: ""), dataSources: Array(self.viewModel.industryCodes.values)
     )
@@ -888,9 +966,10 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
   }
 
   func kycPersonalOptionalDataViewCountryPressed(current: String) {
-    self.dataPickerType = 7
+    self.dataPickerType = .taxCountry
+    self.pickerViewController = nil
     self.pickerViewController = KYCSelectOptionViewController(
-      title: NSLocalizedString("country", value: "Country", comment: ""), dataSources: self.viewModel.countries
+      title: NSLocalizedString("tax.residency.country", value: "Tax Residency Country", comment: ""), dataSources: self.viewModel.countries
     )
     self.pickerViewController?.delegate = self
     self.parent?.navigationController?.pushViewController(self.pickerViewController!, animated: true)
@@ -904,16 +983,20 @@ extension KYCPersonalInfoViewController: KYCSelectOptionViewControllerDelegate {
 
   func kycSelectOptionViewController(_ controller: KYCSelectOptionViewController, didSelect data: String) {
     controller.navigationController?.popViewController(animated: true, completion: {
-      if self.dataPickerType == 5 {
+      switch self.dataPickerType {
+      case .nationality: self.nationalityTextField.text = data
+      case .countryOfResidence: self.countryOfResidenceTextField.text = data
+      case .occupationCode:
         for (key, value) in self.viewModel.occupationCodes where value == data {
           self.optionalDataView.updateOccupationCodeData(key)
         }
-      } else if self.dataPickerType == 6 {
+      case .industryCode:
         for (key, value) in self.viewModel.industryCodes where value == data {
           self.optionalDataView.updateIndustryCodeData(key)
         }
-      } else if self.dataPickerType == 7 {
+      case .taxCountry:
         self.optionalDataView.updateCountryData(data)
+      default: break
       }
     })
   }

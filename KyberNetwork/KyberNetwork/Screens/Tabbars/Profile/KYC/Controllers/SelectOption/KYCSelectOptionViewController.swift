@@ -16,6 +16,7 @@ class KYCSelectOptionViewController: UIViewController {
 
   @IBOutlet weak var noMatchingDataLabel: UILabel!
   @IBOutlet weak var dataTableView: UITableView!
+  @IBOutlet weak var tableViewBottomPaddingConstraint: NSLayoutConstraint!
 
   fileprivate let dataSources: [String]
   fileprivate var displayData: [String] = []
@@ -34,6 +35,23 @@ class KYCSelectOptionViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name.UIKeyboardDidShow,
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name.UIKeyboardDidHide,
+      object: nil
+    )
+  }
+
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.selectTitleLabel.text = self.titleText
@@ -46,10 +64,46 @@ class KYCSelectOptionViewController: UIViewController {
 
     self.searchTextField.delegate = self
     self.noMatchingDataLabel.isHidden = true
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.keyboardDidShow(_:)),
+      name: NSNotification.Name.UIKeyboardDidShow,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.keyboardDidHide(_:)),
+      name: NSNotification.Name.UIKeyboardDidHide,
+      object: nil
+    )
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.view.endEditing(true)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.kycSelectOptionViewControllerShouldBack(self)
+  }
+
+  @objc func keyboardDidShow(_ sender: Notification) {
+    if let keyboardSize = (sender.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+      UIView.animate(
+      withDuration: 0.25) {
+        self.tableViewBottomPaddingConstraint.constant = keyboardSize.height
+        self.view.updateConstraints()
+      }
+    }
+  }
+
+  @objc func keyboardDidHide(_ sender: Notification) {
+    UIView.animate(
+    withDuration: 0.25) {
+      self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
+      self.view.updateConstraints()
+    }
   }
 
   fileprivate func updateViewSearchDataDidChange() {

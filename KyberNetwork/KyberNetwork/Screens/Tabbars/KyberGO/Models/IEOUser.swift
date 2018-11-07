@@ -40,7 +40,7 @@ class IEOUser: Object {
     self.updateKYCStep(step)
 
     if let kycInfoDict = dict["kyc_info"] as? JSONDictionary {
-      let kycObject = IEOUserKYCDetails(userID: self.userID, dict: kycInfoDict)
+      let kycObject = IEOUserKYCDetails2(userID: self.userID, dict: kycInfoDict)
       IEOUserStorage.shared.updateKYCDetails(object: kycObject)
     } else {
       IEOUserStorage.shared.deleteKYCDetails(for: self.userID)
@@ -70,7 +70,7 @@ class IEOUser: Object {
     return UserDefaults.standard.object(forKey: "kUserKYCStepKey_\(self.userID)") as? Int ?? 1
   }
 
-  var kycDetails: IEOUserKYCDetails? {
+  var kycDetails: IEOUserKYCDetails2? {
     return IEOUserStorage.shared.getKYCDetails(for: self.userID)
   }
 
@@ -104,6 +104,67 @@ class IEOUserKYCDetails: Object {
     self.documentType = dict["document_type"] as? String ?? ""
     self.documentNumber = dict["document_id"] as? String ?? ""
     self.documentPhoto = dict["photo_identity_doc"] as? String ?? ""
+    self.documentSelfiePhoto = dict["photo_selfie"] as? String ?? ""
+  }
+
+  override class func primaryKey() -> String? {
+    return "userID"
+  }
+}
+
+class IEOUserKYCDetails2: Object {
+  @objc dynamic var userID: Int = -1
+  @objc dynamic var firstName: String = ""
+  @objc dynamic var lastName: String = ""
+  @objc dynamic var nationality: String = ""
+  @objc dynamic var residentialAddress: String = ""
+  @objc dynamic var country: String = ""
+  @objc dynamic var city: String = ""
+  @objc dynamic var zipCode: String = ""
+  @objc dynamic var documentProofAddress: String = ""
+  @objc dynamic var photoProofAddress: String = ""
+  @objc dynamic var sourceFund: String = ""
+  @objc dynamic var occupationCode: String = ""
+  @objc dynamic var industryCode: String = ""
+  @objc dynamic var taxResidencyCountry: String = ""
+  @objc dynamic var haveTaxIndentification: Bool = false
+  @objc dynamic var taxIDNUmber: String = ""
+  @objc dynamic var gender: Bool = true
+  @objc dynamic var dob: String = ""
+  @objc dynamic var documentType: String = ""
+  @objc dynamic var documentNumber: String = ""
+  @objc dynamic var documentPhotoFront: String = ""
+  @objc dynamic var documentPhotoBack: String = ""
+  @objc dynamic var documentIssueDate: String = ""
+  @objc dynamic var documentExpiryDate: String = ""
+  @objc dynamic var documentSelfiePhoto: String = ""
+
+  convenience init(userID: Int, dict: JSONDictionary) {
+    self.init()
+    self.userID = userID
+    self.firstName = dict["first_name"] as? String ?? ""
+    self.lastName = dict["last_name"] as? String ?? ""
+    self.nationality = dict["nationality"] as? String ?? ""
+    self.residentialAddress = dict["residential_address"] as? String ?? ""
+    self.country = dict["country"] as? String ?? ""
+    self.city = dict["country"] as? String ?? ""
+    self.zipCode = dict["zip_code"] as? String ?? ""
+    self.documentProofAddress = dict["document_proof_address"] as? String ?? ""
+    self.photoProofAddress = dict["photo_proof_address"] as? String ?? ""
+    self.sourceFund = dict["source_fund"] as? String ?? ""
+    self.occupationCode = dict["occupation_code"] as? String ?? ""
+    self.industryCode = dict["industry_code"] as? String ?? ""
+    self.taxResidencyCountry = dict["tax_residency_country"] as? String ?? ""
+    self.haveTaxIndentification = dict["have_tax_indentification"] as? Bool ?? false
+    self.taxIDNUmber = dict["tax_indentification_number"] as? String ?? ""
+    self.gender = dict["gender"] as? Bool ?? true
+    self.dob = dict["dob"] as? String ?? ""
+    self.documentType = dict["document_type"] as? String ?? ""
+    self.documentNumber = dict["document_id"] as? String ?? ""
+    self.documentPhotoFront = dict["photo_identity_front_side"] as? String ?? ""
+    self.documentPhotoBack = dict["photo_identity_back_side"] as? String ?? ""
+    self.documentIssueDate = dict["document_issue_date"] as? String ?? ""
+    self.documentExpiryDate = dict["document_expiry_date"] as? String ?? ""
     self.documentSelfiePhoto = dict["photo_selfie"] as? String ?? ""
   }
 

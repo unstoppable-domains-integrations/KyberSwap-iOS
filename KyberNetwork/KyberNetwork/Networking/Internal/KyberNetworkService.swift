@@ -240,8 +240,8 @@ extension KyberGOService: TargetType {
 }
 
 enum ProfileKYCService {
-  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, country: String, wallets: [(String, String)])
-  case identityInfo(accessToken: String, documentType: String, documentID: String, docImage: Data, docHoldingImage: Data)
+  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, wallets: [(String, String)], residentialAddress: String, country: String, city: String, zipCode: String, proofAddress: String, proofAddressImageData: Data, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?)
+  case identityInfo(accessToken: String, documentType: String, documentID: String, issueDate: String?, expiryDate: String?, docFrontImage: Data, docBackImage: Data, docHoldingImage: Data)
   case submitKYC(accessToken: String)
   case userWallets(accessToken: String)
   case checkWalletExist(accessToken: String, wallet: String)
@@ -271,7 +271,8 @@ extension ProfileKYCService: TargetType {
   var method: Moya.Method { return .post }
   var task: Task {
     switch self {
-    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let country, let wallets):
+    //swiftlint:disable line_length
+    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let wallets, let residentialAddress, let country, let city, let zipCode, let proofAddress, let proofAddressImageData, let sourceFund, let occupationCode, let industryCode, let taxCountry, let taxIDNo):
       let arrJSON: String = {
         if wallets.isEmpty { return "[]" }
         var string = "["
@@ -284,24 +285,44 @@ extension ProfileKYCService: TargetType {
         string += "]"
         return string
       }()
-      let json: JSONDictionary = [
+      var json: JSONDictionary = [
         "access_token": accessToken,
         "first_name": firstName,
         "last_name": lastName,
         "gender": gender,
         "dob": dob,
         "nationality": nationality,
-        "country": country,
         "wallets": arrJSON,
+        "residential_address": residentialAddress,
+        "country": country,
+        "city": city,
+        "zip_code": zipCode,
+        "document_proof_address": proofAddress,
+        "photo_proof_address": "data:image/jpeg;base64,\(proofAddressImageData.base64EncodedString())",
+        "source_fund": sourceFund,
       ]
+      if let code = occupationCode {
+        json["occupation_code"] = code
+      }
+      if let code = industryCode {
+        json["industry_code"] = code
+      }
+      if let taxCountry = taxCountry {
+        json["tax_residency_country"] = taxCountry
+      }
+      json["have_tax_identification"] = taxIDNo != nil
+      json["tax_identification_number"] = taxIDNo ?? ""
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .identityInfo(let accessToken, let documentType, let documentID, let docImage, let docHoldingImage):
+    case .identityInfo(let accessToken, let documentType, let documentID, let issueDate, let expiryDate, let docFrontImage, let docBackImage, let docHoldingImage):
       let json: JSONDictionary = [
         "access_token": accessToken,
         "document_type": documentType,
         "document_id": documentID,
-        "photo_identity_doc": "data:image/jpeg;base64,\(docImage.base64EncodedString())",
+        "document_issue_date": issueDate ?? "",
+        "document_expiry_date": expiryDate ?? "",
+        "photo_identity_front_side": "data:image/jpeg;base64,\(docFrontImage.base64EncodedString())",
+        "photo_identity_back_side": "data:image/jpeg;base64,\(docBackImage.base64EncodedString())",
         "photo_selfie": "data:image/jpeg;base64,\(docHoldingImage.base64EncodedString())",
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])

@@ -15,7 +15,6 @@ class KYCPersonalOptionalDataViewModel: NSObject {
   var industryCode: String = ""
   var country: String = ""
   var hasTaxIDNumber: Bool = false
-  var taxIDNumber: String = ""
 
   var buttonTitle: String {
     if isCollapsed { return NSLocalizedString("see.more", value: "See more", comment: "") }
@@ -99,16 +98,34 @@ class KYCPersonalOptionalDataView: XibLoaderView {
   func updateCountryData(_ data: String) {
     self.countryTextField.text = data
     self.viewModel.country = data
+    self.layoutIfNeeded()
   }
 
   func updateOccupationCodeData(_ data: String) {
     self.occupationCodeTextField.text = data
     self.viewModel.occupationCode = data
+    self.layoutIfNeeded()
   }
 
   func updateIndustryCodeData(_ data: String) {
     self.industryCodeTextField.text = data
     self.viewModel.industryCode = data
+    self.layoutIfNeeded()
+  }
+
+  func updateTaxIDNumber(_ data: String?) {
+    self.viewModel.hasTaxIDNumber = data != nil
+    self.taxIDNumberTextField.text = data
+    self.updateHaveTaxIDNumber()
+    self.layoutIfNeeded()
+  }
+
+  func updateOptionalData(with details: IEOUserKYCDetails2) {
+    self.updateOccupationCodeData(details.occupationCode)
+    self.updateIndustryCodeData(details.industryCode)
+    self.updateCountryData(details.taxResidencyCountry)
+    self.updateTaxIDNumber(details.taxIDNUmber.isEmpty ? nil : details.taxIDNUmber)
+    self.layoutIfNeeded()
   }
 
   fileprivate func setupTexts() {
@@ -145,14 +162,21 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.yesButton.rounded(
       color: self.viewModel.hasTaxIDNumber ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
       width: self.viewModel.hasTaxIDNumber ? 6.0 : 1.0,
-      radius: self.yesButton.frame.height / 2.0
+      radius: 12.0
     )
     self.noButton.rounded(
       color: !self.viewModel.hasTaxIDNumber ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
       width: !self.viewModel.hasTaxIDNumber ? 6.0 : 1.0,
-      radius: self.yesButton.frame.height / 2.0
+      radius: 12.0
     )
+    self.layoutIfNeeded()
   }
+
+  func getOccupationCode() -> String { return self.viewModel.occupationCode }
+  func getIndustryCode() -> String { return self.viewModel.industryCode }
+  func getTaxCountry() -> String { return self.viewModel.country }
+  func getHasTaxIDNumber() -> Bool { return self.viewModel.hasTaxIDNumber }
+  func getTaxIDNumber() -> String { return self.taxIDNumberTextField.text ?? "" }
 
   @IBAction func actionButtonPressed(_ sender: Any) {
     self.delegate?.kycPersonalOptionalDataViewActionPressed(isCollapsed: self.viewModel.isCollapsed)

@@ -16,10 +16,23 @@ struct KYCSubmitInfoViewModel {
   let gender: String
   let dob: String
   let nationality: String
-  let residenceCountry: String
+  let residenceAddress: String
+  let country: String
+  let city: String
+  let zipCode: String
+  let proofAddress: String
+  let proofAddressImage: UIImage?
+  let sourceFund: String
+  let occupationCode: String?
+  let industryCode: String?
+  let taxResidencyCountry: String?
+  let taxIDNumber: String?
   let docType: String
   let docNum: String
-  let docImage: UIImage?
+  let issueDate: String
+  let expiryDate: String
+  let docFrontImage: UIImage?
+  let docBackImage: UIImage?
   let docHoldingImage: UIImage?
 }
 
@@ -101,11 +114,11 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.genderLabel.text = self.viewModel.gender
     self.dobLabel.text = self.viewModel.dob
     self.nationalityLabel.text = self.viewModel.nationality
-    self.residenceCountryLabel.text = self.viewModel.residenceCountry
+    self.residenceCountryLabel.text = self.viewModel.country
     self.documentTypeLabel.text = self.viewModel.docType
     self.documentNumberLabel.text = self.viewModel.docNum
 
-    if let image = self.viewModel.docImage {
+    if let image = self.viewModel.docFrontImage {
       let width = self.documentPhotoContainerView.frame.width - 48.0
       let height = image.size.height / image.size.width * width
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
@@ -124,11 +137,19 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.delegate?.submitInfoViewController(self, run: .submit)
   }
 
-  func updateSubmitInfo(with details: IEOUserKYCDetails) {
+  func updateSubmitInfo(with details: IEOUserKYCDetails2) {
     let base64Prefix = "data:image/jpeg;base64,"
-    let docImage: UIImage? = {
-      if details.documentPhoto.starts(with: base64Prefix),
-        let data = Data(base64Encoded: details.documentPhoto.substring(from: base64Prefix.count)),
+    let docFrontImage: UIImage? = {
+      if details.documentPhotoFront.starts(with: base64Prefix),
+        let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
+        let image = UIImage(data: data) {
+        return image
+      }
+      return nil
+    }()
+    let docBackImage: UIImage? = {
+      if details.documentPhotoBack.starts(with: base64Prefix),
+        let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
         let image = UIImage(data: data) {
         return image
       }
@@ -136,6 +157,12 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     }()
     let docHoldingImage: UIImage? = {
       if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+        return image
+      }
+      return nil
+    }()
+    let proofAddress: UIImage? = {
+      if details.photoProofAddress.starts(with: base64Prefix), let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
         return image
       }
       return nil
@@ -156,10 +183,23 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       gender: details.gender ? NSLocalizedString("male", value: "Male", comment: "") : NSLocalizedString("female", value: "Female", comment: ""),
       dob: details.dob,
       nationality: details.nationality,
-      residenceCountry: details.country,
+      residenceAddress: details.residentialAddress,
+      country: details.country,
+      city: details.city,
+      zipCode: details.zipCode,
+      proofAddress: details.documentProofAddress,
+      proofAddressImage: proofAddress,
+      sourceFund: details.sourceFund,
+      occupationCode: details.occupationCode,
+      industryCode: details.industryCode,
+      taxResidencyCountry: details.taxResidencyCountry,
+      taxIDNumber: details.taxIDNUmber,
       docType: docType,
       docNum: details.documentNumber,
-      docImage: docImage,
+      issueDate: details.documentIssueDate,
+      expiryDate: details.documentExpiryDate,
+      docFrontImage: docFrontImage,
+      docBackImage: docBackImage,
       docHoldingImage: docHoldingImage
     )
     self.updateViewModel(viewModel)

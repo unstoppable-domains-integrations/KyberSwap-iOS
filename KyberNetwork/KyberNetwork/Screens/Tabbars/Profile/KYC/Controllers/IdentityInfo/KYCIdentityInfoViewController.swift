@@ -6,7 +6,7 @@ import MobileCoreServices
 import AVFoundation
 
 enum KYCIdentityInfoViewEvent {
-  case next(docType: String, docNum: String, docImage: UIImage, docHoldingImage: UIImage)
+  case next(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage, docHoldingImage: UIImage)
 }
 
 protocol KYCIdentityInfoViewControllerDelegate: class {
@@ -30,12 +30,14 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBOutlet weak var driverLicenseTextLabel: UILabel!
   @IBOutlet weak var documentNumberTextField: UITextField!
 
-  fileprivate var documentImage: UIImage?
+  fileprivate var documentFrontImage: UIImage?
   @IBOutlet weak var photoOfYourDocumentTextLabel: UILabel!
   @IBOutlet weak var browseDocumentButton: UIButton!
   @IBOutlet weak var documentImageContainerView: UIView!
   @IBOutlet weak var documentImageView: UIImageView!
   @IBOutlet weak var heightConstraintForDocumentPhotoView: NSLayoutConstraint!
+
+  fileprivate var documentBackImage: UIImage?
 
   fileprivate var holdingDocumentImage: UIImage?
   @IBOutlet weak var photoHoldingDocumentTextLabel: UILabel!
@@ -49,7 +51,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   weak var delegate: KYCIdentityInfoViewControllerDelegate?
   fileprivate let viewModel: KYCIdentityInfoViewModel
 
-  fileprivate var isPickingDocumentPhoto: Bool = true
+  fileprivate var pickingDocumentType: Int = 0 // 0: front, 1: back, 2: selfie
   fileprivate var imagePicker: UIImagePickerController = UIImagePickerController()
 
   init(viewModel: KYCIdentityInfoViewModel) {
@@ -160,7 +162,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   @IBAction func browseDocumentPhotoButtonPressed(_ sender: Any) {
-    self.isPickingDocumentPhoto = true
+    self.pickingDocumentType = 0
     self.openImagePickerController()
   }
 
@@ -172,7 +174,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   @IBAction func browseHoldingDocumentPhotoButtonPressed(_ sender: Any) {
-    self.isPickingDocumentPhoto = false
+    self.pickingDocumentType = 2
     self.openImagePickerController()
   }
 
@@ -194,7 +196,15 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
-    guard let docImage = self.documentImage else {
+    guard let docFrontImage = self.documentFrontImage else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
+        message: NSLocalizedString("please.provide.your.document.photo", value: "Please provide your document photo for verification", comment: ""),
+        time: 2.5
+      )
+      return
+    }
+    guard let docBackImage = self.documentBackImage else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
         message: NSLocalizedString("please.provide.your.document.photo", value: "Please provide your document photo for verification", comment: ""),
@@ -210,10 +220,14 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
+    // TODO: Issue + Expiry + BackImage
     let nextEvent = KYCIdentityInfoViewEvent.next(
       docType: self.viewModel.documentType,
       docNum: documentNumber,
-      docImage: docImage,
+      issueDate: "",
+      expiryDate: "",
+      docFrontImage: docFrontImage,
+      docBackImage: docBackImage,
       docHoldingImage: docHoldingImage
     )
     self.delegate?.identityInfoViewController(self, run: nextEvent)
@@ -252,7 +266,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.navigationController?.present(self.imagePicker, animated: true, completion: nil)
   }
 
-  func updateIdentityInfo(with details: IEOUserKYCDetails) {
+  func updateIdentityInfo(with details: IEOUserKYCDetails2) {
     guard !details.documentType.isEmpty else { return }
     self.viewModel.updateDocumentType(details.documentType)
     self.updateDocumentTypeData()
@@ -260,10 +274,15 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.documentNumberTextField.text = details.documentNumber
 
     let base64Prefix = "data:image/jpeg;base64,"
-    if details.documentPhoto.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhoto.substring(from: base64Prefix.count)),
+    if details.documentPhotoFront.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
       let image = UIImage(data: data) {
-      self.updateDocumentPhoto(with: image)
+      self.updateDocumentPhotoFront(with: image)
+    }
+    if details.documentPhotoBack.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
+      let image = UIImage(data: data) {
+      self.updateDocumentPhotoBack(with: image)
     }
     if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
       self.updateHoldingDocumentPhoto(with: image)
@@ -271,15 +290,26 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  fileprivate func updateDocumentPhoto(with image: UIImage) {
+  fileprivate func updateDocumentPhotoFront(with image: UIImage) {
     let width = self.documentImageContainerView.frame.width - 48.0
     let height = image.size.height / image.size.width * width
     let newImage = image.resizeImage(to: CGSize(width: width, height: height))
     // maximum 1Mb
-    self.documentImage = image.compress(to: 0.99)
-    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
-    self.documentImageView.image = newImage
-    self.documentImageContainerView.isHidden = false
+    self.documentFrontImage = image.compress(to: 0.99)
+//    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+//    self.documentImageView.image = newImage
+//    self.documentImageContainerView.isHidden = false
+  }
+
+  fileprivate func updateDocumentPhotoBack(with image: UIImage) {
+    let width = self.documentImageContainerView.frame.width - 48.0
+    let height = image.size.height / image.size.width * width
+    let newImage = image.resizeImage(to: CGSize(width: width, height: height))
+    // maximum 1Mb
+    self.documentBackImage = image.compress(to: 0.99)
+//    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+//    self.documentImageView.image = newImage
+//    self.documentImageContainerView.isHidden = false
   }
 
   fileprivate func updateHoldingDocumentPhoto(with image: UIImage) {
@@ -303,13 +333,14 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
       guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
         return
       }
-      if self.isPickingDocumentPhoto {
-        self.updateDocumentPhoto(with: image)
-        self.view.layoutIfNeeded()
+      if self.pickingDocumentType == 0 {
+        self.updateDocumentPhotoFront(with: image)
+      } else if self.pickingDocumentType == 1 {
+        self.updateDocumentPhotoBack(with: image)
       } else {
         self.updateHoldingDocumentPhoto(with: image)
-        self.view.layoutIfNeeded()
       }
+      self.view.layoutIfNeeded()
     }
   }
 }

@@ -22,10 +22,23 @@ class KYCFlowViewModel {
   fileprivate(set) var gender: String = ""
   fileprivate(set) var dob: String = ""
   fileprivate(set) var nationality: String = ""
+  fileprivate(set) var residenceAddress: String = ""
   fileprivate(set) var residenceCountry: String = ""
+  fileprivate(set) var residenceCity: String = ""
+  fileprivate(set) var residencePostalCode: String = ""
+  fileprivate(set) var proofAddressType: String = ""
+  fileprivate(set) var proofAddressImage: UIImage?
+  fileprivate(set) var sourceFund: String = ""
+  fileprivate(set) var occupationCode: String?
+  fileprivate(set) var industryCode: String?
+  fileprivate(set) var taxCountry: String?
+  fileprivate(set) var taxIDNumber: String?
   fileprivate(set) var docType: String = ""
   fileprivate(set) var docNumber: String = ""
-  fileprivate(set) var docImage: UIImage!
+  fileprivate(set) var issueDate: String = ""
+  fileprivate(set) var expiryDate: String = ""
+  fileprivate(set) var docFrontImage: UIImage!
+  fileprivate(set) var docBackImage: UIImage!
   fileprivate(set) var docHoldingImage: UIImage!
 
   init(user: IEOUser) {
@@ -63,7 +76,7 @@ class KYCFlowViewModel {
     self.stepState = step
   }
 
-  func updateData(with details: IEOUserKYCDetails) {
+  func updateData(with details: IEOUserKYCDetails2) {
     guard !details.firstName.isEmpty else { return }
     self.updatePersonalInfo(
       firstName: details.firstName,
@@ -71,35 +84,68 @@ class KYCFlowViewModel {
       gender: details.gender ? "Male" : "Female",
       dob: details.dob,
       nationality: details.nationality,
-      residenceCountry: details.country
+      residenceAddress: details.residentialAddress,
+      residenceCountry: details.country,
+      residenceCity: details.city,
+      residencePostalCode: details.zipCode,
+      proofAddressType: details.documentProofAddress,
+      proofAddressImage: nil,
+      sourceFund: details.sourceFund,
+      occupationCode: details.occupationCode,
+      industryCode: details.industryCode,
+      taxCountry: details.taxResidencyCountry,
+      taxIDNumber: details.taxIDNUmber
     )
     guard !details.documentType.isEmpty else { return }
     self.docType = details.documentType
     self.docNumber = details.documentNumber
     let base64Prefix = "data:image/jpeg;base64,"
-    if details.documentPhoto.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhoto.substring(from: base64Prefix.count)),
+    if details.photoProofAddress.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)),
       let image = UIImage(data: data) {
-      self.docImage = image
+      self.proofAddressImage = image
+    }
+    if details.documentPhotoFront.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
+      let image = UIImage(data: data) {
+      self.docFrontImage = image
+    }
+    if details.documentPhotoBack.starts(with: base64Prefix),
+      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
+      let image = UIImage(data: data) {
+      self.docBackImage = image
     }
     if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
       self.docHoldingImage = image
     }
   }
 
-  func updatePersonalInfo(firstName: String, lastName: String, gender: String, dob: String, nationality: String, residenceCountry: String) {
+  func updatePersonalInfo(firstName: String, lastName: String, gender: String, dob: String, nationality: String, residenceAddress: String, residenceCountry: String, residenceCity: String, residencePostalCode: String, proofAddressType: String, proofAddressImage: UIImage?, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?) {
     self.firstName = firstName
     self.lastName = lastName
     self.gender = gender
     self.dob = dob
     self.nationality = nationality
+    self.residenceAddress = residenceAddress
     self.residenceCountry = residenceCountry
+    self.residenceCity = residenceCity
+    self.residencePostalCode = residencePostalCode
+    self.proofAddressType = proofAddressType
+    self.proofAddressImage = proofAddressImage
+    self.sourceFund = sourceFund
+    self.occupationCode = occupationCode
+    self.industryCode = industryCode
+    self.taxCountry = taxCountry
+    self.taxIDNumber = taxIDNumber
   }
 
-  func updateIdentityInfo(docType: String, docNum: String, docImage: UIImage, docHoldingImage: UIImage) {
+  func updateIdentityInfo(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage, docHoldingImage: UIImage) {
     self.docType = docType
     self.docNumber = docNum
-    self.docImage = docImage
+    self.issueDate = issueDate
+    self.expiryDate = expiryDate
+    self.docFrontImage = docFrontImage
+    self.docBackImage = docBackImage
     self.docHoldingImage = docHoldingImage
   }
 }
@@ -228,10 +274,23 @@ class KYCFlowViewController: KNBaseViewController {
         gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
-        residenceCountry: self.viewModel.residenceCountry,
+        residenceAddress: self.viewModel.residenceAddress,
+        country: self.viewModel.residenceCountry,
+        city: self.viewModel.residenceCity,
+        zipCode: self.viewModel.residencePostalCode,
+        proofAddress: self.viewModel.proofAddressType,
+        proofAddressImage: self.viewModel.proofAddressImage,
+        sourceFund: self.viewModel.sourceFund,
+        occupationCode: self.viewModel.occupationCode,
+        industryCode: self.viewModel.industryCode,
+        taxResidencyCountry: self.viewModel.taxCountry,
+        taxIDNumber: self.viewModel.taxIDNumber,
         docType: self.viewModel.localisedDocType,
         docNum: self.viewModel.docNumber,
-        docImage: self.viewModel.docImage,
+        issueDate: self.viewModel.issueDate,
+        expiryDate: self.viewModel.expiryDate,
+        docFrontImage: self.viewModel.docFrontImage,
+        docBackImage: self.viewModel.docBackImage,
         docHoldingImage: self.viewModel.docHoldingImage
       )
       let controller = KYCSubmitInfoViewController(viewModel: viewModel)
@@ -306,10 +365,23 @@ class KYCFlowViewController: KNBaseViewController {
         gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
-        residenceCountry: self.viewModel.residenceCountry,
+        residenceAddress: self.viewModel.residenceAddress,
+        country: self.viewModel.residenceCountry,
+        city: self.viewModel.residenceCity,
+        zipCode: self.viewModel.residencePostalCode,
+        proofAddress: self.viewModel.proofAddressType,
+        proofAddressImage: self.viewModel.proofAddressImage,
+        sourceFund: self.viewModel.sourceFund,
+        occupationCode: self.viewModel.occupationCode,
+        industryCode: self.viewModel.industryCode,
+        taxResidencyCountry: self.viewModel.taxCountry,
+        taxIDNumber: self.viewModel.taxIDNumber,
         docType: self.viewModel.localisedDocType,
         docNum: self.viewModel.docNumber,
-        docImage: self.viewModel.docImage,
+        issueDate: self.viewModel.issueDate,
+        expiryDate: self.viewModel.expiryDate,
+        docFrontImage: self.viewModel.docFrontImage,
+        docBackImage: self.viewModel.docBackImage,
         docHoldingImage: self.viewModel.docHoldingImage
       )
       self.submitInfoVC.updateViewModel(viewModel)
@@ -328,25 +400,46 @@ class KYCFlowViewController: KNBaseViewController {
 extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
   func kycPersonalInfoViewController(_ controller: KYCPersonalInfoViewController, run event: KYCPersonalInfoViewEvent) {
     switch event {
-    case .next(let firstName, let lastName, let gender, let dob, let nationality, let country, let wallets):
+    case .next(let firstName, let lastName, let gender, let dob, let nationality, let wallets, let residentAddr, let countryOfResidence, let city, let postalCode, let proofAddrType, let proofAddrImage, let sourceFund, let occupationCode, let industryCode, let taxCountry, let taxIDNumber):
       self.viewModel.updatePersonalInfo(
         firstName: firstName,
         lastName: lastName,
         gender: gender,
         dob: dob,
         nationality: nationality,
-        residenceCountry: country
+        residenceAddress: residentAddr,
+        residenceCountry: countryOfResidence,
+        residenceCity: city,
+        residencePostalCode: postalCode,
+        proofAddressType: proofAddrType,
+        proofAddressImage: proofAddrImage,
+        sourceFund: sourceFund,
+        occupationCode: occupationCode,
+        industryCode: industryCode,
+        taxCountry: taxCountry,
+        taxIDNumber: taxIDNumber
       )
-      guard let user = IEOUserStorage.shared.user else { return }
+      guard let user = IEOUserStorage.shared.user,
+        let data = UIImageJPEGRepresentation(proofAddrImage, 0.0) else { return }
       let service = ProfileKYCService.personalInfo(
         accessToken: user.accessToken,
         firstName: firstName,
         lastName: lastName,
-        gender: gender == "Male" ? true : false,
+        gender: gender.lowercased() == "male",
         dob: dob,
         nationality: nationality,
-        country: country,
-        wallets: wallets
+        wallets: wallets,
+        residentialAddress: residentAddr,
+        country: countryOfResidence,
+        city: city,
+        zipCode: postalCode,
+        proofAddress: proofAddrType,
+        proofAddressImageData: data,
+        sourceFund: sourceFund,
+        occupationCode: occupationCode,
+        industryCode: industryCode,
+        taxCountry: taxCountry,
+        taxIDNo: taxIDNumber
       )
       self.displayLoading()
       self.sendProfileServiceRequest(service: service) { [weak self] result in
@@ -375,21 +468,28 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
 extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
   func identityInfoViewController(_ controller: KYCIdentityInfoViewController, run event: KYCIdentityInfoViewEvent) {
     switch event {
-    case .next(let docType, let docNum, let docImage, let docHoldingImage):
+    case .next(let docType, let docNum, let issueDate, let expiryDate, let docFrontImage, let docBackImage, let docHoldingImage):
       self.viewModel.updateIdentityInfo(
         docType: docType,
         docNum: docNum,
-        docImage: docImage,
+        issueDate: issueDate,
+        expiryDate: expiryDate,
+        docFrontImage: docFrontImage,
+        docBackImage: docBackImage,
         docHoldingImage: docHoldingImage
       )
       guard let user = IEOUserStorage.shared.user else { return }
-      guard let docImageData = UIImageJPEGRepresentation(docImage, 0.0),
+      guard let docFrontImageData = UIImageJPEGRepresentation(docFrontImage, 0.0),
+        let docBackImageData = UIImageJPEGRepresentation(docBackImage, 0.0),
         let docHoldingImageData = UIImageJPEGRepresentation(docHoldingImage, 0.0) else { return }
       let service = ProfileKYCService.identityInfo(
         accessToken: user.accessToken,
         documentType: docType,
         documentID: docNum,
-        docImage: docImageData,
+        issueDate: issueDate,
+        expiryDate: expiryDate,
+        docFrontImage: docFrontImageData,
+        docBackImage: docBackImageData,
         docHoldingImage: docHoldingImageData
       )
       self.displayLoading()
