@@ -240,7 +240,14 @@ extension KyberGOService: TargetType {
 }
 
 enum ProfileKYCService {
-  case personalInfo(accessToken: String, firstName: String, lastName: String, gender: Bool, dob: String, nationality: String, wallets: [(String, String)], residentialAddress: String, country: String, city: String, zipCode: String, proofAddress: String, proofAddressImageData: Data, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?)
+  case personalInfo(
+    accessToken: String,
+    firstName: String, lastName: String, gender: Bool, dob: String, nationality: String,
+    wallets: [(String, String)],
+    residentialAddress: String, country: String, city: String, zipCode: String,
+    proofAddress: String, proofAddressImageData: Data,
+    sourceFund: String,
+    occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?)
   case identityInfo(accessToken: String, documentType: String, documentID: String, issueDate: String?, expiryDate: String?, docFrontImage: Data, docBackImage: Data, docHoldingImage: Data)
   case submitKYC(accessToken: String)
   case userWallets(accessToken: String)

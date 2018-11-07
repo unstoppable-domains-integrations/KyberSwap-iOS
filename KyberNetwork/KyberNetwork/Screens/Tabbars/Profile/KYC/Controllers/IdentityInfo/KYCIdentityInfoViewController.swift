@@ -16,8 +16,32 @@ protocol KYCIdentityInfoViewControllerDelegate: class {
 class KYCIdentityInfoViewModel {
 
   fileprivate(set) var documentType: String = ""
+  fileprivate(set) var hasIssueDate: Bool = true
+  fileprivate(set) var hasExpiryDate: Bool = true
 
   func updateDocumentType(_ type: String) { self.documentType = type }
+  func updateHasIssueDate(has: Bool) { self.hasIssueDate = has }
+  func updateHasExpiryDate(has: Bool) { self.hasExpiryDate = has }
+
+  var dontHaveIssueDateImage: UIImage? {
+    if self.hasIssueDate { return nil }
+    return UIImage(named: "check_box_icon" )
+  }
+
+  var dontHaveIssueDateButtonBorder: UIColor {
+    if self.hasIssueDate { return UIColor.Kyber.border }
+    return UIColor.clear
+  }
+
+  var dontHaveExpiryDateImage: UIImage? {
+    if self.hasExpiryDate { return nil }
+    return UIImage(named: "check_box_icon" )
+  }
+
+  var dontHaveExpiryDateButtonBorder: UIColor {
+    if self.hasExpiryDate { return UIColor.Kyber.border }
+    return UIColor.clear
+  }
 }
 
 class KYCIdentityInfoViewController: KNBaseViewController {
@@ -30,6 +54,13 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBOutlet weak var driverLicenseTextLabel: UILabel!
   @IBOutlet weak var documentNumberTextField: UITextField!
 
+  @IBOutlet weak var issueDateTextField: UITextField!
+  @IBOutlet weak var dontHaveIssueDateButton: UIButton!
+  @IBOutlet weak var dontHaveIssueDateTextLabel: UILabel!
+  @IBOutlet weak var expiryDateTextField: UITextField!
+  @IBOutlet weak var dontHaveExpiryDateButton: UIButton!
+  @IBOutlet weak var dontHaveExpiryDateTextLabel: UILabel!
+
   fileprivate var documentFrontImage: UIImage?
   @IBOutlet weak var photoOfYourDocumentTextLabel: UILabel!
   @IBOutlet weak var browseDocumentButton: UIButton!
@@ -38,6 +69,11 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBOutlet weak var heightConstraintForDocumentPhotoView: NSLayoutConstraint!
 
   fileprivate var documentBackImage: UIImage?
+  @IBOutlet weak var photoOfYourDocumentBackTextLabel: UILabel!
+  @IBOutlet weak var browserDocumentBackButton: UIButton!
+  @IBOutlet weak var documentImageBackContainerView: UIView!
+  @IBOutlet weak var documentBackImageView: UIImageView!
+  @IBOutlet weak var heightConstraintForDocumentPhotoBackView: NSLayoutConstraint!
 
   fileprivate var holdingDocumentImage: UIImage?
   @IBOutlet weak var photoHoldingDocumentTextLabel: UILabel!
@@ -53,6 +89,24 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate var pickingDocumentType: Int = 0 // 0: front, 1: back, 2: selfie
   fileprivate var imagePicker: UIImagePickerController = UIImagePickerController()
+
+  fileprivate var isDatePickerIssueDate: Bool = true
+
+  lazy var datePicker: UIDatePicker = {
+    let frame = CGRect(
+      x: 0,
+      y: self.view.frame.height - 200.0,
+      width: self.view.frame.width,
+      height: 200.0
+    )
+    let picker = UIDatePicker(frame: frame)
+    picker.datePickerMode = .date
+    picker.minimumDate = Date().addingTimeInterval(-100.0 * 360.0 * 24.0 * 60.0 * 60.0)
+    picker.maximumDate = Date().addingTimeInterval(100.0 * 360.0 * 24.0 * 60.0 * 60.0)
+    picker.addTarget(self, action: #selector(self.datePickerDidChange(_:)), for: .valueChanged)
+    picker.date = Date()
+    return picker
+  }()
 
   init(viewModel: KYCIdentityInfoViewModel) {
     self.viewModel = viewModel
@@ -71,6 +125,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.setupDocumentType()
     self.setupPhotoDocumentView()
+    self.setupPhotoDocumentBackView()
     self.setupPhotoHoldingDocumentView()
     self.setupNextButton()
   }
@@ -80,11 +135,21 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.documentNumberTextField.placeholder = NSLocalizedString("document.number", value: "Document Number", comment: "")
     self.passportTextLabel.text = NSLocalizedString("passport", value: "Passport", comment: "")
     self.driverLicenseTextLabel.text = NSLocalizedString("driving.license", value: "Driving License", comment: "")
+    self.issueDateTextField.placeholder = NSLocalizedString("issue.date", value: "Issue Date", comment: "")
+    self.expiryDateTextField.placeholder = NSLocalizedString("expiry.date", value: "Expiry Date", comment: "")
+    self.dontHaveIssueDateTextLabel.text = NSLocalizedString("i.dont.have.this", value: "I don't have this", comment: "")
+    self.dontHaveExpiryDateTextLabel.text = NSLocalizedString("i.dont.have.this", value: "I don't have this", comment: "")
+    self.dontHaveIssueDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
+    self.dontHaveExpiryDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
+    self.issueDateTextField.inputView = self.datePicker
+    self.issueDateTextField.delegate = self
+    self.expiryDateTextField.inputView = self.datePicker
+    self.expiryDateTextField.delegate = self
     self.updateDocumentTypeData()
   }
 
   fileprivate func setupPhotoDocumentView() {
-    self.photoOfYourDocumentTextLabel.text = NSLocalizedString("photo.of.your.document", value: "Photo of your Document", comment: "")
+    self.photoOfYourDocumentTextLabel.text = NSLocalizedString("photo.of.your.document.front", value: "Photo of your Document - Front", comment: "")
     self.heightConstraintForDocumentPhotoView.constant = 180.0
     self.documentImageContainerView.isHidden = true
     self.documentImageContainerView.rounded(radius: 4.0)
@@ -100,10 +165,28 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     )
   }
 
+  fileprivate func setupPhotoDocumentBackView() {
+    self.photoOfYourDocumentBackTextLabel.text = NSLocalizedString("photo.of.your.document.back", value: "Photo of your Document - Back", comment: "")
+    self.heightConstraintForDocumentPhotoBackView.constant = 180.0
+    self.documentImageBackContainerView.isHidden = true
+    self.documentImageBackContainerView.rounded(radius: 4.0)
+
+    self.browserDocumentBackButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: 4.0
+    )
+    self.browserDocumentBackButton.setTitle(
+      NSLocalizedString("browse", value: "Browse", comment: ""),
+      for: .normal
+    )
+  }
+
   fileprivate func setupPhotoHoldingDocumentView() {
     self.photoHoldingDocumentTextLabel.text = NSLocalizedString("photo.of.your.holding.document", value: "Photo of your holding Document", comment: "")
     self.holdingDocumentImageContainerView.isHidden = true
     self.holdingDocumentImageContainerView.rounded(radius: 4.0)
+    self.heightConstraintForHoldingDocumentPhotoView.constant = 0.0
 
     self.browseHoldingDocumentPhotoButton.rounded(
       color: UIColor.Kyber.border,
@@ -139,6 +222,17 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     )
   }
 
+  @objc func datePickerDidChange(_ sender: Any) {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let dob = dateFormatter.string(from: self.datePicker.date)
+    if self.isDatePickerIssueDate {
+      self.issueDateTextField.text = dob
+    } else {
+      self.expiryDateTextField.text = dob
+    }
+  }
+
   @IBAction func idButtonPressed(_ sender: Any) {
     self.viewModel.updateDocumentType(self.viewModel.documentType == "national_id" ? "" : "national_id")
     self.updateDocumentTypeData()
@@ -152,6 +246,28 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBAction func driverLicenseButtonPressed(_ sender: Any) {
     self.viewModel.updateDocumentType(self.viewModel.documentType == "driving_license" ? "" : "driving_license")
     self.updateDocumentTypeData()
+  }
+
+  @IBAction func dontHaveIssueDataButtonPressed(_ sender: Any) {
+    self.viewModel.updateHasIssueDate(has: !self.viewModel.hasIssueDate)
+    self.updateDontHaveIssueDateButton()
+  }
+
+  fileprivate func updateDontHaveIssueDateButton() {
+    self.dontHaveIssueDateButton.setImage(self.viewModel.dontHaveIssueDateImage, for: .normal)
+    self.dontHaveIssueDateButton.rounded(color: self.viewModel.dontHaveIssueDateButtonBorder, width: 1.0, radius: 2.5)
+    self.view.layoutIfNeeded()
+  }
+
+  @IBAction func dontHaveExpiryDateButtonPressed(_ sender: Any) {
+    self.viewModel.updateHasExpiryDate(has: !self.viewModel.hasExpiryDate)
+    self.updateDontHaveExpiryDateButton()
+  }
+
+  fileprivate func updateDontHaveExpiryDateButton() {
+    self.dontHaveExpiryDateButton.setImage(self.viewModel.dontHaveExpiryDateImage, for: .normal)
+    self.dontHaveExpiryDateButton.rounded(color: self.viewModel.dontHaveExpiryDateButtonBorder, width: 1.0, radius: 2.5)
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func photoOfYourDocumentInfoButtonPressed(_ sender: Any) {
@@ -171,6 +287,11 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     holdingDocumentTipsVC.modalPresentationStyle = .overFullScreen
     holdingDocumentTipsVC.modalTransitionStyle = .crossDissolve
     self.present(holdingDocumentTipsVC, animated: true, completion: nil)
+  }
+
+  @IBAction func browserDocumentBackButtonPressed(_ sender: Any) {
+    self.pickingDocumentType = 1
+    self.openImagePickerController()
   }
 
   @IBAction func browseHoldingDocumentPhotoButtonPressed(_ sender: Any) {
@@ -193,6 +314,24 @@ class KYCIdentityInfoViewController: KNBaseViewController {
         with: NSLocalizedString("invalid.document.number", value: "Invalid document number", comment: ""),
         message: NSLocalizedString("please.enter.your.document.number", value: "Please enter your document number", comment: ""),
         time: 1.5
+      )
+      return
+    }
+    let issueDate = self.viewModel.hasIssueDate ? (self.issueDateTextField.text ?? "") : ""
+    if self.viewModel.hasIssueDate && issueDate.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.issue.date", value: "Invalid Issue date", comment: ""),
+        message: NSLocalizedString("please.provide.a.valid.issue.date", value: "Please provide a valid issue date", comment: ""),
+        time: 2.5
+      )
+      return
+    }
+    let expiryDate = self.viewModel.hasExpiryDate ? (self.expiryDateTextField.text ?? "") : ""
+    if self.viewModel.hasExpiryDate && expiryDate.isEmpty {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.expiry.date", value: "Invalid Expiry date", comment: ""),
+        message: NSLocalizedString("please.provide.a.valid.expiry.date", value: "Please provide a valid expiry date", comment: ""),
+        time: 2.5
       )
       return
     }
@@ -220,12 +359,11 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
-    // TODO: Issue + Expiry + BackImage
     let nextEvent = KYCIdentityInfoViewEvent.next(
       docType: self.viewModel.documentType,
       docNum: documentNumber,
-      issueDate: "",
-      expiryDate: "",
+      issueDate: issueDate,
+      expiryDate: expiryDate,
       docFrontImage: docFrontImage,
       docBackImage: docBackImage,
       docHoldingImage: docHoldingImage
@@ -272,6 +410,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.updateDocumentTypeData()
 
     self.documentNumberTextField.text = details.documentNumber
+    self.issueDateTextField.text = details.documentIssueDate
+    self.viewModel.updateHasIssueDate(has: !details.documentIssueDate.isEmpty)
+    self.updateDontHaveIssueDateButton()
+    self.expiryDateTextField.text = details.documentExpiryDate
+    self.viewModel.updateHasExpiryDate(has: !details.documentExpiryDate.isEmpty)
+    self.updateDontHaveExpiryDateButton()
 
     let base64Prefix = "data:image/jpeg;base64,"
     if details.documentPhotoFront.starts(with: base64Prefix),
@@ -296,9 +440,9 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let newImage = image.resizeImage(to: CGSize(width: width, height: height))
     // maximum 1Mb
     self.documentFrontImage = image.compress(to: 0.99)
-//    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
-//    self.documentImageView.image = newImage
-//    self.documentImageContainerView.isHidden = false
+    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+    self.documentImageView.image = newImage
+    self.documentImageContainerView.isHidden = false
   }
 
   fileprivate func updateDocumentPhotoBack(with image: UIImage) {
@@ -307,9 +451,9 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let newImage = image.resizeImage(to: CGSize(width: width, height: height))
     // maximum 1Mb
     self.documentBackImage = image.compress(to: 0.99)
-//    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
-//    self.documentImageView.image = newImage
-//    self.documentImageContainerView.isHidden = false
+    self.heightConstraintForDocumentPhotoBackView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+    self.documentBackImageView.image = newImage
+    self.documentImageBackContainerView.isHidden = false
   }
 
   fileprivate func updateHoldingDocumentPhoto(with image: UIImage) {
@@ -342,5 +486,21 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
       }
       self.view.layoutIfNeeded()
     }
+  }
+}
+
+extension KYCIdentityInfoViewController: UITextFieldDelegate {
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.isDatePickerIssueDate = textField == self.issueDateTextField
+    if let text = textField.text {
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "yyyy-MM-dd"
+      if let date = dateFormatter.date(from: text) {
+        self.datePicker.setDate(date, animated: false)
+      }
+    } else {
+      self.datePicker.setDate(Date(), animated: false)
+    }
+    self.datePickerDidChange(textField)
   }
 }

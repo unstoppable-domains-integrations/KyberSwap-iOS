@@ -361,3 +361,7 @@
 "please.check.your.tax.residency.country" = "Please check your Tax Residency country";
 "invalid.tax.id.number" = "Invalid Tax ID Number";
 "please.provide.your.tax.id.number" = "Please provide your Tax ID Number";
+"invalid.issue.date" = "Invalid Issue date";
+"please.provide.a.valid.issue.date" = "Please provide a valid issue date";
+"invalid.expiry.date" = "Invalid Expiry date";
+"please.provide.a.valid.expiry.date" = "Please provide a valid expiry date";
