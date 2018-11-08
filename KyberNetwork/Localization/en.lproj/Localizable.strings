@@ -365,3 +365,7 @@
 "please.provide.a.valid.issue.date" = "Please provide a valid issue date";
 "invalid.expiry.date" = "Invalid Expiry date";
 "please.provide.a.valid.expiry.date" = "Please provide a valid expiry date";
+"photo.of.your.document.front" = "Photo of your Document - Front";
+"photo.of.your.document.back" = "Photo of your Document - Back";
+"expiry.date" = "Expiry date";
+"issue.date" = "Issue date";

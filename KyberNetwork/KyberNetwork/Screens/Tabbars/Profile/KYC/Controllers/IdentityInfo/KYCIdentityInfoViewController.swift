@@ -186,7 +186,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.photoHoldingDocumentTextLabel.text = NSLocalizedString("photo.of.your.holding.document", value: "Photo of your holding Document", comment: "")
     self.holdingDocumentImageContainerView.isHidden = true
     self.holdingDocumentImageContainerView.rounded(radius: 4.0)
-    self.heightConstraintForHoldingDocumentPhotoView.constant = 0.0
+    self.heightConstraintForHoldingDocumentPhotoView.constant = 48.0
 
     self.browseHoldingDocumentPhotoButton.rounded(
       color: UIColor.Kyber.border,
