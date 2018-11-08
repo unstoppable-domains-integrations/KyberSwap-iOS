@@ -303,6 +303,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       radius: self.femaleButton.frame.height / 2.0
     )
 
+    self.nationalityTextField.delegate = self
     self.dateOfBirthTextField.inputView = self.datePicker
     self.dateOfBirthTextField.delegate = self
     self.view.addSubview(self.fakeTextField)
@@ -344,6 +345,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.countryOfResidenceTextField.placeholder = NSLocalizedString("country.of.residence", value: "Country of Residence", comment: "")
     self.cityTextField.placeholder = NSLocalizedString("city", value: "City", comment: "")
     self.postalCodeTextField.placeholder = NSLocalizedString("postal.zip.code", value: "Postal / Zip Code", comment: "")
+    self.countryOfResidenceTextField.delegate = self
   }
 
   fileprivate func setupProofOfAddress() {
@@ -378,6 +380,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.optionalDataView.collapse()
     self.optionalDataView.delegate = self
     self.heightConstraintForOptionalData.constant = self.optionalDataView.height
+    self.optionalDataView.occupationCodeTextField.delegate = self
+    self.optionalDataView.industryCodeTextField.delegate = self
+    self.optionalDataView.countryTextField.delegate = self
   }
 
   @IBAction func maleButtonPressed(_ sender: Any) {
@@ -894,6 +899,26 @@ extension KYCPersonalInfoViewController: UITextFieldDelegate {
     if textField == self.dateOfBirthTextField {
       self.dateOfBirthDidChange(textField)
     }
+  }
+
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    if textField == self.nationalityTextField {
+      self.nationalityButtonPressed(textField)
+      return false
+    } else if textField == self.countryOfResidenceTextField {
+      self.countryOfResidenceButtonPressed(textField)
+      return false
+    } else if textField == self.optionalDataView.occupationCodeTextField {
+      self.kycPersonalOptionalDataViewOccupationPressed(current: self.optionalDataView.getOccupationCode())
+      return false
+    } else if textField == self.optionalDataView.industryCodeTextField {
+      self.kycPersonalOptionalDataViewIndustryPressed(current: self.optionalDataView.getIndustryCode())
+      return false
+    } else if textField == self.optionalDataView.countryTextField {
+      self.kycPersonalOptionalDataViewCountryPressed(current: self.optionalDataView.getTaxCountry())
+      return false
+    }
+    return true
   }
 }
 
