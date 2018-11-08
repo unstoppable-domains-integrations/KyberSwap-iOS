@@ -335,6 +335,8 @@
 "see.less" = "See less";
 "occupation.code.optional" = "Occupation code (optional)";
 "industry.code.optional" = "Industry code (optional)";
+"occupation.code" = "Occupation Code";
+"industry.code" = "Industry Code";
 "please.indicate.tax.residency" = "Please indicate your country of Tax Residency (Optional)";
 "reason.collecting.country.of.tax.residency" = "We are collecting this information in compliance with the relevant tax regulations.\nHelp us ensure the information is accurate and up to date";
 "country" = "Country";
@@ -348,7 +350,7 @@
 "invalid.postal.code" = "Invalid Postal / Zip Code";
 "please.enter.postal.zip.code" = "Please enter your Postal/Zip Code";
 "invalid.proof.of.address.type" = "Invalid proof of address type";
-"please.enter.select.a.valid.proof.of.address.type" = "Please enter/select a valid proof of address type";
+"please.enter.select.a.valid.document.type.for.proof.of.address.document" = "Please enter/select a valid document type for proof of address";
 "invalid.proof.address.photo" = "Invalid proof of address photo";
 "please.provide.your.proof.of.address.photo" = "Please provide your proof of address photo";
 "invalid.source.of.funds" = "Invalid Source of Funds";
@@ -367,5 +369,8 @@
 "please.provide.a.valid.expiry.date" = "Please provide a valid expiry date";
 "photo.of.your.document.front" = "Photo of your Document - Front";
 "photo.of.your.document.back" = "Photo of your Document - Back";
-"expiry.date" = "Expiry date";
-"issue.date" = "Issue date";
+"expiry.date" = "Expiry Date";
+"issue.date" = "Issue Date";
+"i.dont.have.this" = "I don't have this";
+"proof.of.address.type" = "Proof of Address Type";
+"proof.of.address.photo" = "Proof of Address Photo";

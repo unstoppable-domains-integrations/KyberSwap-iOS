@@ -543,7 +543,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let city: String = self.cityTextField.text ?? ""
     if city.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.city", value: "Invalid city", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.enter.your.city", value: "Please enter your city", comment: ""),
         time: 1.5
       )
@@ -552,7 +552,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let postalCode: String = self.postalCodeTextField.text ?? ""
     if postalCode.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.postal.code", value: "Invalid Postal / Zip Code", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.enter.postal.zip.code", value: "Please enter your Postal/Zip Code", comment: ""),
         time: 1.5
       )
@@ -561,15 +561,15 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let proofAddressType = self.proofAddressDocTypeTextField.text ?? ""
     if !self.viewModel.proofOfAddressTypes.contains(proofAddressType) {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.proof.of.address.type", value: "Invalid proof of address type", comment: ""),
-        message: NSLocalizedString("please.enter.select.a.valid.proof.of.address.type", value: "Please enter/select a valid proof of address type", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("please.enter.select.a.valid.document.type.for.proof.of.address.document", value: "Please enter/select a valid document type for proof of address", comment: ""),
         time: 1.5
       )
       return
     }
     guard let proofAddressImage = self.proofAddressImage else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.proof.address.photo", value: "Invalid proof of address photo", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.your.proof.of.address.photo", value: "Please provide your proof of address photo", comment: ""),
         time: 1.5
       )
@@ -578,7 +578,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let sourceFund = self.primarySourceOfFundTextField.text ?? ""
     if sourceFund.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.source.of.funds", value: "Invalid Source of Funds", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.source.of.funds", value: "Please provide a valid Source of Funds", comment: ""),
         time: 1.5
       )
@@ -587,7 +587,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let occupationCode = self.optionalDataView.getOccupationCode()
     if !occupationCode.isEmpty && self.viewModel.occupationCodes[occupationCode] == nil {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.occupation.code", value: "Invalid occupation code", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.check.your.occupation.code", value: "Please check your occupation code", comment: ""),
         time: 1.5
       )
@@ -596,7 +596,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let industryCode = self.optionalDataView.getIndustryCode()
     if !industryCode.isEmpty && self.viewModel.industryCodes[industryCode] == nil {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.industry.code", value: "Invalid industry code", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.check.your.industry.code", value: "Please check your industry code", comment: ""),
         time: 1.5
       )
@@ -605,7 +605,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let taxCountry = self.optionalDataView.getTaxCountry()
     if !taxCountry.isEmpty && !self.viewModel.countries.contains(taxCountry) {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.tax.residency.country", value: "Invalid Tax Residency country", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.check.your.tax.residency.country", value: "Please check your Tax Residency country", comment: ""),
         time: 1.5
       )
@@ -619,7 +619,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }()
     if let taxID = taxIDNumber, taxID.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.tax.id.number", value: "Invalid Tax ID Number", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.your.tax.id.number", value: "Please provide your Tax ID Number", comment: ""),
         time: 1.5
       )
@@ -949,7 +949,7 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
     self.dataPickerType = .occupationCode
     self.pickerViewController = nil
     self.pickerViewController = KYCSelectOptionViewController(
-      title: NSLocalizedString("occupation.code", value: "Occupation code", comment: ""), dataSources: Array(self.viewModel.occupationCodes.values)
+      title: NSLocalizedString("occupation.code", value: "Occupation Code", comment: ""), dataSources: Array(self.viewModel.occupationCodes.values)
     )
     self.pickerViewController?.delegate = self
     self.parent?.navigationController?.pushViewController(self.pickerViewController!, animated: true)
@@ -959,7 +959,7 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
     self.dataPickerType = .industryCode
     self.pickerViewController = nil
     self.pickerViewController = KYCSelectOptionViewController(
-      title: NSLocalizedString("industry.code", value: "Industry code", comment: ""), dataSources: Array(self.viewModel.industryCodes.values)
+      title: NSLocalizedString("industry.code", value: "Industry Code", comment: ""), dataSources: Array(self.viewModel.industryCodes.values)
     )
     self.pickerViewController?.delegate = self
     self.parent?.navigationController?.pushViewController(self.pickerViewController!, animated: true)
