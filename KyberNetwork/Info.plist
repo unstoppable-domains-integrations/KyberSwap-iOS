@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>29</string>
+	<string>30</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -141,10 +141,10 @@
 	</array>
 	<key>branch_key</key>
 	<dict>
-		<key>test</key>
-		<string>key_test_pmz7B1tgw6fUZWJipeueVipptwpH0cH5</string>
 		<key>live</key>
 		<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
+		<key>test</key>
+		<string>key_test_pmz7B1tgw6fUZWJipeueVipptwpH0cH5</string>
 	</dict>
 	<key>branch_universal_link_domains</key>
 	<array>
