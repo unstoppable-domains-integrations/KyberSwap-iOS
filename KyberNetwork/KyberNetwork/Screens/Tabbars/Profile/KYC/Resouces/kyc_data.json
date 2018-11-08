@@ -565,11 +565,11 @@
     "National Identity Card with residential address"
   ],
   "source_funds": [
-    "Salary",
-    "Inheritance",
-    "Loan",
-    "Lottery / Windfall",
-    "Rental Income",
-    "Business Revenue"
+    "SALARY",
+    "INHERITANCE",
+    "LOAN",
+    "LOTTERY/WINDFALL",
+    "RENTAL INCOME",
+    "BUSINESS REVENUE"
   ]
 }
