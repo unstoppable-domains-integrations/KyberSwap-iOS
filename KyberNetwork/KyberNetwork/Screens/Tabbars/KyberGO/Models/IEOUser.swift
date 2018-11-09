@@ -147,7 +147,7 @@ class IEOUserKYCDetails2: Object {
     self.nationality = dict["nationality"] as? String ?? ""
     self.residentialAddress = dict["residential_address"] as? String ?? ""
     self.country = dict["country"] as? String ?? ""
-    self.city = dict["country"] as? String ?? ""
+    self.city = dict["city"] as? String ?? ""
     self.zipCode = dict["zip_code"] as? String ?? ""
     self.documentProofAddress = dict["document_proof_address"] as? String ?? ""
     self.photoProofAddress = dict["photo_proof_address"] as? String ?? ""
@@ -155,8 +155,8 @@ class IEOUserKYCDetails2: Object {
     self.occupationCode = dict["occupation_code"] as? String ?? ""
     self.industryCode = dict["industry_code"] as? String ?? ""
     self.taxResidencyCountry = dict["tax_residency_country"] as? String ?? ""
-    self.haveTaxIndentification = dict["have_tax_indentification"] as? Bool ?? false
-    self.taxIDNUmber = dict["tax_indentification_number"] as? String ?? ""
+    self.haveTaxIndentification = dict["have_tax_identification"] as? Bool ?? false
+    self.taxIDNUmber = dict["tax_identification_number"] as? String ?? ""
     self.gender = dict["gender"] as? Bool ?? true
     self.dob = dict["dob"] as? String ?? ""
     self.documentType = dict["document_type"] as? String ?? ""
