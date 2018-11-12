@@ -50,7 +50,10 @@ class IEOUserStorage {
 
   func delete(objects: [IEOUser]) {
     if self.realm == nil { return }
-    objects.forEach { $0.removeKYCStep() }
+    objects.forEach {
+      $0.removeKYCStep()
+      IEOUserStorage.shared.deleteKYCDetails(for: $0.userID)
+    }
     try! self.realm.write {
       self.realm.delete(objects)
     }
@@ -58,15 +61,6 @@ class IEOUserStorage {
 
   func signedOut() {
     if self.realm == nil { return }
-//    guard let user = self.user else { return }
-//    for env in KNEnvironment.allEnvironments() {
-//      let config = RealmConfiguration.kyberGOConfiguration(for: user.userID, chainID: env.chainID)
-//      let realm = try! Realm(configuration: config)
-//      realm.beginWrite()
-//      realm.deleteAll()
-//      try! realm.commitWrite()
-//    }
-
     self.delete(objects: self.objects)
   }
 

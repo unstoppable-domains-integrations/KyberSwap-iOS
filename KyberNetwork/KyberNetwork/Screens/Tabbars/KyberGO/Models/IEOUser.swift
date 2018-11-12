@@ -38,13 +38,10 @@ class IEOUser: Object {
     }
     let step = dict["kyc_step"] as? Int ?? 1
     self.updateKYCStep(step)
-
-    if let kycInfoDict = dict["kyc_info"] as? JSONDictionary {
-      let kycObject = UserKYCDetails(userID: self.userID, dict: kycInfoDict)
-      IEOUserStorage.shared.updateKYCDetails(object: kycObject)
-    } else {
-      IEOUserStorage.shared.deleteKYCDetails(for: self.userID)
-    }
+    let rejectReason: String = dict["reject_reason"] as? String ?? ""
+    let kycInfoDict = dict["kyc_info"] as? JSONDictionary ?? [:]
+    let kycObject = UserKYCDetails(userID: self.userID, dict: kycInfoDict, rejectReason: rejectReason)
+    IEOUserStorage.shared.updateKYCDetails(object: kycObject)
   }
 
   func updateToken(type: String, accessToken: String, refreshToken: String, expireTime: Double) {
@@ -107,7 +104,7 @@ class UserKYCDetails: Object {
   @objc dynamic var documentExpiryDate: String = ""
   @objc dynamic var documentSelfiePhoto: String = ""
 
-  convenience init(userID: Int, dict: JSONDictionary) {
+  convenience init(userID: Int, dict: JSONDictionary, rejectReason: String) {
     self.init()
     self.userID = userID
     self.firstName = dict["first_name"] as? String ?? ""
@@ -134,7 +131,7 @@ class UserKYCDetails: Object {
     self.documentIssueDate = dict["document_issue_date"] as? String ?? ""
     self.documentExpiryDate = dict["document_expiry_date"] as? String ?? ""
     self.documentSelfiePhoto = dict["photo_selfie"] as? String ?? ""
-    self.rejectedReason = dict["reject_reason"] as? String ?? ""
+    self.rejectedReason = rejectReason
   }
 
   override class func primaryKey() -> String? {
