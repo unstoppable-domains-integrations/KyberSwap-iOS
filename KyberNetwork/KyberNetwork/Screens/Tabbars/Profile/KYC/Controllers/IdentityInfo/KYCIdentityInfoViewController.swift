@@ -256,6 +256,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   fileprivate func updateDontHaveIssueDateButton() {
     self.dontHaveIssueDateButton.setImage(self.viewModel.dontHaveIssueDateImage, for: .normal)
     self.dontHaveIssueDateButton.rounded(color: self.viewModel.dontHaveIssueDateButtonBorder, width: 1.0, radius: 2.5)
+    if self.viewModel.hasIssueDate {
+      self.issueDateTextField.isEnabled = true
+    } else {
+      self.issueDateTextField.isEnabled = false
+      self.issueDateTextField.text = ""
+    }
     self.view.layoutIfNeeded()
   }
 
@@ -267,6 +273,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   fileprivate func updateDontHaveExpiryDateButton() {
     self.dontHaveExpiryDateButton.setImage(self.viewModel.dontHaveExpiryDateImage, for: .normal)
     self.dontHaveExpiryDateButton.rounded(color: self.viewModel.dontHaveExpiryDateButtonBorder, width: 1.0, radius: 2.5)
+    if self.viewModel.hasExpiryDate {
+      self.expiryDateTextField.isEnabled = true
+    } else {
+      self.expiryDateTextField.isEnabled = false
+      self.expiryDateTextField.text = ""
+    }
     self.view.layoutIfNeeded()
   }
 

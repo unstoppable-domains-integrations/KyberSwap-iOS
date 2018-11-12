@@ -116,6 +116,7 @@ class KYCPersonalOptionalDataView: XibLoaderView {
   func updateTaxIDNumber(_ data: String?) {
     self.viewModel.hasTaxIDNumber = data != nil
     self.taxIDNumberTextField.text = data
+    self.taxIDNumberTextField.isEnabled = data != nil
     self.updateHaveTaxIDNumber()
     self.layoutIfNeeded()
   }
@@ -196,11 +197,14 @@ class KYCPersonalOptionalDataView: XibLoaderView {
 
   @IBAction func yesButtonPressed(_ sender: Any) {
     self.viewModel.hasTaxIDNumber = true
+    self.taxIDNumberTextField.isEnabled = true
     self.updateHaveTaxIDNumber()
   }
 
   @IBAction func noButtonPressed(_ sender: Any) {
     self.viewModel.hasTaxIDNumber = false
+    self.taxIDNumberTextField.text = ""
+    self.taxIDNumberTextField.isEnabled = false
     self.updateHaveTaxIDNumber()
   }
 }
