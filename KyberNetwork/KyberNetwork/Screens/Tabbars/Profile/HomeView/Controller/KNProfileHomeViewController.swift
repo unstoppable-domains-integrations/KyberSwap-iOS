@@ -122,11 +122,12 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")
     self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My Wallet(s)", comment: "")
     self.logOutButton.setTitle(NSLocalizedString("log.out", value: "Log Out", comment: ""), for: .normal)
-    self.userKYCStatusDescLabel.text = NSLocalizedString(
+    let descText: String = NSLocalizedString(
       "complete.your.profile.verfication.increase.trade.limits",
       value: "Complete Your Profile Verification\nIncrease KyberSwap's trade limits",
       comment: ""
     )
+    self.updateKYCStatusDescLabel(with: descText)
 
     self.userImageView.rounded(
       color: UIColor.Kyber.border,
@@ -160,6 +161,21 @@ class KNProfileHomeViewController: KNBaseViewController {
       for: .normal
     )
     self.updateUIUserDidSignedIn()
+  }
+
+  fileprivate func updateKYCStatusDescLabel(with string: String) {
+    self.userKYCStatusDescLabel.attributedText = {
+      let attributedString = NSMutableAttributedString()
+      attributedString.append(NSAttributedString(string: string))
+      let index = string.firstIndex(of: "\n")!
+      let attributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
+        ]
+      let range = NSRange(location: 0, length: index.encodedOffset)
+      attributedString.addAttributes(attributes, range: range)
+      return attributedString
+    }()
+    self.view.layoutIfNeeded()
   }
 
   fileprivate func fetchWalletList() {
@@ -204,6 +220,18 @@ class KNProfileHomeViewController: KNBaseViewController {
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
+    let descText: String = {
+      if status == "Rejected" {
+        let reason = user.kycDetails?.rejectedReason ?? ""
+        return "\(NSLocalizedString("profile.is.rejected", value: "Your project is rejected", comment: ""))\n\(reason)"
+      }
+      return NSLocalizedString(
+        "complete.your.profile.verfication.increase.trade.limits",
+        value: "Complete Your Profile Verification\nIncrease KyberSwap's trade limits",
+        comment: ""
+      )
+    }()
+    self.updateKYCStatusDescLabel(with: descText)
 
     if status == "Approved" || status == "Pending" {
       self.heightConstraintUserKYCStatusView.constant = 0.0

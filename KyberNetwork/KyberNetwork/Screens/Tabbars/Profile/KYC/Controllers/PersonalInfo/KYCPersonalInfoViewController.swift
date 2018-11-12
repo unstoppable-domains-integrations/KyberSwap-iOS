@@ -717,7 +717,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
   }
 
-  func updatePersonalInfoView(with details: IEOUserKYCDetails2) {
+  func updatePersonalInfoView(with details: UserKYCDetails) {
     let dateFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd"

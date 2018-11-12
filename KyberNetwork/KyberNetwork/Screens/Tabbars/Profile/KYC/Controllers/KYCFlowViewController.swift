@@ -76,7 +76,7 @@ class KYCFlowViewModel {
     self.stepState = step
   }
 
-  func updateData(with details: IEOUserKYCDetails2) {
+  func updateData(with details: UserKYCDetails) {
     guard !details.firstName.isEmpty else { return }
     self.updatePersonalInfo(
       firstName: details.firstName,

@@ -376,7 +376,8 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
-    if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0 {
+    if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0, user.kycStatus.lowercased() != "rejected" {
+      if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" { return }
       // draft or none, just open the verification
       self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
       self.kycCoordinator?.delegate = self

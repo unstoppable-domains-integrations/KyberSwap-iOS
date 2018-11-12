@@ -364,3 +364,4 @@
 "proof.of.address.type" = "Proof of Address Type";
 "proof.of.address.photo" = "Proof of Address Photo";
 "rejected.reason" = "拒绝理由";
+"profile.is.rejected" = "您的资料被拒绝";

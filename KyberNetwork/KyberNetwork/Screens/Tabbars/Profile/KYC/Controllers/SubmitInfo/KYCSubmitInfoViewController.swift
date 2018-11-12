@@ -230,7 +230,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.delegate?.submitInfoViewController(self, run: .submit)
   }
 
-  func updateSubmitInfo(with details: IEOUserKYCDetails2) {
+  func updateSubmitInfo(with details: UserKYCDetails) {
     let base64Prefix = "data:image/jpeg;base64,"
     let docFrontImage: UIImage? = {
       if details.documentPhotoFront.starts(with: base64Prefix),

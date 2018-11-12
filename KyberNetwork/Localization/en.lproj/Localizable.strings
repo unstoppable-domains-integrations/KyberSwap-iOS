@@ -375,3 +375,4 @@
 "proof.of.address.type" = "Proof of Address Type";
 "proof.of.address.photo" = "Proof of Address Photo";
 "rejected.reason" = "Rejected reason";
+"profile.is.rejected" = "Your project is rejected";

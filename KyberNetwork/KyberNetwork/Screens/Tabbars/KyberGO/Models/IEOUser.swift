@@ -40,7 +40,7 @@ class IEOUser: Object {
     self.updateKYCStep(step)
 
     if let kycInfoDict = dict["kyc_info"] as? JSONDictionary {
-      let kycObject = IEOUserKYCDetails2(userID: self.userID, dict: kycInfoDict)
+      let kycObject = UserKYCDetails(userID: self.userID, dict: kycInfoDict)
       IEOUserStorage.shared.updateKYCDetails(object: kycObject)
     } else {
       IEOUserStorage.shared.deleteKYCDetails(for: self.userID)
@@ -70,7 +70,7 @@ class IEOUser: Object {
     return UserDefaults.standard.object(forKey: "kUserKYCStepKey_\(self.userID)") as? Int ?? 1
   }
 
-  var kycDetails: IEOUserKYCDetails2? {
+  var kycDetails: UserKYCDetails? {
     return IEOUserStorage.shared.getKYCDetails(for: self.userID)
   }
 
@@ -79,41 +79,9 @@ class IEOUser: Object {
   }
 }
 
-class IEOUserKYCDetails: Object {
+class UserKYCDetails: Object {
   @objc dynamic var userID: Int = -1
-  @objc dynamic var firstName: String = ""
-  @objc dynamic var lastName: String = ""
-  @objc dynamic var nationality: String = ""
-  @objc dynamic var country: String = ""
-  @objc dynamic var gender: Bool = true
-  @objc dynamic var dob: String = ""
-  @objc dynamic var documentType: String = ""
-  @objc dynamic var documentNumber: String = ""
-  @objc dynamic var documentPhoto: String = ""
-  @objc dynamic var documentSelfiePhoto: String = ""
-
-  convenience init(userID: Int, dict: JSONDictionary) {
-    self.init()
-    self.userID = userID
-    self.firstName = dict["first_name"] as? String ?? ""
-    self.lastName = dict["last_name"] as? String ?? ""
-    self.nationality = dict["nationality"] as? String ?? ""
-    self.country = dict["country"] as? String ?? ""
-    self.gender = dict["gender"] as? Bool ?? true
-    self.dob = dict["dob"] as? String ?? ""
-    self.documentType = dict["document_type"] as? String ?? ""
-    self.documentNumber = dict["document_id"] as? String ?? ""
-    self.documentPhoto = dict["photo_identity_doc"] as? String ?? ""
-    self.documentSelfiePhoto = dict["photo_selfie"] as? String ?? ""
-  }
-
-  override class func primaryKey() -> String? {
-    return "userID"
-  }
-}
-
-class IEOUserKYCDetails2: Object {
-  @objc dynamic var userID: Int = -1
+  @objc dynamic var rejectedReason: String = ""
   @objc dynamic var firstName: String = ""
   @objc dynamic var lastName: String = ""
   @objc dynamic var nationality: String = ""
@@ -166,6 +134,7 @@ class IEOUserKYCDetails2: Object {
     self.documentIssueDate = dict["document_issue_date"] as? String ?? ""
     self.documentExpiryDate = dict["document_expiry_date"] as? String ?? ""
     self.documentSelfiePhoto = dict["photo_selfie"] as? String ?? ""
+    self.rejectedReason = dict["reject_reason"] as? String ?? ""
   }
 
   override class func primaryKey() -> String? {

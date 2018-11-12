@@ -129,7 +129,7 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.layoutIfNeeded()
   }
 
-  func updateOptionalData(with details: IEOUserKYCDetails2) {
+  func updateOptionalData(with details: UserKYCDetails) {
     self.updateOccupationCodeData(details.occupationCode)
     self.updateIndustryCodeData(details.industryCode)
     self.updateCountryData(details.taxResidencyCountry)
