@@ -223,7 +223,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     let descText: String = {
       if status == "Rejected" {
         let reason = user.kycDetails?.rejectedReason ?? ""
-        return "\(NSLocalizedString("profile.is.rejected", value: "Your project is rejected", comment: ""))\n\(reason)"
+        return "\(NSLocalizedString("profile.is.rejected", value: "Your Profile is rejected", comment: ""))\n\(reason)"
       }
       return NSLocalizedString(
         "complete.your.profile.verfication.increase.trade.limits",
