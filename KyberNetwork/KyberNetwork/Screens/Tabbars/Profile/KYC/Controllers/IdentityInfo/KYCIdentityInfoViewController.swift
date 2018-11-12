@@ -48,6 +48,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   @IBOutlet weak var documentTypeTextLabel: UILabel!
   @IBOutlet weak var idButton: UIButton!
+  @IBOutlet weak var idTextLabel: UILabel!
   @IBOutlet weak var passportButton: UIButton!
   @IBOutlet weak var passportTextLabel: UILabel!
   @IBOutlet weak var driverLicenseButton: UIButton!
@@ -145,6 +146,28 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.issueDateTextField.delegate = self
     self.expiryDateTextField.inputView = self.datePicker
     self.expiryDateTextField.delegate = self
+
+    // Add gestures to labels
+    let idTap = UITapGestureRecognizer(target: self, action: #selector(self.idButtonPressed(_:)))
+    self.idTextLabel.isUserInteractionEnabled = true
+    self.idTextLabel.addGestureRecognizer(idTap)
+
+    let passportTap = UITapGestureRecognizer(target: self, action: #selector(self.passportButtonPressed(_:)))
+    self.passportTextLabel.isUserInteractionEnabled = true
+    self.passportTextLabel.addGestureRecognizer(passportTap)
+
+    let driverTap = UITapGestureRecognizer(target: self, action: #selector(self.driverLicenseButtonPressed(_:)))
+    self.driverLicenseTextLabel.isUserInteractionEnabled = true
+    self.driverLicenseTextLabel.addGestureRecognizer(driverTap)
+
+    let dontHaveIssueTap = UITapGestureRecognizer(target: self, action: #selector(self.dontHaveIssueDataButtonPressed(_:)))
+    self.dontHaveIssueDateTextLabel.isUserInteractionEnabled = true
+    self.dontHaveIssueDateTextLabel.addGestureRecognizer(dontHaveIssueTap)
+
+    let dontHaveExpiryTap = UITapGestureRecognizer(target: self, action: #selector(self.dontHaveExpiryDateButtonPressed(_:)))
+    self.dontHaveExpiryDateTextLabel.isUserInteractionEnabled = true
+    self.dontHaveExpiryDateTextLabel.addGestureRecognizer(dontHaveExpiryTap)
+
     self.updateDocumentTypeData()
   }
 

@@ -42,6 +42,7 @@
                 <outlet property="holdingDocumentImageContainerView" destination="tlT-HC-EX7" id="qYD-e5-6PP"/>
                 <outlet property="holdingDocumentImageView" destination="irW-cp-YS8" id="apZ-lO-PIb"/>
                 <outlet property="idButton" destination="rTO-b5-3ta" id="3hJ-2u-pza"/>
+                <outlet property="idTextLabel" destination="KAt-Hb-QHY" id="Yxl-7E-xpE"/>
                 <outlet property="issueDateTextField" destination="R43-Bn-FDJ" id="gY3-FM-1wQ"/>
                 <outlet property="nextButton" destination="dIa-Tk-b8H" id="pUs-Xq-DUx"/>
                 <outlet property="passportButton" destination="HBy-QR-90j" id="ldL-PE-GX4"/>

@@ -306,6 +306,14 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.nationalityTextField.delegate = self
     self.dateOfBirthTextField.inputView = self.datePicker
     self.dateOfBirthTextField.delegate = self
+
+    let maleTap = UITapGestureRecognizer(target: self, action: #selector(self.maleButtonPressed(_:)))
+    self.maleTextLabel.isUserInteractionEnabled = true
+    self.maleTextLabel.addGestureRecognizer(maleTap)
+
+    let femaleTap = UITapGestureRecognizer(target: self, action: #selector(self.femaleButtonPressed(_:)))
+    self.femaleTextLabel.isUserInteractionEnabled = true
+    self.femaleTextLabel.addGestureRecognizer(femaleTap)
     self.view.addSubview(self.fakeTextField)
   }
 

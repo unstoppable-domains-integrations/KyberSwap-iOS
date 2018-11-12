@@ -54,6 +54,14 @@ class KYCPersonalOptionalDataView: XibLoaderView {
 
     self.updateHaveTaxIDNumber()
     self.setupTexts()
+
+    let yesTap = UITapGestureRecognizer(target: self, action: #selector(self.yesButtonPressed(_:)))
+    self.yesLabel.isUserInteractionEnabled = true
+    self.yesLabel.addGestureRecognizer(yesTap)
+
+    let noTap = UITapGestureRecognizer(target: self, action: #selector(self.noButtonPressed(_:)))
+    self.noLabel.isUserInteractionEnabled = true
+    self.noLabel.addGestureRecognizer(noTap)
   }
 
   var height: CGFloat {
