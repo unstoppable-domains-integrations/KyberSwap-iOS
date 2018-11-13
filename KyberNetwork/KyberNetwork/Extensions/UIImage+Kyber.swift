@@ -48,13 +48,13 @@ extension UIImage {
           needCompress = false
           imageData = data
         } else {
-          compressingValue -= compressingValue > 0.1 ? 0.1 : 0.01;
+          compressingValue -= 0.1
         }
       } else {
         return self
       }
     }
-    guard let data = imageData else { return self }
+    guard let data = imageData ?? UIImageJPEGRepresentation(self, 0.0) else { return self }
     return UIImage(data: data)
   }
 }

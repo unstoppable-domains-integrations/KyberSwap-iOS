@@ -17,10 +17,8 @@ enum KNTokenChartType: Int {
   var resolution: String {
     switch self {
     case .day: return "15"
-    case .week: return "60"
-    case .month: return "360"
-    case .year: return "D"
-    case .all: return "W"
+    case .week, .month: return "60"
+    case .year, .all: return "D"
     }
   }
 

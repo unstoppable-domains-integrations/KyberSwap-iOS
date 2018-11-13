@@ -744,7 +744,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     if details.photoProofAddress.starts(with: base64Prefix),
       let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)),
       let image = UIImage(data: data) {
-      self.updateProofAddressDocumentType(with: image)
+      self.updateProofAddressDocumentType(with: image, animate: false)
     }
 
     self.primarySourceOfFundTextField.text = details.sourceFund
@@ -952,18 +952,25 @@ extension KYCPersonalInfoViewController: UIImagePickerControllerDelegate, UINavi
       guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
         return
       }
-      self.updateProofAddressDocumentType(with: image)
+      self.updateProofAddressDocumentType(with: image, animate: true)
     }
   }
 
-  fileprivate func updateProofAddressDocumentType(with image: UIImage) {
-    let width = self.proofOfAddressContainerView.frame.width - 48.0
-    let height = image.size.height / image.size.width * width
-    self.proofOfAddressImageView.image = image.resizeImage(to: CGSize(width: width, height: height))
-    self.topPaddingConstraintProofOfAddressImageView.constant = 24.0
-    self.heightConstraintForProofOfAddressContainerView.constant = height + 24.0 * 2.0
-    self.proofAddressImage = image.compress(to: 0.99)
-    self.view.layoutIfNeeded()
+  fileprivate func updateProofAddressDocumentType(with image: UIImage, animate: Bool) {
+    if animate { self.displayLoading() }
+    DispatchQueue.global().async {
+      self.proofAddressImage = image.compress(to: 0.75)
+      DispatchQueue.main.async {
+        if animate { self.hideLoading() }
+        let width = self.proofOfAddressContainerView.frame.width - 48.0
+        let height = image.size.height / image.size.width * width
+        let newImage = image.resizeImage(to: CGSize(width: width, height: height))
+        self.proofOfAddressImageView.image = newImage
+        self.topPaddingConstraintProofOfAddressImageView.constant = 24.0
+        self.heightConstraintForProofOfAddressContainerView.constant = height + 24.0 * 2.0
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 }
 

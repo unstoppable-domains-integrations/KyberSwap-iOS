@@ -456,50 +456,68 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     if details.documentPhotoFront.starts(with: base64Prefix),
       let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
       let image = UIImage(data: data) {
-      self.updateDocumentPhotoFront(with: image)
+      self.updateDocumentPhotoFront(with: image, animate: false)
     }
     if details.documentPhotoBack.starts(with: base64Prefix),
       let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
       let image = UIImage(data: data) {
-      self.updateDocumentPhotoBack(with: image)
+      self.updateDocumentPhotoBack(with: image, animate: false)
     }
     if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
-      self.updateHoldingDocumentPhoto(with: image)
+      self.updateHoldingDocumentPhoto(with: image, animate: false)
     }
     self.view.layoutIfNeeded()
   }
 
-  fileprivate func updateDocumentPhotoFront(with image: UIImage) {
-    let width = self.documentImageContainerView.frame.width - 48.0
-    let height = image.size.height / image.size.width * width
-    let newImage = image.resizeImage(to: CGSize(width: width, height: height))
-    // maximum 1Mb
-    self.documentFrontImage = image.compress(to: 0.99)
-    self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
-    self.documentImageView.image = newImage
-    self.documentImageContainerView.isHidden = false
+  fileprivate func updateDocumentPhotoFront(with image: UIImage, animate: Bool) {
+    if animate { self.displayLoading() }
+    DispatchQueue.global().async {
+      self.documentFrontImage = image.compress(to: 0.75)
+      DispatchQueue.main.async {
+        if animate { self.hideLoading() }
+        let width = self.documentImageContainerView.frame.width - 48.0
+        let height = image.size.height / image.size.width * width
+        let newImage = image.resizeImage(to: CGSize(width: width, height: height))
+        self.heightConstraintForDocumentPhotoView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+        self.documentImageView.image = newImage
+        self.documentImageContainerView.isHidden = false
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 
-  fileprivate func updateDocumentPhotoBack(with image: UIImage) {
-    let width = self.documentImageContainerView.frame.width - 48.0
-    let height = image.size.height / image.size.width * width
-    let newImage = image.resizeImage(to: CGSize(width: width, height: height))
-    // maximum 1Mb
-    self.documentBackImage = image.compress(to: 0.99)
-    self.heightConstraintForDocumentPhotoBackView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
-    self.documentBackImageView.image = newImage
-    self.documentImageBackContainerView.isHidden = false
+  fileprivate func updateDocumentPhotoBack(with image: UIImage, animate: Bool) {
+    if animate { self.displayLoading() }
+    DispatchQueue.global().async {
+      self.documentBackImage = image.compress(to: 0.75)
+      DispatchQueue.main.async {
+        if animate { self.hideLoading() }
+        let width = self.documentImageContainerView.frame.width - 48.0
+        let height = image.size.height / image.size.width * width
+        let newImage = image.resizeImage(to: CGSize(width: width, height: height))
+        self.heightConstraintForDocumentPhotoBackView.constant = 180.0 + height + 24.0 * 2.0 // image height + top/bottom padding
+        self.documentBackImageView.image = newImage
+        self.documentImageBackContainerView.isHidden = false
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 
-  fileprivate func updateHoldingDocumentPhoto(with image: UIImage) {
-    let width = self.documentImageContainerView.frame.width - 48.0
-    let height = image.size.height / image.size.width * width
-    let newImage = image.resizeImage(to: CGSize(width: width, height: height))
-    // maximum 1Mb
-    self.holdingDocumentImage = image.compress(to: 0.99)
-    self.heightConstraintForHoldingDocumentPhotoView.constant = height + 24.0 * 2.0 // image height + top/bottom padding
-    self.holdingDocumentImageView.image = newImage
-    self.holdingDocumentImageContainerView.isHidden = false
+  fileprivate func updateHoldingDocumentPhoto(with image: UIImage, animate: Bool) {
+    if animate { self.displayLoading() }
+    DispatchQueue.global().async {
+      self.holdingDocumentImage = image.compress(to: 0.75)
+      DispatchQueue.main.async {
+        if animate { self.hideLoading() }
+        let width = self.documentImageContainerView.frame.width - 48.0
+        let height = image.size.height / image.size.width * width
+        let newImage = image.resizeImage(to: CGSize(width: width, height: height))
+        self.heightConstraintForHoldingDocumentPhotoView.constant = height + 24.0 * 2.0 // image height + top/bottom padding
+        self.holdingDocumentImageView.image = newImage
+        self.holdingDocumentImageContainerView.isHidden = false
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 }
 extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -513,11 +531,11 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
         return
       }
       if self.pickingDocumentType == 0 {
-        self.updateDocumentPhotoFront(with: image)
+        self.updateDocumentPhotoFront(with: image, animate: true)
       } else if self.pickingDocumentType == 1 {
-        self.updateDocumentPhotoBack(with: image)
+        self.updateDocumentPhotoBack(with: image, animate: true)
       } else {
-        self.updateHoldingDocumentPhoto(with: image)
+        self.updateHoldingDocumentPhoto(with: image, animate: true)
       }
       self.view.layoutIfNeeded()
     }

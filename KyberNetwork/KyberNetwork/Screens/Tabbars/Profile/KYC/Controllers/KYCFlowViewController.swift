@@ -1,5 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+//swiftlint:disable line_length
 import UIKit
 import Moya
 import Result
