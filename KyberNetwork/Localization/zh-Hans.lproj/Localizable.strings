@@ -332,7 +332,7 @@
 "primary.source.of.funds.desc" = "Explain: Why should users fill up these optional fields???";
 "source.of.funds" = "资金来源";
 "see.more" = "看到更多";
-"see.less" = "See less";
+"see.less" = "收回";
 "occupation.code.optional" = "职业代码 (可选)";
 "industry.code.optional" = "行业代码 (可选)";
 "occupation.code" = "职业代码";
