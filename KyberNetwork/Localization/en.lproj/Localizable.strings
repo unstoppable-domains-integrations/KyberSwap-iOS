@@ -376,3 +376,7 @@
 "proof.of.address.photo" = "Proof of Address Photo";
 "rejected.reason" = "Rejected reason";
 "profile.is.rejected" = "Your Profile is rejected";
+"can.not.send.to" = "Can not send %@ to %@";
+"can.not.convert.from.to" = "Can not convert from %@ to %@";
+"successfully.converted.to" = "%@ successfully converted to %@";
+"successfully.sent.to" = "%@ successfully sent to %@";

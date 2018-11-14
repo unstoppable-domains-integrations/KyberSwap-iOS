@@ -179,17 +179,24 @@ extension KNTransaction {
       guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return status.statusDetails }
       let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       if object.type.lowercased() == "transfer" {
-        let sentLocalised = NSLocalizedString("sent", value: "sent", comment: "")
-        let toLocalised = NSLocalizedString("to", value: "to", comment: "")
-        let statusLocalised = NSLocalizedString(status.rawValue.lowercased(), value: status.rawValue, comment: "")
-        return "\(statusLocalised) \(sentLocalised) \(amountFrom) \(from.symbol) \(toLocalised) \n\(self.to)"
+        let localisedString: String = {
+          if status == .success {
+            return NSLocalizedString("successfully.sent.to", value: "%@ successfully sent to %@", comment: "")
+          }
+          return NSLocalizedString("can.not.send.to", value: "Can not send %@ to %@", comment: "")
+        }()
+        return String(format: localisedString, arguments: ["\(amountFrom) \(from.symbol)", "\n\(self.to)"])
       }
       guard let to = storage?.get(forPrimaryKey: object.to) else { return status.statusDetails }
       guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return status.statusDetails }
       let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      let statusLocalised = NSLocalizedString(status.rawValue.lowercased(), value: status.rawValue, comment: "")
-      let convertedToLocalised = NSLocalizedString("converted.to", value: "converted to", comment: "")
-      return "\(statusLocalised) \(amountFrom) \(from.symbol) \(convertedToLocalised) \(amountTo) \(to.symbol)"
+      let localisedString: String = {
+        if status == .success {
+          return NSLocalizedString("successfully.converted.to", value: "%@ successfully converted to %@", comment: "")
+        }
+        return NSLocalizedString("can.not.convert.from.to", value: "Can not convert from %@ to %@", comment: "")
+      }()
+      return String(format: localisedString, arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
     }()
     return details
   }

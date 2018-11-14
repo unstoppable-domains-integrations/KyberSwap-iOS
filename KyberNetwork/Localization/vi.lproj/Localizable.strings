@@ -371,3 +371,7 @@
 "proof.of.address.photo" = "Ảnh chứng minh địa chỉ";
 "rejected.reason" = "Lý do từ chối";
 "profile.is.rejected" = "Hồ sơ của bạn bị từ chối";
+"can.not.send.to" = "Không thể gửi %@ đến %@";
+"can.not.convert.from.to" = "Không thể chuyển đổi từ %@ thành %@";
+"successfully.converted.to" = "%@ thành công chuyển đổi sang %@";
+"successfully.sent.to" = "%@ đã được gửi tới %@";

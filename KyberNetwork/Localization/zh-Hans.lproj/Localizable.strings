@@ -365,3 +365,7 @@
 "proof.of.address.photo" = "Proof of Address Photo";
 "rejected.reason" = "拒绝理由";
 "profile.is.rejected" = "您的资料被拒绝";
+"can.not.send.to" = "无法将％@发送到％@";
+"can.not.convert.from.to" = "无法从%@转换为%@";
+"successfully.converted.to" = "%@成功转换为%@";
+"successfully.sent.to" = "%@成功发送到%@";
