@@ -345,6 +345,7 @@
 "no" = "No";
 "tax.residency.country" = "Tax Residency Country";
 "tax.identification.no.equivalent" = "Tax Identification No (TIN) or equivalent";
+"tax.identification.number" = "Tax identification number";
 "please.enter.your.city" = "Please enter your city";
 "please.enter.postal.zip.code" = "Please enter your Postal/Zip Code";
 "please.enter.select.a.valid.document.type.for.proof.of.address.document" = "Please enter/select a valid document type for proof of address";

@@ -335,12 +335,16 @@
 "see.less" = "Xem ít";
 "occupation.code.optional" = "Mã nghề nghiệp (không bắt buộc)";
 "industry.code.optional" = "Mã ngành (không bắt buộc)";
+"occupation.code" = "Mã nghề nghiệp";
+"industry.code" = "Mã ngành";
 "please.indicate.tax.residency" = "Vui lòng cho biết quốc gia bạn trả thuế (Không bắt buộc)";
 "reason.collecting.country.of.tax.residency" = "Chúng tôi thu thập thông tin này để tuân thủ các quy định về thuế.\nHãy giúp chúng tôi đảm bảo thông tin chính xác và mới nhất";
 "country" = "Quốc gia";
 "have.tax.identification.no" = "Có mã số thuế?";
+"tax.identification.number" = "Mã số thuế";
 "yes" = "Có";
 "no" = "Không";
+"tax.residency.country" = "Quốc gia đăng kí thuế";
 "tax.identification.no.equivalent" = "Mã số thuế hoặc tương đương";
 "please.enter.your.city" = "Vui lòng điền thành phố của bạn";
 "please.enter.postal.zip.code" = "Vui lòng điền mã bưu điện / zip của bạn";
