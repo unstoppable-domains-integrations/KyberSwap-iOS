@@ -355,7 +355,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let issueDate = self.viewModel.hasIssueDate ? (self.issueDateTextField.text ?? "") : ""
     if self.viewModel.hasIssueDate && issueDate.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.issue.date", value: "Invalid Issue date", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.issue.date", value: "Please provide a valid issue date", comment: ""),
         time: 2.5
       )
@@ -364,7 +364,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let expiryDate = self.viewModel.hasExpiryDate ? (self.expiryDateTextField.text ?? "") : ""
     if self.viewModel.hasExpiryDate && expiryDate.isEmpty {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.expiry.date", value: "Invalid Expiry date", comment: ""),
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.expiry.date", value: "Please provide a valid expiry date", comment: ""),
         time: 2.5
       )

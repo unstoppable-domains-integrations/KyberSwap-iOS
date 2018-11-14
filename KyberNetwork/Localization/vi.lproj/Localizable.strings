@@ -196,7 +196,7 @@
 "failed.to.export.private.key" = "Không thể xuất khóa cá nhân";
 "failed.to.export.mnemonics" = "Không xuất được mnemonics";
 "id.passport" = "ID / Hộ chiếu";
-"full.name" = "Tên Đầy Đủ";
+"full.name" = "Tên đầy đủ";
 "gender" = "Giới tính";
 "date.of.birth" = "Ngày sinh";
 "nationality" = "Quốc tịch";
@@ -342,36 +342,44 @@
 "yes" = "Có";
 "no" = "Không";
 "tax.identification.no.equivalent" = "Mã số thuế hoặc tương đương";
-"invalid.city" = "Thành phố không hợp lệ";
-"please.enter.your.city" = "Hãy điền thành phố của bạn";
-"invalid.postal.code" = "Mã bưu điện / zip không hợp lệ";
-"please.enter.postal.zip.code" = "Hãy điền mà bưu điện / zip của bạn";
+"please.enter.your.city" = "Vui lòng điền thành phố của bạn";
+"please.enter.postal.zip.code" = "Vui lòng điền mã bưu điện / zip của bạn";
 "please.enter.select.a.valid.proof.of.address.type" = "Vui lòng nhập/chọn một loại giấy tờ hợp lệ chứng minh địa chỉ";
-"invalid.proof.address.photo" = "Ảnh chứng minh địa chỉ không hợp lệ";
 "please.provide.your.proof.of.address.photo" = "Vui lòng cung cấp ảnh bằng chứng địa chỉ của bạn";
-"invalid.source.of.funds" = "Nguồn tiền không hợp lệ";
 "please.provide.a.valid.source.of.funds" = "Vui lòng nhập/chọn nguồn tiền của bạn";
-"invalid.occupation.code" = "Mã nghề nghiệp không hợp lệ";
 "please.check.your.occupation.code" = "Vui lòng kiểm tra mã nghề nghiệp của bạn";
-"invalid.industry.code" = "Mã ngành không hợp lệ";
 "please.check.your.industry.code" = "Vui lòng kiểm tra mã ngành của bạn";
 "please.check.your.tax.residency.country" = "Vui lòng kiểm tra quốc gia nơi bạn đóng thuế";
-"invalid.tax.id.number" = "Mã số thuế không hợp lệ";
 "please.provide.your.tax.id.number" = "Vui lòng cung cấp mã số thuế của bạn (nếu có)";
-"invalid.issue.date" = "Ngày phát hành không hợp lệ";
 "please.provide.a.valid.issue.date" = "Vui lòng cung cấp ngày phát hành hợp lệ cho giấy tờ của bạn";
-"invalid.expiry.date" = "Ngày hết hạn không hợp lệ";
 "please.provide.a.valid.expiry.date" = "Vui lòng cung cấp ngày hết hạn hợp lệ";
 "photo.of.your.document.front" = "Ảnh tài liệu - Mặt trước";
 "photo.of.your.document.back" = "Ảnh tài liệu - Mặt sau";
 "expiry.date" = "Ngày hết hạn";
 "issue.date" = "Ngày phát hành";
 "i.dont.have.this" = "Tôi không có";
-"proof.of.address.type" = "Loại chứng minh địa chỉ";
-"proof.of.address.photo" = "Ảnh chứng minh địa chỉ";
 "rejected.reason" = "Lý do từ chối";
 "profile.is.rejected" = "Hồ sơ của bạn bị từ chối";
 "can.not.send.to" = "Không thể gửi %@ đến %@";
 "can.not.convert.from.to" = "Không thể chuyển đổi từ %@ thành %@";
 "successfully.converted.to" = "%@ thành công chuyển đổi sang %@";
 "successfully.sent.to" = "%@ đã được gửi tới %@";
+
+// Proof of address
+"Bank Statement" = "Bảng sao kê ngân hàng";
+"Correspondences from Bank" = "Thư uỷ thác của Ngân hàng";
+"Polling vote" = "Tài liệu bầu cử";
+"Tax return" = "Tài liệu Khai thuế";
+"Singapore National Registration Identity Card (NRIC)" = "Thẻ căn cước công dân Singapore (NRIC)";
+"Correspondence from a government agency" = "Thư từ của cơ quan chính phủ";
+"National Identity Card with residential address" = "Thẻ căn cước/ chứng minh nhân dân có địa chỉ cư trú";
+
+// Source of Funds
+"Salary" = "Mức lương";
+"Inheritance" = "Thừa kế";
+"Loan" = "Cho vay";
+"Lottery/Windfall" = "Xổ số/ vận may bất ngờ";
+"Rental income" = "Thu nhập từ cho thuê ";
+"Business revenue" = "Doanh thu kinh doanh";
+"Investment gain" = "Lợi nhuận đầu tư";
+"Other" = "Khác";

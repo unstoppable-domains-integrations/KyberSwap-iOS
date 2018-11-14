@@ -364,6 +364,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       comment: ""
     )
     self.proofAddressDocTypeTextField.placeholder = NSLocalizedString("document.types", value: "Document Types", comment: "")
+    self.proofAddressDocTypeTextField.delegate = self
     self.uploadProofAddressDocButton.setTitle(
       NSLocalizedString("upload.document", value: "Upload Document", comment: ""),
       for: .normal
@@ -443,10 +444,20 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.proofAddressDocTypeTextField.text ?? ""
 
-    if let id = self.viewModel.proofOfAddressTypes.index(of: self.currentValue) {
-      self.currentValue = self.viewModel.proofOfAddressTypes[id]
+    if let id = self.viewModel.proofOfAddressTypes.firstIndex(where: { NSLocalizedString($0, value: $0, comment: "") == self.currentValue }) {
+      self.currentValue = NSLocalizedString(
+        self.viewModel.proofOfAddressTypes[id],
+        value: self.viewModel.proofOfAddressTypes[id],
+        comment: ""
+      )
+      self.pickerView.selectRow(id, inComponent: 0, animated: false)
     } else {
-      self.currentValue = self.viewModel.proofOfAddressTypes[0]
+      self.currentValue = NSLocalizedString(
+        self.viewModel.proofOfAddressTypes[0],
+        value: self.viewModel.proofOfAddressTypes[0],
+        comment: ""
+      )
+      self.pickerView.selectRow(0, inComponent: 0, animated: false)
     }
 
     self.fakeTextField.becomeFirstResponder()
@@ -571,8 +582,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    let proofAddressType = self.proofAddressDocTypeTextField.text ?? ""
-    if !self.viewModel.proofOfAddressTypes.contains(proofAddressType) {
+    let proofAddressTypeLocalised = self.proofAddressDocTypeTextField.text ?? ""
+    guard let proofAddressType = self.viewModel.proofOfAddressTypes.first(where: { NSLocalizedString($0, value: $0, comment: "") == proofAddressTypeLocalised }) else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.enter.select.a.valid.document.type.for.proof.of.address.document", value: "Please enter/select a valid document type for proof of address", comment: ""),
@@ -588,8 +599,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    let sourceFund = self.primarySourceOfFundTextField.text ?? ""
-    if sourceFund.isEmpty {
+    let sourceLocalisedFund = self.primarySourceOfFundTextField.text ?? ""
+    if sourceLocalisedFund.isEmpty {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.source.of.funds", value: "Please provide a valid Source of Funds", comment: ""),
@@ -597,6 +608,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
+    let sourceFund = self.viewModel.sourceFunds.first(where: { NSLocalizedString($0, value: $0, comment: "") == sourceLocalisedFund }) ?? sourceLocalisedFund
     let occupationCode = self.optionalDataView.getOccupationCode()
     if !occupationCode.isEmpty && self.viewModel.occupationCodes[occupationCode] == nil {
       self.showWarningTopBannerMessage(
@@ -688,10 +700,20 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.fakeTextField.inputAccessoryView = self.toolBar
     self.currentValue = self.primarySourceOfFundTextField.text ?? ""
 
-    if let id = self.viewModel.sourceFunds.index(of: self.currentValue) {
-      self.currentValue = self.viewModel.sourceFunds[id]
+    if let id = self.viewModel.sourceFunds.firstIndex(where: { NSLocalizedString($0, value: $0, comment: "") == self.currentValue }) {
+      self.currentValue = NSLocalizedString(
+        self.viewModel.sourceFunds[id],
+        value: self.viewModel.sourceFunds[id],
+        comment: ""
+      )
+      self.pickerView.selectRow(id, inComponent: 0, animated: false)
     } else {
-      self.currentValue = self.viewModel.sourceFunds[0]
+      self.currentValue = NSLocalizedString(
+        self.viewModel.sourceFunds[0],
+        value: self.viewModel.sourceFunds[0],
+        comment: ""
+      )
+      self.pickerView.selectRow(0, inComponent: 0, animated: false)
     }
 
     self.fakeTextField.becomeFirstResponder()
@@ -738,7 +760,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.countryOfResidenceTextField.text = details.country
     self.cityTextField.text = details.city
     self.postalCodeTextField.text = details.zipCode
-    self.proofAddressDocTypeTextField.text = details.documentProofAddress
+    self.proofAddressDocTypeTextField.text = NSLocalizedString(details.documentProofAddress, value: details.documentProofAddress, comment: "")
 
     let base64Prefix = "data:image/jpeg;base64,"
     if details.photoProofAddress.starts(with: base64Prefix),
@@ -747,7 +769,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       self.updateProofAddressDocumentType(with: image, animate: false)
     }
 
-    self.primarySourceOfFundTextField.text = details.sourceFund
+    self.primarySourceOfFundTextField.text = NSLocalizedString(details.sourceFund, value: details.sourceFund, comment: "")
     self.optionalDataView.updateOptionalData(with: details)
     self.view.layoutIfNeeded()
   }
@@ -857,9 +879,17 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
 extension KYCPersonalInfoViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     if self.dataPickerType == .proofOfAddressType {
-      self.currentValue = self.viewModel.proofOfAddressTypes[row]
+      self.currentValue = NSLocalizedString(
+        self.viewModel.proofOfAddressTypes[row],
+        value: self.viewModel.proofOfAddressTypes[row],
+        comment: ""
+      )
     } else if self.dataPickerType == .sourceFund {
-      self.currentValue = self.viewModel.sourceFunds[row]
+      self.currentValue = NSLocalizedString(
+        self.viewModel.sourceFunds[row],
+        value: self.viewModel.sourceFunds[row],
+        comment: ""
+      )
     }
   }
 }
@@ -895,8 +925,9 @@ extension KYCPersonalInfoViewController: UIPickerViewDataSource {
       }
       return ""
     }()
+    let localisedString = NSLocalizedString(string, value: string, comment: "")
     return NSAttributedString(
-      string: string,
+      string: localisedString,
       attributes: attributes
     )
   }
@@ -924,6 +955,9 @@ extension KYCPersonalInfoViewController: UITextFieldDelegate {
       return false
     } else if textField == self.optionalDataView.countryTextField {
       self.kycPersonalOptionalDataViewCountryPressed(current: self.optionalDataView.getTaxCountry())
+      return false
+    } else if textField == self.proofAddressDocTypeTextField {
+      self.proofAddressChooseDocumentTypeButtonPressed(textField)
       return false
     }
     return true

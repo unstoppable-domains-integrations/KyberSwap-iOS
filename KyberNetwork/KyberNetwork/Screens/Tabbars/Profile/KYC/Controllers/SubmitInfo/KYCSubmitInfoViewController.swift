@@ -141,8 +141,8 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.countryResidenceTextLabel.text = NSLocalizedString("country.of.residence", value: "Country of Residence", comment: "")
     self.cityTextLabel.text = NSLocalizedString("city", value: "City", comment: "")
     self.zipCodeTextLabel.text = NSLocalizedString("postal.zip.code", value: "Postal / Zip Code", comment: "")
-    self.proofOfAddressTextLabel.text = NSLocalizedString("proof.of.address.type", value: "Proof of Address Type", comment: "")
-    self.proofOfAddressPhotoTextLabel.text = NSLocalizedString("proof.of.address.photo", value: "Proof of Address Photo", comment: "")
+    self.proofOfAddressTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "")
+    self.proofOfAddressPhotoTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "")
     self.sourceFundTextLabel.text = NSLocalizedString("source.fund", value: "Source Fund", comment: "")
     self.occupationCodeTextLabel.text = NSLocalizedString("occupation.code", value: "Occupation Code", comment: "")
     self.industryCodeTextLabel.text = NSLocalizedString("industry.code", value: "Industry Code", comment: "")
@@ -174,14 +174,14 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.residenceCountryLabel.text = self.viewModel.country
     self.cityValueLabel.text = self.viewModel.city
     self.zipCodeValueLabel.text = self.viewModel.zipCode
-    self.proofOfAddressValueLabel.text = self.viewModel.proofAddress
+    self.proofOfAddressValueLabel.text = NSLocalizedString(self.viewModel.proofAddress, value: self.viewModel.proofAddress, comment: "")
     if let image = self.viewModel.proofAddressImage {
       let width = self.proofAddressImageContainerView.frame.width - 48.0
       let height = image.size.height / image.size.width * width
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
       self.proofOfAddressImageView.image = newImage
     }
-    self.sourceFundValueLabel.text = self.viewModel.sourceFund
+    self.sourceFundValueLabel.text = NSLocalizedString(self.viewModel.sourceFund, value: self.viewModel.sourceFund, comment: "")
     self.occupationCodeValueLabel.text = {
       guard let code = self.viewModel.occupationCode else { return "N/A" }
       return code.isEmpty ? "N/A" : code

@@ -345,38 +345,44 @@
 "no" = "No";
 "tax.residency.country" = "Tax Residency Country";
 "tax.identification.no.equivalent" = "Tax Identification No (TIN) or equivalent";
-"invalid.city" = "Invalid city";
 "please.enter.your.city" = "Please enter your city";
-"invalid.postal.code" = "Invalid Postal / Zip Code";
 "please.enter.postal.zip.code" = "Please enter your Postal/Zip Code";
-"invalid.proof.of.address.type" = "Invalid proof of address type";
 "please.enter.select.a.valid.document.type.for.proof.of.address.document" = "Please enter/select a valid document type for proof of address";
-"invalid.proof.address.photo" = "Invalid proof of address photo";
 "please.provide.your.proof.of.address.photo" = "Please provide your proof of address photo";
-"invalid.source.of.funds" = "Invalid Source of Funds";
 "please.provide.a.valid.source.of.funds" = "Please provide a valid Source of Funds";
-"invalid.occupation.code" = "Invalid occupation code";
 "please.check.your.occupation.code" = "Please check your occupation code";
-"invalid.industry.code" = "Invalid industry code";
 "please.check.your.industry.code" = "Please check your industry code";
-"invalid.tax.residency.country" = "Invalid Tax Residency country";
 "please.check.your.tax.residency.country" = "Please check your Tax Residency country";
-"invalid.tax.id.number" = "Invalid Tax ID Number";
 "please.provide.your.tax.id.number" = "Please provide your Tax ID Number";
-"invalid.issue.date" = "Invalid Issue date";
 "please.provide.a.valid.issue.date" = "Please provide a valid issue date";
-"invalid.expiry.date" = "Invalid Expiry date";
 "please.provide.a.valid.expiry.date" = "Please provide a valid expiry date";
 "photo.of.your.document.front" = "Photo of your Document - Front";
 "photo.of.your.document.back" = "Photo of your Document - Back";
 "expiry.date" = "Expiry Date";
 "issue.date" = "Issue Date";
 "i.dont.have.this" = "I don't have this";
-"proof.of.address.type" = "Proof of Address Type";
-"proof.of.address.photo" = "Proof of Address Photo";
 "rejected.reason" = "Rejected reason";
 "profile.is.rejected" = "Your Profile is rejected";
 "can.not.send.to" = "Can not send %@ to %@";
 "can.not.convert.from.to" = "Can not convert from %@ to %@";
 "successfully.converted.to" = "%@ successfully converted to %@";
 "successfully.sent.to" = "%@ successfully sent to %@";
+
+// Proof of address
+"Bank Statement" = "Bank Statement";
+"Correspondences from Bank" = "Correspondences from Bank";
+"Polling vote" = "Polling vote";
+"Tax return" = "Tax return";
+"Singapore National Registration Identity Card (NRIC)" = "Singapore National Registration Identity Card (NRIC)";
+"Correspondence from a government agency" = "Correspondence from a government agency";
+"National Identity Card with residential address" = "National Identity Card with residential address";
+
+// Source of Funds
+"Salary" = "Salary";
+"Inheritance" = "Inheritance";
+"Loan" = "Loan";
+"Lottery/Windfall" = "Lottery/windfall";
+"Rental income" = "Rental income";
+"Business revenue" = "Business revenue";
+"Investment gain" = "Investment gain";
+"Other" = "Other";
