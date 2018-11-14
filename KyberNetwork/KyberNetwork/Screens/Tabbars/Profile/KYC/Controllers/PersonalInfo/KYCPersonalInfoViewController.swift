@@ -366,7 +366,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.proofAddressDocTypeTextField.placeholder = NSLocalizedString("document.types", value: "Document Types", comment: "")
     self.proofAddressDocTypeTextField.delegate = self
     self.uploadProofAddressDocButton.setTitle(
-      NSLocalizedString("upload.document", value: "Upload Document", comment: ""),
+      NSLocalizedString("browse", value: "Browse", comment: ""),
       for: .normal
     )
     self.uploadProofAddressDocButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)

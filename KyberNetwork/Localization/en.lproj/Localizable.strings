@@ -327,7 +327,6 @@
 "city" = "City";
 "postal.zip.code" = "Postal / Zip Code";
 "document.types" = "Document Types";
-"upload.document" = "Upload Document";
 "primary.source.of.funds" = "Primary source of Funds";
 "primary.source.of.funds.desc" = "Explain: Why should users fill up these optional fields???";
 "source.of.funds" = "Source of Funds";

@@ -327,7 +327,6 @@
 "city" = "Thành phố";
 "postal.zip.code" = "Mã bưu điện / Zip";
 "document.types" = "Loại Tài Liệu";
-"upload.document" = "Tải tài liệu";
 "primary.source.of.funds" = "Nguồn vốn chính";
 "primary.source.of.funds.desc" = "Giải thích: Vì sao người dùng nên đưa ra những thông tin không bắt buộc này???";
 "source.of.funds" = "Nguồn vốn";
