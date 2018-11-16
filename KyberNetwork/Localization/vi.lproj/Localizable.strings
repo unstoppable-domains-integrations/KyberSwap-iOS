@@ -386,3 +386,11 @@
 "Business revenue" = "Doanh thu kinh doanh";
 "Investment gain" = "Lợi nhuận đầu tư";
 "Other" = "Khác";
+
+// Welcome screen
+"welcome.first.screen.title" = "An toàn & Tương thích";
+"welcome.first.screen.description" = "Được thiết kế với tiêu chuẩn bảo mật cao nhất. Dễ dàng nhập và xuất tài khoản từ các ứng dụng ví khác.";
+"welcome.second.screen.title" = "Hoán đổi tức thì với KyberSwap";
+"welcome.second.screen.description" = "Hoán đổi giữa các cặp token tùy ý một cách nhanh chóng. Không cần gửi tiền.";
+"welcome.third.screen.title" = "Hồ sơ";
+"welcome.third.screen.description" = "Xác minh hồ sơ đơn giản hơn. Trực tiếp từ ứng dụng.";

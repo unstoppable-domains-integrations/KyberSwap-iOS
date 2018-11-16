@@ -386,3 +386,11 @@
 "Business revenue" = "Business revenue";
 "Investment gain" = "Investment gain";
 "Other" = "Other";
+
+// Welcome screen
+"welcome.first.screen.title" = "Secure & Compatible";
+"welcome.first.screen.description" = "Designed with highest security standard. Easily import & export accounts from other wallet apps.";
+"welcome.second.screen.title" = "Instant Swap with KyberSwap";
+"welcome.second.screen.description" = "Swap between arbitrary token pairs. No deposit needed.";
+"welcome.third.screen.title" = "Profile";
+"welcome.third.screen.description" = "Profile process just got simpler. Straight from the app.";

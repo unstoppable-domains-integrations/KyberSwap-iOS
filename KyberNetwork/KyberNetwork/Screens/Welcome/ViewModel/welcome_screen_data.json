@@ -2,20 +2,20 @@
   "data": [
   {
            "icon": "welcome_tokenized",
-           "title": "Secure & Compatible",
-           "subtitle": "Designed with highest security standard. Easily import & export accounts from other wallet apps.",
+           "title": "welcome.first.screen.title",
+           "subtitle": "welcome.first.screen.description",
            "position": 0
   },
   {
            "icon": "welcome_kyberswap",
-           "title": "Instant Swap with KyberSwap",
-           "subtitle": "Swap between arbitrary token pairs. No deposit needed.",
+           "title": "welcome.second.screen.title",
+           "subtitle": "welcome.second.screen.description",
            "position": 1
   },
   {
            "icon": "welcome_kybergo",
-           "title": "Profile",
-           "subtitle": "Profile process just got simpler. Straight from the app.",
+           "title": "welcome.third.screen.title",
+           "subtitle": "welcome.third.screen.description",
            "position": 2
   }
   ]
