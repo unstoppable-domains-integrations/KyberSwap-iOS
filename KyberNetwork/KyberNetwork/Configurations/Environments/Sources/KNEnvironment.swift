@@ -9,6 +9,7 @@ enum KNEnvironment: Int {
   case staging = 2
   case ropsten = 3
   case kovan = 4
+  case rinkeby = 5
 
   var displayName: String {
     switch self {
@@ -17,6 +18,7 @@ enum KNEnvironment: Int {
     case .staging: return "Staging"
     case .ropsten: return "Ropsten"
     case .kovan: return "Kovan"
+    case .rinkeby: return "Rinkeby"
     }
   }
 
@@ -27,6 +29,7 @@ enum KNEnvironment: Int {
       KNEnvironment.staging,
       KNEnvironment.ropsten,
       KNEnvironment.kovan,
+      KNEnvironment.rinkeby,
     ]
   }
 
@@ -68,6 +71,7 @@ enum KNEnvironment: Int {
     case .staging: return "config_env_staging"
     case .ropsten: return "config_env_ropsten"
     case .kovan: return "config_env_kovan"
+    case .rinkeby: return "config_env_rinkeby"
     }
   }
 
@@ -75,9 +79,10 @@ enum KNEnvironment: Int {
     switch self {
     case .mainnetTest: return "http://api.etherscan.io/"
     case .production: return "http://api.etherscan.io/"
-    case .staging: return "http://api-kovan.etherscan.io/"
+    case .staging: return "http://api.etherscan.io/"
     case .ropsten: return "http://api-ropsten.etherscan.io/"
     case .kovan: return "http://api-kovan.etherscan.io/"
+    case .rinkeby: return "https://api-rinkeby.etherscan.io/"
     }
   }
 }

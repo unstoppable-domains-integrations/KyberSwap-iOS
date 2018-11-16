@@ -84,13 +84,18 @@ class KNBalanceCoordinator {
     }
   }
 
+  func forceUpdateBalanceTransactionsCompleted() {
+    self.fetchETHBalance(nil)
+    self.fetchOtherTokensBalance(nil)
+  }
+
   func resume() {
     fetchETHBalanceTimer?.invalidate()
     isFetchingETHBalance = false
     fetchETHBalance(nil)
 
     fetchETHBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.loadingBalance,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchETHBalance(timer)
@@ -102,7 +107,7 @@ class KNBalanceCoordinator {
     fetchOtherTokensBalance(nil)
 
     fetchOtherTokensBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.loadingBalance,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchOtherTokensBalance(timer)
@@ -154,6 +159,7 @@ class KNBalanceCoordinator {
     let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).map({ $0.contract })
     let currentWallet = self.session.wallet
     let group = DispatchGroup()
+    var counter = 0
     for contract in tokenContracts {
       if let contractAddress = Address(string: contract) {
         group.enter()
@@ -172,6 +178,10 @@ class KNBalanceCoordinator {
             NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
           case .failure(let error):
             NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+          }
+          counter += 1
+          if counter % 25 == 0 && isBalanceChanged {
+            KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           }
           group.leave()
         })

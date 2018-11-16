@@ -386,8 +386,8 @@ extension KGOHomePageCoordinator {
       self.navigationController.showSuccessTopBannerMessage(with: "Hi \(user.name)", message: "You have signed in successfully! You could buy tokens now")
       return
     }
-    let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
-    let redirectLink = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
+    let clientID = KNEnvironment.default == .production ? KNSecret.appID : KNSecret.debugAppID
+    let redirectLink = KNEnvironment.default == .production ? KNSecret.redirectURL : KNSecret.debugRedirectURL
     if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)&scope=kyber_go") {
       // Clear old session
       URLCache.shared.removeAllCachedResponses()

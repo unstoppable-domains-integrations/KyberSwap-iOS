@@ -33,8 +33,12 @@ class KNSupportedTokenCoordinator {
   }
 
   fileprivate func fetchTrackerSupportedTokens() {
-    // Tracker is not supported for other environment
-    if KNEnvironment.default != .mainnetTest && KNEnvironment.default != .production { return }
+    // Token address is different for other envs
+    if KNEnvironment.default != .mainnetTest && KNEnvironment.default != .production {
+      let tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
+      KNSupportedTokenStorage.shared.updateFromTracker(tokenObjects: tokens)
+      return
+    }
     print("---- Supported Tokens: Start fetching data ----")
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getSupportedTokens()) { result in

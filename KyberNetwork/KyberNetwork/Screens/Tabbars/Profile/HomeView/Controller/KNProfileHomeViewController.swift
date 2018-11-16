@@ -79,7 +79,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.fetchWalletList()
     self.walletTimer?.invalidate()
     self.walletTimer = Timer.scheduledTimer(
-      withTimeInterval: KNEnvironment.default == .ropsten ? 10.0 : 60.0,
+      withTimeInterval: KNEnvironment.default == .production ? 60.0 : 10.0,
       repeats: true,
       block: { [weak self] _ in
       self?.fetchWalletList()

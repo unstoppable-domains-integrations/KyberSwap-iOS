@@ -8,11 +8,7 @@ class KNJSONLoaderUtil {
 
   static let shared = KNJSONLoaderUtil()
 
-  let tokens: [TokenObject]
-
-  init() {
-    self.tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-  }
+  init() {}
 
   static func loadListSupportedTokensFromJSONFile() -> [TokenObject] {
     let configFileName = KNEnvironment.default.configFileName

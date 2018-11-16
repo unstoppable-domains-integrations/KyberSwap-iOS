@@ -216,7 +216,6 @@ extension KNAppCoordinator {
       return
     }
     guard let trans = transaction else { return }
-    // TODO: More meaningfull message here
     let details = trans.getDetails()
     if trans.state == .pending {
       // just sent
@@ -231,6 +230,10 @@ extension KNAppCoordinator {
         message: details,
         time: 3.0
       )
+      if self.session != nil {
+        self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
+        self.balanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
+      }
       KNNotificationUtil.localPushNotification(
         title: NSLocalizedString("success", value: "Success", comment: ""),
         body: details,

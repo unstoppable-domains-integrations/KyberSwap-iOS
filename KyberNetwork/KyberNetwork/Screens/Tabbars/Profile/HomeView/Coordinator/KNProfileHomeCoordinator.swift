@@ -109,7 +109,7 @@ class KNProfileHomeCoordinator: Coordinator {
 
     self.loadUserInfoTimer?.invalidate()
     self.loadUserInfoTimer = Timer.scheduledTimer(
-      withTimeInterval: KNEnvironment.default == .ropsten ? 10.0 : 60.0,
+      withTimeInterval: KNEnvironment.default == .production ? 60.0 : 10.0,
       repeats: true,
       block: { [weak self] _ in
         guard let user = IEOUserStorage.shared.user else {
@@ -160,8 +160,8 @@ extension KNProfileHomeCoordinator {
       self.navigationController.showSuccessTopBannerMessage(with: "", message: message)
       return
     }
-    let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
-    let redirectLink = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
+    let clientID = KNEnvironment.default == .production ? KNSecret.appID : KNSecret.debugAppID
+    let redirectLink = KNEnvironment.default == .production ? KNSecret.redirectURL : KNSecret.debugRedirectURL
     //lang=\(Locale.current.kyberSupportedLang)&
     if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
       // Clear old session

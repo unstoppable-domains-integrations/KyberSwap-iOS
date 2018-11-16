@@ -27,7 +27,11 @@ class KNDebugMenuViewController: KNBaseViewController {
 
   fileprivate func setupEnvironment() {
     self.environmentSegmentedControl.rounded(color: .clear, width: 0, radius: 5.0)
-    self.environmentSegmentedControl.selectedSegmentIndex = self.environment.rawValue
+    self.environmentSegmentedControl.selectedSegmentIndex = {
+      if self.environment == .production { return 0 }
+      if self.environment == .ropsten { return 1 }
+      return 2 // rinkeby
+    }()
     self.updateEnvironmentData()
   }
 
@@ -55,9 +59,11 @@ class KNDebugMenuViewController: KNBaseViewController {
   }
 
   @IBAction func environmentSegmentedControl(_ sender: UISegmentedControl) {
-    if let env = KNEnvironment(rawValue: sender.selectedSegmentIndex) {
-      self.newEnvironment = env
-    }
+    self.newEnvironment = {
+      if sender.selectedSegmentIndex == 0 { return .production }
+      if sender.selectedSegmentIndex == 1 { return .ropsten }
+      return .rinkeby
+    }()
     self.updateEnvironmentData()
   }
 

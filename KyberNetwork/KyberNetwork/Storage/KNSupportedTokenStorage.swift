@@ -13,7 +13,7 @@ class KNSupportedTokenStorage {
   }()
 
   func addLocalSupportedTokens() {
-    let supportedTokenObjects = KNJSONLoaderUtil.shared.tokens
+    let supportedTokenObjects = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
     supportedTokenObjects.forEach { token in
       if let savedToken = self.supportedTokens.first(where: { $0.contract == token.contract }) {
         token.value = savedToken.value
@@ -57,6 +57,10 @@ class KNSupportedTokenStorage {
       }
     }
     self.add(tokens: tokenObjects)
+    let removedTokens = savedTokens.filter { token -> Bool in
+      return tokenObjects.first(where: { $0.contract == token.contract }) == nil
+    }
+    self.delete(tokens: removedTokens)
     // Send post notification to update other UI if needed
     KNNotificationUtil.postNotification(for: kSupportedTokenListDidUpdateNotificationKey)
   }

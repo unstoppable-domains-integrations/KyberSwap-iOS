@@ -24,6 +24,14 @@ class KNTokenStorage {
       }
     }
     self.add(tokens: tokenObjects)
+    // new list of supported has been updated, update list of tokens in the wallet
+    for token in self.tokens {
+      if token.isSupported, supportedTokens.first(where: { $0.contract == token.contract }) == nil {
+        try! self.realm.write {
+          token.isSupported = false
+        }
+      }
+    }
   }
 
   var tokens: [TokenObject] {

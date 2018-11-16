@@ -12,8 +12,8 @@ struct KNWelcomeScreenViewModel {
 
     init(dict: JSONDictionary) {
       icon = dict["icon"] as? String ?? ""
-      title = dict["title"] as? String ?? ""
-      subtitle = dict["subtitle"] as? String ?? ""
+      title = NSLocalizedString(dict["title"] as? String ?? "", comment: "")
+      subtitle = NSLocalizedString(dict["subtitle"] as? String ?? "", comment: "")
       position = dict["position"] as? Int ?? 0
     }
   }

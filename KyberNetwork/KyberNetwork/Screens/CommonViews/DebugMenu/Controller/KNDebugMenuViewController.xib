@@ -47,14 +47,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MOS-Kz-cCU">
-                            <rect key="frame" x="33" y="72" width="309" height="29"/>
+                            <rect key="frame" x="65" y="72" width="245" height="29"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <segments>
-                                <segment title="Main"/>
-                                <segment title="Prod"/>
-                                <segment title="Staging"/>
-                                <segment title="Rops"/>
-                                <segment title="Kovan"/>
+                                <segment title="Production"/>
+                                <segment title="Ropsten"/>
+                                <segment title="Rinkeby"/>
                             </segments>
                             <color key="tintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>

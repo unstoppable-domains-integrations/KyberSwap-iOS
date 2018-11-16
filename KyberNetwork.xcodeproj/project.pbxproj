@@ -87,6 +87,7 @@
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2547714C20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */; };
 		2547714E20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2547714D20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift */; };
+		2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */ = {isa = PBXBuildFile; fileRef = 2549B285219EA3DA00B7564E /* config_env_rinkeby.json */; };
 		254BB32F211BEC8200B8E75D /* KWalletBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB32D211BEC8200B8E75D /* KWalletBalanceViewController.swift */; };
 		254BB330211BEC8200B8E75D /* KWalletBalanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254BB32E211BEC8200B8E75D /* KWalletBalanceViewController.xib */; };
 		254BB333211BFAF200B8E75D /* KWalletBalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB332211BFAF200B8E75D /* KWalletBalanceViewModel.swift */; };
@@ -823,6 +824,7 @@
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2547714B20D8BCAC00DF38DD /* IEOCheckWhiteListedAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOCheckWhiteListedAddressRequest.swift; sourceTree = "<group>"; };
 		2547714D20D8D81E00DF38DD /* IEOGetContridbutorRemainingCapRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOGetContridbutorRemainingCapRequest.swift; sourceTree = "<group>"; };
+		2549B285219EA3DA00B7564E /* config_env_rinkeby.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config_env_rinkeby.json; sourceTree = "<group>"; };
 		254BB32D211BEC8200B8E75D /* KWalletBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWalletBalanceViewController.swift; sourceTree = "<group>"; };
 		254BB32E211BEC8200B8E75D /* KWalletBalanceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KWalletBalanceViewController.xib; sourceTree = "<group>"; };
 		254BB332211BFAF200B8E75D /* KWalletBalanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWalletBalanceViewModel.swift; sourceTree = "<group>"; };
@@ -1704,6 +1706,7 @@
 				251ABCAD20578F6D0069687F /* config_env_production.json */,
 				251ABCAE20578F6D0069687F /* config_env_ropsten.json */,
 				251ABCB020578F6D0069687F /* config_env_staging.json */,
+				2549B285219EA3DA00B7564E /* config_env_rinkeby.json */,
 			);
 			path = Jsons;
 			sourceTree = "<group>";
@@ -5086,6 +5089,7 @@
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				25929C6020DA5C760045CFA3 /* SF-Pro-Display-ThinItalic.otf in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
+				2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */,
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
 				254CD0EB214925DE0079EA7A /* KNKYCStepView.xib in Resources */,

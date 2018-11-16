@@ -31,7 +31,7 @@ class KNAppTracker {
   }
 
   static func internalTrackerEndpoint() -> String {
-    return KNEnvironment.default == .ropsten ? KNSecret.debugTrackerURL : KNSecret.trackerURL
+    return KNEnvironment.default == .production ? KNSecret.trackerURL : KNSecret.debugTrackerURL
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
@@ -111,7 +111,7 @@ class KNAppTracker {
 
   // MARK: Profile base string
   static func getKyberProfileBaseString() -> String {
-    return KNEnvironment.default == .ropsten ? KNSecret.debugProfileURL : KNSecret.profileURL
+    return KNEnvironment.default == .production ? KNSecret.profileURL : KNSecret.debugProfileURL
   }
 
   // MARK: App style

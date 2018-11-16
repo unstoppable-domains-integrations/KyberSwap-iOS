@@ -65,14 +65,14 @@ class KNTrackerRate: Object {
 
 extension KNTrackerRate {
   func isTrackerRate(for token: TokenObject) -> Bool {
-    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
+    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten || KNEnvironment.default == .rinkeby {
       return self.tokenSymbol == token.symbol
     }
     return self.tokenAddress.lowercased() == token.contract.lowercased()
   }
 
   var identifier: String {
-    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
+    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten || KNEnvironment.default == .rinkeby {
       return self.tokenSymbol
     }
     return self.tokenAddress.lowercased()

@@ -55,6 +55,12 @@ class KNTransactionCoordinator {
     self.stopUpdatingListERC20TokenTransactions()
     self.stopUpdatingPendingTransactions()
   }
+
+  func forceUpdateNewTransactionsWhenPendingTxCompleted() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+      self.forceFetchTokenTransactions()
+    }
+  }
 }
 
 // MARK: Update transactions
@@ -164,8 +170,9 @@ extension KNTransactionCoordinator {
         completion: nil
       )
     }
+    self.forceFetchTokenTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.loadingListTransactions,
       repeats: true,
       block: { [weak self] _ in
       self?.forceFetchTokenTransactions()

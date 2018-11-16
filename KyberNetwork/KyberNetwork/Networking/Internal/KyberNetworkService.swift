@@ -147,9 +147,9 @@ extension KyberGOService: TargetType {
   }
 
   var task: Task {
-    let clientID = KNEnvironment.default == .ropsten ? KNSecret.debugAppID : KNSecret.appID
-    let clientSecret = KNEnvironment.default == .ropsten ? KNSecret.debugSecret : KNSecret.secret
-    let redirectURL = KNEnvironment.default == .ropsten ? KNSecret.debugRedirectURL : KNSecret.redirectURL
+    let clientID = KNEnvironment.default == .production ? KNSecret.appID : KNSecret.debugAppID
+    let clientSecret = KNEnvironment.default == .production ? KNSecret.secret : KNSecret.debugSecret
+    let redirectURL = KNEnvironment.default == .production ? KNSecret.redirectURL : KNSecret.debugRedirectURL
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):

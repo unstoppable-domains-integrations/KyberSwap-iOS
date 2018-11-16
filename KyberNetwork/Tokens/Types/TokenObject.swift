@@ -47,7 +47,7 @@ class TokenObject: Object {
       self.symbol = localDict["symbol"] as? String ?? ""
       self.icon = localDict["icon"] as? String ?? self.symbol.lowercased()
       self.contract = (localDict["address"] as? String ?? "").lowercased()
-      self.decimals = localDict["decimal"] as? Int ?? 0
+      self.decimals = localDict["decimals"] as? Int ?? 0
       self.isSupported = true
     }
 
