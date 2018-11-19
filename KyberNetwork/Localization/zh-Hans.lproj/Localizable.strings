@@ -388,9 +388,9 @@
 "Other" = "其他的";
 
 // Welcome screen
-"welcome.first.screen.title" = "Secure & Compatible";
-"welcome.first.screen.description" = "Designed with highest security standard. Easily import & export accounts from other wallet apps.";
-"welcome.second.screen.title" = "Instant Swap with KyberSwap";
-"welcome.second.screen.description" = "Swap between arbitrary token pairs. No deposit needed.";
-"welcome.third.screen.title" = "Profile";
-"welcome.third.screen.description" = "Profile process just got simpler. Straight from the app.";
+"welcome.first.screen.title" = "安全 & 兼容";
+"welcome.first.screen.description" = "采用最高的安全标准进行设计。从其他钱包应用程序轻松导入和导出帐户。";
+"welcome.second.screen.title" = "使用KyberSwap即时兑换";
+"welcome.second.screen.description" = "在任意代币对之间切换。无需充币。";
+"welcome.third.screen.title" = "资料";
+"welcome.third.screen.description" = "资料验证变得更简单了。直接在app里就能搞定。";
