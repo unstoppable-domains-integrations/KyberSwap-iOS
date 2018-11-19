@@ -123,7 +123,7 @@ class TokenObject: Object {
 
 extension TokenObject {
   func identifier() -> String {
-    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten {
+    if KNEnvironment.default == .kovan || KNEnvironment.default == .ropsten || KNEnvironment.default == .rinkeby {
       return self.symbol
     }
     return self.contract.lowercased()

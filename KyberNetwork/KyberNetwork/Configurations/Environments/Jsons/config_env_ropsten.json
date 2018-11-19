@@ -39,14 +39,6 @@
       "decimals": 18,
       "usd_id":"omisego"
     },
-    "EOS": {
-      "name": "Eos",
-      "symbol": "EOS",
-      "icon": "eos",
-      "address": "0xd5b4218b950a53ff07985e2d88346925c335eae7",
-      "decimals": 18,
-      "usd_id":"eos"
-    },
     "SNT": {
       "name":"Status",
       "address": "0xbf5d8683b9be6c43fca607eb2a6f2626a18837a6",
@@ -220,13 +212,6 @@
       "symbol" : "COFI",
       "address": "0xb91786188f8d4e35d6d67799e9f162587bf4da03",
       "icon": "cofi"
-    },
-    "BITX": {
-      "name": "BitScreenerToken",
-      "decimals": 18,
-      "symbol" : "BITX",
-      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
-      "icon": "bitx.png"
     },
     "MOC": {
       "name": "Moss Coin",
