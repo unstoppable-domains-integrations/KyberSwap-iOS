@@ -35,11 +35,6 @@ class KNTrackerRateStorage {
     self.add(rates: rates)
   }
 
-  func updateRates(from ieos: [IEOObject]) {
-    let trackerRates = ieos.map({ return KNTrackerRate(ieoObject: $0) })
-    self.update(rates: trackerRates)
-  }
-
   func delete(rates: [KNTrackerRate]) {
     self.realm.beginWrite()
     self.realm.delete(rates)

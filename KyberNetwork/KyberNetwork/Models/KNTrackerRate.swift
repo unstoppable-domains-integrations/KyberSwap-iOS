@@ -28,28 +28,6 @@ class KNTrackerRate: Object {
     self.rateUSDNow = dict["rate_usd_now"] as? Double ?? 0.0
   }
 
-  convenience init(ieoObject: IEOObject) {
-    self.init()
-    self.timestamp = Date().timeIntervalSince1970
-    self.tokenName = ieoObject.tokenName
-    self.tokenSymbol = ieoObject.tokenSymbol
-    self.tokenAddress = ieoObject.tokenAddr
-    self.tokenDecimals = ieoObject.tokenDecimals
-    let rateDouble: Double = {
-      let rateBigInt = ieoObject.rate.fullBigInt(decimals: ieoObject.tokenDecimals) ?? BigInt(0)
-      return rateBigInt.isZero ? 0.0 : Double(BigInt(10).power(ieoObject.tokenDecimals)) / Double(rateBigInt)
-    }()
-    self.rateETHNow = rateDouble
-    self.changeETH24h = 0.0
-    if let ethTrackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) {
-      self.rateUSDNow = self.rateETHNow * ethTrackerRate.rateUSDNow
-      self.changeUSD24h = ethTrackerRate.changeUSD24h
-    } else {
-      self.rateUSDNow = 0.0
-      self.changeUSD24h = 0.0
-    }
-  }
-
   var rateETHBigInt: BigInt {
     return BigInt(self.rateETHNow * Double(EthereumUnit.ether.rawValue))
   }

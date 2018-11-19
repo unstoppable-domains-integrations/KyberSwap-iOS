@@ -22,7 +22,6 @@ struct KNConfirmTransactionViewModel {
     switch self.type {
     case .transfer: return NSLocalizedString("send", value: "Send", comment: "").uppercased()
     case .exchange: return NSLocalizedString("swap", value: "Swap", comment: "").uppercased()
-    case .buyTokenSale: return NSLocalizedString("contribute", value: "Contribute", comment: "").uppercased()
     }
   }
 
@@ -48,12 +47,6 @@ struct KNConfirmTransactionViewModel {
         minFractionDigits: min(trans.from.decimals, 4),
         maxFractionDigits: min(trans.from.decimals, 4)
       ) + " \(trans.from.symbol)"
-    case .buyTokenSale(let trans):
-      return trans.amount.string(
-        decimals: trans.token.decimals,
-        minFractionDigits: min(trans.token.decimals, 4),
-        maxFractionDigits: min(trans.token.decimals, 4)
-      ) + " \(trans.token.symbol)"
     }
   }
 
@@ -80,9 +73,6 @@ struct KNConfirmTransactionViewModel {
     case .exchange(let trans):
       let receivedAmount = "\(trans.displayExpectedReceive(short: true)) \(trans.to.symbol)"
       attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
-    case .buyTokenSale(let trans):
-      let receivedAmount = "\(trans.displayExpectedReceived) \(trans.ieo.tokenSymbol)"
-      attributedString.append(NSAttributedString(string: receivedAmount, attributes: highlightedAttributes))
     }
     return attributedString
   }
@@ -99,13 +89,6 @@ struct KNConfirmTransactionViewModel {
         maxFractionDigits: min(trans.to.decimals, 6)
       )
       return "1 \(trans.from.symbol) = \(rateString.prefix(10)) \(trans.to.symbol)"
-    case .buyTokenSale(let trans):
-      let rateString = trans.estRate?.string(
-        decimals: trans.ieo.tokenDecimals,
-        minFractionDigits: min(trans.ieo.tokenDecimals, 6),
-        maxFractionDigits: min(trans.ieo.tokenDecimals, 6)
-        ) ?? "0"
-      return "1 \(trans.token.symbol) = \(rateString.prefix(10)) \(trans.ieo.tokenSymbol)"
     default: return ""
     }
   }
@@ -122,12 +105,6 @@ struct KNConfirmTransactionViewModel {
           decimals: trans.to.decimals,
           minFractionDigits: min(trans.to.decimals, 6),
           maxFractionDigits: min(trans.to.decimals, 6)
-        )
-      } else if case .buyTokenSale(let trans) = self.type, let minRate = trans.minRate {
-        return minRate.string(
-          decimals: trans.ieo.tokenDecimals,
-          minFractionDigits: min(trans.ieo.tokenDecimals, 6),
-          maxFractionDigits: min(trans.ieo.tokenDecimals, 6)
         )
       }
       return ""
@@ -147,9 +124,6 @@ struct KNConfirmTransactionViewModel {
       return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
     case .exchange(let trans):
       let fee = (trans.gasPrice ?? BigInt(0)) * (trans.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault)
-      return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
-    case .buyTokenSale(let trans):
-      let fee = trans.gasPrice * trans.gasLimit
       return fee.string(units: .ether, minFractionDigits: 6, maxFractionDigits: 6) + " ETH"
     }
   }
