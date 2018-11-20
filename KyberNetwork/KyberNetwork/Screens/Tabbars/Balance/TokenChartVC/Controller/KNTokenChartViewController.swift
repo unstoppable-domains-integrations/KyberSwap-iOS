@@ -61,6 +61,7 @@ enum KNTokenChartViewEvent {
   case buy(token: TokenObject)
   case sell(token: TokenObject)
   case send(token: TokenObject)
+  case openEtherscan(token: TokenObject)
 }
 
 protocol KNTokenChartViewControllerDelegate: class {
@@ -418,6 +419,14 @@ class KNTokenChartViewController: KNBaseViewController {
     }
 
     EasyTipView.globalPreferences = self.preferences
+
+    // Add gestures to open token in etherscan
+    self.iconImageView.isUserInteractionEnabled = true
+    self.iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
+    self.nameLabel.isUserInteractionEnabled = true
+    self.nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
+    self.symbolLabel.isUserInteractionEnabled = true
+    self.symbolLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
   }
 
   fileprivate func updateDisplayDataType(_ type: KNTokenChartType) {
@@ -432,6 +441,10 @@ class KNTokenChartViewController: KNBaseViewController {
     if self.dataTipView != nil { self.dataTipView.dismiss() }
     self.reloadViewDataDidUpdate()
     self.startTimer()
+  }
+
+  @objc func openTokenOnEtherscanPressed(_ sender: Any) {
+    self.delegate?.tokenChartViewController(self, run: .openEtherscan(token: self.viewModel.token))
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

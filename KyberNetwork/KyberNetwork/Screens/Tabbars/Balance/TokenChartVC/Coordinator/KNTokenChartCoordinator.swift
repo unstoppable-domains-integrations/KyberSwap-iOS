@@ -88,6 +88,10 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         from: token
       )
       self.sendTokenCoordinator?.start()
+    case .openEtherscan(let token):
+      if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(token.contract)") {
+        self.navigationController.openSafari(with: url)
+      }
     }
   }
 }
