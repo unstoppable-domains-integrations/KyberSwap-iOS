@@ -5,9 +5,9 @@ import RealmSwift
 extension TransactionsStorage {
 
   var tokenTransactions: [KNTokenTransaction] {
-    return self.realm.objects(KNTokenTransaction.self)
-      .sorted(byKeyPath: "date", ascending: false)
-      .filter { !$0.id.isEmpty }
+    let data: [KNTokenTransaction] = self.realm.objects(KNTokenTransaction.self)
+      .sorted(by: { return $0.date < $1.date || ($0.date == $1.date && $0.id < $1.id ) })
+    return data.filter({ return !$0.id.isEmpty })
   }
 
   func add(transactions: [KNTokenTransaction]) {

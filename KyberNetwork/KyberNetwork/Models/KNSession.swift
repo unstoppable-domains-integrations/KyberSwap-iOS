@@ -123,7 +123,7 @@ class KNSession {
     // Put here to be able force update new pending transaction immmediately
     let kyberTx = KNTransaction.from(transaction: transaction)
     self.transactionStorage.addKyberTransactions([kyberTx])
-    self.transacionCoordinator?.updatePendingTranscation(kyberTx)
+    self.transacionCoordinator?.updatePendingTransaction(kyberTx)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,

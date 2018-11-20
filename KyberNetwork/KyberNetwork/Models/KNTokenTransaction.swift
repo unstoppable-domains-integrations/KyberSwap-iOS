@@ -5,7 +5,7 @@ import RealmSwift
 import TrustKeystore
 import TrustCore
 
-// "ERC20 - Token Transfer Events" by Address
+// "ETH, ERC20 Tokens Transfer Events" by Address
 class KNTokenTransaction: Object {
 
   @objc dynamic var id: String = ""
@@ -66,9 +66,9 @@ class KNTokenTransaction: Object {
     self.from = internalDict["from"] as? String ?? ""
     self.to = internalDict["to"] as? String ?? ""
     self.contractAddress = internalDict["contractAddress"] as? String ?? ""
-    if contractAddress.isEmpty {
+    self.value = internalDict["value"] as? String ?? ""
+    if contractAddress.isEmpty && self.value != "0" {
       // ETH Transfer
-      self.value = internalDict["value"] as? String ?? ""
       self.tokenName = eth.name
       self.tokenSymbol = eth.symbol
       self.tokenDecimal = "\(eth.decimals)"

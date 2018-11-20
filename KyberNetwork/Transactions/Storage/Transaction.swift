@@ -98,6 +98,12 @@ extension Transaction {
       guard let token = self.getTokenObject() else { return false }
       return token.isETH
     }
+
+    func isReceivingETH(ownerAddress: String) -> Bool {
+      guard let token = self.getTokenObject() else { return false }
+      return token.isETH && ownerAddress.lowercased() == self.to.lowercased()
+    }
+
 }
 
 extension Transaction {

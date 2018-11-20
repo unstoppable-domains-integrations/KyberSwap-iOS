@@ -37,8 +37,7 @@ class KNTransactionCoordinator {
   }
 
   func start() {
-    self.startUpdatingAllTransactions()
-    self.startUpdatingListERC20TokenTransactions()
+    self.startUpdatingCompletedTransactions()
     self.startUpdatingPendingTransactions()
 
     // remove completed kyber transaction if needed
@@ -51,117 +50,20 @@ class KNTransactionCoordinator {
   }
 
   func stop() {
-    self.stopUpdatingAllTransactions()
-    self.stopUpdatingListERC20TokenTransactions()
+    self.stopUpdatingCompletedTransaction()
     self.stopUpdatingPendingTransactions()
   }
 
   func forceUpdateNewTransactionsWhenPendingTxCompleted() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
       self.forceFetchTokenTransactions()
     }
   }
 }
 
-// MARK: Update transactions
+// MARK: ETH/ERC20 Token transactions
 extension KNTransactionCoordinator {
-  func startUpdatingAllTransactions() {
-//    self.stopUpdatingAllTransactions()
-//    self.allTxTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-//      repeats: true,
-//      block: { [weak self] _ in
-//        guard let `self` = self else { return }
-//        let startBlock: Int = {
-//          guard let transaction = self.storage.completedObjects.first else { return 1 }
-//          return transaction.blockNumber - 2000
-//          return 1
-//        }()
-//        self.fetchTransaction(
-//          for: self.wallet.address,
-//          startBlock: startBlock,
-//          completion: nil
-//        )
-//        let fromDate: Date? = {
-//          guard let transaction = self.transactionStorage.historyTransactions.first else { return nil }
-//          return Date(timeIntervalSince1970: Double(transaction.blockTimestamp))
-//        }()
-//        self.fetchHistoryTransactions(
-//          from: fromDate,
-//          toDate: nil,
-//          address: self.wallet.address.description,
-//          completion: nil
-//        )
-//    })
-  }
-
-  func stopUpdatingAllTransactions() {
-//    self.allTxTimer?.invalidate()
-//    self.allTxTimer = nil
-  }
-
-//  func fetchTransaction(for address: Address, startBlock: Int, page: Int = 0, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-//    NSLog("Fetch transactions from block \(startBlock) page \(page)")
-//    let etherScanProvider = MoyaProvider<KNEtherScanService>()
-//    etherScanProvider.request(.getListTransactions(address: address.description, startBlock: startBlock, endBlock: 99999999, page: 0)) { [weak self] result in
-//      guard let `self` = self else { return }
-//      switch result {
-//      case .success(let response):
-//        do {
-//          let json: JSONDictionary = response.mapJSON(failsOnEmptyData: false))
-//          let transArr: [JSONDictionary] = json["result"])
-//          let rawTransactions: [RawTransaction] = try transArr.map({ try  RawTransaction.from(dictionary: $0) })
-//          let transactions: [Transaction] = rawTransactions.flatMap({ return Transaction.from(transaction: $0) })
-//          if !transactions.isEmpty {
-//            self.storage.add(transactions)
-//            self.updateHistoryTransactions(from: transactions)
-//          }
-//          NSLog("Successfully fetched \(transactions.count) transactions")
-//          completion?(.success(transactions))
-//        } catch let error {
-//          NSLog("Fetching transactions parse failed with error: \(error.prettyError)")
-//          completion?(.failure(AnyError(error)))
-//        }
-//      case .failure(let error):
-//        NSLog("Fetching transactions failed with error: \(error.prettyError)")
-//        completion?(.failure(AnyError(error)))
-//      }
-//    }
-//  }
-
-  func fetchHistoryTransactions(from fromDate: Date?, toDate: Date?, address: String, completion: ((Result<[KNHistoryTransaction], AnyError>) -> Void)?) {
-    let trackerProvider = MoyaProvider<KNTrackerService>()
-    trackerProvider.request(.getTrades(fromDate: fromDate, toDate: toDate, address: address)) { result in
-      switch result {
-      case .success(let response):
-        do {
-          let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let transArr: [JSONDictionary] = json["data"] as? [JSONDictionary] ?? []
-          let historyTransactions: [KNHistoryTransaction] = transArr.map({ return KNHistoryTransaction(dictionary: $0) })
-          self.updateHistoryTransactions(historyTransactions)
-          completion?(.success(historyTransactions))
-        } catch let err {
-          completion?(.failure(AnyError(err)))
-        }
-      case .failure(let error):
-        completion?(.failure(AnyError(error)))
-      }
-    }
-  }
-
-  func updateHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
-    self.transactionStorage.addHistoryTransactions(transactions)
-    KNNotificationUtil.postNotification(
-      for: kTransactionListDidUpdateNotificationKey,
-      object: transactions,
-      userInfo: nil
-    )
-  }
-}
-
-// MARK: ERC20 Token transactions
-extension KNTransactionCoordinator {
-  func startUpdatingListERC20TokenTransactions() {
+  func startUpdatingCompletedTransactions() {
     self.tokenTxTimer?.invalidate()
     if KNAppTracker.transactionLoadState(for: self.wallet.address) != .done {
       self.initialFetchERC20TokenTransactions(
@@ -180,7 +82,7 @@ extension KNTransactionCoordinator {
     )
   }
 
-  func stopUpdatingListERC20TokenTransactions() {
+  func stopUpdatingCompletedTransaction() {
     self.tokenTxTimer?.invalidate()
     self.tokenTxTimer = nil
   }
@@ -201,7 +103,7 @@ extension KNTransactionCoordinator {
     )
 
     let internalStartBlock: Int = {
-      guard let transaction = self.transactionStorage.objects.first(where: { $0.isETHTransfer }) else {
+      guard let transaction = self.transactionStorage.objects.first(where: { $0.isReceivingETH(ownerAddress: self.wallet.address.description) }) else {
         return 0
       }
       return max(0, transaction.blockNumber - 200)
@@ -210,7 +112,13 @@ extension KNTransactionCoordinator {
       forAddress: self.wallet.address.description,
       startBlock: internalStartBlock,
       page: 1,
-      sort: "asc",
+      sort: "desc",
+      completion: nil
+    )
+    let lastBlockAllTx: Int = KNAppTracker.lastBlockLoadAllTransaction(for: self.wallet.address)
+    self.fetchAllTransactions(
+      forAddress: self.wallet.address.description,
+      startBlock: max(0, lastBlockAllTx - 10),
       completion: nil
     )
   }
@@ -266,7 +174,7 @@ extension KNTransactionCoordinator {
       if address != self.wallet.address { return }
       switch result {
       case .success(let transactions):
-        if transactions.isEmpty || self.transactionStorage.tokenTransactions.count >= 5000 {
+        if transactions.isEmpty || self.transactionStorage.tokenTransactions.count >= 1000 {
           // done loading or too many transactions
           KNAppTracker.updateTransactionLoadState(.done, for: address)
         } else {
@@ -318,7 +226,7 @@ extension KNTransactionCoordinator {
               let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
               let eth = KNSupportedTokenStorage.shared.ethToken
-              let transactions = data.map({ return KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() }).filter({ self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
+              let transactions = data.map({ return KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() })
               self.updateListTokenTransactions(transactions)
               print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
               completion?(.success(transactions))
@@ -333,6 +241,65 @@ extension KNTransactionCoordinator {
         }
       }
     }
+  }
+
+  // Fetch all transactions, but extract only send ETH transactions
+  fileprivate func fetchAllTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
+    print("---- Internal Token Transactions: Fetching ----")
+    let provider = MoyaProvider<KNEtherScanService>()
+    let service = KNEtherScanService.getListTransactions(address: address, startBlock: startBlock)
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
+              // Update last block loaded
+              let lastBlockLoaded: Int = {
+                let lastBlock = KNAppTracker.lastBlockLoadAllTransaction(for: self.wallet.address)
+                if !data.isEmpty {
+                  let blockNumber = data[0]["blockNumber"] as? String ?? ""
+                  return Int(blockNumber) ?? lastBlock
+                }
+                return lastBlock
+              }()
+              KNAppTracker.updateAllTransactionLastBlockLoad(lastBlockLoaded, for: self.wallet.address)
+              let transactions = self.updateAllTransactions(address: address, data: data)
+              print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
+              completion?(.success(transactions))
+            } catch let error {
+              print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            completion?(.failure(AnyError(error)))
+          }
+        }
+      }
+    }
+  }
+
+  fileprivate func updateAllTransactions(address: String, data: [JSONDictionary]) -> [Transaction] {
+    let eth = KNSupportedTokenStorage.shared.ethToken
+
+    let completedTransactions: [Transaction] = data.filter({ ($0["isError"] as? String ?? "") == "0" })
+      .map({ return KNTokenTransaction(internalDict: $0, eth: eth) })
+      .filter({ $0.from == address.lowercased() && $0.tokenSymbol.lowercased() == eth.symbol.lowercased() })
+      .map({ return $0.toTransaction() })
+    let failedTransactions: [Transaction] = data.filter({ ($0["isError"] as? String ?? "") == "1"
+    }).map({
+      let transaction = KNTokenTransaction(internalDict: $0, eth: eth).toTransaction()
+      transaction.internalState = TransactionState.error.rawValue
+      return transaction
+    })
+    var transactions = completedTransactions
+    transactions.append(contentsOf: failedTransactions)
+    self.updateListTokenTransactions(transactions)
+    return transactions
   }
 
   func updateListTokenTransactions(_ transactions: [Transaction]) {
@@ -367,10 +334,10 @@ extension KNTransactionCoordinator {
   }
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
-    self.transactionStorage.kyberPendingTransactions.forEach { self.updatePendingTranscation($0) }
+    self.transactionStorage.kyberPendingTransactions.forEach { self.updatePendingTransaction($0) }
   }
 
-  func updatePendingTranscation(_ transaction: KNTransaction) {
+  func updatePendingTransaction(_ transaction: KNTransaction) {
     self.checkTransactionReceipt(transaction) { [weak self] error in
       if error == nil { return }
       guard let `self` = self else { return }

@@ -91,16 +91,16 @@ struct KNHistoryTransactionCollectionViewModel {
   var displayedAmountString: String {
     guard let localObject = self.transaction.localizedOperations.first else { return "" }
     if self.isSwap {
-      let amountFrom: String = String(self.transaction.value.prefix(6))
+      let amountFrom: String = String(self.transaction.value.prefix(12))
       let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
 
-      let amountTo: String = String(localObject.value.prefix(6))
+      let amountTo: String = String(localObject.value.prefix(12))
       let toText = "\(amountTo) \(localObject.name ?? "")"
 
       return "\(fromText) -> \(toText)"
     }
     let sign: String = self.isSent ? "-" : "+"
-    return "\(sign)\(self.transaction.value.prefix(6)) \(localObject.symbol ?? "")"
+    return "\(sign)\(self.transaction.value.prefix(12)) \(localObject.symbol ?? "")"
   }
 
   var displayedAmountColorHex: String {

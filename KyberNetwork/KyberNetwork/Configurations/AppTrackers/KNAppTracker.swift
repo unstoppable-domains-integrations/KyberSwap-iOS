@@ -17,6 +17,7 @@ class KNAppTracker {
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
+  static let kAllTransactionLoadStateKey: String = "kAllTransactionLoadStateKey"
   static let kTransactionNonceKey: String = "kTransactionNonceKey"
 
   static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
@@ -66,6 +67,22 @@ class KNAppTracker {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionLoadStateKey + sessionID
     userDefaults.set(state.rawValue, forKey: key)
+    userDefaults.synchronize()
+  }
+
+  static func lastBlockLoadAllTransaction(for address: Address) -> Int {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kAllTransactionLoadStateKey + sessionID
+    if let value = userDefaults.object(forKey: key) as? Int {
+      return value
+    }
+    return 0
+  }
+
+  static func updateAllTransactionLastBlockLoad(_ block: Int, for address: Address) {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kAllTransactionLoadStateKey + sessionID
+    userDefaults.set(block, forKey: key)
     userDefaults.synchronize()
   }
 
@@ -127,6 +144,7 @@ class KNAppTracker {
 
   // MARK: Reset app tracker
   static func resetAppTrackerData(for address: Address) {
+    self.updateAllTransactionLastBlockLoad(0, for: address)
     self.updateTransactionLoadState(.none, for: address)
     self.updateTransactionNonce(0, address: address)
   }
