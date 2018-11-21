@@ -379,7 +379,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.primarySourceOfFundTextLabel.text = NSLocalizedString("primary.source.of.funds", value: "Primary source of funds", comment: "").uppercased()
     self.primaraySourceOfFundDescTextLabel.text = NSLocalizedString(
       "primary.source.of.funds.desc",
-      value: "Explain: Why should users fill up these optional fields???",
+      value: "Please indicate below the primary professional activity that generate the funds that will be transferred into the wallet. Filling up this field will help us better understand your primary professional activity.",
       comment: ""
     )
     self.primarySourceOfFundTextField.placeholder = NSLocalizedString("source.of.funds", value: "Source of Funds", comment: "")

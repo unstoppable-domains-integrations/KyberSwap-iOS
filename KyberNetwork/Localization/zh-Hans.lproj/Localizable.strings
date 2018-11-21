@@ -328,7 +328,7 @@
 "postal.zip.code" = "邮政编码";
 "document.types" = "文件类型";
 "primary.source.of.funds" = "资金的主要来源";
-"primary.source.of.funds.desc" = "说明：为什么用户要填写这些可选字段???";
+"primary.source.of.funds.desc" = "请在下面说明资金的主要来源。填补这一信息将有助于我们更好地了解您的主要职业内容。";
 "source.of.funds" = "资金来源";
 "see.more" = "看到更多";
 "see.less" = "收回";

@@ -328,7 +328,7 @@
 "postal.zip.code" = "Postal / Zip Code";
 "document.types" = "Document Types";
 "primary.source.of.funds" = "Primary source of Funds";
-"primary.source.of.funds.desc" = "Explain: Why should users fill up these optional fields???";
+"primary.source.of.funds.desc" = "Please indicate below the primary professional activity that generate the funds that will be transferred into the wallet. Filling up this field will help us better understand your primary professional activity.";
 "source.of.funds" = "Source of Funds";
 "see.more" = "See more";
 "see.less" = "See less";
