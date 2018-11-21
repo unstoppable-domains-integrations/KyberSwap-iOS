@@ -145,11 +145,20 @@ class KNProfileHomeCoordinator: Coordinator {
 // MARK: Callbacks, networking
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
-    self.loadUserInfoTimer?.invalidate()
-    self.lastUpdatedUserInfo = nil
-    IEOUserStorage.shared.signedOut()
-    Branch.getInstance().logout()
-    self.rootViewController.coordinatorDidSignOut()
+    let alertController = UIAlertController(
+      title: nil,
+      message: NSLocalizedString("do.you.want.to.log.out?", value: "Do you want to log out?", comment: ""),
+      preferredStyle: .alert
+    )
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: NSLocalizedString("log.out", value: "Log Out", comment: ""), style: .default, handler: { _ in
+      self.loadUserInfoTimer?.invalidate()
+      self.lastUpdatedUserInfo = nil
+      IEOUserStorage.shared.signedOut()
+      Branch.getInstance().logout()
+      self.rootViewController.coordinatorDidSignOut()
+    }))
+    self.rootViewController.present(alertController, animated: true, completion: nil)
   }
 
   fileprivate func openSignInView() {

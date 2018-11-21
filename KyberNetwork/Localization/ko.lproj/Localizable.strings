@@ -367,6 +367,7 @@
 "can.not.convert.from.to" = "변환 할 수 없습니다%@%@";
 "successfully.converted.to" = "%@ 가 %@ 로 변환되었습니다.";
 "successfully.sent.to" = "%@ 성공적으로 전송 %@";
+"do.you.want.to.log.out?" = "로그 아웃 하시겠습니까?";
 
 // Proof of address
 "Bank Statement" = "은행 성명서";

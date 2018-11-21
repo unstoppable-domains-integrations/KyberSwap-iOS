@@ -367,6 +367,7 @@
 "can.not.convert.from.to" = "无法从%@转换为%@";
 "successfully.converted.to" = "%@成功转换为%@";
 "successfully.sent.to" = "%@成功发送到%@";
+"do.you.want.to.log.out?" = "您想注销吗?";
 
 // Proof of address
 "Bank Statement" = "银行对帐单";

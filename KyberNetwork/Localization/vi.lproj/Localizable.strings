@@ -367,6 +367,7 @@
 "can.not.convert.from.to" = "Không thể chuyển đổi từ %@ thành %@";
 "successfully.converted.to" = "%@ thành công chuyển đổi sang %@";
 "successfully.sent.to" = "%@ đã được gửi tới %@";
+"do.you.want.to.log.out?" = "Bạn có muốn đăng xuất không?";
 
 // Proof of address
 "Bank Statement" = "Bảng sao kê ngân hàng";

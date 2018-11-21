@@ -367,6 +367,7 @@
 "can.not.convert.from.to" = "Can not convert from %@ to %@";
 "successfully.converted.to" = "%@ successfully converted to %@";
 "successfully.sent.to" = "%@ successfully sent to %@";
+"do.you.want.to.log.out?" = "Do you want to log out?";
 
 // Proof of address
 "Bank Statement" = "Bank Statement";
