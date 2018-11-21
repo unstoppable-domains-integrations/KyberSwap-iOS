@@ -5692,7 +5692,7 @@
 				DEVELOPMENT_TEAM = HMT2AL7Q6Y;
 				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/KyberNetwork/Info.plist";
+				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = manhlx.kyber.network;
@@ -5717,7 +5717,7 @@
 				DEVELOPMENT_TEAM = HMT2AL7Q6Y;
 				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/KyberNetwork/Info.plist";
+				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = manhlx.kyber.network;
 				PRODUCT_NAME = "$(TARGET_NAME)";
