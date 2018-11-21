@@ -178,22 +178,22 @@
                                 <constraint firstAttribute="height" constant="1" id="fHi-AV-anO"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kAL-xL-9HK">
-                            <rect key="frame" x="327" y="266" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kAL-xL-9HK">
+                            <rect key="frame" x="319" y="262" width="32" height="32"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="24" id="mTp-yh-AEo"/>
-                                <constraint firstAttribute="height" constant="24" id="xoE-og-bkI"/>
+                                <constraint firstAttribute="width" constant="32" id="mTp-yh-AEo"/>
+                                <constraint firstAttribute="height" constant="32" id="xoE-og-bkI"/>
                             </constraints>
                             <state key="normal" image="arrow_down_gray"/>
                             <connections>
                                 <action selector="nationalityButtonPressed:" destination="-1" eventType="touchUpInside" id="EPe-V6-MgM"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6c-CU-Any">
-                            <rect key="frame" x="327" y="798.5" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6c-CU-Any">
+                            <rect key="frame" x="319" y="794.5" width="32" height="32"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="21Q-s7-s3h"/>
-                                <constraint firstAttribute="width" constant="24" id="3Xp-i4-TJg"/>
+                                <constraint firstAttribute="height" constant="32" id="21Q-s7-s3h"/>
+                                <constraint firstAttribute="width" constant="32" id="3Xp-i4-TJg"/>
                             </constraints>
                             <state key="normal" image="arrow_down_gray"/>
                             <connections>
@@ -336,7 +336,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Residential Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pmc-cS-lKl">
-                            <rect key="frame" x="24" y="709" width="279" height="17.5"/>
+                            <rect key="frame" x="24" y="709" width="271" height="17.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -440,11 +440,11 @@
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-EC-LuQ">
-                            <rect key="frame" x="327" y="1124.5" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cK-EC-LuQ">
+                            <rect key="frame" x="319" y="1120.5" width="32" height="32"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="24" id="VLj-Ku-o40"/>
-                                <constraint firstAttribute="height" constant="24" id="m7K-UY-RzK"/>
+                                <constraint firstAttribute="width" constant="32" id="VLj-Ku-o40"/>
+                                <constraint firstAttribute="height" constant="32" id="m7K-UY-RzK"/>
                             </constraints>
                             <state key="normal" image="arrow_down_gray"/>
                             <connections>
@@ -528,10 +528,11 @@
                                 <constraint firstAttribute="height" constant="1" id="6IP-bw-Vie"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfe-QW-bsL">
-                            <rect key="frame" x="327" y="1464.5" width="24" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfe-QW-bsL">
+                            <rect key="frame" x="319" y="1459.5" width="32" height="32"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="24" id="wrp-X4-qah"/>
+                                <constraint firstAttribute="width" constant="32" id="wrp-X4-qah"/>
+                                <constraint firstAttribute="height" constant="32" id="x9l-jq-weP"/>
                             </constraints>
                             <state key="normal" image="arrow_down_gray"/>
                             <connections>

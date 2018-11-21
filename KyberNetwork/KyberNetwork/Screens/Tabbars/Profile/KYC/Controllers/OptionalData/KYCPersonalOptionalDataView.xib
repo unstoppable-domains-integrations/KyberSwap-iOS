@@ -152,7 +152,7 @@ Help us ensure the information is accurate and up to date</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kDk-Sx-A8L">
-                    <rect key="frame" x="24" y="373.5" width="287" height="46"/>
+                    <rect key="frame" x="24" y="373.5" width="279" height="46"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="6kM-Ui-Nb0"/>
                     </constraints>
@@ -167,11 +167,11 @@ Help us ensure the information is accurate and up to date</string>
                         <constraint firstAttribute="height" constant="1" id="bga-rJ-Q6e"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yay-g2-4rL">
-                    <rect key="frame" x="327" y="384.5" width="24" height="24"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yay-g2-4rL">
+                    <rect key="frame" x="319" y="380.5" width="32" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="24" id="3Vx-ck-QxY"/>
-                        <constraint firstAttribute="width" constant="24" id="J7C-00-XCG"/>
+                        <constraint firstAttribute="height" constant="32" id="3Vx-ck-QxY"/>
+                        <constraint firstAttribute="width" constant="32" id="J7C-00-XCG"/>
                     </constraints>
                     <state key="normal" image="arrow_down_gray"/>
                     <connections>
