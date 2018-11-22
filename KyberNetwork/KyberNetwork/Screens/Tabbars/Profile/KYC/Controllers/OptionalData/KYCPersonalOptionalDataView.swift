@@ -109,14 +109,14 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.layoutIfNeeded()
   }
 
-  func updateOccupationCodeData(_ data: String) {
-    self.occupationCodeTextField.text = data
+  func updateOccupationCodeData(_ data: String, value: String) {
+    self.occupationCodeTextField.text = value.isEmpty ? data : "\(data) - \(value)"
     self.viewModel.occupationCode = data
     self.layoutIfNeeded()
   }
 
-  func updateIndustryCodeData(_ data: String) {
-    self.industryCodeTextField.text = data
+  func updateIndustryCodeData(_ data: String, value: String) {
+    self.industryCodeTextField.text = value.isEmpty ? data : "\(data) - \(value)"
     self.viewModel.industryCode = data
     self.layoutIfNeeded()
   }
@@ -129,9 +129,9 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.layoutIfNeeded()
   }
 
-  func updateOptionalData(with details: UserKYCDetails) {
-    self.updateOccupationCodeData(details.occupationCode)
-    self.updateIndustryCodeData(details.industryCode)
+  func updateOptionalData(with details: UserKYCDetails, occupation: String, industry: String) {
+    self.updateOccupationCodeData(details.occupationCode, value: occupation)
+    self.updateIndustryCodeData(details.industryCode, value: industry)
     self.updateCountryData(details.taxResidencyCountry)
     self.updateTaxIDNumber(details.taxIDNUmber.isEmpty ? nil : details.taxIDNUmber)
     self.layoutIfNeeded()

@@ -770,7 +770,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
 
     self.primarySourceOfFundTextField.text = NSLocalizedString(details.sourceFund, value: details.sourceFund, comment: "")
-    self.optionalDataView.updateOptionalData(with: details)
+    let occupation = self.viewModel.occupationCodes.first(where: { $0.key == details.occupationCode })?.value ?? ""
+    let industry = self.viewModel.industryCodes.first(where: { $0.key == details.industryCode })?.value ?? ""
+    self.optionalDataView.updateOptionalData(with: details, occupation: occupation, industry: industry)
     self.view.layoutIfNeeded()
   }
 
@@ -1062,11 +1064,11 @@ extension KYCPersonalInfoViewController: KYCSelectOptionViewControllerDelegate {
       case .countryOfResidence: self.countryOfResidenceTextField.text = data
       case .occupationCode:
         for (key, value) in self.viewModel.occupationCodes where value == data {
-          self.optionalDataView.updateOccupationCodeData(key)
+          self.optionalDataView.updateOccupationCodeData(key, value: value)
         }
       case .industryCode:
         for (key, value) in self.viewModel.industryCodes where value == data {
-          self.optionalDataView.updateIndustryCodeData(key)
+          self.optionalDataView.updateIndustryCodeData(key, value: value)
         }
       case .taxCountry:
         self.optionalDataView.updateCountryData(data)
