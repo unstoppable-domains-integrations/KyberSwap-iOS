@@ -15,7 +15,6 @@ class KNExternalProvider {
   let web3Swift: Web3Swift
   let knCustomRPC: KNCustomRPC!
   let networkAddress: Address!
-  let reserveAddress: Address!
 
   var minTxCount: Int {
     didSet {
@@ -30,7 +29,6 @@ class KNExternalProvider {
     let customRPC: KNCustomRPC = KNEnvironment.default.knCustomRPC!
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
-    self.reserveAddress = Address(string: customRPC.reserveAddress)
     self.minTxCount = 0
   }
 
