@@ -16,11 +16,20 @@ enum KyberNetworkService: String {
 extension KyberNetworkService: TargetType {
 
   var baseURL: URL {
-    let baseURLString = KNEnvironment.internalBaseEndpoint
+    let baseURLString: String = {
+      if case .getRate = self {
+        if KNEnvironment.default == .ropsten { return KNSecret.internalRopstenRateEndpoint }
+        if KNEnvironment.default == .rinkeby { return KNSecret.internalRinkebyRateEndpoint }
+      }
+      return KNSecret.internalCachedEndpoint
+    }()
     return URL(string: baseURLString)!
   }
 
   var path: String {
+    if case .getRate = self {
+      if KNEnvironment.default == .ropsten || KNEnvironment.default == .rinkeby { return "" }
+    }
     return self.rawValue
   }
 

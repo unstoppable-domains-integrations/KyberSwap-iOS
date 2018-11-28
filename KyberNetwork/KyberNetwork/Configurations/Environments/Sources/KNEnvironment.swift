@@ -34,7 +34,7 @@ enum KNEnvironment: Int {
   }
 
   static let internalBaseEndpoint: String = {
-    return KNAppTracker.internCachedEnpoint()
+    return KNAppTracker.internalCachedEnpoint()
   }()
 
   static let internalTrackerEndpoint: String = {

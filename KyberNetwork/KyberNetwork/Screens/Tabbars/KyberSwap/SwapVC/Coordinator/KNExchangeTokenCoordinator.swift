@@ -313,9 +313,9 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           slippageRate /= BigInt(10).power(18 - to.decimals)
         } else {
           // fallback to rate from tracker
-          if estRate.isZero, let cmcRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
-            estRate = cmcRate.rate
-            slippageRate = cmcRate.minRate
+          if estRate.isZero, let cacheRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
+            estRate = cacheRate.rate
+            slippageRate = cacheRate.minRate
           }
         }
         self?.rootViewController.coordinatorDidUpdateEstimateRate(

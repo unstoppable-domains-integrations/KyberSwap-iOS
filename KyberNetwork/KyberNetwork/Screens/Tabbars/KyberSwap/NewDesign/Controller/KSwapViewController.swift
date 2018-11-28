@@ -148,6 +148,8 @@ class KSwapViewController: KNBaseViewController {
       self?.updateUserCapInWei()
       }
     )
+
+    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
   }
 
   override func viewWillDisappear(_ animated: Bool) {

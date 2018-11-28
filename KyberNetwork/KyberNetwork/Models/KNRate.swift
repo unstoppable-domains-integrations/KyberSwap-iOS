@@ -24,13 +24,17 @@ class KNRate: NSObject {
       }
     } else {
       source = dictionary["source"] as? String ?? ""
-      dest =  dictionary["dest"] as? String ?? ""
+      let toSymbol = dictionary["dest"] as? String ?? ""
+      dest = toSymbol
       let rateString: String = dictionary["rate"] as? String ?? ""
       let minRateString: String = dictionary["minRate"] as? String ?? ""
-      if let rateDouble = Double(rateString), let minRateDouble = Double(minRateString) {
-        rate = BigInt(rateDouble)
-        minRate = BigInt(minRateDouble)
-        if isDebug { print("Rate from \(source) to \(dest): \(EtherNumberFormatter.full.string(from: rate))") }
+      if let rateDouble = Double(rateString), let minRateDouble = Double(minRateString),
+        let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == toSymbol }) {
+        rate = BigInt(rateDouble) / BigInt(10).power(18 - to.decimals)
+        minRate = BigInt(minRateDouble) / BigInt(10).power(18 - to.decimals)
+        if isDebug {
+          print("Rate from \(source) to \(dest): \(rate.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 10))")
+        }
       } else {
         throw CastError(actualValue: String.self, expectedType: BigInt.self)
       }

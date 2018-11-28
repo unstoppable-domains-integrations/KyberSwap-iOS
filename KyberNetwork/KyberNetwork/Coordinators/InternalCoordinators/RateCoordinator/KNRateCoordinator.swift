@@ -17,10 +17,14 @@ class KNRateCoordinator {
 
   fileprivate let provider = MoyaProvider<KNTrackerService>()
 
+  fileprivate var cacheRates: [KNRate] = []
+  fileprivate var cacheRateTimer: Timer?
+
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
 
   func getRate(from: TokenObject, to: TokenObject) -> KNRate? {
+    if let rate = self.cacheRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol }) { return rate }
     if from.isETH {
       if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: to) {
         return KNRate(
@@ -46,6 +50,11 @@ class KNRateCoordinator {
     )
   }
 
+  func getCacheRate(from: String, to: String) -> KNRate? {
+    if let rate = self.cacheRates.first(where: { $0.source == from && $0.dest == to }) { return rate }
+    return nil
+  }
+
   func usdRate(for token: TokenObject) -> KNRate? {
     if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: token) {
       return KNRate.rateUSD(from: trackerRate)
@@ -53,23 +62,42 @@ class KNRateCoordinator {
     return nil
   }
 
+  func ethRate(for token: TokenObject) -> KNRate? {
+    if let rate = self.getCacheRate(from: token.symbol, to: "ETH") { return rate }
+    if let rate = KNTrackerRateStorage.shared.trackerRate(for: token) {
+      return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18)
+    }
+    return nil
+  }
+
   init() {}
 
   func resume() {
+    self.fetchCacheRate(nil)
+    self.cacheRateTimer?.invalidate()
+    self.cacheRateTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.cacheRateLoadingInterval,
+      repeats: true,
+      block: { [weak self] timer in
+        self?.fetchCacheRate(timer)
+      }
+    )
     // Immediate fetch data from server, then run timers with interview 60 seconds
     self.fetchExchangeTokenRate(nil)
     self.exchangeTokenRatesTimer?.invalidate()
 
     self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-      target: self,
-      selector: #selector(self.fetchExchangeTokenRate(_:)),
-      userInfo: nil,
-      repeats: true
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] timer in
+      self?.fetchExchangeTokenRate(timer)
+      }
     )
   }
 
   func pause() {
+    self.cacheRateTimer?.invalidate()
+    self.cacheRateTimer = nil
     self.exchangeTokenRatesTimer?.invalidate()
     self.exchangeTokenRatesTimer = nil
     self.isLoadingExchangeTokenRates = false
@@ -99,6 +127,15 @@ class KNRateCoordinator {
           }
         }
       })
+    }
+  }
+
+  @objc func fetchCacheRate(_ sender: Any?) {
+    KNInternalProvider.shared.getKNExchangeTokenRate { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let rates) = result {
+        self.cacheRates = rates
+      }
     }
   }
 }

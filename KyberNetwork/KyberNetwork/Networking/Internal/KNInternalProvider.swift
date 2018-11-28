@@ -23,14 +23,16 @@ class KNInternalProvider {
     self.performFetchRequest(service: .getRate) { result in
       switch result {
       case .success(let object):
-        do {
-          let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
-          if isDebug { print("Load KN exchange rates successfully: \(jsonArr)") }
-          let rates = try jsonArr.map({ return try KNRate(dictionary: $0) })
-          completion(.success(rates))
-        } catch let error {
-          completion(.failure(AnyError(error)))
+        let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
+        if isDebug { print("Load KN exchange rates successfully: \(jsonArr)") }
+        var rates: [KNRate] = []
+        for json in jsonArr {
+          do {
+            let rate = try KNRate(dictionary: json, isUSDRate: false)
+            rates.append(rate)
+          } catch {}
         }
+        completion(.success(rates))
       case .failure(let error):
         completion(.failure(error))
       }
@@ -102,18 +104,22 @@ class KNInternalProvider {
   }
 
   private func performFetchRequest(service: KyberNetworkService, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
-    self.provider.request(service) { (result) in
-      switch result {
-      case .success(let response):
-        do {
-          _ = try response.filterSuccessfulStatusCodes()
-          let json: JSONDictionary = try response.mapJSON() as? JSONDictionary ?? [:]
-          completion(.success(json))
-        } catch let error {
-          completion(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(service) { (result) in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              _ = try response.filterSuccessfulStatusCodes()
+              let json: JSONDictionary = try response.mapJSON() as? JSONDictionary ?? [:]
+              completion(.success(json))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }

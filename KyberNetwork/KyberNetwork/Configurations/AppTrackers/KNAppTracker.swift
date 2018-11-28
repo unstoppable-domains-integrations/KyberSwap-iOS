@@ -27,7 +27,7 @@ class KNAppTracker {
   static let kAppStyle: String = "kAppStyle"
   static let userDefaults: UserDefaults = UserDefaults.standard
 
-  static func internCachedEnpoint() -> String {
+  static func internalCachedEnpoint() -> String {
     return KNSecret.internalCachedEndpoint
   }
 

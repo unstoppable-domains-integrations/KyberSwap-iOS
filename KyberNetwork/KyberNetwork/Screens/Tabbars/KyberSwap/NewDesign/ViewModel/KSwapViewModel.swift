@@ -201,10 +201,8 @@ class KSwapViewModel {
       return self.amountToBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
     let ethRate: BigInt = {
-      if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
-        return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
-      }
-      return BigInt(0)
+      let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
+      return cacheRate?.rate ?? BigInt(0)
     }()
     let valueInETH = ethRate * self.amountFromBigInt
     let valueMin = BigInt(0.001 * Double(EthereumUnit.ether.rawValue)) * BigInt(10).power(self.from.decimals)
@@ -221,10 +219,8 @@ class KSwapViewModel {
       if self.from.isETH { return self.amountFromBigInt }
       if self.to.isETH { return self.amountToBigInt }
       let ethRate: BigInt = {
-        if let rate = KNTrackerRateStorage.shared.trackerRate(for: self.from) {
-          return KNRate(source: "", dest: "", rate: rate.rateETHNow, decimals: 18).rate
-        }
-        return BigInt(0)
+        let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
+        return cacheRate?.rate ?? BigInt(0)
       }()
       return ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     }()
