@@ -46,7 +46,9 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
       } else {
         self.window.makeKeyAndVisible()
         self.window.isHidden = false
-        self.passcodeViewController.showBioAuthenticationIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {
+          self.passcodeViewController.showBioAuthenticationIfNeeded()
+        }
       }
     } else if case .setPasscode(let cancellable) = self.type {
       if cancellable {
