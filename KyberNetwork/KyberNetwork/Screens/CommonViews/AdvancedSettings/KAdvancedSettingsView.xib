@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KAdvancedSettingsView" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KAdvancedSettingsView" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="displayViewButton" destination="kC4-al-Lim" id="eNx-qY-2k3"/>
                 <outlet property="fasGasButton" destination="Ahe-Qz-IPa" id="s9D-GY-neN"/>
@@ -231,7 +231,7 @@
                             <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="97" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="H7b-3e-qBq" customClass="CustomSlider" customModule="Trust" customModuleProvider="target">
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="97" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="H7b-3e-qBq" customClass="CustomSlider" customModule="KyberNetwork" customModuleProvider="target">
                             <rect key="frame" x="-2" y="80.5" width="339" height="31"/>
                             <color key="tintColor" red="0.40000000000000002" green="0.67843137249999996" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="minimumTrackTintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -276,7 +276,7 @@
                         <constraint firstItem="n9W-He-ZHp" firstAttribute="centerY" secondItem="m11-tO-aa1" secondAttribute="centerY" id="KhQ-89-YcG"/>
                         <constraint firstItem="H7b-3e-qBq" firstAttribute="leading" secondItem="gEr-dE-MA3" secondAttribute="leading" id="MXi-NB-5o4"/>
                         <constraint firstAttribute="trailing" secondItem="UIu-HK-gHd" secondAttribute="trailing" id="O4y-ba-jJT"/>
-                        <constraint firstItem="M5a-TC-C0g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n9W-He-ZHp" secondAttribute="trailing" constant="16" id="OsD-xn-CKB"/>
+                        <constraint firstItem="M5a-TC-C0g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n9W-He-ZHp" secondAttribute="trailing" constant="8" id="OsD-xn-CKB"/>
                         <constraint firstAttribute="bottom" secondItem="UIu-HK-gHd" secondAttribute="bottom" id="Vyj-xL-6CM"/>
                         <constraint firstItem="ZSD-dG-Fgl" firstAttribute="centerY" secondItem="Ruq-iY-nHZ" secondAttribute="centerY" id="aAQ-za-TEc"/>
                         <constraint firstItem="m11-tO-aa1" firstAttribute="top" secondItem="gEr-dE-MA3" secondAttribute="top" constant="16" id="elE-Xb-ug0"/>

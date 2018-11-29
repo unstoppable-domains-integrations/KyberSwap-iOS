@@ -24,6 +24,7 @@ extension KyberNetworkService: TargetType {
       if case .getRate = self {
         if KNEnvironment.default == .ropsten { return KNSecret.internalRopstenRateEndpoint }
         if KNEnvironment.default == .rinkeby { return KNSecret.internalRinkebyRateEndpoint }
+        if KNEnvironment.default == .staging { return KNSecret.internalStagingEndpoint }
       }
       return KNSecret.internalCachedEndpoint
     }()

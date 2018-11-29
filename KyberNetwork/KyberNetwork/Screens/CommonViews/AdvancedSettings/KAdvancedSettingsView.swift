@@ -228,6 +228,7 @@ class KAdvancedSettingsView: XibLoaderView {
     let tapSlow = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSlowFee(_:)))
     self.slowGasFeeTapView.addGestureRecognizer(tapSlow)
 
+    self.updateConstraintsIfNeeded()
     self.layoutIfNeeded()
   }
 
@@ -242,7 +243,8 @@ class KAdvancedSettingsView: XibLoaderView {
     self.minRateValueLabel.text = self.viewModel.minRateString ?? "0.0"
 
     self.leadingConstraintForMinRatePercentLabel.constant = (self.minRateSlider.frame.width - 40.0) * (self.viewModel.minRatePercent ?? 0.0) / 100.0
-    self.layoutIfNeeded()
+    self.updateConstraints()
+    self.layoutSubviews()
   }
 
   func updateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, gasLimit: BigInt) {
