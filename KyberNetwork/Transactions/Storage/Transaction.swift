@@ -100,8 +100,9 @@ extension Transaction {
     }
 
     func isReceivingETH(ownerAddress: String) -> Bool {
+      if ownerAddress.lowercased() != self.to.lowercased() { return false }
       guard let token = self.getTokenObject() else { return false }
-      return token.isETH && ownerAddress.lowercased() == self.to.lowercased()
+      return token.isETH
     }
 
 }

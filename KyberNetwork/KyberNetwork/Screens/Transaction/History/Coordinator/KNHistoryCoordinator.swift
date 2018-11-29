@@ -55,6 +55,7 @@ class KNHistoryCoordinator: Coordinator {
       let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
       self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     }
+    self.session.transacionCoordinator?.forceFetchTokenTransactions()
   }
 
   func stop() {

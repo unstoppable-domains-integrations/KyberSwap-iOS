@@ -101,20 +101,6 @@ extension KNTransactionCoordinator {
       sort: "asc",
       completion: nil
     )
-
-    let internalStartBlock: Int = {
-      guard let transaction = self.transactionStorage.objects.first(where: { $0.isReceivingETH(ownerAddress: self.wallet.address.description) }) else {
-        return 0
-      }
-      return max(0, transaction.blockNumber - 200)
-    }()
-    self.fetchListInternalTokenTransactions(
-      forAddress: self.wallet.address.description,
-      startBlock: internalStartBlock,
-      page: 1,
-      sort: "desc",
-      completion: nil
-    )
     let lastBlockAllTx: Int = KNAppTracker.lastBlockLoadAllTransaction(for: self.wallet.address)
     self.fetchAllTransactions(
       forAddress: self.wallet.address.description,
@@ -201,48 +187,6 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func fetchListInternalTokenTransactions(
-    forAddress address: String,
-    startBlock: Int,
-    page: Int,
-    sort: String,
-    completion: ((Result<[Transaction], AnyError>) -> Void)?
-    ) {
-    print("---- Internal Token Transactions: Fetching ----")
-    let provider = MoyaProvider<KNEtherScanService>()
-    let service = KNEtherScanService.getListInternalTransactions(
-      address: address,
-      startBlock: startBlock,
-      page: page,
-      sort: sort
-    )
-    DispatchQueue.global(qos: .background).async {
-      provider.request(service) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let response):
-            do {
-              let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
-              let eth = KNSupportedTokenStorage.shared.ethToken
-              let transactions = data.map({ return KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() })
-              self.updateListTokenTransactions(transactions)
-              print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
-              completion?(.success(transactions))
-            } catch let error {
-              print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----")
-              completion?(.failure(AnyError(error)))
-            }
-          case .failure(let error):
-            print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
-            completion?(.failure(AnyError(error)))
-          }
-        }
-      }
-    }
-  }
-
   // Fetch all transactions, but extract only send ETH transactions
   fileprivate func fetchAllTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
     print("---- Internal Token Transactions: Fetching ----")
@@ -288,7 +232,7 @@ extension KNTransactionCoordinator {
 
     let completedTransactions: [Transaction] = data.filter({ ($0["isError"] as? String ?? "") == "0" })
       .map({ return KNTokenTransaction(internalDict: $0, eth: eth) })
-      .filter({ $0.from == address.lowercased() && $0.tokenSymbol.lowercased() == eth.symbol.lowercased() })
+      .filter({ $0.tokenSymbol.lowercased() == eth.symbol.lowercased() })
       .map({ return $0.toTransaction() })
     let failedTransactions: [Transaction] = data.filter({ ($0["isError"] as? String ?? "") == "1"
     }).map({
