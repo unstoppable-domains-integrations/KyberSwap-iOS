@@ -63,7 +63,7 @@ class KNDebugMenuViewController: KNBaseViewController {
     self.newEnvironment = {
       if sender.selectedSegmentIndex == 0 { return .production }
       if sender.selectedSegmentIndex == 1 { return .ropsten }
-      if sender.selectedSegmentIndex == 1 { return .rinkeby }
+      if sender.selectedSegmentIndex == 2 { return .rinkeby }
       return .staging
     }()
     self.updateEnvironmentData()
