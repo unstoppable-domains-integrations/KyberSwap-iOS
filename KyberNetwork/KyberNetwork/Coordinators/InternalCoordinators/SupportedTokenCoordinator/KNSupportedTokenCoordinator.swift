@@ -6,24 +6,18 @@ import Moya
 class KNSupportedTokenCoordinator {
 
   static let shared = KNSupportedTokenCoordinator()
-  fileprivate let provider = MoyaProvider<KNTrackerService>()
+  fileprivate let provider = MoyaProvider<KyberNetworkService>()
 
   fileprivate var timer: Timer?
 
   func resume() {
-    let needReload: Bool = {
-      if let date = KNAppTracker.getSuccessfullyLoadSupportedTokensDate(), Date().timeIntervalSince(date) <= KNLoadingInterval.loadingSupportedTokenInterval / 2.0 {
-        return false
-      }
-      return true
-    }()
-    if needReload { self.fetchTrackerSupportedTokens() }
+    self.fetchSupportedTokens()
     self.timer?.invalidate()
     self.timer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.loadingSupportedTokenInterval,
       repeats: true,
       block: { [weak self] _ in
-      self?.fetchTrackerSupportedTokens()
+      self?.fetchSupportedTokens()
       }
     )
   }
@@ -32,23 +26,24 @@ class KNSupportedTokenCoordinator {
     self.timer?.invalidate()
   }
 
-  fileprivate func fetchTrackerSupportedTokens() {
+  fileprivate func fetchSupportedTokens() {
     // Token address is different for other envs
-    if KNEnvironment.default != .mainnetTest && KNEnvironment.default != .production {
+    if KNEnvironment.default == .kovan {
       let tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-      KNSupportedTokenStorage.shared.updateFromTracker(tokenObjects: tokens)
+      KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokens)
       return
     }
     print("---- Supported Tokens: Start fetching data ----")
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getSupportedTokens()) { result in
+      self.provider.request(.supportedToken) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
             do {
-              let jsonArr: [JSONDictionary] = try response.mapJSON(failsOnEmptyData: false) as? [JSONDictionary] ?? []
-              let tokenObjects = jsonArr.map({ return TokenObject(trackerDict: $0) })
-              KNSupportedTokenStorage.shared.updateFromTracker(tokenObjects: tokenObjects)
+              let respJSON: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let jsonArr: [JSONDictionary] = respJSON["data"] as? [JSONDictionary] ?? []
+              let tokenObjects = jsonArr.map({ return TokenObject(apiDict: $0) })
+              KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokenObjects)
               KNAppTracker.updateSuccessfullyLoadSupportedTokens()
               print("---- Supported Tokens: Load successfully")
             } catch let error {

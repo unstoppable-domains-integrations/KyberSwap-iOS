@@ -43,7 +43,7 @@ class KNSupportedTokenStorage {
   /**
    Update supported token list if needed
    */
-  func updateFromTracker(tokenObjects: [TokenObject]) {
+  func updateSupportedTokens(tokenObjects: [TokenObject]) {
     let savedTokens = self.supportedTokens
     let needUpdate: Bool = {
       if savedTokens.count != tokenObjects.count { return true }

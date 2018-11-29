@@ -11,12 +11,16 @@ enum KyberNetworkService: String {
   case getKyberEnabled = "/getKyberEnabled"
   case getMaxGasPrice = "/getMaxGasPrice"
   case getGasPrice = "/getGasPrice"
+  case supportedToken = ""
 }
 
 extension KyberNetworkService: TargetType {
 
   var baseURL: URL {
     let baseURLString: String = {
+      if case .supportedToken = self {
+        return KNEnvironment.default.supportedTokenEndpoint
+      }
       if case .getRate = self {
         if KNEnvironment.default == .ropsten { return KNSecret.internalRopstenRateEndpoint }
         if KNEnvironment.default == .rinkeby { return KNSecret.internalRinkebyRateEndpoint }

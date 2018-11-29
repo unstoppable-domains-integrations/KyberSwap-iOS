@@ -56,9 +56,20 @@ class TokenObject: Object {
       self.init()
       self.name = trackerDict["name"] as? String ?? ""
       self.symbol = trackerDict["symbol"] as? String ?? ""
-      self.icon = (trackerDict["symbol"] as? String ?? "").lowercased()
+      self.icon = self.symbol.lowercased()
       self.contract = (trackerDict["contractAddress"] as? String ?? "").lowercased()
       self.decimals = trackerDict["decimals"] as? Int ?? 0
+      self.isSupported = true
+    }
+
+    // init from public API
+    convenience init(apiDict: JSONDictionary) {
+      self.init()
+      self.name = apiDict["name"] as? String ?? ""
+      self.symbol = apiDict["symbol"] as? String ?? ""
+      self.icon = self.symbol.lowercased()
+      self.contract = (apiDict["address"] as? String ?? "").lowercased()
+      self.decimals = apiDict["decimals"] as? Int ?? 0
       self.isSupported = true
     }
 

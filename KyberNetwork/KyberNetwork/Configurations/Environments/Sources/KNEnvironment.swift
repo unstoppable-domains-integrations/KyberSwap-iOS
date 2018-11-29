@@ -85,4 +85,15 @@ enum KNEnvironment: Int {
     case .rinkeby: return "https://api-rinkeby.etherscan.io/"
     }
   }
+
+  var supportedTokenEndpoint: String {
+    switch self {
+    case .mainnetTest, .production: return "https://api.kyber.network/currencies"
+    case .staging: return KNSecret.supportedTokenStagingEndpoint
+    case .ropsten: return "https://ropsten-api.kyber.network/currencies"
+    case .rinkeby: return "https://rinkeby-api.kyber.network/currencies"
+    default:
+      return ""
+    }
+  }
 }

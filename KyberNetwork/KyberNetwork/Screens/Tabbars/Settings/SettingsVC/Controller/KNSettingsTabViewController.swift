@@ -71,6 +71,7 @@ class KNSettingsTabViewController: KNBaseViewController {
     )
     var version = Bundle.main.versionNumber ?? ""
     if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
+    version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
   }
 
