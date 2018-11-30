@@ -372,6 +372,10 @@
 "info.income" = "Info Income";
 "address.document.type" = "Address/Document Type";
 "your.proof.of.address.image" = "Your Proof of Address Image";
+"none.applicable" = "None applicable";
+"issue.date.can.not.be.in.the.future" = "Issue date can not be in the future";
+"expiry.date.can.not.be.in.the.past" = "Expiry date can not be in the past";
+"issue.date.and.expiry.date.can.not.be.the.same" = "Issue date and expiry date can not be the same";
 
 // Proof of address
 "Bank Statement" = "Bank Statement";

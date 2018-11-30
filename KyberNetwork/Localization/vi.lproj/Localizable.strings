@@ -372,6 +372,10 @@
 "info.income" = "Thông tin thu nhập";
 "address.document.type" = "Loại địa chỉ / tài liệu";
 "your.proof.of.address.image" = "Ảnh chứng minh địa chỉ của bạn";
+"none.applicable" = "Không áp dụng";
+"issue.date.can.not.be.in.the.future" = "Ngày cấp không thể trong tương lai";
+"expiry.date.can.not.be.in.the.past" = "Ngày hết hạn không thể trong quá khứ";
+"issue.date.and.expiry.date.can.not.be.the.same" = "Ngày cấp và ngày hết hạn phải khác nhau";
 
 // Proof of address
 "Bank Statement" = "Bảng sao kê ngân hàng";

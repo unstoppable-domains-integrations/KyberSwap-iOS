@@ -154,8 +154,8 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.driverLicenseTextLabel.text = NSLocalizedString("driving.license", value: "Driving License", comment: "")
     self.issueDateTextField.placeholder = NSLocalizedString("issue.date", value: "Issue Date", comment: "")
     self.expiryDateTextField.placeholder = NSLocalizedString("expiry.date", value: "Expiry Date", comment: "")
-    self.dontHaveIssueDateTextLabel.text = NSLocalizedString("i.dont.have.this", value: "I don't have this", comment: "")
-    self.dontHaveExpiryDateTextLabel.text = NSLocalizedString("i.dont.have.this", value: "I don't have this", comment: "")
+    self.dontHaveIssueDateTextLabel.text = NSLocalizedString("none.applicable", value: "None applicable", comment: "")
+    self.dontHaveExpiryDateTextLabel.text = NSLocalizedString("none.applicable", value: "None applicable", comment: "")
     self.dontHaveIssueDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
     self.dontHaveExpiryDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
     self.issueDateTextField.inputView = self.issueDatePicker
@@ -375,7 +375,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     dateFormatter.dateFormat = "yyyy-MM-dd"
     let nowString = dateFormatter.string(from: Date())
     let issueDate = self.viewModel.hasIssueDate ? (self.issueDateTextField.text ?? "") : ""
-    if self.viewModel.hasIssueDate && (issueDate.isEmpty || issueDate > nowString) {
+    if self.viewModel.hasIssueDate && issueDate.isEmpty {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.issue.date", value: "Please provide a valid issue date", comment: ""),
@@ -383,11 +383,27 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
+    if self.viewModel.hasIssueDate && issueDate > nowString {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("issue.date.can.not.be.in.the.future", value: "Issue date can not be in the future", comment: ""),
+        time: 2.5
+      )
+      return
+    }
     let expiryDate = self.viewModel.hasExpiryDate ? (self.expiryDateTextField.text ?? "") : ""
-    if self.viewModel.hasExpiryDate && (expiryDate.isEmpty || expiryDate < nowString) {
+    if self.viewModel.hasExpiryDate && expiryDate.isEmpty {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.expiry.date", value: "Please provide a valid expiry date", comment: ""),
+        time: 2.5
+      )
+      return
+    }
+    if self.viewModel.hasExpiryDate && expiryDate < nowString {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
+        message: NSLocalizedString("expiry.date.can.not.be.in.the.past", value: "Expiry date can not be in the past", comment: ""),
         time: 2.5
       )
       return

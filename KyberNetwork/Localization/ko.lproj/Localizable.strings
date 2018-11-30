@@ -369,9 +369,13 @@
 "successfully.sent.to" = "%@ 성공적으로 전송 %@";
 "do.you.want.to.log.out?" = "로그 아웃 하시겠습니까?";
 
-"info.income" = "Thông tin thu nhập";
-"address.document.type" = "Loại địa chỉ / tài liệu";
-"your.proof.of.address.image" = "Ảnh chứng minh địa chỉ của bạn";
+"info.income" = "Info Income";
+"address.document.type" = "Address/Document Type";
+"your.proof.of.address.image" = "Your Proof of Address Image";
+"none.applicable" = "None applicable";
+"issue.date.can.not.be.in.the.future" = "Issue date can not be in the future";
+"expiry.date.can.not.be.in.the.past" = "Expiry date can not be in the past";
+"issue.date.and.expiry.date.can.not.be.the.same" = "Issue date and expiry date can not be the same";
 
 // Proof of address
 "Bank Statement" = "은행 성명서";
