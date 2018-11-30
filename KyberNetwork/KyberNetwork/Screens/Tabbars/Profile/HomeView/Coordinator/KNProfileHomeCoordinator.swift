@@ -388,6 +388,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
     if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0, user.kycStatus.lowercased() != "rejected" {
       if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" { return }
       // draft or none, just open the verification
+      if self.kycCoordinator != nil { return }
       self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
       self.kycCoordinator?.delegate = self
       self.kycCoordinator?.start()
@@ -419,6 +420,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
             alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
             self.navigationController.present(alert, animated: true, completion: nil)
           } else {
+            if self.kycCoordinator != nil { return }
             // draft or none, just open the verification
             self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
             self.kycCoordinator?.delegate = self
@@ -494,6 +496,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
 extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
   func kycCoordinatorDidSubmitData() {
+    self.kycCoordinator = nil
     guard let user = IEOUserStorage.shared.user else { return }
     self.navigationController.displayLoading(
       text: NSLocalizedString("updating.data", value: "Updating data", comment: ""),
@@ -512,5 +515,9 @@ extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
         }
       }
     )
+  }
+
+  func kycCoordinatorDidBack() {
+    self.kycCoordinator = nil
   }
 }

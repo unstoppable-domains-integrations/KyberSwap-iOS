@@ -4,6 +4,7 @@ import UIKit
 
 protocol KYCCoordinatorDelegate: class {
   func kycCoordinatorDidSubmitData()
+  func kycCoordinatorDidBack()
 }
 
 class KYCCoordinator: Coordinator {
@@ -43,6 +44,8 @@ extension KYCCoordinator: KYCFlowViewControllerDelegate {
     self.stop()
     if case .submitted = event {
       self.delegate?.kycCoordinatorDidSubmitData()
+    } else {
+      self.delegate?.kycCoordinatorDidBack()
     }
   }
 }
