@@ -369,13 +369,13 @@
 "successfully.sent.to" = "%@成功发送到%@";
 "do.you.want.to.log.out?" = "您想注销吗?";
 
-"info.income" = "Info Income";
-"address.document.type" = "Address/Document Type";
-"your.proof.of.address.image" = "Your Proof of Address Image";
-"none.applicable" = "None applicable";
-"issue.date.can.not.be.in.the.future" = "Issue date can not be in the future";
-"expiry.date.can.not.be.in.the.past" = "Expiry date can not be in the past";
-"issue.date.and.expiry.date.can.not.be.the.same" = "Issue date and expiry date can not be the same";
+"info.income" = "信息收入";
+"address.document.type" = "地址/文件类型";
+"your.proof.of.address.image" = "您地址证明的图片";
+"none.applicable" = "不适用";
+"issue.date.can.not.be.in.the.future" = "签发日期不能是未来的";
+"expiry.date.can.not.be.in.the.past" = "到期日期不能是过去的";
+"issue.date.and.expiry.date.can.not.be.the.same" = "签发日期和到期日期不能相同";
 
 // Proof of address
 "Bank Statement" = "银行对帐单";
