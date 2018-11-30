@@ -369,6 +369,10 @@
 "successfully.sent.to" = "%@ đã được gửi tới %@";
 "do.you.want.to.log.out?" = "Bạn có muốn đăng xuất không?";
 
+"info.income" = "Thông tin thu nhập";
+"address.document.type" = "Loại địa chỉ / tài liệu";
+"your.proof.of.address.image" = "Ảnh chứng minh địa chỉ của bạn";
+
 // Proof of address
 "Bank Statement" = "Bảng sao kê ngân hàng";
 "Correspondences from Bank" = "Thư uỷ thác của Ngân hàng";

@@ -369,6 +369,10 @@
 "successfully.sent.to" = "%@ successfully sent to %@";
 "do.you.want.to.log.out?" = "Do you want to log out?";
 
+"info.income" = "Info Income";
+"address.document.type" = "Address/Document Type";
+"your.proof.of.address.image" = "Your Proof of Address Image";
+
 // Proof of address
 "Bank Statement" = "Bank Statement";
 "Correspondences from Bank" = "Correspondences from Bank";

@@ -369,6 +369,10 @@
 "successfully.sent.to" = "%@成功发送到%@";
 "do.you.want.to.log.out?" = "您想注销吗?";
 
+"info.income" = "Thông tin thu nhập";
+"address.document.type" = "Loại địa chỉ / tài liệu";
+"your.proof.of.address.image" = "Ảnh chứng minh địa chỉ của bạn";
+
 // Proof of address
 "Bank Statement" = "银行对帐单";
 "Correspondences from Bank" = "来自银行的信件";
