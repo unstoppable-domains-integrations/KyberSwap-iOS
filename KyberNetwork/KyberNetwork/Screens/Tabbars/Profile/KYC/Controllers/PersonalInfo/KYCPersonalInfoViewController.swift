@@ -14,6 +14,7 @@ import AVFoundation
 enum KYCPersonalInfoViewEvent {
   //swiftlint:disable line_length
   case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, wallets: [(String, String)], residentAddr: String, countryOfResidence: String, city: String, postalCode: String, proofAddrType: String, proofAddrImage: UIImage, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?)
+  case updateWallets(_ wallets: [(String, String)])
 }
 
 enum KYCPersonalPickerType {
@@ -51,6 +52,7 @@ class KYCPersonalInfoViewModel {
   fileprivate(set) var dob: String = ""
 
   fileprivate(set) var wallets: [(String, String)] = []
+  fileprivate(set) var currentWallets: [(String, String)] = []
   fileprivate(set) var hasModifiedWallets: Bool = false
 
   init(user: IEOUser) {
@@ -72,6 +74,7 @@ class KYCPersonalInfoViewModel {
 
   func updateWallets(_ wallets: [(String, String)]) {
     self.wallets = wallets
+    self.currentWallets = wallets
   }
 
   @discardableResult
@@ -95,6 +98,12 @@ class KYCPersonalInfoViewModel {
           if !self.hasModifiedWallets {
             self.wallets = values
           }
+          self.currentWallets = values
+          KNNotificationUtil.postNotification(
+            for: kUserWalletsListUpdatedNotificationKey,
+            object: values,
+            userInfo: nil
+          )
           completion(.success(values))
         } catch let error {
           completion(.failure(AnyError(error)))
@@ -162,6 +171,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   @IBOutlet weak var walletLabelTextField: UITextField!
   @IBOutlet weak var walletAddressTextField: UITextField!
 
+  @IBOutlet weak var addressSeparatorView: UIView!
   @IBOutlet weak var residentialAddressTextLabel: UILabel!
   @IBOutlet weak var residentialAddressTextField: UITextField!
   @IBOutlet weak var countryOfResidenceTextField: UITextField!
@@ -263,12 +273,14 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     self.viewModel.getUserWallets { _ in
       self.updateWalletsData()
+      self.delegate?.kycPersonalInfoViewController(self, run: .updateWallets(self.viewModel.currentWallets))
     }
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.optionalDataView.layoutSubviews()
+    self.addressSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
   }
 
   fileprivate func setupUI() {
@@ -340,6 +352,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   fileprivate func setupAddressDetails() {
+    self.addressSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.residentialAddressTextLabel.text = NSLocalizedString(
       "residential.address",
       value: "Residential Address",

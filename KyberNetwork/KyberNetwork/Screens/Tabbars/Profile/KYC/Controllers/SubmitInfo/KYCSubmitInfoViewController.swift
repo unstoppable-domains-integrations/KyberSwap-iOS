@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import NotificationCenter
 
 enum KYCSubmitInfoViewEvent {
   case submit
@@ -16,6 +17,7 @@ struct KYCSubmitInfoViewModel {
   let gender: String
   let dob: String
   let nationality: String
+  var wallets: [(String, String)]
   let residenceAddress: String
   let country: String
   let city: String
@@ -34,21 +36,46 @@ struct KYCSubmitInfoViewModel {
   let docFrontImage: UIImage?
   let docBackImage: UIImage?
   let docHoldingImage: UIImage?
+
+  mutating func updateWallets(_ wallets: [(String, String)]) {
+    self.wallets = wallets
+  }
 }
 
 class KYCSubmitInfoViewController: KNBaseViewController {
 
   fileprivate var viewModel: KYCSubmitInfoViewModel
   weak var delegate: KYCSubmitInfoViewControllerDelegate?
+  let kWalletTableViewCellID = "kWalletTableViewCellID"
+  let kWalletCellRowHeight: CGFloat = 84.0
+
+  lazy var occupationCodes: [String: String] = {
+    guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: "kyc_occupation_code") else { return [:] }
+    let data = json["data"] as? [String: String] ?? [:]
+    return data
+  }()
+
+  lazy var industryCodes: [String: String] = {
+    guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: "kyc_industry_code") else { return [:] }
+    let data = json["data"] as? [String: String] ?? [:]
+    return data
+  }()
 
   @IBOutlet weak var fullNameLabel: UILabel!
   @IBOutlet weak var genderLabel: UILabel!
   @IBOutlet weak var dobLabel: UILabel!
   @IBOutlet weak var nationalityLabel: UILabel!
+
+  @IBOutlet weak var myWalletsTextLabel: UILabel!
+  @IBOutlet weak var myWalletsTableView: UITableView!
+  @IBOutlet weak var noWalletsAddedTextLabel: UILabel!
+  @IBOutlet weak var myWalletsContainerViewHeightConstraint: NSLayoutConstraint!
+
   @IBOutlet weak var residenceCountryLabel: UILabel!
   @IBOutlet weak var documentTypeLabel: UILabel!
   @IBOutlet weak var documentNumberLabel: UILabel!
 
+  @IBOutlet weak var addressSepartorView: UIView!
   @IBOutlet weak var residentialAddressTextLabel: UILabel!
   @IBOutlet weak var residentialAddressValueLabel: UILabel!
 
@@ -58,6 +85,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   @IBOutlet weak var zipCodeTextLabel: UILabel!
   @IBOutlet weak var zipCodeValueLabel: UILabel!
 
+  @IBOutlet weak var proofOfAddressContainerTextLabel: UILabel!
   @IBOutlet weak var proofOfAddressTextLabel: UILabel!
   @IBOutlet weak var proofOfAddressValueLabel: UILabel!
 
@@ -65,6 +93,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   @IBOutlet weak var proofAddressImageContainerView: UIView!
   @IBOutlet weak var proofOfAddressImageView: UIImageView!
 
+  @IBOutlet weak var infoIncomeTextLabel: UILabel!
   @IBOutlet weak var sourceFundTextLabel: UILabel!
   @IBOutlet weak var sourceFundValueLabel: UILabel!
 
@@ -122,6 +151,24 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(self.userWalletsDidUpdate(_:)),
+      name: NSNotification.Name(kUserWalletsListUpdatedNotificationKey),
+      object: nil
+    )
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.addressSepartorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(rawValue: kUserWalletsListUpdatedNotificationKey),
+      object: nil
+    )
   }
 
   fileprivate func setupUI() {
@@ -132,22 +179,42 @@ class KYCSubmitInfoViewController: KNBaseViewController {
 
     self.submitButton.rounded(radius: 4.0)
 
+    // Personal info
     self.personalInfoTextLabel.text = NSLocalizedString("personal.info", value: "Personal Info", comment: "")
     self.fullNameTextLabel.text = NSLocalizedString("full.name", value: "Full Name", comment: "")
     self.genderTextLabel.text = NSLocalizedString("gender", value: "Gender", comment: "")
     self.dateOfBirthTextLabel.text = "\(NSLocalizedString("date.of.birth", value: "Date of birth", comment: "")) (YYYY-MM-DD)"
     self.nationalityTextLabel.text = NSLocalizedString("nationality", value: "Nationality", comment: "")
+
+    // My Wallets
+    self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My wallet(s)", comment: "").uppercased()
+    self.noWalletsAddedTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
+    self.myWalletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
+    self.myWalletsTableView.rowHeight = kWalletCellRowHeight
+    self.myWalletsTableView.delegate = self
+    self.myWalletsTableView.dataSource = self
+
+    // Address
+    self.addressSepartorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.residentialAddressTextLabel.text = NSLocalizedString("residential.address", value: "Residential Address", comment: "")
     self.countryResidenceTextLabel.text = NSLocalizedString("country.of.residence", value: "Country of Residence", comment: "")
     self.cityTextLabel.text = NSLocalizedString("city", value: "City", comment: "")
     self.zipCodeTextLabel.text = NSLocalizedString("postal.zip.code", value: "Postal / Zip Code", comment: "")
-    self.proofOfAddressTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "")
-    self.proofOfAddressPhotoTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "")
+
+    // Proof of Address
+    self.proofOfAddressContainerTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "").uppercased()
+    self.proofOfAddressTextLabel.text = NSLocalizedString("address.document.type", value: "Address/Document Type", comment: "")
+    self.proofOfAddressPhotoTextLabel.text = NSLocalizedString("your.proof.of.address.image", value: "Your Proof of Address Image", comment: "")
+
+    // Info income
+    self.infoIncomeTextLabel.text = NSLocalizedString("info.income", value: "Info Income", comment: "").uppercased()
     self.sourceFundTextLabel.text = NSLocalizedString("source.of.funds", value: "Source of Funds", comment: "")
     self.occupationCodeTextLabel.text = NSLocalizedString("occupation.code", value: "Occupation Code", comment: "")
     self.industryCodeTextLabel.text = NSLocalizedString("industry.code", value: "Industry Code", comment: "")
     self.taxResidencyCountryTextLabel.text = NSLocalizedString("tax.residency.country", value: "Tax Residency Country", comment: "")
     self.taxIDNumberTextLabel.text = NSLocalizedString("tax.identification.number", value: "Tax Identification Number", comment: "")
+
+    // Identity info
     self.idPassportTextLabel.text = NSLocalizedString("id.passport", value: "ID/ Passport", comment: "")
     self.documentTypeTextLabel.text = NSLocalizedString("document.type", value: "Document Type", comment: "")
     self.documentNumberTextLabel.text = NSLocalizedString("document.number", value: "Document Number", comment: "")
@@ -163,6 +230,16 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.updateViewModel(self.viewModel)
   }
 
+  @objc func userWalletsDidUpdate(_ notification: Notification) {
+    guard let wallets = notification.object as? [(String, String)] else { return }
+    self.updateUserWallets(wallets)
+  }
+
+  func updateUserWallets(_ wallets: [(String, String)]) {
+    self.viewModel.updateWallets(wallets)
+    self.updateViewModel(self.viewModel)
+  }
+
   func updateViewModel(_ viewModel: KYCSubmitInfoViewModel) {
     self.viewModel = viewModel
 
@@ -170,6 +247,19 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.genderLabel.text = self.viewModel.gender
     self.dobLabel.text = self.viewModel.dob
     self.nationalityLabel.text = self.viewModel.nationality
+
+    if self.viewModel.wallets.isEmpty {
+      self.noWalletsAddedTextLabel.isHidden = false
+      self.myWalletsTableView.isHidden = true
+      self.myWalletsContainerViewHeightConstraint.constant = 120.0
+      self.myWalletsTableView.reloadData()
+    } else {
+      self.noWalletsAddedTextLabel.isHidden = true
+      self.myWalletsTableView.isHidden = false
+      self.myWalletsContainerViewHeightConstraint.constant = CGFloat(self.viewModel.wallets.count) * kWalletCellRowHeight
+      self.myWalletsTableView.reloadData()
+    }
+
     self.residentialAddressValueLabel.text = self.viewModel.residenceAddress
     self.residenceCountryLabel.text = self.viewModel.country
     self.cityValueLabel.text = self.viewModel.city
@@ -184,11 +274,15 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.sourceFundValueLabel.text = NSLocalizedString(self.viewModel.sourceFund, value: self.viewModel.sourceFund, comment: "")
     self.occupationCodeValueLabel.text = {
       guard let code = self.viewModel.occupationCode else { return "N/A" }
-      return code.isEmpty ? "N/A" : code
+      if code.isEmpty { return "N/A" }
+      let name = self.occupationCodes.first(where: { $0.key == code })?.value ?? ""
+      return name.isEmpty ? code : "\(code) - \(name)"
     }()
     self.industryCodeValueLabel.text = {
       guard let code = self.viewModel.industryCode else { return "N/A" }
-      return code.isEmpty ? "N/A" : code
+      if code.isEmpty { return "N/A" }
+      let name = self.industryCodes.first(where: { $0.key == code })?.value ?? ""
+      return name.isEmpty ? code : "\(code) - \(name)"
     }()
     self.taxCountryValueLabel.text = {
       guard let taxCountry = self.viewModel.taxResidencyCountry else { return "N/A" }
@@ -276,6 +370,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       gender: details.gender ? NSLocalizedString("male", value: "Male", comment: "") : NSLocalizedString("female", value: "Female", comment: ""),
       dob: details.dob,
       nationality: details.nationality,
+      wallets: self.viewModel.wallets,
       residenceAddress: details.residentialAddress,
       country: details.country,
       city: details.city,
@@ -296,5 +391,55 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       docHoldingImage: docHoldingImage
     )
     self.updateViewModel(viewModel)
+  }
+}
+
+extension KYCSubmitInfoViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+extension KYCSubmitInfoViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.wallets.count
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return UIView()
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath)
+    cell.textLabel?.isUserInteractionEnabled = false
+    let wallets = self.viewModel.wallets
+    cell.tintColor = UIColor.Kyber.shamrock
+    let wallet = wallets[indexPath.row]
+    cell.textLabel?.attributedText = {
+      let attributedString = NSMutableAttributedString()
+      let nameAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
+        NSAttributedStringKey.kern: 1.0,
+        ]
+      let addressAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
+        NSAttributedStringKey.kern: 1.0,
+        ]
+      attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
+      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
+      attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
+      return attributedString
+    }()
+    cell.textLabel?.numberOfLines = 2
+    cell.backgroundColor = {
+      return indexPath.row % 2 == 0 ? UIColor(red: 242, green: 243, blue: 246) : UIColor.Kyber.whisper
+    }()
+    return cell
   }
 }

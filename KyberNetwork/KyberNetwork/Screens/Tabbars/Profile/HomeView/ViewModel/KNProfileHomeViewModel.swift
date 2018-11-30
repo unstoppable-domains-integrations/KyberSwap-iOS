@@ -28,6 +28,11 @@ class KNProfileHomeViewModel: NSObject {
           self.wallets = values
           let contacts = self.wallets.map({ return KNContact(address: $0.1, name: $0.0) })
           KNContactStorage.shared.update(contacts: contacts)
+          KNNotificationUtil.postNotification(
+            for: kUserWalletsListUpdatedNotificationKey,
+            object: self.wallets,
+            userInfo: nil
+          )
           completion(.success(values))
         } catch let error {
           completion(.failure(AnyError(error)))

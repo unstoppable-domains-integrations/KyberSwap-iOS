@@ -93,7 +93,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate var isDatePickerIssueDate: Bool = true
 
-  lazy var datePicker: UIDatePicker = {
+  lazy var issueDatePicker: UIDatePicker = {
     let frame = CGRect(
       x: 0,
       y: self.view.frame.height - 200.0,
@@ -102,9 +102,25 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     )
     let picker = UIDatePicker(frame: frame)
     picker.datePickerMode = .date
-    picker.minimumDate = Date().addingTimeInterval(-100.0 * 360.0 * 24.0 * 60.0 * 60.0)
-    picker.maximumDate = Date().addingTimeInterval(100.0 * 360.0 * 24.0 * 60.0 * 60.0)
-    picker.addTarget(self, action: #selector(self.datePickerDidChange(_:)), for: .valueChanged)
+    picker.minimumDate = Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
+    picker.maximumDate = Date()
+    picker.addTarget(self, action: #selector(self.issueDatePickerDidChange(_:)), for: .valueChanged)
+    picker.date = Date()
+    return picker
+  }()
+
+  lazy var expiryDatePicker: UIDatePicker = {
+    let frame = CGRect(
+      x: 0,
+      y: self.view.frame.height - 200.0,
+      width: self.view.frame.width,
+      height: 200.0
+    )
+    let picker = UIDatePicker(frame: frame)
+    picker.datePickerMode = .date
+    picker.minimumDate = Date()
+    picker.maximumDate = Date().addingTimeInterval(200.0 * 360.0 * 24.0 * 60.0 * 60.0)
+    picker.addTarget(self, action: #selector(self.expiryDatePickerDidChange(_:)), for: .valueChanged)
     picker.date = Date()
     return picker
   }()
@@ -142,9 +158,9 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.dontHaveExpiryDateTextLabel.text = NSLocalizedString("i.dont.have.this", value: "I don't have this", comment: "")
     self.dontHaveIssueDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
     self.dontHaveExpiryDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
-    self.issueDateTextField.inputView = self.datePicker
+    self.issueDateTextField.inputView = self.issueDatePicker
     self.issueDateTextField.delegate = self
-    self.expiryDateTextField.inputView = self.datePicker
+    self.expiryDateTextField.inputView = self.expiryDatePicker
     self.expiryDateTextField.delegate = self
 
     // Add gestures to labels
@@ -245,15 +261,18 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     )
   }
 
-  @objc func datePickerDidChange(_ sender: Any) {
+  @objc func issueDatePickerDidChange(_ sender: Any) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
-    let dob = dateFormatter.string(from: self.datePicker.date)
-    if self.isDatePickerIssueDate {
-      self.issueDateTextField.text = dob
-    } else {
-      self.expiryDateTextField.text = dob
-    }
+    let dob = dateFormatter.string(from: self.issueDatePicker.date)
+    self.issueDateTextField.text = dob
+  }
+
+  @objc func expiryDatePickerDidChange(_ sender: Any) {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let dob = dateFormatter.string(from: self.expiryDatePicker.date)
+    self.expiryDateTextField.text = dob
   }
 
   @IBAction func idButtonPressed(_ sender: Any) {
@@ -352,8 +371,11 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let nowString = dateFormatter.string(from: Date())
     let issueDate = self.viewModel.hasIssueDate ? (self.issueDateTextField.text ?? "") : ""
-    if self.viewModel.hasIssueDate && issueDate.isEmpty {
+    if self.viewModel.hasIssueDate && (issueDate.isEmpty || issueDate > nowString) {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.issue.date", value: "Please provide a valid issue date", comment: ""),
@@ -362,7 +384,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       return
     }
     let expiryDate = self.viewModel.hasExpiryDate ? (self.expiryDateTextField.text ?? "") : ""
-    if self.viewModel.hasExpiryDate && expiryDate.isEmpty {
+    if self.viewModel.hasExpiryDate && (expiryDate.isEmpty || expiryDate < nowString) {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
         message: NSLocalizedString("please.provide.a.valid.expiry.date", value: "Please provide a valid expiry date", comment: ""),
@@ -544,16 +566,21 @@ extension KYCIdentityInfoViewController: UIImagePickerControllerDelegate, UINavi
 
 extension KYCIdentityInfoViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    self.isDatePickerIssueDate = textField == self.issueDateTextField
-    if let text = textField.text {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyy-MM-dd"
-      if let date = dateFormatter.date(from: text) {
-        self.datePicker.setDate(date, animated: false)
+    let isDatePickerIssueDate = textField == self.issueDateTextField
+    let date: Date = {
+      if let text = textField.text {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: text) ?? Date()
       }
+      return Date()
+    }()
+    if isDatePickerIssueDate {
+      self.issueDatePicker.setDate(date, animated: false)
+      self.issueDatePickerDidChange(textField)
     } else {
-      self.datePicker.setDate(Date(), animated: false)
+      self.expiryDatePicker.setDate(date, animated: false)
+      self.expiryDatePickerDidChange(textField)
     }
-    self.datePickerDidChange(textField)
   }
 }
