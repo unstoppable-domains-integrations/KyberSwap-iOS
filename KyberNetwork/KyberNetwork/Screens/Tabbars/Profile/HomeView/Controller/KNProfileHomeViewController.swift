@@ -102,6 +102,14 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.signInButton.rounded(
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
+    self.notSignInTitleLabel.text = NSLocalizedString(
+      "profile", value: "Profile",
+      comment: ""
+    )
+    self.notSignInDescLabel.text = NSLocalizedString(
+      "welcome.third.screen.description", value: "Profile process just got simpler. Straight from the app.",
+      comment: ""
+    )
     self.signInButton.setTitle(
       NSLocalizedString("sign.in", value: "Sign In", comment: ""),
       for: .normal

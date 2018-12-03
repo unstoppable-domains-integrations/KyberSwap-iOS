@@ -68,7 +68,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOn-is-adv">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOn-is-adv">
                             <rect key="frame" x="16" y="333" width="343" height="88"/>
                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id porttitor mauris. Phasellus lobortis convallis est sed euismod. </string>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
@@ -76,7 +76,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-Xs-12c">
-                            <rect key="frame" x="36" y="445" width="303" height="44"/>
+                            <rect key="frame" x="36" y="453" width="303" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="qZd-N1-1nd"/>
@@ -90,7 +90,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9t-ZL-afx">
-                            <rect key="frame" x="36" y="505" width="303" height="44"/>
+                            <rect key="frame" x="36" y="513" width="303" height="44"/>
                             <color key="backgroundColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="mdr-Ny-c4n"/>
@@ -106,7 +106,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="ToE-Xs-12c" firstAttribute="top" secondItem="zOn-is-adv" secondAttribute="bottom" constant="24" id="328-cf-Hkw"/>
+                        <constraint firstItem="ToE-Xs-12c" firstAttribute="top" secondItem="zOn-is-adv" secondAttribute="bottom" constant="32" id="328-cf-Hkw"/>
                         <constraint firstItem="f9b-Vb-xfi" firstAttribute="centerX" secondItem="8a5-2v-PR3" secondAttribute="centerX" id="BaH-G9-s8F"/>
                         <constraint firstItem="D9t-ZL-afx" firstAttribute="trailing" secondItem="ToE-Xs-12c" secondAttribute="trailing" id="CTe-a8-NcE"/>
                         <constraint firstItem="f9b-Vb-xfi" firstAttribute="top" secondItem="8a5-2v-PR3" secondAttribute="bottom" constant="44" id="E0x-YT-Plo"/>
