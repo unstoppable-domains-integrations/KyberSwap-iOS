@@ -283,7 +283,7 @@ class KSwapViewModel {
 
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
   }
 
   func updateWalletObject() {
@@ -298,7 +298,7 @@ class KSwapViewModel {
 
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
   }
 
@@ -317,7 +317,7 @@ class KSwapViewModel {
     }
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
   }
 

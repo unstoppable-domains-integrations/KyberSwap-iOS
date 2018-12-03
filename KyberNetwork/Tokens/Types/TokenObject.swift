@@ -77,6 +77,10 @@ class TokenObject: Object {
       return self.symbol == "ETH" && self.name.lowercased() == "ethereum"
     }
 
+    var isDGX: Bool {
+      return self.symbol == "DGX"
+    }
+
     var isKNC: Bool {
       return self.symbol == "KNC" && self.name.replacingOccurrences(of: " ", with: "").lowercased() == "kybernetwork"
     }

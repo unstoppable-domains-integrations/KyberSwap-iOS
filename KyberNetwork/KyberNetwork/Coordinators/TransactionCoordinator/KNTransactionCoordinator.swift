@@ -88,6 +88,7 @@ extension KNTransactionCoordinator {
   }
 
   func forceFetchTokenTransactions() {
+    // Load token transaction
     let startBlock: Int = {
       guard let transaction = self.transactionStorage.objects.first(where: { !$0.isETHTransfer }) else {
         return 0
@@ -101,6 +102,16 @@ extension KNTransactionCoordinator {
       sort: "asc",
       completion: nil
     )
+
+    // load internal transaction
+    let lastBlockInternalTx: Int = KNAppTracker.lastBlockLoadInternalTransaction(for: self.wallet.address)
+    self.fetchInternalTransactions(
+      forAddress: self.wallet.address.description,
+      startBlock: max(0, lastBlockInternalTx - 10),
+      completion:  nil
+    )
+
+    // load all tx
     let lastBlockAllTx: Int = KNAppTracker.lastBlockLoadAllTransaction(for: self.wallet.address)
     self.fetchAllTransactions(
       forAddress: self.wallet.address.description,
@@ -189,7 +200,7 @@ extension KNTransactionCoordinator {
 
   // Fetch all transactions, but extract only send ETH transactions
   fileprivate func fetchAllTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-    print("---- Internal Token Transactions: Fetching ----")
+    print("---- All Token Transactions: Fetching ----")
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListTransactions(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
@@ -212,6 +223,48 @@ extension KNTransactionCoordinator {
               }()
               KNAppTracker.updateAllTransactionLastBlockLoad(lastBlockLoaded, for: self.wallet.address)
               let transactions = self.updateAllTransactions(address: address, data: data)
+              print("---- All Token Transactions: Loaded \(transactions.count) transactions ----")
+              completion?(.success(transactions))
+            } catch let error {
+              print("---- All Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            print("---- All Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            completion?(.failure(AnyError(error)))
+          }
+        }
+      }
+    }
+  }
+
+  // Load internal transaction for receiving ETH only
+  fileprivate func fetchInternalTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
+    print("---- Internal Token Transactions: Fetching ----")
+    let provider = MoyaProvider<KNEtherScanService>()
+    let service = KNEtherScanService.getListInternalTransactions(address: address, startBlock: startBlock)
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
+              let lastBlockLoaded: Int = {
+                let lastBlock = KNAppTracker.lastBlockLoadInternalTransaction(for: self.wallet.address)
+                if !data.isEmpty {
+                  let blockNumber = data[0]["blockNumber"] as? String ?? ""
+                  return Int(blockNumber) ?? lastBlock
+                }
+                return lastBlock
+              }()
+              KNAppTracker.updateInternalTransactionLastBlockLoad(lastBlockLoaded, for: self.wallet.address)
+              let eth = KNSupportedTokenStorage.shared.ethToken
+              let transactions = data.map({ KNTokenTransaction(internalDict: $0, eth: eth).toTransaction() })
+              self.transactionStorage.add(transactions)
+              KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
               print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
               completion?(.success(transactions))
             } catch let error {

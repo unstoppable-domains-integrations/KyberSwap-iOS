@@ -112,10 +112,13 @@ extension Transaction {
     guard let localObject = self.localizedOperations.first, localObject.type == "transfer" else {
       return nil
     }
+    guard let contract = localObject.contract, !contract.isEmpty,
+    let name = localObject.name, !name.isEmpty,
+    let symbol = localObject.symbol, !symbol.isEmpty else { return nil }
     return TokenObject(
-      contract: localObject.contract ?? "",
-      name: localObject.name ?? "",
-      symbol: localObject.symbol ?? "",
+      contract: contract,
+      name: name,
+      symbol: symbol,
       decimals: localObject.decimals,
       value: "0",
       isCustom: false,

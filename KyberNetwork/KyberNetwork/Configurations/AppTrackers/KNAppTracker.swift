@@ -17,7 +17,8 @@ class KNAppTracker {
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
   static let kTransactionLoadStateKey: String = "kTransactionLoadStateKey"
-  static let kAllTransactionLoadStateKey: String = "kAllTransactionLoadStateKey"
+  static let kAllTransactionLoadLastBlockKey: String = "kAllTransactionLoadLastBlockKey"
+  static let kInternalTransactionLoadLastBlockKey: String = "kInternalTransactionLoadLastBlockKey"
   static let kTransactionNonceKey: String = "kTransactionNonceKey"
 
   static let kSupportedLoadingTimeKey: String = "kSupportedLoadingTimeKey"
@@ -72,7 +73,7 @@ class KNAppTracker {
 
   static func lastBlockLoadAllTransaction(for address: Address) -> Int {
     let sessionID = KNSession.sessionID(from: address)
-    let key = kAllTransactionLoadStateKey + sessionID
+    let key = kAllTransactionLoadLastBlockKey + sessionID
     if let value = userDefaults.object(forKey: key) as? Int {
       return value
     }
@@ -81,7 +82,23 @@ class KNAppTracker {
 
   static func updateAllTransactionLastBlockLoad(_ block: Int, for address: Address) {
     let sessionID = KNSession.sessionID(from: address)
-    let key = kAllTransactionLoadStateKey + sessionID
+    let key = kAllTransactionLoadLastBlockKey + sessionID
+    userDefaults.set(block, forKey: key)
+    userDefaults.synchronize()
+  }
+
+  static func lastBlockLoadInternalTransaction(for address: Address) -> Int {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kInternalTransactionLoadLastBlockKey + sessionID
+    if let value = userDefaults.object(forKey: key) as? Int {
+      return value
+    }
+    return 0
+  }
+
+  static func updateInternalTransactionLastBlockLoad(_ block: Int, for address: Address) {
+    let sessionID = KNSession.sessionID(from: address)
+    let key = kInternalTransactionLoadLastBlockKey + sessionID
     userDefaults.set(block, forKey: key)
     userDefaults.synchronize()
   }
