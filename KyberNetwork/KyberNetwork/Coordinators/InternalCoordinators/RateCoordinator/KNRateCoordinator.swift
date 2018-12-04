@@ -87,7 +87,7 @@ class KNRateCoordinator {
     self.exchangeTokenRatesTimer?.invalidate()
 
     self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.cacheRateLoadingInterval,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchExchangeTokenRate(timer)
