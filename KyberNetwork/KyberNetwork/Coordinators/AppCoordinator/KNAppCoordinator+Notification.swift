@@ -130,19 +130,19 @@ extension KNAppCoordinator {
 
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Any?) {
     if self.session == nil { return }
-    guard let balanceCoordinator = self.balanceCoordinator else { return }
+    guard let loadBalanceCoordinator = self.loadBalanceCoordinator else { return }
 
     self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
-      totalBalanceInUSD: balanceCoordinator.totalBalanceInUSD,
-      totalBalanceInETH: balanceCoordinator.totalBalanceInETH
+      totalBalanceInUSD: loadBalanceCoordinator.totalBalanceInUSD,
+      totalBalanceInETH: loadBalanceCoordinator.totalBalanceInETH
     )
   }
 
   @objc func exchangeRateUSDDidUpdateNotification(_ sender: Notification) {
     if self.session == nil { return }
-    guard let balanceCoordinator = self.balanceCoordinator else { return }
-    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
-    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
+    guard let loadBalanceCoordinator = self.loadBalanceCoordinator else { return }
+    let totalUSD: BigInt = loadBalanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = loadBalanceCoordinator.totalBalanceInETH
 
     self.exchangeCoordinator?.appCoordinatorUSDRateDidUpdate(
       totalBalanceInUSD: totalUSD,
@@ -156,10 +156,10 @@ extension KNAppCoordinator {
 
   @objc func ethBalanceDidUpdateNotification(_ sender: Any?) {
     if self.session == nil { return }
-    guard let balanceCoordinator = self.balanceCoordinator else { return }
-    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
-    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
-    let ethBalance: Balance = balanceCoordinator.ethBalance
+    guard let loadBalanceCoordinator = self.loadBalanceCoordinator else { return }
+    let totalUSD: BigInt = loadBalanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = loadBalanceCoordinator.totalBalanceInETH
+    let ethBalance: Balance = loadBalanceCoordinator.ethBalance
 
     self.exchangeCoordinator?.appCoordinatorETHBalanceDidUpdate(
       totalBalanceInUSD: totalUSD,
@@ -176,10 +176,10 @@ extension KNAppCoordinator {
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
     if self.session == nil { return }
-    guard let balanceCoordinator = self.balanceCoordinator else { return }
-    let totalUSD: BigInt = balanceCoordinator.totalBalanceInUSD
-    let totalETH: BigInt = balanceCoordinator.totalBalanceInETH
-    let otherTokensBalance: [String: Balance] = balanceCoordinator.otherTokensBalance
+    guard let loadBalanceCoordinator = self.loadBalanceCoordinator else { return }
+    let totalUSD: BigInt = loadBalanceCoordinator.totalBalanceInUSD
+    let totalETH: BigInt = loadBalanceCoordinator.totalBalanceInETH
+    let otherTokensBalance: [String: Balance] = loadBalanceCoordinator.otherTokensBalance
 
     self.exchangeCoordinator?.appCoordinatorTokenBalancesDidUpdate(
       totalBalanceInUSD: totalUSD,
@@ -232,7 +232,7 @@ extension KNAppCoordinator {
       )
       if self.session != nil {
         self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
-        self.balanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
+        self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
       }
       KNNotificationUtil.localPushNotification(
         title: NSLocalizedString("success", value: "Success", comment: ""),

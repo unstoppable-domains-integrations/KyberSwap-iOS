@@ -13,7 +13,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   internal var session: KNSession!
   internal var currentWallet: Wallet!
-  internal var balanceCoordinator: KNBalanceCoordinator?
+  internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
   internal var balanceTabCoordinator: KNBalanceTabCoordinator!
@@ -104,7 +104,7 @@ extension KNAppCoordinator {
   func appDidBecomeActive() {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
-    self.balanceCoordinator?.resume()
+    self.loadBalanceCoordinator?.resume()
     self.splashScreenCoordinator.stop()
   }
 
@@ -115,7 +115,7 @@ extension KNAppCoordinator {
   func appDidEnterBackground() {
     self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
-    self.balanceCoordinator?.pause()
+    self.loadBalanceCoordinator?.pause()
   }
 
   func appDidReceiveLocalNotification(transactionHash: String) {

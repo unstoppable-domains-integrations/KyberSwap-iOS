@@ -7,7 +7,7 @@ import Result
 import TrustKeystore
 import TrustCore
 
-class KNBalanceCoordinator {
+class KNLoadBalanceCoordinator {
 
   fileprivate var session: KNSession!
   fileprivate var ethToken: TokenObject!
@@ -180,7 +180,7 @@ class KNBalanceCoordinator {
             NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
           }
           counter += 1
-          if counter % 25 == 0 && isBalanceChanged {
+          if counter % 32 == 0 && isBalanceChanged {
             KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           }
           group.leave()

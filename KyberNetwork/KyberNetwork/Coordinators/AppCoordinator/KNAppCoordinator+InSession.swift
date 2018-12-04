@@ -9,10 +9,10 @@ extension KNAppCoordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
-    self.balanceCoordinator?.exit()
-    self.balanceCoordinator = nil
-    self.balanceCoordinator = KNBalanceCoordinator(session: self.session)
-    self.balanceCoordinator?.resume()
+    self.loadBalanceCoordinator?.exit()
+    self.loadBalanceCoordinator = nil
+    self.loadBalanceCoordinator = KNLoadBalanceCoordinator(session: self.session)
+    self.loadBalanceCoordinator?.resume()
 
     self.tabbarController = KNTabBarController()
     // Balance Tab
@@ -100,8 +100,8 @@ extension KNAppCoordinator {
     self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
     self.removeObserveNotificationFromSession()
 
-    self.balanceCoordinator?.exit()
-    self.balanceCoordinator = nil
+    self.loadBalanceCoordinator?.exit()
+    self.loadBalanceCoordinator = nil
 
     self.session.stopSession()
     KNWalletStorage.shared.deleteAll()
@@ -129,9 +129,9 @@ extension KNAppCoordinator {
   func restartNewSession(_ wallet: Wallet) {
     self.removeObserveNotificationFromSession()
 
-    self.balanceCoordinator?.exit()
+    self.loadBalanceCoordinator?.exit()
     self.session.switchSession(wallet)
-    self.balanceCoordinator?.restartNewSession(self.session)
+    self.loadBalanceCoordinator?.restartNewSession(self.session)
 
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
@@ -157,9 +157,9 @@ extension KNAppCoordinator {
       guard let newWallet = self.keystore.wallets.first(where: { $0 != wallet }) else { return }
       self.restartNewSession(newWallet)
     }
-    self.balanceCoordinator?.exit()
+    self.loadBalanceCoordinator?.exit()
     if self.session.removeWallet(wallet) {
-      self.balanceCoordinator?.restartNewSession(self.session)
+      self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: isRemovingCurrentWallet
@@ -173,7 +173,7 @@ extension KNAppCoordinator {
         resetRoot: isRemovingCurrentWallet
       )
     } else {
-      self.balanceCoordinator?.restartNewSession(self.session)
+      self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.navigationController.showErrorTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
         message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
