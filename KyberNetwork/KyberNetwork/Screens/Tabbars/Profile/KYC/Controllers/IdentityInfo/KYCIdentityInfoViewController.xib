@@ -33,8 +33,6 @@
                 <outlet property="dontHaveExpiryDateTextLabel" destination="GPt-UT-q9M" id="oU4-qt-dOV"/>
                 <outlet property="dontHaveIssueDateButton" destination="2rf-MT-xz3" id="Nml-9B-F53"/>
                 <outlet property="dontHaveIssueDateTextLabel" destination="6Ly-M7-abl" id="oVb-Fs-oU1"/>
-                <outlet property="driverLicenseButton" destination="7KZ-IH-bJ6" id="OXC-Us-Jim"/>
-                <outlet property="driverLicenseTextLabel" destination="rFJ-Gc-00Q" id="VLo-JS-Q0w"/>
                 <outlet property="expiryDateTextField" destination="2ta-ie-3Al" id="8Vb-Ky-Web"/>
                 <outlet property="heightConstraintForDocumentPhotoBackView" destination="NAC-UD-WiH" id="LAB-MN-ILM"/>
                 <outlet property="heightConstraintForDocumentPhotoView" destination="3U3-6M-CPK" id="5IN-7N-nnT"/>
@@ -78,23 +76,6 @@
                                 <action selector="idButtonPressed:" destination="-1" eventType="touchUpInside" id="dOb-4U-yvR"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7KZ-IH-bJ6">
-                            <rect key="frame" x="214" y="73.5" width="24" height="24"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="24" id="42X-is-VxI"/>
-                                <constraint firstAttribute="height" constant="24" id="5Hb-D2-Nfg"/>
-                            </constraints>
-                            <connections>
-                                <action selector="driverLicenseButtonPressed:" destination="-1" eventType="touchUpInside" id="Sqe-iE-ntZ"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Driver License" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFJ-Gc-00Q">
-                            <rect key="frame" x="250" y="77" width="101" height="17"/>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45r-vm-Ptv">
                             <rect key="frame" x="24" y="165.5" width="327" height="1"/>
                             <color key="backgroundColor" red="0.72156862749999995" green="0.72941176470000002" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -118,7 +99,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBy-QR-90j">
-                            <rect key="frame" x="104.5" y="73.5" width="24" height="24"/>
+                            <rect key="frame" x="136" y="73.5" width="24" height="24"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="YYF-hL-5AK"/>
@@ -129,7 +110,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MaL-F4-kGC">
-                            <rect key="frame" x="140.5" y="77" width="62.5" height="17"/>
+                            <rect key="frame" x="172" y="77" width="62.5" height="17"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -381,14 +362,11 @@
                         <constraint firstItem="86c-UL-oZf" firstAttribute="top" secondItem="GPt-UT-q9M" secondAttribute="bottom" constant="32" id="4SL-UK-SRF"/>
                         <constraint firstItem="HBy-QR-90j" firstAttribute="centerY" secondItem="KAt-Hb-QHY" secondAttribute="centerY" id="6aV-xD-nSN"/>
                         <constraint firstItem="MaL-F4-kGC" firstAttribute="leading" secondItem="HBy-QR-90j" secondAttribute="trailing" constant="12" id="7AT-Iv-hOL"/>
-                        <constraint firstItem="MaL-F4-kGC" firstAttribute="centerX" secondItem="K7Y-nd-WhP" secondAttribute="centerX" constant="-16" id="7MP-5I-JVJ"/>
                         <constraint firstItem="rVU-JM-4L9" firstAttribute="centerX" secondItem="K7Y-nd-WhP" secondAttribute="centerX" id="8BJ-6h-PcP"/>
-                        <constraint firstItem="rVU-JM-4L9" firstAttribute="top" secondItem="7KZ-IH-bJ6" secondAttribute="bottom" constant="32" id="8kF-Cw-cFT"/>
                         <constraint firstItem="Dfi-XT-h06" firstAttribute="top" secondItem="2ta-ie-3Al" secondAttribute="bottom" constant="-10" id="BCS-UD-pnC"/>
                         <constraint firstItem="45r-vm-Ptv" firstAttribute="top" secondItem="rVU-JM-4L9" secondAttribute="bottom" constant="-10" id="CzA-76-fUm"/>
                         <constraint firstItem="R43-Bn-FDJ" firstAttribute="leading" secondItem="K7Y-nd-WhP" secondAttribute="leading" constant="24" id="DOa-1C-yvU"/>
                         <constraint firstItem="86c-UL-oZf" firstAttribute="leading" secondItem="K7Y-nd-WhP" secondAttribute="leading" id="DYf-0R-Xo7"/>
-                        <constraint firstItem="rFJ-Gc-00Q" firstAttribute="centerY" secondItem="7KZ-IH-bJ6" secondAttribute="centerY" id="Da6-dX-yxM"/>
                         <constraint firstAttribute="trailing" secondItem="86c-UL-oZf" secondAttribute="trailing" id="Gzz-ds-EfM"/>
                         <constraint firstAttribute="trailing" secondItem="rSe-bm-fto" secondAttribute="trailing" constant="24" id="JqO-mA-Rvb"/>
                         <constraint firstAttribute="trailing" secondItem="2ta-ie-3Al" secondAttribute="trailing" constant="24" id="K8Z-Y9-j01"/>
@@ -397,7 +375,6 @@
                         <constraint firstAttribute="bottom" secondItem="dIa-Tk-b8H" secondAttribute="bottom" constant="32" id="MFD-VM-6Wy"/>
                         <constraint firstAttribute="trailing" secondItem="rVU-JM-4L9" secondAttribute="trailing" constant="24" id="PBp-fQ-o6f"/>
                         <constraint firstItem="gPi-Vg-MGY" firstAttribute="leading" secondItem="R43-Bn-FDJ" secondAttribute="leading" id="POn-mW-qfm"/>
-                        <constraint firstItem="rFJ-Gc-00Q" firstAttribute="leading" secondItem="7KZ-IH-bJ6" secondAttribute="trailing" constant="12" id="PXg-T9-1S0"/>
                         <constraint firstItem="GPt-UT-q9M" firstAttribute="leading" secondItem="0QA-7K-afP" secondAttribute="trailing" constant="16" id="PmV-AY-DCA"/>
                         <constraint firstItem="0QA-7K-afP" firstAttribute="top" secondItem="2ta-ie-3Al" secondAttribute="bottom" constant="24" id="QOR-fg-Hsa"/>
                         <constraint firstItem="6Ly-M7-abl" firstAttribute="centerY" secondItem="2rf-MT-xz3" secondAttribute="centerY" id="RNX-Tw-dQ6"/>
@@ -406,12 +383,13 @@
                         <constraint firstItem="45r-vm-Ptv" firstAttribute="leading" secondItem="rVU-JM-4L9" secondAttribute="leading" id="UOZ-xi-86P"/>
                         <constraint firstItem="2rf-MT-xz3" firstAttribute="leading" secondItem="R43-Bn-FDJ" secondAttribute="leading" id="V2L-pM-7ex"/>
                         <constraint firstItem="GPt-UT-q9M" firstAttribute="centerY" secondItem="0QA-7K-afP" secondAttribute="centerY" id="V58-nC-l4m"/>
+                        <constraint firstItem="HBy-QR-90j" firstAttribute="leading" secondItem="KAt-Hb-QHY" secondAttribute="trailing" constant="60" id="VCp-2S-YFA"/>
                         <constraint firstAttribute="trailing" secondItem="R43-Bn-FDJ" secondAttribute="trailing" constant="24" id="VVI-Ji-z3J"/>
                         <constraint firstItem="45r-vm-Ptv" firstAttribute="trailing" secondItem="rVU-JM-4L9" secondAttribute="trailing" id="WqV-cG-QBE"/>
                         <constraint firstItem="8fM-mG-sfX" firstAttribute="leading" secondItem="K7Y-nd-WhP" secondAttribute="leading" id="XBx-jD-3Kz"/>
+                        <constraint firstItem="rVU-JM-4L9" firstAttribute="top" secondItem="rTO-b5-3ta" secondAttribute="bottom" constant="32" id="Z6x-gc-mhj"/>
                         <constraint firstItem="R43-Bn-FDJ" firstAttribute="top" secondItem="rVU-JM-4L9" secondAttribute="bottom" constant="32" id="amz-dx-bca"/>
                         <constraint firstItem="5qp-GO-dos" firstAttribute="top" secondItem="8fM-mG-sfX" secondAttribute="bottom" constant="32" id="c0E-Bp-cZo"/>
-                        <constraint firstItem="7KZ-IH-bJ6" firstAttribute="centerY" secondItem="KAt-Hb-QHY" secondAttribute="centerY" id="cAT-gm-Yk8"/>
                         <constraint firstItem="tlT-HC-EX7" firstAttribute="top" secondItem="rSe-bm-fto" secondAttribute="bottom" constant="32" id="cvC-1Z-fGA"/>
                         <constraint firstItem="Dfi-XT-h06" firstAttribute="trailing" secondItem="2ta-ie-3Al" secondAttribute="trailing" id="dc4-hp-FaA"/>
                         <constraint firstItem="tlT-HC-EX7" firstAttribute="leading" secondItem="K7Y-nd-WhP" secondAttribute="leading" constant="24" id="fJm-KU-eNk"/>
@@ -436,7 +414,6 @@
                         <constraint firstItem="Dfi-XT-h06" firstAttribute="leading" secondItem="2ta-ie-3Al" secondAttribute="leading" id="wbk-WV-ePb"/>
                         <constraint firstItem="gPi-Vg-MGY" firstAttribute="trailing" secondItem="R43-Bn-FDJ" secondAttribute="trailing" id="xVO-Qe-Tm5"/>
                         <constraint firstItem="6Ly-M7-abl" firstAttribute="leading" secondItem="2rf-MT-xz3" secondAttribute="trailing" constant="16" id="yRQ-W3-YJW"/>
-                        <constraint firstAttribute="trailing" secondItem="rFJ-Gc-00Q" secondAttribute="trailing" constant="24" id="yU6-uY-WcS"/>
                     </constraints>
                 </scrollView>
             </subviews>

@@ -52,8 +52,6 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBOutlet weak var idTextLabel: UILabel!
   @IBOutlet weak var passportButton: UIButton!
   @IBOutlet weak var passportTextLabel: UILabel!
-  @IBOutlet weak var driverLicenseButton: UIButton!
-  @IBOutlet weak var driverLicenseTextLabel: UILabel!
   @IBOutlet weak var documentNumberTextField: UITextField!
 
   @IBOutlet weak var issueDateTextField: UITextField!
@@ -152,7 +150,6 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.documentTypeTextLabel.text = NSLocalizedString("document.type", value: "Document Type", comment: "")
     self.documentNumberTextField.placeholder = NSLocalizedString("document.number", value: "Document Number", comment: "")
     self.passportTextLabel.text = NSLocalizedString("passport", value: "Passport", comment: "")
-    self.driverLicenseTextLabel.text = NSLocalizedString("driving.license", value: "Driving License", comment: "")
     self.issueDateTextField.placeholder = NSLocalizedString("issue.date", value: "Issue Date", comment: "")
     self.expiryDateTextField.placeholder = NSLocalizedString("expiry.date", value: "Expiry Date", comment: "")
     self.dontHaveIssueDateTextLabel.text = NSLocalizedString("none.applicable", value: "None applicable", comment: "")
@@ -172,10 +169,6 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     let passportTap = UITapGestureRecognizer(target: self, action: #selector(self.passportButtonPressed(_:)))
     self.passportTextLabel.isUserInteractionEnabled = true
     self.passportTextLabel.addGestureRecognizer(passportTap)
-
-    let driverTap = UITapGestureRecognizer(target: self, action: #selector(self.driverLicenseButtonPressed(_:)))
-    self.driverLicenseTextLabel.isUserInteractionEnabled = true
-    self.driverLicenseTextLabel.addGestureRecognizer(driverTap)
 
     let dontHaveIssueTap = UITapGestureRecognizer(target: self, action: #selector(self.dontHaveIssueDataButtonPressed(_:)))
     self.dontHaveIssueDateTextLabel.isUserInteractionEnabled = true
@@ -255,11 +248,6 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       width: self.viewModel.documentType == "passport" ? 6.0 : 1.0,
       radius: self.passportButton.frame.height / 2.0
     )
-    self.driverLicenseButton.rounded(
-      color: self.viewModel.documentType == "driving_license" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
-      width: self.viewModel.documentType == "driving_license" ? 6.0 : 1.0,
-      radius: self.driverLicenseButton.frame.height / 2.0
-    )
   }
 
   @objc func issueDatePickerDidChange(_ sender: Any) {
@@ -283,11 +271,6 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   @IBAction func passportButtonPressed(_ sender: Any) {
     self.viewModel.updateDocumentType(self.viewModel.documentType == "passport" ? "" : "passport")
-    self.updateDocumentTypeData()
-  }
-
-  @IBAction func driverLicenseButtonPressed(_ sender: Any) {
-    self.viewModel.updateDocumentType(self.viewModel.documentType == "driving_license" ? "" : "driving_license")
     self.updateDocumentTypeData()
   }
 
