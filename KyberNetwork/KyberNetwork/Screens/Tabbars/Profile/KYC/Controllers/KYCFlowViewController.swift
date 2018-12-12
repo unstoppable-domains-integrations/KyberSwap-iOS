@@ -40,7 +40,7 @@ class KYCFlowViewModel {
   fileprivate(set) var issueDate: String = ""
   fileprivate(set) var expiryDate: String = ""
   fileprivate(set) var docFrontImage: UIImage!
-  fileprivate(set) var docBackImage: UIImage!
+  fileprivate(set) var docBackImage: UIImage?
   fileprivate(set) var docHoldingImage: UIImage!
 
   init(user: IEOUser) {
@@ -147,7 +147,7 @@ class KYCFlowViewModel {
     self.taxIDNumber = taxIDNumber
   }
 
-  func updateIdentityInfo(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage, docHoldingImage: UIImage) {
+  func updateIdentityInfo(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage?, docHoldingImage: UIImage) {
     self.docType = docType
     self.docNumber = docNum
     self.issueDate = issueDate
@@ -494,8 +494,8 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
         docHoldingImage: docHoldingImage
       )
       guard let user = IEOUserStorage.shared.user else { return }
+      let docBackImageData: Data? = docBackImage == nil ? nil : UIImageJPEGRepresentation(docBackImage!, 0.0)
       guard let docFrontImageData = UIImageJPEGRepresentation(docFrontImage, 0.0),
-        let docBackImageData = UIImageJPEGRepresentation(docBackImage, 0.0),
         let docHoldingImageData = UIImageJPEGRepresentation(docHoldingImage, 0.0) else { return }
       let service = ProfileKYCService.identityInfo(
         accessToken: user.accessToken,

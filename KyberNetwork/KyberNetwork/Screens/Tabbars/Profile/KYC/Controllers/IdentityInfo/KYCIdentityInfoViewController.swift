@@ -1,13 +1,12 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-//swiftlint:disable file_length
 import UIKit
 import Photos
 import MobileCoreServices
 import AVFoundation
 
 enum KYCIdentityInfoViewEvent {
-  case next(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage, docHoldingImage: UIImage)
+  case next(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage?, docHoldingImage: UIImage)
 }
 
 protocol KYCIdentityInfoViewControllerDelegate: class {
@@ -400,13 +399,15 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
-    guard let docBackImage = self.documentBackImage else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
-        message: NSLocalizedString("please.provide.your.document.photo", value: "Please provide your document photo for verification", comment: ""),
-        time: 2.5
-      )
-      return
+    if self.viewModel.documentType != "passport" {
+      guard self.documentBackImage != nil else {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("photo.not.found", value: "Photo not found", comment: ""),
+          message: NSLocalizedString("please.provide.your.document.photo", value: "Please provide your document photo for verification", comment: ""),
+          time: 2.5
+        )
+        return
+      }
     }
     guard let docHoldingImage = self.holdingDocumentImage else {
       self.showWarningTopBannerMessage(
@@ -422,7 +423,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       issueDate: issueDate,
       expiryDate: expiryDate,
       docFrontImage: docFrontImage,
-      docBackImage: docBackImage,
+      docBackImage: self.documentBackImage,
       docHoldingImage: docHoldingImage
     )
     self.delegate?.identityInfoViewController(self, run: nextEvent)

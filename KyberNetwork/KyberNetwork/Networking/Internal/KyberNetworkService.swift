@@ -265,7 +265,7 @@ enum ProfileKYCService {
     proofAddress: String, proofAddressImageData: Data,
     sourceFund: String,
     occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?)
-  case identityInfo(accessToken: String, documentType: String, documentID: String, issueDate: String?, expiryDate: String?, docFrontImage: Data, docBackImage: Data, docHoldingImage: Data)
+  case identityInfo(accessToken: String, documentType: String, documentID: String, issueDate: String?, expiryDate: String?, docFrontImage: Data, docBackImage: Data?, docHoldingImage: Data)
   case submitKYC(accessToken: String)
   case userWallets(accessToken: String)
   case checkWalletExist(accessToken: String, wallet: String)
@@ -339,16 +339,18 @@ extension ProfileKYCService: TargetType {
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .identityInfo(let accessToken, let documentType, let documentID, let issueDate, let expiryDate, let docFrontImage, let docBackImage, let docHoldingImage):
-      let json: JSONDictionary = [
+      var json: JSONDictionary = [
         "access_token": accessToken,
         "document_type": documentType,
         "document_id": documentID,
         "document_issue_date": issueDate ?? "",
         "document_expiry_date": expiryDate ?? "",
         "photo_identity_front_side": "data:image/jpeg;base64,\(docFrontImage.base64EncodedString())",
-        "photo_identity_back_side": "data:image/jpeg;base64,\(docBackImage.base64EncodedString())",
         "photo_selfie": "data:image/jpeg;base64,\(docHoldingImage.base64EncodedString())",
       ]
+      if let docBackImage = docBackImage {
+        json["photo_identity_back_side"] = "data:image/jpeg;base64,\(docBackImage.base64EncodedString())"
+      }
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .submitKYC(let accessToken):
