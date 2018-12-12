@@ -313,6 +313,7 @@
 		25EE4A6F20C54BEC00E2282F /* KNAppCoordinator+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EE4A6E20C54BEC00E2282F /* KNAppCoordinator+Notification.swift */; };
 		25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EE4A7120C54D1000E2282F /* KNAppCoordinator+Delegation.swift */; };
 		25EE4A7420C54F2F00E2282F /* KNAddNewWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */; };
+		25F1BAD921BBA7D200A36900 /* config_env_ropsten2.json in Resources */ = {isa = PBXBuildFile; fileRef = 25F1BAD821BBA7D200A36900 /* config_env_ropsten2.json */; };
 		25F96F7B215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F96F79215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift */; };
 		25F96F7C215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F96F7A215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib */; };
 		25F96F8021537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F96F7E21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift */; };
@@ -1011,6 +1012,7 @@
 		25EE4A6E20C54BEC00E2282F /* KNAppCoordinator+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KNAppCoordinator+Notification.swift"; sourceTree = "<group>"; };
 		25EE4A7120C54D1000E2282F /* KNAppCoordinator+Delegation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KNAppCoordinator+Delegation.swift"; sourceTree = "<group>"; };
 		25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAddNewWalletCoordinator.swift; sourceTree = "<group>"; };
+		25F1BAD821BBA7D200A36900 /* config_env_ropsten2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config_env_ropsten2.json; sourceTree = "<group>"; };
 		25F96F79215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNDocumentPhotoInfoPopUp.swift; sourceTree = "<group>"; };
 		25F96F7A215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNDocumentPhotoInfoPopUp.xib; sourceTree = "<group>"; };
 		25F96F7E21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHoldingDocumentInfoPopUp.swift; sourceTree = "<group>"; };
@@ -1546,6 +1548,7 @@
 				251ABCAE20578F6D0069687F /* config_env_ropsten.json */,
 				251ABCB020578F6D0069687F /* config_env_staging.json */,
 				2549B285219EA3DA00B7564E /* config_env_rinkeby.json */,
+				25F1BAD821BBA7D200A36900 /* config_env_ropsten2.json */,
 			);
 			path = Jsons;
 			sourceTree = "<group>";
@@ -4695,6 +4698,7 @@
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
+				25F1BAD921BBA7D200A36900 /* config_env_ropsten2.json in Resources */,
 				259BF5C321918B50004D70F9 /* kyc_occupation_code.json in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */,
