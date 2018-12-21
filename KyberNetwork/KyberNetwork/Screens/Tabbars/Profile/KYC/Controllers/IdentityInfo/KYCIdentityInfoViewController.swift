@@ -137,6 +137,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.nextButton.removeSublayer(at: 0)
+    self.nextButton.applyGradient()
+  }
+
   fileprivate func setupUI() {
     self.setupDocumentType()
     self.setupPhotoDocumentView()
@@ -234,16 +240,17 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   fileprivate func setupNextButton() {
     self.nextButton.rounded(radius: 4.0)
     self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
+    self.nextButton.applyGradient()
   }
 
   fileprivate func updateDocumentTypeData() {
     self.idButton.rounded(
-      color: self.viewModel.documentType == "national_id" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: self.viewModel.documentType == "national_id" ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: self.viewModel.documentType == "national_id" ? 6.0 : 1.0,
       radius: self.idButton.frame.height / 2.0
     )
     self.passportButton.rounded(
-      color: self.viewModel.documentType == "passport" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: self.viewModel.documentType == "passport" ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: self.viewModel.documentType == "passport" ? 6.0 : 1.0,
       radius: self.passportButton.frame.height / 2.0
     )

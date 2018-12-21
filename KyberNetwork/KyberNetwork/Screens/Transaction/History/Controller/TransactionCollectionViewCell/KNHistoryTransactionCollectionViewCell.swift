@@ -24,7 +24,7 @@ struct KNHistoryTransactionCollectionViewModel {
     self.index = index
   }
 
-  var backgroundColor: UIColor { return self.index % 2 == 0 ? UIColor.white : UIColor.clear }
+  var backgroundColor: UIColor { return self.index % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250) }
 
   var isSwap: Bool { return self.transaction.localizedOperations.first?.type == "exchange" }
   var isSent: Bool {

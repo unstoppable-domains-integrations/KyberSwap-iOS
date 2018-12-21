@@ -15,6 +15,7 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.resume()
 
     self.tabbarController = KNTabBarController()
+    self.tabbarController.tabBar.barTintColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
     // Balance Tab
     self.balanceTabCoordinator = {
       let coordinator = KNBalanceTabCoordinator(
@@ -61,7 +62,7 @@ extension KNAppCoordinator {
       self.profileCoordinator!.navigationController,
       self.settingsCoordinator.navigationController,
     ]
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.fire
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
     self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("balance", value: "Balance", comment: ""),
       image: UIImage(named: "tabbar_balance_icon"),
@@ -88,7 +89,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator.navigationController.tabBarItem.tag = 3
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
       self.tabbarController.selectedIndex = 1
-      self.tabbarController.tabBar.tintColor = UIColor.Kyber.merigold
+      self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
     }
 
     self.addObserveNotificationFromSession()
@@ -139,7 +140,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
 
     self.tabbarController.selectedIndex = 1
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.merigold
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
 
     self.addObserveNotificationFromSession()
     self.updateLocalData()

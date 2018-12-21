@@ -46,7 +46,7 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
       } else {
         self.window.makeKeyAndVisible()
         self.window.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           self.passcodeViewController.showBioAuthenticationIfNeeded()
         }
       }

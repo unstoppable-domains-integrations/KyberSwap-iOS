@@ -25,7 +25,7 @@ struct KNBalanceTokenTableViewCellModel {
   }
 
   var backgroundColor: UIColor {
-    return self.index % 2 == 0 ? .white : UIColor.Kyber.whisper
+    return self.index % 2 == 0 ? .white : UIColor(red: 248, green: 249, blue: 255)
   }
 
   var displaySymbolAndNameAttributedString: NSAttributedString {
@@ -42,6 +42,13 @@ struct KNBalanceTokenTableViewCellModel {
       ]
     attributedString.append(NSAttributedString(string: self.token.symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: " - \(self.token.name)", attributes: nameAttributes))
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 0
+    attributedString.addAttribute(
+      NSAttributedStringKey.paragraphStyle,
+      value: paragraphStyle,
+      range: NSRange(location: 0, length: attributedString.length)
+    )
     return attributedString
   }
 

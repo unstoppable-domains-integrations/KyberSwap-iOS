@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="bottomPaddingConstraintForTableView" destination="fPU-Qc-GQ7" id="K07-PO-QRu"/>
+                <outlet property="headerContainerView" destination="vL2-AA-W03" id="gdG-2O-37t"/>
                 <outlet property="navTitleLabel" destination="xmh-i9-3kJ" id="uUG-Br-Uu8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletTableView" destination="TaA-Qi-UUl" id="0Yx-am-FGE"/>
@@ -37,20 +38,20 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmh-i9-3kJ">
-                            <rect key="frame" x="128" y="47" width="119.5" height="21"/>
+                            <rect key="frame" x="118.5" y="46" width="138" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwE-Ad-dkO">
-                            <rect key="frame" x="16" y="46.5" width="38" height="22"/>
+                            <rect key="frame" x="16" y="46" width="38" height="22"/>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="hEe-8M-jca"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX3-sw-7fy">
-                            <rect key="frame" x="333" y="44.5" width="26" height="26"/>
+                            <rect key="frame" x="333" y="44" width="26" height="26"/>
                             <state key="normal" image="add_icon_white"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="mdG-Ct-2ma"/>

@@ -27,7 +27,7 @@ class KNListContactViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     let style = KNAppStyleType.current
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     let contacts = KNContactStorage.shared.contacts
     self.contactTableView.delegate = self
     self.contactTableView.updateView(
@@ -41,7 +41,7 @@ class KNListContactViewController: KNBaseViewController {
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactEmptyLabel.text = NSLocalizedString("your.contact.is.empty", value: "Your contact is empty", comment: "")
     self.addContactButton.rounded(radius: style.buttonRadius(for: self.addContactButton.frame.height))
-    self.addContactButton.backgroundColor = style.walletFlowHeaderColor
+    self.addContactButton.applyGradient()
     self.addContactButton.setTitle(
       NSLocalizedString("add.contact", value: "Add Contact", comment: ""),
       for: .normal
@@ -58,6 +58,14 @@ class KNListContactViewController: KNBaseViewController {
     )
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactTableView.isHidden = contacts.isEmpty
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.addContactButton.removeSublayer(at: 0)
+    self.addContactButton.applyGradient()
   }
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

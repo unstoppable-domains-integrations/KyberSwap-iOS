@@ -69,6 +69,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +78,12 @@ class KWalletBalanceViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
-    self.headerContainerView.backgroundColor = self.viewModel.headerBackgroundColor
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   // MARK: Set up UIs

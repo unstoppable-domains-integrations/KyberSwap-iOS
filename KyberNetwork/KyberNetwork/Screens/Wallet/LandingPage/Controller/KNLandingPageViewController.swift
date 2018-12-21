@@ -25,20 +25,20 @@ class KNLandingPageViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     let style = KNAppStyleType.current
-    self.view.backgroundColor = style.landingBackgroundColor
+    self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
 
     self.createWalletButton.backgroundColor = style.landingCreateWalletBackgroundColor
     self.createWalletButton.setTitleColor(
-      style.landingCreateWalletTitleColor,
+      UIColor(red: 250, green: 107, blue: 100),
       for: .normal
     )
     self.createWalletButton.setTitle(
       NSLocalizedString("create.wallet", value: "Create Wallet", comment: ""),
       for: .normal
     )
-    self.importWalletButton.backgroundColor = style.landingImportWalletBackgroundColor
+    self.importWalletButton.backgroundColor = .clear
     self.importWalletButton.setTitleColor(
-      style.landingImmportWalletTitleColor,
+      .white,
       for: .normal
     )
     self.importWalletButton.setTitle(
@@ -48,12 +48,19 @@ class KNLandingPageViewController: KNBaseViewController {
 
     let radius = style.buttonRadius(for: self.createWalletButton.frame.height)
     self.createWalletButton.rounded(radius: radius)
-    self.importWalletButton.rounded(radius: radius)
+    self.importWalletButton.rounded(color: .white, width: 1.0, radius: radius)
     self.termAndConditionButton.setTitle(
       NSLocalizedString("terms.and.conditions", value: "Terms and Conditions", comment: ""),
       for: .normal
     )
+    self.termAndConditionButton.setTitleColor(.white, for: .normal)
     self.debugButton.isHidden = false
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.view.removeSublayer(at: 0)
+    self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {

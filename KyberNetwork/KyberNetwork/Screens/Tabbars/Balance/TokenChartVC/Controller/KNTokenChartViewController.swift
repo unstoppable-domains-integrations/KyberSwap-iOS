@@ -326,13 +326,19 @@ class KNTokenChartViewController: KNBaseViewController {
     self.stopTimer()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   fileprivate func setupUI() {
     self.touchPriceLabel.isHidden = true
 
     self.bottomPaddingConstraintForButton.constant = 16.0 + self.bottomPaddingSafeArea()
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.chartBackgroundColor
-    self.headerContainerView.backgroundColor = style.chartHeaderBackgroundColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
     self.iconImageView.setTokenImage(
       token: self.viewModel.token,
@@ -359,35 +365,38 @@ class KNTokenChartViewController: KNBaseViewController {
     self.priceChart.labelFont = UIFont.Kyber.medium(with: 12)
 
     self.sendButton.rounded(
-      color: .clear,
+      color: UIColor.Kyber.border,
       width: 1,
       radius: style.buttonRadius(for: self.sendButton.frame.height)
     )
-    self.sendButton.backgroundColor = UIColor.Kyber.merigold
+    self.sendButton.backgroundColor = .clear//UIColor.Kyber.merigold
     self.sendButton.setTitle(
       NSLocalizedString("send", value: "Send", comment: ""),
       for: .normal
     )
+    self.sendButton.setTitleColor(UIColor(red: 90, green: 94, blue: 103), for: .normal)
     self.buyButton.rounded(
-      color: .clear,
+      color: UIColor.Kyber.border,
       width: 1,
       radius: style.buttonRadius(for: self.buyButton.frame.height)
     )
-    self.buyButton.backgroundColor = UIColor.Kyber.shamrock
+    self.buyButton.backgroundColor = .clear//UIColor.Kyber.shamrock
     self.buyButton.setTitle(
       NSLocalizedString("buy", value: "Buy", comment: ""),
       for: .normal
     )
+    self.buyButton.setTitleColor(UIColor(red: 90, green: 94, blue: 103), for: .normal)
     self.sellButton.rounded(
-      color: .clear,
+      color: UIColor.Kyber.border,
       width: 1,
       radius: style.buttonRadius(for: self.sellButton.frame.height)
     )
-    self.sellButton.backgroundColor = UIColor.Kyber.blueGreen
+    self.sellButton.backgroundColor = .clear//UIColor.Kyber.blueGreen
     self.sellButton.setTitle(
       NSLocalizedString("sell", value: "Sell", comment: ""),
       for: .normal
     )
+    self.sellButton.setTitleColor(UIColor(red: 90, green: 94, blue: 103), for: .normal)
 
     self.dataTypeButtons.forEach { button in
       let title: String = {
@@ -414,7 +423,7 @@ class KNTokenChartViewController: KNBaseViewController {
         NSLocalizedString("send", value: "Send", comment: ""),
         for: .normal
       )
-      self.sellButton.backgroundColor = UIColor.Kyber.merigold
+      self.sellButton.backgroundColor = .clear//UIColor.Kyber.merigold
       self.sendButton.isHidden = true
     }
 

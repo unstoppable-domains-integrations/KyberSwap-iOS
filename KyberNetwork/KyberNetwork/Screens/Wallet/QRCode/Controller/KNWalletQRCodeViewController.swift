@@ -5,6 +5,7 @@ import MBProgressHUD
 
 class KNWalletQRCodeViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var qrcodeImageView: UIImageView!
   @IBOutlet weak var addressLabel: UILabel!
@@ -32,9 +33,18 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.setupWalletData()
     self.setupButtons()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.copyWalletButton.removeSublayer(at: 0)
+    self.copyWalletButton.applyGradient()
   }
 
   fileprivate func setupWalletData() {
@@ -65,6 +75,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       NSLocalizedString("share", value: "Share", comment: ""),
       for: .normal
     )
+    self.copyWalletButton.applyGradient()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

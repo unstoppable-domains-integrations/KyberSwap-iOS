@@ -76,7 +76,7 @@ class KSwapViewController: KNBaseViewController {
     return KNCustomToolbar(
       leftBtnTitle: NSLocalizedString("swap.all", value: "Swap All", comment: ""),
       rightBtnTitle: NSLocalizedString("done", value: "Done", comment: ""),
-      barTintColor: KNAppStyleType.current.swapHeaderBackgroundColor,
+      barTintColor: UIColor.Kyber.enygold,
       delegate: self)
   }()
 
@@ -91,6 +91,8 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.continueButton.applyGradient()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +101,6 @@ class KSwapViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
-    self.headerContainerView.backgroundColor = self.viewModel.headerBackgroundColor
   }
 
   override func viewDidLayoutSubviews() {
@@ -111,6 +112,10 @@ class KSwapViewController: KNBaseViewController {
       radius: 32
     )
     self.advancedSettingsView.layoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.continueButton.removeSublayer(at: 0)
+    self.continueButton.applyGradient()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -210,7 +215,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate func setupAdvancedSettingsView() {
     let viewModel = KAdvancedSettingsViewModel(
       hasMinRate: true,
-      brandColor: KNAppStyleType.current.swapHeaderBackgroundColor
+      brandColor: UIColor.Kyber.enygold
     )
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
@@ -233,7 +238,6 @@ class KSwapViewController: KNBaseViewController {
     let style = KNAppStyleType.current
     let radius = style.buttonRadius(for: self.continueButton.frame.height)
     self.continueButton.rounded(radius: radius)
-    self.continueButton.backgroundColor = style.swapActionButtonBackgroundColor
     self.continueButton.setTitle(
       NSLocalizedString("continue", value: "Continue", comment: ""),
       for: .normal

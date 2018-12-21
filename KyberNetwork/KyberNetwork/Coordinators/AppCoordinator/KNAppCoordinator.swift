@@ -105,7 +105,7 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.loadBalanceCoordinator?.resume()
-    self.splashScreenCoordinator.stop()
+    //self.splashScreenCoordinator.stop()
   }
 
   func appWillEnterForeground() {

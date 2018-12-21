@@ -79,6 +79,8 @@ class KSendTokenViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.sendButton.applyGradient()
   }
 
   override func viewDidLayoutSubviews() {
@@ -90,6 +92,10 @@ class KSendTokenViewController: KNBaseViewController {
       radius: 32
     )
     self.advancedSettingsView.layoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.sendButton.removeSublayer(at: 0)
+    self.sendButton.applyGradient()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +143,6 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationView() {
-    self.headerContainerView.backgroundColor = self.style.walletFlowHeaderColor
     self.navTitleLabel.text = self.viewModel.navTitle
   }
 
@@ -179,7 +184,7 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func setupAdvancedSettingsView() {
     let viewModel = KAdvancedSettingsViewModel(
       hasMinRate: false,
-      brandColor: KNAppStyleType.current.walletFlowHeaderColor
+      brandColor: UIColor.Kyber.enygold
     )
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
@@ -216,7 +221,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupSendButton() {
     self.sendButton.rounded(radius: self.style.buttonRadius(for: self.sendButton.frame.height))
-    self.sendButton.backgroundColor = self.style.walletFlowHeaderColor
     self.sendButton.setTitle(
       NSLocalizedString("send", value: "Send", comment: ""),
       for: .normal

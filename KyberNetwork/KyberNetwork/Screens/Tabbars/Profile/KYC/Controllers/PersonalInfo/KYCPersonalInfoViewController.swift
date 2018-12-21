@@ -281,6 +281,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.optionalDataView.layoutSubviews()
     self.addressSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.nextButton.removeSublayer(at: 0)
+    self.nextButton.applyGradient()
   }
 
   fileprivate func setupUI() {
@@ -348,6 +350,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.updateWalletsData()
 
     self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
+    self.nextButton.applyGradient()
     self.nextButton.rounded(radius: 4.0)
   }
 
@@ -419,12 +422,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   fileprivate func updateGenderUI() {
     self.maleButton.rounded(
-      color: self.viewModel.gender == "Male" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: self.viewModel.gender == "Male" ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: self.viewModel.gender == "Male" ? 6.0 : 1.0,
       radius: self.maleButton.frame.height / 2.0
     )
     self.femaleButton.rounded(
-      color: self.viewModel.gender == "Female" ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: self.viewModel.gender == "Female" ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: self.viewModel.gender == "Female" ? 6.0 : 1.0,
       radius: self.maleButton.frame.height / 2.0
     )

@@ -15,12 +15,13 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="aboutButton" destination="0Wu-3X-xy0" id="yur-6n-epM"/>
                 <outlet property="changePINButton" destination="c9Z-ZK-Ucl" id="Y2q-9i-4VJ"/>
                 <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
                 <outlet property="contactButton" destination="XDo-Po-iWz" id="gEu-eC-2gh"/>
+                <outlet property="headerContainerView" destination="LAf-Nx-GiM" id="KdF-SZ-Hhs"/>
                 <outlet property="manageWalletButton" destination="OVZ-jU-hlZ" id="yMe-nI-3CH"/>
                 <outlet property="navTitleLabel" destination="BS7-Ut-PSh" id="Czb-hZ-Lfr"/>
                 <outlet property="shareWithFriendsButton" destination="Z6O-Km-0S7" id="Ug8-Xt-Krq"/>

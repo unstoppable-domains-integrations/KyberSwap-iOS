@@ -72,7 +72,7 @@
                             <rect key="frame" x="16" y="333" width="343" height="88"/>
                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id porttitor mauris. Phasellus lobortis convallis est sed euismod. </string>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
-                            <color key="textColor" red="0.68235294117647061" green="0.94509803921568625" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-Xs-12c">

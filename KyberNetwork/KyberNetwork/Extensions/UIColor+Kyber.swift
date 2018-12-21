@@ -66,5 +66,24 @@ extension UIColor {
     static var passcodeInactive = UIColor(red: 213, green: 217, blue: 225)
 
     static var firstTheme = UIColor(red: 15, green: 170, blue: 162)
+
+    static var enygold = UIColor(red: 254, green: 163, blue: 76)
+    static var punch = UIColor(red: 249, green: 86, blue: 109)
+    static var coral = UIColor(red: 251, green: 121, blue: 93)
+
+    static var buttonColors: [UIColor] = [
+      UIColor.Kyber.enygold,
+      UIColor.Kyber.coral,
+    ]
+
+    static var headerColors: [UIColor] = [
+      UIColor.Kyber.enygold,
+      UIColor.Kyber.coral,
+    ]
+
+    static var backgroundColors: [UIColor] = [
+      UIColor.Kyber.enygold,
+      UIColor(red: 245, green: 40, blue: 128),
+    ]
   }
 }

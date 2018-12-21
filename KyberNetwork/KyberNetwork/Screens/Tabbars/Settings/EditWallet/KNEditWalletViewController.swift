@@ -23,6 +23,7 @@ struct KNEditWalletViewModel {
 
 class KNEditWalletViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var nameWalletTextLabel: UILabel!
   @IBOutlet weak var walletNameTextField: UITextField!
@@ -47,6 +48,7 @@ class KNEditWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("edit.wallet", value: "Edit Wallet", comment: "")
     self.nameWalletTextLabel.text = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.placeholder = NSLocalizedString("give.your.wallet.a.name", value: "Give your wallet a name", comment: "")
@@ -55,8 +57,17 @@ class KNEditWalletViewController: KNBaseViewController {
     self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
     self.saveButton.rounded(radius: 4.0)
     self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
+    self.saveButton.applyGradient()
     self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.view.layoutIfNeeded()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.saveButton.removeSublayer(at: 0)
+    self.saveButton.applyGradient()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

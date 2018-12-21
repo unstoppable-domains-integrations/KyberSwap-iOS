@@ -107,12 +107,12 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   var colorKyberListedButton: UIColor {
-    if self.isKyberList { return self.headerBackgroundColor }
+    if self.isKyberList { return UIColor.Kyber.enygold }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
   var colorOthersButton: UIColor {
-    if !self.isKyberList { return self.headerBackgroundColor }
+    if !self.isKyberList { return UIColor.Kyber.enygold }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
