@@ -38,6 +38,7 @@ class KConfirmSendViewController: KNBaseViewController {
   fileprivate let viewModel: KConfirmSendViewModel
   weak var delegate: KConfirmSendViewControllerDelegate?
 
+  fileprivate var isConfirmed: Bool = false
   init(viewModel: KConfirmSendViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KConfirmSendViewController.className, bundle: nil)
@@ -58,8 +59,10 @@ class KConfirmSendViewController: KNBaseViewController {
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.confirmButton.removeSublayer(at: 0)
-    self.confirmButton.applyGradient()
+    if !self.isConfirmed {
+      self.confirmButton.removeSublayer(at: 0)
+      self.confirmButton.applyGradient()
+    }
   }
 
   fileprivate func setupUI() {
@@ -114,10 +117,12 @@ class KConfirmSendViewController: KNBaseViewController {
   }
 
   func updateActionButtonsSendingTransfer() {
+    self.isConfirmed = true
     self.confirmButton.backgroundColor = UIColor.clear
+    self.confirmButton.removeSublayer(at: 0)
     self.confirmButton.setTitle("\(NSLocalizedString("in.progress", value: "In Progress", comment: "")) ...", for: .normal)
     self.confirmButton.setTitleColor(
-      KNAppStyleType.current.walletFlowHeaderColor,
+      UIColor.Kyber.enygold,
       for: .normal
     )
     self.confirmButton.isEnabled = false
