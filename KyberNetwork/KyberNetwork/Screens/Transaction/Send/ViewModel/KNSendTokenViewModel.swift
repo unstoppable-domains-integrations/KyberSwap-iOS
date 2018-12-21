@@ -46,7 +46,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var amountTextColor: UIColor {
-    return isAmountValid ? UIColor.Kyber.lightSeaGreen : UIColor.red
+    return isAmountValid ? UIColor.Kyber.enygold : UIColor.red
   }
 
   var address: Address? { return Address(string: self.addressString) }
