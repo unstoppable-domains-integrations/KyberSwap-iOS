@@ -105,7 +105,7 @@ class KSwapViewModel {
   }
 
   var amountTextFieldColor: UIColor {
-    return self.isAmountValid ? UIColor.Kyber.merigold : UIColor.red
+    return self.isAmountValid ? UIColor.Kyber.enygold : UIColor.red
   }
 
   var expectedReceivedAmountText: String {
