@@ -172,7 +172,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.recentContactTableView.updateScrolling(isEnabled: false)
     self.recentContactTableView.shouldUpdateContacts(nil)
     self.moreContactButton.setTitleColor(
-      self.style.walletFlowHeaderColor,
+      UIColor.Kyber.enygold,
       for: .normal
     )
     self.moreContactButton.setTitle(
@@ -214,7 +214,7 @@ class KSendTokenViewController: KNBaseViewController {
       for: .normal
     )
     self.newContactButton.setTitleColor(
-      self.style.walletFlowHeaderColor,
+      UIColor.Kyber.enygold,
       for: .normal
     )
   }
