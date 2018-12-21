@@ -699,7 +699,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.toAmountTextField.textColor = UIColor.Kyber.mirage
     } else {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-      self.toAmountTextField.textColor = UIColor.Kyber.merigold
+      self.toAmountTextField.textColor = UIColor.Kyber.enygold
     }
   }
 
