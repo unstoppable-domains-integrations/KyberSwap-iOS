@@ -126,12 +126,12 @@ struct KNHistoryViewModel {
 
   var normalAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor(red: 222, green: 242, blue: 253),
+    NSAttributedStringKey.foregroundColor: UIColor.white,
   ]
 
   var selectedAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: KNAppStyleType.current.walletFlowHeaderColor,
+    NSAttributedStringKey.foregroundColor: UIColor.Kyber.enygold,
   ]
 }
 
@@ -177,6 +177,12 @@ class KNHistoryViewController: KNBaseViewController {
     self.updateUIWhenDataDidChange()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.setupCollectionView()
@@ -186,7 +192,7 @@ class KNHistoryViewController: KNBaseViewController {
     let style = KNAppStyleType.current
     self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
     self.view.backgroundColor = style.mainBackgroundColor
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.segmentedControl.rounded(
       color: .white,
       width: 1,
@@ -196,7 +202,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.segmentedControl.setTitle(NSLocalizedString("mined", value: "Mined", comment: ""), forSegmentAt: 1)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
-    self.segmentedControl.backgroundColor = style.walletFlowHeaderColor
   }
 
   fileprivate func setupCollectionView() {

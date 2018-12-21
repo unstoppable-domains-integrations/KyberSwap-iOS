@@ -24,9 +24,16 @@ class KGOInAppSignInViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = self.isSignIn ? NSLocalizedString("sign.in", value: "Sign In", comment: "") : NSLocalizedString("sign.up", value: "Sign Up", comment: "")
     self.webView.loadRequest(URLRequest(url: self.url))
     self.webView.delegate = self
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerView.removeSublayer(at: 0)
+    self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

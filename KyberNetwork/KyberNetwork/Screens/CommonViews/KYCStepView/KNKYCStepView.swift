@@ -22,17 +22,17 @@ class KNKYCStepView: XibLoaderView {
 
   let kInActiveBackgroundColor: UIColor = UIColor(red: 225, green: 225, blue: 225)
   let kActiveBackgroundColor: UIColor = UIColor.white
-  let kDoneBackgroundColor: UIColor = UIColor.Kyber.lightSeaGreen
+  let kDoneBackgroundColor: UIColor = UIColor(red: 251, green: 121, blue: 93)
 
   let backgroundColors: [UIColor] = [
     UIColor(red: 225, green: 225, blue: 225),
     UIColor.white,
-    UIColor.Kyber.lightSeaGreen,
+    UIColor(red: 251, green: 121, blue: 93),
   ]
 
   let borderColors: [UIColor] = [
     UIColor.clear,
-    UIColor.Kyber.lightSeaGreen,
+    UIColor(red: 251, green: 121, blue: 93),
     UIColor.clear,
   ]
 
@@ -46,14 +46,14 @@ class KNKYCStepView: XibLoaderView {
 
   let separatorBackgroundColors: [UIColor] = [
     UIColor(red: 225, green: 225, blue: 225),
-    UIColor.Kyber.lightSeaGreen,
-    UIColor.Kyber.lightSeaGreen,
+    UIColor(red: 251, green: 121, blue: 93),
+    UIColor(red: 251, green: 121, blue: 93),
   ]
 
   let textColors: [UIColor] = [
     UIColor.Kyber.grayChateau,
     UIColor.Kyber.grayChateau,
-    UIColor.Kyber.lightSeaGreen,
+    UIColor(red: 251, green: 121, blue: 93),
   ]
 
   @IBOutlet weak var personalInfoStepImageView: UIImageView!

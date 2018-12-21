@@ -21,19 +21,7 @@ class KNTabBarController: UITabBarController {
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
   override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-    if item.tag == 0 {
-      // Balance tab
-      tabBar.tintColor = UIColor.Kyber.lightSeaGreen
-    } else if item.tag == 1 {
-      // KyberSwap tab
-      tabBar.tintColor = UIColor.Kyber.merigold
-    } else if item.tag == 2 {
-      // Profile tab
-      tabBar.tintColor = UIColor.Kyber.lightSeaGreen
-    } else if item.tag == 3 {
-      // Settings tab
-      tabBar.tintColor = UIColor.black
-    }
+    tabBar.tintColor = UIColor.Kyber.enygold
   }
 }
 

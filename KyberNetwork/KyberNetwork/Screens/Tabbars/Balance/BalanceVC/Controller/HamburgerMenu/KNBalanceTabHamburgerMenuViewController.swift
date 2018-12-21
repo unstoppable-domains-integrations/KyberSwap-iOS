@@ -107,8 +107,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    let style = KNAppStyleType.current
-
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     self.view.isUserInteractionEnabled = true
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backgroundViewTap(_:)))
@@ -128,7 +126,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       for: .normal
     )
     self.sendTokenButton.setTitleColor(
-      style.walletFlowHeaderColor,
+      UIColor.Kyber.enygold,
       for: .normal
     )
 

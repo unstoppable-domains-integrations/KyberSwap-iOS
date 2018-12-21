@@ -46,6 +46,7 @@ class KNImportWalletViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.jsonButton.centerVertically(padding: 10)
     self.privateKeyButton.centerVertically(padding: 10)
     self.seedsButton.centerVertically(padding: 10)

@@ -46,7 +46,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
     super.viewDidLoad()
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.mainBackgroundColor
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
     self.nextButton.setTitle(
@@ -75,13 +75,20 @@ class KNBackUpWalletViewController: KNBaseViewController {
       style.createWalletButtonDisabledColor,
       forState: .disabled
     )
-    self.completeButton.setBackgroundColor(
-      style.createWalletButtonEnabledColor,
-      forState: .normal
-    )
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    if self.isCompleteButtonEnabled {
+      self.completeButton.applyGradient()
+    }
+    self.nextButton.applyGradient()
 
     self.updateUI()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.nextButton.applyGradient()
   }
 
   fileprivate func updateUI() {
@@ -118,6 +125,9 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
         self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
         self.completeButton.isEnabled = self.isCompleteButtonEnabled
+        if self.isCompleteButtonEnabled {
+          self.completeButton.applyGradient()
+        }
         self.view.layoutIfNeeded()
       }, completion: nil
     )
@@ -147,6 +157,9 @@ class KNBackUpWalletViewController: KNBaseViewController {
       self.firstWordTextField.text = ""
       self.secondWordTextField.text = ""
       self.completeButton.isEnabled = self.isCompleteButtonEnabled
+      if self.isCompleteButtonEnabled {
+        self.completeButton.applyGradient()
+      }
       self.viewModel.numberWrongs += 1
       isFirstTime = self.viewModel.numberWrongs == 1
       isSuccess = false
@@ -171,6 +184,9 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    if self.isCompleteButtonEnabled {
+      self.completeButton.applyGradient()
+    }
     self.view.layoutIfNeeded()
     return false
   }
@@ -178,6 +194,10 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    if self.isCompleteButtonEnabled {
+      self.completeButton.applyGradient()
+    }
+    self.view.layoutIfNeeded()
     return false
   }
 }

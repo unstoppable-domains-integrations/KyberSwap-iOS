@@ -12,7 +12,7 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   override func commonInit() {
     super.commonInit()
-    self.backgroundColor = KNAppStyleType.current.landingBackgroundColor
+    self.backgroundColor = .clear
     let nib = UINib(nibName: KNWelcomeScreenCollectionViewCell.className, bundle: nil)
     self.collectionView.register(
       nib,

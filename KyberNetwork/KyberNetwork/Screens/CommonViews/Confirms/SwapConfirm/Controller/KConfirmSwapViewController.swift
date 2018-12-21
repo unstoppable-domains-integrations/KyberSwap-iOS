@@ -51,11 +51,15 @@ class KConfirmSwapViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.confirmButton.removeSublayer(at: 0)
+    self.confirmButton.applyGradient()
   }
 
   fileprivate func setupUI() {
     let style = KNAppStyleType.current
-    self.headerContainerView.backgroundColor = style.swapHeaderBackgroundColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
     self.titleLabel.text = self.viewModel.titleString
 
@@ -77,7 +81,7 @@ class KConfirmSwapViewController: KNBaseViewController {
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
-    self.confirmButton.backgroundColor = style.swapActionButtonBackgroundColor
+    self.confirmButton.applyGradient()
     self.cancelButton.setTitle(
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal

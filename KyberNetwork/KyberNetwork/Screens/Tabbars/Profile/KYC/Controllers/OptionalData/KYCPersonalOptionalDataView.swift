@@ -168,12 +168,12 @@ class KYCPersonalOptionalDataView: XibLoaderView {
 
   fileprivate func updateHaveTaxIDNumber() {
     self.yesButton.rounded(
-      color: self.viewModel.hasTaxIDNumber ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: self.viewModel.hasTaxIDNumber ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: self.viewModel.hasTaxIDNumber ? 6.0 : 1.0,
       radius: 12.0
     )
     self.noButton.rounded(
-      color: !self.viewModel.hasTaxIDNumber ? UIColor.Kyber.shamrock : UIColor.Kyber.border,
+      color: !self.viewModel.hasTaxIDNumber ? UIColor.Kyber.enygold : UIColor.Kyber.border,
       width: !self.viewModel.hasTaxIDNumber ? 6.0 : 1.0,
       radius: 12.0
     )

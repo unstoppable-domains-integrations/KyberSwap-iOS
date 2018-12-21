@@ -11,7 +11,7 @@ class KNSplashScreenViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.backgroundColor = KNAppStyleType.current.landingBackgroundColor
+    self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
     //TODO: Remove in prod build
     //self.debugInfoView.isHidden = isDebug
     self.versionLabel.text = "Version: \(Bundle.main.versionNumber ?? "")"
@@ -21,6 +21,12 @@ class KNSplashScreenViewController: UIViewController {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.splashLogoImageView.isHidden = false
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.view.removeSublayer(at: 0)
+    self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
   }
 
   func rotateSplashLogo(duration: TimeInterval, completion: @escaping () -> Void) {

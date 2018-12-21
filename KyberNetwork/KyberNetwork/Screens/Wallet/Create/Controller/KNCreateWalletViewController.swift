@@ -32,7 +32,7 @@ class KNCreateWalletViewController: KNBaseViewController {
     self.descLabel.text = NSLocalizedString("create.new.wallet.desc", value: "This will create a new wallet. It can not be undone, but you could abandon it", comment: "")
     let style = KNAppStyleType.current
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
-    self.confirmButton.backgroundColor = style.createWalletButtonEnabledColor
+    self.confirmButton.applyGradient()
     self.confirmButton.setTitle(
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
@@ -41,6 +41,12 @@ class KNCreateWalletViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
     self.view.addGestureRecognizer(tapGesture)
     self.view.isUserInteractionEnabled = true
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.confirmButton.removeSublayer(at: 0)
+    self.confirmButton.applyGradient()
   }
 
   @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {

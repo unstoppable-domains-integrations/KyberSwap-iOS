@@ -50,13 +50,21 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     super.viewWillAppear(animated)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.viewOnEtherscanButton.removeSublayer(at: 0)
+    self.viewOnEtherscanButton.applyGradient()
+  }
+
   fileprivate func setupUI() {
     self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.fromTextLabel.text = NSLocalizedString("from", value: "From", comment: "")
     self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")
     self.dateTextLabel.text = NSLocalizedString("date", value: "Date", comment: "")
     self.navigationTitleLabel.text = NSLocalizedString("transaction.details", value: "Transaction Details", comment: "")
-    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.txStatusLabel.rounded(radius: 4.0)
     let fromTapGes = UITapGestureRecognizer(target: self, action: #selector(self.fromAddressTapped(_:)))
     self.fromLabel.addGestureRecognizer(fromTapGes)
@@ -71,6 +79,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
       NSLocalizedString("view.on.etherscan", value: "View on Etherscan", comment: ""),
       for: .normal
     )
+    self.viewOnEtherscanButton.applyGradient()
   }
 
   fileprivate func updateUI() {

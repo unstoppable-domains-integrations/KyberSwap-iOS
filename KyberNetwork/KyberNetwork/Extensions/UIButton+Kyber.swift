@@ -83,4 +83,8 @@ extension UIButton {
       right: 0.0
     )
   }
+
+  func applyGradient() {
+    self.applyGradient(with: UIColor.Kyber.buttonColors)
+  }
 }

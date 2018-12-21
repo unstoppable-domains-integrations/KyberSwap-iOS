@@ -32,10 +32,6 @@ class KNImportSeedsViewController: KNBaseViewController {
       style.importWalletButtonDisabledColor,
       forState: .disabled
     )
-    self.nextButton.setBackgroundColor(
-      style.importWalletButtonEnabledColor,
-      forState: .normal
-    )
     self.nextButton.setTitle(
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
@@ -61,6 +57,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       return words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
+    if enabled { self.nextButton.applyGradient() }
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {

@@ -23,6 +23,7 @@
                 <outlet property="addressLabel" destination="6US-bk-Sk8" id="3IM-nn-s6r"/>
                 <outlet property="bottomPaddingConstraintForButton" destination="bZ6-Zb-aFm" id="DhS-Zs-cr7"/>
                 <outlet property="copyWalletButton" destination="soD-bJ-naO" id="5ZJ-k4-TLi"/>
+                <outlet property="headerContainerView" destination="ayx-K1-otl" id="Kxh-Ft-jfa"/>
                 <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
                 <outlet property="shareButton" destination="JIX-CP-yTw" id="MFa-T3-VWJ"/>
                 <outlet property="titleLabel" destination="hYE-MU-J4V" id="9Ja-R7-3uA"/>

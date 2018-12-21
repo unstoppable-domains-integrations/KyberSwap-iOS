@@ -28,6 +28,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   weak var delegate: KNSettingsTabViewControllerDelegate?
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var manageWalletButton: UIButton!
   @IBOutlet weak var contactButton: UIButton!
@@ -40,6 +41,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("settings", value: "Settings", comment: "")
     self.manageWalletButton.setTitle(
       NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: ""),
@@ -73,6 +75,12 @@ class KNSettingsTabViewController: KNBaseViewController {
     if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
     version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   @IBAction func manageWalletButtonPressed(_ sender: Any) {

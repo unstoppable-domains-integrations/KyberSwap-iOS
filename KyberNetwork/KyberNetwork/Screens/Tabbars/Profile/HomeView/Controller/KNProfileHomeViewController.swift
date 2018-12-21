@@ -92,6 +92,12 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.walletTimer?.invalidate()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.notSignInView.removeSublayer(at: 0)
+    self.notSignInView.applyGradient(with: UIColor.Kyber.backgroundColors)
+  }
+
   fileprivate func setupUI() {
     self.navTitleLabel.text = NSLocalizedString("profile", value: "Profile", comment: "")
     self.setupNotSignInView()
@@ -99,6 +105,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func setupNotSignInView() {
+    self.notSignInView.applyGradient(with: UIColor.Kyber.backgroundColors)
     self.signInButton.rounded(
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
@@ -114,13 +121,19 @@ class KNProfileHomeViewController: KNBaseViewController {
       NSLocalizedString("sign.in", value: "Sign In", comment: ""),
       for: .normal
     )
+    self.signInButton.backgroundColor = UIColor.white
+    self.signInButton.setTitleColor(UIColor(red: 251, green: 121, blue: 93), for: .normal)
     self.signUpButton.rounded(
+      color: .white,
+      width: 1.0,
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
     self.signUpButton.setTitle(
       NSLocalizedString("sign.up", value: "Sign Up", comment: ""),
       for: .normal
     )
+    self.signUpButton.setTitleColor(.white, for: .normal)
+    self.signUpButton.backgroundColor = .clear
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
   }
 

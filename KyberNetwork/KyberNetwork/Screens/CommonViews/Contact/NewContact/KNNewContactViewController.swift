@@ -78,11 +78,18 @@ class KNNewContactViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   fileprivate func setupUI() {
-    self.headerContainerView.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
     self.deleteButton.setTitle(NSLocalizedString("delete.contact", value: "Delete Contact", comment: ""), for: .normal)
     self.sendButton.setTitle(NSLocalizedString("send", value: "Send", comment: ""), for: .normal)
+    self.sendButton.setTitleColor(UIColor.Kyber.enygold, for: .normal)
     self.addressTextField.delegate = self
     self.nameTextField.placeholder = NSLocalizedString("name", value: "Name", comment: "")
     self.addressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")

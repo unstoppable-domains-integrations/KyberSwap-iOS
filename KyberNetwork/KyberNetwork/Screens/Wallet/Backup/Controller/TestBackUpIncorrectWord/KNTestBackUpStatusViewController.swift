@@ -103,8 +103,6 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
       radius: style.buttonRadius(for: self.firstButton.frame.height)
     )
     self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
-    self.firstButton.backgroundColor = self.viewModel.firstButtonColor
-    self.firstButton.setTitleColor(self.viewModel.firstButtonTitleColor, for: .normal)
 
     self.secondButton.rounded(radius: style.buttonRadius(for: self.secondButton.frame.height))
     self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
@@ -113,9 +111,14 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     if self.viewModel.numberButtons == 1 {
       self.secondButtonWidthConstraint.constant = 0
       self.paddingConstraintForButtons.constant = 0
+      self.firstButton.applyGradient()
+      self.firstButton.setTitleColor(.white, for: .normal)
     } else {
       self.paddingConstraintForButtons.constant = 16
       self.secondButtonWidthConstraint.constant = (self.containerView.frame.width - 48) / 2.0
+      self.secondButton.applyGradient()
+      self.firstButton.setTitleColor(UIColor.Kyber.mirage, for: .normal)
+      self.secondButton.setTitleColor(.white, for: .normal)
     }
     self.view.updateConstraints()
     if self.viewModel.isSuccess {
@@ -136,6 +139,17 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.view.endEditing(true)
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    if self.viewModel.numberButtons == 1 {
+      self.firstButton.removeSublayer(at: 0)
+      self.firstButton.applyGradient()
+    } else {
+      self.secondButton.removeSublayer(at: 0)
+      self.secondButton.applyGradient()
+    }
   }
 
   @IBAction func firstButtonPressed(_ sender: Any) {

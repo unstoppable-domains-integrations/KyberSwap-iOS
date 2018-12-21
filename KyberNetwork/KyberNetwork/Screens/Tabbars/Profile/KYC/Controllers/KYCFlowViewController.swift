@@ -160,6 +160,7 @@ class KYCFlowViewModel {
 
 class KYCFlowViewController: KNBaseViewController {
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var stepView: KNKYCStepView!
   @IBOutlet weak var scrollView: UIScrollView!
@@ -188,6 +189,7 @@ class KYCFlowViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -224,6 +226,9 @@ class KYCFlowViewController: KNBaseViewController {
       width: width * 4.0,
       height: 1.0
     )
+
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   fileprivate func setupUI() {

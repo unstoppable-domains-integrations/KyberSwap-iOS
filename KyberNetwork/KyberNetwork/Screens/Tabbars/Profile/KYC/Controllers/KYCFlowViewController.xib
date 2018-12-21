@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KYCFlowViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="Ic6-iR-ykI" id="4xK-Io-XNn"/>
+                <outlet property="headerContainerView" destination="T75-kp-krh" id="wEz-kO-46z"/>
                 <outlet property="navigationTitleLabel" destination="egR-vF-ylx" id="xgs-8t-u6i"/>
                 <outlet property="scrollView" destination="t75-d5-ICc" id="wL3-Z3-ZCN"/>
                 <outlet property="stepView" destination="iVG-Vi-5rH" id="ALh-k3-T8f"/>

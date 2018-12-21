@@ -62,6 +62,17 @@ extension UIView {
     self.layer.insertSublayer(gradient, at: 0)
   }
 
+  func applyGradient(with colours: [UIColor]) {
+    let gradient = CAGradientLayer.getGradientLayer(
+    with: self.bounds,
+    colours: colours,
+    locations: [0, 1],
+    startPoint: CGPoint(x: 0.5, y: 0.0),
+    endPoint: CGPoint(x: 0.8, y: 1.0)
+    )
+    self.layer.insertSublayer(gradient, at: 0)
+  }
+
   func removeSublayer(at index: Int) {
     guard let layers = self.layer.sublayers, layers.count > index else { return }
     layers[index].removeFromSuperlayer()

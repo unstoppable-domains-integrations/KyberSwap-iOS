@@ -161,6 +161,8 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.addressSepartorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.submitButton.removeSublayer(at: 0)
+    self.submitButton.applyGradient()
   }
 
   deinit {
@@ -227,6 +229,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       NSLocalizedString("submit", value: "Submit", comment: ""),
       for: .normal
     )
+    self.submitButton.applyGradient()
     self.updateViewModel(self.viewModel)
   }
 

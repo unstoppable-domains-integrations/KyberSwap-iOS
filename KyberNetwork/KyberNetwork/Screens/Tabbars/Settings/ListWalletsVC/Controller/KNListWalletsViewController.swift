@@ -40,6 +40,7 @@ class KNListWalletsViewController: KNBaseViewController {
   weak var delegate: KNListWalletsViewControllerDelegate?
   fileprivate var viewModel: KNListWalletsViewModel
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var walletTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
@@ -58,12 +59,19 @@ class KNListWalletsViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.setupWalletTableView()
   }
 
   fileprivate func setupNavigationBar() {
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: "")
   }
 

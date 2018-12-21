@@ -56,11 +56,15 @@ class KConfirmSendViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.confirmButton.removeSublayer(at: 0)
+    self.confirmButton.applyGradient()
   }
 
   fileprivate func setupUI() {
     let style = KNAppStyleType.current
-    self.headerContainerView.backgroundColor = style.walletFlowHeaderColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.titleLabel.text = self.viewModel.titleString
 
     self.contactImageView.rounded(radius: self.contactImageView.frame.height / 2.0)
@@ -80,7 +84,7 @@ class KConfirmSendViewController: KNBaseViewController {
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
-    self.confirmButton.backgroundColor = style.walletFlowHeaderColor
+    self.confirmButton.applyGradient()
     self.cancelButton.setTitle(
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal

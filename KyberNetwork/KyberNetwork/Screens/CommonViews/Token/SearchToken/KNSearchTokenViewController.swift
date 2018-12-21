@@ -115,9 +115,15 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   fileprivate func setupUI() {
     self.navTitleLabel.text = NSLocalizedString("search", value: "Search", comment: "")
-    self.headerContainerView.backgroundColor = self.viewModel.headerColor
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.searchTextField.delegate = self
     self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
     self.searchTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: self.searchTextField.frame.height))
