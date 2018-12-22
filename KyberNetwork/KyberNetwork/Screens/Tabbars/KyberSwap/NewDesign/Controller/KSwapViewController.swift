@@ -595,6 +595,14 @@ extension KSwapViewController {
 
   func coordinatorUpdateUserCapInWei(cap: BigInt) {
     self.viewModel.updateUserCapInWei(cap: cap)
+    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
+      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.toAmountTextField.textColor = UIColor.Kyber.mirage
+    }
+    if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
+      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
+      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
+    }
     self.view.layoutIfNeeded()
   }
   /*
