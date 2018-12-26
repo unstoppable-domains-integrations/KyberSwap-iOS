@@ -16,6 +16,7 @@ class KNSplashScreenViewController: UIViewController {
     //self.debugInfoView.isHidden = isDebug
     self.versionLabel.text = "Version: \(Bundle.main.versionNumber ?? "")"
     self.networkLabel.text = "Network: \(KNEnvironment.default.displayName)"
+    self.splashLogoImageView.image = nil
   }
 
   override func viewDidDisappear(_ animated: Bool) {
@@ -29,8 +30,12 @@ class KNSplashScreenViewController: UIViewController {
     self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
   }
 
-  func rotateSplashLogo(duration: TimeInterval, completion: @escaping () -> Void) {
-    self.splashLogoImageView.rotate360Degrees(duration: duration, completion: completion)
+  func rotateSplashLogo(duration: TimeInterval = 1.6, completion: @escaping () -> Void) {
+    let images = [UIImage(named: "logo_1")!, UIImage(named: "logo_2")!, UIImage(named: "logo_3")!, UIImage(named: "logo_4")!]
+    self.splashLogoImageView.animationImages = images
+    self.splashLogoImageView.animationDuration = 0.8
+    self.splashLogoImageView.startAnimating()
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration, execute: completion)
   }
 
   func moveSplashLogoAnimation(completion: @escaping () -> Void) {

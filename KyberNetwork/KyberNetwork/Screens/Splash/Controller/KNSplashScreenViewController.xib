@@ -35,12 +35,6 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_kyber_logo" translatesAutoresizingMaskIntoConstraints="NO" id="CIL-wK-q9N">
                     <rect key="frame" x="141" y="257" width="93" height="133"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberNetwork" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00e-qT-rhs">
-                    <rect key="frame" x="100" y="408" width="175.5" height="29.5"/>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="24"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMc-CX-IYy">
                     <rect key="frame" x="0.0" y="570.5" width="375" height="96.5"/>
                     <subviews>
@@ -78,8 +72,6 @@
             <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="CIL-wK-q9N" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-20" id="Beh-nl-rTs"/>
-                <constraint firstItem="00e-qT-rhs" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="FM6-bD-5jg"/>
-                <constraint firstItem="00e-qT-rhs" firstAttribute="top" secondItem="CIL-wK-q9N" secondAttribute="bottom" constant="18" id="KAK-Yc-Y1A"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TMc-CX-IYy" secondAttribute="trailing" id="MNe-on-S4b"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TMc-CX-IYy" secondAttribute="bottom" id="nvx-Tq-t3i"/>
                 <constraint firstItem="CIL-wK-q9N" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="nx4-QN-XeD"/>
