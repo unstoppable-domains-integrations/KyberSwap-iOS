@@ -37,7 +37,7 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
     }
   }
 
-  func start() {
+  func start(isLaunch: Bool = false) {
     if KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {
@@ -46,7 +46,8 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
       } else {
         self.window.makeKeyAndVisible()
         self.window.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        let delay: TimeInterval = isLaunch ? 2.0 : 0.32
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
           self.passcodeViewController.showBioAuthenticationIfNeeded()
         }
       }

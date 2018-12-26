@@ -95,7 +95,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
-    self.authenticationCoordinator.start()
+    self.authenticationCoordinator.start(isLaunch: true)
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
@@ -105,7 +105,6 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.loadBalanceCoordinator?.resume()
-    //self.splashScreenCoordinator.stop()
   }
 
   func appWillEnterForeground() {
