@@ -77,6 +77,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    self.updateUIUserDidSignedIn()
     self.fetchWalletList()
     self.walletTimer?.invalidate()
     self.walletTimer = Timer.scheduledTimer(
@@ -215,6 +216,8 @@ class KNProfileHomeViewController: KNBaseViewController {
       if user.avatarURL.starts(with: "http") { return user.avatarURL }
       return "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)"
     }()
+    self.signInHeaderView.removeSublayer(at: 0)
+    self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
     self.userImageView.setImage(
       with: url,
       placeholder: UIImage(named: "account"),
