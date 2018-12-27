@@ -67,9 +67,9 @@ extension UIColor {
 
     static var firstTheme = UIColor(red: 15, green: 170, blue: 162)
 
-    static var enygold = UIColor(red: 254, green: 163, blue: 76)
+    static var enygold = UIColor(red: 254, green: 163, blue: 73)
     static var punch = UIColor(red: 249, green: 86, blue: 109)
-    static var coral = UIColor(red: 251, green: 121, blue: 93)
+    static var coral = UIColor(red: 250, green: 114, blue: 96)
 
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,

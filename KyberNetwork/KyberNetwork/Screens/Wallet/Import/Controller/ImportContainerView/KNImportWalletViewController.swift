@@ -91,6 +91,7 @@ class KNImportWalletViewController: KNBaseViewController {
 
   fileprivate func setupImportTypeButtons() {
     self.navTitleLabel.text = NSLocalizedString("import.wallet", value: "Import Wallet", comment: "")
+    self.navTitleLabel.addLetterSpacing()
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.importWalletBackgroundColor
     self.headerContainerView.backgroundColor = style.walletFlowHeaderColor

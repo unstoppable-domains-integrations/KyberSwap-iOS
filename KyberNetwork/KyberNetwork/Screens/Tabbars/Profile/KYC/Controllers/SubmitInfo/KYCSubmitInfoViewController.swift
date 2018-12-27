@@ -137,6 +137,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   @IBOutlet weak var documentNumberTextLabel: UILabel!
   @IBOutlet weak var photoOfDocumentTextLabel: UILabel!
   @IBOutlet weak var photoHoldingDocumentTextLabel: UILabel!
+  @IBOutlet weak var topPaddingPhotoOfYourHoldingDocument: NSLayoutConstraint!
   @IBOutlet weak var photoOfYourDocumentBackTextLabel: UILabel!
 
   init(viewModel: KYCSubmitInfoViewModel) {
@@ -183,14 +184,21 @@ class KYCSubmitInfoViewController: KNBaseViewController {
 
     // Personal info
     self.personalInfoTextLabel.text = NSLocalizedString("personal.info", value: "Personal Info", comment: "")
+    self.personalInfoTextLabel.addLetterSpacing()
     self.fullNameTextLabel.text = NSLocalizedString("full.name", value: "Full Name", comment: "")
+    self.fullNameTextLabel.addLetterSpacing()
     self.genderTextLabel.text = NSLocalizedString("gender", value: "Gender", comment: "")
+    self.genderTextLabel.addLetterSpacing()
     self.dateOfBirthTextLabel.text = "\(NSLocalizedString("date.of.birth", value: "Date of birth", comment: "")) (YYYY-MM-DD)"
+    self.dateOfBirthTextLabel.addLetterSpacing()
     self.nationalityTextLabel.text = NSLocalizedString("nationality", value: "Nationality", comment: "")
+    self.nationalityLabel.addLetterSpacing()
 
     // My Wallets
     self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My wallet(s)", comment: "").uppercased()
+    self.myWalletsTextLabel.addLetterSpacing()
     self.noWalletsAddedTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
+    self.noWalletsAddedTextLabel.addLetterSpacing()
     self.myWalletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.myWalletsTableView.rowHeight = kWalletCellRowHeight
     self.myWalletsTableView.delegate = self
@@ -199,36 +207,58 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     // Address
     self.addressSepartorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
     self.residentialAddressTextLabel.text = NSLocalizedString("residential.address", value: "Residential Address", comment: "")
+    self.residentialAddressTextLabel.addLetterSpacing()
     self.countryResidenceTextLabel.text = NSLocalizedString("country.of.residence", value: "Country of Residence", comment: "")
+    self.countryResidenceTextLabel.addLetterSpacing()
     self.cityTextLabel.text = NSLocalizedString("city", value: "City", comment: "")
+    self.cityTextLabel.addLetterSpacing()
     self.zipCodeTextLabel.text = NSLocalizedString("postal.zip.code", value: "Postal / Zip Code", comment: "")
+    self.zipCodeTextLabel.addLetterSpacing()
 
     // Proof of Address
     self.proofOfAddressContainerTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "").uppercased()
+    self.proofOfAddressContainerTextLabel.addLetterSpacing()
     self.proofOfAddressTextLabel.text = NSLocalizedString("address.document.type", value: "Address/Document Type", comment: "")
+    self.proofOfAddressTextLabel.addLetterSpacing()
     self.proofOfAddressPhotoTextLabel.text = NSLocalizedString("your.proof.of.address.image", value: "Your Proof of Address Image", comment: "")
+    self.proofOfAddressPhotoTextLabel.addLetterSpacing()
 
     // Info income
     self.infoIncomeTextLabel.text = NSLocalizedString("info.income", value: "Info Income", comment: "").uppercased()
+    self.infoIncomeTextLabel.addLetterSpacing()
     self.sourceFundTextLabel.text = NSLocalizedString("source.of.funds", value: "Source of Funds", comment: "")
+    self.sourceFundTextLabel.addLetterSpacing()
     self.occupationCodeTextLabel.text = NSLocalizedString("occupation.code", value: "Occupation Code", comment: "")
+    self.occupationCodeTextLabel.addLetterSpacing()
     self.industryCodeTextLabel.text = NSLocalizedString("industry.code", value: "Industry Code", comment: "")
+    self.industryCodeTextLabel.addLetterSpacing()
     self.taxResidencyCountryTextLabel.text = NSLocalizedString("tax.residency.country", value: "Tax Residency Country", comment: "")
+    self.taxResidencyCountryTextLabel.addLetterSpacing()
     self.taxIDNumberTextLabel.text = NSLocalizedString("tax.identification.number", value: "Tax Identification Number", comment: "")
+    self.taxIDNumberTextLabel.addLetterSpacing()
 
     // Identity info
     self.idPassportTextLabel.text = NSLocalizedString("id.passport", value: "ID/ Passport", comment: "")
+    self.idPassportTextLabel.addLetterSpacing()
     self.documentTypeTextLabel.text = NSLocalizedString("document.type", value: "Document Type", comment: "")
+    self.documentTypeTextLabel.addLetterSpacing()
     self.documentNumberTextLabel.text = NSLocalizedString("document.number", value: "Document Number", comment: "")
+    self.documentNumberTextLabel.addLetterSpacing()
     self.issueDateTextLabel.text = NSLocalizedString("issue.date", value: "Issue Date", comment: "")
+    self.issueDateTextLabel.addLetterSpacing()
     self.expiryDateTextLabel.text = NSLocalizedString("expiry.date", value: "Expiry Date", comment: "")
+    self.expiryDateTextLabel.addLetterSpacing()
     self.photoOfDocumentTextLabel.text = NSLocalizedString("photo.of.your.document.front", value: "Photo of your Document - Front", comment: "")
+    self.photoOfDocumentTextLabel.addLetterSpacing()
     self.photoOfYourDocumentBackTextLabel.text = NSLocalizedString("photo.of.your.document.back", value: "Photo of your Document - Back", comment: "")
+    self.photoOfYourDocumentBackTextLabel.addLetterSpacing()
     self.photoHoldingDocumentTextLabel.text = NSLocalizedString("photo.of.your.holding.document", value: "Photo of your holding Document", comment: "")
+    self.photoHoldingDocumentTextLabel.addLetterSpacing()
     self.submitButton.setTitle(
       NSLocalizedString("submit", value: "Submit", comment: ""),
       for: .normal
     )
+    self.submitButton.addTextSpacing()
     self.submitButton.applyGradient()
     self.updateViewModel(self.viewModel)
   }
@@ -313,6 +343,14 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       let height = image.size.height / image.size.width * width
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
       self.documentBackImageView.image = newImage
+      self.photoOfYourDocumentBackTextLabel.isHidden = false
+      self.documentBackPhotoContainerView.isHidden = false
+      self.topPaddingPhotoOfYourHoldingDocument.constant = 24.0
+    } else {
+      self.documentBackImageView.image = nil
+      self.photoOfYourDocumentBackTextLabel.isHidden = true
+      self.documentBackPhotoContainerView.isHidden = true
+      self.topPaddingPhotoOfYourHoldingDocument.constant = -90.0
     }
 
     if let image = self.viewModel.docHoldingImage {
@@ -321,6 +359,8 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       let newImage = image.resizeImage(to: CGSize(width: width, height: height))
       self.holdingDocumentImageView.image = newImage
     }
+
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func submitButonPressed(_ sender: Any) {
@@ -358,12 +398,11 @@ class KYCSubmitInfoViewController: KNBaseViewController {
       return nil
     }()
     let docType: String = {
-      if details.documentType == "national_id" { return "ID" }
+      if details.documentType == "national_id" {
+        return NSLocalizedString("identity.card", value: "Identity Card", comment: "")
+      }
       if details.documentType == "passport" {
         return NSLocalizedString("passport", value: "Passport", comment: "")
-      }
-      if details.documentType == "driving_license" {
-        return NSLocalizedString("driving.license", value: "Driving License", comment: "")
       }
       return details.documentType
     }()
@@ -427,12 +466,12 @@ extension KYCSubmitInfoViewController: UITableViewDataSource {
       let nameAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
         ]
       let addressAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
         ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
       let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"

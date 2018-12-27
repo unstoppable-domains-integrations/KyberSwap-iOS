@@ -97,6 +97,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   fileprivate func setupWalletBalanceHeaderView() {
     self.balanceTextLabel.text = NSLocalizedString("balance", value: "Balance", comment: "")
+    self.balanceTextLabel.addLetterSpacing()
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openQRCodeViewPressed(_:)))
     self.walletDataView.addGestureRecognizer(tapGesture)
     self.updateWalletBalanceUI()
@@ -135,6 +136,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   // MARK: Update UIs
   fileprivate func updateWalletInfoUI() {
     self.walletNameLabel.text = self.viewModel.wallet.name
+    self.walletNameLabel.addLetterSpacing()
     self.view.layoutIfNeeded()
   }
 

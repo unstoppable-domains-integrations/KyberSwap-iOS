@@ -59,6 +59,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
       for: .normal
     )
     self.backupWalletLabel.text = self.viewModel.headerText
+    self.backupWalletLabel.addLetterSpacing()
 
     self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
     self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
@@ -99,9 +100,12 @@ class KNBackUpWalletViewController: KNBaseViewController {
       animations: {
         self.backButton.isHidden = self.viewModel.isBackButtonHidden
         self.backupWalletLabel.text = self.viewModel.headerText
+        self.backupWalletLabel.addLetterSpacing()
         self.titlelabel.text = self.viewModel.titleText
+        self.titlelabel.addLetterSpacing()
         self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
         self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
+        self.writeDownWordsTextLabel.addLetterSpacing()
         self.writeDownWordsTextLabel.isHidden = self.viewModel.isWriteDownWordsLabelHidden
         self.nextButton.isHidden = self.viewModel.isNextButtonHidden
 

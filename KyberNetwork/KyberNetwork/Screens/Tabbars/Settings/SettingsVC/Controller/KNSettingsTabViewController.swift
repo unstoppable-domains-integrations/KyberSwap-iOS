@@ -47,30 +47,37 @@ class KNSettingsTabViewController: KNBaseViewController {
       NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: ""),
       for: .normal
     )
+    self.manageWalletButton.addTextSpacing()
     self.contactButton.setTitle(
       NSLocalizedString("contact", value: "Contact", comment: ""),
       for: .normal
     )
+    self.contactButton.addTextSpacing()
     self.supportButton.setTitle(
       NSLocalizedString("support", value: "Support", comment: ""),
       for: .normal
     )
+    self.supportButton.addTextSpacing()
     self.changePINButton.setTitle(
       NSLocalizedString("change.pin", value: "Change PIN", comment: ""),
       for: .normal
     )
+    self.changePINButton.addTextSpacing()
     self.aboutButton.setTitle(
       NSLocalizedString("about", value: "About", comment: ""),
       for: .normal
     )
+    self.aboutButton.addTextSpacing()
     self.community.setTitle(
       NSLocalizedString("community", value: "Community", comment: ""),
       for: .normal
     )
+    self.community.addTextSpacing()
     self.shareWithFriendsButton.setTitle(
       NSLocalizedString("share.with.friends", value: "Share with friends", comment: ""),
       for: .normal
     )
+    self.shareWithFriendsButton.addTextSpacing()
     var version = Bundle.main.versionNumber ?? ""
     if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
     version += " - \(KNEnvironment.default.displayName)"

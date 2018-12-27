@@ -205,6 +205,7 @@
 "label" = "레이블";
 "address" = "주소";
 "passport" = "여권";
+"identity.card" = "신분증";
 "driving.license" = "운전 면허증";
 "document.type" = "문서 유형";
 "document.number" = "문서 번호";

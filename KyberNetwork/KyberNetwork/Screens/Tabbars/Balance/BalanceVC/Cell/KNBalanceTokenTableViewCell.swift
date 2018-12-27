@@ -33,12 +33,12 @@ struct KNBalanceTokenTableViewCellModel {
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
-      NSAttributedStringKey.kern: 1.0,
+      NSAttributedStringKey.kern: 0.0,
       ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
       NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
-      NSAttributedStringKey.kern: 1.0,
+      NSAttributedStringKey.kern: 0.0,
       ]
     attributedString.append(NSAttributedString(string: self.token.symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: " - \(self.token.name)", attributes: nameAttributes))
@@ -158,8 +158,11 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
     )
     self.symbolLabel.attributedText = viewModel.displaySymbolAndNameAttributedString
     self.rateLabel.text = viewModel.displayRateString
+    self.rateLabel.addLetterSpacing()
     self.amountHoldingsLabel.text = viewModel.displayAmountHoldingsText
+    self.amountHoldingsLabel.addLetterSpacing()
     self.valueLabel.text = viewModel.displayBalanceValue
+    self.valueLabel.addLetterSpacing()
     self.backgroundColor = viewModel.backgroundColor
 
     self.change24h.setTitleColor(

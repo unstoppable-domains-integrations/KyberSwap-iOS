@@ -44,12 +44,14 @@ class KYCIdentityInfoViewModel {
   }
 }
 
+//swiftlint:disable line_length
 class KYCIdentityInfoViewController: KNBaseViewController {
 
   @IBOutlet weak var documentTypeTextLabel: UILabel!
   @IBOutlet weak var idButton: UIButton!
   @IBOutlet weak var idTextLabel: UILabel!
   @IBOutlet weak var passportButton: UIButton!
+  @IBOutlet weak var identityCardTextLabel: UILabel!
   @IBOutlet weak var passportTextLabel: UILabel!
   @IBOutlet weak var documentNumberTextField: UITextField!
 
@@ -67,13 +69,16 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   @IBOutlet weak var documentImageView: UIImageView!
   @IBOutlet weak var heightConstraintForDocumentPhotoView: NSLayoutConstraint!
 
+  @IBOutlet weak var photoBackContainerView: UIView!
   fileprivate var documentBackImage: UIImage?
   @IBOutlet weak var photoOfYourDocumentBackTextLabel: UILabel!
   @IBOutlet weak var browserDocumentBackButton: UIButton!
   @IBOutlet weak var documentImageBackContainerView: UIView!
   @IBOutlet weak var documentBackImageView: UIImageView!
   @IBOutlet weak var heightConstraintForDocumentPhotoBackView: NSLayoutConstraint!
+  @IBOutlet weak var photoBackInfoButton: UIButton!
 
+  @IBOutlet weak var topPaddingForPhotoHoldingDocumentConstraint: NSLayoutConstraint!
   fileprivate var holdingDocumentImage: UIImage?
   @IBOutlet weak var photoHoldingDocumentTextLabel: UILabel!
   @IBOutlet weak var browseHoldingDocumentPhotoButton: UIButton!
@@ -144,21 +149,30 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.setupDocumentType()
     self.setupPhotoDocumentView()
     self.setupPhotoDocumentBackView()
     self.setupPhotoHoldingDocumentView()
     self.setupNextButton()
+    self.setupDocumentType()
   }
 
   fileprivate func setupDocumentType() {
     self.documentTypeTextLabel.text = NSLocalizedString("document.type", value: "Document Type", comment: "")
+    self.documentTypeTextLabel.addLetterSpacing()
     self.documentNumberTextField.placeholder = NSLocalizedString("document.number", value: "Document Number", comment: "")
+    self.documentNumberTextField.addPlaceholderSpacing()
+    self.identityCardTextLabel.text = NSLocalizedString("identity.card", value: "Identity Card", comment: "")
+    self.identityCardTextLabel.addLetterSpacing()
     self.passportTextLabel.text = NSLocalizedString("passport", value: "Passport", comment: "")
+    self.passportTextLabel.addLetterSpacing()
     self.issueDateTextField.placeholder = NSLocalizedString("issue.date", value: "Issue Date", comment: "")
+    self.issueDateTextField.addPlaceholderSpacing()
     self.expiryDateTextField.placeholder = NSLocalizedString("expiry.date", value: "Expiry Date", comment: "")
+    self.expiryDateTextField.addPlaceholderSpacing()
     self.dontHaveIssueDateTextLabel.text = NSLocalizedString("none.applicable", value: "None applicable", comment: "")
+    self.dontHaveIssueDateTextLabel.addLetterSpacing()
     self.dontHaveExpiryDateTextLabel.text = NSLocalizedString("none.applicable", value: "None applicable", comment: "")
+    self.dontHaveExpiryDateTextLabel.addLetterSpacing()
     self.dontHaveIssueDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
     self.dontHaveExpiryDateButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
     self.issueDateTextField.inputView = self.issueDatePicker
@@ -188,6 +202,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate func setupPhotoDocumentView() {
     self.photoOfYourDocumentTextLabel.text = NSLocalizedString("photo.of.your.document.front", value: "Photo of your Document - Front", comment: "")
+    self.photoOfYourDocumentTextLabel.addLetterSpacing()
     self.heightConstraintForDocumentPhotoView.constant = 180.0
     self.documentImageContainerView.isHidden = true
     self.documentImageContainerView.rounded(radius: 4.0)
@@ -201,10 +216,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       NSLocalizedString("browse", value: "Browse", comment: ""),
       for: .normal
     )
+    self.browseDocumentButton.addTextSpacing()
   }
 
   fileprivate func setupPhotoDocumentBackView() {
     self.photoOfYourDocumentBackTextLabel.text = NSLocalizedString("photo.of.your.document.back", value: "Photo of your Document - Back", comment: "")
+    self.photoOfYourDocumentBackTextLabel.addLetterSpacing()
     self.heightConstraintForDocumentPhotoBackView.constant = 180.0
     self.documentImageBackContainerView.isHidden = true
     self.documentImageBackContainerView.rounded(radius: 4.0)
@@ -214,6 +231,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       width: 1.0,
       radius: 4.0
     )
+    self.browserDocumentBackButton.addTextSpacing()
     self.browserDocumentBackButton.setTitle(
       NSLocalizedString("browse", value: "Browse", comment: ""),
       for: .normal
@@ -222,6 +240,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
   fileprivate func setupPhotoHoldingDocumentView() {
     self.photoHoldingDocumentTextLabel.text = NSLocalizedString("photo.of.your.holding.document", value: "Photo of your holding Document", comment: "")
+    self.photoHoldingDocumentTextLabel.addLetterSpacing()
     self.holdingDocumentImageContainerView.isHidden = true
     self.holdingDocumentImageContainerView.rounded(radius: 4.0)
     self.heightConstraintForHoldingDocumentPhotoView.constant = 48.0
@@ -235,11 +254,13 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       NSLocalizedString("browse", value: "Browse", comment: ""),
       for: .normal
     )
+    self.browseHoldingDocumentPhotoButton.addTextSpacing()
   }
 
   fileprivate func setupNextButton() {
     self.nextButton.rounded(radius: 4.0)
     self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
+    self.nextButton.addTextSpacing()
     self.nextButton.applyGradient()
   }
 
@@ -254,6 +275,15 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       width: self.viewModel.documentType == "passport" ? 6.0 : 1.0,
       radius: self.passportButton.frame.height / 2.0
     )
+    self.updateDocumentBackView()
+  }
+
+  fileprivate func updateDocumentBackView() {
+    let shouldHide = self.viewModel.documentType == "passport"
+    self.photoBackContainerView.isHidden = shouldHide
+    self.documentImageBackContainerView.isHidden = shouldHide || self.documentBackImage == nil
+    self.topPaddingForPhotoHoldingDocumentConstraint.constant = shouldHide ? -self.heightConstraintForDocumentPhotoBackView.constant : 32.0
+    self.view.layoutIfNeeded()
   }
 
   @objc func issueDatePickerDidChange(_ sender: Any) {
@@ -406,6 +436,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
+    let docBackImage = self.viewModel.documentType != "passport" ? self.documentBackImage : nil
     if self.viewModel.documentType != "passport" {
       guard self.documentBackImage != nil else {
         self.showWarningTopBannerMessage(
@@ -430,7 +461,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       issueDate: issueDate,
       expiryDate: expiryDate,
       docFrontImage: docFrontImage,
-      docBackImage: self.documentBackImage,
+      docBackImage: docBackImage,
       docHoldingImage: docHoldingImage
     )
     self.delegate?.identityInfoViewController(self, run: nextEvent)

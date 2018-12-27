@@ -11,6 +11,7 @@ class KYCSelectOptionViewController: UIViewController {
 
   fileprivate let cellID: String = "KYCSelectOptionViewControllerCellID"
 
+  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var selectTitleLabel: UILabel!
   @IBOutlet weak var searchTextField: UITextField!
 
@@ -64,6 +65,7 @@ class KYCSelectOptionViewController: UIViewController {
 
     self.searchTextField.delegate = self
     self.noMatchingDataLabel.isHidden = true
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
     NotificationCenter.default.addObserver(
       self,
@@ -82,6 +84,12 @@ class KYCSelectOptionViewController: UIViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.view.endEditing(true)
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

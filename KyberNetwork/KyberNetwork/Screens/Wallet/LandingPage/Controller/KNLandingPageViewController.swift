@@ -45,15 +45,18 @@ class KNLandingPageViewController: KNBaseViewController {
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.importWalletButton.addTextSpacing()
 
     let radius = style.buttonRadius(for: self.createWalletButton.frame.height)
     self.createWalletButton.rounded(radius: radius)
+    self.createWalletButton.addTextSpacing()
     self.importWalletButton.rounded(color: .white, width: 1.0, radius: radius)
     self.termAndConditionButton.setTitle(
       NSLocalizedString("terms.and.conditions", value: "Terms and Conditions", comment: ""),
       for: .normal
     )
     self.termAndConditionButton.setTitleColor(.white, for: .normal)
+    self.termAndConditionButton.addTextSpacing()
     self.debugButton.isHidden = false
   }
 

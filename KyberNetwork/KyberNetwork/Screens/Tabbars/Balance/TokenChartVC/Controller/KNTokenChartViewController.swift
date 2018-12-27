@@ -103,10 +103,12 @@ class KNTokenChartViewModel {
     let rateAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let changeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: changeColor,
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: "ETH \(rateString) ", attributes: rateAttributes))
@@ -123,6 +125,7 @@ class KNTokenChartViewModel {
     let balanceAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 18),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: balance, attributes: balanceAttributes))
@@ -345,8 +348,11 @@ class KNTokenChartViewController: KNBaseViewController {
       size: self.iconImageView.frame.size
     )
     self.navigationLabel.text = self.viewModel.navigationTitle
+    self.navigationLabel.addLetterSpacing()
     self.symbolLabel.text = self.viewModel.token.symbol
+    self.symbolLabel.addLetterSpacing()
     self.nameLabel.text = self.viewModel.token.name
+    self.nameLabel.addLetterSpacing()
 
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
     self.ethRateLabel.textAlignment = .center
@@ -354,6 +360,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
     self.balanceLabel.attributedText = self.viewModel.balanceAttributedString
     self.totalValueLabel.text = self.viewModel.totalValueString
+    self.totalValueLabel.addLetterSpacing()
 
     self.touchPriceLabel.isHidden = true
 

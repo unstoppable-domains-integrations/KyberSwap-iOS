@@ -3,6 +3,14 @@
 import UIKit
 
 extension UIButton {
+  func addTextSpacing(value: CGFloat = 0) {
+    let text = self.titleLabel?.text ?? ""
+    if text.isEmpty { return }
+    let attributedString = NSMutableAttributedString(string: text)
+    attributedString.addAttribute(NSAttributedStringKey.kern, value: value, range: NSRange(location: 0, length: text.count))
+    self.setAttributedTitle(attributedString, for: .normal)
+  }
+
   func setImage(
     with url: URL,
     placeHolder: UIImage?,

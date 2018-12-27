@@ -296,16 +296,27 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   fileprivate func setupDataContent() {
     self.firstNameTextField.placeholder = NSLocalizedString("first.name", value: "First Name", comment: "")
+    self.firstNameTextField.addPlaceholderSpacing()
     self.lastNameTextField.placeholder = NSLocalizedString("last.name", value: "Last Name", comment: "")
+    self.lastNameTextField.addPlaceholderSpacing()
     self.genderTextLabel.text = NSLocalizedString("gender", value: "Gender", comment: "")
+    self.genderTextLabel.addLetterSpacing()
     self.maleTextLabel.text = NSLocalizedString("male", value: "Male", comment: "")
+    self.maleTextLabel.addLetterSpacing()
     self.femaleTextLabel.text = NSLocalizedString("female", value: "Female", comment: "")
+    self.femaleTextLabel.addLetterSpacing()
     self.dateOfBirthTextField.placeholder = "\(NSLocalizedString("date.of.birth", value: "Date of birth", comment: "")) (YYYY-MM-DD)"
+    self.dateOfBirthTextField.addPlaceholderSpacing()
     self.nationalityTextField.placeholder = NSLocalizedString("nationality", value: "Nationality", comment: "")
+    self.nationalityTextField.addPlaceholderSpacing()
     self.mywalletsLabel.text = NSLocalizedString("my.wallets", value: "My wallet(s)", comment: "")
+    self.mywalletsLabel.addLetterSpacing()
     self.maximumWalletsLabel.text = NSLocalizedString("maximum.three.wallets", value: "Maximum 3 wallets", comment: "")
+    self.maximumWalletsLabel.addLetterSpacing()
     self.walletLabelTextField.placeholder = NSLocalizedString("label", value: "Label", comment: "")
+    self.walletLabelTextField.addPlaceholderSpacing()
     self.walletAddressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
+    self.walletAddressTextField.addPlaceholderSpacing()
     self.maleButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
@@ -342,6 +353,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       for: .normal
     )
     self.noWalletsTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
+    self.noWalletsTextLabel.addLetterSpacing()
 
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
@@ -361,30 +373,39 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       value: "Residential Address",
       comment: ""
     )
+    self.residentialAddressTextLabel.addLetterSpacing()
     self.residentialAddressTextField.placeholder = NSLocalizedString(
       "street.address.apartment.unit",
       value: "Street address, P.O. box, apartment, suite, unit, building, floor,…",
       comment: ""
     )
+    self.residentialAddressTextField.addPlaceholderSpacing()
     self.countryOfResidenceTextField.placeholder = NSLocalizedString("country.of.residence", value: "Country of Residence", comment: "")
+    self.countryOfResidenceTextField.addPlaceholderSpacing()
     self.cityTextField.placeholder = NSLocalizedString("city", value: "City", comment: "")
+    self.cityTextField.addPlaceholderSpacing()
     self.postalCodeTextField.placeholder = NSLocalizedString("postal.zip.code", value: "Postal / Zip Code", comment: "")
+    self.postalCodeTextField.addPlaceholderSpacing()
     self.countryOfResidenceTextField.delegate = self
   }
 
   fileprivate func setupProofOfAddress() {
     self.proofOfAddressTextLabel.text = NSLocalizedString("proof.of.address", value: "Proof of Address", comment: "").uppercased()
+    self.proofOfAddressTextLabel.addLetterSpacing()
     self.proofOfAddressDescTextLabel.text = NSLocalizedString(
       "document.must.display.your.name.and.address",
       value: "Document must display your name and current residential address in 6 months",
       comment: ""
     )
+    self.proofOfAddressDescTextLabel.addLetterSpacing()
     self.proofAddressDocTypeTextField.placeholder = NSLocalizedString("document.types", value: "Document Types", comment: "")
+    self.proofAddressDocTypeTextField.addPlaceholderSpacing()
     self.proofAddressDocTypeTextField.delegate = self
     self.uploadProofAddressDocButton.setTitle(
       NSLocalizedString("browse", value: "Browse", comment: ""),
       for: .normal
     )
+    self.uploadProofAddressDocButton.addTextSpacing()
     self.uploadProofAddressDocButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
     self.heightConstraintForProofOfAddressContainerView.constant = 0.0
     self.topPaddingConstraintProofOfAddressImageView.constant = 0.0
@@ -393,12 +414,15 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   fileprivate func setupSourceOfFunds() {
     self.primarySourceOfFundTextLabel.text = NSLocalizedString("primary.source.of.funds", value: "Primary source of funds", comment: "").uppercased()
+    self.primarySourceOfFundTextLabel.addLetterSpacing()
     self.primaraySourceOfFundDescTextLabel.text = NSLocalizedString(
       "primary.source.of.funds.desc",
       value: "Please indicate below the primary professional activity that generate the funds that will be transferred into the wallet. Filling up this field will help us better understand your primary professional activity.",
       comment: ""
     )
+    self.primaraySourceOfFundDescTextLabel.addLetterSpacing()
     self.primarySourceOfFundTextField.placeholder = NSLocalizedString("source.of.funds", value: "Source of Funds", comment: "")
+    self.primarySourceOfFundTextField.addPlaceholderSpacing()
   }
 
   fileprivate func setupOptionalData() {
@@ -868,12 +892,12 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
       let nameAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
         ]
       let addressAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
         ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
       let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"

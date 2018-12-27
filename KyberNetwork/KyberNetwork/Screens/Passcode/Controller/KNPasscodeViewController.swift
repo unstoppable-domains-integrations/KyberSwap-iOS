@@ -85,7 +85,9 @@ class KNPasscodeViewController: KNBaseViewController {
 
   fileprivate func updateUI() {
     self.titleLabel.text = self.titleText
+    self.titleLabel.addLetterSpacing()
     self.errorLabel.text = self.errorText
+    self.errorLabel.addLetterSpacing()
     self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.enygold : UIColor.Kyber.passcodeInactive })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.view.layoutIfNeeded()

@@ -104,6 +104,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.navTitleLabel.text = NSLocalizedString("profile", value: "Profile", comment: "")
+    self.navTitleLabel.addLetterSpacing()
     self.setupNotSignInView()
     self.setupUserSignedInView()
   }
@@ -117,10 +118,12 @@ class KNProfileHomeViewController: KNBaseViewController {
       "profile", value: "Profile",
       comment: ""
     )
+    self.notSignInTitleLabel.addLetterSpacing()
     self.notSignInDescLabel.text = NSLocalizedString(
       "welcome.third.screen.description", value: "Profile process just got simpler. Straight from the app.",
       comment: ""
     )
+    self.notSignInDescLabel.addLetterSpacing()
     self.signInButton.setTitle(
       NSLocalizedString("sign.in", value: "Sign In", comment: ""),
       for: .normal
@@ -132,12 +135,14 @@ class KNProfileHomeViewController: KNBaseViewController {
       width: 1.0,
       radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
     )
+    self.signInButton.addTextSpacing()
     self.signUpButton.setTitle(
       NSLocalizedString("sign.up", value: "Sign Up", comment: ""),
       for: .normal
     )
     self.signUpButton.setTitleColor(.white, for: .normal)
     self.signUpButton.backgroundColor = .clear
+    self.signUpButton.addTextSpacing()
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
   }
 
@@ -146,8 +151,11 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.bottomPaddingConstraintForSignedInView.constant = self.bottomPaddingSafeArea()
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")
+    self.myProfileTextLabel.addLetterSpacing()
     self.myWalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My Wallet(s)", comment: "")
+    self.myWalletsTextLabel.addLetterSpacing()
     self.logOutButton.setTitle(NSLocalizedString("log.out", value: "Log Out", comment: ""), for: .normal)
+    self.logOutButton.addTextSpacing()
     let descText: String = NSLocalizedString(
       "complete.your.profile.verfication.increase.trade.limits",
       value: "Complete Your Profile Verification\nIncrease KyberSwap's trade limits",
@@ -169,14 +177,18 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.userKYCStatusLabel.rounded(radius: 2.0)
 
     self.noWalletTextLabel.text = NSLocalizedString("you.have.not.added.any.wallets.yet", value: "You haven't added any wallets yet.", comment: "")
+    self.noWalletTextLabel.addLetterSpacing()
     self.maximumWalletsTextLabel.text = NSLocalizedString("maximum.three.wallets", value: "Maximum 3 wallets", comment: "")
+    self.maximumWalletsTextLabel.addLetterSpacing()
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
     self.walletsTableView.delegate = self
     self.walletsTableView.dataSource = self
 
     self.addWalletLabelTextField.placeholder = NSLocalizedString("label", value: "Label", comment: "")
+    self.addWalletLabelTextField.addPlaceholderSpacing()
     self.addWalletAddressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
+    self.addWalletAddressTextField.addPlaceholderSpacing()
     self.addWalletAddButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
@@ -186,6 +198,7 @@ class KNProfileHomeViewController: KNBaseViewController {
       NSLocalizedString("add", value: "Add", comment: ""),
       for: .normal
     )
+    self.addWalletAddButton.addTextSpacing()
     self.updateUIUserDidSignedIn()
   }
 
@@ -196,7 +209,8 @@ class KNProfileHomeViewController: KNBaseViewController {
       let index = string.firstIndex(of: "\n")!
       let attributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-        ]
+        NSAttributedStringKey.kern: 0.0,
+      ]
       let range = NSRange(location: 0, length: index.encodedOffset)
       attributedString.addAttributes(attributes, range: range)
       return attributedString
@@ -224,7 +238,9 @@ class KNProfileHomeViewController: KNBaseViewController {
       size: nil
     )
     self.userNameLabel.text = user.name
+    self.userNameLabel.addLetterSpacing()
     self.userEmailLabel.text = user.contactID
+    self.userEmailLabel.addLetterSpacing()
     let status: String = {
       switch user.kycStatus.lowercased() {
       case "draft", "none": return "Unverified"
@@ -235,9 +251,11 @@ class KNProfileHomeViewController: KNBaseViewController {
       }
     }()
     self.userKYCStatusLabel.text = "\(NSLocalizedString(status.lowercased(), value: status, comment: ""))  "
+    self.userKYCStatusLabel.addLetterSpacing()
 
     let actionTitle: String = status == "Rejected" ? NSLocalizedString("resubmit", value: "Re-submit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
     self.userKYCActionButton.setTitle(actionTitle, for: .normal)
+    self.userKYCActionButton.addTextSpacing()
 
     if status == "Approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
@@ -248,6 +266,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
+    self.userKYCStatusLabel.addLetterSpacing()
     let descText: String = {
       if status == "Rejected" {
         let reason = user.kycDetails?.rejectedReason ?? ""
@@ -401,12 +420,12 @@ extension KNProfileHomeViewController: UITableViewDataSource {
       let nameAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
       ]
       let addressAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
-        NSAttributedStringKey.kern: 1.0,
+        NSAttributedStringKey.kern: 0.0,
       ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
       let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"

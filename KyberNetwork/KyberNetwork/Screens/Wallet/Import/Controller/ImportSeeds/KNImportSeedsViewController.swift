@@ -26,6 +26,7 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.seedsTextField.delegate = self
 
     self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
+    self.recoverSeedsLabel.addLetterSpacing()
     let style = KNAppStyleType.current
     self.nextButton.rounded(radius: style.buttonRadius(for: self.nextButton.frame.height))
     self.nextButton.setBackgroundColor(
@@ -36,8 +37,11 @@ class KNImportSeedsViewController: KNBaseViewController {
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.nextButton.addTextSpacing()
     self.seedsTextField.placeholder = NSLocalizedString("enter.your.seeds", value: "Enter your seeds", comment: "")
+    self.seedsTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
+    self.walletNameTextField.addPlaceholderSpacing()
 
     self.resetUIs()
   }

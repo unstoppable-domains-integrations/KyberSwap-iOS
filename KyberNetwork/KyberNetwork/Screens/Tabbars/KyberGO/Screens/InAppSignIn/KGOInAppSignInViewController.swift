@@ -26,6 +26,7 @@ class KGOInAppSignInViewController: KNBaseViewController {
     super.viewDidLoad()
     self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = self.isSignIn ? NSLocalizedString("sign.in", value: "Sign In", comment: "") : NSLocalizedString("sign.up", value: "Sign Up", comment: "")
+    self.navTitleLabel.addLetterSpacing()
     self.webView.loadRequest(URLRequest(url: self.url))
     self.webView.delegate = self
   }

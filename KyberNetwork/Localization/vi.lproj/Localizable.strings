@@ -205,6 +205,7 @@
 "label" = "Nhãn";
 "address" = "Địa chỉ";
 "passport" = "Hộ chiếu";
+"identity.card" = "Thẻ căn cước công dân";
 "driving.license" = "Bằng lái xe";
 "document.type" = "Loại Tài Liệu";
 "document.number" = "Số Tài Liệu";

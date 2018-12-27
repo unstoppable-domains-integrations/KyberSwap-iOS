@@ -204,6 +204,7 @@
 "my.wallets" = "My wallet(s)";
 "label" = "Label";
 "address" = "Address";
+"identity.card" = "Identity Card";
 "passport" = "Passport";
 "driving.license" = "Driving License";
 "document.type" = "Document Type";

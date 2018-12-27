@@ -88,17 +88,17 @@ class KWalletBalanceViewModel: NSObject {
         return "\(ethValue)"
       }
     }()
-    let currency: String = self.currencyType.rawValue
+    let currency: String = "  \(self.currencyType.rawValue)"
 
     let valueAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 28),
       NSAttributedStringKey.foregroundColor: UIColor.white,
-      NSAttributedStringKey.kern: 1.0,
+      NSAttributedStringKey.kern: 0.0,
     ]
     let currencyAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
       NSAttributedStringKey.foregroundColor: UIColor.white,
-      NSAttributedStringKey.kern: 1.0,
+      NSAttributedStringKey.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: value, attributes: valueAttributes))

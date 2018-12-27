@@ -41,13 +41,17 @@
                 <outlet property="holdingDocumentImageView" destination="irW-cp-YS8" id="apZ-lO-PIb"/>
                 <outlet property="idButton" destination="rTO-b5-3ta" id="3hJ-2u-pza"/>
                 <outlet property="idTextLabel" destination="KAt-Hb-QHY" id="Yxl-7E-xpE"/>
+                <outlet property="identityCardTextLabel" destination="KAt-Hb-QHY" id="Eqy-1g-XWI"/>
                 <outlet property="issueDateTextField" destination="R43-Bn-FDJ" id="gY3-FM-1wQ"/>
                 <outlet property="nextButton" destination="dIa-Tk-b8H" id="pUs-Xq-DUx"/>
                 <outlet property="passportButton" destination="HBy-QR-90j" id="ldL-PE-GX4"/>
                 <outlet property="passportTextLabel" destination="MaL-F4-kGC" id="vAB-JY-Ftw"/>
+                <outlet property="photoBackContainerView" destination="8fM-mG-sfX" id="Ree-1M-1Ev"/>
+                <outlet property="photoBackInfoButton" destination="r6h-ao-85x" id="nJB-4T-sDn"/>
                 <outlet property="photoHoldingDocumentTextLabel" destination="5qp-GO-dos" id="Iyi-Uu-Yif"/>
                 <outlet property="photoOfYourDocumentBackTextLabel" destination="auK-y0-7W8" id="0r4-mh-mQL"/>
                 <outlet property="photoOfYourDocumentTextLabel" destination="1ea-bP-5O7" id="1ai-Z0-VgZ"/>
+                <outlet property="topPaddingForPhotoHoldingDocumentConstraint" destination="c0E-Bp-cZo" id="owX-cT-hdo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -83,8 +87,8 @@
                                 <constraint firstAttribute="height" constant="1" id="wyG-QY-h0U"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAt-Hb-QHY">
-                            <rect key="frame" x="60" y="77" width="16" height="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Identity Card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAt-Hb-QHY">
+                            <rect key="frame" x="60" y="77" width="92.5" height="17"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -99,7 +103,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBy-QR-90j">
-                            <rect key="frame" x="136" y="73.5" width="24" height="24"/>
+                            <rect key="frame" x="176.5" y="73.5" width="24" height="24"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="YYF-hL-5AK"/>
@@ -110,7 +114,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MaL-F4-kGC">
-                            <rect key="frame" x="172" y="77" width="62.5" height="17"/>
+                            <rect key="frame" x="212.5" y="77" width="62.5" height="17"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -126,7 +130,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Fk-mi-fbl">
-                                    <rect key="frame" x="24" y="57.5" width="327" height="44"/>
+                                    <rect key="frame" x="24" y="49.5" width="327" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Dy5-W1-TID"/>
                                     </constraints>
@@ -139,7 +143,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9i2-Y0-AEm">
-                                    <rect key="frame" x="24" y="125.5" width="327" height="96"/>
+                                    <rect key="frame" x="24" y="117.5" width="327" height="96"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test_back_up_icon" translatesAutoresizingMaskIntoConstraints="NO" id="gde-bg-Qk1">
                                             <rect key="frame" x="139.5" y="24" width="48" height="48"/>
@@ -162,7 +166,7 @@
                             <color key="backgroundColor" red="0.94901960784313721" green="0.95294117647058818" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="8Fk-mi-fbl" secondAttribute="trailing" constant="24" id="1LR-3p-uVV"/>
-                                <constraint firstItem="8Fk-mi-fbl" firstAttribute="top" secondItem="1ea-bP-5O7" secondAttribute="bottom" constant="32" id="1ha-5P-72B"/>
+                                <constraint firstItem="8Fk-mi-fbl" firstAttribute="top" secondItem="1ea-bP-5O7" secondAttribute="bottom" constant="24" id="1ha-5P-72B"/>
                                 <constraint firstAttribute="height" constant="240" id="3U3-6M-CPK"/>
                                 <constraint firstItem="9i2-Y0-AEm" firstAttribute="top" secondItem="8Fk-mi-fbl" secondAttribute="bottom" constant="24" id="M9y-e8-s4B"/>
                                 <constraint firstAttribute="trailing" secondItem="9i2-Y0-AEm" secondAttribute="trailing" constant="24" id="f0Y-TL-7Wq"/>
@@ -240,7 +244,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1P-JL-Ynz">
-                                    <rect key="frame" x="24" y="57.5" width="327" height="44"/>
+                                    <rect key="frame" x="24" y="49.5" width="327" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="IXe-76-FBd"/>
                                     </constraints>
@@ -253,7 +257,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNz-hR-8zU">
-                                    <rect key="frame" x="24" y="125.5" width="327" height="96"/>
+                                    <rect key="frame" x="24" y="117.5" width="327" height="96"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test_back_up_icon" translatesAutoresizingMaskIntoConstraints="NO" id="oOj-Q2-z5D">
                                             <rect key="frame" x="139.5" y="24" width="48" height="48"/>
@@ -283,7 +287,7 @@
                                 <constraint firstItem="auK-y0-7W8" firstAttribute="centerY" secondItem="r6h-ao-85x" secondAttribute="centerY" id="hcf-t7-HjX"/>
                                 <constraint firstAttribute="trailing" secondItem="d1P-JL-Ynz" secondAttribute="trailing" constant="24" id="inb-I3-9M1"/>
                                 <constraint firstItem="dNz-hR-8zU" firstAttribute="leading" secondItem="8fM-mG-sfX" secondAttribute="leading" constant="24" id="ljV-lB-SWi"/>
-                                <constraint firstItem="d1P-JL-Ynz" firstAttribute="top" secondItem="auK-y0-7W8" secondAttribute="bottom" constant="32" id="n7D-Hn-xZe"/>
+                                <constraint firstItem="d1P-JL-Ynz" firstAttribute="top" secondItem="auK-y0-7W8" secondAttribute="bottom" constant="24" id="n7D-Hn-xZe"/>
                                 <constraint firstItem="r6h-ao-85x" firstAttribute="leading" secondItem="auK-y0-7W8" secondAttribute="trailing" constant="8" id="tcA-Q7-78a"/>
                                 <constraint firstItem="dNz-hR-8zU" firstAttribute="top" secondItem="d1P-JL-Ynz" secondAttribute="bottom" constant="24" id="zMr-08-MbB"/>
                             </constraints>
@@ -383,7 +387,7 @@
                         <constraint firstItem="45r-vm-Ptv" firstAttribute="leading" secondItem="rVU-JM-4L9" secondAttribute="leading" id="UOZ-xi-86P"/>
                         <constraint firstItem="2rf-MT-xz3" firstAttribute="leading" secondItem="R43-Bn-FDJ" secondAttribute="leading" id="V2L-pM-7ex"/>
                         <constraint firstItem="GPt-UT-q9M" firstAttribute="centerY" secondItem="0QA-7K-afP" secondAttribute="centerY" id="V58-nC-l4m"/>
-                        <constraint firstItem="HBy-QR-90j" firstAttribute="leading" secondItem="KAt-Hb-QHY" secondAttribute="trailing" constant="60" id="VCp-2S-YFA"/>
+                        <constraint firstItem="HBy-QR-90j" firstAttribute="leading" secondItem="KAt-Hb-QHY" secondAttribute="trailing" constant="24" id="VCp-2S-YFA"/>
                         <constraint firstAttribute="trailing" secondItem="R43-Bn-FDJ" secondAttribute="trailing" constant="24" id="VVI-Ji-z3J"/>
                         <constraint firstItem="45r-vm-Ptv" firstAttribute="trailing" secondItem="rVU-JM-4L9" secondAttribute="trailing" id="WqV-cG-QBE"/>
                         <constraint firstItem="8fM-mG-sfX" firstAttribute="leading" secondItem="K7Y-nd-WhP" secondAttribute="leading" id="XBx-jD-3Kz"/>

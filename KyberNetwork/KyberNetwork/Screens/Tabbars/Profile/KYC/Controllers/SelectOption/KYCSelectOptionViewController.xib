@@ -21,6 +21,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KYCSelectOptionViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="dataTableView" destination="Mg8-xW-xyR" id="OOu-0j-FjD"/>
+                <outlet property="headerContainerView" destination="QvI-XI-aYV" id="msw-60-5Tk"/>
                 <outlet property="noMatchingDataLabel" destination="eL9-hc-8pO" id="akp-Mt-JUr"/>
                 <outlet property="searchTextField" destination="pIe-54-bn9" id="FUW-6T-N9K"/>
                 <outlet property="selectTitleLabel" destination="Z3r-I9-59m" id="aa2-2o-vkR"/>

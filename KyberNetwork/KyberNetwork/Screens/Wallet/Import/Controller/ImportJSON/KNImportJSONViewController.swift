@@ -14,7 +14,7 @@ class KNImportJSONViewController: KNBaseViewController {
   lazy var buttonAttributes: [NSAttributedStringKey: Any] = {
     return [
       NSAttributedStringKey.foregroundColor: UIColor.black,
-      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
+      NSAttributedStringKey.kern: 0.0,
     ]
   }()
 
@@ -64,16 +64,15 @@ class KNImportJSONViewController: KNBaseViewController {
       style.importWalletButtonDisabledColor,
       forState: .disabled
     )
-//    self.nextButton.setBackgroundColor(
-//      style.importWalletButtonEnabledColor,
-//      forState: .normal
-//    )
     self.nextButton.setTitle(
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
     )
+    self.nextButton.addTextSpacing()
     self.enterPasswordTextField.placeholder = NSLocalizedString("enter.password.to.decrypt", value: "Enter Password to Decrypt", comment: "")
+    self.enterPasswordTextField.addPlaceholderSpacing()
     self.nameWalletTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
+    self.nameWalletTextField.addPlaceholderSpacing()
 
     self.resetUIs()
   }
