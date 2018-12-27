@@ -38,6 +38,7 @@
                 <outlet property="notSignInTitleLabel" destination="f9b-Vb-xfi" id="1lR-qh-rCP"/>
                 <outlet property="notSignInView" destination="wVn-be-kf6" id="GJs-ND-mvW"/>
                 <outlet property="signInButton" destination="ToE-Xs-12c" id="dPJ-XM-vPq"/>
+                <outlet property="signInHeaderView" destination="UH0-5f-Ssg" id="QtK-Yg-nFU"/>
                 <outlet property="signUpButton" destination="D9t-ZL-afx" id="fWk-Al-IfE"/>
                 <outlet property="signedInView" destination="UrY-qu-28V" id="XZ9-we-wyO"/>
                 <outlet property="userEmailLabel" destination="kTw-hp-avF" id="QEB-Fh-fsg"/>

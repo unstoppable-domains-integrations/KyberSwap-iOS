@@ -28,6 +28,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var signUpButton: UIButton!
   @IBOutlet weak var signInButton: UIButton!
 
+  @IBOutlet weak var signInHeaderView: UIView!
   @IBOutlet weak var myProfileTextLabel: UILabel!
   @IBOutlet weak var myWalletsTextLabel: UILabel!
   @IBOutlet weak var signedInView: UIView!
@@ -96,6 +97,8 @@ class KNProfileHomeViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.notSignInView.removeSublayer(at: 0)
     self.notSignInView.applyGradient(with: UIColor.Kyber.backgroundColors)
+    self.signInHeaderView.removeSublayer(at: 0)
+    self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   fileprivate func setupUI() {
@@ -138,6 +141,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUserSignedInView() {
+    self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
     self.bottomPaddingConstraintForSignedInView.constant = self.bottomPaddingSafeArea()
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")
