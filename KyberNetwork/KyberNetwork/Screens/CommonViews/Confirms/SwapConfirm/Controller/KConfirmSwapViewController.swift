@@ -134,12 +134,14 @@ class KConfirmSwapViewController: KNBaseViewController {
       for: .normal
     )
     self.confirmButton.setTitleColor(UIColor.white, for: .normal)
-    self.confirmButton.backgroundColor = KNAppStyleType.current.swapActionButtonBackgroundColor
+    self.confirmButton.applyGradient()
+    self.isConfirmed = false
     self.confirmButton.isEnabled = true
     self.cancelButton.isHidden = false
     self.cancelButton.setTitle(
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
+    self.view.layoutIfNeeded()
   }
 }

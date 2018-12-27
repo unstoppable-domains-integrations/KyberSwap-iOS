@@ -135,7 +135,8 @@ class KConfirmSendViewController: KNBaseViewController {
       for: .normal
     )
     self.confirmButton.setTitleColor(UIColor.white, for: .normal)
-    self.confirmButton.backgroundColor = KNAppStyleType.current.walletFlowHeaderColor
+    self.isConfirmed = false
+    self.confirmButton.applyGradient()
     self.confirmButton.isEnabled = true
     self.cancelButton.isHidden = false
     self.cancelButton.setTitle(
