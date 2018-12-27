@@ -171,8 +171,7 @@ extension KNProfileHomeCoordinator {
     }
     let clientID = KNEnvironment.default == .production ? KNSecret.appID : KNSecret.debugAppID
     let redirectLink = KNEnvironment.default == .production ? KNSecret.redirectURL : KNSecret.debugRedirectURL
-    //lang=\(Locale.current.kyberSupportedLang)&
-    if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?isInternalApp=true&client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
+    if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?lang=\(Locale.current.kyberSupportedLang)&isInternalApp=true&client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
       // Clear old session
       URLCache.shared.removeAllCachedResponses()
       URLCache.shared.diskCapacity = 0

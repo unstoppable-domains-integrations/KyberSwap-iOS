@@ -81,7 +81,7 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WJc-fq-iX6">
                             <rect key="frame" x="353" y="61.5" width="10" height="10"/>
-                            <color key="backgroundColor" red="0.97647058819999999" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="10" id="N3t-VG-9JQ"/>
                                 <constraint firstAttribute="height" constant="10" id="yBO-6Y-aYL"/>

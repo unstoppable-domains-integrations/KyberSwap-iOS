@@ -8,7 +8,8 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
   @IBOutlet weak var collectionView: UICollectionView!
 
   fileprivate let viewModel: KNWelcomeScreenViewModel = KNWelcomeScreenViewModel()
-  @IBOutlet weak var pageControl: UIPageControl!
+
+  @IBOutlet var pageViews: [UIView]!
 
   override func commonInit() {
     super.commonInit()
@@ -20,9 +21,15 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
     )
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
-    self.pageControl.numberOfPages = self.viewModel.numberRows
-    self.pageControl.currentPage = 0
+    self.pageViews.forEach { $0.rounded(radius: 3.0) }
+    self.updateSelectedPageView(index: 0)
     self.collectionView.reloadData()
+  }
+
+  fileprivate func updateSelectedPageView(index: Int) {
+    self.pageViews.forEach { view in
+      view.backgroundColor = view.tag == index ? .white : UIColor(red: 233, green: 0, blue: 0)
+    }
   }
 }
 
@@ -47,7 +54,7 @@ extension KNWelcomeScreenCollectionView: UIScrollViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     let offsetX = scrollView.contentOffset.x
     let currentPage = Int(round(offsetX / scrollView.frame.width))
-    self.pageControl.currentPage = currentPage
+    self.updateSelectedPageView(index: currentPage)
   }
 }
 
