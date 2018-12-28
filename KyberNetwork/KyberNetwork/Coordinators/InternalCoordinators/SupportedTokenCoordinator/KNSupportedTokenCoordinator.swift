@@ -33,6 +33,7 @@ class KNSupportedTokenCoordinator {
       KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokens)
       return
     }
+    KNSupportedTokenStorage.shared.addLocalSupportedTokens()
     print("---- Supported Tokens: Start fetching data ----")
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.supportedToken) { result in
