@@ -80,10 +80,10 @@ class KNGeneralProvider {
     }
   }
 
-  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     if token.isETH {
       // ETH no need to request for approval
-      completion(.success(true))
+      completion(.success(BigInt(2).power(255)))
       return
     }
     let tokenAddress: Address = Address(string: token.contract)!
@@ -131,14 +131,14 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, account: Account, keystore: Keystore, networkAddress: Address, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, value: BigInt = BigInt(2).power(255), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
     let group = DispatchGroup()
 
     group.enter()
-    self.getSendApproveERC20TokenEncodeData(networkAddress: networkAddress, completion: { result in
+    self.getSendApproveERC20TokenEncodeData(networkAddress: networkAddress, value: value, completion: { result in
       switch result {
       case .success(let resp):
         encodeData = resp
@@ -151,7 +151,7 @@ class KNGeneralProvider {
     self.getTransactionCount(for: account.address.description) { result in
       switch result {
       case .success(let resp):
-        txCount = resp
+        txCount = max(resp, currentNonce)
       case .failure(let err):
         error = err
       }
@@ -269,10 +269,10 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(255), completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
-      value: BigInt(2).power(255)
+      value: value
     )
     self.web3Swift.request(request: encodeRequest) { (encodeResult) in
       switch encodeResult {
@@ -343,10 +343,10 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getTokenAllowanceDecodeData(_ data: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  fileprivate func getTokenAllowanceDecodeData(_ data: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     if data == "0x" {
       // Fix: Can not decode 0x to uint
-      completion(.success(false))
+      completion(.success(BigInt(0)))
       return
     }
     let decodeRequest = KNGetTokenAllowanceDecode(data: data)
@@ -354,7 +354,7 @@ extension KNGeneralProvider {
       switch decodeResult {
       case .success(let value):
         let remain: BigInt = BigInt(value) ?? BigInt(0)
-        completion(.success(!remain.isZero))
+        completion(.success(remain))
       case .failure(let error):
         completion(.failure(AnyError(error)))
       }

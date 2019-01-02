@@ -4,6 +4,7 @@ import UIKit
 import BigInt
 import TrustKeystore
 import TrustCore
+import Result
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -149,10 +150,10 @@ extension KNExchangeTokenCoordinator {
       guard let `self` = self else { return }
       switch getAllowanceResult {
       case .success(let res):
-        if res {
+        if res >= exchangeTransaction.amount {
           self.sendExchangeTransaction(exchangeTransaction)
         } else {
-          self.sendApproveForExchangeTransaction(exchangeTransaction)
+          self.sendApproveForExchangeTransaction(exchangeTransaction, remain: res)
         }
       case .failure(let error):
         self.confirmSwapVC?.resetActionButtons()
@@ -195,18 +196,46 @@ extension KNExchangeTokenCoordinator {
     }
   }
 
-  fileprivate func sendApproveForExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-    self.session.externalProvider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
-      switch result {
+  fileprivate func sendApproveForExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt) {
+    self.resetAllowanceForExchangeTransactionIfNeeded(exchangeTransaction, remain: remain) { [weak self] resetResult in
+      guard let `self` = self else { return }
+      switch resetResult {
       case .success:
-        self?.sendExchangeTransaction(exchangeTransaction)
+        self.session.externalProvider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
+          switch result {
+          case .success:
+            self?.sendExchangeTransaction(exchangeTransaction)
+          case .failure(let error):
+            self?.confirmSwapVC?.resetActionButtons()
+            KNNotificationUtil.postNotification(
+              for: kTransactionDidUpdateNotificationKey,
+              object: error,
+              userInfo: nil
+            )
+          }
+        }
       case .failure(let error):
-        self?.confirmSwapVC?.resetActionButtons()
+        self.confirmSwapVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: error,
           userInfo: nil
         )
+      }
+    }
+  }
+
+  fileprivate func resetAllowanceForExchangeTransactionIfNeeded(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if remain.isZero {
+      completion(.success(true))
+      return
+    }
+    self.session.externalProvider.sendApproveERCToken(for: exchangeTransaction.from, value: BigInt(0)) { result in
+      switch result {
+      case .success:
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
       }
     }
   }

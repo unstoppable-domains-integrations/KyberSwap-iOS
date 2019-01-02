@@ -184,9 +184,9 @@ class KSwapViewController: KNBaseViewController {
     self.dataContainerView.rounded(radius: 4)
 
     self.fromTokenButton.titleLabel?.numberOfLines = 2
-    self.fromTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
+    self.fromTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
     self.toTokenButton.titleLabel?.numberOfLines = 2
-    self.toTokenButton.titleLabel?.lineBreakMode = .byWordWrapping
+    self.toTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
     self.fromAmountTextField.text = ""
     self.fromAmountTextField.adjustsFontSizeToFitWidth = true

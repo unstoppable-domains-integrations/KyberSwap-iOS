@@ -109,7 +109,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNB-lE-CZa">
-                            <rect key="frame" x="16" y="16" width="139.5" height="46"/>
+                            <rect key="frame" x="16" y="16" width="143.5" height="46"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                             <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="KNC" image="knc">
@@ -120,7 +120,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hu8-ec-ud1">
-                            <rect key="frame" x="16" y="94" width="139.5" height="38"/>
+                            <rect key="frame" x="16" y="94" width="143.5" height="38"/>
                             <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="ETH" image="eth">
                                 <color key="titleColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -149,7 +149,7 @@
                         <constraint firstItem="FRx-Np-XK9" firstAttribute="leading" secondItem="J8q-3O-zAd" secondAttribute="trailing" constant="4" id="DfC-ET-1Nj"/>
                         <constraint firstItem="2ue-dF-Sxj" firstAttribute="height" secondItem="FRx-Np-XK9" secondAttribute="height" id="JUo-UW-8xO"/>
                         <constraint firstItem="2ue-dF-Sxj" firstAttribute="trailing" secondItem="FRx-Np-XK9" secondAttribute="trailing" id="NmJ-sH-gCg"/>
-                        <constraint firstItem="J8q-3O-zAd" firstAttribute="leading" secondItem="pNB-lE-CZa" secondAttribute="trailing" constant="4" id="PNf-ll-eRi"/>
+                        <constraint firstItem="J8q-3O-zAd" firstAttribute="leading" secondItem="pNB-lE-CZa" secondAttribute="trailing" id="PNf-ll-eRi"/>
                         <constraint firstItem="J8q-3O-zAd" firstAttribute="centerY" secondItem="69i-TU-qqK" secondAttribute="centerY" id="TvZ-45-JgZ"/>
                         <constraint firstItem="J8q-3O-zAd" firstAttribute="centerX" secondItem="69i-TU-qqK" secondAttribute="centerX" id="UXU-LN-njM"/>
                         <constraint firstItem="Hu8-ec-ud1" firstAttribute="top" secondItem="J8q-3O-zAd" secondAttribute="bottom" constant="4" id="Vec-hi-pyi"/>

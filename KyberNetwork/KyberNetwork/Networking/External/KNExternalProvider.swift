@@ -166,7 +166,7 @@ class KNExternalProvider {
 
   // If the value returned > 0 consider as allowed
   // should check with the current send amount, however the limit is likely set as very big
-  func getAllowance(token: TokenObject, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func getAllowance(token: TokenObject, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: token,
       address: self.account.address,
@@ -177,10 +177,22 @@ class KNExternalProvider {
 
   // Encode function, get transaction count, sign transaction, send signed data
   func sendApproveERC20Token(exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    self.sendApproveERCToken(
+      for: exchangeTransaction.from,
+      value: BigInt(2).power(255),
+      completion: completion
+    )
+  }
+
+  func sendApproveERCToken(for token: TokenObject, value: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
-      token: exchangeTransaction.from,
+      token: token,
+      value: value,
       account: self.account,
-      keystore: self.keystore, networkAddress: self.networkAddress) { [weak self] result in
+      keystore: self.keystore,
+      currentNonce: self.minTxCount,
+      networkAddress: self.networkAddress
+    ) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let txCount):
