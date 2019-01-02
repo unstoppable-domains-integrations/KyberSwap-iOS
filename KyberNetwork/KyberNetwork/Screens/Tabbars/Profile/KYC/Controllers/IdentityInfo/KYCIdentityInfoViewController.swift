@@ -1,5 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+//swiftlint:disable file_length
 import UIKit
 import Photos
 import MobileCoreServices
@@ -44,7 +45,6 @@ class KYCIdentityInfoViewModel {
   }
 }
 
-//swiftlint:disable line_length
 class KYCIdentityInfoViewController: KNBaseViewController {
 
   @IBOutlet weak var documentTypeTextLabel: UILabel!

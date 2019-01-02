@@ -1,6 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-//swiftlint:disable line_length
+//swiftlint:disable file_length
 import UIKit
 import Moya
 import Result
@@ -127,6 +127,7 @@ class KYCFlowViewModel {
     self.wallets = wallets
   }
 
+  //swiftlint:disable line_length
   func updatePersonalInfo(firstName: String, lastName: String, gender: String, dob: String, nationality: String, wallets: [(String, String)], residenceAddress: String, residenceCountry: String, residenceCity: String, residencePostalCode: String, proofAddressType: String, proofAddressImage: UIImage?, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?) {
     self.firstName = firstName
     self.lastName = lastName
@@ -413,6 +414,7 @@ class KYCFlowViewController: KNBaseViewController {
   }
 }
 
+//swiftlint:disable line_length
 extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
   func kycPersonalInfoViewController(_ controller: KYCPersonalInfoViewController, run event: KYCPersonalInfoViewEvent) {
     switch event {

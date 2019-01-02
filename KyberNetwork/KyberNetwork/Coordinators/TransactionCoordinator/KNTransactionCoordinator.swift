@@ -108,7 +108,7 @@ extension KNTransactionCoordinator {
     self.fetchInternalTransactions(
       forAddress: self.wallet.address.description,
       startBlock: max(0, lastBlockInternalTx - 10),
-      completion:  nil
+      completion: nil
     )
 
     // load all tx

@@ -79,10 +79,7 @@ class KNTokenChartViewModel {
     self.data = []
   }
 
-  var navigationTitle: String {
-    return "\(self.token.symbol)"
-  }
-
+  var navigationTitle: String { return "\(self.token.symbol)" }
   var isTokenSupported: Bool { return self.token.isSupported }
 
   var rateAttributedString: NSAttributedString {
