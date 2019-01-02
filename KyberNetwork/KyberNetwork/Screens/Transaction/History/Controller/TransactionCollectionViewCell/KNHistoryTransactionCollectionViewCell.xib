@@ -24,11 +24,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="error_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Zcf-Am-gYl">
-                        <rect key="frame" x="16" y="8" width="22" height="19"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="out_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Zcf-Am-gYl">
+                        <rect key="frame" x="16" y="8" width="18" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="WU9-A8-Vs9"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="[Error]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMH-5M-3Ku">
-                        <rect key="frame" x="54" y="8" width="44.5" height="20"/>
+                        <rect key="frame" x="50" y="8" width="44.5" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="4RO-5b-ZIy"/>
                         </constraints>
@@ -37,12 +40,12 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPI-O7-QOZ">
-                        <rect key="frame" x="54" y="32" width="42" height="20.5"/>
+                        <rect key="frame" x="50" y="32" width="42" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="400 KNC -&gt; 1 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTI-Nj-zlU">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="400 KNC -&gt; 1 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gTI-Nj-zlU">
                         <rect key="frame" x="219" y="8" width="140" height="20"/>
                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                         <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -73,6 +76,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="error_icon" width="22" height="19"/>
+        <image name="out_icon" width="16" height="16"/>
     </resources>
 </document>
