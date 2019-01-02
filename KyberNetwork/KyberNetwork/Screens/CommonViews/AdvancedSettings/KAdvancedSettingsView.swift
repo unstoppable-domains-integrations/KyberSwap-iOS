@@ -62,10 +62,12 @@ class KAdvancedSettingsViewModel: NSObject {
     let gasPriceAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))

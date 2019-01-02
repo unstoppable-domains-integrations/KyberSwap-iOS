@@ -123,6 +123,7 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.navTitleLabel.text = NSLocalizedString("search", value: "Search", comment: "")
+    self.navTitleLabel.addLetterSpacing()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.searchTextField.delegate = self
     self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
@@ -141,6 +142,7 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
 
     self.noMatchingTokensLabel.text = NSLocalizedString("no.matching.tokens", value: "No matching tokens", comment: "")
+    self.noMatchingTokensLabel.addLetterSpacing()
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.keyboardDidShow(_:)),

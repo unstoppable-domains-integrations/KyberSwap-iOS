@@ -57,6 +57,7 @@ class KYCSelectOptionViewController: UIViewController {
     super.viewDidLoad()
     self.selectTitleLabel.text = self.titleText
     self.noMatchingDataLabel.text = NSLocalizedString("no.matching.data", value: "No matching data", comment: "")
+    self.noMatchingDataLabel.addLetterSpacing()
     self.dataTableView.register(UITableViewCell.self, forCellReuseIdentifier: self.cellID)
     self.dataTableView.estimatedRowHeight = 60.0
     self.dataTableView.rowHeight = UITableViewAutomaticDimension

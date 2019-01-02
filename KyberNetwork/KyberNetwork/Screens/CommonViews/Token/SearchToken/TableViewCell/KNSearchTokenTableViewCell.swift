@@ -27,13 +27,16 @@ class KNSearchTokenTableViewCell: UITableViewCell {
         placeholder: UIImage(named: "default_token"))
     }
     self.tokenSymbolLabel.text = token.symbol
+    self.tokenSymbolLabel.addLetterSpacing()
     self.tokenNameLabel.text = token.name
+    self.tokenNameLabel.addLetterSpacing()
     let balText: String = balance?.value.string(
       decimals: token.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(token.decimals, 6)
       ) ?? ""
     self.balanceLabel.text = "\(balText.prefix(12))"
+    self.balanceLabel.addLetterSpacing()
     self.layoutIfNeeded()
   }
 }

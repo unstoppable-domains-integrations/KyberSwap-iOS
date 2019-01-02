@@ -64,11 +64,13 @@ class KNBackUpWalletViewController: KNBaseViewController {
     self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
     self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.firstWordTextField.delegate = self
+    self.firstWordTextField.addPlaceholderSpacing()
     self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
     self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
     self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.secondWordTextField.delegate = self
+    self.secondWordTextField.addPlaceholderSpacing()
     self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
     self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden

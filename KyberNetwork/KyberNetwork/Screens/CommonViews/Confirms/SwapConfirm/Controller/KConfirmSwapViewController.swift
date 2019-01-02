@@ -66,17 +66,24 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
     self.titleLabel.text = self.viewModel.titleString
+    self.titleLabel.addLetterSpacing()
 
     self.fromAmountLabel.text = self.viewModel.leftAmountString
+    self.fromAmountLabel.addLetterSpacing()
     self.toAmountLabel.text = self.viewModel.rightAmountString
+    self.toAmountLabel.addLetterSpacing()
 
     self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
+    self.expectedRateLabel.addLetterSpacing()
     self.minAcceptableRateLabel.text = self.viewModel.minRateString
+    self.minAcceptableRateLabel.addLetterSpacing()
 
     self.transactionFeeETHLabel.text = self.viewModel.feeETHString
+    self.transactionFeeETHLabel.addLetterSpacing()
     self.transactionFeeUSDLabel.text = self.viewModel.feeUSDString
+    self.transactionFeeUSDLabel.addLetterSpacing()
 
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
@@ -93,7 +100,9 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.toTextLabel.text = NSLocalizedString("transaction.to.text", value: "To", comment: "")
     self.minAcceptableRateTextLabel.text = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
+    self.minAcceptableRateLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
+    self.transactionFeeTextLabel.addLetterSpacing()
     self.view.layoutIfNeeded()
   }
 

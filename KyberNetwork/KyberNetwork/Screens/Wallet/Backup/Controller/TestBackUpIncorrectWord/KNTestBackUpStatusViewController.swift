@@ -95,7 +95,9 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.containerView.isHidden = self.viewModel.isContainerViewHidden
 
     self.titleLabel.text = self.viewModel.title
+    self.titleLabel.addLetterSpacing()
     self.messageLabel.text = self.viewModel.message
+    self.messageLabel.addLetterSpacing()
 
     self.firstButton.rounded(
       color: self.viewModel.firstButtonBorderColor,

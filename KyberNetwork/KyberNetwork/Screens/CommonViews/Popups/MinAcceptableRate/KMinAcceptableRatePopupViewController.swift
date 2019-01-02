@@ -10,6 +10,7 @@ struct KMinAcceptableRatePopupViewModel {
     return [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+      NSAttributedStringKey.kern: 0.0,
     ]
   }
 
@@ -17,6 +18,7 @@ struct KMinAcceptableRatePopupViewModel {
     return [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedStringKey.kern: 0.0,
     ]
   }
 
@@ -24,6 +26,7 @@ struct KMinAcceptableRatePopupViewModel {
     return [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
       NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
+      NSAttributedStringKey.kern: 0.0,
     ]
   }
 

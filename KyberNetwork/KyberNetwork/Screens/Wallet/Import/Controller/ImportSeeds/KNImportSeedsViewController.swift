@@ -49,6 +49,7 @@ class KNImportSeedsViewController: KNBaseViewController {
   func resetUIs() {
     self.seedsTextField.text = ""
     self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
+    self.wordsCountLabel.addLetterSpacing()
     self.walletNameTextField.text = ""
     self.updateNextButton()
   }
@@ -100,6 +101,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     textField.text = ""
     if textField == self.seedsTextField {
       self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
+      self.wordsCountLabel.addLetterSpacing()
       self.updateNextButton()
     }
     return false
@@ -111,6 +113,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
       var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
       self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
+      self.wordsCountLabel.addLetterSpacing()
       self.updateNextButton()
     }
     return false

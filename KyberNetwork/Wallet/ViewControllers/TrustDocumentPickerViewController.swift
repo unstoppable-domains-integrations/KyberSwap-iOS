@@ -11,6 +11,5 @@ class TrustDocumentPickerViewController: UIDocumentPickerViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UINavigationBar.appearance().tintColor = AppStyle.navigationBarTintColor
     }
 }

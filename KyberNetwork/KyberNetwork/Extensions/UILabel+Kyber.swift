@@ -1,9 +1,4 @@
-//
-//  UILabel+Kyber.swift
-//  KyberNetwork
-//
-//  Created by Le Xuan Manh on 27/12/2018.
-//
+// Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
 

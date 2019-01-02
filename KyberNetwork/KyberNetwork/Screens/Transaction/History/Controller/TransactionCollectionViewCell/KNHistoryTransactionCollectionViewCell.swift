@@ -56,11 +56,13 @@ struct KNHistoryTransactionCollectionViewModel {
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.lightGray,
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+    NSAttributedStringKey.kern: 0.0,
   ]
 
   let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
     NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+    NSAttributedStringKey.kern: 0.0,
   ]
 
   var descriptionLabelAttributedString: NSAttributedString {

@@ -55,7 +55,9 @@ class KNContactTableViewCell: UITableViewCell {
   func update(with viewModel: KNContactTableViewCellModel) {
     self.addressImageView.image = viewModel.addressImage
     self.contactNameLabel.text = viewModel.displayedName
+    self.contactNameLabel.addLetterSpacing()
     self.contactAddressLabel.text = viewModel.displayedAddress
+    self.contactAddressLabel.addLetterSpacing()
     self.backgroundColor = viewModel.backgroundColor
     self.layoutIfNeeded()
   }

@@ -124,10 +124,12 @@ class KSwapViewModel {
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let nameAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 13),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
+      NSAttributedStringKey.kern: 0.0,
     ]
     let symbol = isSource ? self.from.symbol : self.to.symbol
     let name = isSource ? self.from.name : self.to.name

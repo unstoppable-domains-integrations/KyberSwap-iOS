@@ -74,13 +74,19 @@ class KConfirmSendViewController: KNBaseViewController {
     self.contactImageView.image = self.viewModel.addressToIcon
 
     self.contactNameLabel.text = self.viewModel.contactName
+    self.contactNameLabel.addLetterSpacing()
     self.sendAddressLabel.text = self.viewModel.address
+    self.sendAddressLabel.addLetterSpacing()
 
     self.sendAmountLabel.text = self.viewModel.totalAmountString
+    self.sendAmountLabel.addLetterSpacing()
     self.sendAmountUSDLabel.text = self.viewModel.usdValueString
+    self.sendAmountUSDLabel.addLetterSpacing()
 
     self.feeETHLabel.text = self.viewModel.transactionFeeETHString
+    self.feeETHLabel.addLetterSpacing()
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
+    self.feeUSDLabel.addLetterSpacing()
 
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
     self.confirmButton.setTitle(
@@ -97,7 +103,9 @@ class KConfirmSendViewController: KNBaseViewController {
     self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
 
     self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Send", comment: "").uppercased()
+    self.amountToSendTextLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
+    self.transactionFeeTextLabel.addLetterSpacing()
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {

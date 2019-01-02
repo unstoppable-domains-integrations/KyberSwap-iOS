@@ -30,12 +30,14 @@ struct KNWalletHeaderViewModel {
   var walletAddressAttributes: [NSAttributedStringKey: Any] {
     return [NSAttributedStringKey.foregroundColor: UIColor.Kyber.lightGray,
             NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
+            NSAttributedStringKey.kern: 0.0,
     ]
   }
 
   var walletNameAttributes: [NSAttributedStringKey: Any] {
     return [NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: UIFont(name: "SFProText-Medium", size: 16)!,
+            NSAttributedStringKey.kern: 0.0,
     ]
   }
 }

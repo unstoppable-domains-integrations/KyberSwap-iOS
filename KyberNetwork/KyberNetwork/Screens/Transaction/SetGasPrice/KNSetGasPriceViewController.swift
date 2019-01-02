@@ -58,10 +58,12 @@ struct KNSetGasPriceViewModel {
     let textAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let feeAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.darkGreen,
       NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .regular),
+      NSAttributedStringKey.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: ""))  ", attributes: textAttributes))

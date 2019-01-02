@@ -335,6 +335,7 @@ class KNTokenChartViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
+  //swiftlint:disable function_body_length
   fileprivate func setupUI() {
     self.touchPriceLabel.isHidden = true
 
@@ -433,6 +434,7 @@ class KNTokenChartViewController: KNBaseViewController {
       self.sellButton.backgroundColor = .clear//UIColor.Kyber.merigold
       self.sendButton.isHidden = true
     }
+    self.noDataLabel.addLetterSpacing()
 
     EasyTipView.globalPreferences = self.preferences
 
@@ -491,6 +493,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {
     self.noDataLabel.text = "\(NSLocalizedString("updating.data", value: "Updating data", comment: ""))..."
+    self.noDataLabel.addLetterSpacing()
     self.viewModel.fetchNewData(
       for: self.viewModel.token,
       type: self.viewModel.type) { [weak self] result in
@@ -504,6 +507,7 @@ class KNTokenChartViewController: KNBaseViewController {
         case .failure:
           self?.noDataLabel.text = NSLocalizedString("can.not.update.data", value: "Can not update data", comment: "")
         }
+        self?.noDataLabel.addLetterSpacing()
     }
   }
 
@@ -530,6 +534,7 @@ class KNTokenChartViewController: KNBaseViewController {
     if self.viewModel.data.isEmpty {
       self.noDataLabel.text = NSLocalizedString("no.data.for.this.token", value: "There is no data for this token", comment: "")
       self.noDataLabel.isHidden = false
+      self.noDataLabel.addLetterSpacing()
       self.priceChart.isHidden = true
       if self.dataTipView != nil { self.dataTipView.dismiss() }
     } else {
