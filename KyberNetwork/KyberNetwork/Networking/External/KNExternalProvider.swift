@@ -32,6 +32,10 @@ class KNExternalProvider {
     self.minTxCount = 0
   }
 
+  func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {
+    self.minTxCount = max(self.minTxCount, nonce)
+  }
+
   func updateNewAccount(_ account: Account) {
     self.account = account
     self.minTxCount = 0

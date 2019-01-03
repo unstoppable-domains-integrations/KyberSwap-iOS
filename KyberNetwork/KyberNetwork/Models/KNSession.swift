@@ -37,11 +37,14 @@ class KNSession {
     if case .real(let acc) = self.wallet.type {
       account = acc
     }
-    self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
     let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
+    self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
+    if let tx = self.transactionStorage.objects.first, let nonce = Int(tx.nonce) {
+      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+    }
   }
 
   func startSession() {
