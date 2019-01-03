@@ -237,7 +237,7 @@ class KAdvancedSettingsView: XibLoaderView {
     let selectedColor = UIColor.Kyber.enygold
     let normalColor = UIColor.Kyber.dashLine
 
-    let selectedWidth: CGFloat = 8.0
+    let selectedWidth: CGFloat = 5.0
     let normalWidth: CGFloat = 1.0
 
     self.fasGasButton.rounded(
@@ -270,7 +270,7 @@ class KAdvancedSettingsView: XibLoaderView {
     let selectedColor = UIColor.Kyber.enygold
     let normalColor = UIColor.Kyber.dashLine
 
-    let selectedWidth: CGFloat = 8.0
+    let selectedWidth: CGFloat = 5.0
     let normalWidth: CGFloat = 1.0
 
     self.threePercentButton.rounded(

@@ -90,19 +90,19 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15.0" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6C2-5M-WJZ">
-                                    <rect key="frame" x="50" y="43.5" width="22" height="15"/>
+                                    <rect key="frame" x="46" y="41.5" width="22" height="15"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.0" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3B8-Dg-Kru">
-                                    <rect key="frame" x="161.5" y="42.5" width="27" height="17.5"/>
+                                    <rect key="frame" x="159.5" y="40.5" width="27" height="17.5"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5.5" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exC-DI-hNb">
-                                    <rect key="frame" x="291.5" y="42.5" width="19.5" height="17.5"/>
+                                    <rect key="frame" x="291.5" y="40.5" width="19.5" height="17.5"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -115,33 +115,33 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkj-Ra-RNo">
-                                    <rect key="frame" x="16" y="39" width="24" height="24"/>
+                                    <rect key="frame" x="16" y="39" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="GTm-OZ-g7p"/>
-                                        <constraint firstAttribute="height" constant="24" id="OHf-XO-hQq"/>
+                                        <constraint firstAttribute="width" constant="20" id="GTm-OZ-g7p"/>
+                                        <constraint firstAttribute="height" constant="20" id="OHf-XO-hQq"/>
                                     </constraints>
                                     <connections>
                                         <action selector="fastGasButtonPressed:" destination="-1" eventType="touchUpInside" id="yLx-37-6Oe"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6o-Vf-arG">
-                                    <rect key="frame" x="127.5" y="39" width="24" height="24"/>
+                                    <rect key="frame" x="129.5" y="39" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="24" id="Ba4-6l-Ecd"/>
-                                        <constraint firstAttribute="width" constant="24" id="xfp-4K-6fo"/>
+                                        <constraint firstAttribute="height" constant="20" id="Ba4-6l-Ecd"/>
+                                        <constraint firstAttribute="width" constant="20" id="xfp-4K-6fo"/>
                                     </constraints>
                                     <connections>
                                         <action selector="mediumGasButtonPressed:" destination="-1" eventType="touchUpInside" id="AFO-4F-Viy"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahq-SV-UsD">
-                                    <rect key="frame" x="257.5" y="39" width="24" height="24"/>
+                                    <rect key="frame" x="261.5" y="39" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="Fuz-3l-HOe"/>
-                                        <constraint firstAttribute="height" constant="24" id="nPe-90-4OL"/>
+                                        <constraint firstAttribute="width" constant="20" id="Fuz-3l-HOe"/>
+                                        <constraint firstAttribute="height" constant="20" id="nPe-90-4OL"/>
                                     </constraints>
                                     <connections>
                                         <action selector="slowGasButtonPressed:" destination="-1" eventType="touchUpInside" id="geB-8O-Vmq"/>
@@ -180,58 +180,58 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-d7-yvQ">
-                                    <rect key="frame" x="16" y="47" width="24" height="24"/>
+                                    <rect key="frame" x="16" y="47" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="RgT-1Q-hfm"/>
-                                        <constraint firstAttribute="height" constant="24" id="ubC-uA-ouS"/>
+                                        <constraint firstAttribute="width" constant="20" id="RgT-1Q-hfm"/>
+                                        <constraint firstAttribute="height" constant="20" id="ubC-uA-ouS"/>
                                     </constraints>
                                     <connections>
                                         <action selector="threePercentButtonPressed:" destination="-1" eventType="touchUpInside" id="ULm-x8-VA7"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vV-xU-Ofo">
-                                    <rect key="frame" x="44" y="51.5" width="17" height="15"/>
+                                    <rect key="frame" x="40" y="49.5" width="17" height="15"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avD-77-44k">
-                                    <rect key="frame" x="87.5" y="47" width="24" height="24"/>
+                                    <rect key="frame" x="89.5" y="47" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="BPl-1b-ZFC"/>
-                                        <constraint firstAttribute="height" constant="24" id="l47-4a-8Sc"/>
+                                        <constraint firstAttribute="width" constant="20" id="BPl-1b-ZFC"/>
+                                        <constraint firstAttribute="height" constant="20" id="l47-4a-8Sc"/>
                                     </constraints>
                                     <connections>
                                         <action selector="anyRateButtonPressed:" destination="-1" eventType="touchUpInside" id="xM6-MG-2oh"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Any-rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nxv-Ig-Jpg">
-                                    <rect key="frame" x="115.5" y="51.5" width="52.5" height="15"/>
+                                    <rect key="frame" x="113.5" y="49.5" width="52.5" height="15"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DxF-b7-CUC">
-                                    <rect key="frame" x="183" y="47" width="24" height="24"/>
+                                    <rect key="frame" x="187" y="47" width="20" height="20"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="2nI-rC-Av8"/>
-                                        <constraint firstAttribute="height" constant="24" id="e9C-8a-HhI"/>
+                                        <constraint firstAttribute="width" constant="20" id="2nI-rC-Av8"/>
+                                        <constraint firstAttribute="height" constant="20" id="e9C-8a-HhI"/>
                                     </constraints>
                                     <connections>
                                         <action selector="customRateButtonPressed:" destination="-1" eventType="touchUpInside" id="t1Z-ZT-f6c"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qb1-dP-hFg">
-                                    <rect key="frame" x="211" y="51.5" width="48" height="15"/>
+                                    <rect key="frame" x="211" y="49.5" width="48" height="15"/>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="%" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MEN-YX-m2w">
-                                    <rect key="frame" x="267" y="44" width="44" height="30"/>
+                                    <rect key="frame" x="267" y="42" width="44" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="QnH-fR-SEU"/>
                                     </constraints>
@@ -240,7 +240,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction will be reverted if GIF-ETH is lower than 0.0787654365456 (Current rate 0.0864568756)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oEr-DN-fk8">
-                                    <rect key="frame" x="16" y="90" width="295" height="44"/>
+                                    <rect key="frame" x="16" y="88" width="295" height="44"/>
                                     <fontDescription key="fontDescription" name="Montserrat-SemiBoldItalic" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
