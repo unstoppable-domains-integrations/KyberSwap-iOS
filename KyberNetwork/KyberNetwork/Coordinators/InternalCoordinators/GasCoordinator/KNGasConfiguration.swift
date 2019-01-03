@@ -6,12 +6,16 @@ import BigInt
 public struct KNGasConfiguration {
   static let digixGasLimitDefault = BigInt(770_000)
   static let exchangeTokensGasLimitDefault = BigInt(660_000)
-  static let exchangeETHTokenGasLimitDefault = BigInt(350_000)
+  static let exchangeETHTokenGasLimitDefault = BigInt(330_000)
   static let approveTokenGasLimitDefault = BigInt(100_000)
   static let transferTokenGasLimitDefault = BigInt(60_000)
   static let transferETHGasLimitDefault = BigInt(21_000)
   static let buytokenSaleByETHGasLimitDefault = BigInt(550_000)
   static let buyTokenSaleByTokenGasLimitDefault = BigInt(700_000)
+  static let daiGasLimitDefault = BigInt(450_000)
+  static let makerGasLimitDefault = BigInt(400_000)
+  static let propyGasLimitDefault = BigInt(500_000)
+  static let promotionTokenGasLimitDefault = BigInt(380_000)
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
@@ -23,15 +27,24 @@ public struct KNGasConfiguration {
       if from.isETH { return transferETHGasLimitDefault }
       return transferTokenGasLimitDefault
     }
-    // swapping
-    if from.isDGX {
-      // swapping digix to eth or token
-      return to.isETH ? digixGasLimitDefault : digixGasLimitDefault + exchangeETHTokenGasLimitDefault
-    }
-    if to.isDGX {
-      return from.isETH ? digixGasLimitDefault : digixGasLimitDefault + exchangeETHTokenGasLimitDefault
-    }
-    // swap ETH <-> token or token <-> token
-    return (from.isETH || to.isETH) ? exchangeETHTokenGasLimitDefault : exchangeTokensGasLimitDefault
+    let gasSrcToETH: BigInt = {
+      if from.isETH { return BigInt(0) }
+      if from.isDGX { return digixGasLimitDefault }
+      if from.isDAI { return daiGasLimitDefault }
+      if from.isMKR { return makerGasLimitDefault }
+      if from.isPRO { return propyGasLimitDefault }
+      if from.isPRO { return promotionTokenGasLimitDefault }
+      return exchangeETHTokenGasLimitDefault
+    }()
+    let gasETHToDest: BigInt = {
+      if to.isETH { return BigInt(0) }
+      if to.isDGX { return digixGasLimitDefault }
+      if to.isDAI { return daiGasLimitDefault }
+      if to.isMKR { return makerGasLimitDefault }
+      if to.isPRO { return propyGasLimitDefault }
+      if to.isPRO { return promotionTokenGasLimitDefault }
+      return exchangeETHTokenGasLimitDefault
+    }()
+    return gasSrcToETH + gasETHToDest
   }
 }

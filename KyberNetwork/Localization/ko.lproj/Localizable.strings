@@ -370,13 +370,13 @@
 "successfully.sent.to" = "%@ 성공적으로 전송 %@";
 "do.you.want.to.log.out?" = "로그 아웃 하시겠습니까?";
 
-"info.income" = "Info Income";
-"address.document.type" = "Address/Document Type";
-"your.proof.of.address.image" = "Your Proof of Address Image";
-"none.applicable" = "None applicable";
-"issue.date.can.not.be.in.the.future" = "Issue date can not be in the future";
-"expiry.date.can.not.be.in.the.past" = "Expiry date can not be in the past";
-"issue.date.and.expiry.date.can.not.be.the.same" = "Issue date and expiry date can not be the same";
+"info.income" = "소득 정보";
+"address.document.type" = "주소 / 문서 유형";
+"your.proof.of.address.image" = "귀하의 주소 증명 사진";
+"none.applicable" = "해당 사항 없음";
+"issue.date.can.not.be.in.the.future" = "발행일은 미래가 될 수 없습니다.";
+"expiry.date.can.not.be.in.the.past" = "만료일은 과거 일 수 없습니다.";
+"issue.date.and.expiry.date.can.not.be.the.same" = "발행일 및 만료일은 동일 할 수 없습니다.";
 
 // Proof of address
 "Bank Statement" = "은행 성명서";

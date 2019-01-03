@@ -67,7 +67,7 @@ extension UIColor {
 
     static var firstTheme = UIColor(red: 15, green: 170, blue: 162)
 
-    static var enygold = UIColor(red: 254, green: 163, blue: 73)
+    static var enygold = UIColor(red: 254, green: 169, blue: 73)
     static var punch = UIColor(red: 249, green: 86, blue: 109)
     static var coral = UIColor(red: 250, green: 114, blue: 96)
 
