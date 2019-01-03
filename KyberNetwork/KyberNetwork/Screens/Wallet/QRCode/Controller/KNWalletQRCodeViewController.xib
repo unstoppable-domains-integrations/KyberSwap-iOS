@@ -76,8 +76,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-K1-otl">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYE-MU-J4V">
-                            <rect key="frame" x="103.5" y="44" width="168" height="22"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYE-MU-J4V">
+                            <rect key="frame" x="64" y="44" width="247" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -99,7 +99,9 @@
                         <constraint firstAttribute="height" constant="82" id="XY1-26-aan"/>
                         <constraint firstItem="hYE-MU-J4V" firstAttribute="centerX" secondItem="ayx-K1-otl" secondAttribute="centerX" id="ZLB-uL-H9l"/>
                         <constraint firstItem="1Sw-3K-xlS" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="16" id="hYc-eb-FJg"/>
+                        <constraint firstItem="hYE-MU-J4V" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="64" id="mE3-Wk-V7d"/>
                         <constraint firstItem="1Sw-3K-xlS" firstAttribute="centerY" secondItem="hYE-MU-J4V" secondAttribute="centerY" id="v3Y-iU-yt3"/>
+                        <constraint firstAttribute="trailing" secondItem="hYE-MU-J4V" secondAttribute="trailing" constant="64" id="xei-Nd-E9t"/>
                     </constraints>
                 </view>
             </subviews>

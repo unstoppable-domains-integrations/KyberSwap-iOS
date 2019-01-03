@@ -150,7 +150,7 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ilE-hI-Pkf">
                             <rect key="frame" x="24" y="1703.5" width="327" height="3"/>
-                            <color key="backgroundColor" red="0.99607843139999996" green="0.63921568630000003" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.99607843139999996" green="0.66274509800000003" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="rw7-Hf-7KY"/>
                             </constraints>
@@ -163,7 +163,7 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hae-l6-im4">
                             <rect key="frame" x="24" y="62" width="327" height="3"/>
-                            <color key="backgroundColor" red="0.99607843137254903" green="0.63921568627450975" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.99607843137254903" green="0.66274509803921566" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="vYY-qR-cPz"/>
                             </constraints>

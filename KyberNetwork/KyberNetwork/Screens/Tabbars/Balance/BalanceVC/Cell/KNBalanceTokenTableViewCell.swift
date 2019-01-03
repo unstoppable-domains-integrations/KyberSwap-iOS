@@ -34,21 +34,14 @@ struct KNBalanceTokenTableViewCellModel {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
       NSAttributedStringKey.kern: 0.0,
-      ]
-    let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
-      NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
-      NSAttributedStringKey.kern: 0.0,
-      ]
+    ]
+//    let nameAttributes: [NSAttributedStringKey: Any] = [
+//      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
+//      NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
+//      NSAttributedStringKey.kern: 0.0,
+//      ]
     attributedString.append(NSAttributedString(string: self.token.symbol, attributes: symbolAttributes))
-    attributedString.append(NSAttributedString(string: " - \(self.token.name)", attributes: nameAttributes))
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineSpacing = 0
-    attributedString.addAttribute(
-      NSAttributedStringKey.paragraphStyle,
-      value: paragraphStyle,
-      range: NSRange(location: 0, length: attributedString.length)
-    )
+//    attributedString.append(NSAttributedString(string: " - \(self.token.name)", attributes: nameAttributes))
     return attributedString
   }
 
@@ -137,7 +130,6 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
   @IBOutlet weak var symbolLabel: UILabel!
   @IBOutlet weak var amountHoldingsLabel: UILabel!
   @IBOutlet weak var rateLabel: UILabel!
-  @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var change24h: UIButton!
 
   override func awakeFromNib() {
@@ -147,7 +139,6 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
     self.symbolLabel.text = ""
     self.rateLabel.text = ""
     self.amountHoldingsLabel.text = ""
-    self.valueLabel.text = ""
     self.iconImageView.rounded(radius: self.iconImageView.frame.width / 2.0)
   }
 
@@ -161,8 +152,6 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
     self.rateLabel.addLetterSpacing()
     self.amountHoldingsLabel.text = viewModel.displayAmountHoldingsText
     self.amountHoldingsLabel.addLetterSpacing()
-    self.valueLabel.text = viewModel.displayBalanceValue
-    self.valueLabel.addLetterSpacing()
     self.backgroundColor = viewModel.backgroundColor
 
     self.change24h.setTitleColor(

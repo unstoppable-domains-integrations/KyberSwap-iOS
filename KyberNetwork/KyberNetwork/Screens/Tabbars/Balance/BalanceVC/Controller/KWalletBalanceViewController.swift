@@ -135,7 +135,11 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   // MARK: Update UIs
   fileprivate func updateWalletInfoUI() {
-    self.walletNameLabel.text = self.viewModel.wallet.name
+    self.walletNameLabel.text = {
+      let name = self.viewModel.wallet.name
+      let address = "\(self.viewModel.wallet.address.prefix(6))...\(self.viewModel.wallet.address.suffix(4))"
+      return "\(name) - \(address)"
+    }()
     self.walletNameLabel.addLetterSpacing()
     self.view.layoutIfNeeded()
   }
