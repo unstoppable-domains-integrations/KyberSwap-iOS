@@ -98,7 +98,7 @@ class KNTokenChartViewModel {
       return trackerRate.changeETH24h > 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
     }()
     let rateAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 131, green: 136, blue: 148),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
       NSAttributedStringKey.kern: 0.0,
     ]
