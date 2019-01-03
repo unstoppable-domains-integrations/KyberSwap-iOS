@@ -260,6 +260,7 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.balanceTabCoordinator.appCoordinatorTokensTransactionsDidUpdate()
+    self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {

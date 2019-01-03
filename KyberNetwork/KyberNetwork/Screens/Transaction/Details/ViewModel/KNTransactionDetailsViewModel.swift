@@ -47,7 +47,7 @@ struct KNTransactionDetailsViewModel {
   }
 
   var displayedAmountColor: UIColor {
-    if self.isSwap { return UIColor.Kyber.merigold }
+    if self.isSwap { return UIColor(red: 248, green: 159, blue: 80) }
     return self.isSent ? UIColor.Kyber.strawberry : UIColor.Kyber.shamrock
   }
 

@@ -377,6 +377,7 @@
 "issue.date.can.not.be.in.the.future" = "Issue date can not be in the future";
 "expiry.date.can.not.be.in.the.past" = "Expiry date can not be in the past";
 "issue.date.and.expiry.date.can.not.be.the.same" = "Issue date and expiry date can not be the same";
+"regular" = "Regular";
 "still.proceed.if.rate.goes.down.by" = "Still proceed if %@ goes down by:";
 "transaction.will.be.reverted.if.rate.lower.than" = "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)";
 "can.not.handle.your.amount" = "Can not handle your amount";

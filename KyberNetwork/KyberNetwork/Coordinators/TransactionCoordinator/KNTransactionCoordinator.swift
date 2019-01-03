@@ -300,6 +300,7 @@ extension KNTransactionCoordinator {
   }
 
   func updateListTokenTransactions(_ transactions: [Transaction]) {
+    if transactions.isEmpty { return }
     self.transactionStorage.add(transactions)
     KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
     var tokenObjects: [TokenObject] = []

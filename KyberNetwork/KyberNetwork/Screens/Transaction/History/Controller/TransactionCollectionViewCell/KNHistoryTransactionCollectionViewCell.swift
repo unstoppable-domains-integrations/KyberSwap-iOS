@@ -106,7 +106,7 @@ struct KNHistoryTransactionCollectionViewModel {
   }
 
   var displayedAmountColorHex: String {
-    if self.isSwap { return "f89f50" }
+    if self.isSwap { return "F89F50" }
     return self.isSent ? "f87171" : "31cb9e"
   }
 }

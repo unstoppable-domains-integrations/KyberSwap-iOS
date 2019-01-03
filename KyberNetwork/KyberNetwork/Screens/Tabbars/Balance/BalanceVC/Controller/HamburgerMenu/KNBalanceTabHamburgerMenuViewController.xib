@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBalanceTabHamburgerMenuViewController" customModule="Trust" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNBalanceTabHamburgerMenuViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="allTransactionButton" destination="f9M-BC-Uae" id="iRL-OY-7pJ"/>
                 <outlet property="hamburgerMenuViewTrailingConstraint" destination="md2-TE-yB9" id="309-qb-7aO"/>
@@ -68,7 +68,7 @@
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4v-Ng-FRf">
                                     <rect key="frame" x="208" y="17" width="32" height="20"/>
-                                    <color key="backgroundColor" red="0.97647058823529409" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="1Z3-6x-q6p"/>
                                         <constraint firstAttribute="height" constant="20" id="pDh-pB-fd2"/>

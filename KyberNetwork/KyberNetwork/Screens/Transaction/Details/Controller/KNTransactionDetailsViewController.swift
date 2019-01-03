@@ -94,7 +94,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
         self.txStatusLabel.backgroundColor = UIColor.Kyber.strawberry
       case .pending:
         self.txStatusLabel.text = "\(NSLocalizedString("pending", value: "Pending", comment: ""))  "
-        self.txStatusLabel.backgroundColor = UIColor.Kyber.merigold
+        self.txStatusLabel.backgroundColor = UIColor(red: 248, green: 159, blue: 80)
       default: break
       }
     } else {
