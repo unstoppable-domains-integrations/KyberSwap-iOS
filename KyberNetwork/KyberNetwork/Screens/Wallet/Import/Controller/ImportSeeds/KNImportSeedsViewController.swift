@@ -3,6 +3,7 @@
 import UIKit
 import TrustKeystore
 import TrustCore
+import QRCodeReaderViewController
 
 protocol KNImportSeedsViewControllerDelegate: class {
   func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String], name: String?)
@@ -18,6 +19,7 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var seedsTextField: UITextField!
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var wordsCountLabel: UILabel!
+  @IBOutlet weak var qrcodeButton: UIButton!
 
   @IBOutlet weak var nextButton: UIButton!
 
@@ -65,6 +67,12 @@ class KNImportSeedsViewController: KNBaseViewController {
     if enabled { self.nextButton.applyGradient() }
   }
 
+  @IBAction func qrcodeButtonPressed(_ sender: Any) {
+    let reader = QRCodeReaderViewController()
+    reader.delegate = self
+    self.parent?.present(reader, animated: true, completion: nil)
+  }
+
   @IBAction func nextButtonPressed(_ sender: Any) {
     if let seeds = self.seedsTextField.text?.trimmed {
       guard Mnemonic.isValid(seeds) else {
@@ -106,16 +114,35 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     }
     return false
   }
+
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     if textField == self.seedsTextField {
-      var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
-      words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
-      self.wordsCountLabel.addLetterSpacing()
-      self.updateNextButton()
+      self.updateWordsCount()
     }
     return false
+  }
+
+  fileprivate func updateWordsCount() {
+    guard let text = self.seedsTextField.text else { return }
+    var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+    words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+    self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
+    self.wordsCountLabel.addLetterSpacing()
+    self.updateNextButton()
+  }
+}
+
+extension KNImportSeedsViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      self.seedsTextField.text = result
+      self.updateWordsCount()
+    }
   }
 }

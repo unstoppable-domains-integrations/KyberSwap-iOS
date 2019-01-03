@@ -22,6 +22,7 @@
             <connections>
                 <outlet property="descLabel" destination="WhK-I2-j2i" id="yS3-eD-pSd"/>
                 <outlet property="nextButton" destination="F1b-jf-zFf" id="e4a-Tj-fzb"/>
+                <outlet property="qrcodeButton" destination="gSr-h0-m7v" id="3XM-4R-dIJ"/>
                 <outlet property="recoverSeedsLabel" destination="vYN-r3-AGA" id="kto-oO-YzR"/>
                 <outlet property="seedsTextField" destination="Ij9-VL-InI" id="WiC-tJ-Z0A"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -61,7 +62,7 @@
                     </connections>
                 </button>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter your seeds" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ij9-VL-InI">
-                    <rect key="frame" x="24" y="102" width="327" height="45"/>
+                    <rect key="frame" x="24" y="102" width="297" height="45"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="tu1-Wj-Xq1"/>
@@ -71,7 +72,7 @@
                     <textInputTraits key="textInputTraits" textContentType="password"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAo-9A-uFg">
-                    <rect key="frame" x="24" y="135" width="327" height="1"/>
+                    <rect key="frame" x="24" y="139" width="327" height="1"/>
                     <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="xvn-YL-8cb"/>
@@ -100,27 +101,36 @@
                     <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSr-h0-m7v">
+                    <rect key="frame" x="329" y="113.5" width="22" height="22"/>
+                    <state key="normal" image="qr_code_icon"/>
+                    <connections>
+                        <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="PuU-iE-VqJ"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="ARF-7r-f6v" firstAttribute="trailing" secondItem="0HB-xF-UpI" secondAttribute="trailing" id="1L6-eq-VzM"/>
                 <constraint firstItem="zAo-9A-uFg" firstAttribute="trailing" secondItem="ARF-7r-f6v" secondAttribute="trailing" id="8yf-wd-jt0"/>
                 <constraint firstItem="ARF-7r-f6v" firstAttribute="top" secondItem="0HB-xF-UpI" secondAttribute="bottom" constant="-12" id="AXG-FF-krC"/>
-                <constraint firstItem="bcy-tK-EEx" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" id="AhX-cx-hpN"/>
                 <constraint firstItem="Ij9-VL-InI" firstAttribute="top" secondItem="WhK-I2-j2i" secondAttribute="bottom" constant="32" id="BQU-aP-Syc"/>
                 <constraint firstAttribute="trailing" secondItem="F1b-jf-zFf" secondAttribute="trailing" constant="35" id="EsI-Xv-vCc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="F1b-jf-zFf" secondAttribute="bottom" constant="30" id="F1D-F9-fSy"/>
                 <constraint firstItem="ARF-7r-f6v" firstAttribute="leading" secondItem="0HB-xF-UpI" secondAttribute="leading" id="GyR-hG-J7A"/>
+                <constraint firstItem="gSr-h0-m7v" firstAttribute="centerY" secondItem="Ij9-VL-InI" secondAttribute="centerY" id="Hsu-3d-Us2"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gSr-h0-m7v" secondAttribute="trailing" constant="24" id="Jao-00-FA7"/>
                 <constraint firstItem="WhK-I2-j2i" firstAttribute="top" secondItem="vYN-r3-AGA" secondAttribute="bottom" constant="12" id="JiU-E0-xys"/>
                 <constraint firstItem="WhK-I2-j2i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="MSp-x2-ECo"/>
-                <constraint firstItem="0HB-xF-UpI" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" id="NbC-Fa-l1d"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0HB-xF-UpI" secondAttribute="trailing" constant="24" id="NMx-C8-wL0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bcy-tK-EEx" secondAttribute="trailing" constant="24" id="RMH-D0-zXf"/>
                 <constraint firstItem="vYN-r3-AGA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="ReR-tT-V2G"/>
                 <constraint firstItem="F1b-jf-zFf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="ZQ4-z0-G1q"/>
                 <constraint firstItem="zAo-9A-uFg" firstAttribute="leading" secondItem="Ij9-VL-InI" secondAttribute="leading" id="ZqJ-wr-2XM"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WhK-I2-j2i" secondAttribute="trailing" constant="30" id="dUn-xo-SRW"/>
                 <constraint firstItem="0HB-xF-UpI" firstAttribute="leading" secondItem="Ij9-VL-InI" secondAttribute="leading" id="fJG-N6-wzN"/>
-                <constraint firstItem="zAo-9A-uFg" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="-12" id="hv7-lk-sno"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" constant="24" id="iwv-H8-gjQ"/>
+                <constraint firstItem="zAo-9A-uFg" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="-8" id="hv7-lk-sno"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ij9-VL-InI" secondAttribute="trailing" constant="54" id="iwv-H8-gjQ"/>
                 <constraint firstItem="Ij9-VL-InI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="lS1-bV-e2r"/>
                 <constraint firstItem="vYN-r3-AGA" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="onZ-7s-Koy"/>
                 <constraint firstItem="bcy-tK-EEx" firstAttribute="top" secondItem="Ij9-VL-InI" secondAttribute="bottom" constant="12" id="qFq-Yg-rVs"/>
@@ -129,4 +139,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
+    <resources>
+        <image name="qr_code_icon" width="22" height="22"/>
+    </resources>
 </document>
