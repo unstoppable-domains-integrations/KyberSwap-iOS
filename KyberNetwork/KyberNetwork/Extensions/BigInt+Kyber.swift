@@ -35,6 +35,6 @@ extension BigInt {
   }
 
   func fullString(decimals: Int) -> String {
-    return EtherNumberFormatter.full.string(from: self, decimals: decimals)
+    return self.string(decimals: decimals, minFractionDigits: 0, maxFractionDigits: decimals)
   }
 }

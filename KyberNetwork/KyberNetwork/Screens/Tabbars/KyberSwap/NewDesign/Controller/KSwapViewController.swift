@@ -213,20 +213,15 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    let viewModel = KAdvancedSettingsViewModel(
-      hasMinRate: true,
-      brandColor: UIColor.Kyber.enygold
-    )
+    let viewModel = KAdvancedSettingsViewModel(hasMinRate: true)
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
       slow: KNGasCoordinator.shared.lowKNGas
     )
-    viewModel.updateGasLimit(self.viewModel.estimateGasLimit)
-    let minRateString: String = self.viewModel.minRateText ?? "0"
-    let percent: CGFloat = CGFloat(self.viewModel.currentMinRatePercentValue)
-    viewModel.updateMinRateValue(minRateString, percent: percent)
+    viewModel.updateMinRateValue(self.viewModel.estimatedRateDouble, percent: self.viewModel.minRatePercent)
     viewModel.updateViewHidden(isHidden: true)
+    viewModel.updatePairToken("\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)")
     self.advancedSettingsView.updateViewModel(viewModel)
     self.heightConstraintForAdvacedSettingsView.constant = self.advancedSettingsView.height
     self.advancedSettingsView.delegate = self
@@ -423,14 +418,14 @@ class KSwapViewController: KNBaseViewController {
         )
         return true
       }
-      guard self.viewModel.isMinRateValid else {
+      guard self.viewModel.isSlippageRateValid else {
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("invalid.min.rate", value: "Invalid min rate", comment: ""),
-          message: NSLocalizedString("your.min.rate.should.be.greater.than.zero", value: "Your min rate should be greater than zero", comment: "")
+          with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+          message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: "")
         )
         return true
       }
-      guard self.viewModel.estRate != nil, self.viewModel.isRateValid else {
+      guard self.viewModel.estRate != nil, self.viewModel.estRate?.isZero == false else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("rate.might.change", value: "Rate might change", comment: ""),
           message: NSLocalizedString("please.wait.for.expected.rate.updated", value: "Please wait for expected rate to be updated", comment: "")
@@ -489,15 +484,15 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAdvancedSettingsView() {
-    let minRateString: String = self.viewModel.minRateText ?? "0"
-    let percent: CGFloat = CGFloat(self.viewModel.currentMinRatePercentValue)
-    self.advancedSettingsView.updateMinRate(minRateString, percent: percent)
+    let rate = self.viewModel.estimatedRateDouble
+    let percent = self.viewModel.minRatePercent
+    self.advancedSettingsView.updatePairToken("\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)")
+    self.advancedSettingsView.updateMinRate(rate, percent: percent)
 
     self.advancedSettingsView.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      gasLimit: self.viewModel.estimateGasLimit
+      slow: KNGasCoordinator.shared.lowKNGas
     )
     self.view.layoutIfNeeded()
   }
@@ -590,7 +585,6 @@ extension KSwapViewController {
       amount: amount,
       gasLimit: gasLimit
     )
-    self.updateAdvancedSettingsView()
   }
 
   /*

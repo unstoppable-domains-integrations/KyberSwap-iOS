@@ -182,16 +182,12 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupAdvancedSettingsView() {
-    let viewModel = KAdvancedSettingsViewModel(
-      hasMinRate: false,
-      brandColor: UIColor.Kyber.enygold
-    )
+    let viewModel = KAdvancedSettingsViewModel(hasMinRate: false)
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
       slow: KNGasCoordinator.shared.lowKNGas
     )
-    viewModel.updateGasLimit(self.viewModel.gasLimit)
     viewModel.updateViewHidden(isHidden: true)
     self.advancedSettingsView.updateViewModel(viewModel)
     self.heightConstraintAdvancedSettingsView.constant = self.advancedSettingsView.height
@@ -231,8 +227,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.advancedSettingsView.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      gasLimit: self.viewModel.gasLimit
+      slow: KNGasCoordinator.shared.lowKNGas
     )
     self.view.layoutIfNeeded()
   }

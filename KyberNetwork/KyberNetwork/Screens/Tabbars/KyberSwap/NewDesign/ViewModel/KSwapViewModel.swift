@@ -25,8 +25,13 @@ class KSwapViewModel {
 
   fileprivate(set) var userCapInWei: BigInt?
   fileprivate(set) var estRate: BigInt?
-  fileprivate var slippageRate: BigInt?
-  fileprivate var minRatePercent: Double?
+  fileprivate(set) var slippageRate: BigInt?
+  fileprivate(set) var minRatePercent: Double = 3.0
+
+  var estimatedRateDouble: Double {
+    guard let rate = self.estRate else { return 0.0 }
+    return Double(rate) / pow(10.0, Double(self.to.decimals))
+  }
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
@@ -161,30 +166,12 @@ class KSwapViewModel {
   }
 
   var minRate: BigInt? {
-    guard let estRate = self.estRate, let slippageRate = self.slippageRate else { return nil }
-    if let percent = self.minRatePercent {
-      return estRate * BigInt(percent) / BigInt(100.0)
-    }
-    return slippageRate
-  }
-
-  var minRateText: String? {
-    return self.minRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
+    guard let estRate = self.estRate else { return nil }
+    return estRate * BigInt(100.0 - self.minRatePercent) / BigInt(100.0)
   }
 
   var slippageRateText: String? {
     return self.slippageRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
-  }
-
-  var currentMinRatePercentValue: Float {
-    if let double = self.minRatePercent { return Float(floor(double)) }
-    guard let estRate = self.estRate, let slippageRate = self.slippageRate, !estRate.isZero else { return 100.0 }
-    return Float(floor(Double(slippageRate * BigInt(100) / estRate)))
-  }
-
-  var currentMinRatePercentText: String {
-    let value = self.currentMinRatePercentValue
-    return "\(Int(floor(value)))%"
   }
 
   // MARK: Gas Price
@@ -248,14 +235,14 @@ class KSwapViewModel {
   }
 
   // rate should not be nil and greater than zero
-  var isMinRateValid: Bool {
-    if self.minRate == nil || self.minRate?.isZero == true { return false }
+  var isSlippageRateValid: Bool {
+    if self.slippageRate == nil || self.slippageRate?.isZero == true { return false }
     return true
   }
 
   var isRateValid: Bool {
     if self.estRate == nil || self.estRate?.isZero == true { return false }
-    if self.minRate == nil || self.minRate?.isZero == true { return false }
+    if self.slippageRate == nil || self.slippageRate?.isZero == true { return false }
     return true
   }
 
@@ -326,12 +313,7 @@ class KSwapViewModel {
   func updateEstimatedRateFromCachedIfNeeded() {
     guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
     self.estRate = rate.rate
-    if rate.rate.isZero {
-      self.slippageRate = rate.minRate
-    } else {
-      let percent = Double(rate.minRate * BigInt(100) / rate.rate)
-      self.slippageRate = rate.rate * BigInt(Int(floor(percent))) / BigInt(100)
-    }
+    self.slippageRate = rate.minRate
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -374,13 +356,7 @@ class KSwapViewModel {
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
     if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estRate = rate
-      if rate.isZero {
-        self.slippageRate = slippageRate
-      } else {
-        var percent = Double(slippageRate * BigInt(100) / rate)
-        if percent == 0 { percent = 97.0 } // fixed: if slippage rate = 0 -> set as 97 %
-        self.slippageRate = rate * BigInt(Int(floor(percent))) / BigInt(100)
-      }
+      self.slippageRate = slippageRate
     }
   }
 
