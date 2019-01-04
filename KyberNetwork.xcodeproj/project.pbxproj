@@ -4607,6 +4607,9 @@
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.DataProtection = {
 								enabled = 1;
 							};
@@ -5712,7 +5715,7 @@
 				PROVISIONING_PROFILE = "e5075762-0411-4d14-9957-1b8590f82682";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Development Kyber Network";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -5736,7 +5739,7 @@
 				PROVISIONING_PROFILE = "d08d5f84-6398-4202-b037-8e45e693b687";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution AppStore Kyber Network";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

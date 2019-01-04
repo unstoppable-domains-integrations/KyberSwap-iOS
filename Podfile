@@ -35,6 +35,7 @@ target 'KyberNetwork' do
   pod 'JdenticonSwift'
   pod 'MSCircularSlider'
   pod 'EasyTipView', '~> 2.0.0'
+  pod 'OneSignal'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

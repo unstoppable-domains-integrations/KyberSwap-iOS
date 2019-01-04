@@ -7,6 +7,7 @@ import Fabric
 import Crashlytics
 import UserNotificationsUI
 import UserNotifications
+import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -15,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (_, _) in
+          DispatchQueue.main.async {
+            application.registerForRemoteNotifications()
+            application.applicationIconBadgeNumber = 0
+          }
         }
         UNUserNotificationCenter.current().delegate = self
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -41,6 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         KNReachability.shared.startNetworkReachabilityObserver()
         Fabric.with([Crashlytics.self])
+        OneSignal.setRequiresUserPrivacyConsent(false)
+        OneSignal.initWithLaunchOptions(launchOptions, appId: KNSecret.oneSignalAppID)
+        OneSignal.inFocusDisplayType = .notification
         return true
     }
 
