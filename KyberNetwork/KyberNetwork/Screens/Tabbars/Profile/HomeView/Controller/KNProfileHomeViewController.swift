@@ -255,7 +255,6 @@ class KNProfileHomeViewController: KNBaseViewController {
 
     let actionTitle: String = status == "Rejected" ? NSLocalizedString("resubmit", value: "Re-submit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
     self.userKYCActionButton.setTitle(actionTitle, for: .normal)
-    self.userKYCActionButton.addTextSpacing()
 
     if status == "Approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock

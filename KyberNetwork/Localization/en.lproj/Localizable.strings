@@ -381,6 +381,7 @@
 "still.proceed.if.rate.goes.down.by" = "Still proceed if %@ goes down by:";
 "transaction.will.be.reverted.if.rate.lower.than" = "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)";
 "can.not.handle.your.amount" = "Can not handle your amount";
+"advanced.optional" = "Advanced (optional)";
 
 // Proof of address
 "Bank Statement" = "Bank Statement";

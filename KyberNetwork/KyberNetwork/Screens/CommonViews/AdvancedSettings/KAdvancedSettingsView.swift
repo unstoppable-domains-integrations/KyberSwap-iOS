@@ -189,6 +189,10 @@ class KAdvancedSettingsView: XibLoaderView {
 
   override func commonInit() {
     super.commonInit()
+    self.displayViewButton.setTitle(
+      NSLocalizedString("advanced.optional", value: "Advanced (optional)", comment: ""),
+      for: .normal
+    )
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.advancedContainerView.rounded(radius: 5.0)

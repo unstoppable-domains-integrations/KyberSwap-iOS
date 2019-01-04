@@ -152,6 +152,16 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.yesLabel.text = NSLocalizedString("yes", value: "Yes", comment: "")
     self.noLabel.text = NSLocalizedString("no", value: "No", comment: "")
     self.taxIDNumberTextField.placeholder = NSLocalizedString("tax.identification.no.equivalent", value: "Tax Identification No (TIN) or equivalent", comment: "")
+
+    self.occupationCodeTextField.isHidden = false
+    self.industryCodeTextField.isHidden = false
+    self.pleaseIndicateYourTaxResidencyTextLabel.isHidden = false
+    self.reasonCollectingInformationTextLabel.isHidden = false
+    self.countryTextField.isHidden = false
+    self.haveTaxIDNoTextLabel.isHidden = false
+    self.yesLabel.isHidden = false
+    self.noLabel.isHidden = false
+    self.taxIDNumberTextField.isHidden = false
   }
 
   fileprivate func resetTexts() {
@@ -164,6 +174,16 @@ class KYCPersonalOptionalDataView: XibLoaderView {
     self.yesLabel.text = ""
     self.noLabel.text = ""
     self.taxIDNumberTextField.text = nil
+
+    self.occupationCodeTextField.isHidden = true
+    self.industryCodeTextField.isHidden = true
+    self.pleaseIndicateYourTaxResidencyTextLabel.isHidden = true
+    self.reasonCollectingInformationTextLabel.isHidden = true
+    self.countryTextField.isHidden = true
+    self.haveTaxIDNoTextLabel.isHidden = true
+    self.yesLabel.isHidden = true
+    self.noLabel.isHidden = true
+    self.taxIDNumberTextField.isHidden = true
   }
 
   fileprivate func updateHaveTaxIDNumber() {
