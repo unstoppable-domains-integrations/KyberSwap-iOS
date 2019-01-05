@@ -23,7 +23,7 @@ class KWalletBalanceViewModel: NSObject {
   private(set) var isKyberList: Bool = true
   private(set) var wallet: KNWalletObject
   private(set) var tokenObjects: [TokenObject] = []
-  private(set) var tokensDisplayType: KWalletSortType = .nameAsc
+  private(set) var tokensDisplayType: KWalletSortType = .balanceDesc
 
   private(set) var trackerRateData: [String: KNTrackerRate] = [:]
   private(set) var displayedTokens: [TokenObject] = []
@@ -128,11 +128,7 @@ class KWalletBalanceViewModel: NSObject {
         self.tokensDisplayType = .nameAsc
       }
     } else if positionClicked == 2 {
-      if self.tokensDisplayType == .priceAsc || self.tokensDisplayType == .priceDesc {
-        self.tokensDisplayType = self.tokensDisplayType == .priceAsc ? .priceDesc : .priceAsc
-      } else {
-        self.tokensDisplayType = .priceAsc
-      }
+      self.tokensDisplayType = .balanceDesc
     } else {
       if self.tokensDisplayType == .changeAsc || self.tokensDisplayType == .changeDesc {
         self.tokensDisplayType = self.tokensDisplayType == .changeAsc ? .changeDesc : .changeAsc
