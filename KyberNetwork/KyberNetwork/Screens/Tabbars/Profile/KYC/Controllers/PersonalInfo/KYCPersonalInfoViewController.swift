@@ -346,7 +346,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.addWalletButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.addWalletButton.frame.height)
     )
     self.addWalletButton.setTitle(
       NSLocalizedString("add", value: "Add", comment: ""),
@@ -363,7 +363,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
     self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
     self.nextButton.applyGradient()
-    self.nextButton.rounded(radius: 4.0)
+    self.nextButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.nextButton.frame.height))
   }
 
   fileprivate func setupAddressDetails() {
@@ -406,7 +406,11 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       for: .normal
     )
     self.uploadProofAddressDocButton.addTextSpacing()
-    self.uploadProofAddressDocButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
+    self.uploadProofAddressDocButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: KNAppStyleType.current.buttonRadius(for: self.uploadProofAddressDocButton.frame.height)
+    )
     self.heightConstraintForProofOfAddressContainerView.constant = 0.0
     self.topPaddingConstraintProofOfAddressImageView.constant = 0.0
     self.proofOfAddressImageView.image = nil

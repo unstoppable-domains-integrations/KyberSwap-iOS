@@ -210,7 +210,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.browseDocumentButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.browseDocumentButton.frame.height)
     )
     self.browseDocumentButton.setTitle(
       NSLocalizedString("browse", value: "Browse", comment: ""),
@@ -229,7 +229,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.browserDocumentBackButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.browserDocumentBackButton.frame.height)
     )
     self.browserDocumentBackButton.addTextSpacing()
     self.browserDocumentBackButton.setTitle(
@@ -248,7 +248,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.browseHoldingDocumentPhotoButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.browseHoldingDocumentPhotoButton.frame.height)
     )
     self.browseHoldingDocumentPhotoButton.setTitle(
       NSLocalizedString("browse", value: "Browse", comment: ""),
@@ -258,7 +258,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   fileprivate func setupNextButton() {
-    self.nextButton.rounded(radius: 4.0)
+    self.nextButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.nextButton.frame.height))
     self.nextButton.setTitle(NSLocalizedString("next", value: "Next", comment: ""), for: .normal)
     self.nextButton.addTextSpacing()
     self.nextButton.applyGradient()

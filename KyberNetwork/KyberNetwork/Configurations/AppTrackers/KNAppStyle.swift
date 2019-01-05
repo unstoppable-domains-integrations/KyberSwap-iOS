@@ -163,7 +163,7 @@ enum KNAppStyleType: String {
   }
 
   func buttonRadius(for height: CGFloat) -> CGFloat {
-    return self == .default ? 5.0 : height / 2.0
+    return height / 2.0
   }
 
   func buttonTitle(with name: String) -> String {

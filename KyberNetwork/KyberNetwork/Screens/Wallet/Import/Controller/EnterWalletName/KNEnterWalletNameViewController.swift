@@ -55,7 +55,7 @@ class KNEnterWalletNameViewController: KNBaseViewController {
     self.nameTextField.leftViewMode = .always
     self.nameTextField.rightView = paddingView
     self.nameTextField.rightViewMode = .always
-    self.nextButton.rounded(radius: 4.0)
+    self.nextButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.nextButton.frame.height))
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -180,7 +180,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.documentBackPhotoContainerView.rounded(radius: 4.0)
     self.holdingDocumentPhotoContainerView.rounded(radius: 4.0)
 
-    self.submitButton.rounded(radius: 4.0)
+    self.submitButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.submitButton.frame.height))
 
     // Personal info
     self.personalInfoTextLabel.text = NSLocalizedString("personal.info", value: "Personal Info", comment: "")

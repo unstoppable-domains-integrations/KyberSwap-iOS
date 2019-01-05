@@ -39,7 +39,6 @@
                 <outlet property="notSignInView" destination="wVn-be-kf6" id="GJs-ND-mvW"/>
                 <outlet property="signInButton" destination="ToE-Xs-12c" id="dPJ-XM-vPq"/>
                 <outlet property="signInHeaderView" destination="UH0-5f-Ssg" id="QtK-Yg-nFU"/>
-                <outlet property="signUpButton" destination="D9t-ZL-afx" id="fWk-Al-IfE"/>
                 <outlet property="signedInView" destination="UrY-qu-28V" id="XZ9-we-wyO"/>
                 <outlet property="userEmailLabel" destination="kTw-hp-avF" id="QEB-Fh-fsg"/>
                 <outlet property="userImageView" destination="YjR-XA-Zz1" id="9qS-TR-RLz"/>
@@ -61,23 +60,23 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_big_icon" translatesAutoresizingMaskIntoConstraints="NO" id="8a5-2v-PR3">
-                            <rect key="frame" x="120" y="100" width="135" height="135"/>
+                            <rect key="frame" x="120" y="120" width="135" height="135"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Know Your Customer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9b-Vb-xfi">
-                            <rect key="frame" x="90.5" y="279" width="194" height="22"/>
+                            <rect key="frame" x="90.5" y="299" width="194" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zOn-is-adv">
-                            <rect key="frame" x="16" y="333" width="343" height="51.5"/>
+                            <rect key="frame" x="16" y="353" width="343" height="51.5"/>
                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id porttitor mauris. Phasellus lobortis convallis est sed euismod. </string>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-Xs-12c">
-                            <rect key="frame" x="36" y="416.5" width="303" height="44"/>
+                            <rect key="frame" x="36" y="468.5" width="303" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="qZd-N1-1nd"/>
@@ -90,36 +89,18 @@
                                 <action selector="signInButtonPressed:" destination="-1" eventType="touchUpInside" id="WVG-VV-wog"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9t-ZL-afx">
-                            <rect key="frame" x="36" y="476.5" width="303" height="44"/>
-                            <color key="backgroundColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="44" id="mdr-Ny-c4n"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
-                            <state key="normal" title="Sign Up">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
-                            <connections>
-                                <action selector="signUpButtonPressed:" destination="-1" eventType="touchUpInside" id="q0g-uQ-d5x"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="ToE-Xs-12c" firstAttribute="top" secondItem="zOn-is-adv" secondAttribute="bottom" constant="32" id="328-cf-Hkw"/>
+                        <constraint firstItem="ToE-Xs-12c" firstAttribute="top" secondItem="zOn-is-adv" secondAttribute="bottom" constant="64" id="328-cf-Hkw"/>
                         <constraint firstItem="f9b-Vb-xfi" firstAttribute="centerX" secondItem="8a5-2v-PR3" secondAttribute="centerX" id="BaH-G9-s8F"/>
-                        <constraint firstItem="D9t-ZL-afx" firstAttribute="trailing" secondItem="ToE-Xs-12c" secondAttribute="trailing" id="CTe-a8-NcE"/>
                         <constraint firstItem="f9b-Vb-xfi" firstAttribute="top" secondItem="8a5-2v-PR3" secondAttribute="bottom" constant="44" id="E0x-YT-Plo"/>
                         <constraint firstAttribute="trailing" secondItem="ToE-Xs-12c" secondAttribute="trailing" constant="36" id="Eir-GR-VzP"/>
-                        <constraint firstItem="D9t-ZL-afx" firstAttribute="leading" secondItem="ToE-Xs-12c" secondAttribute="leading" id="HLW-k8-L7v"/>
                         <constraint firstAttribute="trailing" secondItem="zOn-is-adv" secondAttribute="trailing" constant="16" id="OGC-yy-Ehb"/>
                         <constraint firstItem="zOn-is-adv" firstAttribute="centerX" secondItem="wVn-be-kf6" secondAttribute="centerX" id="X3D-Jo-cSh"/>
-                        <constraint firstItem="D9t-ZL-afx" firstAttribute="centerX" secondItem="ToE-Xs-12c" secondAttribute="centerX" id="XYy-N9-SpM"/>
                         <constraint firstItem="8a5-2v-PR3" firstAttribute="centerX" secondItem="wVn-be-kf6" secondAttribute="centerX" id="d9d-tV-cmJ"/>
                         <constraint firstItem="ToE-Xs-12c" firstAttribute="leading" secondItem="wVn-be-kf6" secondAttribute="leading" constant="36" id="haY-fk-xs0"/>
-                        <constraint firstItem="8a5-2v-PR3" firstAttribute="top" secondItem="wVn-be-kf6" secondAttribute="top" constant="100" id="kGV-Ux-yfU"/>
-                        <constraint firstItem="D9t-ZL-afx" firstAttribute="top" secondItem="ToE-Xs-12c" secondAttribute="bottom" constant="16" id="v08-Pq-heM"/>
+                        <constraint firstItem="8a5-2v-PR3" firstAttribute="top" secondItem="wVn-be-kf6" secondAttribute="top" constant="120" id="kGV-Ux-yfU"/>
                         <constraint firstItem="ToE-Xs-12c" firstAttribute="centerX" secondItem="wVn-be-kf6" secondAttribute="centerX" id="wI5-52-EmN"/>
                         <constraint firstItem="zOn-is-adv" firstAttribute="leading" secondItem="wVn-be-kf6" secondAttribute="leading" constant="16" id="xAl-No-ekc"/>
                         <constraint firstItem="zOn-is-adv" firstAttribute="top" secondItem="f9b-Vb-xfi" secondAttribute="bottom" constant="32" id="xfQ-70-l1Y"/>

@@ -55,7 +55,7 @@ class KNEditWalletViewController: KNBaseViewController {
     self.walletNameTextField.text = self.viewModel.wallet.name
     self.showBackupPhraseButton.setTitle(NSLocalizedString("show.backup.phrase", value: "Show Backup Phrase", comment: ""), for: .normal)
     self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
-    self.saveButton.rounded(radius: 4.0)
+    self.saveButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.saveButton.frame.height))
     self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
     self.saveButton.applyGradient()
     self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()

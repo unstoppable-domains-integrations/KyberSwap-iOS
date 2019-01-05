@@ -74,7 +74,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
     let txHashTapGes = UITapGestureRecognizer(target: self, action: #selector(self.txHashTapped(_:)))
     self.txHashLabel.addGestureRecognizer(txHashTapGes)
-    self.viewOnEtherscanButton.rounded(radius: 5.0)
+    self.viewOnEtherscanButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.viewOnEtherscanButton.frame.height))
     self.viewOnEtherscanButton.setTitle(
       NSLocalizedString("view.on.etherscan", value: "View on Etherscan", comment: ""),
       for: .normal

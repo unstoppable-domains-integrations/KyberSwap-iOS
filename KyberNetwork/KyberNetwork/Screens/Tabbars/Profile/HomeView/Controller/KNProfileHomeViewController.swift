@@ -25,7 +25,6 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var notSignInView: UIView!
   @IBOutlet weak var notSignInTitleLabel: UILabel!
   @IBOutlet weak var notSignInDescLabel: UILabel!
-  @IBOutlet weak var signUpButton: UIButton!
   @IBOutlet weak var signInButton: UIButton!
 
   @IBOutlet weak var signInHeaderView: UIView!
@@ -112,7 +111,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   fileprivate func setupNotSignInView() {
     self.notSignInView.applyGradient(with: UIColor.Kyber.backgroundColors)
     self.signInButton.rounded(
-      radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
+      radius: self.appStyle.buttonRadius(for: self.signInButton.frame.height)
     )
     self.notSignInTitleLabel.text = NSLocalizedString(
       "profile", value: "Profile",
@@ -130,19 +129,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     )
     self.signInButton.backgroundColor = UIColor.white
     self.signInButton.setTitleColor(UIColor(red: 251, green: 121, blue: 93), for: .normal)
-    self.signUpButton.rounded(
-      color: .white,
-      width: 1.0,
-      radius: self.appStyle.buttonRadius(for: self.signUpButton.frame.height)
-    )
     self.signInButton.addTextSpacing()
-    self.signUpButton.setTitle(
-      NSLocalizedString("sign.up", value: "Sign Up", comment: ""),
-      for: .normal
-    )
-    self.signUpButton.setTitleColor(.white, for: .normal)
-    self.signUpButton.backgroundColor = .clear
-    self.signUpButton.addTextSpacing()
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
   }
 
@@ -172,7 +159,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.userKYCActionButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.userKYCActionButton.frame.height)
     )
     self.userKYCStatusLabel.rounded(radius: 2.0)
 
@@ -192,7 +179,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.addWalletAddButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: 4.0
+      radius: KNAppStyleType.current.buttonRadius(for: self.addWalletAddButton.frame.height)
     )
     self.addWalletAddButton.setTitle(
       NSLocalizedString("add", value: "Add", comment: ""),

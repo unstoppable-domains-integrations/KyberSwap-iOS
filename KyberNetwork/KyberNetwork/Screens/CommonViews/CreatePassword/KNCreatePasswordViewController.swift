@@ -52,7 +52,7 @@ class KNCreatePasswordViewController: UIViewController {
     self.errorConfirmPasswordLabel.text = NSLocalizedString("passwords.mismatch", value: "Passwords mismatch", comment: "")
     self.errorConfirmPasswordLabel.isHidden = true
 
-    self.doneButton.rounded(color: .clear, width: 0, radius: 5.0)
+    self.doneButton.rounded(color: .clear, width: 0, radius: KNAppStyleType.current.buttonRadius(for: self.doneButton.frame.height))
   }
 
   @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {
