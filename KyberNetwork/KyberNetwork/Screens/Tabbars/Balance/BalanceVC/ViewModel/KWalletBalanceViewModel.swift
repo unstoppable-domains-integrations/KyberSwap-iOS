@@ -72,7 +72,6 @@ class KWalletBalanceViewModel: NSObject {
     if self.currencyType == type { return false }
     self.currencyType = type
     KNAppTracker.updateCurrencyType(type)
-    self.tokensDisplayType = .priceDesc
     self.createDisplayedData()
     return true
   }

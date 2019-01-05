@@ -209,13 +209,10 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.hamburgerMenu.gestureScreenEdgePanAction(sender)
   }
 
-  @IBAction func receiveTokenButtonPressed(_ sender: Any) {
-    self.delegate?.kWalletBalanceViewController(self, run: .receiveToken)
-  }
-
   @IBAction func currencyButtonPressed(_ sender: Any) {
     let newType: KWalletCurrencyType = self.viewModel.currencyType == .usd ? .eth : .usd
     _ = self.viewModel.updateCurrencyType(newType)
+    self.viewModel.updateTokenDisplayType(positionClicked: 2)
     self.updateDisplayedDataType()
   }
 }
