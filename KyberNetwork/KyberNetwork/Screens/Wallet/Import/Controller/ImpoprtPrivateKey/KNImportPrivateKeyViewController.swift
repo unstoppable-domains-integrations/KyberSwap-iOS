@@ -71,10 +71,11 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 
   fileprivate func updateNextButton() {
     let enabled: Bool = {
-      if let text = self.enterPrivateKeyTextField.text, !text.isEmpty { return true }
+      if let text = self.enterPrivateKeyTextField.text, text.count == 64 { return true }
       return false
     }()
     self.nextButton.isEnabled = enabled
+    self.privateKeyNoteLabel.textColor = enabled ? UIColor(red: 182, green: 186, blue: 185) : UIColor.Kyber.strawberry
     if enabled { self.nextButton.applyGradient() }
   }
 
