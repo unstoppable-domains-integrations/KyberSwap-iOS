@@ -328,7 +328,7 @@ extension KWalletBalanceViewController: UITableViewDataSource {
     let sendAction = UITableViewRowAction(style: .default, title: sendText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .send(token: tokenObject))
     }
-    sendAction.backgroundColor = UIColor.Kyber.merigold
+    sendAction.backgroundColor = UIColor.Kyber.enygold
     let sellText = NSLocalizedString("sell", value: "Sell", comment: "")
     let sellAction = UITableViewRowAction(style: .default, title: sellText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .sell(token: tokenObject))
