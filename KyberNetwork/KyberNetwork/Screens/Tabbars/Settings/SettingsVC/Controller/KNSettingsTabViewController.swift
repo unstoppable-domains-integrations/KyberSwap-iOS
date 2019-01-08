@@ -8,6 +8,7 @@ enum KNSettingsTabViewEvent {
   case support
   case changePIN
   case about
+  case community
   case shareWithFriends
   case telegram
   case telegramDev
@@ -108,6 +109,10 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func aboutButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .about)
+  }
+
+  @IBAction func communityButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .community)
   }
 
   @IBAction func shareWithFriendButtonPressed(_ sender: Any) {

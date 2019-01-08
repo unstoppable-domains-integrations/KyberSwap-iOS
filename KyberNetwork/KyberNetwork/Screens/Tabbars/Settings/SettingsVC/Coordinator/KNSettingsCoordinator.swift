@@ -110,6 +110,9 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       )
       self.passcodeCoordinator.delegate = self
       self.passcodeCoordinator.start()
+    case .community:
+      let url = KNAppTracker.getKyberProfileBaseString() + "/community"
+      self.openCommunityURL(url)
     case .shareWithFriends:
       self.openShareWithFriends()
     case .telegram:
