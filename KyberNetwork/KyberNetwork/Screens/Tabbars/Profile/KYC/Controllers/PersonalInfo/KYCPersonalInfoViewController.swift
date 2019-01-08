@@ -897,14 +897,14 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
         NSAttributedStringKey.kern: 0.0,
-        ]
+      ]
       let addressAttributes: [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
         NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
         NSAttributedStringKey.kern: 0.0,
-        ]
+      ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
-      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
+      let addressString: String = "      \(wallet.1.prefix(16))...\(wallet.1.suffix(10))"
       attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
       return attributedString
     }()

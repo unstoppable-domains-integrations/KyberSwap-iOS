@@ -1762,6 +1762,7 @@
 		254CD0DB2148F0FE0079EA7A /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				25A293F620CE7AD4008C6759 /* Users */,
 				254CD0ED21492DD50079EA7A /* KYC */,
 				254CD0EC21492DC80079EA7A /* HomeView */,
 			);
@@ -2024,7 +2025,6 @@
 				254CD0DB2148F0FE0079EA7A /* Profile */,
 				255DC60A20A9495F002C2BBF /* Balance */,
 				25CC0A9A2057E2680009D0D5 /* KyberSwap */,
-				25A293F620CE7AD4008C6759 /* KyberGO */,
 				257C9FCB2078FB2000EE0128 /* Settings */,
 			);
 			path = Tabbars;
@@ -2567,14 +2567,14 @@
 			path = SelectOption;
 			sourceTree = "<group>";
 		};
-		25A293F620CE7AD4008C6759 /* KyberGO */ = {
+		25A293F620CE7AD4008C6759 /* Users */ = {
 			isa = PBXGroup;
 			children = (
 				25A2940E20CE9F8F008C6759 /* Storage */,
 				25A293FC20CE7B0F008C6759 /* Models */,
 				25A293FB20CE7B06008C6759 /* Screens */,
 			);
-			path = KyberGO;
+			path = Users;
 			sourceTree = "<group>";
 		};
 		25A293FB20CE7B06008C6759 /* Screens */ = {

@@ -32,14 +32,14 @@ open class SliderTextFieldCell: Cell<Float>, CellType, UITextFieldDelegate {
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
 
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
-            guard let me = self else { return }
-            if me.shouldShowTitle {
-                me.titleLabel = me.textLabel
-                me.valueLabel = me.detailTextLabel
-                me.addConstraints()
-            }
-        }
+//        NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
+//            guard let me = self else { return }
+//            if me.shouldShowTitle {
+//                me.titleLabel = me.textLabel
+//                me.valueLabel = me.detailTextLabel
+//                me.addConstraints()
+//            }
+//        }
     }
 
     deinit {

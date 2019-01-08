@@ -380,6 +380,10 @@ extension KNProfileHomeViewController {
 extension KNProfileHomeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    if indexPath.row < self.viewModel.wallets.count {
+      let address = self.viewModel.wallets[indexPath.row].1
+      self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "address/\(address)")
+    }
   }
 }
 
@@ -414,7 +418,7 @@ extension KNProfileHomeViewController: UITableViewDataSource {
         NSAttributedStringKey.kern: 0.0,
       ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
-      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
+      let addressString: String = "      \(wallet.1.prefix(16))...\(wallet.1.suffix(10))"
       attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
       return attributedString
     }()

@@ -4,9 +4,9 @@ import Foundation
 
 class DeviceChecker: JailbreakChecker {
     func isJailbroken() -> Bool {
-        if TARGET_IPHONE_SIMULATOR == 1 {
-            return false
-        }
+//        if TARGET_IPHONE_SIMULATOR == 1 {
+//            return false
+//        }
 
         let list: [String] = [
             "/Applications/Cydia.app",

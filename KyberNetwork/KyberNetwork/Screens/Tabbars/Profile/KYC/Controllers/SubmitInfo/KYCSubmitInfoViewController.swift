@@ -474,7 +474,7 @@ extension KYCSubmitInfoViewController: UITableViewDataSource {
         NSAttributedStringKey.kern: 0.0,
         ]
       attributedString.append(NSAttributedString(string: "    \(wallet.0)", attributes: nameAttributes))
-      let addressString: String = "      \(wallet.1.prefix(8))...\(wallet.1.suffix(6))"
+      let addressString: String = "      \(wallet.1.prefix(16))...\(wallet.1.suffix(10))"
       attributedString.append(NSAttributedString(string: "\n\(addressString)", attributes: addressAttributes))
       return attributedString
     }()

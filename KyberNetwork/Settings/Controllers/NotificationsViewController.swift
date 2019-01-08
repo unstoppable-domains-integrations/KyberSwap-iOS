@@ -27,8 +27,9 @@ class NotificationsViewController: FormViewController {
     var didChange: ((_ change: NotificationChanged) -> Void)?
 
     private static var isPushNotificationEnabled: Bool {
-        guard let settings = UIApplication.shared.currentUserNotificationSettings else { return false }
-        return UIApplication.shared.isRegisteredForRemoteNotifications && !settings.types.isEmpty
+//        guard let settings = UIApplication.shared.currentUserNotificationSettings else { return false }
+//        return UIApplication.shared.isRegisteredForRemoteNotifications && !settings.types.isEmpty
+      return false
     }
 
     private var showOptionsCondition: Condition {

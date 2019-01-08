@@ -17,9 +17,9 @@ class KNTransactionCoordinator {
   let tokenStorage: KNTokenStorage
   let externalProvider: KNExternalProvider
   let wallet: Wallet
+  fileprivate var isLoadingEnabled: Bool = false
 
   fileprivate var pendingTxTimer: Timer?
-  fileprivate var allTxTimer: Timer?
   fileprivate var tokenTxTimer: Timer?
 
   deinit { self.stop() }
@@ -37,6 +37,7 @@ class KNTransactionCoordinator {
   }
 
   func start() {
+    self.isLoadingEnabled = true
     self.startUpdatingCompletedTransactions()
     self.startUpdatingPendingTransactions()
 
@@ -50,13 +51,17 @@ class KNTransactionCoordinator {
   }
 
   func stop() {
+    self.isLoadingEnabled = false
     self.stopUpdatingCompletedTransaction()
     self.stopUpdatingPendingTransactions()
   }
 
   func forceUpdateNewTransactionsWhenPendingTxCompleted() {
+    self.isLoadingEnabled = true
     DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-      self.forceFetchTokenTransactions()
+      if self.isLoadingEnabled {
+        self.forceFetchTokenTransactions()
+      }
     }
   }
 }
@@ -77,7 +82,10 @@ extension KNTransactionCoordinator {
       withTimeInterval: KNLoadingInterval.loadingListTransactions,
       repeats: true,
       block: { [weak self] _ in
-      self?.forceFetchTokenTransactions()
+        guard let `self` = self else { return }
+        if self.isLoadingEnabled {
+          self.forceFetchTokenTransactions()
+        }
       }
     )
   }
@@ -326,13 +334,19 @@ extension KNTransactionCoordinator {
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
       repeats: true,
       block: { [weak self] timer in
-      self?.shouldUpdatePendingTransaction(timer)
+        guard let `self` = self else { return }
+        if self.isLoadingEnabled {
+          self.shouldUpdatePendingTransaction(timer)
+        }
       }
     )
   }
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
-    self.transactionStorage.kyberPendingTransactions.forEach { self.updatePendingTransaction($0) }
+    let objects = self.transactionStorage.kyberPendingTransactions
+    objects.forEach {
+      if self.isLoadingEnabled { self.updatePendingTransaction($0) }
+    }
   }
 
   func updatePendingTransaction(_ transaction: KNTransaction) {
