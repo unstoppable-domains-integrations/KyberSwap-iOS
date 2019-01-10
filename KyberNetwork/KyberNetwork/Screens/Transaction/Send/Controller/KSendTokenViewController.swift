@@ -164,6 +164,8 @@ class KSendTokenViewController: KNBaseViewController {
 
     self.balanceTextLabel.text = self.viewModel.balanceText
     self.tokenBalanceLabel.text = self.viewModel.displayBalance
+    let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.tokenBalanceLabelTapped(_:)))
+    self.tokenBalanceLabel.addGestureRecognizer(tapBalanceGesture)
   }
 
   fileprivate func setupRecentContact() {
@@ -232,6 +234,10 @@ class KSendTokenViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
+  @objc func tokenBalanceLabelTapped(_ sender: Any) {
+    self.keyboardSendAllButtonPressed(sender)
+  }
+
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.kSendTokenViewController(self, run: .back)
   }
@@ -273,6 +279,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.amountTextField.text = self.viewModel.allTokenBalanceString
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
     self.amountTextField.resignFirstResponder()
+    self.amountTextField.textColor = self.viewModel.amountTextColor
     self.shouldUpdateEstimatedGasLimit(nil)
     if self.viewModel.from.isETH {
       self.showSuccessTopBannerMessage(

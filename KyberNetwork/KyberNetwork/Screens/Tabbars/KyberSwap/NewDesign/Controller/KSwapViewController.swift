@@ -469,7 +469,11 @@ extension KSwapViewController {
     self.viewModel.updateEstimatedRateFromCachedIfNeeded()
     // call update est rate from node
     self.updateEstimatedRate()
+
     self.balanceLabel.text = self.viewModel.balanceText
+    let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.balanceLabelTapped(_:)))
+    self.balanceLabel.addGestureRecognizer(tapBalanceGesture)
+
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
@@ -495,6 +499,10 @@ extension KSwapViewController {
       slow: KNGasCoordinator.shared.lowKNGas
     )
     self.view.layoutIfNeeded()
+  }
+
+  @objc func balanceLabelTapped(_ sender: Any) {
+    self.keyboardSwapAllButtonPressed(sender)
   }
 }
 
