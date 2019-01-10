@@ -45,64 +45,56 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
   }
 
   func promoCodeViewController(_ controller: KNPromoCodeViewController, promoCode: String, name: String) {
-    if isDebug {
-      let privateKey: String = "f4e72838eb3b07d2508289042e49c7996d06c3c4907922485fd6565646bc3f1e"
-      let expiredDate: TimeInterval = Date().addingTimeInterval(300).timeIntervalSince1970
-      let destinationToken: String = "KNC"
-      self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
-      self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey)) { [weak self] result in
+    let nonce: UInt = UInt(round(Date().timeIntervalSince1970))
+    self.rootViewController.displayLoading()
+    let provider = MoyaProvider<ProfileKYCService>()
+    DispatchQueue.global(qos: .background).async {
+      provider.request(.promoCode(promoCode: promoCode, nonce: nonce), completion: { [weak self] result in
         guard let `self` = self else { return }
-        self.rootViewController.hideLoading()
-        switch result {
-        case .success(let wallet):
-          self.didSuccessUnlockPromoCode(
-            wallet: wallet,
-            name: name,
-            expiredDate: expiredDate,
-            destinationToken: destinationToken
-          )
-        case .failure(let error):
-          self.navigationController.displayError(error: error)
+        DispatchQueue.main.async {
+          self.rootViewController.hideLoading()
+          switch result {
+          case .success(let resp):
+            do {
+              _ = try resp.filterSuccessfulStatusCodes()
+              let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let data = json["data"] as? JSONDictionary {
+                let privateKey = data["private_key"] as? String ?? ""
+                let expiredDate = data["expired_date"] as? Double ?? 0.0
+                let destinationToken = data["destination_token"] as? String ?? ""
+                self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
+                self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey)) { [weak self] result in
+                  guard let `self` = self else { return }
+                  self.rootViewController.hideLoading()
+                  switch result {
+                  case .success(let wallet):
+                    self.didSuccessUnlockPromoCode(
+                      wallet: wallet,
+                      name: name,
+                      expiredDate: expiredDate,
+                      destinationToken: destinationToken
+                    )
+                  case .failure(let error):
+                    self.navigationController.displayError(error: error)
+                  }
+                }
+              } else {
+                let error = json["error"] as? String ?? ""
+                self.navigationController.showWarningTopBannerMessage(
+                  with: NSLocalizedString("error", value: "Error", comment: ""),
+                  message: error,
+                  time: 1.5
+                )
+              }
+            } catch let error {
+              self.navigationController.displayError(error: error)
+            }
+          case .failure(let error):
+            self.navigationController.displayError(error: error)
+          }
         }
-      }
-      return
+      })
     }
-//    let nonce: UInt = UInt(round(Date().timeIntervalSince1970))
-//    self.rootViewController.displayLoading()
-//    let provider = MoyaProvider<ProfileKYCService>()
-//    DispatchQueue.global(qos: .background).async {
-//      provider.request(.promoCode(promoCode: promoCode, nonce: nonce), completion: { [weak self] result in
-//        guard let `self` = self else { return }
-//        DispatchQueue.main.async {
-//          self.rootViewController.hideLoading()
-//          switch result {
-//          case .success(let resp):
-//            do {
-//              _ = try resp.filterSuccessfulStatusCodes()
-//              let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-//              print("Response: \(json)")
-//              if let data = json["data"] as? JSONDictionary {
-//                let privateKey = data["private_key"] as? String ?? ""
-//                let expiredDate = data["expired_date"] as? Double ?? 0.0
-//                let destinationToken = data["destination_token"] as? String ?? ""
-//                // import wallet here
-//              } else {
-//                let error = json["error"] as? String ?? ""
-//                self.navigationController.showWarningTopBannerMessage(
-//                  with: NSLocalizedString("error", value: "Error", comment: ""),
-//                  message: error,
-//                  time: 1.5
-//                )
-//              }
-//            } catch let error {
-//              self.navigationController.displayError(error: error)
-//            }
-//          case .failure(let error):
-//            self.navigationController.displayError(error: error)
-//          }
-//        }
-//      })
-//    }
   }
 
   fileprivate func didSuccessUnlockPromoCode(wallet: Wallet, name: String, expiredDate: TimeInterval, destinationToken: String) {
