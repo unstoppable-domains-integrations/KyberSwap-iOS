@@ -43,6 +43,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     return coordinator
   }()
 
+  internal var promoCodeCoordinator: KNPromoCodeCoordinator?
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,

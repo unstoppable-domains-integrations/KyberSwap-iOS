@@ -77,6 +77,16 @@ class TokenObject: Object {
       return self.symbol == "ETH" && self.name.lowercased() == "ethereum"
     }
 
+    var isPromoToken: Bool {
+      let promoTokenSymbol: String = {
+        switch KNEnvironment.default {
+        case .mainnetTest, .production, .staging: return "PT"
+        default: return "OMG" // set OMG as PT token for other networks
+        }
+      }()
+      return promoTokenSymbol == self.symbol
+    }
+
     var isDGX: Bool { return self.symbol == "DGX" }
     var isDAI: Bool { return self.symbol == "DAI" }
     var isMKR: Bool { return self.symbol == "MKR" }

@@ -192,6 +192,16 @@ extension KNAppCoordinator {
     }
   }
 
+  func addPromoCode() {
+    self.promoCodeCoordinator = nil
+    self.promoCodeCoordinator = KNPromoCodeCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+    self.promoCodeCoordinator?.delegate = self
+    self.promoCodeCoordinator?.start()
+  }
+
   fileprivate func updateLocalData() {
     self.tokenBalancesDidUpdateNotification(nil)
     self.ethBalanceDidUpdateNotification(nil)

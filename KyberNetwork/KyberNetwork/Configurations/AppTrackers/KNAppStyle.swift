@@ -35,15 +35,15 @@ enum KNAppStyleType: String {
   }
 
   var landingCreateWalletBackgroundColor: UIColor {
-    return UIColor.white
+    return UIColor.clear
   }
 
   var landingCreateWalletTitleColor: UIColor {
-    return UIColor.Kyber.lightSeaGreen
+    return UIColor.Kyber.white
   }
 
   var landingImportWalletBackgroundColor: UIColor {
-    return UIColor(red: 90, green: 94, blue: 103)
+    return UIColor.clear
   }
 
   var landingImmportWalletTitleColor: UIColor {

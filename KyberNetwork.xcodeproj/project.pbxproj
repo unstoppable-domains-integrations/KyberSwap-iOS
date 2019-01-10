@@ -57,6 +57,9 @@
 		25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */; };
 		2537431E20ECEA5E002C29FC /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2537431D20ECEA5E002C29FC /* KNSecret.swift */; };
 		253B044B21647C6F002153B6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B044A21647C6F002153B6 /* R.generated.swift */; };
+		253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253F50E121E5B40E0068813D /* KNPromoCodeCoordinator.swift */; };
+		253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253F50E521E5B5290068813D /* KNPromoCodeViewController.swift */; };
+		253F50E821E5B5290068813D /* KNPromoCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253F50E621E5B5290068813D /* KNPromoCodeViewController.xib */; };
 		253FD59C219048DF00CACDEB /* KYCPersonalOptionalDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253FD59B219048DF00CACDEB /* KYCPersonalOptionalDataView.swift */; };
 		253FD59E219048F800CACDEB /* KYCPersonalOptionalDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253FD59D219048F800CACDEB /* KYCPersonalOptionalDataView.xib */; };
 		2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604321215C120015ECC7 /* KSwapViewController.swift */; };
@@ -756,6 +759,9 @@
 		25369F1120F88C52007231FE /* KNWelcomeScreenCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWelcomeScreenCollectionView.xib; sourceTree = "<group>"; };
 		2537431D20ECEA5E002C29FC /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
 		253B044A21647C6F002153B6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		253F50E121E5B40E0068813D /* KNPromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPromoCodeCoordinator.swift; sourceTree = "<group>"; };
+		253F50E521E5B5290068813D /* KNPromoCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPromoCodeViewController.swift; sourceTree = "<group>"; };
+		253F50E621E5B5290068813D /* KNPromoCodeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPromoCodeViewController.xib; sourceTree = "<group>"; };
 		253FD59B219048DF00CACDEB /* KYCPersonalOptionalDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCPersonalOptionalDataView.swift; sourceTree = "<group>"; };
 		253FD59D219048F800CACDEB /* KYCPersonalOptionalDataView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCPersonalOptionalDataView.xib; sourceTree = "<group>"; };
 		2542604321215C120015ECC7 /* KSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewController.swift; sourceTree = "<group>"; };
@@ -1677,6 +1683,23 @@
 			path = Secret;
 			sourceTree = "<group>";
 		};
+		253F50E321E5B4E70068813D /* PromoCode */ = {
+			isa = PBXGroup;
+			children = (
+				253F50E421E5B4F40068813D /* Controller */,
+			);
+			path = PromoCode;
+			sourceTree = "<group>";
+		};
+		253F50E421E5B4F40068813D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				253F50E521E5B5290068813D /* KNPromoCodeViewController.swift */,
+				253F50E621E5B5290068813D /* KNPromoCodeViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		253FD59A219048B400CACDEB /* OptionalData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2009,6 +2032,7 @@
 		25682B6C20EE0315009738C4 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				253F50E321E5B4E70068813D /* PromoCode */,
 				25A4B4AF21242DC300924351 /* Create */,
 				25696F4620BD0ECD002CC53F /* HeaderView */,
 				25C45ABF20AC3D7400CDA1FF /* LandingPage */,
@@ -2767,6 +2791,7 @@
 				25C45AC620AC3EF600CDA1FF /* KNLandingPageCoordinator.swift */,
 				25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */,
 				25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */,
+				253F50E121E5B40E0068813D /* KNPromoCodeCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -4792,6 +4817,7 @@
 				256BD3FC214A57450085DE55 /* KYCIdentityInfoViewController.xib in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
+				253F50E821E5B5290068813D /* KNPromoCodeViewController.xib in Resources */,
 				25929C6820DA5C760045CFA3 /* SF-Pro-Display-Light.otf in Resources */,
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
 				25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */,
@@ -5030,6 +5056,7 @@
 				77872D25202505B70032D687 /* EnterPasswordViewController.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
+				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				25F96F8021537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift in Sources */,
@@ -5297,6 +5324,7 @@
 				615F10621FCD3F0F008A45AF /* OnboardingPageStyle.swift in Sources */,
 				2912CD341F6A849C00C6CBE3 /* WelcomeViewModel.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
+				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				29E9CFCD1FE7343C00017744 /* NewTokenViewModel.swift in Sources */,
 				291F52A21F6B6DCF00B369AB /* EtherClient.swift in Sources */,
 				299B5E421FD2298E0051361C /* ConfigureTransactionViewController.swift in Sources */,

@@ -484,6 +484,9 @@ extension KSwapViewController {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     self.updateAdvancedSettingsView()
+
+    // update tokens button in case promo wallet
+    self.toTokenButton.isEnabled = self.viewModel.isToTokenBtnEnabled
     self.view.layoutIfNeeded()
   }
 
@@ -621,6 +624,16 @@ extension KSwapViewController {
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
     self.viewModel.updateSelectedToken(token, isSource: isSource)
+    // support for promo wallet
+    let isUpdatedTo: Bool = {
+      if token.isPromoToken, isSource,
+        let dest = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.viewModel.walletObject.address),
+        let destToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == dest.uppercased() }) {
+        self.viewModel.updateSelectedToken(destToken, isSource: false)
+        return true
+      }
+      return !isSource
+    }()
 
     if self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.text = self.viewModel.amountFrom
@@ -631,7 +644,7 @@ extension KSwapViewController {
     }
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
-    self.updateTokensView(updatedFrom: isSource, updatedTo: !isSource)
+    self.updateTokensView(updatedFrom: isSource, updatedTo: isUpdatedTo)
     if self.viewModel.from == self.viewModel.to {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),

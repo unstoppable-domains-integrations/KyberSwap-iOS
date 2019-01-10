@@ -37,6 +37,10 @@ class KNWalletStorage {
 
   func delete(wallets: [KNWalletObject]) {
     self.realm.beginWrite()
+    // remove promo info for wallet if have
+    wallets.forEach({
+      KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: $0.address)
+    })
     self.realm.delete(wallets)
     try! self.realm.commitWrite()
   }

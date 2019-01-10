@@ -3,6 +3,7 @@
 import UIKit
 
 enum KNLandingPageViewEvent {
+  case openPromoCode
   case openCreateWallet
   case openImportWallet
   case openTermAndCondition
@@ -18,6 +19,7 @@ class KNLandingPageViewController: KNBaseViewController {
 
   @IBOutlet weak var welcomeScreenCollectionView: KNWelcomeScreenCollectionView!
   @IBOutlet weak var debugButton: UIButton!
+  @IBOutlet weak var promoCodeButton: UIButton!
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
@@ -27,9 +29,19 @@ class KNLandingPageViewController: KNBaseViewController {
     let style = KNAppStyleType.current
     self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
 
-    self.createWalletButton.backgroundColor = style.landingCreateWalletBackgroundColor
-    self.createWalletButton.setTitleColor(
+    self.promoCodeButton.backgroundColor = .white
+    self.promoCodeButton.setTitleColor(
       UIColor(red: 250, green: 107, blue: 100),
+      for: .normal
+    )
+    self.promoCodeButton.setTitle(
+      NSLocalizedString("promo.code", value: "Promo Code", comment: ""),
+      for: .normal
+    )
+
+    self.createWalletButton.backgroundColor = .clear
+    self.createWalletButton.setTitleColor(
+      .white,
       for: .normal
     )
     self.createWalletButton.setTitle(
@@ -48,8 +60,8 @@ class KNLandingPageViewController: KNBaseViewController {
     self.importWalletButton.addTextSpacing()
 
     let radius = style.buttonRadius(for: self.createWalletButton.frame.height)
-    self.createWalletButton.rounded(radius: radius)
-    self.createWalletButton.addTextSpacing()
+    self.promoCodeButton.rounded(radius: radius)
+    self.createWalletButton.rounded(color: .white, width: 1.0, radius: radius)
     self.importWalletButton.rounded(color: .white, width: 1.0, radius: radius)
     self.termAndConditionButton.setTitle(
       NSLocalizedString("terms.and.conditions", value: "Terms and Conditions", comment: ""),
@@ -64,6 +76,10 @@ class KNLandingPageViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.view.removeSublayer(at: 0)
     self.view.applyGradient(with: UIColor.Kyber.backgroundColors)
+  }
+
+  @IBAction func promoCodeButtonPressed(_ sender: Any) {
+    self.delegate?.landinagePageViewController(self, run: .openPromoCode)
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {

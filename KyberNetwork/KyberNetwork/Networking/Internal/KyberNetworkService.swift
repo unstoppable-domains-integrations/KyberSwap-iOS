@@ -271,6 +271,7 @@ enum ProfileKYCService {
   case checkWalletExist(accessToken: String, wallet: String)
   case addWallet(accessToken: String, label: String, address: String)
   case removeProfile(accessToken: String, userID: String)
+  case promoCode(promoCode: String, nonce: UInt)
 
   var apiPath: String {
     switch self {
@@ -281,6 +282,7 @@ enum ProfileKYCService {
     case .checkWalletExist: return KNSecret.checkWalletsExistEndpoint
     case .addWallet: return KNSecret.addWallet
     case .removeProfile: return KNSecret.removeProfile
+    case .promoCode: return KNSecret.promoCode
     }
   }
 }
@@ -292,7 +294,10 @@ extension ProfileKYCService: TargetType {
   }
 
   var path: String { return self.apiPath }
-  var method: Moya.Method { return .post }
+  var method: Moya.Method {
+    if case .promoCode = self { return .get }
+    return .post
+  }
   var task: Task {
     switch self {
     //swiftlint:disable line_length
@@ -383,15 +388,35 @@ extension ProfileKYCService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
+    case .promoCode(let promoCode, let nonce):
+      let params: JSONDictionary = [
+        "nonce": nonce,
+        "promo_code": promoCode,
+        "isInternalApp": true,
+      ]
+      return .requestCompositeData(bodyData: Data(), urlParameters: params)
     }
   }
 
   var sampleData: Data { return Data() }
   var headers: [String: String]? {
-    return [
-      "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
-      "client-build": Bundle.main.buildNumber ?? "",
-    ]
+    switch self {
+    case .promoCode(let promoCode, let nonce):
+      let string = "nonce=\(nonce)&promo_code=\(promoCode)&isInternalApp=true"
+      let hmac = try! HMAC(key: KNSecret.promoCode, variant: .sha512)
+      let hash = try! hmac.authenticate(string.bytes).toHexString()
+      return [
+        "Content-Type": "application/x-www-form-urlencoded",
+        "signed": hash,
+        "client": Bundle.main.bundleIdentifier ?? "",
+        "client-build": Bundle.main.buildNumber ?? "",
+      ]
+    default:
+      return [
+        "content-type": "application/json",
+        "client": Bundle.main.bundleIdentifier ?? "",
+        "client-build": Bundle.main.buildNumber ?? "",
+      ]
+    }
   }
 }

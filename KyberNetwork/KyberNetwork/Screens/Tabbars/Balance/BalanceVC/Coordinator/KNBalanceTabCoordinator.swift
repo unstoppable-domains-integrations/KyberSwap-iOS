@@ -6,7 +6,8 @@ import BigInt
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool)
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
-  func balancetabCoordinatorDidSelectAddWallet()
+  func balanceTabCoordinatorDidSelectAddWallet()
+  func balanceTabCoordinatorDidSelectPromoCode()
 }
 
 class KNBalanceTabCoordinator: Coordinator {
@@ -28,6 +29,8 @@ class KNBalanceTabCoordinator: Coordinator {
     controller.loadViewIfNeeded()
     return controller
   }()
+
+  fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
     guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
@@ -188,6 +191,8 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
       self.hamburgerMenu(select: wallet)
     case .selectAddWallet:
       self.hamburgerMenuSelectAddWallet()
+    case .selectPromoCode:
+      self.hamburgerMenuSelectPromoCode()
     case .selectSendToken:
       self.openSendTokenView(with: self.session.tokenStorage.ethToken)
     case .selectAllTransactions:
@@ -211,7 +216,11 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func hamburgerMenuSelectAddWallet() {
-    self.delegate?.balancetabCoordinatorDidSelectAddWallet()
+    self.delegate?.balanceTabCoordinatorDidSelectAddWallet()
+  }
+
+  func hamburgerMenuSelectPromoCode() {
+    self.delegate?.balanceTabCoordinatorDidSelectPromoCode()
   }
 
   func openSendTokenView(with token: TokenObject) {

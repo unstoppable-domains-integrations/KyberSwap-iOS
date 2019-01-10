@@ -8,6 +8,7 @@ enum KNBalanceTabHamburgerMenuViewEvent {
   case selectAddWallet
   case selectSendToken
   case selectAllTransactions
+  case selectPromoCode
 }
 
 protocol KNBalanceTabHamburgerMenuViewControllerDelegate: class {
@@ -78,6 +79,8 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var allTransactionButton: UIButton!
   @IBOutlet weak var numberPendingTxLabel: UILabel!
 
+  @IBOutlet weak var promoCodeContainerView: UIView!
+  @IBOutlet weak var promoCodeTextLabel: UILabel!
   @IBOutlet weak var mywalletsTextLabel: UILabel!
   @IBOutlet weak var hamburgerView: UIView!
   @IBOutlet weak var walletListTableView: UITableView!
@@ -134,6 +137,10 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       NSLocalizedString("transactions", value: "Transactions", comment: "").uppercased(),
       for: .normal
     )
+    self.promoCodeTextLabel.text = NSLocalizedString("promo.code", value: "Promo Code", comment: "").uppercased()
+    let promoTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.promoCodeTapped(_:)))
+    self.promoCodeContainerView.addGestureRecognizer(promoTapGesture)
+
     self.mywalletsTextLabel.text = NSLocalizedString("my.wallets", value: "My wallet(s)", comment: "").uppercased()
     self.update(transactions: self.viewModel.pendingTransactions)
 
@@ -187,6 +194,12 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.view.isHidden = true
       completion?()
     })
+  }
+
+  @objc func promoCodeTapped(_ sender: Any?) {
+    self.hideMenu(animated: true) {
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectPromoCode)
+    }
   }
 
   @objc func backgroundViewTap(_ recognizer: UITapGestureRecognizer) {

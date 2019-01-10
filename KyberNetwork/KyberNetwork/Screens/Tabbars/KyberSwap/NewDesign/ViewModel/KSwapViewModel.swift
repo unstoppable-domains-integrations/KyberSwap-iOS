@@ -101,6 +101,15 @@ class KSwapViewModel {
     return self.amountTo.fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
   }
 
+  var isToTokenBtnEnabled: Bool {
+    guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.walletObject.address) else {
+      // not a promo wallet, always enabled
+      return true
+    }
+    if self.from.isPromoToken && self.to.symbol == destToken { return false }
+    return true
+  }
+
   var toTokenBtnTitle: String {
     return self.to.symbol
   }

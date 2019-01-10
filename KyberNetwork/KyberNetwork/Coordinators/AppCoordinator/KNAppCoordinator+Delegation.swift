@@ -40,6 +40,10 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   func exchangeTokenCoordinatorDidSelectAddWallet() {
     self.addNewWallet()
   }
+
+  func exchangeTokenCoordinatorDidSelectPromoCode() {
+    self.addPromoCode()
+  }
 }
 
 // MARK: Settings Coordinator Delegate
@@ -80,8 +84,12 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
     self.restartNewSession(wallet)
   }
 
-  func balancetabCoordinatorDidSelectAddWallet() {
+  func balanceTabCoordinatorDidSelectAddWallet() {
     self.addNewWallet()
+  }
+
+  func balanceTabCoordinatorDidSelectPromoCode() {
+    self.addPromoCode()
   }
 }
 
@@ -101,6 +109,19 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
       self.startNewSession(with: wallet)
     } else {
       self.restartNewSession(wallet)
+    }
+  }
+}
+
+extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
+  func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, name: String?) {
+    self.navigationController.popViewController(animated: true) {
+      let address = wallet.address.description
+      KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
+        address: address,
+        destinationToken: destinationToken ?? ""
+      )
+      self.addNewWalletCoordinator(add: wallet)
     }
   }
 }

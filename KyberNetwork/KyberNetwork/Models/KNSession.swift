@@ -114,6 +114,7 @@ class KNSession {
         let globalConfig = RealmConfiguration.globalConfiguration(for: env.chainID)
         let globalRealm = try! Realm(configuration: globalConfig)
         if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
+          KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
           try! globalRealm.write { globalRealm.delete(walletObject) }
         }
       }

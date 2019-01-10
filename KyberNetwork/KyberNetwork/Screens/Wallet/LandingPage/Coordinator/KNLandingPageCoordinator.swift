@@ -39,6 +39,15 @@ class KNLandingPageCoordinator: Coordinator {
     return controller
   }()
 
+  lazy var promoCodeCoordinator: KNPromoCodeCoordinator = {
+    let coordinator = KNPromoCodeCoordinator(
+      navigationController: self.navigationController,
+      keystore: self.keystore
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+
   lazy var createWalletCoordinator: KNCreateWalletCoordinator = {
     let coordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
@@ -128,6 +137,8 @@ class KNLandingPageCoordinator: Coordinator {
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
+    case .openPromoCode:
+      self.promoCodeCoordinator.start()
     case .openCreateWallet:
       self.createWalletCoordinator.updateNewWallet(nil, name: nil)
       self.createWalletCoordinator.start()
@@ -174,5 +185,15 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
     guard let wallet = wallet else { return }
     self.addNewWallet(wallet, isCreate: true, name: name)
+  }
+}
+
+extension KNLandingPageCoordinator: KNPromoCodeCoordinatorDelegate {
+  func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, name: String?) {
+    KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
+      address: wallet.address.description,
+      destinationToken: destinationToken ?? ""
+    )
+    self.addNewWallet(wallet, isCreate: false, name: name)
   }
 }

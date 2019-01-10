@@ -9,6 +9,7 @@ import Result
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
   func exchangeTokenCoordinatorDidSelectAddWallet()
+  func exchangeTokenCoordinatorDidSelectPromoCode()
 }
 
 class KNExchangeTokenCoordinator: Coordinator {
@@ -28,10 +29,20 @@ class KNExchangeTokenCoordinator: Coordinator {
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
 
   lazy var rootViewController: KSwapViewController = {
+    let (from, to): (TokenObject, TokenObject) = {
+      let address = self.session.wallet.address.description
+      let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address)
+      if let dest = destToken {
+        let from = KNSupportedTokenStorage.shared.ptToken
+        let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == dest.uppercased() }) ?? KNSupportedTokenStorage.shared.ethToken
+        return (from, to)
+      }
+      return (KNSupportedTokenStorage.shared.ethToken, KNSupportedTokenStorage.shared.kncToken)
+    }()
     let viewModel = KSwapViewModel(
       wallet: self.session.wallet,
-      from: KNSupportedTokenStorage.shared.ethToken,
-      to: KNSupportedTokenStorage.shared.kncToken,
+      from: from,
+      to: to,
       supportedTokens: tokens
     )
     let controller = KSwapViewController(viewModel: viewModel)
@@ -39,6 +50,8 @@ class KNExchangeTokenCoordinator: Coordinator {
     controller.delegate = self
     return controller
   }()
+
+  fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
     guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
@@ -286,6 +299,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .selectAllTransactions:
       self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
       self.historyCoordinator.start()
+    case .selectPromoCode:
+      self.openPromoCodeView()
     }
   }
 
@@ -414,6 +429,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       from: self.session.tokenStorage.ethToken
     )
     self.sendTokenCoordinator?.start()
+  }
+
+  fileprivate func openPromoCodeView() {
+    self.delegate?.exchangeTokenCoordinatorDidSelectPromoCode()
   }
 
   fileprivate func openAddWalletView() {

@@ -43,3 +43,25 @@ class KNWalletObject: Object {
     return "address"
   }
 }
+
+class KNWalletPromoInfoStorage: NSObject {
+
+  let userDefaults = UserDefaults.standard
+  static let shared = KNWalletPromoInfoStorage()
+
+  override init() {}
+
+  func addWalletPromoInfo(address: String, destinationToken: String) {
+    self.userDefaults.set(destinationToken, forKey: address.lowercased())
+    self.userDefaults.synchronize()
+  }
+
+  func removeWalletPromoInfo(address: String) {
+    self.userDefaults.removeObject(forKey: address.lowercased())
+    self.userDefaults.synchronize()
+  }
+
+  func getDestinationToken(from address: String) -> String? {
+    return self.userDefaults.object(forKey: address.lowercased()) as? String
+  }
+}
