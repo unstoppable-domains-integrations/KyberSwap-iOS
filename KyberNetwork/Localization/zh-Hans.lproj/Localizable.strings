@@ -387,17 +387,17 @@
 "Correspondence from a government agency" = "来自政府机构的通信";
 "National Identity Card with residential address" = "带居住地址的国民身份证";
 "regular" = "定期";
-"still.proceed.if.rate.goes.down.by" = "Still proceed if %@ goes down by:";
-"transaction.will.be.reverted.if.rate.lower.than" = "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)";
-"can.not.handle.your.amount" = "Can not handle your amount";
+"still.proceed.if.rate.goes.down.by" = "仍然继续，即便%@下降：";
+"transaction.will.be.reverted.if.rate.lower.than" = "如果费率%@低于%@ （当前费率%@ ），那么交易将被退回";
+"can.not.handle.your.amount" = "无法处理您的数量";
 "advanced.optional" = "高级 (可选)";
 "promo.code" = "活动码";
 "your.promo.code" = "您的促销代码";
 "enter.your.promo.code" = "输入您的活动代码";
 "apply" = "提交";
 "promo.code.is.empty" = "未填写活动码";
-"congratulations" = "Congratulations!!!";
-"you.have.successfully.unlocked.your.promo.code" = "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@";
+"congratulations" = "恭喜!!!";
+"you.have.successfully.unlocked.your.promo.code" = "您已成功解锁促销代码。请在%@前将所有资产移至您的钱包";
 
 // Source of Funds
 "Salary" = "薪水";
