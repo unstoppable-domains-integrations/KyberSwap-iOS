@@ -13,7 +13,9 @@ protocol KYCSubmitInfoViewControllerDelegate: class {
 
 struct KYCSubmitInfoViewModel {
   let firstName: String
+  let middleName: String
   let lastName: String
+  let nativeFullName: String
   let gender: String
   let dob: String
   let nationality: String
@@ -61,7 +63,10 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     return data
   }()
 
-  @IBOutlet weak var fullNameLabel: UILabel!
+  @IBOutlet weak var firstNameLabel: UILabel!
+  @IBOutlet weak var middleNameLabel: UILabel!
+  @IBOutlet weak var lastNameLabel: UILabel!
+  @IBOutlet weak var nativeFullNameLabel: UILabel!
   @IBOutlet weak var genderLabel: UILabel!
   @IBOutlet weak var dobLabel: UILabel!
   @IBOutlet weak var nationalityLabel: UILabel!
@@ -127,7 +132,10 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   @IBOutlet weak var submitButton: UIButton!
 
   @IBOutlet weak var personalInfoTextLabel: UILabel!
-  @IBOutlet weak var fullNameTextLabel: UILabel!
+  @IBOutlet weak var firstNameTextLabel: UILabel!
+  @IBOutlet weak var middleNameTextLabel: UILabel!
+  @IBOutlet weak var lastNameTextLabel: UILabel!
+  @IBOutlet weak var nativeFullNameTextLabel: UILabel!
   @IBOutlet weak var genderTextLabel: UILabel!
   @IBOutlet weak var dateOfBirthTextLabel: UILabel!
   @IBOutlet weak var nationalityTextLabel: UILabel!
@@ -185,8 +193,15 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     // Personal info
     self.personalInfoTextLabel.text = NSLocalizedString("personal.info", value: "Personal Info", comment: "")
     self.personalInfoTextLabel.addLetterSpacing()
-    self.fullNameTextLabel.text = NSLocalizedString("full.name", value: "Full Name", comment: "")
-    self.fullNameTextLabel.addLetterSpacing()
+    self.firstNameTextLabel.text = NSLocalizedString("first.name", value: "First Name", comment: "")
+    self.firstNameTextLabel.addLetterSpacing()
+    self.middleNameTextLabel.text = NSLocalizedString("middle.name", value: "Middle Name", comment: "")
+    self.middleNameTextLabel.addLetterSpacing()
+    self.lastNameTextLabel.text = NSLocalizedString("last.name", value: "Last Name", comment: "")
+    self.lastNameTextLabel.addLetterSpacing()
+    self.nativeFullNameTextLabel.text = NSLocalizedString("full.name.in.native.characters", value: "Full Name in Native Characters", comment: "")
+    self.nativeFullNameTextLabel.addLetterSpacing()
+
     self.genderTextLabel.text = NSLocalizedString("gender", value: "Gender", comment: "")
     self.genderTextLabel.addLetterSpacing()
     self.dateOfBirthTextLabel.text = "\(NSLocalizedString("date.of.birth", value: "Date of birth", comment: "")) (YYYY-MM-DD)"
@@ -276,7 +291,10 @@ class KYCSubmitInfoViewController: KNBaseViewController {
   func updateViewModel(_ viewModel: KYCSubmitInfoViewModel) {
     self.viewModel = viewModel
 
-    self.fullNameLabel.text = self.viewModel.firstName + " " + self.viewModel.lastName
+    self.firstNameLabel.text = self.viewModel.firstName
+    self.middleNameLabel.text = self.viewModel.middleName
+    self.lastNameLabel.text = self.viewModel.lastName
+    self.nativeFullNameLabel.text = self.viewModel.nativeFullName
     self.genderLabel.text = self.viewModel.gender
     self.dobLabel.text = self.viewModel.dob
     self.nationalityLabel.text = self.viewModel.nationality
@@ -367,7 +385,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     self.delegate?.submitInfoViewController(self, run: .submit)
   }
 
-  func updateSubmitInfo(with details: UserKYCDetails) {
+  func updateSubmitInfo(with details: UserKYCDetailsInfo) {
     let base64Prefix = "data:image/jpeg;base64,"
     let docFrontImage: UIImage? = {
       if details.documentPhotoFront.starts(with: base64Prefix),
@@ -408,7 +426,9 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     }()
     let viewModel = KYCSubmitInfoViewModel(
       firstName: details.firstName,
+      middleName: details.middleName,
       lastName: details.lastName,
+      nativeFullName: details.nativeFullName,
       gender: details.gender ? NSLocalizedString("male", value: "Male", comment: "") : NSLocalizedString("female", value: "Female", comment: ""),
       dob: details.dob,
       nationality: details.nationality,

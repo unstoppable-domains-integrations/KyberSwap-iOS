@@ -259,13 +259,21 @@ extension KyberGOService: TargetType {
 enum ProfileKYCService {
   case personalInfo(
     accessToken: String,
-    firstName: String, lastName: String, gender: Bool, dob: String, nationality: String,
+    firstName: String, middleName: String, lastName: String,
+    nativeFullName: String,
+    gender: Bool, dob: String, nationality: String,
     wallets: [(String, String)],
     residentialAddress: String, country: String, city: String, zipCode: String,
     proofAddress: String, proofAddressImageData: Data,
     sourceFund: String,
-    occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?)
-  case identityInfo(accessToken: String, documentType: String, documentID: String, issueDate: String?, expiryDate: String?, docFrontImage: Data, docBackImage: Data?, docHoldingImage: Data)
+    occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?
+  )
+  case identityInfo(
+    accessToken: String,
+    documentType: String, documentID: String,
+    issueDate: String?, expiryDate: String?,
+    docFrontImage: Data, docBackImage: Data?, docHoldingImage: Data
+  )
   case submitKYC(accessToken: String)
   case userWallets(accessToken: String)
   case checkWalletExist(accessToken: String, wallet: String)
@@ -300,8 +308,27 @@ extension ProfileKYCService: TargetType {
   }
   var task: Task {
     switch self {
-    //swiftlint:disable line_length
-    case .personalInfo(let accessToken, let firstName, let lastName, let gender, let dob, let nationality, let wallets, let residentialAddress, let country, let city, let zipCode, let proofAddress, let proofAddressImageData, let sourceFund, let occupationCode, let industryCode, let taxCountry, let taxIDNo):
+    case .personalInfo(
+      let accessToken,
+      let firstName,
+      let middleName,
+      let lastName,
+      let nativeFullName,
+      let gender,
+      let dob,
+      let nationality,
+      let wallets,
+      let residentialAddress,
+      let country,
+      let city,
+      let zipCode,
+      let proofAddress,
+      let proofAddressImageData,
+      let sourceFund,
+      let occupationCode,
+      let industryCode,
+      let taxCountry,
+      let taxIDNo):
       let arrJSON: String = {
         if wallets.isEmpty { return "[]" }
         var string = "["
@@ -317,7 +344,9 @@ extension ProfileKYCService: TargetType {
       var json: JSONDictionary = [
         "access_token": accessToken,
         "first_name": firstName,
+        "middle_name": middleName,
         "last_name": lastName,
+        "native_full_name": nativeFullName,
         "gender": gender,
         "dob": dob,
         "nationality": nationality,

@@ -500,7 +500,7 @@ class KYCIdentityInfoViewController: KNBaseViewController {
     self.navigationController?.present(self.imagePicker, animated: true, completion: nil)
   }
 
-  func updateIdentityInfo(with details: UserKYCDetails) {
+  func updateIdentityInfo(with details: UserKYCDetailsInfo) {
     guard !details.documentType.isEmpty else { return }
     self.viewModel.updateDocumentType(details.documentType)
     self.updateDocumentTypeData()

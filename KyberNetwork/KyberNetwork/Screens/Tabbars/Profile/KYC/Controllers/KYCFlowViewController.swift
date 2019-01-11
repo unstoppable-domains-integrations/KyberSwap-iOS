@@ -19,7 +19,9 @@ class KYCFlowViewModel {
   var stepState: KNKYCStepViewState
 
   fileprivate(set) var firstName: String = ""
+  fileprivate(set) var middleName: String = ""
   fileprivate(set) var lastName: String = ""
+  fileprivate(set) var nativeFullName: String = ""
   fileprivate(set) var gender: String = ""
   fileprivate(set) var dob: String = ""
   fileprivate(set) var nationality: String = ""
@@ -78,11 +80,13 @@ class KYCFlowViewModel {
     self.stepState = step
   }
 
-  func updateData(with details: UserKYCDetails) {
+  func updateData(with details: UserKYCDetailsInfo) {
     guard !details.firstName.isEmpty else { return }
     self.updatePersonalInfo(
       firstName: details.firstName,
+      middleName: details.middleName,
       lastName: details.lastName,
+      nativeFullName: details.nativeFullName,
       gender: details.gender ? "Male" : "Female",
       dob: details.dob,
       nationality: details.nationality,
@@ -127,10 +131,31 @@ class KYCFlowViewModel {
     self.wallets = wallets
   }
 
-  //swiftlint:disable line_length
-  func updatePersonalInfo(firstName: String, lastName: String, gender: String, dob: String, nationality: String, wallets: [(String, String)], residenceAddress: String, residenceCountry: String, residenceCity: String, residencePostalCode: String, proofAddressType: String, proofAddressImage: UIImage?, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?) {
+  func updatePersonalInfo(
+    firstName: String,
+    middleName: String,
+    lastName: String,
+    nativeFullName: String,
+    gender: String,
+    dob: String,
+    nationality: String,
+    wallets: [(String, String)],
+    residenceAddress: String,
+    residenceCountry: String,
+    residenceCity: String,
+    residencePostalCode: String,
+    proofAddressType: String,
+    proofAddressImage: UIImage?,
+    sourceFund: String,
+    occupationCode: String?,
+    industryCode: String?,
+    taxCountry: String?,
+    taxIDNumber: String?
+    ) {
     self.firstName = firstName
+    self.middleName = middleName
     self.lastName = lastName
+    self.nativeFullName = nativeFullName
     self.gender = gender
     self.dob = dob
     self.nationality = nationality
@@ -148,7 +173,15 @@ class KYCFlowViewModel {
     self.taxIDNumber = taxIDNumber
   }
 
-  func updateIdentityInfo(docType: String, docNum: String, issueDate: String, expiryDate: String, docFrontImage: UIImage, docBackImage: UIImage?, docHoldingImage: UIImage) {
+  func updateIdentityInfo(
+    docType: String,
+    docNum: String,
+    issueDate: String,
+    expiryDate: String,
+    docFrontImage: UIImage,
+    docBackImage: UIImage?,
+    docHoldingImage: UIImage
+    ) {
     self.docType = docType
     self.docNumber = docNum
     self.issueDate = issueDate
@@ -285,7 +318,9 @@ class KYCFlowViewController: KNBaseViewController {
     self.submitInfoVC = {
       let viewModel = KYCSubmitInfoViewModel(
         firstName: self.viewModel.firstName,
+        middleName: self.viewModel.middleName,
         lastName: self.viewModel.lastName,
+        nativeFullName: self.viewModel.nativeFullName,
         gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
@@ -377,7 +412,9 @@ class KYCFlowViewController: KNBaseViewController {
     if newState == .submit {
       let viewModel = KYCSubmitInfoViewModel(
         firstName: self.viewModel.firstName,
+        middleName: self.viewModel.middleName,
         lastName: self.viewModel.lastName,
+        nativeFullName: self.viewModel.nativeFullName,
         gender: self.viewModel.localisedGender,
         dob: self.viewModel.dob,
         nationality: self.viewModel.nationality,
@@ -414,14 +451,34 @@ class KYCFlowViewController: KNBaseViewController {
   }
 }
 
-//swiftlint:disable line_length
 extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
   func kycPersonalInfoViewController(_ controller: KYCPersonalInfoViewController, run event: KYCPersonalInfoViewEvent) {
     switch event {
-    case .next(let firstName, let lastName, let gender, let dob, let nationality, let wallets, let residentAddr, let countryOfResidence, let city, let postalCode, let proofAddrType, let proofAddrImage, let sourceFund, let occupationCode, let industryCode, let taxCountry, let taxIDNumber):
+    case .next(
+      let firstName,
+      let middleName,
+      let lastName,
+      let nativeFullname,
+      let gender,
+      let dob,
+      let nationality,
+      let wallets,
+      let residentAddr,
+      let countryOfResidence,
+      let city,
+      let postalCode,
+      let proofAddrType,
+      let proofAddrImage,
+      let sourceFund,
+      let occupationCode,
+      let industryCode,
+      let taxCountry,
+      let taxIDNumber):
       self.viewModel.updatePersonalInfo(
         firstName: firstName,
+        middleName: middleName,
         lastName: lastName,
+        nativeFullName: nativeFullname,
         gender: gender,
         dob: dob,
         nationality: nationality,
@@ -443,7 +500,9 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
       let service = ProfileKYCService.personalInfo(
         accessToken: user.accessToken,
         firstName: firstName,
+        middleName: middleName,
         lastName: lastName,
+        nativeFullName: nativeFullname,
         gender: gender.lowercased() == "male",
         dob: dob,
         nationality: nationality,

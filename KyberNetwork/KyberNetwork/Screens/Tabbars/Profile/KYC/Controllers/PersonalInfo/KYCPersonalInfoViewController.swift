@@ -12,8 +12,13 @@ import MobileCoreServices
 import AVFoundation
 
 enum KYCPersonalInfoViewEvent {
-  //swiftlint:disable line_length
-  case next(firstName: String, lastName: String, gender: String, dob: String, nationality: String, wallets: [(String, String)], residentAddr: String, countryOfResidence: String, city: String, postalCode: String, proofAddrType: String, proofAddrImage: UIImage, sourceFund: String, occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNumber: String?)
+  case next(
+    firstName: String, middleName: String, lastName: String, nativeFullName: String,
+    gender: String, dob: String, nationality: String, wallets: [(String, String)],
+    residentAddr: String, countryOfResidence: String, city: String, postalCode: String,
+    proofAddrType: String, proofAddrImage: UIImage,
+    sourceFund: String, occupationCode: String?, industryCode: String?,
+    taxCountry: String?, taxIDNumber: String?)
   case updateWallets(_ wallets: [(String, String)])
 }
 
@@ -150,7 +155,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var firstNameTextField: UITextField!
+  @IBOutlet weak var middleNameTextField: UITextField!
   @IBOutlet weak var lastNameTextField: UITextField!
+  @IBOutlet weak var nativeFullNameTextField: UITextField!
   @IBOutlet weak var maleButton: UIButton!
   @IBOutlet weak var femaleButton: UIButton!
   @IBOutlet weak var dateOfBirthTextField: UITextField!
@@ -297,8 +304,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   fileprivate func setupDataContent() {
     self.firstNameTextField.placeholder = NSLocalizedString("first.name", value: "First Name", comment: "")
     self.firstNameTextField.addPlaceholderSpacing()
+    self.middleNameTextField.placeholder = NSLocalizedString("middle.name", value: "Middle Name", comment: "")
+    self.middleNameTextField.addPlaceholderSpacing()
     self.lastNameTextField.placeholder = NSLocalizedString("last.name", value: "Last Name", comment: "")
     self.lastNameTextField.addPlaceholderSpacing()
+    self.nativeFullNameTextField.placeholder = NSLocalizedString("full.name.in.native.characters", value: "Full Name in Native Characters", comment: "")
+    self.nativeFullNameTextField.addPlaceholderSpacing()
     self.genderTextLabel.text = NSLocalizedString("gender", value: "Gender", comment: "")
     self.genderTextLabel.addLetterSpacing()
     self.maleTextLabel.text = NSLocalizedString("male", value: "Male", comment: "")
@@ -561,6 +572,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     // Check first + last name
     let firstName = self.firstNameTextField.text ?? ""
     let lastName = self.lastNameTextField.text ?? ""
+    let middleName = self.middleNameTextField.text ?? ""
+    let nativeFullName = self.nativeFullNameTextField.text ?? ""
     guard !firstName.isEmpty && !lastName.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.name", value: "Invalid name", comment: ""),
@@ -696,7 +709,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
     let nextEvent = KYCPersonalInfoViewEvent.next(
       firstName: firstName,
+      middleName: middleName,
       lastName: lastName,
+      nativeFullName: nativeFullName,
       gender: self.viewModel.gender,
       dob: self.viewModel.dob,
       nationality: nationality,
@@ -783,7 +798,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }
   }
 
-  func updatePersonalInfoView(with details: UserKYCDetails) {
+  func updatePersonalInfoView(with details: UserKYCDetailsInfo) {
     let dateFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd"
@@ -791,7 +806,9 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     }()
     guard !details.firstName.isEmpty else { return }
     self.firstNameTextField.text = details.firstName
+    self.middleNameTextField.text = details.middleName
     self.lastNameTextField.text = details.lastName
+    self.nativeFullNameTextField.text = details.nativeFullName
     self.viewModel.updateGender(details.gender ? "Male": "Female")
     self.updateGenderUI()
     self.viewModel.updateDoB(details.dob)

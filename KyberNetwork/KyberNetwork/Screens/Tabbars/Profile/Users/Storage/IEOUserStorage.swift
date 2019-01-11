@@ -77,15 +77,15 @@ class IEOUserStorage {
   }
 }
 
-// For UserKYCDetails
+// For UserKYCDetailsInfo
 extension IEOUserStorage {
-  var kycDetailObjects: [UserKYCDetails] {
-    return self.realm.objects(UserKYCDetails.self)
+  var kycDetailObjects: [UserKYCDetailsInfo] {
+    return self.realm.objects(UserKYCDetailsInfo.self)
       .sorted(byKeyPath: "userID", ascending: true)
       .filter { $0.userID != -1 }
   }
 
-  func getKYCDetails(for userID: Int) -> UserKYCDetails? {
+  func getKYCDetails(for userID: Int) -> UserKYCDetailsInfo? {
     return self.kycDetailObjects.first(where: { $0.userID == userID })
   }
 
@@ -98,7 +98,7 @@ extension IEOUserStorage {
     }
   }
 
-  func updateKYCDetails(object: UserKYCDetails) {
+  func updateKYCDetails(object: UserKYCDetailsInfo) {
     self.realm.beginWrite()
     self.realm.add(object, update: true)
     try! self.realm.commitWrite()

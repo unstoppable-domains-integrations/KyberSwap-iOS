@@ -40,7 +40,7 @@ class IEOUser: Object {
     self.updateKYCStep(step)
     let rejectReason: String = dict["reject_reason"] as? String ?? ""
     let kycInfoDict = dict["kyc_info"] as? JSONDictionary ?? [:]
-    let kycObject = UserKYCDetails(userID: self.userID, dict: kycInfoDict, rejectReason: rejectReason)
+    let kycObject = UserKYCDetailsInfo(userID: self.userID, dict: kycInfoDict, rejectReason: rejectReason)
     IEOUserStorage.shared.updateKYCDetails(object: kycObject)
   }
 
@@ -67,7 +67,7 @@ class IEOUser: Object {
     return UserDefaults.standard.object(forKey: "kUserKYCStepKey_\(self.userID)") as? Int ?? 1
   }
 
-  var kycDetails: UserKYCDetails? {
+  var kycDetails: UserKYCDetailsInfo? {
     return IEOUserStorage.shared.getKYCDetails(for: self.userID)
   }
 
@@ -76,11 +76,13 @@ class IEOUser: Object {
   }
 }
 
-class UserKYCDetails: Object {
+class UserKYCDetailsInfo: Object {
   @objc dynamic var userID: Int = -1
   @objc dynamic var rejectedReason: String = ""
   @objc dynamic var firstName: String = ""
+  @objc dynamic var middleName: String = ""
   @objc dynamic var lastName: String = ""
+  @objc dynamic var nativeFullName: String = ""
   @objc dynamic var nationality: String = ""
   @objc dynamic var residentialAddress: String = ""
   @objc dynamic var country: String = ""
@@ -108,7 +110,9 @@ class UserKYCDetails: Object {
     self.init()
     self.userID = userID
     self.firstName = dict["first_name"] as? String ?? ""
+    self.middleName = dict["middle_name"] as? String ?? ""
     self.lastName = dict["last_name"] as? String ?? ""
+    self.nativeFullName = dict["native_full_name"] as? String ?? ""
     self.nationality = dict["nationality"] as? String ?? ""
     self.residentialAddress = dict["residential_address"] as? String ?? ""
     self.country = dict["country"] as? String ?? ""
