@@ -528,6 +528,7 @@ extension KSwapViewController {
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.walletObject
     )
+    self.hamburgerMenu.hideMenu(animated: false)
     self.view.layoutIfNeeded()
   }
 

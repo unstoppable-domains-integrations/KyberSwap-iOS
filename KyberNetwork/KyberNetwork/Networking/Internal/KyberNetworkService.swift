@@ -390,9 +390,9 @@ extension ProfileKYCService: TargetType {
       return .requestData(data)
     case .promoCode(let promoCode, let nonce):
       let params: JSONDictionary = [
+        "code": promoCode,
+        "isInternalApp": "True",
         "nonce": nonce,
-        "promo_code": promoCode,
-        "isInternalApp": true,
       ]
       return .requestCompositeData(bodyData: Data(), urlParameters: params)
     }
@@ -402,8 +402,8 @@ extension ProfileKYCService: TargetType {
   var headers: [String: String]? {
     switch self {
     case .promoCode(let promoCode, let nonce):
-      let string = "nonce=\(nonce)&promo_code=\(promoCode)&isInternalApp=true"
-      let hmac = try! HMAC(key: KNSecret.promoCode, variant: .sha512)
+      let string = "code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
+      let hmac = try! HMAC(key: KNSecret.promoCodeSecretKey, variant: .sha512)
       let hash = try! hmac.authenticate(string.bytes).toHexString()
       return [
         "Content-Type": "application/x-www-form-urlencoded",

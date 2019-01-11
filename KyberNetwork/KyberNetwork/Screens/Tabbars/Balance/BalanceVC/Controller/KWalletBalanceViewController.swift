@@ -228,6 +228,8 @@ extension KWalletBalanceViewController {
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.wallet
     )
+    self.hamburgerMenu.hideMenu(animated: false)
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateWalletObjects() {

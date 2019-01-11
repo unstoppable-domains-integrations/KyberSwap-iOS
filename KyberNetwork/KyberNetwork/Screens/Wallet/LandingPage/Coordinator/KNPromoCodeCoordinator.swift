@@ -45,7 +45,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
   }
 
   func promoCodeViewController(_ controller: KNPromoCodeViewController, promoCode: String, name: String) {
-    let nonce: UInt = UInt(round(Date().timeIntervalSince1970))
+    let nonce: UInt = UInt(round(Date().timeIntervalSince1970 * 1000.0))
     self.rootViewController.displayLoading()
     let provider = MoyaProvider<ProfileKYCService>()
     DispatchQueue.global(qos: .background).async {
@@ -60,7 +60,13 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
               let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               if let data = json["data"] as? JSONDictionary {
                 let privateKey = data["private_key"] as? String ?? ""
-                let expiredDate = data["expired_date"] as? Double ?? 0.0
+                let expiredDate: TimeInterval = {
+                  let string = data["expired_date"] as? String ?? ""
+                  let dateFormatter = DateFormatter()
+                  dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                  return (dateFormatter.date(from: string) ?? Date()).timeIntervalSince1970
+                }()
                 let destinationToken = data["destination_token"] as? String ?? ""
                 self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
                 self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey)) { [weak self] result in
