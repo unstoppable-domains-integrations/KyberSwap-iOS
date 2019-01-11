@@ -289,7 +289,9 @@
 "enter.password.to.decrypt" = "패스워드를 입력하세요";
 "enter.your.seeds" = "Seed 단어들을 입력해주세요";
 "first.name" = "이름";
+"middle.name" = "중간 이름";
 "last.name" = "성";
+"full.name.in.native.characters" = "Full Name in Native Characters";
 "complete.your.profile.verfication.increase.trade.limits" = "고객님의 실명인증을 완료하고 독점적인 혜택을 얻습니다\nKyberSwap의 거래 한도를 늘립니다.";
 "initializing.session" = "세션 초기화 중";
 "photo.of.holding.document.tips" = "여권 혹은 운전면허증을 얼굴 옆에 쥐어주세요.\n\n귀하의 얼굴과 여권 / 신분증을 분명하게 볼 수 있어야하며 여권상의 모든 문자, 숫자 또는 사진을 알아 볼 수 있어야합니다.";

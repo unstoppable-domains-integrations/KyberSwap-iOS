@@ -289,7 +289,9 @@
 "enter.password.to.decrypt" = "输入密码解密";
 "enter.your.seeds" = "输入你的seeds";
 "first.name" = "名字";
+"middle.name" = "Middle Name";
 "last.name" = "姓氏";
+"full.name.in.native.characters" = "Full Name in Native Characters";
 "complete.your.profile.verfication.increase.trade.limits" = "完成您的个人资料验证\n增加KyberSwap的交易限额";
 "initializing.session" = "正在初始化会话";
 "photo.of.holding.document.tips" = "请将护照/身份证/驾驶执照放在您旁边的手中。 \n \n您的面部和护照/身份证必须清晰可见，并且护照上的任何文字，数字或照片必须是可读的，不得用手指遮住。";

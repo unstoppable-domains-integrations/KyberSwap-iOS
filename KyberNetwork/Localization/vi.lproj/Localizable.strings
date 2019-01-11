@@ -289,7 +289,9 @@
 "enter.password.to.decrypt" = "Nhập mật khẩu để giải mã";
 "enter.your.seeds" = "Nhập seeds";
 "first.name" = "Tên";
+"middle.name" = "Tên đệm";
 "last.name" = "Họ";
+"full.name.in.native.characters" = "Full Name in Native Characters";
 "complete.your.profile.verfication.increase.trade.limits" = "Hoàn tất xác minh hồ sơ của bạn\nTăng giới hạn giao dịch của KyberSwap";
 "initializing.session" = "Khởi tạo phiên";
 "photo.of.holding.document.tips" = "Vui lòng giữ Hộ chiếu/ID/Giấy phép lái xe trong tay và bên cạnh khuôn mặt của bạn.\n\nKhuôn mặt của bạn và Hộ chiếu/ID phải được hiển thị rõ ràng, tất cả chữ, số hoặc ảnh trên giấy tờ phải có thể đọc được và không được các ngón tay của bạn che lại.";
