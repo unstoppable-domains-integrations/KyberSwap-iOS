@@ -88,7 +88,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                 let error = json["error"] as? String ?? ""
                 self.navigationController.showWarningTopBannerMessage(
                   with: NSLocalizedString("error", value: "Error", comment: ""),
-                  message: error,
+                  message: NSLocalizedString(error, value: error, comment: ""),
                   time: 1.5
                 )
               }

@@ -390,6 +390,10 @@
 "congratulations" = "Congratulations!!!";
 "you.have.successfully.unlocked.your.promo.code" = "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@";
 
+// Promo code error messages
+"Promo code is invalid!" = "Promo code is invalid!";
+"Promo code has expired." = "Promo code has expired.";
+
 // Proof of address
 "Bank Statement" = "Bank Statement";
 "Correspondences from Bank" = "Correspondences from Bank";

@@ -377,15 +377,6 @@
 "issue.date.can.not.be.in.the.future" = "签发日期不能是未来的";
 "expiry.date.can.not.be.in.the.past" = "到期日期不能是过去的";
 "issue.date.and.expiry.date.can.not.be.the.same" = "签发日期和到期日期不能相同";
-
-// Proof of address
-"Bank Statement" = "银行对帐单";
-"Correspondences from Bank" = "来自银行的信件";
-"Polling vote" = "投票表决";
-"Tax return" = "退税";
-"Singapore National Registration Identity Card (NRIC)" = "新加坡国民登记证（NRIC)";
-"Correspondence from a government agency" = "来自政府机构的通信";
-"National Identity Card with residential address" = "带居住地址的国民身份证";
 "regular" = "定期";
 "still.proceed.if.rate.goes.down.by" = "仍然继续，即便%@下降：";
 "transaction.will.be.reverted.if.rate.lower.than" = "如果费率%@低于%@ （当前费率%@ ），那么交易将被退回";
@@ -398,6 +389,19 @@
 "promo.code.is.empty" = "未填写活动码";
 "congratulations" = "恭喜!!!";
 "you.have.successfully.unlocked.your.promo.code" = "您已成功解锁促销代码。请在%@前将所有资产移至您的钱包";
+
+// Promo code error messages
+"Promo code is invalid!" = "促销代码无效！";
+"Promo code has expired." = "促销代码已过期。";
+
+// Proof of address
+"Bank Statement" = "银行对帐单";
+"Correspondences from Bank" = "来自银行的信件";
+"Polling vote" = "投票表决";
+"Tax return" = "退税";
+"Singapore National Registration Identity Card (NRIC)" = "新加坡国民登记证（NRIC)";
+"Correspondence from a government agency" = "来自政府机构的通信";
+"National Identity Card with residential address" = "带居住地址的国民身份证";
 
 // Source of Funds
 "Salary" = "薪水";

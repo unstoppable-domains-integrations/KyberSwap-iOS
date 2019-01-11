@@ -377,15 +377,6 @@
 "issue.date.can.not.be.in.the.future" = "발행일은 미래가 될 수 없습니다.";
 "expiry.date.can.not.be.in.the.past" = "만료일은 과거 일 수 없습니다.";
 "issue.date.and.expiry.date.can.not.be.the.same" = "발행일 및 만료일은 동일 할 수 없습니다.";
-
-// Proof of address
-"Bank Statement" = "은행 성명서";
-"Correspondences from Bank" = "은행의 서신";
-"Polling vote" = "투표";
-"Tax return" = "세금 환급";
-"Singapore National Registration Identity Card (NRIC)" = "싱가포르 국민 등록 신분증 (NRIC)";
-"Correspondence from a government agency" = "정부 기관의 서신";
-"National Identity Card with residential address" = "주거지 주소가있는 주민등록증";
 "regular" = "Regular";
 "still.proceed.if.rate.goes.down.by" = "%@이 내려가도 거래를 진행";
 "transaction.will.be.reverted.if.rate.lower.than" = "%@의 교환비가 %@보다 낮아진다면 거래는 취소됩니다. (현재 교환비 %@)";
@@ -398,6 +389,19 @@
 "promo.code.is.empty" = "프로모션 코드 오류입니다.";
 "congratulations" = "축하합니다!!!";
 "you.have.successfully.unlocked.your.promo.code" = "프로모션 코드 입력을 완료했습니다. 지갑의 자산을 %@까지 이동해주세요";
+
+// Promo code error messages
+"Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";
+"Promo code has expired." = "프로모션 코드가 만료되었습니다.";
+
+// Proof of address
+"Bank Statement" = "은행 성명서";
+"Correspondences from Bank" = "은행의 서신";
+"Polling vote" = "투표";
+"Tax return" = "세금 환급";
+"Singapore National Registration Identity Card (NRIC)" = "싱가포르 국민 등록 신분증 (NRIC)";
+"Correspondence from a government agency" = "정부 기관의 서신";
+"National Identity Card with residential address" = "주거지 주소가있는 주민등록증";
 
 // Source of Funds
 "Salary" = "급여";
