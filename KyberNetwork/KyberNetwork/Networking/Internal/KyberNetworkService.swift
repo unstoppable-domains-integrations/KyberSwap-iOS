@@ -161,9 +161,9 @@ extension KyberGOService: TargetType {
   }
 
   var task: Task {
-    let clientID = KNEnvironment.default == .production ? KNSecret.appID : KNSecret.debugAppID
-    let clientSecret = KNEnvironment.default == .production ? KNSecret.secret : KNSecret.debugSecret
-    let redirectURL = KNEnvironment.default == .production ? KNSecret.redirectURL : KNSecret.debugRedirectURL
+    let clientID = KNEnvironment.default.isMainnet ? KNSecret.appID : KNSecret.debugAppID
+    let clientSecret = KNEnvironment.default.isMainnet ? KNSecret.secret : KNSecret.debugSecret
+    let redirectURL = KNEnvironment.default.isMainnet ? KNSecret.redirectURL : KNSecret.debugRedirectURL
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
@@ -398,7 +398,7 @@ extension ProfileKYCService: TargetType {
     case .checkWalletExist(let accessToken, let wallet):
       let json: JSONDictionary = [
         "access_token": accessToken,
-        "wallet": wallet,
+        "address": wallet,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

@@ -45,6 +45,10 @@ enum KNEnvironment: Int {
     return KNAppTracker.externalEnvironment()
   }
 
+  var isMainnet: Bool {
+    return KNEnvironment.default == .mainnetTest || KNEnvironment.default == .production || KNEnvironment.default == .staging
+  }
+
   var chainID: Int {
     return self.customRPC?.chainID ?? 0
   }

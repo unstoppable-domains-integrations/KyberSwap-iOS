@@ -33,7 +33,7 @@ class KNBackUpWalletViewModel {
   }
 
   lazy var defaultTime: Int = {
-    return KNEnvironment.default == .production ? 15 : 3
+    return KNEnvironment.default.isMainnet ? 15 : 3
   }()
 
   func attributedString(for id: Int) -> NSAttributedString {
