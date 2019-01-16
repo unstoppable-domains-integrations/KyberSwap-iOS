@@ -14,7 +14,7 @@ target 'KyberNetwork' do
   pod 'StatefulViewController', '~> 3.0'
   pod 'QRCodeReaderViewController', '~> 4.0.2' #:git=>'https://github.com/yannickl/QRCodeReaderViewController.git', :branch=>'master'
   pod 'KeychainSwift', '~> 13.0.0'
-  pod 'SwiftLint', '~> 0.29.0'
+  pod 'SwiftLint', '~> 0.29.3'
   pod 'SeedStackViewController'
   pod 'RealmSwift', '~> 3.10.0'
   pod 'Lokalise', '~> 0.8.1'
@@ -26,7 +26,7 @@ target 'KyberNetwork' do
   pod 'Kingfisher', '~> 4.10.1'
   pod 'TrustCore', '~> 0.0.7'
   pod 'TrustKeystore', '~> 0.4.2'
-  pod 'Branch', '~> 0.25.8'
+  pod 'Branch', '~> 0.25.10'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'SAMKeychain', '~> 1.5.3'
   pod 'IQKeyboardManager', '~> 6.2.0'
@@ -35,7 +35,7 @@ target 'KyberNetwork' do
   pod 'JdenticonSwift', '~> 0.0.1'
   pod 'MSCircularSlider', '~> 1.2.2'
   pod 'EasyTipView', '~> 2.0.1'
-  pod 'OneSignal', '~> 2.9.3'
+  pod 'OneSignal', '~> 2.9.5'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
