@@ -90,6 +90,16 @@ class KYCPersonalInfoViewModel {
     return true
   }
 
+  @discardableResult
+  func updateAddress(_ address: String, label: String) -> Bool {
+    if let id = self.wallets.firstIndex(where: { $0.1 == address }) {
+      if self.wallets[id].0 != label { self.hasModifiedWallets = true }
+      self.wallets[id] = (label, address)
+      return true
+    }
+    return false
+  }
+
   func getUserWallets(completion: @escaping (Result<[(String, String)], AnyError>) -> Void) {
     let provider = MoyaProvider<ProfileKYCService>()
     provider.request(.userWallets(accessToken: self.user.accessToken)) { result in
@@ -555,11 +565,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
           self.viewModel.addAddress(address, label: label)
           self.updateWalletsData()
         } else {
-          self.showWarningTopBannerMessage(
-            with: NSLocalizedString("address.existed", value: "Address existed", comment: ""),
-            message: NSLocalizedString("your.addres.has.already.added", value: "Your address has already added.", comment: ""),
-            time: 1.5
-          )
+          var updated = self.viewModel.updateAddress(address, label: label)
+          if !updated {
+            // in case user has removed this wallet and added again
+            updated = self.viewModel.addAddress(address, label: label)
+          }
+          self.updateWalletsData()
         }
       case .failure(let error):
         self.displayError(error: error)
@@ -874,6 +885,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 extension KYCPersonalInfoViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    let id = indexPath.row
+    if id < self.viewModel.wallets.count && self.viewModel.wallets.count < 3 {
+      let wallet = self.viewModel.wallets[id]
+      self.walletLabelTextField.text = wallet.0
+      self.walletAddressTextField.text = wallet.1
+    }
   }
 }
 
