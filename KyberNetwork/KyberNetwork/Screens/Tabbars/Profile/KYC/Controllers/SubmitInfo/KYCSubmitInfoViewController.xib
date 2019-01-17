@@ -577,7 +577,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="2AO-RS-cKG" firstAttribute="centerY" secondItem="l62-DD-qv5" secondAttribute="centerY" id="10G-iV-rqj"/>
                                 <constraint firstAttribute="height" constant="60" id="1PF-Z7-mP2"/>
@@ -602,7 +602,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="79Q-wD-huH" secondAttribute="trailing" constant="24" id="TxJ-3e-re3"/>
                                 <constraint firstItem="weR-Op-5kd" firstAttribute="top" secondItem="G3w-9c-WXD" secondAttribute="top" constant="22" id="Voj-SI-sta"/>
@@ -634,7 +634,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="YO8-LO-hLH" secondAttribute="trailing" constant="24" id="FyL-Ri-OHZ"/>
                                 <constraint firstItem="k3S-aU-Cwp" firstAttribute="leading" secondItem="DVp-go-LI2" secondAttribute="leading" constant="24" id="KN1-Bo-lMJ"/>

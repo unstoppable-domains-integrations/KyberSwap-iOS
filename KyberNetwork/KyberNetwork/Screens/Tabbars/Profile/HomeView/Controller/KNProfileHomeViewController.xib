@@ -201,7 +201,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.87058823529411766" green="0.94901960784313721" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="Vv0-Qj-VoP" firstAttribute="centerY" secondItem="IKe-v2-0WJ" secondAttribute="centerY" id="4J0-Q4-aH9"/>
                                         <constraint firstAttribute="trailing" secondItem="Vv0-Qj-VoP" secondAttribute="trailing" constant="18" id="4YC-5k-kMH"/>
@@ -269,7 +269,7 @@ Increase KyberSwap's trade limits</string>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="FXu-7Z-ieT" firstAttribute="top" secondItem="QyU-pN-i8D" secondAttribute="bottom" constant="8" id="4Ab-Pj-apz"/>
                                         <constraint firstAttribute="trailing" secondItem="FXu-7Z-ieT" secondAttribute="trailing" constant="24" id="LoN-tA-pdb"/>

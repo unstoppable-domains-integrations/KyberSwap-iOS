@@ -226,7 +226,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="Gms-8I-i03" firstAttribute="leading" secondItem="Lu7-Ha-oYe" secondAttribute="leading" constant="24" id="4xf-ss-ZZ1"/>
                                 <constraint firstItem="GCA-tb-mah" firstAttribute="centerY" secondItem="Gms-8I-i03" secondAttribute="centerY" id="NgX-Fa-6nh"/>
@@ -434,7 +434,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="Kd1-Dt-P9q" firstAttribute="leading" secondItem="DUR-hr-Cek" secondAttribute="leading" constant="24" id="3Ib-Hc-47a"/>
                                 <constraint firstAttribute="trailing" secondItem="Kd1-Dt-P9q" secondAttribute="trailing" constant="24" id="6Tg-C7-Ohy"/>
@@ -515,7 +515,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="Azo-yi-8ZO" firstAttribute="top" secondItem="yor-ax-Dj4" secondAttribute="bottom" constant="8" id="4OD-KL-x92"/>
                                 <constraint firstItem="Azo-yi-8ZO" firstAttribute="leading" secondItem="yor-ax-Dj4" secondAttribute="leading" id="DTH-jo-5Ds"/>
