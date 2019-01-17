@@ -44,6 +44,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
+  @IBOutlet weak var walletWarningMessageLabel: UILabel!
   @IBOutlet weak var maximumWalletsTextLabel: UILabel!
   @IBOutlet weak var heightConstraintWalletsTableView: NSLayoutConstraint!
   @IBOutlet weak var addWalletContainer: UIView!
@@ -167,6 +168,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.noWalletTextLabel.addLetterSpacing()
     self.maximumWalletsTextLabel.text = NSLocalizedString("maximum.three.wallets", value: "Maximum 3 wallets", comment: "")
     self.maximumWalletsTextLabel.addLetterSpacing()
+    self.walletWarningMessageLabel.text = nil
     self.walletsTableView.register(UITableViewCell.self, forCellReuseIdentifier: kWalletTableViewCellID)
     self.walletsTableView.rowHeight = kWalletCellRowHeight
     self.walletsTableView.delegate = self
@@ -234,13 +236,21 @@ class KNProfileHomeViewController: KNBaseViewController {
       case "pending": return "Pending"
       case "approved": return "Approved"
       case "rejected": return "Rejected"
+      case "blocked": return "Blocked"
       default: return "Unknown"
       }
     }()
+    if status == "Approved" || status == "Pending" || status == "Blocked" {
+      //swiftlint:disable line_length
+      self.walletWarningMessageLabel.text = NSLocalizedString("kyc.submit.wallet.warning.message", value: "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.", comment: "")
+      self.walletWarningMessageLabel.addLetterSpacing()
+    } else {
+      self.walletWarningMessageLabel.text = nil
+    }
     self.userKYCStatusLabel.text = "\(NSLocalizedString(status.lowercased(), value: status, comment: ""))  "
     self.userKYCStatusLabel.addLetterSpacing()
 
-    let actionTitle: String = status == "Rejected" ? NSLocalizedString("resubmit", value: "Re-submit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
+    let actionTitle: String = status == "Rejected" ? NSLocalizedString("edit", value: "Edit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
     self.userKYCActionButton.setTitle(actionTitle, for: .normal)
 
     if status == "Approved" {
@@ -249,14 +259,22 @@ class KNProfileHomeViewController: KNBaseViewController {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.merigold
     } else if status == "Rejected" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.strawberry
+    } else if status == "Blocked" {
+      self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.mirage
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
     self.userKYCStatusLabel.addLetterSpacing()
     let descText: String = {
-      if status == "Rejected" {
+      if status == "Rejected" || status == "Blocked" {
         let reason = user.kycDetails?.rejectedReason ?? ""
-        return "\(NSLocalizedString("profile.is.rejected", value: "Your Profile is rejected", comment: ""))\n\(reason)"
+        let title: String = {
+          if status == "Rejected" {
+            return NSLocalizedString("profile.is.rejected", value: "Your Profile is rejected", comment: "")
+          }
+          return NSLocalizedString("profile.is.blocked", value: "Your Profile is blocked", comment: "")
+        }()
+        return "\(title)\n\(reason)"
       }
       return NSLocalizedString(
         "complete.your.profile.verfication.increase.trade.limits",
@@ -298,10 +316,6 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBAction func signInButtonPressed(_ sender: Any) {
     self.delegate?.profileHomeViewController(self, run: .signIn)
-  }
-
-  @IBAction func signUpButtonPressed(_ sender: Any) {
-    self.delegate?.profileHomeViewController(self, run: .signUp)
   }
 
   @IBAction func logOutButtonPressed(_ sender: Any) {

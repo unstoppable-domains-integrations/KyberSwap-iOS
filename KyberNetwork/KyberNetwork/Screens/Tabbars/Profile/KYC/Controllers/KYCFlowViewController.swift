@@ -49,8 +49,8 @@ class KYCFlowViewModel {
     self.user = user
     self.stepState = {
       let kycStatus = user.kycStatus.lowercased()
-      if kycStatus == "rejected" { return .personalInfo }
-      if kycStatus != "none" && kycStatus != "draft" { return .done }
+      if kycStatus == "blocked" { return .personalInfo }
+      if kycStatus != "none" && kycStatus != "draft" && kycStatus != "rejected" { return .done }
       return KNKYCStepViewState(rawValue: user.kycStep - 1) ?? .done
     }()
   }

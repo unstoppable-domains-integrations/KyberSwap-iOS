@@ -384,6 +384,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
+    if user.kycStatus.lowercased() == "blocked" { return }
     if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0, user.kycStatus.lowercased() != "rejected" {
       if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" { return }
       // draft or none, just open the verification
@@ -404,89 +405,11 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
         if success {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
           let status = user.kycStatus.lowercased()
-          if status == "approved" || status == "pending" { return }
-          if status == "rejected" {
-            // need to call remove first
-            let alert = UIAlertController(
-              title: NSLocalizedString("remove.old.profile", value: "Remove old profile?", comment: ""),
-              message: NSLocalizedString("remove.your.old.profile.to.resubmit", value: "To resubmit, you will need to remove your old profile first", comment: ""),
-              preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-              self.sendRemoveProfile(userID: user.userID, accessToken: user.accessToken)
-            }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-            self.navigationController.present(alert, animated: true, completion: nil)
-          } else {
-            // draft or none, just open the verification
-            self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
-            self.kycCoordinator?.delegate = self
-            self.kycCoordinator?.start()
-          }
+          if status == "approved" || status == "pending" || status == "blocked" { return }
+          self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+          self.kycCoordinator?.delegate = self
+          self.kycCoordinator?.start()
         }
-    }
-  }
-
-  fileprivate func sendRemoveProfile(userID: Int, accessToken: String) {
-    let provider = MoyaProvider<ProfileKYCService>()
-    let service = ProfileKYCService.removeProfile(accessToken: accessToken, userID: "\(userID)")
-    self.navigationController.displayLoading(text: "\(NSLocalizedString("removing", value: "Removing", comment: ""))...", animated: true)
-    DispatchQueue.global(qos: .background).async {
-      provider.request(service) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-          switch result {
-          case .success(let resp):
-            do {
-              _ = try resp.filterSuccessfulStatusCodes()
-              let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let success: Bool = json["success"] as? Bool ?? false
-              let message: String = {
-                if success { return json["message"] as? String ?? "" }
-                let reasons: [String] = json["reason"] as? [String] ?? []
-                return reasons.isEmpty ? (json["reason"] as? String ?? "Unknown reason") : reasons[0]
-              }()
-              if !success {
-                // Unsuccessful remove profile
-                self.navigationController.showErrorTopBannerMessage(
-                  with: NSLocalizedString("error", value: "Error", comment: ""),
-                  message: message,
-                  time: 1.5
-                )
-              } else {
-                // Success
-                self.navigationController.showSuccessTopBannerMessage(
-                  with: NSLocalizedString("removed", value: "Removed", comment: ""),
-                  message: NSLocalizedString("your.profile.has.been.removed.can.resubmit.now", value: "Your profile has been removed. You can now resubmit your profile again", comment: ""),
-                  time: 2.0
-                )
-                guard let user = IEOUserStorage.shared.user else { return }
-                self.navigationController.displayLoading(text: "\(NSLocalizedString("updating.info", value: "Updating info", comment: ""))...", animated: true)
-                self.getUserInfo(
-                  type: user.tokenType,
-                  accessToken: user.accessToken,
-                  refreshToken: user.refreshToken,
-                  expireTime: user.expireTime,
-                  hasUser: true,
-                  showError: true,
-                  completion: { [weak self] success in
-                    if success {
-                      self?.rootViewController.coordinatorUserDidSignInSuccessfully()
-                      // Open verification view again
-                      self?.openVerificationView()
-                    }
-                  }
-                )
-              }
-            } catch let error {
-              self.navigationController.displayError(error: error)
-            }
-          case .failure(let error):
-            self.navigationController.displayError(error: error)
-          }
-        }
-      }
     }
   }
 }

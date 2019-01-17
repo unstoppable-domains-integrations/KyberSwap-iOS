@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-MediumItalic.ttf">
+            <string>Montserrat-MediumItalic</string>
         </array>
         <array key="Montserrat-SemiBold.ttf">
             <string>Montserrat-SemiBold</string>
@@ -48,6 +51,7 @@
                 <outlet property="userKYCStatusLabel" destination="Vv0-Qj-VoP" id="jks-vi-kSR"/>
                 <outlet property="userNameLabel" destination="zCQ-Oq-5yC" id="eav-yM-z46"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletWarningMessageLabel" destination="FXu-7Z-ieT" id="VsW-iE-K0u"/>
                 <outlet property="walletsTableView" destination="JH1-tw-2kU" id="hFi-fy-yRm"/>
             </connections>
         </placeholder>
@@ -243,32 +247,42 @@ Increase KyberSwap's trade limits</string>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ksi-AX-JjD">
-                                    <rect key="frame" x="0.0" y="313" width="375" height="60"/>
+                                    <rect key="frame" x="0.0" y="313" width="375" height="139"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY WALLET(S)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QyU-pN-i8D">
-                                            <rect key="frame" x="25" y="21.5" width="104" height="17.5"/>
+                                            <rect key="frame" x="25" y="24" width="104" height="17.5"/>
                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                             <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum 3 wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5c-EV-cl4">
-                                            <rect key="frame" x="213" y="21.5" width="138" height="17.5"/>
+                                            <rect key="frame" x="213" y="24" width="138" height="17.5"/>
                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                            <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FXu-7Z-ieT">
+                                            <rect key="frame" x="24" y="49.5" width="327" height="73.5"/>
+                                            <string key="text">We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.</string>
+                                            <fontDescription key="fontDescription" name="Montserrat-MediumItalic" family="Montserrat" pointSize="12"/>
                                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.87058823529999996" green="0.94901960780000005" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstItem="QyU-pN-i8D" firstAttribute="centerY" secondItem="ksi-AX-JjD" secondAttribute="centerY" id="ODq-mX-mhn"/>
+                                        <constraint firstItem="FXu-7Z-ieT" firstAttribute="top" secondItem="QyU-pN-i8D" secondAttribute="bottom" constant="8" id="4Ab-Pj-apz"/>
+                                        <constraint firstAttribute="trailing" secondItem="FXu-7Z-ieT" secondAttribute="trailing" constant="24" id="LoN-tA-pdb"/>
                                         <constraint firstItem="K5c-EV-cl4" firstAttribute="centerY" secondItem="QyU-pN-i8D" secondAttribute="centerY" id="STV-YV-bIA"/>
+                                        <constraint firstItem="FXu-7Z-ieT" firstAttribute="leading" secondItem="ksi-AX-JjD" secondAttribute="leading" constant="24" id="WMt-sZ-JRu"/>
                                         <constraint firstItem="QyU-pN-i8D" firstAttribute="leading" secondItem="ksi-AX-JjD" secondAttribute="leading" constant="25" id="Z9S-ei-JD8"/>
-                                        <constraint firstAttribute="height" constant="60" id="wLg-pf-sb4"/>
+                                        <constraint firstItem="QyU-pN-i8D" firstAttribute="top" secondItem="ksi-AX-JjD" secondAttribute="top" constant="24" id="nW0-p1-m3y"/>
+                                        <constraint firstAttribute="bottom" secondItem="FXu-7Z-ieT" secondAttribute="bottom" constant="16" id="o7C-GZ-7OG"/>
                                         <constraint firstAttribute="trailing" secondItem="K5c-EV-cl4" secondAttribute="trailing" constant="24" id="y56-ig-Tig"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ler-uj-x7q">
-                                    <rect key="frame" x="0.0" y="373" width="375" height="368"/>
+                                    <rect key="frame" x="0.0" y="452" width="375" height="368"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Wb-ixh">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -424,7 +438,7 @@ Increase KyberSwap's trade limits</string>
                 <constraint firstItem="wVn-be-kf6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="xQq-Nz-TyP"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="49.5" y="53.5"/>
+            <point key="canvasLocation" x="48.799999999999997" y="52.623688155922046"/>
         </view>
     </objects>
     <resources>

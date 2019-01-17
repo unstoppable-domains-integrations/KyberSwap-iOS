@@ -38,7 +38,11 @@ class IEOUser: Object {
     }
     let step = dict["kyc_step"] as? Int ?? 1
     self.updateKYCStep(step)
-    let rejectReason: String = dict["reject_reason"] as? String ?? ""
+    let rejectReason: String = {
+      let reject: String = dict["reject_reason"] as? String ?? ""
+      let block: String = dict["block_reason"] as? String ?? ""
+      return !reject.isEmpty ? reject : block
+    }()
     let kycInfoDict = dict["kyc_info"] as? JSONDictionary ?? [:]
     let kycObject = UserKYCDetailsInfo(userID: self.userID, dict: kycInfoDict, rejectReason: rejectReason)
     IEOUserStorage.shared.updateKYCDetails(object: kycObject)
