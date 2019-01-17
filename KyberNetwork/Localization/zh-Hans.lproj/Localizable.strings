@@ -184,7 +184,7 @@
 "converted.to" = "转换为";
 "failed.to.delete.account" = "无法删除帐户";
 "could.not.decrypt.key.with.given.passphrase" = "无法用给定的口令解密密钥";
-"can.not.import.your.wallet" = "无法导入您的钱包";
+"can.not.import.your.wallet" = "无法导入您的钱包.";
 "you.already.added.this.address.to.wallets" = "您已将此地址添加到钱包中";
 "failed.to.sign.transaction" = "无法签署交易";
 "failed.to.update.password" = "无法更新密码";
@@ -395,6 +395,7 @@
 "profile.is.blocked" = "Your Profile is blocked";
 "kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
 "kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
+"invalid password" = "无效的密码";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";

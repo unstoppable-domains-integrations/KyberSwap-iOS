@@ -184,7 +184,7 @@
 "converted.to" = "converted to";
 "failed.to.delete.account" = "Failed to delete account";
 "could.not.decrypt.key.with.given.passphrase" = "Could not decrypt key with given passphrase";
-"can.not.import.your.wallet" = "Can not import your wallet";
+"can.not.import.your.wallet" = "Can not import your wallet.";
 "you.already.added.this.address.to.wallets" = "You already added this address to wallets";
 "failed.to.sign.transaction" = "Failed to sign transaction";
 "failed.to.update.password" = "Failed to update password";
@@ -395,6 +395,7 @@
 "profile.is.blocked" = "Your Profile is blocked";
 "kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
 "kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
+"invalid password" = "Invalid Password";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";

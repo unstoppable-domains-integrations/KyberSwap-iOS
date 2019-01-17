@@ -23,8 +23,10 @@ enum KeystoreError: LocalizedError {
             return NSLocalizedString("failed.to.delete.account", value: "Failed to delete account", comment: "")
         case .failedToDecryptKey:
             return NSLocalizedString("could.not.decrypt.key.with.given.passphrase", value: "Could not decrypt key with given passphrase", comment: "")
-        case .failedToImport:
-            return NSLocalizedString("can.not.import.your.wallet", value: "Can not import your wallet", comment: "")
+        case .failedToImport(let error):
+            let general = NSLocalizedString("can.not.import.your.wallet", value: "Can not import your wallet", comment: "")
+            let errorString = NSLocalizedString(error.localizedDescription.lowercased(), value: error.localizedDescription, comment: "")
+            return "\(general) \(errorString)"
         case .duplicateAccount:
             return NSLocalizedString("you.already.added.this.address.to.wallets", value: "You already added this address to wallets", comment: "")
         case .failedToSignTransaction:
