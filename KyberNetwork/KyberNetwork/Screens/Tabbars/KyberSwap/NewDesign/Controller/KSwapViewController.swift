@@ -487,6 +487,7 @@ extension KSwapViewController {
 
     // update tokens button in case promo wallet
     self.toTokenButton.isEnabled = self.viewModel.isToTokenBtnEnabled
+    self.fromTokenButton.isEnabled = self.viewModel.isFromTokenBtnEnabled
     self.view.layoutIfNeeded()
   }
 

@@ -26,7 +26,7 @@ class KNSearchTokenViewModel {
 
   init(headerColor: UIColor, supportedTokens: [TokenObject]) {
     self.headerColor = headerColor
-    self.supportedTokens = supportedTokens.sorted(by: { return $0.symbol < $1.symbol })
+    self.supportedTokens = supportedTokens.sorted(by: { return $0.symbol < $1.symbol }).filter({ return !$0.isPromoToken })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
   }
@@ -48,7 +48,7 @@ class KNSearchTokenViewModel {
   }
 
   func updateListSupportedTokens(_ tokens: [TokenObject]) {
-    self.supportedTokens = tokens.sorted(by: { return $0.symbol < $1.symbol })
+    self.supportedTokens = tokens.sorted(by: { return $0.symbol < $1.symbol }).filter({ return !$0.isPromoToken })
     self.updateDisplayedTokens()
   }
 

@@ -79,6 +79,15 @@ class KSwapViewModel {
     return self.from.icon
   }
 
+  var isFromTokenBtnEnabled: Bool {
+    guard KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.walletObject.address) != nil else {
+      // not a promo wallet, always enabled
+      return true
+    }
+    if self.from.isPromoToken { return false }
+    return true
+  }
+
   var fromTokenBtnTitle: String {
     return self.from.symbol
   }
