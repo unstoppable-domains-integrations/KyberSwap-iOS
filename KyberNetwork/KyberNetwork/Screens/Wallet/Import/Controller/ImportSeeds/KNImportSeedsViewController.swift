@@ -51,6 +51,7 @@ class KNImportSeedsViewController: KNBaseViewController {
   func resetUIs() {
     self.seedsTextField.text = ""
     self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
+    self.wordsCountLabel.textColor = UIColor.Kyber.border
     self.wordsCountLabel.addLetterSpacing()
     self.walletNameTextField.text = ""
     self.updateNextButton()
@@ -109,6 +110,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     textField.text = ""
     if textField == self.seedsTextField {
       self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
+      self.wordsCountLabel.textColor = UIColor.Kyber.border
       self.wordsCountLabel.addLetterSpacing()
       self.updateNextButton()
     }
@@ -129,6 +131,8 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
     words = words.filter({ !$0.replacingOccurrences(of: " ", with: "").isEmpty })
     self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
+    let color = words.isEmpty || words.count == 12 ? UIColor.Kyber.border : UIColor.Kyber.strawberry
+    self.wordsCountLabel.textColor = color
     self.wordsCountLabel.addLetterSpacing()
     self.updateNextButton()
   }
