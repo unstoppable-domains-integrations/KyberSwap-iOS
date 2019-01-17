@@ -26,6 +26,7 @@ extension KyberNetworkService: TargetType {
         if KNEnvironment.default == .rinkeby { return KNSecret.internalRinkebyRateEndpoint }
         if KNEnvironment.default == .staging { return KNSecret.internalStagingEndpoint }
       }
+      if KNEnvironment.default == .staging { return KNSecret.internalStagingEndpoint }
       return KNSecret.internalCachedEndpoint
     }()
     return URL(string: baseURLString)!
