@@ -391,6 +391,10 @@
 "promo.code.is.empty" = "프로모션 코드 오류입니다.";
 "congratulations" = "축하합니다!!!";
 "you.have.successfully.unlocked.your.promo.code" = "프로모션 코드 입력을 완료했습니다. 지갑의 자산을 %@까지 이동해주세요";
+"blocked" = "Blocked";
+"profile.is.blocked" = "Your Profile is blocked";
+"kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
+"kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";
