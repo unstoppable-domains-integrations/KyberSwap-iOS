@@ -178,6 +178,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
   @IBOutlet weak var mywalletsLabel: UILabel!
   @IBOutlet weak var maximumWalletsLabel: UILabel!
+  @IBOutlet weak var walletWarningMessageLabel: UILabel!
   @IBOutlet weak var walletsDataView: UIView!
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var noWalletsTextLabel: UILabel!
@@ -334,6 +335,8 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.mywalletsLabel.addLetterSpacing()
     self.maximumWalletsLabel.text = NSLocalizedString("maximum.three.wallets", value: "Maximum 3 wallets", comment: "")
     self.maximumWalletsLabel.addLetterSpacing()
+    self.walletWarningMessageLabel.text = NSLocalizedString("kyc.submit.wallet.warning.message.personal.info", value: "", comment: "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.")
+    self.walletWarningMessageLabel.addLetterSpacing()
     self.walletLabelTextField.placeholder = NSLocalizedString("label", value: "Label", comment: "")
     self.walletLabelTextField.addPlaceholderSpacing()
     self.walletAddressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
