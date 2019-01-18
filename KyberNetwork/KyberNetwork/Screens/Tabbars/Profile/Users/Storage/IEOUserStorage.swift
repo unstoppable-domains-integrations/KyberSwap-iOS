@@ -16,12 +16,14 @@ class IEOUserStorage {
   }
 
   var objects: [IEOUser] {
+    if self.realm == nil { return [] }
     return self.realm.objects(IEOUser.self)
       .sorted(byKeyPath: "userID", ascending: true)
       .filter { $0.userID != -1 }
   }
 
   func add(objects: [IEOUser]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.add(objects, update: true)
     try! self.realm.commitWrite()
@@ -33,6 +35,7 @@ class IEOUserStorage {
 
   @discardableResult
   func updateToken(object: IEOUser, type: String, accessToken: String, refreshToken: String, expireTime: Double) -> IEOUser {
+    if self.realm == nil { return object }
     try! self.realm.write {
       object.updateToken(
         type: type,
@@ -45,6 +48,7 @@ class IEOUserStorage {
   }
 
   func getObject(primaryKey: Int) -> IEOUser? {
+    if self.realm == nil { return nil }
     return self.realm.object(ofType: IEOUser.self, forPrimaryKey: primaryKey)
   }
 
@@ -80,6 +84,7 @@ class IEOUserStorage {
 // For UserKYCDetailsInfo
 extension IEOUserStorage {
   var kycDetailObjects: [UserKYCDetailsInfo] {
+    if self.realm == nil { return [] }
     return self.realm.objects(UserKYCDetailsInfo.self)
       .sorted(byKeyPath: "userID", ascending: true)
       .filter { $0.userID != -1 }
@@ -99,6 +104,7 @@ extension IEOUserStorage {
   }
 
   func updateKYCDetails(object: UserKYCDetailsInfo) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.add(object, update: true)
     try! self.realm.commitWrite()

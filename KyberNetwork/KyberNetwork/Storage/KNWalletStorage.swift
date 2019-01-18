@@ -16,16 +16,19 @@ class KNWalletStorage {
   }
 
   var wallets: [KNWalletObject] {
+    if self.realm == nil { return [] }
     return self.realm.objects(KNWalletObject.self)
       .sorted(byKeyPath: "date", ascending: true)
       .filter { !$0.address.isEmpty }
   }
 
   func get(forPrimaryKey key: String) -> KNWalletObject? {
+    if self.realm == nil { return nil }
     return self.realm.object(ofType: KNWalletObject.self, forPrimaryKey: key)
   }
 
   func add(wallets: [KNWalletObject]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.add(wallets, update: true)
     try! self.realm.commitWrite()
@@ -36,6 +39,7 @@ class KNWalletStorage {
   }
 
   func delete(wallets: [KNWalletObject]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     // remove promo info for wallet if have
     wallets.forEach({
@@ -46,6 +50,7 @@ class KNWalletStorage {
   }
 
   func deleteAll() {
+    if self.realm == nil { return }
     try! realm.write {
       realm.delete(realm.objects(KNWalletObject.self))
     }

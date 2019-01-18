@@ -16,6 +16,7 @@ class KNTrackerRateStorage {
   }
 
   var rates: [KNTrackerRate] {
+    if self.realm == nil { return [] }
     return self.realm.objects(KNTrackerRate.self)
       .sorted(byKeyPath: "tokenAddress", ascending: true)
       .filter { !$0.tokenAddress.isEmpty }
@@ -26,6 +27,7 @@ class KNTrackerRateStorage {
   }
 
   func add(rates: [KNTrackerRate]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.add(rates, update: true)
     try!self.realm.commitWrite()
@@ -36,12 +38,14 @@ class KNTrackerRateStorage {
   }
 
   func delete(rates: [KNTrackerRate]) {
+    if self.realm == nil { return }
     self.realm.beginWrite()
     self.realm.delete(rates)
     try! self.realm.commitWrite()
   }
 
   func deleteAll() {
+    if self.realm == nil { return }
     try! realm.write {
       realm.delete(realm.objects(KNTrackerRate.self))
     }
