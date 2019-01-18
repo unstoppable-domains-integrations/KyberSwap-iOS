@@ -391,10 +391,10 @@
 "promo.code.is.empty" = "未填写活动码";
 "congratulations" = "恭喜!!!";
 "you.have.successfully.unlocked.your.promo.code" = "您已成功解锁促销代码。请在%@前将所有资产移至您的钱包";
-"blocked" = "Blocked";
-"profile.is.blocked" = "Your Profile is blocked";
-"kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
-"kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
+"blocked" = "封了";
+"profile.is.blocked" = "您的资料已被封";
+"kyc.submit.wallet.warning.message" = "据我们了解, 作为验证过程的一部分, 您已提交了钱包地址。因此, 我们很遗憾地通知您, 提交的钱包地址无法从您的个人资料中删除或更改。";
+"kyc.submit.wallet.warning.message.personal.info" = "您只能在此处编辑钱包。一旦您的个人资料提交审查, 您将无法修改。";
 "invalid password" = "无效的密码";
 
 // Promo code error messages
