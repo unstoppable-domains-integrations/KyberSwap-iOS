@@ -406,10 +406,36 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
           self.rootViewController.coordinatorUserDidSignInSuccessfully()
           let status = user.kycStatus.lowercased()
           if status == "approved" || status == "pending" || status == "blocked" { return }
-          self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
-          self.kycCoordinator?.delegate = self
-          self.kycCoordinator?.start()
+          if status == "rejected" {
+            self.sendResubmitRequest(for: user)
+          } else {
+            self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+            self.kycCoordinator?.delegate = self
+            self.kycCoordinator?.start()
+          }
         }
+    }
+  }
+
+  fileprivate func sendResubmitRequest(for user: IEOUser) {
+    self.navigationController.displayLoading()
+    let accessToken = user.accessToken
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<ProfileKYCService>()
+      provider.request(.resubmitKYC(accessToken: accessToken)) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+          switch result {
+          case .success:
+            self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+            self.kycCoordinator?.delegate = self
+            self.kycCoordinator?.start()
+          case .failure(let error):
+            self.navigationController.displayError(error: error)
+          }
+        }
+      }
     }
   }
 }

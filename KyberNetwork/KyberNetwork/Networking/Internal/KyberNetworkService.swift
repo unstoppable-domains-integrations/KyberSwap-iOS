@@ -279,6 +279,7 @@ enum ProfileKYCService {
   case userWallets(accessToken: String)
   case checkWalletExist(accessToken: String, wallet: String)
   case addWallet(accessToken: String, label: String, address: String)
+  case resubmitKYC(accessToken: String)
   case promoCode(promoCode: String, nonce: UInt)
 
   var apiPath: String {
@@ -289,6 +290,7 @@ enum ProfileKYCService {
     case .userWallets: return KNSecret.userWalletsEndpoint
     case .checkWalletExist: return KNSecret.checkWalletsExistEndpoint
     case .addWallet: return KNSecret.addWallet
+    case .resubmitKYC: return KNSecret.resubmitKYC
     case .promoCode: return KNSecret.promoCode
     }
   }
@@ -407,6 +409,10 @@ extension ProfileKYCService: TargetType {
         "label": label,
         "address": address,
       ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .resubmitKYC(let accessToken):
+      let json: JSONDictionary = ["access_token": accessToken]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .promoCode(let promoCode, let nonce):
