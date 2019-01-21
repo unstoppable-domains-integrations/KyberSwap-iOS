@@ -252,6 +252,8 @@ class KNProfileHomeViewController: KNBaseViewController {
 
     let actionTitle: String = status == "Rejected" ? NSLocalizedString("edit", value: "Edit", comment: "") : NSLocalizedString("verify", value: "Verify", comment: "")
     self.userKYCActionButton.setTitle(actionTitle, for: .normal)
+    // hide button if it is blocked
+    self.userKYCActionButton.isHidden = status == "Blocked"
 
     if status == "Approved" {
       self.userKYCStatusLabel.backgroundColor = UIColor.Kyber.shamrock
