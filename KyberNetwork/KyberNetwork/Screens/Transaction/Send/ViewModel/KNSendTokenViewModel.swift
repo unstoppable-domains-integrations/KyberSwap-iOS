@@ -62,19 +62,14 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var tokenButtonAttributedText: NSAttributedString {
+    // only have symbol and logo
     let attributedString = NSMutableAttributedString()
     let symbolAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
       NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
       NSAttributedStringKey.kern: 0.0,
     ]
-    let nameAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 13),
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
-      NSAttributedStringKey.kern: 0.0,
-    ]
     attributedString.append(NSAttributedString(string: self.from.symbol, attributes: symbolAttributes))
-    attributedString.append(NSAttributedString(string: "\n\(self.from.name)", attributes: nameAttributes))
     return attributedString
   }
 
