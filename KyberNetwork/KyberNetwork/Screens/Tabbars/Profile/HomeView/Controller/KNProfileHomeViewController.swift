@@ -40,7 +40,8 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var userKYCStatusContainerView: UIView!
   @IBOutlet weak var userKYCStatusDescLabel: UILabel!
   @IBOutlet weak var userKYCActionButton: UIButton!
-  @IBOutlet weak var heightConstraintUserKYCStatusView: NSLayoutConstraint!
+  @IBOutlet var userKYCStatusPaddingConstraints: [NSLayoutConstraint]!
+  @IBOutlet weak var userKYCActionHeightConstraint: NSLayoutConstraint!
 
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
@@ -195,13 +196,14 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.userKYCStatusDescLabel.attributedText = {
       let attributedString = NSMutableAttributedString()
       attributedString.append(NSAttributedString(string: string))
-      let index = string.firstIndex(of: "\n")!
-      let attributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-        NSAttributedStringKey.kern: 0.0,
-      ]
-      let range = NSRange(location: 0, length: index.encodedOffset)
-      attributedString.addAttributes(attributes, range: range)
+      if let index = string.firstIndex(of: "\n") {
+        let attributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
+          NSAttributedStringKey.kern: 0.0,
+          ]
+        let range = NSRange(location: 0, length: index.encodedOffset)
+        attributedString.addAttributes(attributes, range: range)
+      }
       return attributedString
     }()
     self.view.layoutIfNeeded()
@@ -268,6 +270,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     }
     self.userKYCStatusLabel.addLetterSpacing()
     let descText: String = {
+      if status == "Approved" || status == "Pending" { return "" }
       if status == "Rejected" || status == "Blocked" {
         let reason = user.kycDetails?.rejectedReason ?? ""
         let title: String = {
@@ -287,11 +290,13 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.updateKYCStatusDescLabel(with: descText)
 
     if status == "Approved" || status == "Pending" {
-      self.heightConstraintUserKYCStatusView.constant = 0.0
+      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = 0.0 })
+      self.userKYCActionHeightConstraint.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {
+      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = 24.0 })
+      self.userKYCActionHeightConstraint.constant = self.userKYCActionButton.isHidden ? 0.0 : 44.0
       self.userKYCStatusContainerView.isHidden = false
-      self.heightConstraintUserKYCStatusView.constant = 160.0
     }
     self.updateWalletsData()
   }
