@@ -108,7 +108,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAmountTooSmall: Bool {
-    return self.amountBigInt <= BigInt(0)
+    return self.amountBigInt < BigInt(0)
   }
 
   var isAmountTooBig: Bool {
