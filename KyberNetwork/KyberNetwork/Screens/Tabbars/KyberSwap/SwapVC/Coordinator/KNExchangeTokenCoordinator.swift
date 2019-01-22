@@ -283,6 +283,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
+    case .validateRate(let data):
+      self.validateRateBeforeSwapping(data: data)
     case .swap(let data):
       self.exchangeButtonPressed(data: data)
     }
@@ -321,6 +323,18 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
+  fileprivate func validateRateBeforeSwapping(data: KNDraftExchangeTransaction) {
+    self.navigationController.displayLoading()
+    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount) { [weak self] error in
+      self?.navigationController.hideLoading()
+      if let err = error {
+        self?.navigationController.displayError(error: err)
+      } else {
+        self?.rootViewController.coordinatorDidValidateRate()
+      }
+    }
+  }
+
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
     self.confirmSwapVC = {
       let viewModel = KConfirmSwapViewModel(transaction: data)
@@ -332,7 +346,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.navigationController.pushViewController(self.confirmSwapVC!, animated: true)
   }
 
-  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt) {
+  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, completion: ((Error?) -> Void)? = nil) {
     if from == to {
       let rate = BigInt(10).power(from.decimals)
       self.rootViewController.coordinatorDidUpdateEstimateRate(
@@ -342,6 +356,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         rate: rate,
         slippageRate: rate * BigInt(97) / BigInt(100)
       )
+      completion?(nil)
       return
     }
     self.session.externalProvider.getExpectedRate(
@@ -350,25 +365,23 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       amount: amount) { [weak self] (result) in
         var estRate: BigInt = BigInt(0)
         var slippageRate: BigInt = BigInt(0)
-        if case .success(let data) = result {
+        switch result {
+        case .success(let data):
           estRate = data.0
           slippageRate = data.1
           estRate /= BigInt(10).power(18 - to.decimals)
           slippageRate /= BigInt(10).power(18 - to.decimals)
-        } else {
-          // fallback to rate from tracker
-          if estRate.isZero, let cacheRate = KNRateCoordinator.shared.getRate(from: from, to: to) {
-            estRate = cacheRate.rate
-            slippageRate = cacheRate.minRate
-          }
+          self?.rootViewController.coordinatorDidUpdateEstimateRate(
+            from: from,
+            to: to,
+            amount: amount,
+            rate: estRate,
+            slippageRate: slippageRate
+          )
+          completion?(nil)
+        case .failure(let error):
+          completion?(error)
         }
-        self?.rootViewController.coordinatorDidUpdateEstimateRate(
-          from: from,
-          to: to,
-          amount: amount,
-          rate: estRate,
-          slippageRate: slippageRate
-        )
     }
   }
 

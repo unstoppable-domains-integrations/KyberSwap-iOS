@@ -397,6 +397,8 @@
 "kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
 "invalid password" = "Invalid Password";
 
+"please.check.your.internet.connection" = "Please check your internet connection";
+
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
 "Promo code has expired." = "Promo code has expired.";

@@ -397,6 +397,8 @@
 "kyc.submit.wallet.warning.message.personal.info" = "Bạn chỉ có thể xóa/chỉnh sửa ví của bạn ở đây. Khi hồ sơ của bạn được gửi để xem xét, bạn sẽ không thể thay đổi.";
 "invalid password" = "Mật khẩu không hợp lệ";
 
+"please.check.your.internet.connection" = "Xin vui lòng kiểm tra kết nối Internet của bạn";
+
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
 "Promo code has expired." = "Mã khuyến mãi đã hết hạn.";

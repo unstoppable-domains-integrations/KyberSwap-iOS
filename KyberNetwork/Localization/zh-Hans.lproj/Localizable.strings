@@ -397,6 +397,8 @@
 "kyc.submit.wallet.warning.message.personal.info" = "您只能在此处编辑钱包。一旦您的个人资料提交审查, 您将无法修改。";
 "invalid password" = "无效的密码";
 
+"please.check.your.internet.connection" = "请检查您的互联网连接";
+
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
 "Promo code has expired." = "促销代码已过期。";

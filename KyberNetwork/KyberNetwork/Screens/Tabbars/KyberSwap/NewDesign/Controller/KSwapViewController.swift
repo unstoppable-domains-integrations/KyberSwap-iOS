@@ -12,6 +12,7 @@ enum KSwapViewEvent {
   case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
   case getUserCapInWei
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
+  case validateRate(data: KNDraftExchangeTransaction)
   case swap(data: KNDraftExchangeTransaction)
   case showQRCode
 }
@@ -279,6 +280,10 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
+    self.validateDataBeforeContinuing(hasCallValidateRate: false)
+  }
+
+  fileprivate func validateDataBeforeContinuing(hasCallValidateRate: Bool) {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
@@ -301,7 +306,11 @@ class KSwapViewController: KNBaseViewController {
       gasLimit: self.viewModel.estimateGasLimit,
       expectedReceivedString: self.viewModel.amountTo
     )
-    self.delegate?.kSwapViewController(self, run: .swap(data: exchange))
+    if !hasCallValidateRate {
+      self.delegate?.kSwapViewController(self, run: .validateRate(data: exchange))
+    } else {
+      self.delegate?.kSwapViewController(self, run: .swap(data: exchange))
+    }
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -664,6 +673,13 @@ extension KSwapViewController {
     if case .failure(let error) = result {
       self.displayError(error: error)
     }
+  }
+
+  /*
+  Rate validate for swapping
+   */
+  func coordinatorDidValidateRate() {
+    self.validateDataBeforeContinuing(hasCallValidateRate: true)
   }
 
   /*
