@@ -427,10 +427,24 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
         DispatchQueue.main.async {
           self.navigationController.hideLoading()
           switch result {
-          case .success:
-            self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
-            self.kycCoordinator?.delegate = self
-            self.kycCoordinator?.start()
+          case .success(let resp):
+            var json: JSONDictionary = [:]
+            do {
+              json = try resp.mapJSON() as? JSONDictionary ?? [:]
+            } catch {} // ignore catch error
+            let success = json["success"] as? Bool ?? false
+            let reason = json["reason"] as? String ?? NSLocalizedString("unknown.reason", value: "Unknown reason", comment: "")
+            if success {
+              self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+              self.kycCoordinator?.delegate = self
+              self.kycCoordinator?.start()
+            } else {
+              self.navigationController.showWarningTopBannerMessage(
+                with: NSLocalizedString("error", value: "Error", comment: ""),
+                message: reason,
+                time: 1.5
+              )
+            }
           case .failure(let error):
             self.navigationController.displayError(error: error)
           }
