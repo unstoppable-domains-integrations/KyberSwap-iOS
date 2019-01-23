@@ -44,7 +44,7 @@ class KNImportJSONViewController: KNBaseViewController {
     self.importJSONButton.setAttributedTitle(attributedString, for: .normal)
     self.nameWalletTextField.text = ""
     self.enterPasswordTextField.text = ""
-    self.enterPasswordTextField.isSecureTextEntry = false
+    self.enterPasswordTextField.isSecureTextEntry = true
     self.secureTextButton.setImage(UIImage(named: self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
 
     self.updateNextButton()

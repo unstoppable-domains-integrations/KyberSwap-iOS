@@ -145,7 +145,7 @@ class KNAppTracker {
 
   // MARK: Profile base string
   static func getKyberProfileBaseString() -> String {
-    return KNEnvironment.default.isMainnet ? KNSecret.profileURL : KNSecret.debugProfileURL
+    return KNEnvironment.default.profileURL
   }
 
   // MARK: App style

@@ -169,8 +169,8 @@ extension KNProfileHomeCoordinator {
       self.navigationController.showSuccessTopBannerMessage(with: "", message: message)
       return
     }
-    let clientID = KNEnvironment.default.isMainnet ? KNSecret.appID : KNSecret.debugAppID
-    let redirectLink = KNEnvironment.default.isMainnet ? KNSecret.redirectURL : KNSecret.debugRedirectURL
+    let clientID: String = KNEnvironment.default.clientID
+    let redirectLink: String = KNEnvironment.default.redirectLink
     if let url = URL(string: KNAppTracker.getKyberProfileBaseString() + "/oauth/authorize?lang=\(Locale.current.kyberSupportedLang)&isInternalApp=true&client_id=\(clientID)&redirect_uri=\(redirectLink)&response_type=code&state=\(KNSecret.state)") {
       // Clear old session
       URLCache.shared.removeAllCachedResponses()

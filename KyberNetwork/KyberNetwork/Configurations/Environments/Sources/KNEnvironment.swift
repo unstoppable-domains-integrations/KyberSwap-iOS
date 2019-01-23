@@ -100,4 +100,36 @@ enum KNEnvironment: Int {
       return ""
     }
   }
+
+  var clientID: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.appID
+    case .ropsten, .rinkeby, .kovan: return KNSecret.debugAppID
+    case .staging: return KNSecret.stagingAppID
+    }
+  }
+
+  var clientSecret: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.secret
+    case .ropsten, .rinkeby, .kovan: return KNSecret.debugSecret
+    case .staging: return KNSecret.stagingSecret
+    }
+  }
+
+  var redirectLink: String {
+    switch KNEnvironment.default {
+    caseO .mainnetTest, .production: return KNSecret.redirectURL
+    case .ropsten, .rinkeby, .kovan: return KNSecret.debugRedirectURL
+    case .staging: return KNSecret.stagingRedirectURL
+    }
+  }
+
+  var profileURL: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.profileURL
+    case .ropsten, .rinkeby, .kovan: return KNSecret.debugProfileURL
+    case .staging: return KNSecret.stagingProfileURL
+    }
+  }
 }

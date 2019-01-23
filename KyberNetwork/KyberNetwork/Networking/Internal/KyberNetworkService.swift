@@ -162,9 +162,9 @@ extension KyberGOService: TargetType {
   }
 
   var task: Task {
-    let clientID = KNEnvironment.default.isMainnet ? KNSecret.appID : KNSecret.debugAppID
-    let clientSecret = KNEnvironment.default.isMainnet ? KNSecret.secret : KNSecret.debugSecret
-    let redirectURL = KNEnvironment.default.isMainnet ? KNSecret.redirectURL : KNSecret.debugRedirectURL
+    let clientID: String = KNEnvironment.default.clientID
+    let clientSecret: String = KNEnvironment.default.clientSecret
+    let redirectURL: String = KNEnvironment.default.redirectLink
     switch self {
     case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
