@@ -20,8 +20,9 @@ struct KNExchangeRequestEncode: Web3Request {
       guard let minRate = exchange.minRate else { return BigInt(0) }
       return minRate * BigInt(10).power(18 - exchange.to.decimals)
     }()
+    let walletID: String = "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da"
     let hint = "PERM".hexEncoded
-    let run = "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.abi), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(address.description)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"0x0000000000000000000000000000000000000000\", \"\(hint)\"])"
+    let run = "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.abi), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(address.description)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"\(walletID)\", \"\(hint)\"])"
     return .script(command: run)
   }
 }
