@@ -145,7 +145,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
     case .openImportWallet:
       self.importWalletCoordinator.start()
     case .openTermAndCondition:
-      self.navigationController.topViewController?.openSafari(with: "https://files.kyber.network/tac.html")
+      self.navigationController.topViewController?.openSafari(with: "https://files.kyber.network/tac.pdf")
     }
   }
 }
