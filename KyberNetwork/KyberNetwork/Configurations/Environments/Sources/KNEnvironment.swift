@@ -119,7 +119,7 @@ enum KNEnvironment: Int {
 
   var redirectLink: String {
     switch KNEnvironment.default {
-    caseO .mainnetTest, .production: return KNSecret.redirectURL
+    case .mainnetTest, .production: return KNSecret.redirectURL
     case .ropsten, .rinkeby, .kovan: return KNSecret.debugRedirectURL
     case .staging: return KNSecret.stagingRedirectURL
     }
