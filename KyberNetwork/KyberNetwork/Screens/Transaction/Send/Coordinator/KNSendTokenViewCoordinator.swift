@@ -43,6 +43,9 @@ class KNSendTokenViewCoordinator: Coordinator {
     self.session = session
     self.balances = balances
     self.from = from
+    if self.from.isPromoToken {
+      self.from = KNSupportedTokenStorage.shared.ethToken
+    }
   }
 
   func start() {

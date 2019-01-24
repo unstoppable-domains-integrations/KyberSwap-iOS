@@ -388,6 +388,7 @@ extension KSendTokenViewController {
 // MARK: Update from coordinator
 extension KSendTokenViewController {
   func coordinatorDidUpdateSendToken(_ from: TokenObject, balance: Balance?) {
+    if from.isPromoToken { return }
     self.viewModel.updateSendToken(from: from, balance: balance)
     self.updateUIFromTokenDidChange()
   }

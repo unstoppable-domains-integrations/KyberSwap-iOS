@@ -264,6 +264,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func swapButtonPressed(_ sender: UIButton) {
+    if !self.viewModel.isFromTokenBtnEnabled { return }
     self.viewModel.swapTokens()
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
@@ -632,6 +633,8 @@ extension KSwapViewController {
    Update UIs according to new values
    */
   func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
+    if isSource, !self.fromTokenButton.isEnabled { return }
+    if !isSource, !self.toTokenButton.isEnabled { return }
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
     self.viewModel.updateSelectedToken(token, isSource: isSource)
