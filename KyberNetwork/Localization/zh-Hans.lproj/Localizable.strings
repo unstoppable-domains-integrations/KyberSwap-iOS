@@ -398,6 +398,7 @@
 "invalid password" = "无效的密码";
 
 "please.check.your.internet.connection" = "请检查您的互联网连接";
+"address.has.already.been.taken" = "地址已经被采纳";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";

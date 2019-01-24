@@ -571,6 +571,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
             updated = self.viewModel.addAddress(address, label: label)
           }
           self.updateWalletsData()
+        } else {
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: NSLocalizedString("address.has.already.been.taken", value: "Address has already been taken", comment: ""),
+            time: 1.5
+          )
         }
       case .failure(let error):
         self.displayError(error: error)

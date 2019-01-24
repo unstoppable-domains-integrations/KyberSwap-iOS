@@ -398,6 +398,7 @@
 "invalid password" = "잘못된 비밀번호";
 
 "please.check.your.internet.connection" = "인터넷 연결을 확인하십시오.";
+"address.has.already.been.taken" = "이미 주소가 찍혔습니다.";
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";
