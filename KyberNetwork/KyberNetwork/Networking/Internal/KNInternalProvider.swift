@@ -20,7 +20,8 @@ class KNInternalProvider {
 
   // MARK: Rate
   func getKNExchangeTokenRate(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
-    self.performFetchRequest(service: .getRate) { result in
+    self.performFetchRequest(service: .getRate) { [weak self] result in
+      guard let _ = `self` else { return }
       switch result {
       case .success(let object):
         let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
@@ -40,7 +41,8 @@ class KNInternalProvider {
   }
 
   func getKNExchangeRateUSD(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
-    self.performFetchRequest(service: .getRateUSD) { (result) in
+    self.performFetchRequest(service: .getRateUSD) { [weak self] (result) in
+      guard let _ = `self` else { return }
       switch result {
       case .success(let object):
         do {
@@ -78,7 +80,8 @@ class KNInternalProvider {
 
   // MARK: Latest block
   func getKNLatestBlock(completion: @escaping (Result<String, AnyError>) -> Void) {
-    self.performFetchRequest(service: .getLatestBlock) { (result) in
+    self.performFetchRequest(service: .getLatestBlock) { [weak self] (result) in
+      guard let _ = `self` else { return }
       switch result {
       case .success(let json):
         if isDebug { print("Load recent trades successfully: \(json)") }
@@ -91,7 +94,8 @@ class KNInternalProvider {
   }
 
   func getKNEnabled(completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    self.performFetchRequest(service: .getKyberEnabled) { (result) in
+    self.performFetchRequest(service: .getKyberEnabled) { [weak self] (result) in
+      guard let _ = `self` else { return }
       switch result {
       case .success(let json):
         if isDebug { print("Load recent trades successfully: \(json)") }
@@ -105,7 +109,8 @@ class KNInternalProvider {
 
   private func performFetchRequest(service: KyberNetworkService, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(service) { (result) in
+      self.provider.request(service) { [weak self] (result) in
+        guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
