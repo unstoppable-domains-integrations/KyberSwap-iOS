@@ -84,7 +84,7 @@ class KYCPersonalInfoViewModel {
 
   @discardableResult
   func addAddress(_ address: String, label: String) -> Bool {
-    guard self.wallets.first(where: { $0.1 == address }) == nil else { return false }
+    guard self.wallets.first(where: { $0.1.lowercased() == address.lowercased() }) == nil else { return false }
     self.wallets.append((label, address))
     self.hasModifiedWallets = true
     return true
@@ -92,7 +92,7 @@ class KYCPersonalInfoViewModel {
 
   @discardableResult
   func updateAddress(_ address: String, label: String) -> Bool {
-    if let id = self.wallets.firstIndex(where: { $0.1 == address }) {
+    if let id = self.wallets.firstIndex(where: { $0.1.lowercased() == address.lowercased() }) {
       if self.wallets[id].0 != label { self.hasModifiedWallets = true }
       self.wallets[id] = (label, address)
       return true
@@ -564,10 +564,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       self.hideLoading()
       switch result {
       case .success(let ok):
-        if !ok {
-          self.viewModel.addAddress(address, label: label)
-          self.updateWalletsData()
-        } else {
+        if ok {
           var updated = self.viewModel.updateAddress(address, label: label)
           if !updated {
             // in case user has removed this wallet and added again
