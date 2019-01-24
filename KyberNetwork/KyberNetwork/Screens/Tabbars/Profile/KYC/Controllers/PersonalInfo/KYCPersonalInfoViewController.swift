@@ -142,7 +142,7 @@ class KYCPersonalInfoViewModel {
           _ = try resp.filterSuccessfulStatusCodes()
           let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let existed: Bool = json["wallet_existed"] as? Bool ?? false
-          completion(.success(existed))
+          completion(.success(!existed))
         } catch let error {
           completion(.failure(AnyError(error)))
         }
