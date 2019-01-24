@@ -48,20 +48,23 @@ class KNWalletPromoInfoStorage: NSObject {
 
   let userDefaults = UserDefaults.standard
   static let shared = KNWalletPromoInfoStorage()
+  var kKeyPrefix: String {
+    return "\(KNEnvironment.default.chainID)_"
+  }
 
   override init() {}
 
   func addWalletPromoInfo(address: String, destinationToken: String) {
-    self.userDefaults.set(destinationToken, forKey: address.lowercased())
+    self.userDefaults.set(destinationToken, forKey: kKeyPrefix + address.lowercased())
     self.userDefaults.synchronize()
   }
 
   func removeWalletPromoInfo(address: String) {
-    self.userDefaults.removeObject(forKey: address.lowercased())
+    self.userDefaults.removeObject(forKey: kKeyPrefix + address.lowercased())
     self.userDefaults.synchronize()
   }
 
   func getDestinationToken(from address: String) -> String? {
-    return self.userDefaults.object(forKey: address.lowercased()) as? String
+    return self.userDefaults.object(forKey: kKeyPrefix + address.lowercased()) as? String
   }
 }
