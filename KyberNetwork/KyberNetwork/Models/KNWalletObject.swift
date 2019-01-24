@@ -49,7 +49,7 @@ class KNWalletPromoInfoStorage: NSObject {
   let userDefaults = UserDefaults.standard
   static let shared = KNWalletPromoInfoStorage()
   var kKeyPrefix: String {
-    return "\(KNEnvironment.default.chainID)_"
+    return "\(KNEnvironment.default.displayName)_\(KNEnvironment.default.chainID)_"
   }
 
   override init() {}
