@@ -5,6 +5,7 @@ import BigInt
 import TrustKeystore
 import TrustCore
 import Result
+import Moya
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -324,13 +325,41 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func validateRateBeforeSwapping(data: KNDraftExchangeTransaction) {
-    self.navigationController.displayLoading()
-    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount) { [weak self] error in
-      self?.navigationController.hideLoading()
-      if let err = error {
-        self?.navigationController.displayError(error: err)
+    self.navigationController.displayLoading(text: NSLocalizedString("checking", value: "Checking", comment: ""), animated: true)
+    let address = self.session.wallet.address.description
+    var errorMessage: String?
+    let group = DispatchGroup()
+    group.enter()
+    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount) { error in
+      if let err = error { errorMessage = err.prettyError }
+      group.leave()
+    }
+    if KNEnvironment.default.isMainnet {
+      group.enter()
+      DispatchQueue.global(qos: .background).async {
+        let provider = MoyaProvider<KNTrackerService>()
+        provider.request(.getUserTradable(address: address)) { result in
+          if case .success(let resp) = result,
+            let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
+            let data = json["data"] as? Bool ?? false
+            if data {
+              errorMessage = NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: "")
+            }
+          }
+          group.leave()
+        }
+      }
+    }
+    group.notify(queue: .main) {
+      self.navigationController.hideLoading()
+      if let message = errorMessage {
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: message,
+          time: 1.5
+        )
       } else {
-        self?.rootViewController.coordinatorDidValidateRate()
+        self.rootViewController.coordinatorDidValidateRate()
       }
     }
   }
@@ -410,10 +439,22 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func updateUserCapInWei() {
-    let address = self.session.wallet.address
-    KNGeneralProvider.shared.getUserCapInWei(for: address) { [weak self] result in
-      if case .success(let data) = result {
-        self?.rootViewController.coordinatorUpdateUserCapInWei(cap: data)
+    if !KNEnvironment.default.isMainnet { return }
+    let address = self.session.wallet.address.description
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KNTrackerService>()
+      provider.request(.getUserCap(address: address.lowercased())) { result in
+        DispatchQueue.main.async {
+          if case .success(let resp) = result,
+            let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+            let capData = json["data"] as? JSONDictionary,
+            let capTx = capData["TxLimit"] as? Double {
+            if let rateUSD = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken)?.rateUSDBigInt {
+              let cap = BigInt(capTx) * BigInt(10).power(36) / rateUSD
+              self.rootViewController.coordinatorUpdateUserCapInWei(cap: cap)
+            }
+          }
+        }
       }
     }
   }
