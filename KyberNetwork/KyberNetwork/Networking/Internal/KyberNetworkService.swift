@@ -65,12 +65,18 @@ enum KNTrackerService {
   case getSupportedTokens()
   case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
   case getRates
+  case getUserCap(address: String)
+  case getUserTradable(address: String)
 }
 
 extension KNTrackerService: TargetType {
   var baseURL: URL {
     let baseURLString = KNEnvironment.internalTrackerEndpoint
     switch self {
+    case .getUserCap(let address):
+      return URL(string: "\(KNSecret.userCapURL)\(address)")!
+    case .getUserTradable(let address):
+      return URL(string: "\(KNSecret.userCanTradeURL)\(address)")!
     case .getTrades(let fromDate, let toDate, let address):
       let path: String = {
         var path = "\(KNSecret.getTradeEndpoint)?q=\(address)&exportData=true"

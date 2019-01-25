@@ -142,7 +142,7 @@ class KYCPersonalInfoViewModel {
           _ = try resp.filterSuccessfulStatusCodes()
           let json: JSONDictionary = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let existed: Bool = json["wallet_existed"] as? Bool ?? false
-          completion(.success(existed))
+          completion(.success(!existed))
         } catch let error {
           completion(.failure(AnyError(error)))
         }
@@ -571,6 +571,12 @@ class KYCPersonalInfoViewController: KNBaseViewController {
             updated = self.viewModel.addAddress(address, label: label)
           }
           self.updateWalletsData()
+        } else {
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: NSLocalizedString("address.has.already.been.taken", value: "Address has already been taken", comment: ""),
+            time: 1.5
+          )
         }
       case .failure(let error):
         self.displayError(error: error)

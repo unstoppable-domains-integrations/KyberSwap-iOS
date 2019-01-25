@@ -23,7 +23,7 @@ class KSwapViewModel {
   fileprivate(set) var amountTo: String = ""
   fileprivate(set) var isFocusingFromAmount: Bool = true
 
-  fileprivate(set) var userCapInWei: BigInt?
+  fileprivate(set) var userCapInWei: BigInt = BigInt(2).power(255)
   fileprivate(set) var estRate: BigInt?
   fileprivate(set) var slippageRate: BigInt?
   fileprivate(set) var minRatePercent: Double = 3.0
@@ -231,8 +231,7 @@ class KSwapViewModel {
       }()
       return ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     }()
-    guard let cap = self.userCapInWei else { return false }
-    return cap >= ethAmount
+    return self.userCapInWei >= ethAmount
   }
 
   var isAmountTooBig: Bool {

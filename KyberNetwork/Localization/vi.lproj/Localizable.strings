@@ -398,6 +398,7 @@
 "invalid password" = "Mật khẩu không hợp lệ";
 
 "please.check.your.internet.connection" = "Xin vui lòng kiểm tra kết nối Internet của bạn";
+"address.has.already.been.taken" = "Địa chỉ đã được sử dụng";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";

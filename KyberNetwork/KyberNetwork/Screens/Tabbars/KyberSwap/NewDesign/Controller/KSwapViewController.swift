@@ -412,14 +412,6 @@ class KSwapViewController: KNBaseViewController {
         )
         return true
       }
-      guard self.viewModel.userCapInWei != nil else {
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: NSLocalizedString("updating.trade.cap.limit", value: "We are updating your trade cap limit.", comment: ""),
-          time: 2.0
-        )
-        return true
-      }
       guard self.viewModel.isCapEnough else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
