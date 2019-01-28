@@ -396,6 +396,7 @@
 "kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
 "kyc.submit.wallet.warning.message.personal.info" = "You can only delete/edit your wallets here. Once your profile is submitted for review, you won't be able to do so.";
 "invalid password" = "Invalid Password";
+"can.not.transfer.this.token" = "Can not transfer this token";
 
 "please.check.your.internet.connection" = "Please check your internet connection";
 "address.has.already.been.taken" = "Address has already been taken";
