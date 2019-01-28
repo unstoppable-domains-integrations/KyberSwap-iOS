@@ -5,7 +5,12 @@
 	<key>aps-environment</key>
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
-	<array/>
+	<array>
+		<string>applinks:kyberswaplive.app.link</string>
+		<string>applinks:kyberswaplive-alternate.app.link</string>
+		<string>applinks:kyberswaplive.test-app.link</string>
+		<string>applinks:kyberswaplive-alternate.test-app.link</string>
+	</array>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
 	<key>com.apple.developer.icloud-container-identifiers</key>

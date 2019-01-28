@@ -140,22 +140,22 @@
 	<true/>
 	<key>branch_app_domain</key>
 	<array>
-		<string>kybermangcut.test-app.link</string>
-		<string>kybermangcut.app.link</string>
+		<string>kyberswaplive.test-app.link</string>
+		<string>kyberswaplive.app.link</string>
 	</array>
 	<key>branch_key</key>
 	<dict>
 		<key>live</key>
-		<string>key_live_mjw5xWqhE6fT63HfgnbHwhopxxgVZpSQ</string>
+		<string>key_live_plIpHArcGEXmGKW1bigxPpacCyoCKU5H</string>
 		<key>test</key>
-		<string>key_test_pmz7B1tgw6fUZWJipeueVipptwpH0cH5</string>
+		<string>key_test_dfGpGyAnNCYhNUZ5cfqppmcjvtntKK1Z</string>
 	</dict>
 	<key>branch_universal_link_domains</key>
 	<array>
-		<string>kybermangcut-alternate.test-app.link</string>
-		<string>kybermangcut.test-app.link</string>
-		<string>kybermangcut-alternate.app.link</string>
-		<string>kybermangcut.app.link</string>
+		<string>kyberswaplive-alternate.test-app.link</string>
+		<string>kyberswaplive.test-app.link</string>
+		<string>kyberswaplive-alternate.app.link</string>
+		<string>kyberswaplive.app.link</string>
 	</array>
 	<key>com.apple.security.get-task-allow</key>
 	<true/>
