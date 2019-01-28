@@ -435,8 +435,14 @@ extension ProfileKYCService: TargetType {
   var headers: [String: String]? {
     switch self {
     case .promoCode(let promoCode, let nonce):
+      let key: String = {
+        if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest {
+          return KNSecret.promoCodeProdSecretKey
+        }
+        return KNSecret.promoCodeDevSecretKey
+      }()
       let string = "code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
-      let hmac = try! HMAC(key: KNSecret.promoCodeSecretKey, variant: .sha512)
+      let hmac = try! HMAC(key: key, variant: .sha512)
       let hash = try! hmac.authenticate(string.bytes).toHexString()
       return [
         "Content-Type": "application/x-www-form-urlencoded",
