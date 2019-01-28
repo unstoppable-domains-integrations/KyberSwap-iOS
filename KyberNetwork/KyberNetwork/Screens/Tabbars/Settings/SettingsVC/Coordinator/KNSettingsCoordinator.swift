@@ -100,7 +100,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .contact:
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
-      self.navigationController.openSafari(with: "https://kybernetwork.zendesk.com/hc/en-us/requests/new")
+      self.navigationController.openSafari(with: "https://docs.google.com/forms/d/1Ik-H0nN8qKpi90NVTCwwDzopId7C8mX_HOPeT5iBLhc/viewform?edit_requested=true")
     case .about:
       self.openCommunityURL("https://kyber.network/about/company")
     case .changePIN:
@@ -122,7 +122,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .github:
       self.openCommunityURL("https://github.com/KyberNetwork")
     case .twitter:
-      self.openCommunityURL("https://twitter.com/KyberNetwork")
+      self.openCommunityURL("https://twitter.com/KyberSwap")
     case .facebook:
       self.openCommunityURL("https://www.facebook.com/kybernetwork")
     case .medium:
@@ -237,7 +237,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       formatter.dateFormat = "yyyy-MM-dd_HH:mm"
       return formatter
     }()
-    let fileName = "kyber_network_backup\(self.session.wallet.address.description)_\(dateFormatter.string(from: Date())).json"
+    let fileName = "kyberswap_backup\(self.session.wallet.address.description)_\(dateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
