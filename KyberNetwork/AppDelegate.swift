@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         } catch {
             print("EtherKeystore init issue.")
         }
-        if KNEnvironment.default == .ropsten {
+        if !KNEnvironment.default.isMainnet {
           Branch.setUseTestBranchKey(true)
           Branch.getInstance().setDebug()
         }
