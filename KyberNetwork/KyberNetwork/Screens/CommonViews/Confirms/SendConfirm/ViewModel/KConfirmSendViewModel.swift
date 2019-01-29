@@ -61,12 +61,8 @@ struct KConfirmSendViewModel {
       guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
       return gasPrice * gasLimit
     }()
-    let feeString: String = fee?.string(
-      units: EthereumUnit.ether,
-      minFractionDigits: 0,
-      maxFractionDigits: 9
-    ) ?? ""
-    return "\(feeString.prefix(12)) ETH"
+    let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
+    return "\(feeString) ETH"
   }
 
   var transactionFeeUSDString: String {
@@ -78,7 +74,7 @@ struct KConfirmSendViewModel {
     guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
     let feeUSD: String = {
       let fee = feeBigInt * trackerRate.rateUSDBigInt / BigInt(EthereumUnit.ether.rawValue)
-      return fee.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 4)
+      return fee.displayRate(decimals: 18)
     }()
     return "~ \(feeUSD) USD"
   }

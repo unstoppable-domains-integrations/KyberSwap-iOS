@@ -179,8 +179,7 @@ class KSwapViewModel {
 
   // MARK: Rate
   var exchangeRateText: String {
-    let rateString: String = self.estRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9)) ?? "---"
-    return "\(rateString)"
+    return self.estRate?.displayRate(decimals: self.to.decimals) ?? "---"
   }
 
   var minRate: BigInt? {

@@ -58,9 +58,7 @@ struct KNBalanceTokenTableViewCellModel {
       }
       return nil
     }()
-    guard let rateValue = rate else { return "---" }
-    let rateString = rateValue.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6).prefix(11)
-    return "\(rateString.prefix(11))"
+    return rate?.displayRate(decimals: 18) ?? "---"
   }
 
   var displayAmountHoldingsText: String {

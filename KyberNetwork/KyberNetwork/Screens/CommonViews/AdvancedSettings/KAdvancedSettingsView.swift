@@ -22,6 +22,14 @@ protocol KAdvancedSettingsViewDelegate: class {
 
 class KAdvancedSettingsViewModel: NSObject {
 
+  let numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 18
+    formatter.minimumFractionDigits = 18
+    formatter.minimumIntegerDigits = 1
+    return formatter
+  }()
+
   private let kGasPriceContainerHeight: CGFloat = 80.0
   private let kMinRateContainerHeight: CGFloat = 140.0
   private let kAdvancedSettingsHasMinRateHeight: CGFloat = 270.0
@@ -108,7 +116,11 @@ class KAdvancedSettingsViewModel: NSObject {
 
   var minRateDisplay: String {
     let minRate = self.currentRate * (100.0 - self.minRatePercent) / 100.0
-    return "\(minRate)"
+    return self.numberFormatter.string(from: NSNumber(value: minRate))?.displayRate() ?? "0"
+  }
+
+  var currentRateDisplay: String {
+    return self.numberFormatter.string(from: NSNumber(value: self.currentRate))?.displayRate() ?? "0"
   }
 
   func updateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt) {
@@ -303,7 +315,7 @@ class KAdvancedSettingsView: XibLoaderView {
     )
     self.transactionWillBeRevertedTextLabel.text = String(
       format: NSLocalizedString("transaction.will.be.reverted.if.rate.lower.than", value: "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)", comment: ""),
-      arguments: [self.viewModel.pairToken, self.viewModel.minRateDisplay, "\(self.viewModel.currentRate)"]
+      arguments: [self.viewModel.pairToken, self.viewModel.minRateDisplay, self.viewModel.currentRateDisplay]
     )
     self.updateConstraints()
     self.layoutSubviews()
