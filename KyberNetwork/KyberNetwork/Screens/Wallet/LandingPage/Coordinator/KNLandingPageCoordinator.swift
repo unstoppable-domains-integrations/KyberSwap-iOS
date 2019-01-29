@@ -145,7 +145,16 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
     case .openImportWallet:
       self.importWalletCoordinator.start()
     case .openTermAndCondition:
-      self.navigationController.topViewController?.openSafari(with: "https://files.kyber.network/tac.pdf")
+      let url: String = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        if let date = dateFormatter.date(from: "2019-01-31T16:59:00.000Z"),
+          Date().timeIntervalSince(date) > 0 {
+          return "https://files.kyberswap.com/tac.pdf"
+        }
+        return "https://files.kyber.network/tac.pdf"
+      }()
+      self.navigationController.topViewController?.openSafari(with: url)
     }
   }
 }
