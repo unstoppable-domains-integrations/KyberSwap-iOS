@@ -60,4 +60,8 @@ extension String {
       units: units
     )
   }
+
+  func displayRate() -> String {
+    return KNRateHelper.displayRate(from: self)
+  }
 }

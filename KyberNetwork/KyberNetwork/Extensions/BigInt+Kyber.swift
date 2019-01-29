@@ -37,4 +37,8 @@ extension BigInt {
   func fullString(decimals: Int) -> String {
     return self.string(decimals: decimals, minFractionDigits: 0, maxFractionDigits: decimals)
   }
+
+  func displayRate(decimals: Int) -> String {
+    return KNRateHelper.displayRate(from: self, decimals: decimals)
+  }
 }

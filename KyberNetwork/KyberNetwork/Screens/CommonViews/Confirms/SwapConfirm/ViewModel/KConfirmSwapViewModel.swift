@@ -16,11 +16,7 @@ struct KConfirmSwapViewModel {
   }
 
   var leftAmountString: String {
-    let amountString = self.transaction.amount.string(
-      decimals: self.transaction.from.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: 6
-    )
+    let amountString = self.transaction.amount.displayRate(decimals: transaction.from.decimals)
     return "\(amountString.prefix(12)) \(self.transaction.from.symbol)"
   }
 
@@ -30,24 +26,13 @@ struct KConfirmSwapViewModel {
   }
 
   var displayEstimatedRate: String {
-    let rateString = self.transaction.expectedRate.string(
-      decimals: self.transaction.to.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: 6
-    )
-    return "1 \(self.transaction.from.symbol) = \(rateString.prefix(12)) \(self.transaction.to.symbol)"
+    let rateString = self.transaction.expectedRate.displayRate(decimals: transaction.to.decimals)
+    return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol)"
   }
 
   var minRateString: String {
-    let rate: String = {
-      let minRate = self.transaction.minRate ?? BigInt(0)
-      return minRate.string(
-        decimals: self.transaction.to.decimals,
-        minFractionDigits: 0,
-        maxFractionDigits: 6
-      )
-    }()
-    return "\(rate.prefix(8))"
+    let minRate = self.transaction.minRate ?? BigInt(0)
+    return minRate.displayRate(decimals: self.transaction.to.decimals)
   }
 
   var transactionFee: BigInt {
@@ -57,15 +42,15 @@ struct KConfirmSwapViewModel {
   }
 
   var feeETHString: String {
-    let string: String = self.transactionFee.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
-    return "\(string.prefix(12)) ETH"
+    let string: String = self.transactionFee.displayRate(decimals: 18)
+    return "\(string) ETH"
   }
 
   var feeUSDString: String {
     guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "~ --- USD" }
     let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
     let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
-    let valueString: String = value.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6)
-    return "~ \(valueString.prefix(12)) USD"
+    let valueString: String = value.displayRate(decimals: 18)
+    return "~ \(valueString) USD"
   }
 }

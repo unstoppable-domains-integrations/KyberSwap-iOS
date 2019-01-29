@@ -88,7 +88,7 @@ class KNTokenChartViewModel {
     }
     let rateString: String = {
       let rate = BigInt(trackerRate.rateETHNow * Double(EthereumUnit.ether.rawValue))
-      return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(12))
+      return rate.displayRate(decimals: 18)
     }()
     let change24hString: String = {
       let numberFormatter = NumberFormatter()
@@ -252,6 +252,7 @@ class KNTokenChartViewModel {
   }
 }
 
+//swiftlint:disable file_length
 class KNTokenChartViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
@@ -302,7 +303,14 @@ class KNTokenChartViewController: KNBaseViewController {
     let timeString = formatter.string(from: self.viewModel.data[index].date)
     let timeText = NSLocalizedString("time", value: "Time", comment: "")
     let priceText = NSLocalizedString("price", value: "Price", comment: "")
-    return EasyTipView(text: "\(timeText): \(timeString)\n\(priceText): \(value)")
+    let numberFormatter: NumberFormatter = {
+      let formatter = NumberFormatter()
+      formatter.maximumFractionDigits = self.viewModel.token.decimals
+      formatter.minimumIntegerDigits = 1
+      return formatter
+    }()
+    let rate = numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+    return EasyTipView(text: "\(timeText): \(timeString)\n\(priceText): \(rate.displayRate())")
   }
 
   init(viewModel: KNTokenChartViewModel) {
@@ -553,7 +561,8 @@ class KNTokenChartViewController: KNBaseViewController {
         return formatter
       }()
       self.priceChart.yLabelsFormatter = { (_, value) in
-        return numberFormatter.string(from: NSNumber(value: value)) ?? ""
+        let rate = numberFormatter.string(from: NSNumber(value: value)) ?? ""
+        return rate.displayRate()
       }
       self.priceChart.xLabels = []
       self.priceChart.setNeedsDisplay()

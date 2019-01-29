@@ -3,6 +3,7 @@
 import Foundation
 import Result
 import Moya
+import BigInt
 
 /*
 
@@ -137,5 +138,59 @@ class KNRateCoordinator {
         self.cacheRates = rates
       }
     }
+  }
+}
+
+class KNRateHelper {
+  static func displayRate(from rate: BigInt, decimals: Int) -> String {
+    /*
+     Displaying rate with at most 4 digits after leading zeros
+     */
+    if rate.isZero {
+      return rate.string(decimals: decimals, minFractionDigits: min(decimals, 4), maxFractionDigits: min(decimals, 4))
+    }
+    var string = rate.string(decimals: decimals, minFractionDigits: decimals, maxFractionDigits: decimals)
+    let separator = EtherNumberFormatter.full.decimalSeparator
+    if let _ = string.firstIndex(of: separator[separator.startIndex]) { string = string + "0000" }
+    var start = false
+    var cnt = 0
+    var index = string.startIndex
+    for id in 0..<string.count {
+      if string[index] == separator[separator.startIndex] {
+        start = true
+      } else if start {
+        if cnt > 0 || string[index] != "0" { cnt += 1 }
+        if cnt == 4 { return string.substring(to: id + 1) }
+      }
+      index = string.index(after: index)
+    }
+    if cnt == 0, let id = string.firstIndex(of: separator[separator.startIndex]) {
+      index = string.index(id, offsetBy: 5)
+      return String(string[..<index])
+    }
+    return string
+  }
+
+  static func displayRate(from rate: String) -> String {
+    var string = rate
+    let separator = EtherNumberFormatter.full.decimalSeparator
+    if let _ = string.firstIndex(of: separator[separator.startIndex]) { string = string + "0000" }
+    var start = false
+    var cnt = 0
+    var index = string.startIndex
+    for id in 0..<string.count {
+      if string[index] == separator[separator.startIndex] {
+        start = true
+      } else if start {
+        if cnt > 0 || string[index] != "0" { cnt += 1 }
+        if cnt == 4 { return string.substring(to: id + 1) }
+      }
+      index = string.index(after: index)
+    }
+    if cnt == 0, let id = string.firstIndex(of: separator[separator.startIndex]) {
+      index = string.index(id, offsetBy: 5)
+      return String(string[..<index])
+    }
+    return string
   }
 }
