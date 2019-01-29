@@ -39,6 +39,7 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var community: UIButton!
   @IBOutlet weak var shareWithFriendsButton: UIButton!
   @IBOutlet weak var versionLabel: UILabel!
+  @IBOutlet weak var bottomPaddingVersionLabelConstraint: NSLayoutConstraint!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -83,6 +84,7 @@ class KNSettingsTabViewController: KNBaseViewController {
     if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
     version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
+    self.bottomPaddingVersionLabelConstraint.constant = 24.0 + self.bottomPaddingSafeArea()
   }
 
   override func viewDidLayoutSubviews() {

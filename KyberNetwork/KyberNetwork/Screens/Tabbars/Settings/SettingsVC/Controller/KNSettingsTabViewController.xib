@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="aboutButton" destination="0Wu-3X-xy0" id="yur-6n-epM"/>
+                <outlet property="bottomPaddingVersionLabelConstraint" destination="5pD-cH-Lq6" id="QdI-t5-dMr"/>
                 <outlet property="changePINButton" destination="c9Z-ZK-Ucl" id="Y2q-9i-4VJ"/>
                 <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
                 <outlet property="contactButton" destination="XDo-Po-iWz" id="gEu-eC-2gh"/>
