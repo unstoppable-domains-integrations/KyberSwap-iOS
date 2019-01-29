@@ -91,7 +91,12 @@ class KNTokenChartViewModel {
       return String(rate.string(units: .ether, minFractionDigits: 9, maxFractionDigits: 9).prefix(12))
     }()
     let change24hString: String = {
-      return String("\(trackerRate.changeETH24h)".prefix(5)) + "%"
+      let numberFormatter = NumberFormatter()
+      numberFormatter.maximumFractionDigits = 2
+      numberFormatter.minimumFractionDigits = 2
+      numberFormatter.minimumIntegerDigits = 1
+      let string = numberFormatter.string(from: NSNumber(value: trackerRate.changeETH24h)) ?? "0.00"
+      return "\(string)%"
     }()
     let changeColor: UIColor = {
       if trackerRate.changeETH24h == 0.0 { return UIColor.Kyber.grayChateau }
