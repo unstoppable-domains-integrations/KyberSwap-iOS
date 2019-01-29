@@ -106,7 +106,12 @@ struct KNBalanceTokenTableViewCellModel {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
     }()
-    return "\("\(change)".prefix(5))%"
+    let numberFormatter = NumberFormatter()
+    numberFormatter.maximumFractionDigits = 2
+    numberFormatter.minimumFractionDigits = 2
+    numberFormatter.minimumIntegerDigits = 1
+    let string = numberFormatter.string(from: NSNumber(value: change)) ?? "0.00"
+    return "\(string)%"
   }
 
   var change24hImage: UIImage? {
