@@ -181,7 +181,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
-                    <rect key="frame" x="24" y="409" width="327" height="32"/>
+                    <rect key="frame" x="24" y="369" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Q4W-8X-DHG"/>
                     </constraints>
@@ -206,13 +206,6 @@
                         <action selector="telegramDevButtonPressed:" destination="-1" eventType="touchUpInside" id="0ze-VG-Xif"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpT-lc-n0P">
-                    <rect key="frame" x="23.5" y="369" width="33" height="33"/>
-                    <state key="normal" image="youtube"/>
-                    <connections>
-                        <action selector="youtubeButtonPressed:" destination="-1" eventType="touchUpInside" id="7hl-hm-bVd"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -231,7 +224,7 @@
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QPD-eE-njQ" secondAttribute="trailing" constant="10" id="GdZ-Ic-y9t"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="OVZ-jU-hlZ" secondAttribute="leading" id="JrF-tz-6Wh"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="trailing" secondItem="c9Z-ZK-Ucl" secondAttribute="trailing" id="JyF-Mh-lTr"/>
-                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="48" id="KAx-Gb-p8P"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="KAx-Gb-p8P"/>
                 <constraint firstItem="N5S-5z-7Ii" firstAttribute="trailing" secondItem="XDo-Po-iWz" secondAttribute="trailing" id="Nlb-ey-zwt"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="top" secondItem="0Wu-3X-xy0" secondAttribute="bottom" constant="4" id="OEN-KH-Gaf"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
@@ -239,7 +232,6 @@
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="4" id="Trp-EE-9QD"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
-                <constraint firstItem="lpT-lc-n0P" firstAttribute="centerX" secondItem="Pd0-VK-ek2" secondAttribute="centerX" id="VeP-dl-4Qo"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="Wwf-N9-2mk"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
@@ -258,7 +250,6 @@
                 <constraint firstItem="dSF-Hs-lsq" firstAttribute="centerY" secondItem="tdX-Yv-Ujd" secondAttribute="centerY" id="ojW-qs-WkJ"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="or9-IV-hJj"/>
                 <constraint firstItem="QlK-9e-kdZ" firstAttribute="leading" secondItem="dSF-Hs-lsq" secondAttribute="trailing" constant="10" id="vyO-U7-A4N"/>
-                <constraint firstItem="lpT-lc-n0P" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="xU4-FW-THG"/>
                 <constraint firstItem="Z6O-Km-0S7" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="leading" id="yiS-GU-7WV"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -273,6 +264,5 @@
         <image name="tele_dev_group" width="32" height="32"/>
         <image name="telegram" width="32" height="33"/>
         <image name="twitter" width="32" height="33"/>
-        <image name="youtube" width="33" height="33"/>
     </resources>
 </document>
