@@ -40,14 +40,6 @@ class KNTransactionCoordinator {
     self.isLoadingEnabled = true
     self.startUpdatingCompletedTransactions()
     self.startUpdatingPendingTransactions()
-
-    // remove completed kyber transaction if needed
-    let kyberTx = self.transactionStorage.kyberMinedTransactions.sorted(by: { return $0.date < $1.date })
-    if kyberTx.count > 10 {
-      // keep <= 10 transactions for safe
-      let trans = Array(kyberTx.prefix(kyberTx.count - 10)) as [KNTransaction]
-      self.transactionStorage.delete(trans)
-    }
   }
 
   func stop() {
@@ -355,7 +347,8 @@ extension KNTransactionCoordinator {
       guard let `self` = self else { return }
       self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
         guard let `self` = self else { return }
-        if let trans = self.transactionStorage.get(forPrimaryKey: transaction.id), trans.state != .pending {
+        guard let trans = self.transactionStorage.get(forPrimaryKey: transaction.id) else { return }
+        if trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
@@ -370,7 +363,7 @@ extension KNTransactionCoordinator {
                 object: respError,
                 userInfo: nil
               )
-              self.transactionStorage.delete([transaction])
+              self.transactionStorage.delete([trans])
             case .resultObjectParseError:
               // transaction seems to be removed
               if transaction.date.addingTimeInterval(60) < Date() {
@@ -379,11 +372,6 @@ extension KNTransactionCoordinator {
             default: break
             }
           }
-        } else {
-          // Success to get transaction by hash, but not have status yet
-          //          if transaction.date.addingTimeInterval(60) < Date() {
-          //            self.updateTransactionStateIfNeeded(transaction, state: .completed)
-          //          }
         }
       })
     }
@@ -406,6 +394,7 @@ extension KNTransactionCoordinator {
           object: newTx.id,
           userInfo: nil
         )
+        self?.transactionStorage.delete([transaction])
         completion(nil)
       case .failure(let error):
         completion(error)
