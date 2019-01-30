@@ -131,8 +131,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
     case .linkedIn:
       self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
-    case .youtube:
-      self.openCommunityURL("https://www.youtube.com/channel/UCQ-8mEqsKM3x9dTT6rrqgJw")
     }
   }
 
