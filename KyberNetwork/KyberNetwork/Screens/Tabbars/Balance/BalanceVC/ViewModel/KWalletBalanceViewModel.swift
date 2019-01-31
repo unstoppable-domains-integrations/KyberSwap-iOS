@@ -232,6 +232,10 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
+    if self.isKyberList {
+      if self.trackerRateData[left.identifier()] == nil { return false }
+      if self.trackerRateData[right.identifier()] == nil { return true }
+    }
     // sort by name
     if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
     if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
@@ -244,9 +248,9 @@ class KWalletBalanceViewModel: NSObject {
       let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
       return value0 > value1
     }
-    // sort by price or change
     guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
     guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
+    // sort by price or change
     let change0: Double = {
       return self.currencyType == .eth ? tracker0.changeETH24h : tracker0.changeUSD24h
     }()
