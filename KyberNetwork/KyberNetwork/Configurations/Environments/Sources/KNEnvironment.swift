@@ -130,7 +130,7 @@ enum KNEnvironment: Int {
     case .mainnetTest, .production:
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-      if let date = dateFormatter.date(from: "2019-01-31T16:59:00.000Z"),
+      if let date = dateFormatter.date(from: "2019-02-01T03:59:00.000Z"),
         Date().timeIntervalSince(date) > 0 {
         return KNSecret.kyberswapProfileURL
       }
