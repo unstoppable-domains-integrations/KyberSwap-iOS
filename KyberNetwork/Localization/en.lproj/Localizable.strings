@@ -384,11 +384,11 @@
 "transaction.will.be.reverted.if.rate.lower.than" = "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)";
 "can.not.handle.your.amount" = "Can not handle your amount";
 "advanced.optional" = "Advanced (optional)";
-"promo.code" = "Promo code";
-"your.promo.code" = "Your Promo code";
-"enter.your.promo.code" = "Enter your Promo code";
+"kybercode" = "KyberCode";
+"your.kybercode" = "Your KyberCode";
+"enter.your.kybercode" = "Enter your KyberCode";
 "apply" = "Apply";
-"promo.code.is.empty" = "Promo code is empty";
+"kybercode.is.empty" = "KyberCode is empty";
 "congratulations" = "Congratulations!!!";
 "you.have.successfully.unlocked.your.promo.code" = "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@";
 "blocked" = "Blocked";

@@ -137,7 +137,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       NSLocalizedString("transactions", value: "Transactions", comment: "").uppercased(),
       for: .normal
     )
-    self.promoCodeTextLabel.text = NSLocalizedString("promo.code", value: "Promo Code", comment: "").uppercased()
+    self.promoCodeTextLabel.text = NSLocalizedString("kybercode", value: "KyberCode", comment: "").uppercased()
     let promoTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.promoCodeTapped(_:)))
     self.promoCodeContainerView.addGestureRecognizer(promoTapGesture)
 

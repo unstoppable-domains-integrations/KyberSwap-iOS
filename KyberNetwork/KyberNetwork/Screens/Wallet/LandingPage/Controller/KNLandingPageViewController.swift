@@ -35,7 +35,7 @@ class KNLandingPageViewController: KNBaseViewController {
       for: .normal
     )
     self.promoCodeButton.setTitle(
-      NSLocalizedString("promo.code", value: "Promo Code", comment: ""),
+      NSLocalizedString("kybercode", value: "KyberCode", comment: ""),
       for: .normal
     )
 

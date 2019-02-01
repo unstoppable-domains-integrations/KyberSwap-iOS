@@ -384,11 +384,11 @@
 "transaction.will.be.reverted.if.rate.lower.than" = "Giao dịch sẽ huỷ bỏ nếu tỷ giá %@ thấp hơn %@ (Tỷ giá hiện tại %@)";
 "can.not.handle.your.amount" = "Không thể xử lý số tiền của bạn";
 "advanced.optional" = "Nâng cao (tuỳ chọn)";
-"promo.code" = "Mã khuyến mãi";
-"your.promo.code" = "Mã khuyến mãi của bạn";
-"enter.your.promo.code" = "Nhập mã khuyến mãi";
+"kybercode" = "KyberCode";
+"your.kybercode" = "KyberCode của bạn";
+"enter.your.kybercode" = "Nhập KyberCode của bạn";
 "apply" = "Áp dụng";
-"promo.code.is.empty" = "Bạn phải điền mã khuyến mãi";
+"kybercode.is.empty" = "Bạn phải điền KyberCode";
 "congratulations" = "Chúc mừng!!!";
 "you.have.successfully.unlocked.your.promo.code" = "Bạn đã thành công mở khóa mã khuyến mãi. Xin vui lòng chuyển tất cả tiền qua ví của bạn trước %@";
 "blocked" = "Bị chặn";

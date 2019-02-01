@@ -127,7 +127,7 @@ enum KNEnvironment: Int {
 
   var profileURL: String {
     switch KNEnvironment.default {
-    case .mainnetTest, .production: return KNSecret.profileURL
+    case .mainnetTest, .production: return KNSecret.kyberswapProfileURL
     case .ropsten, .rinkeby, .kovan: return KNSecret.debugProfileURL
     case .staging: return KNSecret.stagingProfileURL
     }

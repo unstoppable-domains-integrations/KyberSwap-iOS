@@ -21,10 +21,10 @@ class KNPromoCodeViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.navTitleLabel.text = NSLocalizedString("promo.code", value: "Promo Code", comment: "")
+    self.navTitleLabel.text = NSLocalizedString("kybercode", value: "KyberCode", comment: "")
 
-    self.yourPromoCodeTextLabel.text = NSLocalizedString("your.promo.code", value: "Your Promo code", comment: "")
-    self.enterPromoCodeTextField.placeholder = NSLocalizedString("enter.your.promo.code", value: "Enter your Promo code", comment: "")
+    self.yourPromoCodeTextLabel.text = NSLocalizedString("your.kybercode", value: "Your KyberCode", comment: "")
+    self.enterPromoCodeTextField.placeholder = NSLocalizedString("enter.your.kybercode", value: "Enter your KyberCode", comment: "")
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
 
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
@@ -61,7 +61,7 @@ class KNPromoCodeViewController: KNBaseViewController {
     guard !promoCode.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: NSLocalizedString("promo.code.is.empty", value: "Promo code is empty", comment: ""),
+        message: NSLocalizedString("kybercode.is.empty", value: "KyberCode is empty", comment: ""),
         time: 1.5
       )
       return
