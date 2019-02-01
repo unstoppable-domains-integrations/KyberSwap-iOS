@@ -384,11 +384,11 @@
 "transaction.will.be.reverted.if.rate.lower.than" = "%@의 교환비가 %@보다 낮아진다면 거래는 취소됩니다. (현재 교환비 %@)";
 "can.not.handle.your.amount" = "금액을 처리 할 수 없음";
 "advanced.optional" = "고급 (선택 사항)";
-"promo.code" = "促销代码";
-"your.promo.code" = "프로모션 코드";
-"enter.your.promo.code" = "프로모션 코드를 입력하세요";
+"kybercode" = "KyberCode";
+"your.kybercode" = "귀하의 KyberCode";
+"enter.your.kybercode" = "귀하의 KyberCode를 입력하십시오";
 "apply" = "적용";
-"promo.code.is.empty" = "프로모션 코드 오류입니다.";
+"kybercode.is.empty" = "KyberCode가 비어 있습니다.";
 "congratulations" = "축하합니다!!!";
 "you.have.successfully.unlocked.your.promo.code" = "프로모션 코드 입력을 완료했습니다. 지갑의 자산을 %@까지 이동해주세요";
 "blocked" = "차단됨";

@@ -127,14 +127,7 @@ enum KNEnvironment: Int {
 
   var profileURL: String {
     switch KNEnvironment.default {
-    case .mainnetTest, .production:
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-      if let date = dateFormatter.date(from: "2019-02-01T03:59:00.000Z"),
-        Date().timeIntervalSince(date) > 0 {
-        return KNSecret.kyberswapProfileURL
-      }
-      return KNSecret.profileURL
+    case .mainnetTest, .production: return KNSecret.kyberswapProfileURL
     case .ropsten, .rinkeby, .kovan: return KNSecret.debugProfileURL
     case .staging: return KNSecret.stagingProfileURL
     }

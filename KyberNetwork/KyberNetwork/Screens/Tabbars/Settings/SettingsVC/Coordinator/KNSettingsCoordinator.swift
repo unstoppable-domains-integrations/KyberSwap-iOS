@@ -120,13 +120,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .telegramDev:
       self.openCommunityURL("https://t.me/KyberDeveloper")
     case .github:
-      self.openCommunityURL("https://github.com/KyberNetwork")
+      self.openCommunityURL("https://github.com/KyberNetwork/KyberSwap")
     case .twitter:
       self.openCommunityURL("https://twitter.com/KyberSwap")
     case .facebook:
       self.openCommunityURL("https://www.facebook.com/kybernetwork")
     case .medium:
-      self.openCommunityURL("https://blog.kyber.network")
+      self.openCommunityURL("https://medium.com/@kyberswap")
     case .reddit:
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
     case .linkedIn:
