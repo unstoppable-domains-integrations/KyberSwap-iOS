@@ -390,7 +390,7 @@
 "apply" = "Apply";
 "kybercode.is.empty" = "KyberCode is empty";
 "congratulations" = "Congratulations!!!";
-"you.have.successfully.unlocked.your.promo.code" = "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@";
+"you.have.successfully.imported.your.kybercode" = "You have successfully imported your wallet. Please move all assets to your wallet by %@";
 "blocked" = "Blocked";
 "profile.is.blocked" = "Your Profile is blocked";
 "kyc.submit.wallet.warning.message" = "We understand that you have submitted the wallet address as part of the verification process. As such, we regret to inform you that the submitted wallet address cannot be deleted or changed from your profile.";
