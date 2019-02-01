@@ -390,7 +390,7 @@
 "apply" = "적용";
 "kybercode.is.empty" = "KyberCode가 비어 있습니다.";
 "congratulations" = "축하합니다!!!";
-"you.have.successfully.unlocked.your.promo.code" = "프로모션 코드 입력을 완료했습니다. 지갑의 자산을 %@까지 이동해주세요";
+"you.have.successfully.imported.your.kybercode" = "지갑을 성공적으로 가져 왔습니다. 지갑의 자산을 %@까지 이동해주세요";
 "blocked" = "차단됨";
 "profile.is.blocked" = "프로필이 차단되었습니다.";
 "kyc.submit.wallet.warning.message" = "KYC 중 제출하신 지갑 주소는 삭제하거나 귀하의 프로필에서 변경할 수 없다는 사실을 알려드립니다.";

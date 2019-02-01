@@ -390,7 +390,7 @@
 "apply" = "Áp dụng";
 "kybercode.is.empty" = "Bạn phải điền KyberCode";
 "congratulations" = "Chúc mừng!!!";
-"you.have.successfully.unlocked.your.promo.code" = "Bạn đã thành công mở khóa mã khuyến mãi. Xin vui lòng chuyển tất cả tiền qua ví của bạn trước %@";
+"you.have.successfully.imported.your.kybercode" = "Bạn đã nhập ví thành công. Xin vui lòng chuyển tất cả tiền qua ví của bạn trước %@";
 "blocked" = "Bị chặn";
 "profile.is.blocked" = "Hồ sơ của bạn bị chặn";
 "kyc.submit.wallet.warning.message" = "Chúng tôi hiểu rằng bạn đã gửi địa chỉ ví trong quá trình xác minh. Vì vậy, chúng tôi rất tiếc phải thông báo cho bạn rằng địa chỉ ví đã gửi không thể bị xóa hoặc thay đổi khỏi hồ sơ của bạn.";
