@@ -6,6 +6,7 @@ import Result
 import BigInt
 import SwiftChart
 import EasyTipView
+import FirebaseAnalytics
 
 enum KNTokenChartType: Int {
   case day = 0
@@ -484,6 +485,7 @@ class KNTokenChartViewController: KNBaseViewController {
       self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
       return
     }
+    Analytics.logEvent("token_chart", parameters: ["type": "action_button", "value": sender.tag])
     if sender.tag == 0 {
       self.delegate?.tokenChartViewController(self, run: .buy(token: self.viewModel.token))
     } else if sender.tag == 1 {
@@ -495,6 +497,7 @@ class KNTokenChartViewController: KNBaseViewController {
 
   @IBAction func dataTypeDidChange(_ sender: UIButton) {
     let type = KNTokenChartType(rawValue: sender.tag) ?? .day
+    Analytics.logEvent("token_chart", parameters: ["type": "data_type_changed", "value": type.rawValue])
     self.updateDisplayDataType(type)
   }
 

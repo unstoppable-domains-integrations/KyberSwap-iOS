@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import FirebaseAnalytics
 
 protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: Wallet, name: String?)
@@ -30,6 +31,7 @@ class KNImportWalletCoordinator: Coordinator {
   }
 
   func start() {
+    Analytics.logEvent("import_wallet", parameters: nil)
     self.rootViewController.resetUIs()
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
@@ -48,10 +50,13 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .back:
       self.stop()
     case .importJSON(let json, let password, let name):
+      Analytics.logEvent("import_wallet", parameters: ["type": "JSON"])
       self.importWallet(with: .keystore(string: json, password: password), name: name)
     case .importPrivateKey(let privateKey, let name):
+      Analytics.logEvent("import_wallet", parameters: ["type": "PrivateKey"])
       self.importWallet(with: .privateKey(privateKey: privateKey), name: name)
     case .importSeeds(let seeds, let name):
+      Analytics.logEvent("import_wallet", parameters: ["type": "Seeds"])
       self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name)
     }
   }

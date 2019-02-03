@@ -2,6 +2,7 @@
 
 import UIKit
 import SafariServices
+import FirebaseAnalytics
 
 enum KNBalanceTabHamburgerMenuViewEvent {
   case select(wallet: KNWalletObject)
@@ -200,6 +201,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectPromoCode)
     }
+    Analytics.logEvent("hamburger_menu", parameters: ["type": "kybercode"])
   }
 
   @objc func backgroundViewTap(_ recognizer: UITapGestureRecognizer) {
@@ -213,18 +215,21 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAddWallet)
     }
+    Analytics.logEvent("hamburger_menu", parameters: ["type": "add_wallet"])
   }
 
   @IBAction func sendTokenButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSendToken)
     }
+    Analytics.logEvent("hamburger_menu", parameters: ["type": "send_token"])
   }
 
   @IBAction func allTransactionButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAllTransactions)
     }
+    Analytics.logEvent("hamburger_menu", parameters: ["type": "transaction"])
   }
 
   func gestureScreenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

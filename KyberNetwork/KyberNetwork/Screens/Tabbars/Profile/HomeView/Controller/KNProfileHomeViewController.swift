@@ -4,6 +4,7 @@ import UIKit
 import Moya
 import QRCodeReaderViewController
 import TrustCore
+import FirebaseAnalytics
 
 enum KNProfileHomeViewEvent {
   case signIn
@@ -330,6 +331,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   @IBAction func userKYCActionButtonPressed(_ sender: Any) {
+    Analytics.logEvent("profile_kyc", parameters: ["value": "verify_pressed"])
     self.delegate?.profileHomeViewController(self, run: .openVerification)
   }
 
@@ -340,6 +342,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   @IBAction func addWalletAddButtonPressed(_ sender: Any) {
+    Analytics.logEvent("profile_kyc", parameters: ["value": "add_wallet_profile_view"])
     guard let label = self.addWalletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),

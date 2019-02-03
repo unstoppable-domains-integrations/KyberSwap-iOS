@@ -10,6 +10,7 @@ import TrustCore
 import Photos
 import MobileCoreServices
 import AVFoundation
+import FirebaseAnalytics
 
 enum KYCPersonalInfoViewEvent {
   case next(
@@ -542,6 +543,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func addWalletButtonPressed(_ sender: Any) {
+    Analytics.logEvent("profile_kyc", parameters: ["value": "add_wallet_personal_info"])
     guard let label = self.walletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
@@ -956,6 +958,7 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
   }
 
   fileprivate func removeAddress(at indexPath: IndexPath) {
+    Analytics.logEvent("profile_kyc", parameters: ["value": "remove_wallet_address"])
     self.viewModel.removeAddress(at: indexPath.row)
     self.walletsTableView.deleteRows(at: [indexPath], with: .automatic)
     self.updateWalletsData()

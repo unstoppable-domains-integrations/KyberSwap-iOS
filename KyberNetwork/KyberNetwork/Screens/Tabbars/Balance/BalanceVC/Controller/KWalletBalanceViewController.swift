@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import FirebaseAnalytics
 
 enum KWalletBalanceViewEvent {
   case openQRCode
@@ -285,6 +286,7 @@ extension KWalletBalanceViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: false)
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
     self.delegate?.kWalletBalanceViewController(self, run: .selectToken(token: tokenObject))
+    Analytics.logEvent("balance_select_token", parameters: ["token": tokenObject.symbol])
   }
 }
 

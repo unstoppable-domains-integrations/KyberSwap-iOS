@@ -7,7 +7,7 @@ protocol KYCSelectOptionViewControllerDelegate: class {
   func kycSelectOptionViewControllerShouldBack(_ controller: KYCSelectOptionViewController)
 }
 
-class KYCSelectOptionViewController: UIViewController {
+class KYCSelectOptionViewController: KNBaseViewController {
 
   fileprivate let cellID: String = "KYCSelectOptionViewControllerCellID"
 

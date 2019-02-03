@@ -7,7 +7,7 @@ protocol KNCreatePasswordViewControllerDelegate: class {
   func createPasswordDidCancel(sender: KNCreatePasswordViewController)
 }
 
-class KNCreatePasswordViewController: UIViewController {
+class KNCreatePasswordViewController: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var passwordTextField: UITextField!
