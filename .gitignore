@@ -4,6 +4,7 @@
 
 ## Secret
 KNSecret.swift
+GoogleService-Info.plist
 
 ## Build generated
 build/
