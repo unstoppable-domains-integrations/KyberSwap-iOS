@@ -97,6 +97,10 @@ class KNSession {
   // Remove a wallet, it should not be a current wallet
   @discardableResult
   func removeWallet(_ wallet: Wallet) -> Bool {
+    if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet {
+      self.transacionCoordinator?.stop()
+      self.transacionCoordinator = nil
+    }
     // delete all storage for each wallet
     let deleteResult = self.keystore.delete(wallet: wallet)
     if case .success() = deleteResult {
