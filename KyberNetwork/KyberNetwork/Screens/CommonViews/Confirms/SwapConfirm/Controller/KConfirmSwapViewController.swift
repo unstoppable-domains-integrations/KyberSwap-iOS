@@ -110,7 +110,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func backButtonPressed(_ sender: Any) {
     Analytics.logEvent(
       "confirm_swap",
-      parameters: ["type": "back_pressed", "from": self.viewModel.transaction.from.symbol, "to": self.viewModel.transaction.to.symbol]
+      parameters: ["type": "back_pressed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
     )
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
@@ -119,7 +119,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     if sender.state == .ended {
       Analytics.logEvent(
         "confirm_swap",
-        parameters: ["type": "screen_edge_pan", "from": self.viewModel.transaction.from.symbol, "to": self.viewModel.transaction.to.symbol]
+        parameters: ["type": "screen_edge_pan", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
       )
       self.delegate?.kConfirmSwapViewController(self, run: .cancel)
     }
@@ -128,7 +128,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func confirmButtonPressed(_ sender: Any) {
     Analytics.logEvent(
       "confirm_swap",
-      parameters: ["type": "confirmed", "from": self.viewModel.transaction.from.symbol, "to": self.viewModel.transaction.to.symbol]
+      parameters: ["type": "confirmed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
     )
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
     self.updateActionButtonsSendingSwap()
@@ -138,7 +138,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func cancelButtonPressed(_ sender: Any) {
     Analytics.logEvent(
       "confirm_swap",
-      parameters: ["type": "cancel_pressed", "from": self.viewModel.transaction.from.symbol, "to": self.viewModel.transaction.to.symbol]
+      parameters: ["type": "cancel_pressed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
     )
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
