@@ -6,6 +6,7 @@ import TrustKeystore
 import TrustCore
 import Result
 import QRCodeReaderViewController
+import FirebaseAnalytics
 
 enum KSendTokenViewEvent {
   case back
@@ -21,6 +22,7 @@ protocol KSendTokenViewControllerDelegate: class {
   func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent)
 }
 
+//swiftlint:disable file_length
 class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var navTitleLabel: UILabel!
@@ -247,6 +249,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    Analytics.logEvent("send_token", parameters: ["token": self.viewModel.from.symbol])
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))

@@ -2,7 +2,7 @@
 
 import UIKit
 
-class KNSplashScreenViewController: UIViewController {
+class KNSplashScreenViewController: KNBaseViewController {
 
   @IBOutlet weak var splashLogoImageView: UIImageView!
   @IBOutlet weak var debugInfoView: UIView!

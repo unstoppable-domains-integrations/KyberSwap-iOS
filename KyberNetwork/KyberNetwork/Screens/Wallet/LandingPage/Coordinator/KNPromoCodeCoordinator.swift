@@ -4,6 +4,7 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import Moya
+import FirebaseAnalytics
 
 protocol KNPromoCodeCoordinatorDelegate: class {
   func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, name: String?)
@@ -30,6 +31,7 @@ class KNPromoCodeCoordinator: Coordinator {
   }
 
   func start() {
+    Analytics.logEvent("kybercode", parameters: nil)
     self.rootViewController.resetUI()
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }

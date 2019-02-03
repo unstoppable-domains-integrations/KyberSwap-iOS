@@ -4,6 +4,8 @@ import UIKit
 import IQKeyboardManager
 import BigInt
 import Moya
+import Firebase
+import FirebaseAnalytics
 
 class KNAppCoordinator: NSObject, Coordinator {
 
@@ -96,6 +98,8 @@ class KNAppCoordinator: NSObject, Coordinator {
 // Application state
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
+    FirebaseApp.configure()
+    if let userID = IEOUserStorage.shared.user?.contactID { Analytics.setUserID(userID) }
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start(isLaunch: true)
     IQKeyboardManager.shared().isEnabled = true

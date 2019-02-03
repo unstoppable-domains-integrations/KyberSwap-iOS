@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import Result
+import FirebaseAnalytics
 
 //swiftlint:disable file_length
 
@@ -281,6 +282,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
+    Analytics.logEvent("swap_continue", parameters: ["from": self.viewModel.from.symbol, "to": self.viewModel.to.symbol])
     self.validateDataBeforeContinuing(hasCallValidateRate: false)
   }
 

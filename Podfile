@@ -36,6 +36,7 @@ target 'KyberNetwork' do
   pod 'MSCircularSlider', '~> 1.2.2'
   pod 'EasyTipView', '~> 2.0.1'
   pod 'OneSignal', '~> 2.9.5'
+  pod 'Firebase/Core'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
