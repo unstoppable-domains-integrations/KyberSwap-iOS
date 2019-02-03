@@ -282,7 +282,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    Analytics.logEvent("swap_continue", parameters: ["from": self.viewModel.from.symbol, "to": self.viewModel.to.symbol])
+    Analytics.logEvent("swap_continue", parameters: ["pair": "\(self.viewModel.from.symbol)_\(self.viewModel.to.symbol)"])
     self.validateDataBeforeContinuing(hasCallValidateRate: false)
   }
 
