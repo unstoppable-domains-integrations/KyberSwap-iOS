@@ -44,8 +44,8 @@ class KNTransactionCoordinator {
 
   func stop() {
     self.isLoadingEnabled = false
-    self.stopUpdatingCompletedTransaction()
     self.stopUpdatingPendingTransactions()
+    self.stopUpdatingCompletedTransaction()
   }
 
   func forceUpdateNewTransactionsWhenPendingTxCompleted() {

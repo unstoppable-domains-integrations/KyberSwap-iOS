@@ -209,7 +209,7 @@ extension TransactionsStorage {
   }
 
   var kyberPendingTransactions: [KNTransaction] {
-    return self.kyberTransactions.filter { $0.state == TransactionState.pending }
+    return self.kyberTransactions.filter { $0.state == .pending }
   }
 
   var kyberMinedTransactions: [KNTransaction] {
