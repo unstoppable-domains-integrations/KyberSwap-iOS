@@ -41,12 +41,7 @@ class KNBalanceTabCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
-  lazy var historyCoordinator: KNHistoryCoordinator = {
-    let coordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session)
-    return coordinator
-  }()
+  fileprivate var historyCoordinator: KNHistoryCoordinator?
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
@@ -88,12 +83,18 @@ extension KNBalanceTabCoordinator {
     self.newRootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     let pendingObjects = self.session.transactionStorage.kyberPendingTransactions
     self.newRootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
-    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
     self.newRootViewController.coordinatorUpdateWalletObjects()
-    self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
+    self.historyCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(
@@ -153,7 +154,7 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.newRootViewController.coordinatorUpdatePendingTransactions(transactions)
-    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
@@ -162,7 +163,7 @@ extension KNBalanceTabCoordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    self.historyCoordinator.appCoordinatorTokensTransactionsDidUpdate()
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 }
 
@@ -234,8 +235,14 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openHistoryTransactionView() {
-    self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator.start()
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator?.start()
   }
 }
 
@@ -261,5 +268,11 @@ extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
 
   func tokenChartCoordinator(buy token: TokenObject) {
     self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
+  }
+}
+
+extension KNBalanceTabCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidClose() {
+    self.historyCoordinator = nil
   }
 }

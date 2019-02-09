@@ -3,6 +3,10 @@
 import UIKit
 import SafariServices
 
+protocol KNHistoryCoordinatorDelegate: class {
+  func historyCoordinatorDidClose()
+}
+
 class KNHistoryCoordinator: Coordinator {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
@@ -16,6 +20,7 @@ class KNHistoryCoordinator: Coordinator {
   var currentWallet: KNWalletObject
 
   var coordinators: [Coordinator] = []
+  weak var delegate: KNHistoryCoordinatorDelegate?
 
   lazy var rootViewController: KNHistoryViewController = {
     let viewModel = KNHistoryViewModel(
@@ -59,7 +64,9 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true) {
+      self.delegate?.historyCoordinatorDidClose()
+    }
   }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {

@@ -63,13 +63,7 @@ class KNExchangeTokenCoordinator: Coordinator {
     return qrcodeCoordinator
   }
 
-  lazy var historyCoordinator: KNHistoryCoordinator = {
-    let coordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session)
-    return coordinator
-  }()
-
+  fileprivate var historyCoordinator: KNHistoryCoordinator?
   fileprivate var searchTokensViewController: KNSearchTokenViewController?
 
   init(
@@ -96,7 +90,13 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
-    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     if resetRoot {
       self.navigationController.popToRootViewController(animated: false)
     }
@@ -104,7 +104,7 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorDidUpdateWalletObjects() {
     self.rootViewController.coordinatorUpdateWalletObjects()
-    self.historyCoordinator.appCoordinatorDidUpdateWalletObjects()
+    self.historyCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -142,7 +142,7 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
-    self.historyCoordinator.appCoordinatorPendingTransactionDidUpdate(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
@@ -151,7 +151,7 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    self.historyCoordinator.appCoordinatorTokensTransactionsDidUpdate()
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 }
 
@@ -300,8 +300,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .select(let wallet):
       self.updateCurrentWallet(wallet)
     case .selectAllTransactions:
-      self.historyCoordinator.appCoordinatorDidUpdateNewSession(self.session)
-      self.historyCoordinator.start()
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
     case .selectPromoCode:
       self.openPromoCodeView()
     }
@@ -529,5 +535,11 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
     let address = wallet.address.description
     let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
+  }
+}
+
+extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidClose() {
+    self.historyCoordinator = nil
   }
 }
