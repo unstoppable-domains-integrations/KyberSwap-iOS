@@ -258,6 +258,7 @@
 		25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25BE329B209096E800D760FB /* KNListWalletsViewController.xib */; };
 		25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */; };
 		25C151C420C5414500A6F684 /* KNCreateWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */; };
+		25C32D65220F669D0073859E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25C32D64220F669D0073859E /* GoogleService-Info.plist */; };
 		25C45ABE20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */; };
 		25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */; };
 		25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */; };
@@ -301,7 +302,6 @@
 		25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3E920F61C110071D599 /* KNTrackerRate.swift */; };
 		25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */; };
 		25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */; };
-		25E397A022073BC60058F117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25E3979F22073BC50058F117 /* GoogleService-Info.plist */; };
 		25E3D3A020D7D3E9005D506B /* IEOUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D39F20D7D3E9005D506B /* IEOUser.swift */; };
 		25E3D3A220D7D83B005D506B /* IEOUserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */; };
 		25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1EE208DE24F00A9090D /* BigInt.swift */; };
@@ -963,6 +963,7 @@
 		25BE329B209096E800D760FB /* KNListWalletsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsViewController.xib; sourceTree = "<group>"; };
 		25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListWalletsCoordinator.swift; sourceTree = "<group>"; };
 		25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCreateWalletCoordinator.swift; sourceTree = "<group>"; };
+		25C32D64220F669D0073859E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenCoordinator.swift; sourceTree = "<group>"; };
 		25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLandingPageViewController.swift; sourceTree = "<group>"; };
 		25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNLandingPageViewController.xib; sourceTree = "<group>"; };
@@ -1006,7 +1007,6 @@
 		25D3D3E920F61C110071D599 /* KNTrackerRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRate.swift; sourceTree = "<group>"; };
 		25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRateStorage.swift; sourceTree = "<group>"; };
 		25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
-		25E3979F22073BC50058F117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25E3D39F20D7D3E9005D506B /* IEOUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUser.swift; sourceTree = "<group>"; };
 		25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUserStorage.swift; sourceTree = "<group>"; };
 		25E9E1EE208DE24F00A9090D /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
@@ -1492,6 +1492,7 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				25C32D64220F669D0073859E /* GoogleService-Info.plist */,
 				255C40EC2092DB6200475871 /* Storage */,
 				257740C82057948F003323EB /* Coordinators */,
 				257740C2205793C6003323EB /* Screens */,
@@ -3177,7 +3178,6 @@
 		2912CCF71F6A830700C6CBE3 /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				25E3979F22073BC50058F117 /* GoogleService-Info.plist */,
 				251ABC9F20578D980069687F /* KyberNetwork */,
 				73ACEEF620163B4E003DD71D /* Lock */,
 				732086B2201506AA0047F605 /* Protection */,
@@ -4756,7 +4756,7 @@
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
-				25E397A022073BC60058F117 /* GoogleService-Info.plist in Resources */,
+				25C32D65220F669D0073859E /* GoogleService-Info.plist in Resources */,
 				25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
