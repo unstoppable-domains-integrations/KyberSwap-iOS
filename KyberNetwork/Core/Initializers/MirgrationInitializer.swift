@@ -5,6 +5,11 @@ import RealmSwift
 import TrustKeystore
 import TrustCore
 
+protocol Initializer {
+  func perform()
+}
+
+
 class MigrationInitializer: Initializer {
 
     let account: Wallet

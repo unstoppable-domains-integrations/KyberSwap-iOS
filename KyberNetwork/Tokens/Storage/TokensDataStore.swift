@@ -21,7 +21,6 @@ class TokensDataStore {
     }
     let config: Config
     let realm: Realm
-    var tickers: [CoinTicker] = []
     var objects: [TokenObject] {
         return realm.objects(TokenObject.self)
             .sorted(byKeyPath: "contract", ascending: true)
@@ -45,9 +44,6 @@ class TokensDataStore {
         if objects.first(where: { $0 == etherToken }) == nil {
             add(tokens: [etherToken])
         }
-    }
-    func coinTicker(for token: TokenObject) -> CoinTicker? {
-        return tickers.first(where: { $0.contract == token.contract })
     }
     func addCustom(token: ERC20Token) {
         let newToken = TokenObject(
@@ -84,19 +80,6 @@ class TokensDataStore {
                 token.isDisabled = value
             }
         }
-    }
-    static func update(in realm: Realm, tokens: [Token]) {
-        realm.beginWrite()
-        for token in tokens {
-            let update: [String: Any] = [
-                "contract": token.address.description,
-                "name": token.name,
-                "symbol": token.symbol,
-                "decimals": token.decimals,
-                ]
-            realm.create(TokenObject.self, value: update, update: true)
-        }
-        try! realm.commitWrite()
     }
     static func etherToken(for config: Config) -> TokenObject {
         return TokenObject(

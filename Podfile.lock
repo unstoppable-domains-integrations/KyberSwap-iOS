@@ -31,9 +31,6 @@ PODS:
   - MSCircularSlider (1.2.2)
   - OneSignal (2.9.5)
   - QRCodeReaderViewController (4.0.2)
-  - R.swift (4.0.0):
-    - R.swift.Library (~> 4.0.0)
-  - R.swift.Library (4.0.0)
   - Realm (3.10.0):
     - Realm/Headers (= 3.10.0)
   - Realm/Headers (3.10.0)
@@ -80,7 +77,6 @@ DEPENDENCIES:
   - MSCircularSlider (~> 1.2.2)
   - OneSignal (~> 2.9.5)
   - QRCodeReaderViewController (~> 4.0.2)
-  - R.swift (~> 4.0.0)
   - RealmSwift (~> 3.10.0)
   - SAMKeychain (~> 1.5.3)
   - SeedStackViewController
@@ -114,8 +110,6 @@ SPEC REPOS:
     - MSCircularSlider
     - OneSignal
     - QRCodeReaderViewController
-    - R.swift
-    - R.swift.Library
     - Realm
     - RealmSwift
     - Result
@@ -152,8 +146,6 @@ SPEC CHECKSUMS:
   MSCircularSlider: 70759318a899279d7923aa0f454f3ba0fe448642
   OneSignal: ccdeb961882f8668305e5b694e2cb7cb325fc907
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
-  R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
-  R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
   Realm: 85ab9e4f779d66f6e9ffeb118dc25b7f130c96ac
   RealmSwift: 69121c8b86d0ae005fb779efdb10e606732e1c74
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
@@ -168,6 +160,6 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
 
-PODFILE CHECKSUM: e684ae18aafdfb4b4486f627f7addbf3758ec771
+PODFILE CHECKSUM: 5346e04aab5003d2bfdde38d67c36f94de1d99c6
 
 COCOAPODS: 1.5.3
