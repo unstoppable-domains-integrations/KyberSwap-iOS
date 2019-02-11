@@ -4,6 +4,7 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import QRCodeReaderViewController
+import Crashlytics
 
 enum KNNewContactViewEvent {
   case dismiss
@@ -124,6 +125,7 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "new_contact", customAttributes: ["type": "save_button"])
     guard let name = self.nameTextField.text, !name.isEmpty else {
       self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
@@ -142,6 +144,7 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "new_contact", customAttributes: ["type": "delete_button"])
     let alertController = UIAlertController(
       title: "",
       message: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
@@ -157,6 +160,7 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "new_contact", customAttributes: ["type": "send_button"])
     guard let address = Address(string: self.addressTextField.text ?? "") else {
       self.showErrorTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),

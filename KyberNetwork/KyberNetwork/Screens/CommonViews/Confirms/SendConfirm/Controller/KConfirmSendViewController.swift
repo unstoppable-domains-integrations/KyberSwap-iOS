@@ -1,7 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import FirebaseAnalytics
+import Crashlytics
 
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType)
@@ -110,29 +110,20 @@ class KConfirmSendViewController: KNBaseViewController {
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    Analytics.logEvent(
-      "confirm_send",
-      parameters: ["type": "confirmed", "from": self.viewModel.transaction.transferType.tokenObject().symbol]
-    )
+    Answers.logCustomEvent(withName: "confirm_send", customAttributes: ["type": "confirmed_\(self.viewModel.transaction.transferType.tokenObject().symbol)"])
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction))
     self.updateActionButtonsSendingTransfer()
     self.delegate?.kConfirmSendViewController(self, run: event)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    Analytics.logEvent(
-      "confirm_send",
-      parameters: ["type": "back_pressed", "from": self.viewModel.transaction.transferType.tokenObject().symbol]
-    )
+    Answers.logCustomEvent(withName: "confirm_send", customAttributes: ["type": "back_pressed_\(self.viewModel.transaction.transferType.tokenObject().symbol)"])
     self.delegate?.kConfirmSendViewController(self, run: .cancel)
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      Analytics.logEvent(
-        "confirm_send",
-        parameters: ["type": "screen_edge_pan", "from": self.viewModel.transaction.transferType.tokenObject().symbol]
-      )
+      Answers.logCustomEvent(withName: "confirm_send", customAttributes: ["type": "screen_edge_pan\(self.viewModel.transaction.transferType.tokenObject().symbol)"])
       self.delegate?.kConfirmSendViewController(self, run: .cancel)
     }
   }

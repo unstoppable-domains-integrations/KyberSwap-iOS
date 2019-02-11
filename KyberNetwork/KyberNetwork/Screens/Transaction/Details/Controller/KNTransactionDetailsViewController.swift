@@ -2,6 +2,7 @@
 
 import UIKit
 import MBProgressHUD
+import Crashlytics
 
 enum KNTransactionDetailsViewEvent {
   case back
@@ -114,14 +115,17 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   @objc func fromAddressTapped(_ sender: Any) {
+    Answers.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "copy_from_address"])
     self.copy(text: self.viewModel.transaction?.from ?? "")
   }
 
   @objc func toAddressTapped(_ sender: Any) {
+    Answers.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "copy_to_address"])
     self.copy(text: self.viewModel.transaction?.to ?? "")
   }
 
   @objc func txHashTapped(_ sender: Any) {
+    Answers.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "copy_tx_hash"])
     self.copy(text: self.viewModel.transaction?.id ?? "")
   }
 
@@ -150,6 +154,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "open_ether_scan"])
     self.delegate?.transactionDetailsViewController(self, run: .openEtherScan)
   }
 }

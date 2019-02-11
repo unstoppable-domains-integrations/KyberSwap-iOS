@@ -2,7 +2,7 @@
 
 import UIKit
 import BigInt
-import FirebaseAnalytics
+import Crashlytics
 
 enum KWalletBalanceViewEvent {
   case openQRCode
@@ -177,31 +177,37 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   @IBAction func menuButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "hamburger_menu"])
     self.hamburgerMenu.openMenu(animated: true)
   }
 
   @IBAction func kyberListButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "kyber_listed_tokens"])
     if self.viewModel.updateDisplayKyberList(true) {
       self.updateDisplayedDataType()
     }
   }
 
   @IBAction func otherButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "other_tokens"])
     if self.viewModel.updateDisplayKyberList(false) {
       self.updateDisplayedDataType()
     }
   }
 
   @IBAction func searchButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "search_token"])
     if !self.searchTextField.isFirstResponder { self.searchTextField.becomeFirstResponder() }
   }
 
   @IBAction func sortNameButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_name"])
     self.viewModel.updateTokenDisplayType(positionClicked: 1)
     self.tokensBalanceTableView.reloadData()
   }
 
   @IBAction func changeButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_change_24h"])
     self.viewModel.updateTokenDisplayType(positionClicked: 3)
     self.tokensBalanceTableView.reloadData()
   }
@@ -212,6 +218,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func currencyButtonPressed(_ sender: Any) {
     let newType: KWalletCurrencyType = self.viewModel.currencyType == .usd ? .eth : .usd
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "currency_changed_\(newType.rawValue)"])
     _ = self.viewModel.updateCurrencyType(newType)
     self.viewModel.updateTokenDisplayType(positionClicked: 2)
     self.updateDisplayedDataType()
@@ -286,7 +293,7 @@ extension KWalletBalanceViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: false)
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
     self.delegate?.kWalletBalanceViewController(self, run: .selectToken(token: tokenObject))
-    Analytics.logEvent("balance_select_token", parameters: ["token": tokenObject.symbol])
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "selected_\(tokenObject.symbol)"])
   }
 }
 

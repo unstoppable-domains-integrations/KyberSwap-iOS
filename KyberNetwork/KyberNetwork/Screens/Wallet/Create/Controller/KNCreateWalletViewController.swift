@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Crashlytics
 
 enum KNCreateWalletViewEvent {
   case back
@@ -55,11 +56,13 @@ class KNCreateWalletViewController: KNBaseViewController {
       || touchedPoint.x > self.containerView.frame.maxX
       || touchedPoint.y < self.containerView.frame.minY
       || touchedPoint.y > self.containerView.frame.maxY {
+      Answers.logCustomEvent(withName: "create_wallet", customAttributes: ["type": "dismiss"])
       self.delegate?.createWalletViewController(self, run: .back)
     }
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "create_wallet", customAttributes: ["type": "confirm_button"])
     self.delegate?.createWalletViewController(self, run: .next(name: "Untitled"))
   }
 }

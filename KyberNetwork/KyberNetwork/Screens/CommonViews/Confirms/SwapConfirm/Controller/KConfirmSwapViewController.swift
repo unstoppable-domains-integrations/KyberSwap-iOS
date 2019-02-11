@@ -1,7 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import FirebaseAnalytics
+import Crashlytics
 
 protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent)
@@ -108,38 +108,26 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    Analytics.logEvent(
-      "confirm_swap",
-      parameters: ["type": "back_pressed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
-    )
+    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "back_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      Analytics.logEvent(
-        "confirm_swap",
-        parameters: ["type": "screen_edge_pan", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
-      )
+      Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "screen_edge_pan_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
       self.delegate?.kConfirmSwapViewController(self, run: .cancel)
     }
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    Analytics.logEvent(
-      "confirm_swap",
-      parameters: ["type": "confirmed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
-    )
+    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
     self.updateActionButtonsSendingSwap()
     self.delegate?.kConfirmSwapViewController(self, run: event)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    Analytics.logEvent(
-      "confirm_swap",
-      parameters: ["type": "cancel_pressed", "pair": "\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"]
-    )
+    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "cancel_pressed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
 

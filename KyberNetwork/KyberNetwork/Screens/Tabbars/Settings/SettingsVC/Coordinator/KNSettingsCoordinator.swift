@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Crashlytics
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
@@ -96,14 +97,19 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   func settingsTabViewController(_ controller: KNSettingsTabViewController, run event: KNSettingsTabViewEvent) {
     switch event {
     case .manageWallet:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "manage_wallet"])
       self.settingsViewControllerWalletsButtonPressed()
     case .contact:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "contact"])
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "support"])
       self.navigationController.openSafari(with: "https://docs.google.com/forms/d/1Ik-H0nN8qKpi90NVTCwwDzopId7C8mX_HOPeT5iBLhc/viewform?edit_requested=true")
     case .about:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "about"])
       self.openCommunityURL("https://kyber.network/about/company")
     case .changePIN:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "change_pin"])
       self.passcodeCoordinator = KNPasscodeCoordinator(
         navigationController: self.navigationController,
         type: .authenticate(isUpdating: true)
@@ -111,25 +117,35 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.passcodeCoordinator.delegate = self
       self.passcodeCoordinator.start()
     case .community:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "community"])
       let url = KNAppTracker.getKyberProfileBaseString() + "/community"
       self.openCommunityURL(url)
     case .shareWithFriends:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "share_with_friends"])
       self.openShareWithFriends()
     case .telegram:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_telegram"])
       self.openCommunityURL("https://t.me/kybernetwork")
     case .telegramDev:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_telegram_dev"])
       self.openCommunityURL("https://t.me/KyberDeveloper")
     case .github:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_github"])
       self.openCommunityURL("https://github.com/KyberNetwork/KyberSwap")
     case .twitter:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_twitter"])
       self.openCommunityURL("https://twitter.com/KyberSwap")
     case .facebook:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_facebook"])
       self.openCommunityURL("https://www.facebook.com/kybernetwork")
     case .medium:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_medium"])
       self.openCommunityURL("https://medium.com/@kyberswap")
     case .reddit:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_reddit"])
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
     case .linkedIn:
+      Answers.logCustomEvent(withName: "settings", customAttributes: ["value": "open_linked_in"])
       self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
     }
   }
@@ -207,6 +223,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupKeystore() {
+    Answers.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_keystore"])
     let createPassword = KNCreatePasswordViewController(delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
     createPassword.modalTransitionStyle = .crossDissolve
@@ -214,6 +231,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupPrivateKey() {
+    Answers.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_private_key"])
     if case .real(let account) = self.session.wallet.type {
       let result = self.session.keystore.exportPrivateKey(account: account)
       switch result {
@@ -226,6 +244,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func copyAddress() {
+    Answers.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_copy_address"])
     UIPasteboard.general.string = self.session.wallet.address.description
   }
 

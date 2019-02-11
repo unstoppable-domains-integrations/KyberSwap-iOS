@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import Crashlytics
 
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool)
@@ -178,10 +179,13 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .send(let token):
       self.openSendTokenView(with: token)
     case .sell(let token):
+      Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sell_\(token.symbol)"])
       self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
     case .buy(let token):
+      Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "buy_\(token.symbol)"])
       self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
     case .receiveToken:
+      Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "open_qrcode"])
       self.qrcodeCoordinator?.start()
     }
   }
@@ -225,6 +229,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openSendTokenView(with token: TokenObject) {
+    Answers.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "send_\(token.symbol)"])
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,

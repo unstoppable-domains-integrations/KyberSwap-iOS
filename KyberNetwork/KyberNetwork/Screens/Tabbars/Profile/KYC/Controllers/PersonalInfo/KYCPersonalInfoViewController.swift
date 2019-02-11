@@ -10,7 +10,7 @@ import TrustCore
 import Photos
 import MobileCoreServices
 import AVFoundation
-import FirebaseAnalytics
+import Crashlytics
 
 enum KYCPersonalInfoViewEvent {
   case next(
@@ -533,6 +533,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "qrcode_button"])
     let qrcodeReader = QRCodeReaderViewController()
     qrcodeReader.delegate = self
     self.present(qrcodeReader, animated: true, completion: nil)
@@ -543,7 +544,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func addWalletButtonPressed(_ sender: Any) {
-    Analytics.logEvent("profile_kyc", parameters: ["value": "add_wallet_personal_info"])
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_wallet_personal_info"])
     guard let label = self.walletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
@@ -694,6 +695,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "occupation_code_\(occupationCode.isEmpty ? "empty" : "nonempty")"])
     let industryCode = self.optionalDataView.getIndustryCode()
     if !industryCode.isEmpty && self.viewModel.industryCodes[industryCode] == nil {
       self.showWarningTopBannerMessage(
@@ -703,6 +705,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "industry_code_\(industryCode.isEmpty ? "empty" : "nonempty")"])
     let taxCountry = self.optionalDataView.getTaxCountry()
     if !taxCountry.isEmpty && !self.viewModel.countries.contains(taxCountry) {
       self.showWarningTopBannerMessage(
@@ -712,6 +715,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "tax_country_\(taxCountry.isEmpty ? "empty" : "nonempty")"])
     let taxIDNumber: String? = {
       if !self.optionalDataView.getHasTaxIDNumber() {
         return nil
@@ -772,6 +776,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func primarySourceOfFundButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "primary_source_fund_picker"])
     self.dataPickerType = .sourceFund
     self.fakeTextField.inputView = self.pickerView
 
@@ -958,7 +963,7 @@ extension KYCPersonalInfoViewController: UITableViewDataSource {
   }
 
   fileprivate func removeAddress(at indexPath: IndexPath) {
-    Analytics.logEvent("profile_kyc", parameters: ["value": "remove_wallet_address"])
+    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "remove_wallet_address"])
     self.viewModel.removeAddress(at: indexPath.row)
     self.walletsTableView.deleteRows(at: [indexPath], with: .automatic)
     self.updateWalletsData()
@@ -1101,8 +1106,10 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
   func kycPersonalOptionalDataViewActionPressed(isCollapsed: Bool) {
     if isCollapsed {
       self.optionalDataView.expand()
+      Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "optional_view_expand"])
     } else {
       self.optionalDataView.collapse()
+      Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "optional_view_collapse"])
     }
     self.heightConstraintForOptionalData.constant = self.optionalDataView.height
     self.view.layoutSubviews()
