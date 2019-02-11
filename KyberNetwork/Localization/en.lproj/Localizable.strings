@@ -400,6 +400,8 @@
 
 "please.check.your.internet.connection" = "Please check your internet connection";
 "address.has.already.been.taken" = "Address has already been taken";
+"report.bugs" = "Report Bugs";
+"rate.our.app" = "Rate our App";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
