@@ -6,7 +6,6 @@ target 'KyberNetwork' do
   use_frameworks!
 
   pod 'BigInt', '~> 3.1.0'
-  pod 'R.swift', '~> 4.0.0'
   pod 'JSONRPCKit', '~> 3.0.0' #:git=> 'https://github.com/bricklife/JSONRPCKit.git'
   pod 'APIKit', '~> 3.2.1'
   pod 'Eureka', '~> 4.1.1'

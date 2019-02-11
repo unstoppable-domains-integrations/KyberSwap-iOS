@@ -251,20 +251,6 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 }
 
-// MARK: New Token Delegate
-extension KNBalanceTabCoordinator: NewTokenViewControllerDelegate {
-  func didAddToken(token: ERC20Token, in viewController: NewTokenViewController) {
-    self.session.tokenStorage.addCustom(token: token)
-    self.navigationController.topViewController?.dismiss(animated: true, completion: {
-      KNNotificationUtil.postNotification(for: kTokenObjectListDidUpdateNotificationKey)
-    })
-  }
-
-  func didCancel(in viewController: NewTokenViewController) {
-    self.navigationController.topViewController?.dismiss(animated: true, completion: nil)
-  }
-}
-
 // MARK: Token Chart Coordinator Delegate
 extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
   func tokenChartCoordinator(sell token: TokenObject) {

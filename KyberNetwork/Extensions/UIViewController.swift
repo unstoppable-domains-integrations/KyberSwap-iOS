@@ -54,10 +54,4 @@ extension UIViewController {
     func hideLoading(animated: Bool = true) {
         MBProgressHUD.hide(for: view, animated: animated)
     }
-
-    func openURL(_ url: URL) {
-        let controller = SFSafariViewController(url: url)
-        controller.preferredBarTintColor = Colors.darkBlue
-        present(controller, animated: true, completion: nil)
-    }
 }
