@@ -1,7 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import FirebaseAnalytics
+import Crashlytics
 
 class KNBaseViewController: UIViewController {
 
@@ -10,7 +10,7 @@ class KNBaseViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     NSLog("Did present: \(self.className)")
-    Analytics.setScreenName(self.className, screenClass: "UIViewController")
+    Answers.logCustomEvent(withName: "view_appeared", customAttributes: ["screen": self.className])
   }
 
   override func viewDidDisappear(_ animated: Bool) {

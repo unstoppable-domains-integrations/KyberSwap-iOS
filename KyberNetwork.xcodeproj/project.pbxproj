@@ -301,7 +301,6 @@
 		25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3E920F61C110071D599 /* KNTrackerRate.swift */; };
 		25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */; };
 		25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */; };
-		25E397A022073BC60058F117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25E3979F22073BC50058F117 /* GoogleService-Info.plist */; };
 		25E3D3A020D7D3E9005D506B /* IEOUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D39F20D7D3E9005D506B /* IEOUser.swift */; };
 		25E3D3A220D7D83B005D506B /* IEOUserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */; };
 		25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E9E1EE208DE24F00A9090D /* BigInt.swift */; };
@@ -1006,7 +1005,6 @@
 		25D3D3E920F61C110071D599 /* KNTrackerRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRate.swift; sourceTree = "<group>"; };
 		25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTrackerRateStorage.swift; sourceTree = "<group>"; };
 		25DBB57D205FB4E20020F19D /* UIViewController+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kyber.swift"; sourceTree = "<group>"; };
-		25E3979F22073BC50058F117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25E3D39F20D7D3E9005D506B /* IEOUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUser.swift; sourceTree = "<group>"; };
 		25E3D3A120D7D83B005D506B /* IEOUserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEOUserStorage.swift; sourceTree = "<group>"; };
 		25E9E1EE208DE24F00A9090D /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
@@ -3177,7 +3175,6 @@
 		2912CCF71F6A830700C6CBE3 /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				25E3979F22073BC50058F117 /* GoogleService-Info.plist */,
 				251ABC9F20578D980069687F /* KyberNetwork */,
 				73ACEEF620163B4E003DD71D /* Lock */,
 				732086B2201506AA0047F605 /* Protection */,
@@ -4756,7 +4753,6 @@
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
-				25E397A022073BC60058F117 /* GoogleService-Info.plist in Resources */,
 				25A4F033209461DF00AA5FA0 /* KNNewCustomTokenViewController.xib in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
@@ -4945,7 +4941,6 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/EasyTipView/EasyTipView.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework",
 				"${BUILT_PRODUCTS_DIR}/JavaScriptKit/JavaScriptKit.framework",
@@ -4969,7 +4964,6 @@
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustCore/TrustCore.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKeystore/TrustKeystore.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -4980,7 +4974,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EasyTipView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONRPCKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JavaScriptKit.framework",
@@ -5004,7 +4997,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKeystore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

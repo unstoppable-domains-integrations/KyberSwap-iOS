@@ -3,7 +3,7 @@
 import UIKit
 import TrustKeystore
 import TrustCore
-import FirebaseAnalytics
+import Crashlytics
 
 protocol KNCreateWalletCoordinatorDelegate: class {
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?)
@@ -33,7 +33,7 @@ class KNCreateWalletCoordinator: Coordinator {
   }
 
   func start() {
-    Analytics.logEvent("create_new_wallet", parameters: nil)
+    Answers.logCustomEvent(withName: "create_new_wallet", customAttributes: nil)
     if let wallet = self.newWallet {
       self.openBackUpWallet(wallet, name: self.name)
     } else {

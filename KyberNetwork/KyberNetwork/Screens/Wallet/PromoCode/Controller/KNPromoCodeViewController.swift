@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Crashlytics
 
 protocol KNPromoCodeViewControllerDelegate: class {
   func promoCodeViewControllerDidClose()
@@ -57,6 +58,7 @@ class KNPromoCodeViewController: KNBaseViewController {
   }
 
   @IBAction func applyButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "apply_button"])
     let promoCode = self.enterPromoCodeTextField.text ?? ""
     guard !promoCode.isEmpty else {
       self.showWarningTopBannerMessage(

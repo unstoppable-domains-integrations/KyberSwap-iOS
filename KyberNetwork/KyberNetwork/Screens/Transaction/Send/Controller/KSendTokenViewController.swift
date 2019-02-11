@@ -6,7 +6,7 @@ import TrustKeystore
 import TrustCore
 import Result
 import QRCodeReaderViewController
-import FirebaseAnalytics
+import Crashlytics
 
 enum KSendTokenViewEvent {
   case back
@@ -245,17 +245,24 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "search_token"])
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    Analytics.logEvent("send_token", parameters: ["token": self.viewModel.from.symbol])
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_\(self.viewModel.from.symbol)"])
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
+    if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (self.viewModel.address?.description.lowercased() ?? "") }) != nil {
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_to_contact"])
+    } else {
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_not_in_contact"])
+    }
     self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "scan_qr_code"])
     let qrcodeReaderVC: QRCodeReaderViewController = {
       let controller = QRCodeReaderViewController()
       controller.delegate = self
@@ -271,14 +278,17 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "recent_contact_more"])
     self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
   }
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "new_contact_button"])
     self.delegate?.kSendTokenViewController(self, run: .addContact(address: self.viewModel.addressString))
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
+    Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_all"])
     self.amountTextField.text = self.viewModel.allTokenBalanceString
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
     self.amountTextField.resignFirstResponder()
@@ -520,12 +530,16 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     case .update(let height):
       self.updateContactTableView(height: height)
     case .select(let contact):
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "selected_contact"])
       self.contactTableView(select: contact)
     case .edit(let contact):
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "edit/add_contact"])
       self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address))
     case .delete(let contact):
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "delete_contact"])
       self.contactTableView(delete: contact)
     case .send(let address):
+      Answers.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_contact"])
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
