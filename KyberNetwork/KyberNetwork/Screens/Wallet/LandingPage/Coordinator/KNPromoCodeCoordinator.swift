@@ -31,7 +31,7 @@ class KNPromoCodeCoordinator: Coordinator {
   }
 
   func start() {
-    Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "start"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "kybercode", customAttributes: ["type": "start"])
     self.rootViewController.resetUI()
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
@@ -71,7 +71,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                 }()
                 let destinationToken = data["destination_token"] as? String ?? ""
                 self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
-                Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_success"])
+                KNCrashlyticsUtil.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_success"])
                 self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey)) { [weak self] result in
                   guard let `self` = self else { return }
                   self.rootViewController.hideLoading()
@@ -88,7 +88,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                   }
                 }
               } else {
-                Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_data_error"])
+                KNCrashlyticsUtil.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_data_error"])
                 let error = json["error"] as? String ?? ""
                 self.navigationController.showWarningTopBannerMessage(
                   with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -97,11 +97,11 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                 )
               }
             } catch let error {
-              Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_parse_error"])
+              KNCrashlyticsUtil.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_parse_error"])
               self.navigationController.displayError(error: error)
             }
           case .failure(let error):
-            Answers.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_failed"])
+            KNCrashlyticsUtil.logCustomEvent(withName: "kybercode", customAttributes: ["type": "check_code_failed"])
             self.navigationController.displayError(error: error)
           }
         }

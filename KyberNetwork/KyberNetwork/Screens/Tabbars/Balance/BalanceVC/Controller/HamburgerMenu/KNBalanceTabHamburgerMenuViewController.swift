@@ -201,7 +201,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectPromoCode)
     }
-    Answers.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "kybercode"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "kybercode"])
   }
 
   @objc func backgroundViewTap(_ recognizer: UITapGestureRecognizer) {
@@ -215,21 +215,21 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAddWallet)
     }
-    Answers.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "add_wallet"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "add_wallet"])
   }
 
   @IBAction func sendTokenButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectSendToken)
     }
-    Answers.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "send_token"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "send_token"])
   }
 
   @IBAction func allTransactionButtonPressed(_ sender: Any) {
     self.hideMenu(animated: true) {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAllTransactions)
     }
-    Answers.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "transaction"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "transaction"])
   }
 
   func gestureScreenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

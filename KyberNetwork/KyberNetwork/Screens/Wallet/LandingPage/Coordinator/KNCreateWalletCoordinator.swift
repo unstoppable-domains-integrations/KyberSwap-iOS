@@ -33,7 +33,7 @@ class KNCreateWalletCoordinator: Coordinator {
   }
 
   func start() {
-    Answers.logCustomEvent(withName: "create_new_wallet", customAttributes: nil)
+    KNCrashlyticsUtil.logCustomEvent(withName: "create_new_wallet", customAttributes: nil)
     if let wallet = self.newWallet {
       self.openBackUpWallet(wallet, name: self.name)
     } else {

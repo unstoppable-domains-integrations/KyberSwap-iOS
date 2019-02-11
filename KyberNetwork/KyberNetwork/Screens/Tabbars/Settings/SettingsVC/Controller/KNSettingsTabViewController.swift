@@ -80,7 +80,7 @@ class KNSettingsTabViewController: KNBaseViewController {
     )
     self.shareWithFriendsButton.addTextSpacing()
     var version = Bundle.main.versionNumber ?? ""
-    if isDebug { version += " - \(Bundle.main.buildNumber ?? "")" }
+    version += " - \(Bundle.main.buildNumber ?? "")"
     version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
     self.bottomPaddingVersionLabelConstraint.constant = 24.0 + self.bottomPaddingSafeArea()

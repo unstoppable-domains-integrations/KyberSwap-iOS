@@ -323,29 +323,29 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   @IBAction func signInButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "sign_in_button_pressed"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "sign_in_button_pressed"])
     self.delegate?.profileHomeViewController(self, run: .signIn)
   }
 
   @IBAction func logOutButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "sign_out_button_pressed"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "sign_out_button_pressed"])
     self.delegate?.profileHomeViewController(self, run: .logOut)
   }
 
   @IBAction func userKYCActionButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "verify_pressed_\(self.userKYCActionButton.titleLabel?.text ?? "")"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "verify_pressed_\(self.userKYCActionButton.titleLabel?.text ?? "")"])
     self.delegate?.profileHomeViewController(self, run: .openVerification)
   }
 
   @IBAction func addWalletScanQRCodePressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_wallet_scan_qr_code"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_wallet_scan_qr_code"])
     let qrcodeReader = QRCodeReaderViewController()
     qrcodeReader.delegate = self
     self.present(qrcodeReader, animated: true, completion: nil)
   }
 
   @IBAction func addWalletAddButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_wallet_profile_view"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_wallet_profile_view"])
     guard let label = self.addWalletLabelTextField.text, !label.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
@@ -407,7 +407,7 @@ extension KNProfileHomeViewController {
 extension KNProfileHomeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "open_address_on_etherscan"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "open_address_on_etherscan"])
     if indexPath.row < self.viewModel.wallets.count {
       let address = self.viewModel.wallets[indexPath.row].1
       self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "address/\(address)")

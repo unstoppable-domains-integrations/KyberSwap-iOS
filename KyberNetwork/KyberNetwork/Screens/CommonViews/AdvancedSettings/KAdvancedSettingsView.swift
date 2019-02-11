@@ -349,7 +349,7 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBAction func displayViewButtonPressed(_ sender: Any) {
     if self.viewModel == nil { return }
     let isHidden = !self.viewModel.isViewHidden
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "display", "isHidden": isHidden])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "display", "isHidden": isHidden])
     self.viewModel.updateViewHidden(isHidden: isHidden)
 
     self.advancedSettingsViewHeightConstraint.constant = self.viewModel.advancedSettingsHeight
@@ -363,37 +363,37 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBAction func fastGasButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectedType(.fast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
   }
 
   @IBAction func mediumGasButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectedType(.medium)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
   }
 
   @IBAction func slowGasButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
   }
 
   @objc func userTappedFastFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.fast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
   }
 
   @objc func userTappedMediumFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.medium)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
   }
 
   @objc func userTappedSlowFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow))
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
   }
 
   @IBAction func threePercentButtonPressed(_ sender: Any) {
@@ -402,12 +402,12 @@ class KAdvancedSettingsView: XibLoaderView {
     self.customRateTextField.isEnabled = false
     self.delegate?.kAdvancedSettingsView(self, run: .minRatePercentageChanged(percent: 3.0))
     self.updateMinRateUIs()
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "default_three"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "default_three"])
   }
 
   @objc func userTappedThreePercent(_ sender: Any) {
     self.threePercentButtonPressed(sender)
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "default_three"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "default_three"])
   }
 
   @IBAction func anyRateButtonPressed(_ sender: Any) {
@@ -416,12 +416,12 @@ class KAdvancedSettingsView: XibLoaderView {
     self.customRateTextField.isEnabled = false
     self.delegate?.kAdvancedSettingsView(self, run: .minRatePercentageChanged(percent: 100.0))
     self.updateMinRateUIs()
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
   }
 
   @objc func userTappedAnyRate(_ sender: Any) {
     self.anyRateButtonPressed(sender)
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
   }
 
   @IBAction func customRateButtonPressed(_ sender: Any) {
@@ -430,12 +430,12 @@ class KAdvancedSettingsView: XibLoaderView {
     self.customRateTextField.isEnabled = true
     self.delegate?.kAdvancedSettingsView(self, run: .minRatePercentageChanged(percent: 3.0))
     self.updateMinRateUIs()
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "custom_slippage_rate"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "custom_slippage_rate"])
   }
 
   @objc func userTappedCustomRate(_ sender: Any) {
     self.customRateButtonPressed(sender)
-    Answers.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "custom_slippage_rate"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "custom_slippage_rate"])
   }
 }
 
