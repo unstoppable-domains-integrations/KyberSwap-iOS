@@ -400,6 +400,8 @@
 
 "please.check.your.internet.connection" = "인터넷 연결을 확인하십시오.";
 "address.has.already.been.taken" = "이미 주소가 찍혔습니다.";
+"report.bugs" = "보고서 버그";
+"rate.our.app" = "신청서 평가";
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";

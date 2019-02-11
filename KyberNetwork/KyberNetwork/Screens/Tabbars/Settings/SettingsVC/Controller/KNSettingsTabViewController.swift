@@ -18,6 +18,8 @@ enum KNSettingsTabViewEvent {
   case medium
   case reddit
   case linkedIn
+  case reportBugs
+  case rateOurApp
 }
 
 protocol KNSettingsTabViewControllerDelegate: class {
@@ -37,6 +39,8 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var aboutButton: UIButton!
   @IBOutlet weak var community: UIButton!
   @IBOutlet weak var shareWithFriendsButton: UIButton!
+  @IBOutlet weak var reportBugsButton: UIButton!
+  @IBOutlet weak var rateOurAppButton: UIButton!
   @IBOutlet weak var versionLabel: UILabel!
   @IBOutlet weak var bottomPaddingVersionLabelConstraint: NSLayoutConstraint!
 
@@ -76,6 +80,14 @@ class KNSettingsTabViewController: KNBaseViewController {
     self.community.addTextSpacing()
     self.shareWithFriendsButton.setTitle(
       NSLocalizedString("share.with.friends", value: "Share with friends", comment: ""),
+      for: .normal
+    )
+    self.reportBugsButton.setTitle(
+      NSLocalizedString("report.bugs", value: "Report Bugs", comment: ""),
+      for: .normal
+    )
+    self.rateOurAppButton.setTitle(
+      NSLocalizedString("rate.our.app", value: "Rate our App", comment: ""),
       for: .normal
     )
     self.shareWithFriendsButton.addTextSpacing()
@@ -150,5 +162,13 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func linkedInButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .linkedIn)
+  }
+
+  @IBAction func reportBugsButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .reportBugs)
+  }
+
+  @IBAction func rateOurAppButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .rateOurApp)
   }
 }

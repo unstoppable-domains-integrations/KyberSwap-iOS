@@ -147,6 +147,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .linkedIn:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "open_linked_in"])
       self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
+    case .reportBugs:
+      KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "report_bugs"])
+      self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
+    case .rateOurApp:
+      KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "rate_our_app"])
+      self.navigationController.openSafari(with: "https://goo.gl/forms/RkvyT7MpTYV93gV02")
     }
   }
 
