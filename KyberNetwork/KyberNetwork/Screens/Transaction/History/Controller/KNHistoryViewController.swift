@@ -185,7 +185,7 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    Answers.logCustomEvent(withName: "history", customAttributes: ["type": "pending_tx"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": "pending_tx"])
     self.setupNavigationBar()
     self.setupCollectionView()
   }
@@ -239,7 +239,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBAction func segmentedControlValueDidChange(_ sender: UISegmentedControl) {
     self.viewModel.updateIsShowingPending(sender.selectedSegmentIndex == 0)
     self.updateUIWhenDataDidChange()
-    Answers.logCustomEvent(withName: "history", customAttributes: ["type": self.viewModel.isShowingPending ? "pending_tx" : "mined_tx"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": self.viewModel.isShowingPending ? "pending_tx" : "mined_tx"])
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -279,7 +279,7 @@ extension KNHistoryViewController {
 
 extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    Answers.logCustomEvent(withName: "history", customAttributes: ["type": "selected_tx"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": "selected_tx"])
     if self.segmentedControl.selectedSegmentIndex == 0 {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
       self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))

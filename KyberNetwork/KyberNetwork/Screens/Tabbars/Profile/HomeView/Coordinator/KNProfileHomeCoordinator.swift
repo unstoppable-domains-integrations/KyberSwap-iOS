@@ -216,7 +216,7 @@ extension KNProfileHomeCoordinator {
     }
     // got authentication code
     // use the code to get access token for user
-    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "received_call_back"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "received_call_back"])
     self.navigationController.displayLoading(text: "\(NSLocalizedString("initializing.session", value: "Initializing Session", comment: ""))...", animated: true)
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KyberGOService>()
@@ -239,7 +239,7 @@ extension KNProfileHomeCoordinator {
                     with: NSLocalizedString("error", value: "Error", comment: ""),
                     message: NSLocalizedString("can.not.get.access.token", value: "Can not get access token", comment: "")
                   )
-                  Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "can_not_get_access_token"])
+                  KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "can_not_get_access_token"])
                   return
               }
               self?.getUserInfo(
@@ -252,18 +252,18 @@ extension KNProfileHomeCoordinator {
                 showError: true,
                 completion: { success in
                   if success {
-                    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_successfully"])
+                    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_successfully"])
                     let name = IEOUserStorage.shared.user?.name ?? ""
                     let text = NSLocalizedString("welcome.back.user", value: "Welcome back, %@", comment: "")
                     let message = String(format: text, name)
                     self?.navigationController.showSuccessTopBannerMessage(with: "", message: message)
                   } else {
-                    Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_failed"])
+                    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_failed"])
                   }
                 }
               )
             } catch {
-              Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "can_not_get_access_token"])
+              KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "can_not_get_access_token"])
               self?.navigationController.hideLoading()
               self?.navigationController.showWarningTopBannerMessage(
                 with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -300,7 +300,7 @@ extension KNProfileHomeCoordinator {
                   with: NSLocalizedString("error", value: "Error", comment: ""),
                   message: NSLocalizedString("can.not.get.user.info", value: "Can not get user info", comment: "")
                 )
-                Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
+                KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
               }
               completion(false)
               return
@@ -321,7 +321,7 @@ extension KNProfileHomeCoordinator {
             completion(true)
           // Already have user
           case .failure(let error):
-            Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
+            KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
             if showError {
               self?.navigationController.displayError(error: error)
             }
@@ -357,7 +357,7 @@ extension KNProfileHomeCoordinator {
                   expireTime: Date().addingTimeInterval(expireTime).timeIntervalSince1970
                 )
                 self?.timerAccessTokenExpired()
-                Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_reload_successfully"])
+                KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_reload_successfully"])
                 return
               }
             } catch {}
@@ -365,7 +365,7 @@ extension KNProfileHomeCoordinator {
             break
           }
           // Error for some reason
-          Answers.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_failed_reload"])
+          KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_failed_reload"])
           KNNotificationUtil.localPushNotification(
             title: NSLocalizedString("session.expired", value: "Session expired", comment: ""),
             body: NSLocalizedString("your.session.has.expired.sign.in.to.continue", value: "Your session has expired, please sign in again to continue", comment: "")

@@ -10,7 +10,7 @@ class KNBaseViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     NSLog("Did present: \(self.className)")
-    Answers.logCustomEvent(withName: "view_appeared", customAttributes: ["screen": self.className])
+    KNCrashlyticsUtil.logCustomEvent(withName: "view_appeared", customAttributes: ["screen": self.className])
   }
 
   override func viewDidDisappear(_ animated: Bool) {

@@ -108,26 +108,26 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "back_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "back_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "screen_edge_pan_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "screen_edge_pan_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
       self.delegate?.kConfirmSwapViewController(self, run: .cancel)
     }
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
     self.updateActionButtonsSendingSwap()
     self.delegate?.kConfirmSwapViewController(self, run: event)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    Answers.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "cancel_pressed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "cancel_pressed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
 
