@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "salt-1.png",
+      "filename" : "salt.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "salt-2.png",
+      "filename" : "salt@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "salt.png",
+      "filename" : "salt@3x.png",
       "scale" : "3x"
     }
   ],
