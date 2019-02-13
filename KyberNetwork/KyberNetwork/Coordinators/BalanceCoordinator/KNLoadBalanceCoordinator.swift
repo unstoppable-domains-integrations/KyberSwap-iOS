@@ -156,7 +156,13 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
     var isBalanceChanged: Bool = false
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).map({ $0.contract })
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).sorted { (token0, token1) -> Bool in
+      if !token1.isSupported { return true }
+      if !token0.isSupported { return false }
+      if token0.value.isEmpty || token0.value == "0" { return false }
+      if token1.value.isEmpty || token1.value == "0" { return true }
+      return true
+    }.map({ $0.contract })
     let currentWallet = self.session.wallet
     let group = DispatchGroup()
     var counter = 0
