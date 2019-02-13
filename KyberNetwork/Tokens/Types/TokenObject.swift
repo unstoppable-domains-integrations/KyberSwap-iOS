@@ -23,7 +23,6 @@ class TokenObject: Object {
         symbol: String = "",
         decimals: Int = 0,
         value: String,
-        icon: String = "",
         isCustom: Bool = false,
         isSupported: Bool = false,
         isDisabled: Bool = false
@@ -34,7 +33,7 @@ class TokenObject: Object {
         self.symbol = symbol
         self.decimals = decimals
         self.value = value
-        self.icon = icon
+        self.icon = symbol.lowercased()
         self.isCustom = isCustom
         self.isSupported = isSupported
         self.isDisabled = isDisabled
@@ -45,7 +44,7 @@ class TokenObject: Object {
       self.init()
       self.name = localDict["name"] as? String ?? ""
       self.symbol = localDict["symbol"] as? String ?? ""
-      self.icon = localDict["icon"] as? String ?? self.symbol.lowercased()
+      self.icon = self.symbol.lowercased()
       self.contract = (localDict["address"] as? String ?? "").lowercased()
       self.decimals = localDict["decimals"] as? Int ?? 0
       self.isSupported = true
@@ -138,7 +137,6 @@ class TokenObject: Object {
       symbol: self.symbol,
       decimals: self.decimals,
       value: self.value,
-      icon: self.icon,
       isCustom: self.isCustom,
       isSupported: self.isSupported,
       isDisabled: self.isDisabled
