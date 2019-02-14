@@ -19,7 +19,7 @@ public struct KNGasConfiguration {
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
-  static let gasPriceMax: BigInt = EtherNumberFormatter.full.number(from: "50", units: UnitConfiguration.gasPriceUnit)!
+  static let gasPriceMax: BigInt = EtherNumberFormatter.full.number(from: "100", units: UnitConfiguration.gasPriceUnit)!
 
   static func calculateDefaultGasLimit(from: TokenObject, to: TokenObject) -> BigInt {
     if from == to {
