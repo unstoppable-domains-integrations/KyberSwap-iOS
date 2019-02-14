@@ -155,7 +155,7 @@ class KNSendTokenViewModel: NSObject {
     self.from = token
     self.balance = balance
     self.amount = ""
-    self.gasLimit = self.from.isETH ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+    self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: self.from)
   }
 
   func updateBalance(_ balances: [String: Balance]) {
