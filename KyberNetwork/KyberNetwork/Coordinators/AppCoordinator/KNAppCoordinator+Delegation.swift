@@ -11,6 +11,10 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
       self.restartNewSession(wallet)
     }
   }
+
+  func landingPageCoordinator(remove wallet: Wallet) {
+    self.removeWallet(wallet)
+  }
 }
 
 // MARK: Session Delegate
@@ -37,6 +41,10 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     self.restartNewSession(wallet)
   }
 
+  func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet) {
+    self.removeWallet(wallet)
+  }
+
   func exchangeTokenCoordinatorDidSelectAddWallet() {
     self.addNewWallet()
   }
@@ -49,7 +57,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidUpdateWalletObjects() {
-    self.balanceTabCoordinator.appCoordinatorDidUpdateWalletObjects()
+    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.profileCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
@@ -110,6 +118,10 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
     } else {
       self.restartNewSession(wallet)
     }
+  }
+
+  func addNewWalletCoordinator(remove wallet: Wallet) {
+    self.removeWallet(wallet)
   }
 }
 

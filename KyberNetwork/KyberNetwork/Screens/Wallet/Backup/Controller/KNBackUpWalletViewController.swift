@@ -5,6 +5,7 @@ import Crashlytics
 
 protocol KNBackUpWalletViewControllerDelegate: class {
   func backupWalletViewControllerDidFinish()
+  func backupWalletViewControllerDidConfirmSkipWallet()
 }
 
 class KNBackUpWalletViewController: KNBaseViewController {
@@ -28,6 +29,8 @@ class KNBackUpWalletViewController: KNBaseViewController {
   @IBOutlet weak var secondSeparatorView: UIView!
   @IBOutlet weak var completeButton: UIButton!
 
+  @IBOutlet weak var skipWalletButton: UIButton!
+
   var isCompleteButtonEnabled: Bool {
     return self.firstWordTextField.text?.isEmpty == false && self.secondWordTextField.text?.isEmpty == false
   }
@@ -45,6 +48,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.skipWalletButton.setTitle(NSLocalizedString("skip", value: "Skip", comment: ""), for: .normal)
     let style = KNAppStyleType.current
     self.view.backgroundColor = style.mainBackgroundColor
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
@@ -185,6 +189,19 @@ class KNBackUpWalletViewController: KNBaseViewController {
       return controller
     }()
     self.present(popupVC, animated: true, completion: nil)
+  }
+
+  @IBAction func skipButtonPressed(_ sender: Any) {
+    let alert = UIAlertController(
+      title: "\(NSLocalizedString("skip", value: "Skip", comment: ""))?",
+      message: NSLocalizedString("you.can.backup.your.wallet.later", value: "You can backup your wallet later", comment: ""),
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: NSLocalizedString("continue", value: "Continue", comment: ""), style: .default, handler: { _ in
+      self.delegate?.backupWalletViewControllerDidConfirmSkipWallet()
+    }))
+    self.present(alert, animated: true, completion: nil)
   }
 }
 

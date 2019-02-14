@@ -7,6 +7,7 @@ import TrustCore
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: Wallet)
+  func landingPageCoordinator(remove wallet: Wallet)
 }
 
 /**
@@ -93,16 +94,9 @@ class KNLandingPageCoordinator: Coordinator {
       KNPasscodeUtil.shared.deletePasscode()
     }
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
-      if KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == false {
-        // Open back up wallet if it is created from app and not backed up yet
-        self.newWallet = wallet
-        self.isCreate = true
-        let name: String? = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.name
-        self.createWalletCoordinator.updateNewWallet(wallet, name: name)
-        self.createWalletCoordinator.start()
-      } else if KNPasscodeUtil.shared.currentPasscode() == nil {
+      if KNPasscodeUtil.shared.currentPasscode() == nil {
         // In case user imported a wallet and kill the app during settings passcode
-        self.newWallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first
+        self.newWallet = wallet
         self.passcodeCoordinator.start()
       }
     }
@@ -181,6 +175,12 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
 
 extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
   func createWalletCoordinatorDidClose() {
+  }
+
+  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet) {
+    self.navigationController.popViewController(animated: true) {
+      self.delegate?.landingPageCoordinator(remove: wallet)
+    }
   }
 
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {

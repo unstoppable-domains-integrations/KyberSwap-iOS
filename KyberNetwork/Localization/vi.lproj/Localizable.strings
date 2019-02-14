@@ -402,6 +402,8 @@
 "address.has.already.been.taken" = "Địa chỉ đã được sử dụng";
 "report.bugs" = "Báo Lỗi";
 "rate.our.app" = "Đánh giá ứng dụng";
+"skip" = "Bỏ qua";
+"you.can.backup.your.wallet.later" = "Bạn có thể sao lưu ví của mình sau";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";

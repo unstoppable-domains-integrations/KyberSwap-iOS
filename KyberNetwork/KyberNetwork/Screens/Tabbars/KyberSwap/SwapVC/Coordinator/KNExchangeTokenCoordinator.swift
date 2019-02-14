@@ -9,6 +9,7 @@ import Moya
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
+  func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectAddWallet()
   func exchangeTokenCoordinatorDidSelectPromoCode()
 }
@@ -535,6 +536,10 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
     let address = wallet.address.description
     let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
+  }
+
+  func addNewWalletCoordinator(remove wallet: Wallet) {
+    self.delegate?.exchangeTokenCoordinatorRemoveWallet(wallet)
   }
 }
 

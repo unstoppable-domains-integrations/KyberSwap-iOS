@@ -402,6 +402,8 @@
 "address.has.already.been.taken" = "地址已经被采纳";
 "report.bugs" = "报告错误";
 "rate.our.app" = "评价我们的申请";
+"skip" = "跳跃";
+"you.can.backup.your.wallet.later" = "您可以稍后备份您的钱包";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";

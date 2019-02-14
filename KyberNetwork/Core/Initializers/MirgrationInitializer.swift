@@ -9,7 +9,6 @@ protocol Initializer {
   func perform()
 }
 
-
 class MigrationInitializer: Initializer {
 
     let account: Wallet
