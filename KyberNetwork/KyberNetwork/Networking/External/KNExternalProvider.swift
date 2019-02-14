@@ -222,10 +222,7 @@ class KNExternalProvider {
   func getEstimateGasLimit(for transferTransaction: UnconfirmedTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
 
     let defaultGasLimit: BigInt = {
-      if transferTransaction.transferType.isETHTransfer() {
-        return KNGasConfiguration.transferETHGasLimitDefault
-      }
-      return KNGasConfiguration.transferTokenGasLimitDefault
+      KNGasConfiguration.calculateDefaultGasLimitTransfer(token: transferTransaction.transferType.tokenObject())
     }()
     self.requestDataForTokenTransfer(transferTransaction) { [weak self] result in
       guard let `self` = self else { return }
@@ -250,7 +247,7 @@ class KNExternalProvider {
     let value: BigInt = exchangeTransaction.from.isETH ? exchangeTransaction.amount : BigInt(0)
 
     let defaultGasLimit: BigInt = {
-      return KNGasConfiguration.exchangeTokensGasLimitDefault
+      return KNGasConfiguration.calculateDefaultGasLimit(from: exchangeTransaction.from, to: exchangeTransaction.to)
     }()
 
     self.requestDataForTokenExchange(exchangeTransaction) { [weak self] dataResult in
@@ -301,7 +298,7 @@ class KNExternalProvider {
 
   // MARK: Sign transaction
   private func signTransactionData(from transaction: UnconfirmedTransaction, nonce: Int, data: Data?, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    let defaultGasLimit: BigInt = transaction.transferType.isETHTransfer() ? KNGasConfiguration.transferETHGasLimitDefault : KNGasConfiguration.transferTokenGasLimitDefault
+    let defaultGasLimit: BigInt = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: transaction.transferType.tokenObject())
     let signTransaction: SignTransaction = SignTransaction(
       value: self.valueToSend(transaction),
       account: self.account,
