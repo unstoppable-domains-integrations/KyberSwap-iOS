@@ -7,6 +7,7 @@ import BigInt
 
 protocol KNAddNewWalletCoordinatorDelegate: class {
   func addNewWalletCoordinator(add wallet: Wallet)
+  func addNewWalletCoordinator(remove wallet: Wallet)
 }
 
 class KNAddNewWalletCoordinator: Coordinator {
@@ -112,6 +113,12 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
 
   func createWalletCoordinatorDidClose() {
     self.navigationController.dismiss(animated: false, completion: nil)
+  }
+
+  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet) {
+    self.navigationController.dismiss(animated: true) {
+      self.delegate?.addNewWalletCoordinator(remove: wallet)
+    }
   }
 }
 

@@ -132,7 +132,7 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     guard let loadBalanceCoordinator = self.loadBalanceCoordinator else { return }
 
-    self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
+    self.balanceTabCoordinator?.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: loadBalanceCoordinator.totalBalanceInUSD,
       totalBalanceInETH: loadBalanceCoordinator.totalBalanceInETH
     )
@@ -148,7 +148,7 @@ extension KNAppCoordinator {
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH
     )
-    self.balanceTabCoordinator.appCoordinatorExchangeRateDidUpdate(
+    self.balanceTabCoordinator?.appCoordinatorExchangeRateDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH
     )
@@ -166,12 +166,12 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH,
       ethBalance: ethBalance
     )
-    self.balanceTabCoordinator.appCoordinatorETHBalanceDidUpdate(
+    self.balanceTabCoordinator?.appCoordinatorETHBalanceDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
       ethBalance: ethBalance
     )
-    self.settingsCoordinator.appCoordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
+    self.settingsCoordinator?.appCoordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
@@ -186,12 +186,12 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH,
       otherTokensBalance: otherTokensBalance
     )
-    self.balanceTabCoordinator.appCoordinatorTokenBalancesDidUpdate(
+    self.balanceTabCoordinator?.appCoordinatorTokenBalancesDidUpdate(
       totalBalanceInUSD: totalUSD,
       totalBalanceInETH: totalETH,
       otherTokensBalance: otherTokensBalance
     )
-    self.settingsCoordinator.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
+    self.settingsCoordinator?.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
   }
 
   @objc func transactionStateDidUpdate(_ sender: Notification) {
@@ -253,13 +253,13 @@ extension KNAppCoordinator {
     }
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.balanceTabCoordinator.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
-    self.balanceTabCoordinator.appCoordinatorTokensTransactionsDidUpdate()
+    self.balanceTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
   }
 
@@ -267,14 +267,14 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     self.session.tokenStorage.addKyberSupportedTokens()
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-    self.balanceTabCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.balanceTabCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
-    self.settingsCoordinator.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.settingsCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
   @objc func gasPriceCachedDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
-    self.balanceTabCoordinator.appCoordinatorGasPriceCachedDidUpdate()
+    self.balanceTabCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
   }
 }

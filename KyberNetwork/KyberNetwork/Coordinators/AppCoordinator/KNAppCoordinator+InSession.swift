@@ -24,8 +24,8 @@ extension KNAppCoordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.balanceTabCoordinator)
-    self.balanceTabCoordinator.start()
+    self.addCoordinator(self.balanceTabCoordinator!)
+    self.balanceTabCoordinator?.start()
 
     // KyberSwap Tab
     self.exchangeCoordinator = {
@@ -53,22 +53,22 @@ extension KNAppCoordinator {
       coordinator.delegate = self
       return coordinator
     }()
-    self.addCoordinator(self.settingsCoordinator)
-    self.settingsCoordinator.start()
+    self.addCoordinator(self.settingsCoordinator!)
+    self.settingsCoordinator?.start()
 
     self.tabbarController.viewControllers = [
-      self.balanceTabCoordinator.navigationController,
+      self.balanceTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
       self.profileCoordinator!.navigationController,
-      self.settingsCoordinator.navigationController,
+      self.settingsCoordinator!.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
-    self.balanceTabCoordinator.navigationController.tabBarItem = UITabBarItem(
+    self.balanceTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("balance", value: "Balance", comment: ""),
       image: UIImage(named: "tabbar_balance_icon"),
       selectedImage: UIImage(named: "tabbar_balance_icon")
     )
-    self.balanceTabCoordinator.navigationController.tabBarItem.tag = 0
+    self.balanceTabCoordinator?.navigationController.tabBarItem.tag = 0
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("kyberswap", value: "KyberSwap", comment: ""),
       image: UIImage(named: "tabbar_kyberswap_icon"),
@@ -81,12 +81,12 @@ extension KNAppCoordinator {
       selectedImage: UIImage(named: "tabbar_profile_icon")
     )
     self.profileCoordinator?.navigationController.tabBarItem.tag = 2
-    self.settingsCoordinator.navigationController.tabBarItem = UITabBarItem(
+    self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("settings", value: "Settings", comment: ""),
       image: UIImage(named: "tabbar_settings_icon"),
       selectedImage: UIImage(named: "tabbar_settings_icon")
     )
-    self.settingsCoordinator.navigationController.tabBarItem.tag = 3
+    self.settingsCoordinator?.navigationController.tabBarItem.tag = 3
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
       self.tabbarController.selectedIndex = 1
       self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
@@ -104,7 +104,10 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
 
-    self.session.stopSession()
+    if self.session == nil, let wallet = self.keystore.wallets.first {
+      self.session = KNSession(keystore: self.keystore, wallet: wallet)
+    }
+    if self.session != nil { self.session.stopSession() }
     KNWalletStorage.shared.deleteAll()
 
     self.currentWallet = nil
@@ -116,11 +119,11 @@ extension KNAppCoordinator {
     // Stop all coordinators in tabs and re-assign to nil
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
-    self.balanceTabCoordinator.stop()
+    self.balanceTabCoordinator?.stop()
     self.balanceTabCoordinator = nil
     self.profileCoordinator?.stop()
     self.profileCoordinator = nil
-    self.settingsCoordinator.stop()
+    self.settingsCoordinator?.stop()
     self.settingsCoordinator = nil
     IEOUserStorage.shared.signedOut()
     self.tabbarController = nil
@@ -135,9 +138,9 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.restartNewSession(self.session)
 
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.profileCoordinator?.updateSession(self.session)
-    self.settingsCoordinator.appCoordinatorDidUpdateNewSession(self.session)
+    self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
 
     self.tabbarController.selectedIndex = 1
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
@@ -153,9 +156,13 @@ extension KNAppCoordinator {
       return
     }
     // User remove current wallet, switch to another wallet first
+    if self.session == nil {
+      self.stopAllSessions()
+      return
+    }
     let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
     if isRemovingCurrentWallet {
-      guard let newWallet = self.keystore.wallets.first(where: { $0 != wallet }) else { return }
+      guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
       self.restartNewSession(newWallet)
     }
     self.loadBalanceCoordinator?.exit()
@@ -165,11 +172,11 @@ extension KNAppCoordinator {
         self.session,
         resetRoot: isRemovingCurrentWallet
       )
-      self.balanceTabCoordinator.appCoordinatorDidUpdateNewSession(
+      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: isRemovingCurrentWallet
       )
-      self.settingsCoordinator.appCoordinatorDidUpdateNewSession(
+      self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: isRemovingCurrentWallet
       )

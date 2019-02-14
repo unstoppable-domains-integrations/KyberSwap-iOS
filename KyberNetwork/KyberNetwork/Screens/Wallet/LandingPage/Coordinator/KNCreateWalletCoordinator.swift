@@ -6,6 +6,7 @@ import TrustCore
 import Crashlytics
 
 protocol KNCreateWalletCoordinatorDelegate: class {
+  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet)
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?)
   func createWalletCoordinatorDidClose()
 }
@@ -19,6 +20,8 @@ class KNCreateWalletCoordinator: Coordinator {
   fileprivate var newWallet: Wallet?
   fileprivate var name: String?
   weak var delegate: KNCreateWalletCoordinatorDelegate?
+
+  fileprivate var isCreating: Bool = false
 
   init(
     navigationController: UINavigationController,
@@ -35,8 +38,10 @@ class KNCreateWalletCoordinator: Coordinator {
   func start() {
     KNCrashlyticsUtil.logCustomEvent(withName: "create_new_wallet", customAttributes: nil)
     if let wallet = self.newWallet {
+      self.isCreating = false
       self.openBackUpWallet(wallet, name: self.name)
     } else {
+      self.isCreating = true
       let createWalletVC = KNCreateWalletViewController()
       createWalletVC.loadViewIfNeeded()
       createWalletVC.delegate = self
@@ -103,6 +108,17 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
       address: wallet.address.description,
       name: self.name ?? "Untitled",
       isBackedUp: true
+    )
+    KNWalletStorage.shared.add(wallets: [walletObject])
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)
+  }
+
+  func backupWalletViewControllerDidConfirmSkipWallet() {
+    guard let wallet = self.newWallet else { return }
+    let walletObject = KNWalletObject(
+      address: wallet.address.description,
+      name: self.name ?? "Untitled",
+      isBackedUp: false
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
     self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)

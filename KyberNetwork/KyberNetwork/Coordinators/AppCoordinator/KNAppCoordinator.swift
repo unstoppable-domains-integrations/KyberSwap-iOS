@@ -4,6 +4,7 @@ import UIKit
 import IQKeyboardManager
 import BigInt
 import Moya
+import Crashlytics
 
 class KNAppCoordinator: NSObject, Coordinator {
 
@@ -16,8 +17,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
-  internal var balanceTabCoordinator: KNBalanceTabCoordinator!
-  internal var settingsCoordinator: KNSettingsCoordinator!
+  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
+  internal var settingsCoordinator: KNSettingsCoordinator?
 
   internal var profileCoordinator: KNProfileHomeCoordinator?
 
@@ -84,10 +85,8 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate func startFirstSessionIfNeeded() {
     // For security, should always have passcode protection when user has imported wallets
-    // In case user created a new wallet, it should be backed up
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first,
-      KNPasscodeUtil.shared.currentPasscode() != nil,
-      KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description)?.isBackedUp == true {
+      KNPasscodeUtil.shared.currentPasscode() != nil {
       self.startNewSession(with: wallet)
     }
   }
