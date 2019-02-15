@@ -213,6 +213,7 @@ extension KNAppCoordinator {
         message: error.prettyError,
         time: 3.0
       )
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
       return
     }
     guard let trans = transaction else { return }
@@ -239,6 +240,7 @@ extension KNAppCoordinator {
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "success"])
     } else if trans.state == .failed || trans.state == .error {
       self.navigationController.showSuccessTopBannerMessage(
         with: NSLocalizedString("failed", value: "Failed", comment: ""),
@@ -250,6 +252,7 @@ extension KNAppCoordinator {
         body: details,
         userInfo: ["transaction_hash": trans.id]
       )
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
     }
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
