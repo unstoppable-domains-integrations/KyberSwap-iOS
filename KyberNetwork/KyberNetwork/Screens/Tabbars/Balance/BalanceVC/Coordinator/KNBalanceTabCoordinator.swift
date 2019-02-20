@@ -135,6 +135,7 @@ extension KNBalanceTabCoordinator {
     totalBalanceInETH: BigInt
     ) {
     self.tokenChartCoordinator?.coordinatorExchangeRateDidUpdate()
+    self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
     self.newRootViewController.coordinatorUpdateBalanceInETHAndUSD(
       ethBalance: totalBalanceInETH,
       usdBalance: totalBalanceInUSD

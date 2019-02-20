@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,7 @@
             <connections>
                 <outlet property="cancelButton" destination="dDY-qI-vwz" id="TJf-iS-Fsc"/>
                 <outlet property="confirmButton" destination="4hI-jM-AkG" id="9rK-Xx-Jjj"/>
+                <outlet property="equivalentUSDValueLabel" destination="gkf-4M-ngk" id="iNP-zk-7yb"/>
                 <outlet property="expectedRateLabel" destination="gkk-HI-Saw" id="4Cf-YN-6he"/>
                 <outlet property="firstSeparatorView" destination="VeZ-po-ehb" id="aBd-hc-1XD"/>
                 <outlet property="fromAmountLabel" destination="ptv-4N-PR6" id="UIk-MJ-11r"/>
@@ -168,6 +169,12 @@
                         <constraint firstAttribute="height" constant="6" id="HmB-Yd-TQf"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $3,4324 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkf-4M-ngk">
+                    <rect key="frame" x="137" y="202" width="101" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -179,6 +186,7 @@
                 <constraint firstItem="dDY-qI-vwz" firstAttribute="trailing" secondItem="4hI-jM-AkG" secondAttribute="trailing" id="5Tu-cB-EO9"/>
                 <constraint firstItem="9Hs-Gk-9ve" firstAttribute="centerY" secondItem="iK5-x6-6Wa" secondAttribute="centerY" id="AMu-4E-c1Y"/>
                 <constraint firstItem="oao-ep-AZ6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="AT3-j7-m31"/>
+                <constraint firstItem="gkf-4M-ngk" firstAttribute="top" secondItem="JeZ-f9-d1J" secondAttribute="bottom" constant="4" id="Bfa-3K-wos"/>
                 <constraint firstItem="8DI-gG-yMn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DN1-jv-eTP"/>
                 <constraint firstItem="JeZ-f9-d1J" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="Jan-QD-2mm"/>
                 <constraint firstItem="8DI-gG-yMn" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="KJQ-zI-ySt"/>
@@ -210,6 +218,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vI4-hY-KzW" secondAttribute="trailing" constant="32" id="uHP-Mn-ML8"/>
                 <constraint firstItem="vI4-hY-KzW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="vem-Lp-jTk"/>
                 <constraint firstItem="vI4-hY-KzW" firstAttribute="top" secondItem="yOL-vO-tt5" secondAttribute="bottom" constant="16" id="xFu-tZ-JWu"/>
+                <constraint firstItem="gkf-4M-ngk" firstAttribute="centerX" secondItem="JeZ-f9-d1J" secondAttribute="centerX" id="zkj-am-1tE"/>
                 <constraint firstItem="iK5-x6-6Wa" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="zy1-n7-n1d"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

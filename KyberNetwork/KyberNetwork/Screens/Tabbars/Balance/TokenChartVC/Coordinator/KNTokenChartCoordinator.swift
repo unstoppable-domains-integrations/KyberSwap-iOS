@@ -59,7 +59,8 @@ class KNTokenChartCoordinator: Coordinator {
   }
 
   func coordinatorExchangeRateDidUpdate() {
-    self.rootViewController.coordinatorUpdateETHRate()
+    self.rootViewController.coordinatorUpdateRate()
+    self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
   }
 
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {

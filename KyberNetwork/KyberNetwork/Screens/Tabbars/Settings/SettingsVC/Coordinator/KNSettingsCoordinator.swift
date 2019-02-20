@@ -88,6 +88,10 @@ class KNSettingsCoordinator: Coordinator {
     self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
   }
 
+  func appCoordinatorUSDRateUpdate() {
+    self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
+  }
+
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }

@@ -26,6 +26,7 @@
                 <outlet property="bottomPaddingConstraintForScrollView" destination="oxA-wg-TwX" id="ooe-8a-ZBl"/>
                 <outlet property="continueButton" destination="YJW-Oi-0g6" id="8t8-Bj-5r4"/>
                 <outlet property="dataContainerView" destination="69i-TU-qqK" id="k2T-VA-QzQ"/>
+                <outlet property="equivalentUSDValueLabel" destination="ThL-2a-mea" id="xvo-BU-ibi"/>
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
@@ -168,7 +169,7 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-OW-m6C">
-                    <rect key="frame" x="0.0" y="254" width="375" height="413"/>
+                    <rect key="frame" x="0.0" y="258" width="375" height="409"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EOS Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LN8-3r-cFX">
                             <rect key="frame" x="20" y="4" width="78" height="15"/>
@@ -236,16 +237,24 @@
                         <constraint firstItem="fk0-fr-Th3" firstAttribute="leading" secondItem="LN8-3r-cFX" secondAttribute="leading" id="xkF-xI-hUR"/>
                     </constraints>
                 </scrollView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $232 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-2a-mea">
+                    <rect key="frame" x="294.5" y="240" width="68.5" height="15"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                    <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="P3a-OW-m6C" secondAttribute="trailing" id="0hB-5h-k5m"/>
+                <constraint firstItem="ThL-2a-mea" firstAttribute="top" secondItem="69i-TU-qqK" secondAttribute="bottom" constant="6" id="0ml-PC-UeP"/>
                 <constraint firstItem="69i-TU-qqK" firstAttribute="top" secondItem="vbp-fJ-pmC" secondAttribute="bottom" constant="-74" id="Cbe-JB-vH6"/>
                 <constraint firstItem="P3a-OW-m6C" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FQa-m0-Zea"/>
                 <constraint firstItem="69i-TU-qqK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="GDS-HV-cfD"/>
-                <constraint firstItem="P3a-OW-m6C" firstAttribute="top" secondItem="69i-TU-qqK" secondAttribute="bottom" constant="20" id="Ozu-P2-DzO"/>
+                <constraint firstItem="P3a-OW-m6C" firstAttribute="top" secondItem="69i-TU-qqK" secondAttribute="bottom" constant="24" id="Ozu-P2-DzO"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vbp-fJ-pmC" secondAttribute="trailing" id="Yy5-BR-ozj"/>
+                <constraint firstItem="ThL-2a-mea" firstAttribute="trailing" secondItem="69i-TU-qqK" secondAttribute="trailing" id="bu6-4Q-5iU"/>
                 <constraint firstItem="P3a-OW-m6C" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="mik-8b-USq"/>
                 <constraint firstItem="vbp-fJ-pmC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="n21-y4-LLc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="P3a-OW-m6C" secondAttribute="bottom" id="oxA-wg-TwX"/>

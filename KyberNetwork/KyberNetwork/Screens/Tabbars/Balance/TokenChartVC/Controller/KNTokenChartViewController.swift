@@ -140,8 +140,23 @@ class KNTokenChartViewModel {
     let value: BigInt = {
       return trackerRate.rateETHBigInt * self.balance.value / BigInt(10).power(self.token.decimals)
     }()
-    let valueString: String = value.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 9)
-    return "~\(valueString.prefix(12)) ETH"
+    if value.isZero { return "0 ETH" }
+    let valueString: String = value.displayRate(decimals: 18)
+    return self.token.isETH ? "\(valueString) ETH" : "~\(valueString) ETH"
+  }
+
+  var totalUSDAmount: BigInt? {
+    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.token) {
+      return usdRate.rate * self.balance.value / BigInt(10).power(self.token.decimals)
+    }
+    return nil
+  }
+
+  var displayTotalUSDAmount: String? {
+    guard let amount = self.totalUSDAmount else { return nil }
+    if amount.isZero { return "$0 USD" }
+    let value = amount.displayRate(decimals: 18)
+    return "~ $\(value) USD"
   }
 
   func updateType(_ newType: KNTokenChartType) {
@@ -264,6 +279,7 @@ class KNTokenChartViewController: KNBaseViewController {
   @IBOutlet weak var ethRateLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var totalValueLabel: UILabel!
+  @IBOutlet weak var totalUSDValueLabel: UILabel!
 
   @IBOutlet weak var priceChart: Chart!
   @IBOutlet weak var noDataLabel: UILabel!
@@ -311,7 +327,7 @@ class KNTokenChartViewController: KNBaseViewController {
       return formatter
     }()
     let rate = numberFormatter.string(from: NSNumber(value: value)) ?? "0"
-    return EasyTipView(text: "\(timeText): \(timeString)\n\(priceText): \(rate.displayRate())")
+    return EasyTipView(text: "\(timeText): \(timeString)\n\(priceText): ETH \(rate.displayRate())")
   }
 
   init(viewModel: KNTokenChartViewModel) {
@@ -373,6 +389,8 @@ class KNTokenChartViewController: KNBaseViewController {
     self.balanceLabel.attributedText = self.viewModel.balanceAttributedString
     self.totalValueLabel.text = self.viewModel.totalValueString
     self.totalValueLabel.addLetterSpacing()
+    self.totalUSDValueLabel.text = self.viewModel.displayTotalUSDAmount
+    self.totalUSDValueLabel.addLetterSpacing()
 
     self.touchPriceLabel.isHidden = true
 
@@ -576,8 +594,10 @@ class KNTokenChartViewController: KNBaseViewController {
     }
   }
 
-  func coordinatorUpdateETHRate() {
+  func coordinatorUpdateRate() {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
+    self.totalUSDValueLabel.text = self.viewModel.displayTotalUSDAmount
+    self.totalUSDValueLabel.addLetterSpacing()
   }
 
   func coordinatorUpdateBalance(balance: [String: Balance]) {
@@ -585,6 +605,9 @@ class KNTokenChartViewController: KNBaseViewController {
       self.viewModel.updateBalance(bal)
       self.balanceLabel.attributedText = self.viewModel.balanceAttributedString
       self.totalValueLabel.text = self.viewModel.totalValueString
+      self.totalValueLabel.addLetterSpacing()
+      self.totalUSDValueLabel.text = self.viewModel.displayTotalUSDAmount
+      self.totalUSDValueLabel.addLetterSpacing()
     }
   }
 }
