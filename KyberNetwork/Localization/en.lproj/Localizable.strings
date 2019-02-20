@@ -118,9 +118,9 @@
 "wallet.imported" = "Wallet Imported";
 "you.have.successfully.imported.a.wallet" = "You have successfully imported a wallet";
 "import.wallet" = "Import Wallet";
-"invalid.seeds" = "Invalid Seeds";
-"please.check.your.seeds.again" = "Please check your seeds again.";
-"seeds.should.have.exactly.12.words" = "Seeds should have exactly 12 words";
+"invalid.seeds" = "Invalid seeds/mnemonic";
+"please.check.your.seeds.again" = "Please check your seeds/mnemonic again.";
+"seeds.should.have.exactly.12.words" = "Seeds/Mnemonic should have exactly 12 words";
 "field.required" = "Field Required";
 "please.check.your.input.data" = "Please check your input data";
 "words.count" = "Words Count";
@@ -287,7 +287,7 @@
 "enter.or.scan.private.key" = "Enter or scan private key";
 "private.key" = "Private Key";
 "enter.password.to.decrypt" = "Enter Password to Decrypt";
-"enter.your.seeds" = "Enter your seeds";
+"enter.your.seeds" = "Enter your seeds/mnemonic";
 "first.name" = "First Name";
 "middle.name" = "Middle Name";
 "last.name" = "Last Name";
@@ -301,7 +301,7 @@
 "do.you.want.to.exit.and.remove.all.wallets" = "Do you want to exit and remove all wallets from the app?";
 "contribute" = "Contribute";
 "loading" = "Loading";
-"recover.with.seeds" = "Recover with seeds";
+"recover.with.seeds" = "Recover with seeds/mnemonic";
 "create.new.wallet.desc" = "This will create a new wallet. It can not be undone, but you could abandon it";
 "edit.wallet" = "Edit Wallet";
 "backup.keystore" = "Backup Keystore";

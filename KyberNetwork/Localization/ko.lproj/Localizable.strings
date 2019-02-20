@@ -118,9 +118,9 @@
 "wallet.imported" = "지갑을 가져 왔습니다.";
 "you.have.successfully.imported.a.wallet" = "지갑을 성공적으로 가져 왔습니다.";
 "import.wallet" = "지갑 가져 오기";
-"invalid.seeds" = "유효하지 않은 Seed";
-"please.check.your.seeds.again" = "Seed를 다시 확인하십시오.";
-"seeds.should.have.exactly.12.words" = "Seed는 정확히 12단어여야 합니다.";
+"invalid.seeds" = "유효하지 않은 Seeds/Mnemonic";
+"please.check.your.seeds.again" = "Seeds/Mnemonic를 다시 확인하십시오.";
+"seeds.should.have.exactly.12.words" = "Seeds/Mnemonic는 정확히 12단어여야 합니다.";
 "field.required" = "필요한 영역";
 "please.check.your.input.data" = "입력 데이터를 확인하십시오.";
 "words.count" = "단어 수";
@@ -287,7 +287,7 @@
 "enter.or.scan.private.key" = "프라이빗 키 입력 또는 스캔";
 "private.key" = "프라이빗 키";
 "enter.password.to.decrypt" = "패스워드를 입력하세요";
-"enter.your.seeds" = "Seed 단어들을 입력해주세요";
+"enter.your.seeds" = "Seed/Mnemonic 단어들을 입력해주세요";
 "first.name" = "이름";
 "middle.name" = "중간 이름";
 "last.name" = "성";
@@ -301,7 +301,7 @@
 "do.you.want.to.exit.and.remove.all.wallets" = "종료하고 모든 지갑을 제거하시겠습니까?";
 "contribute" = "기여하기";
 "loading" = "로딩 중";
-"recover.with.seeds" = "Seeds키로 복구 하기";
+"recover.with.seeds" = "Seeds/Mnemonic키로 복구 하기";
 "create.new.wallet.desc" = "새 지갑을 생성합니다. 실행 취소 할 수는 없지만, 추후에 지갑 목록에서 삭제할 수 있습니다.";
 "edit.wallet" = "지갑 수정";
 "backup.keystore" = "키스토어 백업";

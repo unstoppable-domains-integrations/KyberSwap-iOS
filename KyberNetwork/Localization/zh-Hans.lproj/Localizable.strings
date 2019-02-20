@@ -118,9 +118,9 @@
 "wallet.imported" = "钱包导入成功";
 "you.have.successfully.imported.a.wallet" = "您已成功导入钱包";
 "import.wallet" = "导入钱包";
-"invalid.seeds" = "无效的seeds";
-"please.check.your.seeds.again" = "请再次检查你的seeds。";
-"seeds.should.have.exactly.12.words" = "seeds应该有12个词";
+"invalid.seeds" = "无效的seeds/mnemonic";
+"please.check.your.seeds.again" = "请再次检查你的seeds/mnemonic。";
+"seeds.should.have.exactly.12.words" = "seeds/mnemonic应该有12个词";
 "field.required" = "需要字段";
 "please.check.your.input.data" = "请检查您的输入数据";
 "words.count" = "字数统计";
@@ -287,7 +287,7 @@
 "enter.or.scan.private.key" = "输入或扫描私钥";
 "private.key" = "私钥";
 "enter.password.to.decrypt" = "输入密码解密";
-"enter.your.seeds" = "输入你的seeds";
+"enter.your.seeds" = "输入你的seeds/mnemonic";
 "first.name" = "名字";
 "middle.name" = "Middle Name";
 "last.name" = "姓氏";
@@ -301,7 +301,7 @@
 "do.you.want.to.exit.and.remove.all.wallets" = "您想退出并从应用程序中删除所有钱包吗？";
 "contribute" = "贡献";
 "loading" = "载入中";
-"recover.with.seeds" = "用种子恢复";
+"recover.with.seeds" = "用助记词恢复";
 "create.new.wallet.desc" = "这将创建一个新的钱包。它无法撤消，但你可以抛弃它";
 "edit.wallet" = "编辑钱包";
 "backup.keystore" = "备份Keystore";
