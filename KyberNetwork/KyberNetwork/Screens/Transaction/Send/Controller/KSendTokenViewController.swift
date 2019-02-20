@@ -33,6 +33,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var amountTextField: UITextField!
   @IBOutlet weak var balanceTextLabel: UILabel!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
+  @IBOutlet weak var equivalentUSDLabel: UILabel!
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
@@ -157,6 +158,8 @@ class KSendTokenViewController: KNBaseViewController {
     self.amountTextField.adjustsFontSizeToFitWidth = true
     self.amountTextField.delegate = self
     self.amountTextField.inputAccessoryView = self.toolBar
+
+    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
 
     self.tokenButton.setTokenImage(
       token: self.viewModel.from,
@@ -291,6 +294,7 @@ class KSendTokenViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_all"])
     self.amountTextField.text = self.viewModel.allTokenBalanceString
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
+    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.amountTextField.resignFirstResponder()
     self.amountTextField.textColor = self.viewModel.amountTextColor
     self.shouldUpdateEstimatedGasLimit(nil)
@@ -374,6 +378,7 @@ extension KSendTokenViewController {
   func updateUIFromTokenDidChange() {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
+    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.tokenButton.setTokenImage(
       token: self.viewModel.from,
       size: self.viewModel.defaultTokenIconImg?.size
@@ -434,6 +439,7 @@ extension KSendTokenViewController {
     // Reset exchange amount
     self.amountTextField.text = ""
     self.viewModel.updateAmount("")
+    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
   }
@@ -457,6 +463,10 @@ extension KSendTokenViewController {
     self.viewModel.updateAddress(address)
     self.updateUIAddressQRCode()
   }
+
+  func coordinatorUpdateTrackerRate() {
+    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
+  }
 }
 
 // MARK: UITextFieldDelegate
@@ -465,6 +475,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     textField.text = ""
     if self.amountTextField == textField {
       self.viewModel.updateAmount("")
+      self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
       self.view.layoutIfNeeded()
     } else {
       self.viewModel.updateAddress("")
@@ -481,6 +492,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.viewModel.updateAmount(cleanedText)
+      self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     } else {
       textField.text = text
       self.viewModel.updateAddress(text)

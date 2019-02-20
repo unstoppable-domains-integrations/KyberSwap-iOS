@@ -20,6 +20,19 @@ struct KConfirmSwapViewModel {
     return "\(amountString.prefix(12)) \(self.transaction.from.symbol)"
   }
 
+  var equivalentUSDAmount: BigInt? {
+    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.from) {
+      return usdRate.rate * self.transaction.amount / BigInt(10).power(self.transaction.from.decimals)
+    }
+    return nil
+  }
+
+  var displayEquivalentUSDAmount: String? {
+    guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
+    let value = amount.displayRate(decimals: 18)
+    return "~ $\(value) USD"
+  }
+
   var rightAmountString: String {
     let receivedAmount = self.transaction.displayExpectedReceive(short: false)
     return "\(receivedAmount.prefix(12)) \(self.transaction.to.symbol)"

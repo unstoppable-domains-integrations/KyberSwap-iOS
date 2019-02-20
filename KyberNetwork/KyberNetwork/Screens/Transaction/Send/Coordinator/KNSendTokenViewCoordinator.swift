@@ -88,6 +88,10 @@ extension KNSendTokenViewCoordinator {
   func coordinatorOpenSendView(to address: String) {
     self.rootViewController.coordinatorSend(to: address)
   }
+
+  func coordinatorDidUpdateTrackerRate() {
+    self.rootViewController.coordinatorUpdateTrackerRate()
+  }
 }
 
 // MARK: Send Token View Controller Delegate

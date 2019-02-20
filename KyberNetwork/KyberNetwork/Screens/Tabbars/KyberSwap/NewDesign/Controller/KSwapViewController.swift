@@ -44,6 +44,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var toTokenButton: UIButton!
 
   @IBOutlet weak var fromAmountTextField: UITextField!
+  @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var toAmountTextField: UITextField!
 
   @IBOutlet weak var rateTextLabel: UILabel!
@@ -497,6 +498,8 @@ extension KSwapViewController {
     // update tokens button in case promo wallet
     self.toTokenButton.isEnabled = self.viewModel.isToTokenBtnEnabled
     self.fromTokenButton.isEnabled = self.viewModel.isFromTokenBtnEnabled
+
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
   }
 
@@ -594,6 +597,7 @@ extension KSwapViewController {
     }
 
     self.updateAdvancedSettingsView()
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
   }
 
@@ -694,7 +698,12 @@ extension KSwapViewController {
     self.viewModel.updateFocusingField(true)
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
+  }
+
+  func coordinatorTrackerRateDidUpdate() {
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
   }
 
   /*
@@ -777,6 +786,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
   }
 }

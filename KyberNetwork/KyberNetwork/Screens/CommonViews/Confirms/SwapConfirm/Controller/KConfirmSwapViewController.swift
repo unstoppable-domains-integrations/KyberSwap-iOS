@@ -15,6 +15,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var fromAmountLabel: UILabel!
   @IBOutlet weak var toAmountLabel: UILabel!
   @IBOutlet weak var toTextLabel: UILabel!
+  @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var minAcceptableRateTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
 
@@ -104,6 +105,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.minAcceptableRateLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
     self.transactionFeeTextLabel.addLetterSpacing()
+    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
   }
 

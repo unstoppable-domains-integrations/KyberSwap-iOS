@@ -45,6 +45,19 @@ class KNSendTokenViewModel: NSObject {
     return amount.shortBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
+  var equivalentUSDAmount: BigInt? {
+    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.from) {
+      return usdRate.rate * self.amountBigInt / BigInt(10).power(self.from.decimals)
+    }
+    return nil
+  }
+
+  var displayEquivalentUSDAmount: String? {
+    guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
+    let value = amount.displayRate(decimals: 18)
+    return "~ $\(value) USD"
+  }
+
   var amountTextColor: UIColor {
     return isAmountValid ? UIColor.Kyber.enygold : UIColor.red
   }

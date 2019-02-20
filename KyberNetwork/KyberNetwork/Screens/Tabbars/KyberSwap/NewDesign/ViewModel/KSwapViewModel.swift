@@ -75,6 +75,19 @@ class KSwapViewModel {
     return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
+  var equivalentUSDAmount: BigInt? {
+    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.from) {
+      return usdRate.rate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
+    }
+    return nil
+  }
+
+  var displayEquivalentUSDAmount: String? {
+    guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
+    let value = amount.displayRate(decimals: 18)
+    return "~ $\(value) USD"
+  }
+
   var fromTokenIconName: String {
     return self.from.icon
   }
