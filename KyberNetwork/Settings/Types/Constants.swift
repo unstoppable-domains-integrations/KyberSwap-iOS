@@ -3,7 +3,7 @@
 import Foundation
 
 public struct Constants {
-    public static let keychainKeyPrefix = "kybernetworkwallet"
+    public static let keychainKeyPrefix = "com.kyberswap.ios"
 }
 
 public struct UnitConfiguration {
