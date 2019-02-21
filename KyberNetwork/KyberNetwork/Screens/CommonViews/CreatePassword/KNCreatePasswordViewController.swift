@@ -53,6 +53,10 @@ class KNCreatePasswordViewController: KNBaseViewController {
     self.errorConfirmPasswordLabel.isHidden = true
 
     self.doneButton.rounded(color: .clear, width: 0, radius: KNAppStyleType.current.buttonRadius(for: self.doneButton.frame.height))
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
+    self.view.addGestureRecognizer(tapGesture)
+    self.view.isUserInteractionEnabled = true
   }
 
   @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {
