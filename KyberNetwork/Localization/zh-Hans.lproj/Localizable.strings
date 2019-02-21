@@ -308,7 +308,7 @@
 "backup.private.key" = "备份私钥";
 "copy.address" = "复制地址";
 "backup" = "备份";
-"share.with.friends.text" = "我刚刚找到一个很棒的钱包应用程序。在这里查看https://kyber.network/";
+"share.with.friends.text" = "我刚刚找到一个很棒的钱包应用程序。在这里查看https://kyberswap.com";
 "transaction.being.broadcasted" = "正在广播交易";
 "can.not.create.transaction" = "无法创建交易";
 "transaction.being.mined" = "交易正在上链";
