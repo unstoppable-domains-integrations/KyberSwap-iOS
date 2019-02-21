@@ -138,7 +138,7 @@
 "write.down.the.words.from" = "받아 적어 주세요";
 "i.wrote.down.the.words.from" = "받아적었음.";
 "test.your.backup" = "백업 테스트";
-"make.sure.you.have.written.down.all.your.backup.words" = "모든 백업 단어를 기록했는지 확인하십시오. 다음을 입력하십시오.";
+"make.sure.you.have.written.down.all.your.backup.words" = "모든 백업 단어를 기록했는지 확인하십시오, 다음을 입력하십시오:";
 "complete" = "완료";
 "word" = "단어";
 "wrong.backup" = "잘못된 백업";

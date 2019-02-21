@@ -2807,7 +2807,6 @@
 		2912CD291F6A831D00C6CBE3 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				2977CAE31F7E0B3F009682A0 /* Coordinators */,
 				29E14FCF1F7F456A00185568 /* Storage */,
 				29B6AECF1F7C881100EC6DE3 /* Types */,
 			);
@@ -2943,13 +2942,6 @@
 				2977CAF31F7E0C5D009682A0 /* Types */,
 			);
 			path = Tokens;
-			sourceTree = "<group>";
-		};
-		2977CAE31F7E0B3F009682A0 /* Coordinators */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		2977CAF31F7E0C5D009682A0 /* Types */ = {
@@ -3143,7 +3135,6 @@
 			isa = PBXGroup;
 			children = (
 				29C70C7D20199ADE0072E454 /* Factory */,
-				77B3BF2C2017CD1A00EEC15A /* Views */,
 				771AA94C1FF971BB00D25403 /* Types */,
 			);
 			path = Browser;
@@ -3290,13 +3281,6 @@
 				778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */,
 			);
 			path = Coordinators;
-			sourceTree = "<group>";
-		};
-		77B3BF2C2017CD1A00EEC15A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		9A0F00B2D545197C8F7691C2 /* Pods */ = {
