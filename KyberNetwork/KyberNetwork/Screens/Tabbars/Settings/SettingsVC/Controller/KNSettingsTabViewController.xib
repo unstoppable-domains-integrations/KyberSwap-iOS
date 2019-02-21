@@ -208,7 +208,7 @@
                         <action selector="telegramDevButtonPressed:" destination="-1" eventType="touchUpInside" id="0ze-VG-Xif"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f5-D1-b9i">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f5-D1-b9i">
                     <rect key="frame" x="24" y="405" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="iyx-iq-67d"/>
@@ -221,7 +221,7 @@
                         <action selector="reportBugsButtonPressed:" destination="-1" eventType="touchUpInside" id="Thl-wk-Mvw"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-yd-iWq">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-yd-iWq">
                     <rect key="frame" x="24" y="441" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="AJz-bO-L3w"/>

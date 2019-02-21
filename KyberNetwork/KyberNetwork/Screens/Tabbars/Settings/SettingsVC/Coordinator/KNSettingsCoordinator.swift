@@ -167,7 +167,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   fileprivate func openShareWithFriends() {
     let text = NSLocalizedString(
       "share.with.friends.text",
-      value: "I just found an awesome wallet app. Check out here https://kyber.network/",
+      value: "I just found an awesome wallet app. Check out here https://kyberswap.com",
       comment: ""
     )
     let activitiy = UIActivityViewController(activityItems: [text], applicationActivities: nil)

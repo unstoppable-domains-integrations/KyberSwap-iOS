@@ -308,7 +308,7 @@
 "backup.private.key" = "프라이빗 키 백업";
 "copy.address" = "주소 복사";
 "backup" = "백업";
-"share.with.friends.text" = "최고의 암호화폐 지갑앱을 추천합니다. https://kyber.network/";
+"share.with.friends.text" = "최고의 암호화폐 지갑앱을 추천합니다. https://kyberswap.com";
 "transaction.being.broadcasted" = "거래가 중계되고 있습니다.";
 "can.not.create.transaction" = "거래를 생성 할 수 없습니다.";
 "transaction.being.mined" = "거래가 채굴되고 있습니다.";
