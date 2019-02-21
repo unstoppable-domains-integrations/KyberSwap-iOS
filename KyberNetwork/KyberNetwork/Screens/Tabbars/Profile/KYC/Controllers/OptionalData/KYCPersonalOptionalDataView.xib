@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -63,8 +63,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nml-Oj-nfY">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc5-dR-KCw">
-                            <rect key="frame" x="261" y="21" width="90" height="18"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc5-dR-KCw">
+                            <rect key="frame" x="265" y="21" width="90" height="18"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <inset key="titleEdgeInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -78,7 +78,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.94901960780000005" green="0.95294117649999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="fc5-dR-KCw" secondAttribute="trailing" constant="24" id="6Ot-fe-2Vg"/>
+                        <constraint firstAttribute="trailing" secondItem="fc5-dR-KCw" secondAttribute="trailing" constant="20" id="6Ot-fe-2Vg"/>
                         <constraint firstItem="fc5-dR-KCw" firstAttribute="centerY" secondItem="Nml-Oj-nfY" secondAttribute="centerY" id="c6S-51-6zq"/>
                         <constraint firstAttribute="height" constant="60" id="iWG-rr-6RH"/>
                     </constraints>
@@ -99,7 +99,7 @@
                         <constraint firstAttribute="height" constant="1" id="JIK-G0-pL7"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uH8-A2-cDz">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uH8-A2-cDz">
                     <rect key="frame" x="327" y="103" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="3Sg-bq-JJI"/>
@@ -126,7 +126,7 @@
                         <constraint firstAttribute="height" constant="1" id="ZgE-lC-oaa"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wlX-WQ-8fj">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wlX-WQ-8fj">
                     <rect key="frame" x="327" y="181" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="0S6-3W-kn1"/>
@@ -167,7 +167,7 @@ Help us ensure the information is accurate and up to date</string>
                         <constraint firstAttribute="height" constant="1" id="bga-rJ-Q6e"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yay-g2-4rL">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yay-g2-4rL">
                     <rect key="frame" x="319" y="380.5" width="32" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="3Vx-ck-QxY"/>
