@@ -158,7 +158,7 @@ extension TokenObject {
 
   func contains(_ text: String) -> Bool {
     if text.isEmpty { return true }
-    let desc = "\(symbol) \(name)".lowercased()
+    let desc = "\(symbol)\(name)".replacingOccurrences(of: " ", with: "").lowercased()
     return desc.contains(text.lowercased())
   }
 }

@@ -367,7 +367,7 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text
+    textField.text = text.replacingOccurrences(of: " ", with: "")
     if textField == self.searchTextField {
       self.searchAmountTextFieldChanged()
     }
@@ -375,7 +375,7 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
   }
 
   fileprivate func searchAmountTextFieldChanged() {
-    self.viewModel.updateSearchText(self.searchTextField.text ?? "")
+    self.viewModel.updateSearchText((self.searchTextField.text ?? "").replacingOccurrences(of: " ", with: ""))
     self.tokensBalanceTableView.reloadData()
     self.updateWalletBalanceUI()
   }
