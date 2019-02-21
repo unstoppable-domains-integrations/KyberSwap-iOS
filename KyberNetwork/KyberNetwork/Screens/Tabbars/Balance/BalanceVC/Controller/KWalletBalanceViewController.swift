@@ -237,6 +237,8 @@ extension KWalletBalanceViewController {
       currentWallet: self.viewModel.wallet
     )
     self.hamburgerMenu.hideMenu(animated: false)
+    self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
+    self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
     self.view.layoutIfNeeded()
   }
 
