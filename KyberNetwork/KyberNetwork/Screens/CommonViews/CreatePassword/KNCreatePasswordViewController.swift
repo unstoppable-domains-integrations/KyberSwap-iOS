@@ -38,6 +38,12 @@ class KNCreatePasswordViewController: KNBaseViewController {
     self.passwordTextField.becomeFirstResponder()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.doneButton.removeSublayer(at: 0)
+    self.doneButton.applyGradient(with: UIColor.Kyber.buttonColors)
+  }
+
   fileprivate func setupUI() {
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     self.containerView.rounded(radius: 5.0)
@@ -53,6 +59,7 @@ class KNCreatePasswordViewController: KNBaseViewController {
     self.errorConfirmPasswordLabel.isHidden = true
 
     self.doneButton.rounded(color: .clear, width: 0, radius: KNAppStyleType.current.buttonRadius(for: self.doneButton.frame.height))
+    self.doneButton.applyGradient(with: UIColor.Kyber.buttonColors)
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
     self.view.addGestureRecognizer(tapGesture)
