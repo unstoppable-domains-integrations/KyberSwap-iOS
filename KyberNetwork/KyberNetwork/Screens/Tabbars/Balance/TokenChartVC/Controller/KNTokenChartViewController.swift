@@ -63,6 +63,7 @@ enum KNTokenChartViewEvent {
   case sell(token: TokenObject)
   case send(token: TokenObject)
   case openEtherscan(token: TokenObject)
+  case addNewAlert(token: TokenObject)
 }
 
 protocol KNTokenChartViewControllerDelegate: class {
@@ -524,6 +525,10 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+  }
+
+  @IBAction func priceAlertButtonPressed(_ sender: Any) {
+    self.delegate?.tokenChartViewController(self, run: .addNewAlert(token: self.viewModel.token))
   }
 
   fileprivate func shouldUpdateData(for type: KNTokenChartType, token: TokenObject) {

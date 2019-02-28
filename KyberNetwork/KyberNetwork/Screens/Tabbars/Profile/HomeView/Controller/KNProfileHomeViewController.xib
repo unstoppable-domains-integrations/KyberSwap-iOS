@@ -30,18 +30,29 @@
                 <outlet property="bottomPaddingConstraintForSignedInView" destination="9Oa-YN-ifD" id="AWh-gx-SAb"/>
                 <outlet property="heightConstraintForAddWalletContainer" destination="dQ3-ox-zyw" id="5nC-Na-1aD"/>
                 <outlet property="heightConstraintWalletsTableView" destination="nJj-FT-TKb" id="aGy-g1-1yA"/>
+                <outlet property="listPriceAlertsContainerView" destination="3Qp-bp-feV" id="3dH-Ad-ysH"/>
+                <outlet property="listPriceAlertsContainerViewHeightConstraint" destination="Spz-we-JZD" id="euV-ck-zxv"/>
                 <outlet property="logOutButton" destination="2pd-lu-Yff" id="aZu-a3-iZh"/>
                 <outlet property="maximumWalletsTextLabel" destination="K5c-EV-cl4" id="rRK-rq-wg6"/>
+                <outlet property="moreAlertsButton" destination="UsS-bN-sSf" id="Vdi-Lm-7WV"/>
                 <outlet property="myProfileTextLabel" destination="IKe-v2-0WJ" id="pgc-I8-2aq"/>
                 <outlet property="myWalletsTextLabel" destination="QyU-pN-i8D" id="5ir-e2-Qne"/>
                 <outlet property="navTitleLabel" destination="BLX-sM-X5k" id="eqx-Co-SWd"/>
+                <outlet property="noPriceAlertContainerView" destination="j6h-vu-mnA" id="eix-kd-d6F"/>
+                <outlet property="noPriceAlertMessageLabel" destination="63D-Qe-n4r" id="JlO-jj-1DD"/>
                 <outlet property="noWalletTextLabel" destination="sBs-5h-Tri" id="7uD-gM-37c"/>
                 <outlet property="notSignInDescLabel" destination="zOn-is-adv" id="s2b-zh-G0D"/>
                 <outlet property="notSignInTitleLabel" destination="f9b-Vb-xfi" id="1lR-qh-rCP"/>
                 <outlet property="notSignInView" destination="wVn-be-kf6" id="GJs-ND-mvW"/>
+                <outlet property="priceAlertContainerView" destination="sd9-ld-opX" id="ulP-jk-zBo"/>
+                <outlet property="priceAlertContainerViewHeightConstraint" destination="wZS-9A-Wfv" id="RiI-4u-RlE"/>
+                <outlet property="priceAlertTableView" destination="sz1-gK-2Gl" id="1z6-fr-PnQ"/>
+                <outlet property="priceAlertTableViewHeightConstraint" destination="dWv-HX-JkU" id="gMg-m9-pTb"/>
+                <outlet property="priceAlertsTextLabel" destination="IzM-fe-aah" id="lf4-5f-hRK"/>
                 <outlet property="signInButton" destination="ToE-Xs-12c" id="dPJ-XM-vPq"/>
                 <outlet property="signInHeaderView" destination="UH0-5f-Ssg" id="QtK-Yg-nFU"/>
                 <outlet property="signedInView" destination="UrY-qu-28V" id="XZ9-we-wyO"/>
+                <outlet property="topPaddingConstraintForMyWalletsSection" destination="NTu-h7-Ga8" id="ucN-XG-zzG"/>
                 <outlet property="userEmailLabel" destination="kTw-hp-avF" id="QEB-Fh-fsg"/>
                 <outlet property="userImageView" destination="YjR-XA-Zz1" id="9qS-TR-RLz"/>
                 <outlet property="userKYCActionButton" destination="JdJ-Un-hJO" id="JFh-X5-Q5g"/>
@@ -194,7 +205,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unverified  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vv0-Qj-VoP">
-                                            <rect key="frame" x="298.5" y="22" width="58.5" height="16"/>
+                                            <rect key="frame" x="292.5" y="22" width="58.5" height="16"/>
                                             <color key="backgroundColor" red="0.60392156862745094" green="0.6705882352941176" blue="0.70588235294117641" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="qrg-qp-cUc"/>
@@ -207,7 +218,7 @@
                                     <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="Vv0-Qj-VoP" firstAttribute="centerY" secondItem="IKe-v2-0WJ" secondAttribute="centerY" id="4J0-Q4-aH9"/>
-                                        <constraint firstAttribute="trailing" secondItem="Vv0-Qj-VoP" secondAttribute="trailing" constant="18" id="4YC-5k-kMH"/>
+                                        <constraint firstAttribute="trailing" secondItem="Vv0-Qj-VoP" secondAttribute="trailing" constant="24" id="4YC-5k-kMH"/>
                                         <constraint firstAttribute="height" constant="60" id="Mcr-9T-jox"/>
                                         <constraint firstItem="IKe-v2-0WJ" firstAttribute="centerY" secondItem="9vH-0R-pjN" secondAttribute="centerY" id="ibF-vE-nbG"/>
                                         <constraint firstItem="IKe-v2-0WJ" firstAttribute="leading" secondItem="9vH-0R-pjN" secondAttribute="leading" constant="25" id="xsf-8P-3aJ"/>
@@ -250,7 +261,7 @@ Increase KyberSwap's trade limits</string>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ksi-AX-JjD">
-                                    <rect key="frame" x="0.0" y="303.5" width="375" height="139"/>
+                                    <rect key="frame" x="0.0" y="530.5" width="375" height="139"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MY WALLET(S)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QyU-pN-i8D">
                                             <rect key="frame" x="25" y="24" width="104" height="17.5"/>
@@ -285,7 +296,7 @@ Increase KyberSwap's trade limits</string>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ler-uj-x7q">
-                                    <rect key="frame" x="0.0" y="442.5" width="375" height="368"/>
+                                    <rect key="frame" x="0.0" y="669.5" width="375" height="368"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Wb-ixh">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -394,6 +405,101 @@ Increase KyberSwap's trade limits</string>
                                         <constraint firstItem="tA1-Wb-ixh" firstAttribute="top" secondItem="Ler-uj-x7q" secondAttribute="top" id="qV3-Lo-Bwj"/>
                                     </constraints>
                                 </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sd9-ld-opX">
+                                    <rect key="frame" x="0.0" y="303.5" width="375" height="228"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K55-bp-vNB">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PRICE ALERTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IzM-fe-aah">
+                                                    <rect key="frame" x="25" y="21.5" width="103" height="17.5"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qpx-9N-hcO">
+                                                    <rect key="frame" x="327" y="18" width="24" height="24"/>
+                                                    <state key="normal" image="add_blue_button"/>
+                                                    <connections>
+                                                        <action selector="addPriceAlertButtonPressed:" destination="-1" eventType="touchUpInside" id="QDc-34-Kub"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.89411764709999997" green="0.90588235289999997" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="qpx-9N-hcO" secondAttribute="trailing" constant="24" id="0A3-6j-kUn"/>
+                                                <constraint firstItem="IzM-fe-aah" firstAttribute="centerY" secondItem="K55-bp-vNB" secondAttribute="centerY" id="1dj-EW-aJd"/>
+                                                <constraint firstAttribute="height" constant="60" id="7PH-Q3-h80"/>
+                                                <constraint firstItem="IzM-fe-aah" firstAttribute="leading" secondItem="K55-bp-vNB" secondAttribute="leading" constant="25" id="JQb-Fy-pca"/>
+                                                <constraint firstItem="qpx-9N-hcO" firstAttribute="centerY" secondItem="IzM-fe-aah" secondAttribute="centerY" id="uNa-gn-MnU"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6h-vu-mnA">
+                                            <rect key="frame" x="0.0" y="60" width="375" height="168"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send you notifications when prices go above or belove your targets" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="63D-Qe-n4r">
+                                                    <rect key="frame" x="24" y="67" width="327" height="34.5"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="63D-Qe-n4r" secondAttribute="trailing" constant="24" id="5Gv-8y-y5L"/>
+                                                <constraint firstItem="63D-Qe-n4r" firstAttribute="centerY" secondItem="j6h-vu-mnA" secondAttribute="centerY" id="L4q-bU-DQz"/>
+                                                <constraint firstItem="63D-Qe-n4r" firstAttribute="leading" secondItem="j6h-vu-mnA" secondAttribute="leading" constant="24" id="kW5-WL-epb"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Qp-bp-feV">
+                                            <rect key="frame" x="0.0" y="60" width="375" height="168"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sz1-gK-2Gl" customClass="KNAlertTableView" customModule="KyberNetwork" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="112" id="dWv-HX-JkU"/>
+                                                    </constraints>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UsS-bN-sSf">
+                                                    <rect key="frame" x="0.0" y="112" width="375" height="56"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                                                    <state key="normal" title="MORE ALERTS">
+                                                        <color key="titleColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="moreAlertsButtonPressed:" destination="-1" eventType="touchUpInside" id="SYg-Ha-LP6"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="UsS-bN-sSf" firstAttribute="top" secondItem="sz1-gK-2Gl" secondAttribute="bottom" id="7yX-x5-6UV"/>
+                                                <constraint firstAttribute="trailing" secondItem="sz1-gK-2Gl" secondAttribute="trailing" id="AZn-dQ-8Zu"/>
+                                                <constraint firstItem="sz1-gK-2Gl" firstAttribute="leading" secondItem="3Qp-bp-feV" secondAttribute="leading" id="Hx2-N3-4kA"/>
+                                                <constraint firstAttribute="height" constant="168" id="Spz-we-JZD"/>
+                                                <constraint firstAttribute="bottom" secondItem="UsS-bN-sSf" secondAttribute="bottom" id="a5P-aB-z3g"/>
+                                                <constraint firstItem="sz1-gK-2Gl" firstAttribute="top" secondItem="3Qp-bp-feV" secondAttribute="top" id="uiN-KR-RUJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="UsS-bN-sSf" secondAttribute="trailing" id="vXu-jU-HjX"/>
+                                                <constraint firstItem="UsS-bN-sSf" firstAttribute="leading" secondItem="3Qp-bp-feV" secondAttribute="leading" id="wnG-1a-egv"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="K55-bp-vNB" secondAttribute="trailing" id="7Js-sh-3Wt"/>
+                                        <constraint firstItem="3Qp-bp-feV" firstAttribute="top" secondItem="K55-bp-vNB" secondAttribute="bottom" id="BZy-ga-XTX"/>
+                                        <constraint firstAttribute="trailing" secondItem="3Qp-bp-feV" secondAttribute="trailing" id="JQE-tT-gZQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="j6h-vu-mnA" secondAttribute="trailing" id="Mwc-BK-WTl"/>
+                                        <constraint firstItem="K55-bp-vNB" firstAttribute="top" secondItem="sd9-ld-opX" secondAttribute="top" id="bHu-kc-p9c"/>
+                                        <constraint firstItem="K55-bp-vNB" firstAttribute="leading" secondItem="sd9-ld-opX" secondAttribute="leading" id="bdh-d2-seU"/>
+                                        <constraint firstItem="j6h-vu-mnA" firstAttribute="top" secondItem="K55-bp-vNB" secondAttribute="bottom" id="jnL-TS-mq4"/>
+                                        <constraint firstAttribute="bottom" secondItem="j6h-vu-mnA" secondAttribute="bottom" id="nJZ-yt-PbP"/>
+                                        <constraint firstItem="3Qp-bp-feV" firstAttribute="leading" secondItem="sd9-ld-opX" secondAttribute="leading" id="roF-R6-UbA"/>
+                                        <constraint firstAttribute="height" constant="228" id="wZS-9A-Wfv"/>
+                                        <constraint firstItem="j6h-vu-mnA" firstAttribute="leading" secondItem="sd9-ld-opX" secondAttribute="leading" id="xyf-kz-dzc"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -401,18 +507,21 @@ Increase KyberSwap's trade limits</string>
                                 <constraint firstItem="9vH-0R-pjN" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="99y-2k-Syg"/>
                                 <constraint firstItem="Ler-uj-x7q" firstAttribute="top" secondItem="ksi-AX-JjD" secondAttribute="bottom" id="D1L-sI-EZE"/>
                                 <constraint firstAttribute="trailing" secondItem="vCa-T9-DFD" secondAttribute="trailing" id="IIV-Ic-AOM"/>
-                                <constraint firstItem="ksi-AX-JjD" firstAttribute="top" secondItem="irh-yy-yJC" secondAttribute="bottom" constant="1" id="NTu-h7-Ga8"/>
+                                <constraint firstItem="ksi-AX-JjD" firstAttribute="top" secondItem="irh-yy-yJC" secondAttribute="bottom" constant="228" id="NTu-h7-Ga8"/>
                                 <constraint firstItem="irh-yy-yJC" firstAttribute="top" secondItem="9vH-0R-pjN" secondAttribute="bottom" id="P6D-P6-ODH"/>
                                 <constraint firstAttribute="trailing" secondItem="ksi-AX-JjD" secondAttribute="trailing" id="Q9K-Am-ZbL"/>
                                 <constraint firstItem="irh-yy-yJC" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="Rc4-fN-W9v"/>
                                 <constraint firstAttribute="trailing" secondItem="9vH-0R-pjN" secondAttribute="trailing" id="ZVF-tF-ynN"/>
+                                <constraint firstItem="sd9-ld-opX" firstAttribute="top" secondItem="irh-yy-yJC" secondAttribute="bottom" constant="1" id="bYC-Qf-ScY"/>
                                 <constraint firstItem="vCa-T9-DFD" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="dpe-nz-VfX"/>
                                 <constraint firstItem="9vH-0R-pjN" firstAttribute="top" secondItem="vCa-T9-DFD" secondAttribute="bottom" id="fxg-n3-zdC"/>
+                                <constraint firstAttribute="trailing" secondItem="sd9-ld-opX" secondAttribute="trailing" id="gTw-Do-7f4"/>
                                 <constraint firstAttribute="trailing" secondItem="irh-yy-yJC" secondAttribute="trailing" id="hII-Iy-4hu"/>
                                 <constraint firstAttribute="bottom" secondItem="Ler-uj-x7q" secondAttribute="bottom" constant="20" id="iMi-xJ-CbN"/>
                                 <constraint firstItem="vCa-T9-DFD" firstAttribute="top" secondItem="bg6-Uo-kRt" secondAttribute="top" id="mCu-85-M7v"/>
                                 <constraint firstItem="vCa-T9-DFD" firstAttribute="centerX" secondItem="bg6-Uo-kRt" secondAttribute="centerX" id="oaQ-iW-ipe"/>
                                 <constraint firstAttribute="trailing" secondItem="Ler-uj-x7q" secondAttribute="trailing" id="vMA-kk-YW9"/>
+                                <constraint firstItem="sd9-ld-opX" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="vjZ-FM-hXT"/>
                                 <constraint firstItem="ksi-AX-JjD" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="xSW-mr-kYN"/>
                             </constraints>
                         </scrollView>
@@ -446,6 +555,7 @@ Increase KyberSwap's trade limits</string>
     </objects>
     <resources>
         <image name="account" width="56" height="56"/>
+        <image name="add_blue_button" width="24" height="24"/>
         <image name="avatar_big_icon" width="135" height="135"/>
         <image name="qr_code_icon" width="22" height="22"/>
     </resources>

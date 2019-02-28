@@ -61,8 +61,6 @@ extension KyberNetworkService: TargetType {
 }
 
 enum KNTrackerService {
-  case getTrades(fromDate: Date?, toDate: Date?, address: String)
-  case getSupportedTokens()
   case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
   case getRates
   case getUserCap(address: String)
@@ -77,20 +75,6 @@ extension KNTrackerService: TargetType {
       return URL(string: "\(KNSecret.userCapURL)\(address)")!
     case .getUserTradable(let address):
       return URL(string: "\(KNSecret.userCanTradeURL)\(address)")!
-    case .getTrades(let fromDate, let toDate, let address):
-      let path: String = {
-        var path = "\(KNSecret.getTradeEndpoint)?q=\(address)&exportData=true"
-        if let date = fromDate {
-          path += "&fromDate=\(date.timeIntervalSince1970)"
-        }
-        if let date = toDate {
-          path += "&toDate=\(date.timeIntervalSince1970)"
-        }
-        return path
-      }()
-      return URL(string: baseURLString + path)!
-    case .getSupportedTokens:
-      return URL(string: baseURLString + KNSecret.getSupportedToken)!
     case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
       let url = "\(KNSecret.getChartHistory)?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!
@@ -124,37 +108,28 @@ extension KNTrackerService: TargetType {
   }
 }
 
-enum KyberGOService {
-  case listIEOs
+enum UserInfoService {
   case getAccessToken(code: String, isRefresh: Bool)
   case getUserInfo(accessToken: String)
-  case checkParticipate(accessToken: String, ieoID: Int)
-  case getSignedTx(userID: Int, ieoID: Int, address: String, time: UInt)
-  case getTxList(accessToken: String)
-  case createTx(ieoID: Int, srcAddress: String, hash: String, accessToken: String)
-  case markView(accessToken: String)
+  case addPushToken(accessToken: String, pushToken: String)
+  case getListAlerts(accessToken: String)
+  case updateAlert(accessToken: String)
 }
 
-extension KyberGOService: TargetType {
+extension UserInfoService: TargetType {
   var baseURL: URL {
     let baseString = KNAppTracker.getKyberProfileBaseString()
     switch self {
-    case .listIEOs:
-      return URL(string: "\(baseString)/api/ieos")!
     case .getAccessToken:
       return URL(string: "\(baseString)/oauth/token")!
     case .getUserInfo:
       return URL(string: "\(baseString)/api/user_info")!
-    case .checkParticipate:
-      return URL(string: "\(baseString)/api/can_participate_ieo")!
-    case .getSignedTx:
-      return URL(string: KNSecret.ieoSignedEndpoint)!
-    case .getTxList:
-      return URL(string: "\(baseString)/api/txs")!
-    case .createTx:
-      return URL(string: "\(baseString)/api/txs")!
-    case .markView:
-      return URL(string: "\(baseString)/api/txs/set_viewed_txs")!
+    case .addPushToken:
+      return URL(string: "\(baseString)/api/addPushToken")!
+    case .getListAlerts:
+      return URL(string: "\(baseString)/api/list_alers")!
+    case .updateAlert:
+      return URL(string: "\(baseString)/api/update_alert")!
     }
   }
 
@@ -162,7 +137,7 @@ extension KyberGOService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .listIEOs, .getUserInfo, .checkParticipate, .getTxList: return .get
+    case .getUserInfo, .getListAlerts: return .get
     default: return .post
     }
   }
@@ -172,7 +147,6 @@ extension KyberGOService: TargetType {
     let clientSecret: String = KNEnvironment.default.clientSecret
     let redirectURL: String = KNEnvironment.default.redirectLink
     switch self {
-    case .listIEOs: return .requestPlain
     case .getAccessToken(let code, let isRefresh):
       var json: JSONDictionary = [
         "grant_type": isRefresh ? "refresh_token" : "authorization_code",
@@ -187,15 +161,6 @@ extension KyberGOService: TargetType {
       }
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .checkParticipate(let accessToken, let ieoID):
-      let json: JSONDictionary = [
-        "client_id": clientID,
-        "client_secret": clientSecret,
-        "access_token": accessToken,
-        "ieo_id": ieoID,
-      ]
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
     case .getUserInfo(let accessToken):
       let json: JSONDictionary = [
         "access_token": accessToken,
@@ -203,63 +168,38 @@ extension KyberGOService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getTxList(let accessToken):
+    case .addPushToken(let accessToken, let pushToken):
       let json: JSONDictionary = [
         "client_id": clientID,
         "client_secret": clientSecret,
         "access_token": accessToken,
+        "push_token": pushToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .getListAlerts(let accessToken):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
         ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getSignedTx(let userID, let ieoID, let address, let time):
-      let params: JSONDictionary = [
-        "contributor": address,
-        "ieoid": ieoID,
-        "nonce": time,
-        "userid": userID,
-      ]
-      return .requestCompositeData(bodyData: Data(), urlParameters: params)
-    case .createTx(let ieoID, let srcAddress, let hash, let accessToken):
-      let json: JSONDictionary = [
-        "client_id": clientSecret,
-        "client_secret": clientSecret,
-        "access_token": accessToken,
-        "ieo_id": ieoID,
-        "hash": hash,
-        "source_address": srcAddress,
-      ]
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
-    case .markView(let accessToken):
+    case .updateAlert(let accessToken):
       let json: JSONDictionary = [
         "client_id": clientID,
         "client_secret": clientSecret,
         "access_token": accessToken,
-        ]
+      ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     }
   }
   var sampleData: Data { return Data() }
   var headers: [String: String]? {
-    switch self {
-    case .getSignedTx(let userID, let ieoID, let address, let time):
-      let string = "contributor=\(address)&ieoid=\(ieoID)&nonce=\(time)&userid=\(userID)"
-      let hmac = try! HMAC(key: KNSecret.ieoSignedKey, variant: .sha512)
-      let hash = try! hmac.authenticate(string.bytes).toHexString()
-      return [
-        "Content-Type": "application/x-www-form-urlencoded",
-        "signed": hash,
-        "client": Bundle.main.bundleIdentifier ?? "",
-        "client-build": Bundle.main.buildNumber ?? "",
-      ]
-    default:
-      return [
-        "content-type": "application/json",
-        "client": Bundle.main.bundleIdentifier ?? "",
-        "client-build": Bundle.main.buildNumber ?? "",
-      ]
-    }
+    return [
+      "content-type": "application/json",
+      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
   }
 }
 

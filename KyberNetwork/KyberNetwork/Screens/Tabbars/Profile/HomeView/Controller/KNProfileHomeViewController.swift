@@ -11,6 +11,9 @@ enum KNProfileHomeViewEvent {
   case signUp
   case logOut
   case openVerification
+  case addPriceAlert
+  case managePriceAlerts
+  case editAlert(alert: KNAlertObject)
 }
 
 protocol KNProfileHomeViewControllerDelegate: class {
@@ -44,6 +47,18 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet var userKYCStatusPaddingConstraints: [NSLayoutConstraint]!
   @IBOutlet weak var userKYCActionHeightConstraint: NSLayoutConstraint!
 
+  @IBOutlet weak var priceAlertContainerView: UIView!
+  @IBOutlet weak var priceAlertsTextLabel: UILabel!
+  @IBOutlet weak var noPriceAlertContainerView: UIView!
+  @IBOutlet weak var noPriceAlertMessageLabel: UILabel!
+  @IBOutlet weak var listPriceAlertsContainerView: UIView!
+  @IBOutlet weak var priceAlertTableView: KNAlertTableView!
+  @IBOutlet weak var moreAlertsButton: UIButton!
+  @IBOutlet weak var priceAlertContainerViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var listPriceAlertsContainerViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var priceAlertTableViewHeightConstraint: NSLayoutConstraint!
+
+  @IBOutlet weak var topPaddingConstraintForMyWalletsSection: NSLayoutConstraint!
   @IBOutlet weak var noWalletTextLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var walletWarningMessageLabel: UILabel!
@@ -190,7 +205,43 @@ class KNProfileHomeViewController: KNBaseViewController {
       for: .normal
     )
     self.addWalletAddButton.addTextSpacing()
+    self.setupPriceAlertsView()
     self.updateUIUserDidSignedIn()
+  }
+
+  fileprivate func setupPriceAlertsView() {
+    self.priceAlertsTextLabel.text = "Price Alerts".uppercased().toBeLocalised()
+    self.noPriceAlertMessageLabel.text = "We will send you notifications when prices go above or below your targets".toBeLocalised()
+    self.moreAlertsButton.setTitle("More Alerts".uppercased().toBeLocalised(), for: .normal)
+    self.priceAlertTableView.delegate = self
+    self.priceAlertTableView.updateView(with: KNAlertStorage.shared.alerts, isFull: false)
+    self.priceAlertTableView.updateScrolling(isEnabled: false)
+  }
+
+  fileprivate func updatePriceAlertsView(tableViewHeight: CGFloat) {
+    if !KNAppTracker.isPriceAlertEnabled {
+      self.topPaddingConstraintForMyWalletsSection.constant = 1
+      self.priceAlertContainerView.isHidden = true
+    } else {
+      if tableViewHeight == 0.0 {
+        // no alerts
+        self.listPriceAlertsContainerView.isHidden = true
+        self.noPriceAlertContainerView.isHidden = false
+        self.priceAlertContainerViewHeightConstraint.constant = 160.0
+        self.topPaddingConstraintForMyWalletsSection.constant = 160.0
+      } else {
+        self.listPriceAlertsContainerView.isHidden = false
+        self.noPriceAlertContainerView.isHidden = true
+        // section height + table height + moreAlerts button height
+        self.priceAlertContainerViewHeightConstraint.constant = 60.0 + tableViewHeight + 56.0
+        self.topPaddingConstraintForMyWalletsSection.constant = 60.0 + tableViewHeight + 56.0
+        self.priceAlertTableViewHeightConstraint.constant = tableViewHeight
+        self.listPriceAlertsContainerViewHeightConstraint.constant = tableViewHeight + 56.0
+      }
+      self.moreAlertsButton.backgroundColor = KNAlertStorage.shared.alerts.count == 1 ? UIColor(red: 246, green: 247, blue: 250) : UIColor(red: 242, green: 243, blue: 246)
+      self.updateViewConstraints()
+      self.view.layoutIfNeeded()
+    }
   }
 
   fileprivate func updateKYCStatusDescLabel(with string: String) {
@@ -300,6 +351,10 @@ class KNProfileHomeViewController: KNBaseViewController {
       self.userKYCStatusContainerView.isHidden = false
     }
     self.updateWalletsData()
+    self.priceAlertTableView.updateView(
+      with: KNAlertStorage.shared.alerts,
+      isFull: false
+    )
   }
 
   fileprivate func updateWalletsData() {
@@ -389,6 +444,16 @@ class KNProfileHomeViewController: KNBaseViewController {
       }
     }
   }
+
+  @IBAction func addPriceAlertButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_alert"])
+    self.delegate?.profileHomeViewController(self, run: .addPriceAlert)
+  }
+
+  @IBAction func moreAlertsButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "more_alerts"])
+    self.delegate?.profileHomeViewController(self, run: .managePriceAlerts)
+  }
 }
 
 extension KNProfileHomeViewController {
@@ -466,6 +531,50 @@ extension KNProfileHomeViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.addWalletAddressTextField.text = result
+    }
+  }
+}
+
+extension KNProfileHomeViewController: KNAlertTableViewDelegate {
+  func alertTableView(_ tableView: UITableView, run event: KNAlertTableViewEvent) {
+    switch event {
+    case .update(let height):
+      self.updatePriceAlertsView(tableViewHeight: height)
+    case .delete(let alert):
+      let alertController = UIAlertController(title: "Delete?".toBeLocalised(), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+      alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+        self.deleteAnAlert(alert)
+      }))
+      self.present(alertController, animated: true, completion: nil)
+    case .edit(let alert):
+      self.delegate?.profileHomeViewController(self, run: .editAlert(alert: alert))
+    case .select(let alert):
+      self.delegate?.profileHomeViewController(self, run: .editAlert(alert: alert))
+    }
+  }
+
+  fileprivate func deleteAnAlert(_ alert: KNAlertObject) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "delete_alert"])
+    self.displayLoading()
+    KNPriceAlertCoordinator.shared.removeAnAlert(alert) { [weak self] result in
+      guard let `self` = self else { return }
+      self.hideLoading()
+      switch result {
+      case .success:
+        self.showSuccessTopBannerMessage(
+          with: "",
+          message: "Alert deleted!".toBeLocalised(),
+          time: 1.0
+        )
+      case .failure(let error):
+        KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "delete_alert_failed", "error": error.prettyError])
+        self.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.prettyError,
+          time: 1.5
+        )
+      }
     }
   }
 }

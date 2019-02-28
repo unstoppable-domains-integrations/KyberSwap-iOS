@@ -15,6 +15,7 @@ class KNProfileHomeCoordinator: Coordinator {
   fileprivate(set) var accessTokenExpireTimer: Timer?
 
   fileprivate(set) var webViewSignInVC: KGOInAppSignInViewController?
+  fileprivate var newAlertController: KNNewAlertViewController?
 
   lazy var rootViewController: KNProfileHomeViewController = {
     let viewModel = KNProfileHomeViewModel()
@@ -25,6 +26,7 @@ class KNProfileHomeCoordinator: Coordinator {
   }()
 
   fileprivate var kycCoordinator: KYCCoordinator?
+  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
 
   fileprivate var loadUserInfoTimer: Timer?
   fileprivate var lastUpdatedUserInfo: Date?
@@ -219,8 +221,8 @@ extension KNProfileHomeCoordinator {
     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "received_call_back"])
     self.navigationController.displayLoading(text: "\(NSLocalizedString("initializing.session", value: "Initializing Session", comment: ""))...", animated: true)
     DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<KyberGOService>()
-      let accessToken = KyberGOService.getAccessToken(code: code, isRefresh: false)
+      let provider = MoyaProvider<UserInfoService>()
+      let accessToken = UserInfoService.getAccessToken(code: code, isRefresh: false)
       provider.request(accessToken, completion: { [weak self] result in
         DispatchQueue.main.async {
           guard let _ = `self` else { return }
@@ -282,8 +284,8 @@ extension KNProfileHomeCoordinator {
   fileprivate func getUserInfo(type: String, accessToken: String, refreshToken: String, expireTime: Double, hasUser: Bool, showError: Bool = false, completion: @escaping (Bool) -> Void) {
     // got access token, user access token  to retrieve user information
     DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<KyberGOService>()
-      let userInfoRequest = KyberGOService.getUserInfo(accessToken: accessToken)
+      let provider = MoyaProvider<UserInfoService>()
+      let userInfoRequest = UserInfoService.getUserInfo(accessToken: accessToken)
       provider.request(userInfoRequest, completion: { [weak self] userInfoResult in
         DispatchQueue.main.async {
           guard let _ = `self` else { return }
@@ -336,8 +338,8 @@ extension KNProfileHomeCoordinator {
     guard let user = IEOUserStorage.shared.user else { return }
     let refreshToken = user.refreshToken
     DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<KyberGOService>()
-      let request = KyberGOService.getAccessToken(code: refreshToken, isRefresh: true)
+      let provider = MoyaProvider<UserInfoService>()
+      let request = UserInfoService.getAccessToken(code: refreshToken, isRefresh: true)
       provider.request(request) { [weak self] result in
         DispatchQueue.main.async {
           switch result {
@@ -390,6 +392,21 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       self.handleUserSignOut()
     case .openVerification:
       self.openVerificationView()
+    case .managePriceAlerts:
+      self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
+      self.manageAlertCoordinator?.start()
+    case .addPriceAlert:
+      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_new_alert"])
+      self.newAlertController = KNNewAlertViewController()
+      self.newAlertController?.loadViewIfNeeded()
+      self.navigationController.pushViewController(self.newAlertController!, animated: true)
+    case .editAlert(let alert):
+      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "edit_alert"])
+      self.newAlertController = KNNewAlertViewController()
+      self.newAlertController?.loadViewIfNeeded()
+      self.navigationController.pushViewController(self.newAlertController!, animated: true) {
+        self.newAlertController?.updateEditAlert(alert)
+      }
     }
   }
 

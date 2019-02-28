@@ -182,4 +182,6 @@ class KNAppTracker {
     userDefaults.removeObject(forKey: kSupportedLoadingTimeKey)
     userDefaults.removeObject(forKey: kCurrencyTypeKey)
   }
+
+  static var isPriceAlertEnabled: Bool { return true }
 }

@@ -27,6 +27,8 @@ class KNTokenChartCoordinator: Coordinator {
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 
+  fileprivate var newAlertController: KNNewAlertViewController?
+
   init(
     navigationController: UINavigationController,
     session: KNSession,
@@ -92,6 +94,12 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
     case .openEtherscan(let token):
       if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(token.contract)") {
         self.navigationController.openSafari(with: url)
+      }
+    case .addNewAlert(let token):
+      self.newAlertController = KNNewAlertViewController()
+      self.newAlertController?.loadViewIfNeeded()
+      self.navigationController.pushViewController(self.newAlertController!, animated: true) {
+        self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
       }
     }
   }

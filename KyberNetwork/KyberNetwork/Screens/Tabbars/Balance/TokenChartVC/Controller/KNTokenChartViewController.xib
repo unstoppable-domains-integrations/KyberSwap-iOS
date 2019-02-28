@@ -70,13 +70,22 @@
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="dvN-tZ-L3P"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Er6-dx-2Ju">
+                            <rect key="frame" x="341" y="46" width="18" height="22"/>
+                            <state key="normal" image="add_alert_icon"/>
+                            <connections>
+                                <action selector="priceAlertButtonPressed:" destination="-1" eventType="touchUpInside" id="UPE-7I-B0S"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="aSm-QQ-Xz3" secondAttribute="bottom" constant="16" id="B1P-Cw-GS6"/>
+                        <constraint firstAttribute="trailing" secondItem="Er6-dx-2Ju" secondAttribute="trailing" constant="16" id="Fbc-e7-c6e"/>
                         <constraint firstAttribute="height" constant="84" id="O1W-Hf-XkT"/>
                         <constraint firstItem="JH7-5H-Vln" firstAttribute="centerY" secondItem="aSm-QQ-Xz3" secondAttribute="centerY" id="Sbx-7n-LNO"/>
                         <constraint firstItem="aSm-QQ-Xz3" firstAttribute="centerX" secondItem="RuW-OO-mGF" secondAttribute="centerX" id="WVi-mm-Kp9"/>
+                        <constraint firstItem="Er6-dx-2Ju" firstAttribute="centerY" secondItem="aSm-QQ-Xz3" secondAttribute="centerY" id="aIZ-O6-but"/>
                         <constraint firstItem="JH7-5H-Vln" firstAttribute="leading" secondItem="RuW-OO-mGF" secondAttribute="leading" constant="16" id="h1I-ux-QeD"/>
                     </constraints>
                 </view>
@@ -319,6 +328,7 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
+        <image name="add_alert_icon" width="18" height="21"/>
         <image name="back_white_icon" width="38" height="19"/>
         <image name="knc" width="36" height="36"/>
     </resources>
