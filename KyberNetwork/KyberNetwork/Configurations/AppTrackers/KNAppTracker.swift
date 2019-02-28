@@ -35,7 +35,7 @@ class KNAppTracker {
   }
 
   static func internalTrackerEndpoint() -> String {
-    return KNEnvironment.default.isMainnet ? KNSecret.trackerURL : KNSecret.debugTrackerURL
+    return KNEnvironment.default.kyberAPIEnpoint
   }
 
   static func updateInternalTrackerEndpoint(value: String) {
