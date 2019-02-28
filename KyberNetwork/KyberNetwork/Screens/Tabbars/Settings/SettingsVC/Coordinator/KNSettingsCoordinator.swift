@@ -52,6 +52,7 @@ class KNSettingsCoordinator: Coordinator {
   }()
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
+  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -103,6 +104,10 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .manageWallet:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "manage_wallet"])
       self.settingsViewControllerWalletsButtonPressed()
+    case .manageAlerts:
+      KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "manage_alerts"])
+      self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
+      self.manageAlertCoordinator?.start()
     case .contact:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "contact"])
       self.navigationController.pushViewController(self.contactVC, animated: true)

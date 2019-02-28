@@ -32,6 +32,8 @@ let kGasPriceDidUpdateNotificationKey = "kGasPriceDidUpdateNotificationKey"
 
 let kUpdateListContactNotificationKey = "kUpdateListContactNotificationKey"
 
+let kUpdateListAlertsNotificationKey = "kUpdateListAlertsNotificationKey"
+
 // IEO
 let kIEOUserDidUpdateNotificationKey = "kIEOUserDidUpdateNotificationKey"
 let kIEODidReceiveCallbackNotificationKey = "kIEODidReceiveCallbackNotificationKey"

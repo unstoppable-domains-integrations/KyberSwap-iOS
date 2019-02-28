@@ -4,6 +4,7 @@ import UIKit
 
 enum KNSettingsTabViewEvent {
   case manageWallet
+  case manageAlerts
   case contact
   case support
   case changePIN
@@ -33,7 +34,9 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var manageWalletButton: UIButton!
+  @IBOutlet weak var manageAlerts: UIButton!
   @IBOutlet weak var contactButton: UIButton!
+  @IBOutlet weak var topPaddingConstraintForContactButton: NSLayoutConstraint!
   @IBOutlet weak var supportButton: UIButton!
   @IBOutlet weak var changePINButton: UIButton!
   @IBOutlet weak var aboutButton: UIButton!
@@ -53,6 +56,10 @@ class KNSettingsTabViewController: KNBaseViewController {
       for: .normal
     )
     self.manageWalletButton.addTextSpacing()
+    self.manageAlerts.setTitle("Price Alerts".toBeLocalised(), for: .normal)
+    self.manageAlerts.addTextSpacing()
+    self.manageAlerts.isHidden = !KNAppTracker.isPriceAlertEnabled
+    self.topPaddingConstraintForContactButton.constant = KNAppTracker.isPriceAlertEnabled ? 40.0 : 4.0
     self.contactButton.setTitle(
       NSLocalizedString("contact", value: "Contact", comment: ""),
       for: .normal
@@ -106,6 +113,10 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func manageWalletButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .manageWallet)
+  }
+
+  @IBAction func manageAlertsButtonPressed(_ sender: Any) {
+    self.delegate?.settingsTabViewController(self, run: .manageAlerts)
   }
 
   @IBAction func contactButtonPressed(_ sender: Any) {
