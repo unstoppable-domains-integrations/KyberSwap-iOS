@@ -54,4 +54,8 @@ class KNPriceAlertCoordinator: NSObject {
       completion(.success("Success"))
     }
   }
+
+  func updateUserSignedInPushTokenWithRetry() {
+    //TODO: Send push token to server with retry on failure
+  }
 }

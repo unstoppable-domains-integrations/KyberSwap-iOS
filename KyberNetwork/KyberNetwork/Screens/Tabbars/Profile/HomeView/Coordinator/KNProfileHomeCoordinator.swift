@@ -320,6 +320,7 @@ extension KNProfileHomeCoordinator {
             if !hasUser { self?.timerLoadUserInfo() }
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
             self?.lastUpdatedUserInfo = Date()
+            KNPriceAlertCoordinator.shared.updateUserSignedInPushTokenWithRetry()
             completion(true)
           // Already have user
           case .failure(let error):
