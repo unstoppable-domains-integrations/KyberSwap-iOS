@@ -13,6 +13,8 @@ class KNAlertStorage: NSObject {
     return jsonArr.map({ return KNAlertObject(json: $0) })
   }
 
+  var isMaximumAlertsReached: Bool { return self.alerts.count >= 10 }
+
   func addNewAlert(_ alert: KNAlertObject) {
     var allAlerts = self.alerts
     allAlerts.append(alert)

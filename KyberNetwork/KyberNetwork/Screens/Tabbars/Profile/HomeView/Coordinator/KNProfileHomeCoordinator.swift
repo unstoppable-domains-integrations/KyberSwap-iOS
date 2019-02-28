@@ -397,9 +397,13 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       self.manageAlertCoordinator?.start()
     case .addPriceAlert:
       KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_new_alert"])
-      self.newAlertController = KNNewAlertViewController()
-      self.newAlertController?.loadViewIfNeeded()
-      self.navigationController.pushViewController(self.newAlertController!, animated: true)
+      if KNAlertStorage.shared.isMaximumAlertsReached {
+        self.showAlertMaximumPriceAlertsReached()
+      } else {
+        self.newAlertController = KNNewAlertViewController()
+        self.newAlertController?.loadViewIfNeeded()
+        self.navigationController.pushViewController(self.newAlertController!, animated: true)
+      }
     case .editAlert(let alert):
       KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "edit_alert"])
       self.newAlertController = KNNewAlertViewController()
@@ -408,6 +412,16 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
         self.newAlertController?.updateEditAlert(alert)
       }
     }
+  }
+
+  fileprivate func showAlertMaximumPriceAlertsReached() {
+    let alertController = UIAlertController(
+      title: "Cap reached".toBeLocalised(),
+      message: "You can only have maximum of 10 alerts".toBeLocalised(),
+      preferredStyle: .alert
+    )
+    alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
+    self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
   fileprivate func openVerificationView() {

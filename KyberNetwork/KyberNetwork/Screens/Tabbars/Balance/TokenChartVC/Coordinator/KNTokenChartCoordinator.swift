@@ -96,10 +96,20 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         self.navigationController.openSafari(with: url)
       }
     case .addNewAlert(let token):
-      self.newAlertController = KNNewAlertViewController()
-      self.newAlertController?.loadViewIfNeeded()
-      self.navigationController.pushViewController(self.newAlertController!, animated: true) {
-        self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
+      if KNAlertStorage.shared.isMaximumAlertsReached {
+        let alertController = UIAlertController(
+          title: "Cap reached".toBeLocalised(),
+          message: "You can only have maximum of 10 alerts".toBeLocalised(),
+          preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.newAlertController = KNNewAlertViewController()
+        self.newAlertController?.loadViewIfNeeded()
+        self.navigationController.pushViewController(self.newAlertController!, animated: true) {
+          self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
+        }
       }
     }
   }
