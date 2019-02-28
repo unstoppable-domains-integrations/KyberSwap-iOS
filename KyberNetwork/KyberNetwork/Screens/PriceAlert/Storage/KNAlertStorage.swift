@@ -17,6 +17,8 @@ class KNAlertStorage {
       .filter({ return $0.id != -1 })
   }
 
+  var isMaximumAlertsReached: Bool { return self.alerts.count >= 10 }
+
   func addNewAlert(_ alert: KNAlertObject) {
     self.addNewAlerts([alert])
   }
