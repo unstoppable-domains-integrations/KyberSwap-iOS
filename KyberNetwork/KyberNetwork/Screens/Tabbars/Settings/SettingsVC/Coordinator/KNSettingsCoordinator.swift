@@ -106,8 +106,16 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.settingsViewControllerWalletsButtonPressed()
     case .manageAlerts:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "manage_alerts"])
-      self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
-      self.manageAlertCoordinator?.start()
+      if let _ = IEOUserStorage.shared.user {
+        self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
+        self.manageAlertCoordinator?.start()
+      } else {
+        self.navigationController.showWarningTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: "You must sign in to use Price Alert feature",
+          time: 1.5
+        )
+      }
     case .contact:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "contact"])
       self.navigationController.pushViewController(self.contactVC, animated: true)
