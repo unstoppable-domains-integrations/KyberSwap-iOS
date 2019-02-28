@@ -130,12 +130,6 @@ extension KNAppCoordinator {
   }
 
   func appDidReceiverOneSignalPushNotification(notification: OSNotification?) {
-    guard let noti = notification else { return }
-    let title = noti.payload.title
-    let body = noti.payload.body
-    let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
-    self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
   func appDidReceiverOneSignalPushNotification(result: OSNotificationOpenedResult?) {
@@ -179,8 +173,8 @@ extension KNAppCoordinator {
   }
 
   fileprivate func handlePriceAlertPushNotification(_ notification: OSNotification) {
-    let token = notification.payload.additionalData["token"] as? String ?? ""
     let view = notification.payload.additionalData["view"] as? String ?? ""
+    let token = notification.payload.additionalData["from"] as? String ?? ""
     if view == "token_chart" {
       self.tabbarController.selectedIndex = 0
       self.balanceTabCoordinator?.appCoordinatorOpenTokenChart(for: token)
@@ -190,5 +184,22 @@ extension KNAppCoordinator {
     } else if view == "kyberswap" {
       self.handleOpenKyberSwapPushNotification(notification)
     }
+    let alertID = notification.payload.additionalData["alert_id"] as? String ?? ""
+    guard let alert = KNAlertStorage.shared.alerts.first(where: { $0.id == alertID }) else {
+      // reload list alerts
+      KNPriceAlertCoordinator.shared.startLoadingListPriceAlerts(nil)
+      return
+    }
+    let action = notification.payload.additionalData["action"] as? String ?? "OK".toBeLocalised()
+    let desc = notification.payload.body ?? ""
+    let controller = KNNotificationAlertPopupViewController(
+      alert: alert,
+      actionButtonTitle: action,
+      descriptionText: desc
+    )
+    controller.loadViewIfNeeded()
+    controller.modalPresentationStyle = .overCurrentContext
+    controller.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(controller, animated: true, completion: nil)
   }
 }

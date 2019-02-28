@@ -18,7 +18,6 @@ class KNTrackerRateStorage {
   var rates: [KNTrackerRate] {
     if self.realm == nil { return [] }
     return self.realm.objects(KNTrackerRate.self)
-      .sorted(byKeyPath: "tokenAddress", ascending: true)
       .filter { !$0.tokenAddress.isEmpty }
   }
 

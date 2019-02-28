@@ -39,6 +39,10 @@ class KNAlertStorage: NSObject {
     self.updateAlert(newAlert)
   }
 
+  func deleteAll() {
+    self.userDefaults.set(nil, forKey: kListAlertsKey)
+  }
+
   func saveAlerts(_ alerts: [KNAlertObject]) {
     let jsonArr = alerts.map({ return $0.json })
     self.userDefaults.set(jsonArr, forKey: kListAlertsKey)

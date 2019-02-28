@@ -18,7 +18,6 @@ class IEOUserStorage {
   var objects: [IEOUser] {
     if self.realm == nil { return [] }
     return self.realm.objects(IEOUser.self)
-      .sorted(byKeyPath: "userID", ascending: true)
       .filter { $0.userID != -1 }
   }
 
@@ -66,6 +65,7 @@ class IEOUserStorage {
   func signedOut() {
     if self.realm == nil { return }
     self.delete(objects: self.objects)
+    KNAlertStorage.shared.deleteAll()
   }
 
   func signedIn() {
@@ -86,7 +86,6 @@ extension IEOUserStorage {
   var kycDetailObjects: [UserKYCDetailsInfo] {
     if self.realm == nil { return [] }
     return self.realm.objects(UserKYCDetailsInfo.self)
-      .sorted(byKeyPath: "userID", ascending: true)
       .filter { $0.userID != -1 }
   }
 

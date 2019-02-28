@@ -24,7 +24,6 @@ class KNSupportedTokenStorage {
 
   var supportedTokens: [TokenObject] {
     return self.realm.objects(TokenObject.self)
-      .sorted(byKeyPath: "contract", ascending: true)
       .filter { !$0.contract.isEmpty }
   }
 

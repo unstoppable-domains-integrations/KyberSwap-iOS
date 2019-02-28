@@ -185,6 +185,8 @@
 		257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */; };
 		257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */; };
 		258711E62226433800B5906C /* KNPriceAlertCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258711E52226433800B5906C /* KNPriceAlertCoordinator.swift */; };
+		258711EA2227DA9900B5906C /* KNNotificationAlertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */; };
+		258711EB2227DA9900B5906C /* KNNotificationAlertPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */; };
 		258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EB2081F22C00BD4068 /* KNReachability.swift */; };
 		258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */; };
 		25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25929C3420DA5C640045CFA3 /* SF-Pro-Text-BoldItalic.otf */; };
@@ -704,6 +706,8 @@
 		257C9FC82078F6A500EE0128 /* KNCreatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNCreatePasswordViewController.xib; sourceTree = "<group>"; };
 		257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsCoordinator.swift; sourceTree = "<group>"; };
 		258711E52226433800B5906C /* KNPriceAlertCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPriceAlertCoordinator.swift; sourceTree = "<group>"; };
+		258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationAlertPopupViewController.swift; sourceTree = "<group>"; };
+		258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationAlertPopupViewController.xib; sourceTree = "<group>"; };
 		258C47EB2081F22C00BD4068 /* KNReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNReachability.swift; sourceTree = "<group>"; };
 		258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Kyber.swift"; sourceTree = "<group>"; };
 		25929C3420DA5C640045CFA3 /* SF-Pro-Text-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-BoldItalic.otf"; sourceTree = "<group>"; };
@@ -1401,6 +1405,7 @@
 		2545C8EE2223F37300CA99C5 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				258711E72227DA2800B5906C /* AlertPopup */,
 				2545C8F42223F3F500CA99C5 /* AlertTableView */,
 				2545C8F32223F3EF00CA99C5 /* NewAlert */,
 				2545C8F22223F3E600CA99C5 /* ManageAlert */,
@@ -2123,6 +2128,15 @@
 				257C9FD22078FB5700EE0128 /* KNSettingsCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		258711E72227DA2800B5906C /* AlertPopup */ = {
+			isa = PBXGroup;
+			children = (
+				258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */,
+				258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */,
+			);
+			path = AlertPopup;
 			sourceTree = "<group>";
 		};
 		258C47EA2081F20600BD4068 /* Reachability */ = {
@@ -3588,6 +3602,7 @@
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
+				258711EB2227DA9900B5906C /* KNNotificationAlertPopupViewController.xib in Resources */,
 				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
 				256BD3F4214A22900085DE55 /* KYCFlowViewController.xib in Resources */,
@@ -4026,6 +4041,7 @@
 				25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				2545C8F12223F3AB00CA99C5 /* KNManageAlertCoordinator.swift in Sources */,
+				258711EA2227DA9900B5906C /* KNNotificationAlertPopupViewController.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				2561455920C6AB5600FB00CF /* KNTokenChartCoordinator.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
