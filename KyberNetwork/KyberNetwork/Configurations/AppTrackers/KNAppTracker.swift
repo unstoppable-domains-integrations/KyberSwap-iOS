@@ -183,5 +183,5 @@ class KNAppTracker {
     userDefaults.removeObject(forKey: kCurrencyTypeKey)
   }
 
-  static var isPriceAlertEnabled: Bool { return true }
+  static var isPriceAlertEnabled: Bool { return false }
 }
