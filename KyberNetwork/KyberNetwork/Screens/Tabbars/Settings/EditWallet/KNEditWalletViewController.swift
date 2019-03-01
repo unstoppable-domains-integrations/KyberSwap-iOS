@@ -32,9 +32,6 @@ class KNEditWalletViewController: KNBaseViewController {
   @IBOutlet weak var showBackupPhraseButton: UIButton!
   @IBOutlet weak var deleteButton: UIButton!
 
-  @IBOutlet weak var saveButton: UIButton!
-  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
-
   fileprivate let viewModel: KNEditWalletViewModel
   weak var delegate: KNEditWalletViewControllerDelegate?
 
@@ -56,10 +53,6 @@ class KNEditWalletViewController: KNBaseViewController {
     self.walletNameTextField.text = self.viewModel.wallet.name
     self.showBackupPhraseButton.setTitle(NSLocalizedString("show.backup.phrase", value: "Show Backup Phrase", comment: ""), for: .normal)
     self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
-    self.saveButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.saveButton.frame.height))
-    self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
-    self.saveButton.applyGradient()
-    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.view.layoutIfNeeded()
   }
 
@@ -67,8 +60,6 @@ class KNEditWalletViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.saveButton.removeSublayer(at: 0)
-    self.saveButton.applyGradient()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

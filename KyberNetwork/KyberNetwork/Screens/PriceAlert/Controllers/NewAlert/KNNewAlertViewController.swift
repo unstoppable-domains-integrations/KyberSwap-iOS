@@ -12,6 +12,7 @@ class KNNewAlertViewModel {
 
   var displayTokenTitle: String { return "\(token)/\(currencyType.rawValue)" }
   var displayCurrencyTitle: String { return currencyType.rawValue }
+
   var currentPriceDisplay: String {
     let price = BigInt(currentPrice * pow(10.0, 18.0))
     let display = price.displayRate(decimals: 18)
@@ -63,18 +64,31 @@ class KNNewAlertViewController: KNBaseViewController {
 
   let viewModel: KNNewAlertViewModel = KNNewAlertViewModel()
 
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kExchangeTokenRateNotificationKey), object: nil)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
     self.updateUIs()
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "currency_\(self.viewModel.currencyType.rawValue)"])
+    self.alertPriceTextField.delegate = self
+    self.viewModel.updateCurrentPrice()
+    self.updateUIs()
+    NotificationCenter.default.addObserver(self, selector: #selector(self.trackerRateDidUpdate(_:)), name: NSNotification.Name(rawValue: kExchangeTokenRateNotificationKey), object: nil)
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
+  @objc func trackerRateDidUpdate(_ sender: Any) {
+    self.viewModel.updateCurrentPrice()
+    self.updateUIs()
   }
 
   func updatePair(token: TokenObject, currencyType: KWalletCurrencyType) {
@@ -86,7 +100,7 @@ class KNNewAlertViewController: KNBaseViewController {
   func updateEditAlert(_ alert: KNAlertObject) {
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "alert_edited"])
     self.viewModel.updateEditAlert(alert)
-    self.alertPriceTextField.text = "\(alert.price)"
+    self.alertPriceTextField.text = BigInt(alert.price * pow(10.0, 18.0)).displayRate(decimals: 18)
     self.updateUIs()
   }
 
@@ -144,8 +158,24 @@ class KNNewAlertViewController: KNBaseViewController {
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "save_button", "is_added_new_alert": self.viewModel.alert == nil])
-    let targetPrice = Double((self.alertPriceTextField.text ?? "").removeGroupSeparator()) ?? 0.0
-    self.viewModel.updateTargetPrice(targetPrice)
+    if self.viewModel.token == "ETH" && self.viewModel.currencyType == .eth {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Can not select pair ETH/ETH".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    let targetPrice = self.alertPriceTextField.text ?? ""
+    guard let price = targetPrice.fullBigInt(decimals: 18), !targetPrice.isEmpty else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Please enter your target price to be alerted".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    self.viewModel.updateTargetPrice(Double(price) / pow(10.0, 18.0))
     if let _ = self.viewModel.alert {
       self.updateAlertSavePressed()
     } else {
@@ -224,5 +254,23 @@ extension KNNewAlertViewController: KNSearchTokenViewControllerDelegate {
         self.updateUIs()
       }
     })
+  }
+}
+
+extension KNNewAlertViewController: UITextFieldDelegate {
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    self.alertPriceTextField.text = ""
+    self.viewModel.updateTargetPrice(0)
+    return false
+  }
+
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    guard let priceBigInt = text.fullBigInt(decimals: 18) else {
+      return false
+    }
+    self.viewModel.updateTargetPrice(Double(priceBigInt) / pow(10.0, 18.0))
+    self.alertPriceTextField.text = text
+    return false
   }
 }

@@ -23,6 +23,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTokenChartViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
+                <outlet property="addAlertButton" destination="Er6-dx-2Ju" id="bYQ-Kg-zQo"/>
                 <outlet property="balanceLabel" destination="k0O-wv-xoq" id="UmI-6n-C0N"/>
                 <outlet property="bottomPaddingConstraintForButton" destination="pNs-iY-lVl" id="24G-pM-LUd"/>
                 <outlet property="buyButton" destination="NQJ-aQ-heZ" id="uJF-gm-Fex"/>
