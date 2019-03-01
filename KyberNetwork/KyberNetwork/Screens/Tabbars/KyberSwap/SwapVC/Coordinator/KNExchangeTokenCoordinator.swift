@@ -465,7 +465,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
             let capData = json["data"] as? JSONDictionary,
             let capTx = capData["TxLimit"] as? Double {
-            if let rateUSD = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken)?.rateUSDBigInt {
+            if let rateUSD = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken)?.rateUSDBigInt, rateUSD != 0 {
               let cap = BigInt(capTx) * BigInt(10).power(36) / rateUSD
               self.rootViewController.coordinatorUpdateUserCapInWei(cap: cap)
             }
