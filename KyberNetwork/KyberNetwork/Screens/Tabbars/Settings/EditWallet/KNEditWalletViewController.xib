@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,19 +13,14 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
-        <array key="Montserrat-SemiBold.ttf">
-            <string>Montserrat-SemiBold</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
-                <outlet property="bottomPaddingConstraintForButton" destination="k3E-wn-Yny" id="rmC-Pd-KhU"/>
                 <outlet property="deleteButton" destination="GHh-yr-vlk" id="KYN-gn-PSC"/>
                 <outlet property="headerContainerView" destination="eV5-M1-8S1" id="6Rl-BI-4tr"/>
                 <outlet property="nameWalletTextLabel" destination="7aY-6e-4Tj" id="Gsg-GL-cbh"/>
                 <outlet property="navTitleLabel" destination="HgD-62-9w1" id="15e-JD-ICk"/>
-                <outlet property="saveButton" destination="GmJ-Ck-u1A" id="Xil-22-qYw"/>
                 <outlet property="showBackupPhraseButton" destination="DaD-mS-84w" id="a3F-gA-hLK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="cyD-4H-2LB" id="Dab-cX-aOH"/>
@@ -52,13 +47,26 @@
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="Ast-gk-q5C"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEW-UW-Zjj">
+                            <rect key="frame" x="327" y="41" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Oen-Xi-kc5"/>
+                                <constraint firstAttribute="width" constant="32" id="tfQ-cc-ltJ"/>
+                            </constraints>
+                            <state key="normal" image="save_alert_icon"/>
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="14x-hD-tVs"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="2hM-eU-a7S" firstAttribute="centerY" secondItem="HgD-62-9w1" secondAttribute="centerY" id="7Ta-9c-nOR"/>
+                        <constraint firstAttribute="trailing" secondItem="WEW-UW-Zjj" secondAttribute="trailing" constant="16" id="bMR-eP-qb7"/>
                         <constraint firstAttribute="height" constant="84" id="jAV-Oc-DaV"/>
                         <constraint firstAttribute="bottom" secondItem="HgD-62-9w1" secondAttribute="bottom" constant="16" id="lMX-xd-d1w"/>
                         <constraint firstItem="HgD-62-9w1" firstAttribute="centerX" secondItem="eV5-M1-8S1" secondAttribute="centerX" id="msA-cJ-oAs"/>
+                        <constraint firstItem="WEW-UW-Zjj" firstAttribute="centerY" secondItem="HgD-62-9w1" secondAttribute="centerY" id="tZA-SP-2Ly"/>
                         <constraint firstItem="2hM-eU-a7S" firstAttribute="leading" secondItem="eV5-M1-8S1" secondAttribute="leading" constant="16" id="wdU-dP-8yd"/>
                     </constraints>
                 </view>
@@ -106,20 +114,6 @@
                         <constraint firstAttribute="height" constant="1" id="sg2-G4-WNA"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmJ-Ck-u1A">
-                    <rect key="frame" x="24" y="590" width="327" height="45"/>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="45" id="E48-7K-jcJ"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
-                    <state key="normal" title="Save">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="dUG-EI-xV4"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -129,17 +123,14 @@
                 <constraint firstItem="cyD-4H-2LB" firstAttribute="top" secondItem="7aY-6e-4Tj" secondAttribute="bottom" constant="16" id="BbU-Sz-br4"/>
                 <constraint firstItem="69G-Je-nPq" firstAttribute="bottom" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="-8" id="C0z-Gz-OJe"/>
                 <constraint firstItem="GHh-yr-vlk" firstAttribute="leading" secondItem="DaD-mS-84w" secondAttribute="leading" id="DCW-LJ-YzZ"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="GmJ-Ck-u1A" secondAttribute="trailing" constant="24" id="GIb-eo-w3x"/>
                 <constraint firstItem="GHh-yr-vlk" firstAttribute="top" secondItem="DaD-mS-84w" secondAttribute="bottom" constant="24" id="Jls-ru-1Fb"/>
                 <constraint firstItem="eV5-M1-8S1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KmJ-Xg-Z9p"/>
                 <constraint firstItem="cyD-4H-2LB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="MVf-bN-aKJ"/>
                 <constraint firstItem="DaD-mS-84w" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="Q02-J8-Vzu"/>
                 <constraint firstItem="7aY-6e-4Tj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="RQh-Nj-33b"/>
-                <constraint firstItem="GmJ-Ck-u1A" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="a38-Os-0V7"/>
                 <constraint firstItem="69G-Je-nPq" firstAttribute="trailing" secondItem="cyD-4H-2LB" secondAttribute="trailing" id="cTB-nD-oB3"/>
                 <constraint firstItem="eV5-M1-8S1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dIa-nG-kD4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cyD-4H-2LB" secondAttribute="trailing" constant="24" id="jUT-IK-O0H"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="GmJ-Ck-u1A" secondAttribute="bottom" constant="32" id="k3E-wn-Yny"/>
                 <constraint firstItem="69G-Je-nPq" firstAttribute="leading" secondItem="cyD-4H-2LB" secondAttribute="leading" id="xnE-IJ-Uqk"/>
                 <constraint firstItem="DaD-mS-84w" firstAttribute="top" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="32" id="yQP-n0-Gdh"/>
             </constraints>
@@ -160,5 +151,6 @@
         <image name="back_white_icon" width="38" height="19"/>
         <image name="backup_phrase_icon" width="22" height="24"/>
         <image name="delete_icon" width="21" height="24"/>
+        <image name="save_alert_icon" width="18" height="14"/>
     </resources>
 </document>

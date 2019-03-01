@@ -285,6 +285,7 @@ class KNTokenChartViewController: KNBaseViewController {
   @IBOutlet weak var priceChart: Chart!
   @IBOutlet weak var noDataLabel: UILabel!
   @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var addAlertButton: UIButton!
   @IBOutlet weak var buyButton: UIButton!
   @IBOutlet weak var sellButton: UIButton!
   @IBOutlet weak var sendButton: UIButton!
@@ -475,6 +476,8 @@ class KNTokenChartViewController: KNBaseViewController {
     self.nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
     self.symbolLabel.isUserInteractionEnabled = true
     self.symbolLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
+
+    self.addAlertButton.isHidden = !KNAppTracker.isPriceAlertEnabled
   }
 
   fileprivate func updateDisplayDataType(_ type: KNTokenChartType) {
