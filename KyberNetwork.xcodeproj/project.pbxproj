@@ -306,6 +306,8 @@
 		25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0ABB20591DFB0009D0D5 /* KNGasConfiguration.swift */; };
 		25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0AC220591F8A0009D0D5 /* KNRateCoordinator.swift */; };
 		25CC0ACD2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CC0ACC2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift */; };
+		25CDE82122290D9200AD0363 /* KNNotificationMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CDE81F22290D9200AD0363 /* KNNotificationMethodsViewController.swift */; };
+		25CDE82222290D9200AD0363 /* KNNotificationMethodsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25CDE82022290D9200AD0363 /* KNNotificationMethodsViewController.xib */; };
 		25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE6F7120723F7C00A3A2F9 /* KNAppTracker.swift */; };
 		25CE6F77207291EC00A3A2F9 /* KNEtherScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE6F76207291EC00A3A2F9 /* KNEtherScanService.swift */; };
 		25CE6F8E2073E05A00A3A2F9 /* KNHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE6F8D2073E05A00A3A2F9 /* KNHistoryCoordinator.swift */; };
@@ -827,6 +829,8 @@
 		25CC0ABB20591DFB0009D0D5 /* KNGasConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGasConfiguration.swift; sourceTree = "<group>"; };
 		25CC0AC220591F8A0009D0D5 /* KNRateCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNRateCoordinator.swift; sourceTree = "<group>"; };
 		25CC0ACC2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNExchangeTokenCoordinator.swift; sourceTree = "<group>"; };
+		25CDE81F22290D9200AD0363 /* KNNotificationMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationMethodsViewController.swift; sourceTree = "<group>"; };
+		25CDE82022290D9200AD0363 /* KNNotificationMethodsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationMethodsViewController.xib; sourceTree = "<group>"; };
 		25CE6F7120723F7C00A3A2F9 /* KNAppTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAppTracker.swift; sourceTree = "<group>"; };
 		25CE6F76207291EC00A3A2F9 /* KNEtherScanService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNEtherScanService.swift; sourceTree = "<group>"; };
 		25CE6F8D2073E05A00A3A2F9 /* KNHistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHistoryCoordinator.swift; sourceTree = "<group>"; };
@@ -1405,6 +1409,7 @@
 		2545C8EE2223F37300CA99C5 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				25CDE81E22290D7C00AD0363 /* AlertMethods */,
 				258711E72227DA2800B5906C /* AlertPopup */,
 				2545C8F42223F3F500CA99C5 /* AlertTableView */,
 				2545C8F32223F3EF00CA99C5 /* NewAlert */,
@@ -2702,6 +2707,15 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		25CDE81E22290D7C00AD0363 /* AlertMethods */ = {
+			isa = PBXGroup;
+			children = (
+				25CDE81F22290D9200AD0363 /* KNNotificationMethodsViewController.swift */,
+				25CDE82022290D9200AD0363 /* KNNotificationMethodsViewController.xib */,
+			);
+			path = AlertMethods;
+			sourceTree = "<group>";
+		};
 		25CE6F7020723F6800A3A2F9 /* AppTrackers */ = {
 			isa = PBXGroup;
 			children = (
@@ -3746,6 +3760,7 @@
 				25929C6320DA5C760045CFA3 /* SF-Pro-Text-Light.otf in Resources */,
 				25929C5820DA5C760045CFA3 /* SF-Pro-Text-MediumItalic.otf in Resources */,
 				25C45ADB20AD40F400CDA1FF /* KNImportPrivateKeyViewController.xib in Resources */,
+				25CDE82222290D9200AD0363 /* KNNotificationMethodsViewController.xib in Resources */,
 				256BD3F7214A3F030085DE55 /* kyc_data.json in Resources */,
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
@@ -4087,6 +4102,7 @@
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
+				25CDE82122290D9200AD0363 /* KNNotificationMethodsViewController.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				254CD0E02148F1420079EA7A /* KNProfileHomeViewController.swift in Sources */,
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,

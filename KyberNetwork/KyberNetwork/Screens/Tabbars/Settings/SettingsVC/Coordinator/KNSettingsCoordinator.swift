@@ -112,7 +112,20 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       } else {
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "You must sign in to use Price Alert feature",
+          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          time: 1.5
+        )
+      }
+    case .alertMethods:
+      KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "alert_method"])
+      if let _ = IEOUserStorage.shared.user {
+        let alertMethodsVC = KNNotificationMethodsViewController()
+        alertMethodsVC.loadViewIfNeeded()
+        self.navigationController.pushViewController(alertMethodsVC, animated: true)
+      } else {
+        self.navigationController.showWarningTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: "You must sign in to use Price Alert feature".toBeLocalised(),
           time: 1.5
         )
       }

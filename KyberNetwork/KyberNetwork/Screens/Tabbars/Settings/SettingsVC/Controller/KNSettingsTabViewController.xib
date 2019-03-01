@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="aboutButton" destination="0Wu-3X-xy0" id="yur-6n-epM"/>
+                <outlet property="alertMethodsButton" destination="400-Y7-DXM" id="xEe-j2-A0A"/>
                 <outlet property="bottomPaddingVersionLabelConstraint" destination="5pD-cH-Lq6" id="QdI-t5-dMr"/>
                 <outlet property="changePINButton" destination="c9Z-ZK-Ucl" id="Y2q-9i-4VJ"/>
                 <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
@@ -71,7 +72,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDo-Po-iWz">
-                    <rect key="frame" x="24" y="180" width="327" height="32"/>
+                    <rect key="frame" x="24" y="216" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="uxN-7F-6cv"/>
                     </constraints>
@@ -84,7 +85,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N5S-5z-7Ii">
-                    <rect key="frame" x="24" y="216" width="327" height="32"/>
+                    <rect key="frame" x="24" y="252" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="JTo-XI-MHq"/>
                     </constraints>
@@ -97,7 +98,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9Z-ZK-Ucl">
-                    <rect key="frame" x="24" y="252" width="327" height="32"/>
+                    <rect key="frame" x="24" y="288" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="eCr-lg-9wf"/>
                     </constraints>
@@ -110,7 +111,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wu-3X-xy0">
-                    <rect key="frame" x="24" y="288" width="327" height="32"/>
+                    <rect key="frame" x="24" y="324" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="5bn-5l-4ED"/>
                     </constraints>
@@ -123,7 +124,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSk-u8-Y8q">
-                    <rect key="frame" x="24" y="324" width="327" height="32"/>
+                    <rect key="frame" x="24" y="360" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="5Yc-3G-Y8k"/>
                     </constraints>
@@ -136,56 +137,56 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pd0-VK-ek2">
-                    <rect key="frame" x="24" y="364" width="32" height="33"/>
+                    <rect key="frame" x="24" y="400" width="32" height="33"/>
                     <state key="normal" image="telegram"/>
                     <connections>
                         <action selector="telegramButtonPressed:" destination="-1" eventType="touchUpInside" id="p4f-5L-GGt"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-Nk-EbV">
-                    <rect key="frame" x="108" y="364.5" width="32" height="32"/>
+                    <rect key="frame" x="108" y="400.5" width="32" height="32"/>
                     <state key="normal" image="github"/>
                     <connections>
                         <action selector="githubButtonPressed:" destination="-1" eventType="touchUpInside" id="9gv-8L-EJL"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdX-Yv-Ujd">
-                    <rect key="frame" x="150" y="364" width="32" height="33"/>
+                    <rect key="frame" x="150" y="400" width="32" height="33"/>
                     <state key="normal" image="twitter"/>
                     <connections>
                         <action selector="twitterButtonPressed:" destination="-1" eventType="touchUpInside" id="UVE-ys-1R6"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSF-Hs-lsq">
-                    <rect key="frame" x="192" y="364" width="32" height="33"/>
+                    <rect key="frame" x="192" y="400" width="32" height="33"/>
                     <state key="normal" image="facebook"/>
                     <connections>
                         <action selector="facebookButtonPressed:" destination="-1" eventType="touchUpInside" id="WRG-lA-KWI"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlK-9e-kdZ">
-                    <rect key="frame" x="234" y="364" width="32" height="33"/>
+                    <rect key="frame" x="234" y="400" width="32" height="33"/>
                     <state key="normal" image="medium"/>
                     <connections>
                         <action selector="mediumButtonPressed:" destination="-1" eventType="touchUpInside" id="Ksb-1Y-6lt"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPD-eE-njQ">
-                    <rect key="frame" x="276" y="364" width="32" height="33"/>
+                    <rect key="frame" x="276" y="400" width="32" height="33"/>
                     <state key="normal" image="reddit"/>
                     <connections>
                         <action selector="redditButtonPressed:" destination="-1" eventType="touchUpInside" id="kXc-54-myd"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYu-os-Pb3">
-                    <rect key="frame" x="318" y="364" width="32" height="33"/>
+                    <rect key="frame" x="318" y="400" width="32" height="33"/>
                     <state key="normal" image="linkedin"/>
                     <connections>
                         <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
-                    <rect key="frame" x="24" y="405" width="327" height="32"/>
+                    <rect key="frame" x="24" y="441" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Q4W-8X-DHG"/>
                     </constraints>
@@ -204,14 +205,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80r-ho-KCH">
-                    <rect key="frame" x="66" y="364.5" width="32" height="32"/>
+                    <rect key="frame" x="66" y="400.5" width="32" height="32"/>
                     <state key="normal" image="tele_dev_group"/>
                     <connections>
                         <action selector="telegramDevButtonPressed:" destination="-1" eventType="touchUpInside" id="0ze-VG-Xif"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f5-D1-b9i">
-                    <rect key="frame" x="24" y="441" width="327" height="32"/>
+                    <rect key="frame" x="24" y="477" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="iyx-iq-67d"/>
                     </constraints>
@@ -224,7 +225,7 @@
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-yd-iWq">
-                    <rect key="frame" x="24" y="477" width="327" height="32"/>
+                    <rect key="frame" x="24" y="513" width="327" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="AJz-bO-L3w"/>
                     </constraints>
@@ -242,11 +243,24 @@
                         <constraint firstAttribute="height" constant="32" id="3Yu-KT-OTn"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                    <state key="normal" title="Manage Wallet">
+                    <state key="normal" title="Manage Alerts">
                         <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="manageAlertsButtonPressed:" destination="-1" eventType="touchUpInside" id="H5k-rw-l7b"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="400-Y7-DXM">
+                    <rect key="frame" x="24" y="180" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="fxx-aU-yXU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Alert Methods">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="notificationsButtonPressed:" destination="-1" eventType="touchUpInside" id="MKs-rH-7dK"/>
                     </connections>
                 </button>
             </subviews>
@@ -279,11 +293,13 @@
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="top" secondItem="c9Z-ZK-Ucl" secondAttribute="bottom" constant="4" id="Q9G-MX-kME"/>
                 <constraint firstItem="Z43-SL-69M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="RpI-iu-DEb"/>
                 <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
-                <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="40" id="Trp-EE-9QD"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="76" id="Trp-EE-9QD"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="400-Y7-DXM" secondAttribute="trailing" constant="24" id="WqP-r2-LSA"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="Wwf-N9-2mk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0f5-D1-b9i" secondAttribute="trailing" constant="24" id="YmC-i0-h7e"/>
+                <constraint firstItem="400-Y7-DXM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="ZUG-Hx-Ulv"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
                 <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
@@ -303,6 +319,7 @@
                 <constraint firstItem="0f5-D1-b9i" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="rvB-RT-5Tz"/>
                 <constraint firstItem="QlK-9e-kdZ" firstAttribute="leading" secondItem="dSF-Hs-lsq" secondAttribute="trailing" constant="10" id="vyO-U7-A4N"/>
                 <constraint firstItem="Z6O-Km-0S7" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="leading" id="yiS-GU-7WV"/>
+                <constraint firstItem="400-Y7-DXM" firstAttribute="top" secondItem="Z43-SL-69M" secondAttribute="bottom" constant="4" id="zmv-Zy-AFP"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
