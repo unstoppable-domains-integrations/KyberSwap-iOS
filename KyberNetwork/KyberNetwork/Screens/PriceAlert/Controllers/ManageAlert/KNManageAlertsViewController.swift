@@ -34,7 +34,7 @@ class KNManageAlertsViewController: KNBaseViewController {
       isFull: true
     )
     self.alertTableView.updateScrolling(isEnabled: true)
-    self.navTitleLabel.text = "Price Alerts".toBeLocalised()
+    self.navTitleLabel.text = "Manage Alert".toBeLocalised()
     self.emptyAlertDescLabel.text = "We will send you notifications when prices go above or below your targets".toBeLocalised()
 
     self.alertTableView.isHidden = alerts.isEmpty

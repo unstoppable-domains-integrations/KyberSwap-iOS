@@ -58,4 +58,21 @@ class KNPriceAlertCoordinator: NSObject {
   func updateUserSignedInPushTokenWithRetry() {
     //TODO: Send push token to server with retry on failure
   }
+
+  func getAlertMethods(completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+      let result: JSONDictionary = [
+        "push_noti": true,
+        "email": true,
+        "telegram": false,
+      ]
+      completion(.success(result))
+    }
+  }
+
+  func updateAlertMethods(data: JSONDictionary, completion: @escaping (Result<String, AnyError>) -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+      completion(.success(""))
+    }
+  }
 }
