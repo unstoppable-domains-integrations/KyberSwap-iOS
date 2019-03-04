@@ -112,8 +112,10 @@ enum UserInfoService {
   case getAccessToken(code: String, isRefresh: Bool)
   case getUserInfo(accessToken: String)
   case addPushToken(accessToken: String, pushToken: String)
+  case addNewAlert(accessToken: String, alert: KNAlertObject)
+  case removeAnAlert(accessToken: String, alert: KNAlertObject)
   case getListAlerts(accessToken: String)
-  case updateAlert(accessToken: String)
+  case updateAlert(accessToken: String, alert: KNAlertObject)
 }
 
 extension UserInfoService: TargetType {
@@ -126,10 +128,12 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/user_info")!
     case .addPushToken:
       return URL(string: "\(baseString)/api/addPushToken")!
-    case .getListAlerts:
-      return URL(string: "\(baseString)/api/list_alers")!
-    case .updateAlert:
-      return URL(string: "\(baseString)/api/update_alert")!
+    case .addNewAlert, .getListAlerts:
+      return URL(string: "\(baseString)/api/alerts")!
+    case .updateAlert(_, let alert):
+      return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
+    case .removeAnAlert(_, let alert):
+      return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
     }
   }
 
@@ -180,10 +184,26 @@ extension UserInfoService: TargetType {
     case .getListAlerts(let accessToken):
       let json: JSONDictionary = [
         "access_token": accessToken,
-        ]
+      ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .updateAlert(let accessToken):
+    case .addNewAlert(let accessToken, _):
+      let json: JSONDictionary = [
+        "client_id": clientID,
+        "client_secret": clientSecret,
+        "access_token": accessToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .updateAlert(let accessToken, _):
+      let json: JSONDictionary = [
+        "client_id": clientID,
+        "client_secret": clientSecret,
+        "access_token": accessToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .removeAnAlert(let accessToken, _):
       let json: JSONDictionary = [
         "client_id": clientID,
         "client_secret": clientSecret,
