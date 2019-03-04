@@ -477,7 +477,7 @@ class KNTokenChartViewController: KNBaseViewController {
     self.symbolLabel.isUserInteractionEnabled = true
     self.symbolLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.openTokenOnEtherscanPressed(_:))))
 
-    self.addAlertButton.isHidden = !KNAppTracker.isPriceAlertEnabled
+    self.addAlertButton.isHidden = !KNAppTracker.isPriceAlertEnabled || !self.viewModel.isTokenSupported
   }
 
   fileprivate func updateDisplayDataType(_ type: KNTokenChartType) {
