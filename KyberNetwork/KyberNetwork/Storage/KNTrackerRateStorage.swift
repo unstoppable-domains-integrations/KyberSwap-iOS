@@ -18,7 +18,7 @@ class KNTrackerRateStorage {
   var rates: [KNTrackerRate] {
     if self.realm == nil { return [] }
     return self.realm.objects(KNTrackerRate.self)
-      .filter { !$0.tokenAddress.isEmpty }
+      .filter { return !$0.tokenAddress.isEmpty }
   }
 
   func get(forPrimaryKey key: String) -> KNTrackerRate? {

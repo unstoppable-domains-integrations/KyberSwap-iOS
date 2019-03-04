@@ -18,7 +18,7 @@ class IEOUserStorage {
   var objects: [IEOUser] {
     if self.realm == nil { return [] }
     return self.realm.objects(IEOUser.self)
-      .filter { $0.userID != -1 }
+      .filter { return $0.userID != -1 }
   }
 
   func add(objects: [IEOUser]) {
@@ -86,7 +86,7 @@ extension IEOUserStorage {
   var kycDetailObjects: [UserKYCDetailsInfo] {
     if self.realm == nil { return [] }
     return self.realm.objects(UserKYCDetailsInfo.self)
-      .filter { $0.userID != -1 }
+      .filter { return $0.userID != -1 }
   }
 
   func getKYCDetails(for userID: Int) -> UserKYCDetailsInfo? {
