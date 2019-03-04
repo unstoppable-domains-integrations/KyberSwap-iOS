@@ -36,7 +36,7 @@ class KNTokenStorage {
 
   var tokens: [TokenObject] {
     return self.realm.objects(TokenObject.self)
-      .filter { !$0.contract.isEmpty }
+      .filter { return !$0.contract.isEmpty }
   }
 
   var ethToken: TokenObject {
