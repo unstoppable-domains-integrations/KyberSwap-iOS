@@ -42,6 +42,7 @@ class KNNotificationMethodsViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    if IEOUserStorage.shared.user == nil { self.navigationController?.popViewController(animated: true) }
     self.reloadAlertMethods()
   }
 
@@ -52,12 +53,13 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   }
 
   fileprivate func reloadAlertMethods() {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.getAlertMethods { [weak self] result in
+    KNPriceAlertCoordinator.shared.getAlertMethods(accessToken: accessToken) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       if case .success(let resp) = result {
-        self.isPushNotiEnabled = resp["push_noti"] as? Bool ?? true
+        self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? true
         self.isEmailEnabled = resp["email"] as? Bool ?? true
         self.isTelegramEnabled = resp["telegram"] as? Bool ?? true
         self.updateUIs()
@@ -122,13 +124,9 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    let json: JSONDictionary = [
-      "push_noti": self.isPushNotiEnabled,
-      "email": self.isEmailEnabled,
-      "telegram": self.isTelegramEnabled,
-    ]
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading(text: "Updating".toBeLocalised(), animated: true)
-    KNPriceAlertCoordinator.shared.updateAlertMethods(data: json) { [weak self] result in
+    KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.isEmailEnabled, telegram: self.isTelegramEnabled, pushNoti: self.isPushNotiEnabled) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       if case .success = result {

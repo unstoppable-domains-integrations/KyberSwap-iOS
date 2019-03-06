@@ -1,52 +1,67 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-import UIKit
+import RealmSwift
 
-class KNAlertStorage: NSObject {
+class KNAlertStorage {
   static let shared: KNAlertStorage = KNAlertStorage()
+  private(set) var realm: Realm!
 
-  let kListAlertsKey: String = "kListAlertsKey"
-  let userDefaults = UserDefaults.standard
+  init() {
+    let config = RealmConfiguration.globalConfiguration()
+    self.realm = try! Realm(configuration: config)
+  }
 
   var alerts: [KNAlertObject] {
-    let jsonArr = self.userDefaults.object(forKey: kListAlertsKey) as? [JSONDictionary] ?? []
-    return jsonArr.map({ return KNAlertObject(json: $0) })
+    if self.realm == nil { return [] }
+    return self.realm.objects(KNAlertObject.self)
+      .filter({ return $0.id != -1 })
   }
 
   func addNewAlert(_ alert: KNAlertObject) {
-    var allAlerts = self.alerts
-    allAlerts.append(alert)
-    self.saveAlerts(allAlerts)
+    self.addNewAlerts([alert])
+  }
+
+  func addNewAlerts(_ alerts: [KNAlertObject]) {
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    self.realm.add(alerts, update: false)
+    try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }
 
   func updateAlert(_ alert: KNAlertObject) {
-    let alerts = self.alerts
-    guard alerts.first(where: { return $0.id == alert.id }) != nil else { return }
-    var newAlerts = alerts.filter({ return $0.id != alert.id })
-    newAlerts.append(alert)
-    self.saveAlerts(newAlerts)
+    self.updateAlerts([alert])
+  }
+
+  func updateAlerts(_ alerts: [KNAlertObject]) {
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    self.realm.add(alerts, update: true)
+    try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }
 
   func deleteAlert(_ alert: KNAlertObject) {
-    let alerts = self.alerts
-    guard alerts.first(where: { return $0.id == alert.id }) != nil else { return }
-    let newAlerts = alerts.filter({ return $0.id != alert.id })
-    self.saveAlerts(newAlerts)
+    self.deleteAlerts([alert])
   }
 
-  func triggeredAnAlert(_ alert: KNAlertObject) {
-    let newAlert = alert.triggered()
-    self.updateAlert(newAlert)
+  func deleteAlerts(_ alerts: [KNAlertObject]) {
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    self.realm.delete(alerts)
+    try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
+  }
+  func getObject(primaryKey: Int) -> KNAlertObject? {
+    if self.realm == nil { return nil }
+    return self.realm.object(ofType: KNAlertObject.self, forPrimaryKey: primaryKey)
   }
 
   func deleteAll() {
-    self.userDefaults.set(nil, forKey: kListAlertsKey)
-  }
-
-  func saveAlerts(_ alerts: [KNAlertObject]) {
-    let jsonArr = alerts.map({ return $0.json })
-    self.userDefaults.set(jsonArr, forKey: kListAlertsKey)
-    self.userDefaults.synchronize()
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    self.realm.delete(self.alerts)
+    try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }
 }

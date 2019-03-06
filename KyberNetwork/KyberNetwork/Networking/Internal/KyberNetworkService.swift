@@ -116,6 +116,8 @@ enum UserInfoService {
   case removeAnAlert(accessToken: String, alert: KNAlertObject)
   case getListAlerts(accessToken: String)
   case updateAlert(accessToken: String, alert: KNAlertObject)
+  case getListAlertMethods(accessToken: String)
+  case setAlertMethods(accessToken: String, email: Bool, telegram: Bool, pushNoti: Bool)
 }
 
 extension UserInfoService: TargetType {
@@ -127,13 +129,17 @@ extension UserInfoService: TargetType {
     case .getUserInfo:
       return URL(string: "\(baseString)/api/user_info")!
     case .addPushToken:
-      return URL(string: "\(baseString)/api/addPushToken")!
+      return URL(string: "\(baseString)/api/update_push_token")!
     case .addNewAlert, .getListAlerts:
       return URL(string: "\(baseString)/api/alerts")!
     case .updateAlert(_, let alert):
       return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
     case .removeAnAlert(_, let alert):
       return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
+    case .getListAlertMethods:
+      return URL(string: "\(baseString)/api/alert_methods")!
+    case .setAlertMethods:
+      return URL(string: "\(baseString)/api/set_alert_methods")!
     }
   }
 
@@ -141,7 +147,9 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getUserInfo, .getListAlerts: return .get
+    case .getUserInfo, .getListAlerts, .getListAlertMethods: return .get
+    case .removeAnAlert: return .delete
+    case .setAlertMethods, .addPushToken, .updateAlert: return .patch
     default: return .post
     }
   }
@@ -174,8 +182,6 @@ extension UserInfoService: TargetType {
       return .requestData(data)
     case .addPushToken(let accessToken, let pushToken):
       let json: JSONDictionary = [
-        "client_id": clientID,
-        "client_secret": clientSecret,
         "access_token": accessToken,
         "push_token": pushToken,
       ]
@@ -187,27 +193,48 @@ extension UserInfoService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .addNewAlert(let accessToken, _):
+    case .addNewAlert(let accessToken, let alert):
       let json: JSONDictionary = [
-        "client_id": clientID,
-        "client_secret": clientSecret,
         "access_token": accessToken,
+        "symbol": alert.token,
+        "base": alert.currency == "ETH" ? 0 : 1,
+        "alert_type": 0, // type: 0 (price), 1 (percent)
+        "status": 0, // active: 0, triggered: 1
+        "alert_price": alert.price,
+        "is_above": alert.isAbove,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .updateAlert(let accessToken, _):
+    case .updateAlert(let accessToken, let alert):
       let json: JSONDictionary = [
-        "client_id": clientID,
-        "client_secret": clientSecret,
         "access_token": accessToken,
+        "symbol": alert.token,
+        "base": alert.currency == "ETH" ? 0 : 1,
+        "alert_type": 0, // type: 0 (price), 1 (percent)
+        "status": 0, // active: 0, triggered: 1
+        "alert_price": alert.price,
+        "is_above": alert.isAbove,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .removeAnAlert(let accessToken, _):
       let json: JSONDictionary = [
-        "client_id": clientID,
-        "client_secret": clientSecret,
         "access_token": accessToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .getListAlertMethods(let accessToken):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .setAlertMethods(let accessToken, let email, let telegram, let pushNoti):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+        "email": email,
+        "telegram": telegram,
+        "push_notification": pushNoti,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)

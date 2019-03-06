@@ -556,8 +556,9 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
 
   fileprivate func deleteAnAlert(_ alert: KNAlertObject) {
     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "delete_alert"])
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.removeAnAlert(alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alert: alert) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       switch result {

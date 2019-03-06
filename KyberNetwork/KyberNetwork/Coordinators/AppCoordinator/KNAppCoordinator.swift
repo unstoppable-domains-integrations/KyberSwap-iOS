@@ -184,7 +184,7 @@ extension KNAppCoordinator {
     } else if view == "kyberswap" {
       self.handleOpenKyberSwapPushNotification(notification)
     }
-    let alertID = notification.payload.additionalData["alert_id"] as? String ?? ""
+    let alertID = notification.payload.additionalData["alert_id"] as? Int ?? -1
     guard let alert = KNAlertStorage.shared.alerts.first(where: { $0.id == alertID }) else {
       // reload list alerts
       KNPriceAlertCoordinator.shared.startLoadingListPriceAlerts(nil)
