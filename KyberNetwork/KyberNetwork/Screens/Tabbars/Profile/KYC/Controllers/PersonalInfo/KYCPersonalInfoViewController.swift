@@ -755,9 +755,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @objc func dateOfBirthDidChange(_ sender: Any) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let dob = dateFormatter.string(from: self.datePicker.date)
+    let dob = DateFormatterUtil.shared.kycDateFormatter.string(from: self.datePicker.date)
     self.dateOfBirthTextField.text = dob
     self.viewModel.updateDoB(dob)
   }
@@ -823,11 +821,6 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   func updatePersonalInfoView(with details: UserKYCDetailsInfo) {
-    let dateFormatter: DateFormatter = {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy-MM-dd"
-      return formatter
-    }()
     guard !details.firstName.isEmpty else { return }
     self.firstNameTextField.text = details.firstName
     self.middleNameTextField.text = details.middleName
@@ -836,7 +829,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     self.viewModel.updateGender(details.gender ? "Male": "Female")
     self.updateGenderUI()
     self.viewModel.updateDoB(details.dob)
-    if let dob = dateFormatter.date(from: details.dob) {
+    if let dob = DateFormatterUtil.shared.kycDateFormatter.date(from: details.dob) {
       self.dateOfBirthTextField.text = details.dob
       self.datePicker.setDate(dob, animated: false)
     }

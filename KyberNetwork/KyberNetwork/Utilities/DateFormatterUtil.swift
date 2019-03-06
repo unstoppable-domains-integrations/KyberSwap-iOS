@@ -11,4 +11,23 @@ class DateFormatterUtil {
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     return formatter
   }()
+
+  lazy var kycDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter
+  }()
+
+  lazy var backupDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd_HH:mm"
+    return formatter
+  }()
+
+  lazy var promoCodeDateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    return dateFormatter
+  }()
 }

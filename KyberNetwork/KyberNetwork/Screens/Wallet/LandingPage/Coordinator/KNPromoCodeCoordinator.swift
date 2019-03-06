@@ -64,10 +64,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                 let privateKey = data["private_key"] as? String ?? ""
                 let expiredDate: TimeInterval = {
                   let string = data["expired_date"] as? String ?? ""
-                  let dateFormatter = DateFormatter()
-                  dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-                  return (dateFormatter.date(from: string) ?? Date()).timeIntervalSince1970
+                  return (DateFormatterUtil.shared.promoCodeDateFormatter.date(from: string) ?? Date()).timeIntervalSince1970
                 }()
                 let destinationToken = data["destination_token"] as? String ?? ""
                 self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)

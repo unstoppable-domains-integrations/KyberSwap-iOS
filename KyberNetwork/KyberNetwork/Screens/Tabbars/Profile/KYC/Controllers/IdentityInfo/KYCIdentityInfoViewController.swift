@@ -287,16 +287,12 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   @objc func issueDatePickerDidChange(_ sender: Any) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let dob = dateFormatter.string(from: self.issueDatePicker.date)
+    let dob = DateFormatterUtil.shared.kycDateFormatter.string(from: self.issueDatePicker.date)
     self.issueDateTextField.text = dob
   }
 
   @objc func expiryDatePickerDidChange(_ sender: Any) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let dob = dateFormatter.string(from: self.expiryDatePicker.date)
+    let dob = DateFormatterUtil.shared.kycDateFormatter.string(from: self.expiryDatePicker.date)
     self.expiryDateTextField.text = dob
   }
 
@@ -391,9 +387,8 @@ class KYCIdentityInfoViewController: KNBaseViewController {
       )
       return
     }
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let nowString = dateFormatter.string(from: Date())
+
+    let nowString = DateFormatterUtil.shared.kycDateFormatter.string(from: Date())
     let issueDate = self.viewModel.hasIssueDate ? (self.issueDateTextField.text ?? "") : ""
     if self.viewModel.hasIssueDate && issueDate.isEmpty {
       self.showWarningTopBannerMessage(
@@ -608,9 +603,7 @@ extension KYCIdentityInfoViewController: UITextFieldDelegate {
     let isDatePickerIssueDate = textField == self.issueDateTextField
     let date: Date = {
       if let text = textField.text {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.date(from: text) ?? Date()
+        return DateFormatterUtil.shared.kycDateFormatter.date(from: text) ?? Date()
       }
       return Date()
     }()
