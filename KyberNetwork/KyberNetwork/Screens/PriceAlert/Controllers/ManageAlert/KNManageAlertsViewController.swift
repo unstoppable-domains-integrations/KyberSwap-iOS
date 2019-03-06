@@ -47,6 +47,13 @@ class KNManageAlertsViewController: KNBaseViewController {
     )
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if IEOUserStorage.shared.user == nil {
+      self.delegate?.manageAlertsViewControllerShouldBack()
+    }
+  }
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.bottomPaddingConstraintForAlertTableView.constant = self.bottomPaddingSafeArea()

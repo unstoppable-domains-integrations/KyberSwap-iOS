@@ -80,6 +80,13 @@ class KNNewAlertViewController: KNBaseViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(self.trackerRateDidUpdate(_:)), name: NSNotification.Name(rawValue: kExchangeTokenRateNotificationKey), object: nil)
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if IEOUserStorage.shared.user == nil {
+      self.navigationController?.popViewController(animated: true)
+    }
+  }
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
@@ -184,6 +191,7 @@ class KNNewAlertViewController: KNBaseViewController {
   }
 
   fileprivate func createNewAlertSavePressed() {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     let alert = KNAlertObject(
       token: self.viewModel.token,
       currency: self.viewModel.currencyType.rawValue,
@@ -191,7 +199,7 @@ class KNNewAlertViewController: KNBaseViewController {
       isAbove: self.viewModel.targetPrice > self.viewModel.currentPrice
     )
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.addNewAlert(alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.addNewAlert(accessToken: accessToken, alert: alert) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       switch result {
@@ -201,6 +209,7 @@ class KNNewAlertViewController: KNBaseViewController {
           message: "New alert has been added successfully!".toBeLocalised(),
           time: 1.0
         )
+        self.navigationController?.popViewController(animated: true)
       case .failure(let error):
         KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "create_new_alert_failed", "error": error.prettyError])
         self.showErrorTopBannerMessage(
@@ -209,21 +218,26 @@ class KNNewAlertViewController: KNBaseViewController {
           time: 1.5
         )
       }
-      self.navigationController?.popViewController(animated: true)
     }
   }
 
   fileprivate func updateAlertSavePressed() {
-    var json = self.viewModel.alert?.json ?? [:]
-    json["token"] = self.viewModel.token
-    json["currency"] = self.viewModel.currencyType.rawValue
-    json["price"] = self.viewModel.targetPrice
-    json["isAbove"] = self.viewModel.targetPrice > self.viewModel.currentPrice
-    json["updatedDate"] = Date().timeIntervalSince1970
-    json["state"] = KNAlertState.active.rawValue
-    let alert = KNAlertObject(json: json)
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken, let alert = self.viewModel.alert else { return }
+    let json: JSONDictionary = [
+      "id": alert.id,
+      "symbol": self.viewModel.token,
+      "base": self.viewModel.currencyType.rawValue.lowercased(),
+      "alert_type": alert.alertType,
+      "alert_price": self.viewModel.targetPrice,
+      "is_above": self.viewModel.targetPrice > self.viewModel.currentPrice,
+      "status": 0, // active
+      "created_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date(timeIntervalSince1970: alert.createdDate)),
+      "updated_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date()),
+      "triggered_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date(timeIntervalSince1970: alert.triggeredDate)),
+    ]
+    let newAlert = KNAlertObject(json: json)
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.updateAlert(alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.updateAlert(accessToken: accessToken, alert: newAlert) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       switch result {
@@ -233,6 +247,7 @@ class KNNewAlertViewController: KNBaseViewController {
           message: "Updated alert successfully!".toBeLocalised(),
           time: 1.0
         )
+        self.navigationController?.popViewController(animated: true)
       case .failure(let error):
         KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "update_alert_failed", "error": error.prettyError])
         self.showErrorTopBannerMessage(
@@ -241,7 +256,6 @@ class KNNewAlertViewController: KNBaseViewController {
           time: 1.5
         )
       }
-      self.navigationController?.popViewController(animated: true)
     }
   }
 }

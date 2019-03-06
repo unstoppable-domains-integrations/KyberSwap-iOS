@@ -38,7 +38,7 @@ class KNAlertTableViewCell: UITableViewCell {
         NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       ]
       attributedString.append(NSAttributedString(string: pair, attributes: pairAttributes))
-      if let triggered = alert.triggeredDate {
+      if alert.state == .triggered {
         let triggerAttributes: [NSAttributedStringKey: Any] = [
           NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
           NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
@@ -47,7 +47,7 @@ class KNAlertTableViewCell: UITableViewCell {
         dateFormatter.dateFormat = "HH:mm dd/MM/yyyy"
         let triggerString = String(
           format: "Triggered: %@".toBeLocalised(),
-          dateFormatter.string(from: Date(timeIntervalSince1970: triggered))
+          dateFormatter.string(from: Date(timeIntervalSince1970: alert.triggeredDate))
         )
         attributedString.append(NSAttributedString(string: "\n\(triggerString)", attributes: triggerAttributes))
       }

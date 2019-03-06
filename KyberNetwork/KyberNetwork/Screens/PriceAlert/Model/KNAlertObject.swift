@@ -1,72 +1,73 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import RealmSwift
 
 enum KNAlertState: Int {
   case active
-  case cancelled
   case triggered
+  case cancelled
   case deleted
 }
 
-class KNAlertObject {
+class KNAlertObject: Object {
 
-  let id: String
-  let token: String
-  let currency: String
-  let price: Double
-  let isAbove: Bool
-  let createdDate: TimeInterval
-  let updatedDate: TimeInterval
-  let triggeredDate: TimeInterval?
-  let state: KNAlertState
+  @objc dynamic var id: Int = -1
+  @objc dynamic var token: String = ""
+  @objc dynamic var currency: String = ""
+  @objc dynamic var price: Double = 0.0
+  @objc dynamic var isAbove: Bool = true
+  @objc dynamic var alertType: String = ""
+  @objc dynamic var createdDate: TimeInterval = 0.0
+  @objc dynamic var updatedDate: TimeInterval = 0.0
+  @objc dynamic var triggeredDate: TimeInterval = 0.0
+  @objc dynamic var stateValue: Int = KNAlertState.active.rawValue
 
-  init(token: String, currency: String, price: Double, isAbove: Bool) {
-    self.id = UUID().uuidString
+  convenience init(token: String, currency: String, price: Double, isAbove: Bool, type: String = "price") {
+    self.init()
+    self.id = -1
     self.token = token
     self.currency = currency
     self.price = price
+    self.alertType = type
     self.isAbove = isAbove
     self.createdDate = Date().timeIntervalSince1970
     self.updatedDate = Date().timeIntervalSince1970
-    self.triggeredDate = nil
-    self.state = .active
+    self.triggeredDate = 0.0
+    self.stateValue = KNAlertState.active.rawValue
   }
 
-  init(json: JSONDictionary) {
-    self.id = json["id"] as? String ?? ""
-    self.token = json["token"] as? String ?? ""
-    self.currency = json["currency"] as? String ?? ""
-    self.price = json["price"] as? Double ?? 0.0
-    self.isAbove = json["isAbove"] as? Bool ?? false
-    self.createdDate = json["createdDate"] as? TimeInterval ?? 0.0
-    self.updatedDate = json["updatedDate"] as? TimeInterval ?? 0.0
-    self.triggeredDate = json["triggeredDate"] as? TimeInterval
-    self.state = KNAlertState(rawValue: json["state"] as? Int ?? 0) ?? .active
+  convenience init(json: JSONDictionary) {
+    self.init()
+    self.id = json["id"] as? Int ?? -1
+    self.token = json["symbol"] as? String ?? ""
+    self.currency = (json["base"] as? String ?? "").uppercased()
+    self.alertType = json["alert_type"] as? String ?? ""
+    self.price = json["alert_price"] as? Double ?? 0.0
+    self.isAbove = json["is_above"] as? Bool ?? false
+    let status = json["status"] as? String ?? ""
+    self.stateValue = status == "active" ? 0 : 1 // active or triggered
+    self.createdDate = {
+      let string = json["created_at"] as? String ?? ""
+      let date = DateFormatterUtil.shared.priceAlertAPIFormatter.date(from: string)
+      return date?.timeIntervalSince1970 ?? 0.0
+    }()
+    self.updatedDate = {
+      let string = json["updated_at"] as? String ?? ""
+      let date = DateFormatterUtil.shared.priceAlertAPIFormatter.date(from: string)
+      return date?.timeIntervalSince1970 ?? 0.0
+    }()
+    self.triggeredDate = {
+      let string = json["triggered_at"] as? String ?? ""
+      let date = DateFormatterUtil.shared.priceAlertAPIFormatter.date(from: string)
+      return date?.timeIntervalSince1970 ?? 0.0
+    }()
   }
 
-  var json: JSONDictionary {
-    var data: JSONDictionary = [
-      "id": self.id,
-      "token": self.token,
-      "currency": self.currency,
-      "price": self.price,
-      "isAbove": self.isAbove,
-      "createdDate": self.createdDate,
-      "updatedDate": self.updatedDate,
-      "state": self.state.rawValue,
-    ]
-    if let triggeredDate = self.triggeredDate {
-      data["triggeredDate"] = triggeredDate
-    }
-    return data
+  var state: KNAlertState { return KNAlertState(rawValue: self.stateValue) ?? .active }
+
+  override class func primaryKey() -> String? {
+    return "id"
   }
 
-  func triggered() -> KNAlertObject {
-    var json = self.json
-    json["triggeredDate"] = Date().timeIntervalSince1970
-    json["updatedDate"] = Date().timeIntervalSince1970
-    json["state"] = KNAlertState.triggered.rawValue
-    return KNAlertObject(json: json)
-  }
 }

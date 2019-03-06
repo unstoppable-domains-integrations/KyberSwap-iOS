@@ -69,8 +69,9 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
 
   fileprivate func deleteAnAlert(_ alert: KNAlertObject) {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "delete_alert"])
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading()
-    KNPriceAlertCoordinator.shared.removeAnAlert(alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alert: alert) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch result {
