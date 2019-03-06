@@ -54,13 +54,13 @@ class KNProfileHomeCoordinator: Coordinator {
       object: nil
     )
     if IEOUserStorage.shared.user != nil {
-      KNPriceAlertCoordinator.shared.resume()
+      if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.resume() }
       self.timerLoadUserInfo()
     }
   }
 
   func stop() {
-    KNPriceAlertCoordinator.shared.pause()
+    if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
     // Remove notification observer
     self.accessTokenExpireTimer?.invalidate()
     self.accessTokenExpireTimer = nil
@@ -162,7 +162,7 @@ extension KNProfileHomeCoordinator {
       IEOUserStorage.shared.signedOut()
       Branch.getInstance().logout()
       self.rootViewController.coordinatorDidSignOut()
-      KNPriceAlertCoordinator.shared.pause()
+      if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
     }))
     self.rootViewController.present(alertController, animated: true, completion: nil)
   }
@@ -262,7 +262,7 @@ extension KNProfileHomeCoordinator {
                     let text = NSLocalizedString("welcome.back.user", value: "Welcome back, %@", comment: "")
                     let message = String(format: text, name)
                     self?.navigationController.showSuccessTopBannerMessage(with: "", message: message)
-                    KNPriceAlertCoordinator.shared.resume()
+                    if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.resume() }
                   } else {
                     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_failed"])
                   }
@@ -324,7 +324,7 @@ extension KNProfileHomeCoordinator {
             if !hasUser { self?.timerLoadUserInfo() }
             self?.rootViewController.coordinatorUserDidSignInSuccessfully()
             self?.lastUpdatedUserInfo = Date()
-            KNPriceAlertCoordinator.shared.updateUserSignedInPushTokenWithRetry()
+            if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.updateUserSignedInPushTokenWithRetry() }
             completion(true)
           // Already have user
           case .failure(let error):
