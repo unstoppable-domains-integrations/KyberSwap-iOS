@@ -9,8 +9,6 @@ class KNPriceAlertCoordinator: NSObject {
   static let shared: KNPriceAlertCoordinator = KNPriceAlertCoordinator()
   let provider = MoyaProvider<UserInfoService>()
 
-  fileprivate var alerts: [KNAlertObject] = []
-
   fileprivate var loadingTimer: Timer?
 
   func resume() {
@@ -41,11 +39,6 @@ class KNPriceAlertCoordinator: NSObject {
   }
 
   func loadListPriceAlerts(_ accessToken: String, completion: @escaping (Result<[KNAlertObject], AnyError>) -> Void) {
-    if isDebug {
-      KNAlertStorage.shared.updateAlerts(self.alerts)
-      completion(.success(self.alerts))
-      return
-    }
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getListAlerts(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
@@ -58,6 +51,7 @@ class KNPriceAlertCoordinator: NSObject {
               let jsonArr = json["data"] as? [JSONDictionary] ?? []
               let alerts = jsonArr.map({ return KNAlertObject(json: $0) })
               KNAlertStorage.shared.updateAlerts(alerts)
+              self?.startLoadingListPriceAlerts(nil)
               completion(.success(alerts))
             } catch let error {
               completion(.failure(AnyError(error)))
@@ -71,12 +65,6 @@ class KNPriceAlertCoordinator: NSObject {
   }
 
   func addNewAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    if isDebug {
-      self.addNewAlert(alert)
-      KNAlertStorage.shared.updateAlerts(self.alerts)
-      completion(.success("Success"))
-      return
-    }
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.addNewAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
         guard let _ = self else { return }
@@ -85,6 +73,7 @@ class KNPriceAlertCoordinator: NSObject {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
+              self?.startLoadingListPriceAlerts(nil)
               completion(.success(""))
             } catch let error {
               completion(.failure(AnyError(error)))
@@ -98,47 +87,38 @@ class KNPriceAlertCoordinator: NSObject {
   }
 
   func updateAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    if isDebug {
-      self.updateAlert(alert)
-      KNAlertStorage.shared.updateAlerts(self.alerts)
-      completion(.success("Success"))
-      return
-    }
-    DispatchQueue.global(qos: .background).async {
-      self.provider.request(.updateAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
-        guard let _ = self else { return }
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let data):
-            do {
-              let _ = try data.filterSuccessfulStatusCodes()
-              completion(.success(""))
-            } catch let error {
-              completion(.failure(AnyError(error)))
-            }
-          case .failure(let error):
+    self.provider.request(.updateAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
+      guard let _ = self else { return }
+      DispatchQueue.main.async {
+        switch result {
+        case .success(let data):
+          do {
+            let _ = try data.filterSuccessfulStatusCodes()
+            KNAlertStorage.shared.updateAlert(alert)
+            self?.startLoadingListPriceAlerts(nil)
+            completion(.success(""))
+          } catch let error {
             completion(.failure(AnyError(error)))
           }
+        case .failure(let error):
+          completion(.failure(AnyError(error)))
         }
       }
     }
   }
 
   func removeAnAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    if isDebug {
-      self.removeAlert(alert)
-      KNAlertStorage.shared.updateAlerts(self.alerts)
-      completion(.success("Success"))
-      return
-    }
+    let id = alert.id
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.removeAnAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
+      self.provider.request(.removeAnAlert(accessToken: accessToken, alertID: id)) { [weak self] result in
         guard let _ = self else { return }
         DispatchQueue.main.async {
           switch result {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
+              KNAlertStorage.shared.deleteAlert(alert)
+              self?.startLoadingListPriceAlerts(nil)
               completion(.success(""))
             } catch let error {
               completion(.failure(AnyError(error)))
@@ -167,10 +147,6 @@ class KNPriceAlertCoordinator: NSObject {
   }
 
   func getAlertMethods(accessToken: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
-    if isDebug {
-      completion(.success(["push_notification": true, "email": true, "telegram": false]))
-      return
-    }
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getListAlertMethods(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
@@ -180,7 +156,7 @@ class KNPriceAlertCoordinator: NSObject {
             do {
               let _ = try data.filterSuccessfulStatusCodes()
               let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              completion(.success(json))
+              completion(.success(json["data"] as? JSONDictionary ?? [:]))
             } catch let error {
               completion(.failure(AnyError(error)))
             }
@@ -210,25 +186,6 @@ class KNPriceAlertCoordinator: NSObject {
           }
         }
       }
-    }
-  }
-}
-
-// Mock data
-extension KNPriceAlertCoordinator {
-  func addNewAlert(_ alert: KNAlertObject) {
-    alert.id = self.alerts.count
-    self.alerts.append(alert)
-  }
-
-  func updateAlert(_ alert: KNAlertObject) {
-    self.alerts = self.alerts.filter({ return $0.id != alert.id })
-    self.alerts.append(alert)
-  }
-
-  func removeAlert(_ alert: KNAlertObject) {
-    if let id = self.alerts.firstIndex(of: alert) {
-      self.alerts.remove(at: id)
     }
   }
 }

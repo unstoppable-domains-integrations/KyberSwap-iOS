@@ -59,9 +59,9 @@ class KNNotificationMethodsViewController: KNBaseViewController {
       guard let `self` = self else { return }
       self.hideLoading()
       if case .success(let resp) = result {
-        self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? true
-        self.isEmailEnabled = resp["email"] as? Bool ?? true
-        self.isTelegramEnabled = resp["telegram"] as? Bool ?? true
+        self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? false
+        self.isEmailEnabled = resp["email"] as? Bool ?? false
+        self.isTelegramEnabled = resp["telegram"] as? Bool ?? false
         self.updateUIs()
       } else {
         self.showAlertCanNotLoadAlertMethods()

@@ -113,7 +113,7 @@ enum UserInfoService {
   case getUserInfo(accessToken: String)
   case addPushToken(accessToken: String, pushToken: String)
   case addNewAlert(accessToken: String, alert: KNAlertObject)
-  case removeAnAlert(accessToken: String, alert: KNAlertObject)
+  case removeAnAlert(accessToken: String, alertID: Int)
   case getListAlerts(accessToken: String)
   case updateAlert(accessToken: String, alert: KNAlertObject)
   case getListAlertMethods(accessToken: String)
@@ -134,8 +134,8 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/alerts")!
     case .updateAlert(_, let alert):
       return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
-    case .removeAnAlert(_, let alert):
-      return URL(string: "\(baseString)/api/alerts/\(alert.id)")!
+    case .removeAnAlert(_, let alertID):
+      return URL(string: "\(baseString)/api/alerts/\(alertID)")!
     case .getListAlertMethods:
       return URL(string: "\(baseString)/api/alert_methods")!
     case .setAlertMethods:
