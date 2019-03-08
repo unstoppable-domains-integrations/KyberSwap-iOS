@@ -65,22 +65,20 @@ class KNPriceAlertCoordinator: NSObject {
   }
 
   func addNewAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    DispatchQueue.global(qos: .background).async {
-      self.provider.request(.addNewAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
-        guard let _ = self else { return }
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let data):
-            do {
-              let _ = try data.filterSuccessfulStatusCodes()
-              self?.startLoadingListPriceAlerts(nil)
-              completion(.success(""))
-            } catch let error {
-              completion(.failure(AnyError(error)))
-            }
-          case .failure(let error):
+    self.provider.request(.addNewAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
+      guard let _ = self else { return }
+      DispatchQueue.main.async {
+        switch result {
+        case .success(let data):
+          do {
+            let _ = try data.filterSuccessfulStatusCodes()
+            self?.startLoadingListPriceAlerts(nil)
+            completion(.success(""))
+          } catch let error {
             completion(.failure(AnyError(error)))
           }
+        case .failure(let error):
+          completion(.failure(AnyError(error)))
         }
       }
     }
