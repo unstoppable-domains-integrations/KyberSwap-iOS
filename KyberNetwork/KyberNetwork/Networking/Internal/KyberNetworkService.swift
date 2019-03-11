@@ -183,7 +183,7 @@ extension UserInfoService: TargetType {
     case .addPushToken(let accessToken, let pushToken):
       let json: JSONDictionary = [
         "access_token": accessToken,
-        "push_token": pushToken,
+        "push_token_mobile": pushToken,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
