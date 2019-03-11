@@ -4,6 +4,14 @@ import UIKit
 import BigInt
 
 class KNNewAlertViewModel {
+  lazy var numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 2
+    formatter.minimumFractionDigits = 2
+    return formatter
+  }()
+
   fileprivate(set) var alert: KNAlertObject?
   fileprivate(set) var currencyType: KWalletCurrencyType = .usd
   fileprivate(set) var token: String = "ETH"
@@ -17,6 +25,17 @@ class KNNewAlertViewModel {
     let price = BigInt(currentPrice * pow(10.0, 18.0))
     let display = price.displayRate(decimals: 18)
     return "Current Price: \(display)"
+  }
+
+  var isPercentageHidden: Bool { return self.percentageChange < 0.01 }
+  var isAbove: Bool { return targetPrice >= currentPrice }
+  var percentageImage: UIImage? { return self.isAbove ? UIImage(named: "change_up") : UIImage(named: "change_down") }
+  var percentageChange: Double { return fabs(targetPrice - currentPrice) * 100.0 / currentPrice }
+  var percentageChangeDisplay: String {
+    return (self.numberFormatter.string(from: NSNumber(value: percentageChange)) ?? "") + "%"
+  }
+  var percentageChangeColor: UIColor {
+    return self.isAbove ? UIColor(red: 49, green: 203, blue: 158) : UIColor(red: 250, green: 101, blue: 102)
   }
 
   func update(token: String, currencyType: KWalletCurrencyType) {
@@ -61,6 +80,7 @@ class KNNewAlertViewController: KNBaseViewController {
   @IBOutlet weak var alertPriceTextLabel: UILabel!
   @IBOutlet weak var alertPriceTextField: UITextField!
   @IBOutlet weak var currentPriceTextLabel: UILabel!
+  @IBOutlet weak var percentageChange: UIButton!
 
   let viewModel: KNNewAlertViewModel = KNNewAlertViewModel()
 
@@ -127,9 +147,14 @@ class KNNewAlertViewController: KNBaseViewController {
         state: .normal
       )
     }
+    self.percentageChange.isHidden = self.viewModel.isPercentageHidden || (self.alertPriceTextField.text ?? "").isEmpty
+    self.percentageChange.setImage(self.viewModel.percentageImage, for: .normal)
+    self.percentageChange.setTitle(self.viewModel.percentageChangeDisplay, for: .normal)
+    self.percentageChange.setTitleColor(self.viewModel.percentageChangeColor, for: .normal)
     self.tokenButton.setTitle(self.viewModel.displayTokenTitle, for: .normal)
     self.currencyButton.setTitle(self.viewModel.displayCurrencyTitle, for: .normal)
     self.currentPriceTextLabel.text = self.viewModel.currentPriceDisplay
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func switchCurrencyTypePressed(_ sender: Any) {
@@ -275,6 +300,7 @@ extension KNNewAlertViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     self.alertPriceTextField.text = ""
     self.viewModel.updateTargetPrice(0)
+    self.updateUIs()
     return false
   }
 
@@ -285,6 +311,7 @@ extension KNNewAlertViewController: UITextFieldDelegate {
     }
     self.viewModel.updateTargetPrice(Double(priceBigInt) / pow(10.0, 18.0))
     self.alertPriceTextField.text = text
+    self.updateUIs()
     return false
   }
 }
