@@ -12,6 +12,13 @@ class KNNewAlertViewModel {
     return formatter
   }()
 
+  lazy var priceNumberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 9
+    return formatter
+  }()
+
   fileprivate(set) var alert: KNAlertObject?
   fileprivate(set) var currencyType: KWalletCurrencyType = .usd
   fileprivate(set) var token: String = "ETH"
@@ -27,7 +34,7 @@ class KNNewAlertViewModel {
     return "Current Price: \(display)"
   }
 
-  var isPercentageHidden: Bool { return self.percentageChange < 0.01 }
+  var isPercentageHidden: Bool { return self.percentageChange < 0.01 || currentPrice == 0.0 }
   var isAbove: Bool { return targetPrice >= currentPrice }
   var percentageImage: UIImage? { return self.isAbove ? UIImage(named: "change_up") : UIImage(named: "change_down") }
   var percentageChange: Double { return fabs(targetPrice - currentPrice) * 100.0 / currentPrice }
@@ -127,7 +134,7 @@ class KNNewAlertViewController: KNBaseViewController {
   func updateEditAlert(_ alert: KNAlertObject) {
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "alert_edited"])
     self.viewModel.updateEditAlert(alert)
-    self.alertPriceTextField.text = BigInt(alert.price * pow(10.0, 18.0)).displayRate(decimals: 18)
+    self.alertPriceTextField.text = self.viewModel.priceNumberFormatter.string(from: NSNumber(value: alert.price))
     self.updateUIs()
   }
 
