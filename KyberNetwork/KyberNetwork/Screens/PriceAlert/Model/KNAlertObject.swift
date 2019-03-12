@@ -46,7 +46,7 @@ class KNAlertObject: Object {
     self.price = json["alert_price"] as? Double ?? 0.0
     self.isAbove = json["is_above"] as? Bool ?? false
     let status = json["status"] as? String ?? ""
-    self.stateValue = status == "active" ? 0 : 1 // active or triggered
+    self.stateValue = status.lowercased() == "active" ? 0 : 1 // active or triggered
     self.createdDate = {
       let string = json["created_at"] as? String ?? ""
       let date = DateFormatterUtil.shared.priceAlertAPIFormatter.date(from: string)
