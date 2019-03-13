@@ -329,7 +329,7 @@ class KSwapViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "swap_all"])
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
-    self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString
+    self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.updateTokensView()
     self.updateViewAmountDidChange()

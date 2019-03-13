@@ -292,7 +292,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_all"])
-    self.amountTextField.text = self.viewModel.allTokenBalanceString
+    self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
     self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.amountTextField.resignFirstResponder()
