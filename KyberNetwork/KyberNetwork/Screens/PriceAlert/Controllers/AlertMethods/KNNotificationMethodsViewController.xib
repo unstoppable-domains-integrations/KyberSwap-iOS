@@ -19,6 +19,7 @@
             <connections>
                 <outlet property="emailButton" destination="x6i-aC-y5l" id="wTX-Fz-yC5"/>
                 <outlet property="emailContainerView" destination="47e-oK-1fI" id="0fo-yT-e2h"/>
+                <outlet property="emailTextLabel" destination="47O-de-e6y" id="oAb-re-lz6"/>
                 <outlet property="getAlertByTextLabel" destination="ZZx-Oe-tUH" id="J5R-nu-0db"/>
                 <outlet property="headerContainerView" destination="Z6j-bU-pvB" id="aBZ-38-fFW"/>
                 <outlet property="navTitleLabel" destination="VlY-D4-fnM" id="BDl-4O-kCr"/>
@@ -27,6 +28,7 @@
                 <outlet property="pushNotificationTextLabel" destination="34f-8C-xzv" id="a0K-U0-QZg"/>
                 <outlet property="telegramButton" destination="P7H-vg-SFZ" id="4oj-t0-QCp"/>
                 <outlet property="telegramContainerView" destination="r7O-41-rPi" id="Sll-hk-KfW"/>
+                <outlet property="telegramTextLabel" destination="M1j-jF-PBO" id="2vK-3y-0hf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
