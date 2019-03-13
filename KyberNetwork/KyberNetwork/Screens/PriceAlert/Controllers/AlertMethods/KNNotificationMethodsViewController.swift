@@ -11,8 +11,10 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   @IBOutlet weak var pushNotiContainerView: UIView!
   @IBOutlet weak var pushNotiButton: UIButton!
   @IBOutlet weak var emailButton: UIButton!
+  @IBOutlet weak var emailTextLabel: UILabel!
   @IBOutlet weak var emailContainerView: UIView!
   @IBOutlet weak var telegramButton: UIButton!
+  @IBOutlet weak var telegramTextLabel: UILabel!
   @IBOutlet weak var telegramContainerView: UIView!
 
   fileprivate var isPushNotiEnabled: Bool = true
@@ -62,6 +64,33 @@ class KNNotificationMethodsViewController: KNBaseViewController {
         self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? false
         self.isEmailEnabled = resp["email"] as? Bool ?? false
         self.isTelegramEnabled = resp["telegram"] as? Bool ?? false
+        if resp["push_notification"] == nil {
+          self.pushNotiButton.isHidden = true
+          self.pushNotificationTextLabel.isHidden = true
+          self.pushNotiContainerView.isHidden = true
+        } else {
+          self.pushNotiButton.isHidden = false
+          self.pushNotificationTextLabel.isHidden = false
+          self.pushNotiContainerView.isHidden = false
+        }
+        if resp["email"] == nil {
+          self.emailButton.isHidden = true
+          self.emailTextLabel.isHidden = true
+          self.emailContainerView.isHidden = true
+        } else {
+          self.emailButton.isHidden = false
+          self.emailTextLabel.isHidden = false
+          self.emailContainerView.isHidden = false
+        }
+        if resp["telegram"] == nil {
+          self.telegramButton.isHidden = true
+          self.telegramTextLabel.isHidden = true
+          self.telegramContainerView.isHidden = true
+        } else {
+          self.telegramButton.isHidden = false
+          self.telegramTextLabel.isHidden = false
+          self.telegramContainerView.isHidden = false
+        }
         self.updateUIs()
       } else {
         self.showAlertCanNotLoadAlertMethods()
