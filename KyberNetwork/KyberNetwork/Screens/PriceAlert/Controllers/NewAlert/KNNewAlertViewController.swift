@@ -5,11 +5,7 @@ import BigInt
 
 class KNNewAlertViewModel {
   lazy var numberFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.minimumIntegerDigits = 1
-    formatter.maximumFractionDigits = 2
-    formatter.minimumFractionDigits = 2
-    return formatter
+    return NumberFormatterUtil.shared.percentageFormatter
   }()
 
   lazy var priceNumberFormatter: NumberFormatter = {
@@ -32,6 +28,7 @@ class KNNewAlertViewModel {
     let price = BigInt(currentPrice * pow(10.0, 18.0))
     let display = price.displayRate(decimals: 18)
     return "Current Price: \(display)"
+
   }
 
   var isPercentageHidden: Bool { return self.percentageChange < 0.01 || currentPrice == 0.0 }
@@ -228,6 +225,7 @@ class KNNewAlertViewController: KNBaseViewController {
       token: self.viewModel.token,
       currency: self.viewModel.currencyType.rawValue,
       price: self.viewModel.targetPrice,
+      currentPrice: self.viewModel.currentPrice,
       isAbove: self.viewModel.targetPrice > self.viewModel.currentPrice
     )
     self.displayLoading()
@@ -261,6 +259,7 @@ class KNNewAlertViewController: KNBaseViewController {
       "base": self.viewModel.currencyType.rawValue.lowercased(),
       "alert_type": alert.alertType,
       "alert_price": self.viewModel.targetPrice,
+      "created_at_price": self.viewModel.currentPrice,
       "is_above": self.viewModel.targetPrice > self.viewModel.currentPrice,
       "status": 0, // active
       "created_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date(timeIntervalSince1970: alert.createdDate)),

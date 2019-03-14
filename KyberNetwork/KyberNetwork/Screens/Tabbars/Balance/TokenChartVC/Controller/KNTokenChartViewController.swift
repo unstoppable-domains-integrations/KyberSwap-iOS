@@ -93,10 +93,7 @@ class KNTokenChartViewModel {
       return rate.displayRate(decimals: 18)
     }()
     let change24hString: String = {
-      let numberFormatter = NumberFormatter()
-      numberFormatter.maximumFractionDigits = 2
-      numberFormatter.minimumFractionDigits = 2
-      numberFormatter.minimumIntegerDigits = 1
+      let numberFormatter = NumberFormatterUtil.shared.percentageFormatter
       let string = numberFormatter.string(from: NSNumber(value: trackerRate.changeETH24h)) ?? "0.00"
       return "\(string)%"
     }()

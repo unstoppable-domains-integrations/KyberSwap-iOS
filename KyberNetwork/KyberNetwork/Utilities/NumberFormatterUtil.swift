@@ -1,0 +1,16 @@
+// Copyright SIX DAY LLC. All rights reserved.
+
+import Foundation
+
+class NumberFormatterUtil {
+
+  static let shared = NumberFormatterUtil()
+
+  lazy var percentageFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 2
+    formatter.minimumFractionDigits = 2
+    return formatter
+  }()
+}

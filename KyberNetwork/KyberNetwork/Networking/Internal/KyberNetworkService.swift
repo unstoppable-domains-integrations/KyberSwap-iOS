@@ -201,6 +201,7 @@ extension UserInfoService: TargetType {
         "alert_type": 0, // type: 0 (price), 1 (percent)
         "status": 0, // active: 0, triggered: 1
         "alert_price": alert.price,
+        "created_at_price": alert.currentPrice,
         "is_above": alert.isAbove,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
@@ -213,6 +214,7 @@ extension UserInfoService: TargetType {
         "alert_type": 0, // type: 0 (price), 1 (percent)
         "status": 0, // active: 0, triggered: 1
         "alert_price": alert.price,
+        "created_at_price": alert.currentPrice,
         "is_above": alert.isAbove,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
