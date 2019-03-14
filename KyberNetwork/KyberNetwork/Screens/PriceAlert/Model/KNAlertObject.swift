@@ -17,13 +17,14 @@ class KNAlertObject: Object {
   @objc dynamic var currency: String = ""
   @objc dynamic var price: Double = 0.0
   @objc dynamic var isAbove: Bool = true
+  @objc dynamic var currentPrice: Double = 0.0
   @objc dynamic var alertType: String = ""
   @objc dynamic var createdDate: TimeInterval = 0.0
   @objc dynamic var updatedDate: TimeInterval = 0.0
   @objc dynamic var triggeredDate: TimeInterval = 0.0
   @objc dynamic var stateValue: Int = KNAlertState.active.rawValue
 
-  convenience init(token: String, currency: String, price: Double, isAbove: Bool, type: String = "price") {
+  convenience init(token: String, currency: String, price: Double, currentPrice: Double, isAbove: Bool, type: String = "price") {
     self.init()
     self.id = -1
     self.token = token
@@ -31,6 +32,7 @@ class KNAlertObject: Object {
     self.price = price
     self.alertType = type
     self.isAbove = isAbove
+    self.currentPrice = currentPrice
     self.createdDate = Date().timeIntervalSince1970
     self.updatedDate = Date().timeIntervalSince1970
     self.triggeredDate = 0.0
@@ -44,6 +46,7 @@ class KNAlertObject: Object {
     self.currency = (json["base"] as? String ?? "").uppercased()
     self.alertType = json["alert_type"] as? String ?? ""
     self.price = json["alert_price"] as? Double ?? 0.0
+    self.currentPrice = json["created_at_price"] as? Double ?? 0.0
     self.isAbove = json["is_above"] as? Bool ?? false
     let status = json["status"] as? String ?? ""
     self.stateValue = status.lowercased() == "active" ? 0 : 1 // active or triggered

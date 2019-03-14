@@ -67,6 +67,7 @@
 		2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604921215C360015ECC7 /* KSwapViewModel.swift */; };
 		2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542604D21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift */; };
 		2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2542604E21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib */; };
+		2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */; };
 		2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */; };
 		2545C8EA2223EEAF00CA99C5 /* KNAlertObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545C8E92223EEAF00CA99C5 /* KNAlertObject.swift */; };
 		2545C8ED2223F08900CA99C5 /* KNAlertStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545C8EC2223F08900CA99C5 /* KNAlertStorage.swift */; };
@@ -590,6 +591,7 @@
 		2542604921215C360015ECC7 /* KSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSwapViewModel.swift; sourceTree = "<group>"; };
 		2542604D21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMinAcceptableRatePopupViewController.swift; sourceTree = "<group>"; };
 		2542604E21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KMinAcceptableRatePopupViewController.xib; sourceTree = "<group>"; };
+		2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterUtil.swift; sourceTree = "<group>"; };
 		2545577C20ABD9A200012692 /* KNSupportedTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenStorage.swift; sourceTree = "<group>"; };
 		2545C8E92223EEAF00CA99C5 /* KNAlertObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAlertObject.swift; sourceTree = "<group>"; };
 		2545C8EC2223F08900CA99C5 /* KNAlertStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAlertStorage.swift; sourceTree = "<group>"; };
@@ -1197,6 +1199,7 @@
 				251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */,
 				251ABCA420578E630069687F /* KNNotificationUtil.swift */,
 				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
+				2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -4203,6 +4206,7 @@
 				256BD3FB214A57450085DE55 /* KYCIdentityInfoViewController.swift in Sources */,
 				257740CB205794CE003323EB /* KNAppCoordinator.swift in Sources */,
 				73ED85A520349BE400593BF3 /* StringFormatter.swift in Sources */,
+				2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,

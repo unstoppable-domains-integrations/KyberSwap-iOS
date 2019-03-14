@@ -9,6 +9,7 @@ class KNAlertTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenIcon: UIImageView!
   @IBOutlet weak var pairLabel: UILabel!
   @IBOutlet weak var alertPriceLabel: UILabel!
+  @IBOutlet weak var changeButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -54,6 +55,22 @@ class KNAlertTableViewCell: UITableViewCell {
       return attributedString
     }()
     self.pairLabel.numberOfLines = 0
+
+    let percentageChange = alert.currentPrice == 0.0 ? 0.0 : 100.0 * fabs(alert.price - alert.currentPrice) / alert.currentPrice
+    let percentageString = NumberFormatterUtil.shared.percentageFormatter.string(from: NSNumber(value: percentageChange)) ?? "0.00"
+    self.changeButton.setTitle("\(percentageString)%", for: .normal)
+    self.changeButton.setTitleColor(
+      alert.state == .triggered ? UIColor.Kyber.grayChateau : UIColor(red: 90, green: 94, blue: 103),
+      for: .normal
+    )
+    let dirImageActive = alert.isAbove ? UIImage(named: "change_up") : UIImage(named: "change_down")
+    let dirImageTrigger = alert.isAbove ? UIImage(named: "change_up_grey") : UIImage(named: "change_down_grey")
+    self.changeButton.setImage(
+      alert.state == .triggered ? dirImageTrigger : dirImageActive,
+      for: .normal
+    )
+    self.changeButton.alpha = alert.state == .triggered ? 0.5 : 1.0
+
     self.alertPriceLabel.text = {
       let number = BigInt(alert.price * pow(10.0, 18.0))
       let string = number.displayRate(decimals: 18)
