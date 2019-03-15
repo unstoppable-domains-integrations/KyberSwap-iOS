@@ -104,12 +104,20 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         )
         alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
         self.navigationController.present(alertController, animated: true, completion: nil)
-      } else {
-        self.newAlertController = KNNewAlertViewController()
-        self.newAlertController?.loadViewIfNeeded()
-        self.navigationController.pushViewController(self.newAlertController!, animated: true) {
-          self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
-        }
+        return
+      }
+      if IEOUserStorage.shared.user == nil {
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+      self.newAlertController = KNNewAlertViewController()
+      self.newAlertController?.loadViewIfNeeded()
+      self.navigationController.pushViewController(self.newAlertController!, animated: true) {
+        self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
       }
     }
   }
