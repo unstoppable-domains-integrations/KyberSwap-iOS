@@ -96,6 +96,24 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         self.navigationController.openSafari(with: url)
       }
     case .addNewAlert(let token):
+      if KNAlertStorage.shared.isMaximumAlertsReached {
+        let alertController = UIAlertController(
+          title: "Cap reached".toBeLocalised(),
+          message: "You can only have maximum of 10 alerts".toBeLocalised(),
+          preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
+        self.navigationController.present(alertController, animated: true, completion: nil)
+        return
+      }
+      if IEOUserStorage.shared.user == nil {
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
       self.newAlertController = KNNewAlertViewController()
       self.newAlertController?.loadViewIfNeeded()
       self.navigationController.pushViewController(self.newAlertController!, animated: true) {
