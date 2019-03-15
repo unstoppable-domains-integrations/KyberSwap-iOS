@@ -4,8 +4,8 @@ import Moya
 import CryptoSwift
 
 enum KyberNetworkService: String {
-  case getRate = "/rate"
-  case getRateUSD = "/rateUSD"
+  case getRate = "/token_price?currency=ETH"
+  case getRateUSD = "/token_price?currency=USD"
   case getHistoryOneColumn = "/getHistoryOneColumn"
   case getLatestBlock = "/latestBlock"
   case getKyberEnabled = "/kyberEnabled"
@@ -21,11 +21,8 @@ extension KyberNetworkService: TargetType {
       if case .supportedToken = self {
         return KNEnvironment.default.supportedTokenEndpoint
       }
-      if case .getRate = self {
-        if KNEnvironment.default == .ropsten { return KNSecret.internalRopstenRateEndpoint }
-        if KNEnvironment.default == .rinkeby { return KNSecret.internalRinkebyRateEndpoint }
-        if KNEnvironment.default == .staging { return KNSecret.internalStagingEndpoint }
-      }
+      if case .getRate = self { return "\(KNEnvironment.default.kyberAPIEnpoint)\(self.rawValue)" }
+      if case .getRateUSD = self { return "\(KNEnvironment.default.kyberAPIEnpoint)\(self.rawValue)" }
       if KNEnvironment.default == .staging { return KNSecret.internalStagingEndpoint }
       return KNSecret.internalCachedEndpoint
     }()
@@ -33,9 +30,8 @@ extension KyberNetworkService: TargetType {
   }
 
   var path: String {
-    if case .getRate = self {
-      if KNEnvironment.default == .ropsten || KNEnvironment.default == .rinkeby { return "" }
-    }
+    if case .getRate = self { return "" }
+    if case .getRateUSD = self { return "" }
     return self.rawValue
   }
 

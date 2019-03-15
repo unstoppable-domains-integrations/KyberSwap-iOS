@@ -21,6 +21,8 @@ class KNRateCoordinator {
   fileprivate var cacheRates: [KNRate] = []
   fileprivate var cacheRateTimer: Timer?
 
+  fileprivate var cachedUSDRates: [KNRate] = []
+
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
 
@@ -52,11 +54,19 @@ class KNRateCoordinator {
   }
 
   func getCacheRate(from: String, to: String) -> KNRate? {
-    if let rate = self.cacheRates.first(where: { $0.source == from && $0.dest == to }) { return rate }
+    if to == "ETH" {
+      return self.cacheRates.first(where: { $0.source == from && $0.dest == to })
+    }
+    if to == "USD" {
+      return self.cachedUSDRates.first(where: { $0.source == from && $0.dest == to })
+    }
     return nil
   }
 
   func usdRate(for token: TokenObject) -> KNRate? {
+    if let cachedRate = self.cachedUSDRates.first(where: { $0.source == token.symbol }) {
+      return cachedRate
+    }
     if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: token) {
       return KNRate.rateUSD(from: trackerRate)
     }
@@ -136,6 +146,12 @@ class KNRateCoordinator {
       guard let `self` = self else { return }
       if case .success(let rates) = result {
         self.cacheRates = rates
+      }
+    }
+    KNInternalProvider.shared.getKNExchangeRateUSD { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let rates) = result {
+        self.cachedUSDRates = rates
       }
     }
   }

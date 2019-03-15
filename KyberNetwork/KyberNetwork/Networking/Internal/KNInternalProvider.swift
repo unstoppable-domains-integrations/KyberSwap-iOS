@@ -20,41 +20,57 @@ class KNInternalProvider {
 
   // MARK: Rate
   func getKNExchangeTokenRate(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
-    self.performFetchRequest(service: .getRate) { [weak self] result in
-      guard let _ = `self` else { return }
-      switch result {
-      case .success(let object):
-        let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
-        if isDebug { print("Load KN exchange rates successfully: \(jsonArr)") }
-        var rates: [KNRate] = []
-        for json in jsonArr {
-          do {
-            let rate = try KNRate(dictionary: json, isUSDRate: false)
-            rates.append(rate)
-          } catch {}
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getRate) { [weak self] (result) in
+        guard let _ = `self` else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              _ = try response.filterSuccessfulStatusCodes()
+              let json: JSONDictionary = try response.mapJSON() as? JSONDictionary ?? [:]
+              let jsonArr = json["data"] as? [JSONDictionary] ?? []
+              if isDebug { print("Load KN exchange rates successfully: \(jsonArr)") }
+              var rates: [KNRate] = []
+              for json in jsonArr {
+                do {
+                  let rate = try KNRate(dictionary: json, isUSDRate: false)
+                  rates.append(rate)
+                } catch {}
+              }
+              completion(.success(rates))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
         }
-        completion(.success(rates))
-      case .failure(let error):
-        completion(.failure(error))
       }
     }
   }
 
   func getKNExchangeRateUSD(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
-    self.performFetchRequest(service: .getRateUSD) { [weak self] (result) in
-      guard let _ = `self` else { return }
-      switch result {
-      case .success(let object):
-        do {
-          let jsonArr: [JSONDictionary] = object["data"] as? [JSONDictionary] ?? []
-          if isDebug { print("Load KN USD exchange rates successfully: \(jsonArr)") }
-          let rates = try jsonArr.map({ return try KNRate(dictionary: $0, isUSDRate: true) })
-          completion(.success(rates))
-        } catch let error {
-          completion(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getRateUSD) { [weak self] (result) in
+        guard let _ = `self` else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              _ = try response.filterSuccessfulStatusCodes()
+              let json: JSONDictionary = try response.mapJSON() as? JSONDictionary ?? [:]
+              let jsonArr = json["data"] as? [JSONDictionary] ?? []
+              if isDebug { print("Load KN USD exchange rates successfully: \(jsonArr)") }
+              let rates = try jsonArr.map({ return try KNRate(dictionary: $0, isUSDRate: true) })
+              completion(.success(rates))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        completion(.failure(error))
       }
     }
   }
