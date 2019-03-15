@@ -50,7 +50,7 @@ class KNPriceAlertCoordinator: NSObject {
               let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let jsonArr = json["data"] as? [JSONDictionary] ?? []
               let alerts = jsonArr.map({ return KNAlertObject(json: $0) })
-              KNAlertStorage.shared.updateAlerts(alerts)
+              KNAlertStorage.shared.updateAlertsFromServer(alerts)
               completion(.success(alerts))
             } catch let error {
               completion(.failure(AnyError(error)))
