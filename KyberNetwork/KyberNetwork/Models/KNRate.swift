@@ -14,8 +14,7 @@ class KNRate: NSObject {
     if isUSDRate {
       source = dictionary["symbol"] as? String ?? ""
       dest = "USD"
-      let rateString: String = dictionary["price_usd"] as? String ?? ""
-      if let rateDouble = Double(rateString) {
+      if let rateDouble = dictionary["price"] as? Double {
         rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))
         minRate = rate * BigInt(97) / BigInt(100)
         if isDebug { print("Rate from \(source) to USD: \(EtherNumberFormatter.full.string(from: rate))") }
@@ -23,13 +22,12 @@ class KNRate: NSObject {
         throw CastError(actualValue: String.self, expectedType: Double.self)
       }
     } else {
-      source = dictionary["source"] as? String ?? ""
-      let toSymbol = dictionary["dest"] as? String ?? ""
+      source = "ETH"
+      let toSymbol = dictionary["symbol"] as? String ?? ""
       dest = toSymbol
-      let rateString: String = dictionary["rate"] as? String ?? ""
-      let minRateString: String = dictionary["minRate"] as? String ?? ""
-      if let rateDouble = Double(rateString), let minRateDouble = Double(minRateString),
+      if let rateDouble = dictionary["price"] as? Double,
         let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == toSymbol }) {
+        let minRateDouble = rateDouble * 97.0 / 100.0
         rate = BigInt(rateDouble) / BigInt(10).power(18 - to.decimals)
         minRate = BigInt(minRateDouble) / BigInt(10).power(18 - to.decimals)
         if isDebug {

@@ -61,11 +61,10 @@ class KNNewAlertViewModel {
   }
 
   func updateCurrentPrice() {
-    guard let tracker = KNTrackerRateStorage.shared.rates.first(where: { $0.tokenSymbol == self.token }) else {
-      self.currentPrice = 0.0
-      return
-    }
-    self.currentPrice = self.currencyType == .usd ? tracker.rateUSDNow : tracker.rateETHNow
+    self.currentPrice = {
+      let rate = KNRateCoordinator.shared.getCacheRate(from: self.token, to: self.currencyType.rawValue.uppercased())?.rate ?? BigInt(0)
+      return Double(rate) / pow(10.0, 18.0)
+    }()
   }
 
   func switchCurrencyType() {
