@@ -62,8 +62,10 @@ class KNNewAlertViewModel {
 
   func updateCurrentPrice() {
     self.currentPrice = {
-      let rate = KNRateCoordinator.shared.getCacheRate(from: self.token, to: self.currencyType.rawValue.uppercased())?.rate ?? BigInt(0)
-      return Double(rate) / pow(10.0, 18.0)
+      if let rate = KNTrackerRateStorage.shared.rates.first(where: { $0.tokenSymbol == self.token }) {
+        return self.currencyType == .eth ? rate.rateETHNow : rate.rateUSDNow
+      }
+      return 0.0
     }()
   }
 
@@ -108,6 +110,8 @@ class KNNewAlertViewController: KNBaseViewController {
     if IEOUserStorage.shared.user == nil {
       self.navigationController?.popViewController(animated: true)
     }
+    // force reload current exchange rate
+    KNRateCoordinator.shared.fetchCacheRate(nil)
   }
 
   override func viewDidLayoutSubviews() {
@@ -125,6 +129,8 @@ class KNNewAlertViewController: KNBaseViewController {
     self.viewModel.update(token: token.symbol, currencyType: currencyType)
     self.updateUIs()
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "currency_\(self.viewModel.currencyType.rawValue)"])
+    // for refetch token rates
+    KNRateCoordinator.shared.fetchCacheRate(nil)
   }
 
   func updateEditAlert(_ alert: KNAlertObject) {
@@ -135,29 +141,31 @@ class KNNewAlertViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIs() {
-    let placeHolder = UIImage(named: "default_token")
-    let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(self.viewModel.token.lowercased()).png"
-    if let image = UIImage(named: self.viewModel.token.lowercased()) {
-      self.tokenButton.setImage(
-        image.resizeImage(to: CGSize(width: 36.0, height: 36.0)),
-        for: .normal
-      )
-    } else {
-      self.tokenButton.setImage(
-        with: url,
-        placeHolder: placeHolder,
-        size: CGSize(width: 36.0, height: 36.0),
-        state: .normal
-      )
+    UIView.animate(withDuration: 0.16) {
+      let placeHolder = UIImage(named: "default_token")
+      let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(self.viewModel.token.lowercased()).png"
+      if let image = UIImage(named: self.viewModel.token.lowercased()) {
+        self.tokenButton.setImage(
+          image.resizeImage(to: CGSize(width: 36.0, height: 36.0)),
+          for: .normal
+        )
+      } else {
+        self.tokenButton.setImage(
+          with: url,
+          placeHolder: placeHolder,
+          size: CGSize(width: 36.0, height: 36.0),
+          state: .normal
+        )
+      }
+      self.percentageChange.isHidden = self.viewModel.isPercentageHidden || (self.alertPriceTextField.text ?? "").isEmpty
+      self.percentageChange.setImage(self.viewModel.percentageImage, for: .normal)
+      self.percentageChange.setTitle(self.viewModel.percentageChangeDisplay, for: .normal)
+      self.percentageChange.setTitleColor(self.viewModel.percentageChangeColor, for: .normal)
+      self.tokenButton.setTitle(self.viewModel.displayTokenTitle, for: .normal)
+      self.currencyButton.setTitle(self.viewModel.displayCurrencyTitle, for: .normal)
+      self.currentPriceTextLabel.text = self.viewModel.currentPriceDisplay
+      self.view.layoutIfNeeded()
     }
-    self.percentageChange.isHidden = self.viewModel.isPercentageHidden || (self.alertPriceTextField.text ?? "").isEmpty
-    self.percentageChange.setImage(self.viewModel.percentageImage, for: .normal)
-    self.percentageChange.setTitle(self.viewModel.percentageChangeDisplay, for: .normal)
-    self.percentageChange.setTitleColor(self.viewModel.percentageChangeColor, for: .normal)
-    self.tokenButton.setTitle(self.viewModel.displayTokenTitle, for: .normal)
-    self.currencyButton.setTitle(self.viewModel.displayCurrencyTitle, for: .normal)
-    self.currentPriceTextLabel.text = self.viewModel.currentPriceDisplay
-    self.view.layoutIfNeeded()
   }
 
   @IBAction func switchCurrencyTypePressed(_ sender: Any) {
@@ -295,6 +303,8 @@ extension KNNewAlertViewController: KNSearchTokenViewControllerDelegate {
     self.navigationController?.popViewController(animated: true, completion: {
       if case .select(let token) = event {
         self.viewModel.update(token: token.symbol, currencyType: self.viewModel.currencyType)
+        // for refetch token rates
+        KNRateCoordinator.shared.fetchCacheRate(nil)
         self.updateUIs()
       }
     })

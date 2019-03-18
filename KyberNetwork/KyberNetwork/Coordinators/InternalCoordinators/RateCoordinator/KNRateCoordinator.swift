@@ -87,7 +87,7 @@ class KNRateCoordinator {
     self.fetchCacheRate(nil)
     self.cacheRateTimer?.invalidate()
     self.cacheRateTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.cacheRateLoadingInterval,
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
       repeats: true,
       block: { [weak self] timer in
         self?.fetchCacheRate(timer)
@@ -133,7 +133,10 @@ class KNRateCoordinator {
                 }
               }
               KNTrackerRateStorage.shared.update(rates: rates)
-              KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+              // cached rate is more updated than exchange token rate API
+              self.updateTrackerRateWithCachedRates(isUSD: true, isNotify: false)
+              self.updateTrackerRateWithCachedRates(isUSD: false, isNotify: true)
+
             } catch {}
           }
         }
@@ -146,14 +149,23 @@ class KNRateCoordinator {
       guard let `self` = self else { return }
       if case .success(let rates) = result {
         self.cacheRates = rates
+        self.updateTrackerRateWithCachedRates(isUSD: false)
       }
     }
     KNInternalProvider.shared.getKNExchangeRateUSD { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let rates) = result {
         self.cachedUSDRates = rates
+        self.updateTrackerRateWithCachedRates(isUSD: true)
       }
     }
+  }
+
+  fileprivate func updateTrackerRateWithCachedRates(isUSD: Bool, isNotify: Bool = true) {
+    KNTrackerRateStorage.shared.updateCachedRates(
+      cachedRates: isUSD ? self.cachedUSDRates : self.cacheRates
+    )
+    KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
   }
 }
 
