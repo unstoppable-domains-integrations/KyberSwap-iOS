@@ -36,6 +36,22 @@ class KNTrackerRateStorage {
     self.add(rates: rates)
   }
 
+  func updateCachedRates(cachedRates: [KNRate]) {
+    if self.realm == nil { return }
+    self.realm.beginWrite()
+    // Note: Might need to improve this one
+    self.rates.forEach({ trackerRate in
+      if let rate = cachedRates.first(where: { trackerRate.tokenSymbol == $0.source }) {
+        if rate.dest == "USD" {
+          trackerRate.rateUSDNow = Double(rate.rate) / pow(10.0, 18.0)
+        } else {
+          trackerRate.rateETHNow = Double(rate.rate) / pow(10.0, 18.0)
+        }
+      }
+    })
+    try!self.realm.commitWrite()
+  }
+
   func delete(rates: [KNTrackerRate]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
