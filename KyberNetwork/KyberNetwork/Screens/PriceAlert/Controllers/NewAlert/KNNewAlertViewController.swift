@@ -201,6 +201,26 @@ class KNNewAlertViewController: KNBaseViewController {
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "save_button", "is_added_new_alert": self.viewModel.alert == nil])
+    if self.viewModel.currentPrice == 0.0 {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "We can not update current price of this token pair".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+    let change = self.getPercentageChange(
+      targetPrice: self.viewModel.targetPrice,
+      currentPrice: self.viewModel.currentPrice
+    )
+    if (change < KNAppTracker.minimumPriceAlertPercent || change > KNAppTracker.maximumPriceAlertPercent) {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Your target price should be from 1% to 10000% of current price".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
     if self.viewModel.token == "ETH" && self.viewModel.currencyType == .eth {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -324,9 +344,17 @@ extension KNNewAlertViewController: UITextFieldDelegate {
     guard let priceBigInt = text.fullBigInt(decimals: 18) else {
       return false
     }
-    self.viewModel.updateTargetPrice(Double(priceBigInt) / pow(10.0, 18.0))
+    let targetPrice = Double(priceBigInt) / pow(10.0, 18.0)
+    let change = self.getPercentageChange(targetPrice: targetPrice, currentPrice: self.viewModel.currentPrice)
+    if change > KNAppTracker.maximumPriceAlertPercent { return false }
+    self.viewModel.updateTargetPrice(targetPrice)
     self.alertPriceTextField.text = text
     self.updateUIs()
     return false
+  }
+
+  fileprivate func getPercentageChange(targetPrice: Double, currentPrice: Double) -> Double {
+    if currentPrice == 0 { return KNAppTracker.maximumPriceAlertPercent + 1.0 }
+    return (targetPrice - currentPrice) * 100.0 / currentPrice
   }
 }
