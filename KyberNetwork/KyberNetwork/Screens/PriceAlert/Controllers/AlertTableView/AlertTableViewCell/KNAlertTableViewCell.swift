@@ -47,7 +47,7 @@ class KNAlertTableViewCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm dd/MM/yyyy"
         let triggerString = String(
-          format: "Triggered: %@".toBeLocalised(),
+          format: "Triggered: \n%@".toBeLocalised(),
           dateFormatter.string(from: Date(timeIntervalSince1970: alert.triggeredDate))
         )
         attributedString.append(NSAttributedString(string: "\n\(triggerString)", attributes: triggerAttributes))
