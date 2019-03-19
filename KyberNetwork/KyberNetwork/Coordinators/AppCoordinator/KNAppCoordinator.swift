@@ -135,7 +135,7 @@ extension KNAppCoordinator {
   func appDidReceiverOneSignalPushNotification(result: OSNotificationOpenedResult?) {
     if let noti = result?.notification,
       let data = noti.payload.additionalData,
-      let type = data["type"] as? String, type == "price_alert", self.tabbarController != nil {
+      let type = data["type"] as? String, type == "alert_price", self.tabbarController != nil {
       self.handlePriceAlertPushNotification(noti)
       return
     }
@@ -165,8 +165,12 @@ extension KNAppCoordinator {
 
   fileprivate func handleOpenKyberSwapPushNotification(_ notification: OSNotification) {
     self.tabbarController.selectedIndex = 1
-    let from = notification.payload.additionalData["from"] as? String ?? ""
-    let to = notification.payload.additionalData["to"] as? String ?? ""
+    let base = notification.payload.additionalData["base"] as? String ?? ""
+    let from: String = {
+      if base == "USD" { return "ETH" }
+      return notification.payload.additionalData["token"] as? String ?? ""
+    }()
+    let to = base == "USD" ? "KNC" : "ETH"
     self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
 
@@ -178,8 +182,9 @@ extension KNAppCoordinator {
   }
 
   fileprivate func handlePriceAlertPushNotification(_ notification: OSNotification) {
-    let view = notification.payload.additionalData["view"] as? String ?? ""
-    let token = notification.payload.additionalData["from"] as? String ?? ""
+    if notification.payload.additionalData == nil { return }
+    let view = "kyberswap" // we only open kyberswap for now
+    let token = notification.payload.additionalData["token"] as? String ?? ""
     if view == "token_chart" {
       self.tabbarController.selectedIndex = 0
       self.balanceTabCoordinator?.appCoordinatorOpenTokenChart(for: token)
