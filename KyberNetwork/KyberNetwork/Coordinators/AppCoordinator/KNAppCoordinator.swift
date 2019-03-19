@@ -133,20 +133,25 @@ extension KNAppCoordinator {
   }
 
   func appDidReceiverOneSignalPushNotification(result: OSNotificationOpenedResult?) {
-    if let noti = result?.notification, let type = noti.payload.additionalData["type"] as? String, type == "price_alert", self.tabbarController != nil {
+    if let noti = result?.notification,
+      let data = noti.payload.additionalData,
+      let type = data["type"] as? String, type == "price_alert", self.tabbarController != nil {
       self.handlePriceAlertPushNotification(noti)
       return
     }
-    if let noti = result?.notification, let type = noti.payload.additionalData["type"] as? String, type == "swap", self.tabbarController != nil {
+    if let noti = result?.notification,
+       let data = noti.payload.additionalData,
+      let type = data["type"] as? String, type == "swap", self.tabbarController != nil {
       self.handleOpenKyberSwapPushNotification(noti)
       return
     }
-    if let urlString = result?.notification.payload.additionalData["open_url"] as? String, let url = URL(string: urlString) {
+    if let data = result?.notification.payload.additionalData, let urlString = data["open_url"] as? String, let url = URL(string: urlString) {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
       return
     }
     if let noti = result?.notification,
-      let type = noti.payload.additionalData["type"] as? String, type == "balance", self.tabbarController != nil {
+      let data = noti.payload.additionalData,
+      let type = data["type"] as? String, type == "balance", self.tabbarController != nil {
       self.handleOpenBalanceTabPushNotification(noti)
       return
     }
