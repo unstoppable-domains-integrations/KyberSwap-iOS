@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         ]
         OneSignal.initWithLaunchOptions(
           launchOptions,
-          appId: KNSecret.oneSignalAppID,
+          appId: KNEnvironment.default.oneSignAppID,
           handleNotificationReceived: notficationReceiveBlock,
           handleNotificationAction: notificationOpenedBlock,
           settings: oneSignalInitSettings

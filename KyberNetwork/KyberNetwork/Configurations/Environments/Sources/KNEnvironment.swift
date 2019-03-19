@@ -143,4 +143,12 @@ enum KNEnvironment: Int {
     case .staging: return KNSecret.stagingTrackerURL
     }
   }
+
+  var oneSignAppID: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.oneSignalAppID
+    case .ropsten, .rinkeby, .kovan: return KNSecret.oneSignalAppIDDev
+    case .staging: return KNSecret.oneSignalAppIDStaging
+    }
+  }
 }
