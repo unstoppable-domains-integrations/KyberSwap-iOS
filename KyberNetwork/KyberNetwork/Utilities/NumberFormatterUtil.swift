@@ -13,4 +13,12 @@ class NumberFormatterUtil {
     formatter.minimumFractionDigits = 2
     return formatter
   }()
+
+  lazy var alertPriceFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 9
+    formatter.minimumFractionDigits = 0
+    return formatter
+  }()
 }
