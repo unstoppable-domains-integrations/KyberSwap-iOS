@@ -15,7 +15,8 @@ class KNNewAlertViewModel {
     return formatter
   }()
 
-  fileprivate(set) var alert: KNAlertObject?
+  fileprivate(set) var alertID: Int?
+  fileprivate(set) var alertCreatedDate: Double?
   fileprivate(set) var currencyType: KWalletCurrencyType = .usd
   fileprivate(set) var token: String = "ETH"
   fileprivate(set) var currentPrice: Double = 0.0
@@ -49,7 +50,8 @@ class KNNewAlertViewModel {
   }
 
   func updateEditAlert(_ alert: KNAlertObject) {
-    self.alert = alert
+    self.alertID = alert.id
+    self.alertCreatedDate = alert.createdDate
     self.currencyType = KWalletCurrencyType(rawValue: alert.currency) ?? .usd
     self.token = alert.token
     self.targetPrice = alert.price
@@ -200,7 +202,7 @@ class KNNewAlertViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "save_button", "is_added_new_alert": self.viewModel.alert == nil])
+    KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "save_button", "is_added_new_alert": self.viewModel.alertID == nil])
     if self.viewModel.currentPrice == 0.0 {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -213,7 +215,7 @@ class KNNewAlertViewController: KNBaseViewController {
       targetPrice: self.viewModel.targetPrice,
       currentPrice: self.viewModel.currentPrice
     )
-    if (change < KNAppTracker.minimumPriceAlertPercent || change > KNAppTracker.maximumPriceAlertPercent) {
+    if change < KNAppTracker.minimumPriceAlertPercent || change > KNAppTracker.maximumPriceAlertPercent {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
         message: "Your target price should be from 1% to 10000% of current price".toBeLocalised(),
@@ -239,7 +241,7 @@ class KNNewAlertViewController: KNBaseViewController {
       return
     }
     self.viewModel.updateTargetPrice(Double(price) / pow(10.0, 18.0))
-    if let _ = self.viewModel.alert {
+    if let _ = self.viewModel.alertID {
       self.updateAlertSavePressed()
     } else {
       self.createNewAlertSavePressed()
@@ -279,19 +281,24 @@ class KNNewAlertViewController: KNBaseViewController {
   }
 
   fileprivate func updateAlertSavePressed() {
-    guard let accessToken = IEOUserStorage.shared.user?.accessToken, let alert = self.viewModel.alert else { return }
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken, let alertID = self.viewModel.alertID else { return }
+    let createdDate: Date = {
+      if let date = self.viewModel.alertCreatedDate {
+        return Date(timeIntervalSince1970: date)
+      }
+      return Date()
+    }()
     let json: JSONDictionary = [
-      "id": alert.id,
+      "id": alertID,
       "symbol": self.viewModel.token,
       "base": self.viewModel.currencyType.rawValue.lowercased(),
-      "alert_type": alert.alertType,
+      "alert_type": 0,
       "alert_price": self.viewModel.targetPrice,
       "created_at_price": self.viewModel.currentPrice,
       "is_above": self.viewModel.targetPrice > self.viewModel.currentPrice,
       "status": 0, // active
-      "created_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date(timeIntervalSince1970: alert.createdDate)),
+      "created_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: createdDate),
       "updated_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date()),
-      "triggered_at": DateFormatterUtil.shared.priceAlertAPIFormatter.string(from: Date(timeIntervalSince1970: alert.triggeredDate)),
     ]
     let newAlert = KNAlertObject(json: json)
     self.displayLoading()

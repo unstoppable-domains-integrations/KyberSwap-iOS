@@ -30,7 +30,7 @@ class KNAppTracker {
   static let kPushNotificationTokenKey: String = "kPushNotificationTokenKey"
   static let userDefaults: UserDefaults = UserDefaults.standard
 
-  static let minimumPriceAlertPercent: Double = 1.0
+  static let minimumPriceAlertPercent: Double = -99.0
   static let maximumPriceAlertPercent: Double = 10000.0
 
   static func internalCachedEnpoint() -> String {
