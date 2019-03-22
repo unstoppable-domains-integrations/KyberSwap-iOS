@@ -180,11 +180,9 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBOutlet weak var minRateContainerView: UIView!
 
   @IBOutlet weak var threePercentButton: UIButton!
-  @IBOutlet weak var anyRateButton: UIButton!
   @IBOutlet weak var customButton: UIButton!
 
   @IBOutlet weak var threePercentTextLabel: UILabel!
-  @IBOutlet weak var anyRateTextLabel: UILabel!
   @IBOutlet weak var customTextLabel: UILabel!
   @IBOutlet weak var customRateTextField: UITextField!
   @IBOutlet weak var stillProceedIfRateGoesDownTextLabel: UILabel!
@@ -213,7 +211,6 @@ class KAdvancedSettingsView: XibLoaderView {
     self.mediumGasButton.backgroundColor = .white
     self.slowGasButton.backgroundColor = .white
     self.threePercentButton.backgroundColor = .white
-    self.anyRateButton.backgroundColor = .white
     self.customButton.backgroundColor = .white
 
     let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedFastFee(_:)))
@@ -227,9 +224,6 @@ class KAdvancedSettingsView: XibLoaderView {
 
     let tapThreePercent = UITapGestureRecognizer(target: self, action: #selector(self.userTappedThreePercent(_:)))
     self.threePercentTextLabel.addGestureRecognizer(tapThreePercent)
-
-    let tapAnyRate = UITapGestureRecognizer(target: self, action: #selector(self.userTappedAnyRate(_:)))
-    self.anyRateTextLabel.addGestureRecognizer(tapAnyRate)
 
     let tapCustom = UITapGestureRecognizer(target: self, action: #selector(self.userTappedCustomRate(_:)))
     self.customTextLabel.addGestureRecognizer(tapCustom)
@@ -294,12 +288,6 @@ class KAdvancedSettingsView: XibLoaderView {
       color: self.viewModel.minRateTypeInt == 0  ? selectedColor : normalColor,
       width: self.viewModel.minRateTypeInt == 0 ? selectedWidth : normalWidth,
       radius: self.threePercentButton.frame.height / 2.0
-    )
-
-    self.anyRateButton.rounded(
-      color: self.viewModel.minRateTypeInt == 1 ? selectedColor : normalColor,
-      width: self.viewModel.minRateTypeInt == 1 ? selectedWidth : normalWidth,
-      radius: self.anyRateButton.frame.height / 2.0
     )
 
     self.customButton.rounded(
@@ -408,20 +396,6 @@ class KAdvancedSettingsView: XibLoaderView {
   @objc func userTappedThreePercent(_ sender: Any) {
     self.threePercentButtonPressed(sender)
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "default_three"])
-  }
-
-  @IBAction func anyRateButtonPressed(_ sender: Any) {
-    self.viewModel.updateMinRateType(.anyRate)
-    self.customRateTextField.text = ""
-    self.customRateTextField.isEnabled = false
-    self.delegate?.kAdvancedSettingsView(self, run: .minRatePercentageChanged(percent: 100.0))
-    self.updateMinRateUIs()
-    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
-  }
-
-  @objc func userTappedAnyRate(_ sender: Any) {
-    self.anyRateButtonPressed(sender)
-    KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "slippage_rate", "value": "any"])
   }
 
   @IBAction func customRateButtonPressed(_ sender: Any) {
