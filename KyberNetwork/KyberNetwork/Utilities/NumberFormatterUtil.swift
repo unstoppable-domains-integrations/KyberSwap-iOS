@@ -17,7 +17,7 @@ class NumberFormatterUtil {
   lazy var alertPriceFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.minimumIntegerDigits = 1
-    formatter.maximumFractionDigits = 9
+    formatter.maximumFractionDigits = 6
     formatter.minimumFractionDigits = 0
     return formatter
   }()
