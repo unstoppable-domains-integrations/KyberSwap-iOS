@@ -72,7 +72,7 @@ class KNAlertTableViewCell: UITableViewCell {
     self.changeButton.alpha = alert.state == .triggered ? 0.5 : 1.0
 
     self.alertPriceLabel.text = {
-      let string = NumberFormatterUtil.shared.alertPriceFormatter.string(from: NSNumber(value: alert.price)) ?? ""
+      let string = (NumberFormatterUtil.shared.alertPriceFormatter.string(from: NSNumber(value: alert.price)) ?? "").prefix(10)
       if alert.isAbove { return ">= \(string)" }
       return "<= \(string)"
     }()
