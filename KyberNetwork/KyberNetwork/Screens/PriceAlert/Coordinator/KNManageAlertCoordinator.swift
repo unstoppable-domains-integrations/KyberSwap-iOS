@@ -41,7 +41,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
         message: "You can only have maximum of 10 alerts".toBeLocalised(),
         preferredStyle: .alert
       )
-      alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
       self.navigationController.present(alertController, animated: true, completion: nil)
     } else {
       self.newAlertController = KNNewAlertViewController()
@@ -53,9 +53,9 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   func manageAlertsViewControllerRunEvent(_ event: KNAlertTableViewEvent) {
     switch event {
     case .delete(let alert):
-      let alertController = UIAlertController(title: "Delete?".toBeLocalised(), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
+      let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-      alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
         self.deleteAnAlert(alert)
       }))
       self.navigationController.present(alertController, animated: true, completion: nil)

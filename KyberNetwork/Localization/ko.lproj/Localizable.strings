@@ -408,6 +408,32 @@
 "you.can.backup.your.wallet.later" = "나중에 지갑을 백업 할 수 있습니다.";
 "new" = "새로운";
 
+// MARK: Price alert feature
+"Cap reached" = "Cap reached";
+"You can only have maximum of 10 alerts" = "You can only have maximum of 10 alerts";
+"Price Alerts" = "Price Alerts";
+"We will send you notifications when prices go above or below your targets" = "We will send you notifications when prices go above or below your targets";
+"More Alerts" = "More Alerts";
+"Do you want to delete this alert?" = "Do you want to delete this alert?";
+"Add Alert" = "Add Alert";
+"Alert deleted!" = "Alert deleted!";
+"You must sign in to use Price Alert feature" = "You must sign in to use Price Alert feature";
+"Manage Alert" = "Manage Alert";
+"Alert Method" = "Alert Method";
+"Push Notification" = "Push Notification";
+"Can not load alert methods. Please try again" = "Can not load alert methods. Please try again";
+"Reload" = "Reload";
+"Updating" = "Updating";
+"Updated alert methods successfully!" = "Updated alert methods successfully!";
+"Can not update alert methods!" = "Can not update alert methods!";
+"Triggered: \n%@" = "Triggered: \n%@";
+"We can not update current price of this token pair" = "We can not update current price of this token pair";
+"Your target price should be from 1% to 10000% of current price" = "Your target price should be from 1% to 10000% of current price";
+"Can not select pair ETH/ETH" = "Can not select pair ETH/ETH";
+"Please enter your target price to be alerted" = "Please enter your target price to be alerted";
+"New alert has been added successfully!" = "New alert has been added successfully!";
+"Updated alert successfully!" = "Updated alert successfully!";
+
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";
 "Promo code has expired." = "프로모션 코드가 만료되었습니다.";

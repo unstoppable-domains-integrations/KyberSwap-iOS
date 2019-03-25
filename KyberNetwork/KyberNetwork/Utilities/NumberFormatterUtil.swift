@@ -21,4 +21,8 @@ class NumberFormatterUtil {
     formatter.minimumFractionDigits = 0
     return formatter
   }()
+
+  func displayPercentage(from number: Double) -> String {
+    return self.percentageFormatter.string(from: NSNumber(value: number)) ?? "0.00"
+  }
 }

@@ -408,6 +408,32 @@
 "you.can.backup.your.wallet.later" = "Bạn có thể sao lưu ví của mình sau";
 "new" = "Mới";
 
+// MARK: Price alert feature
+"Cap reached" = "Đạt mức cho phép";
+"You can only have maximum of 10 alerts" = "Bạn chỉ có thể có tối đa 10 thông báo";
+"Price Alerts" = "Thông báo giá";
+"We will send you notifications when prices go above or below your targets" = "Chúng tôi sẽ gửi cho bạn thông báo khi giá vượt quá hoặc thấp hơn mục tiêu của bạn";
+"More Alerts" = "Thông báo khác";
+"Do you want to delete this alert?" = "Bạn có muốn xóa thông báo này không?";
+"Add Alert" = "Thêm Thông Báo";
+"Alert deleted!" = "Thông báo đã xoá!";
+"You must sign in to use Price Alert feature" = "Bạn phải đăng nhập để sử dụng tính năng Thông Báo Giá";
+"Manage Alert" = "Quảng Lý Thông Báo";
+"Alert Method" = "Phương Thức Thông Báo";
+"Push Notification" = "Gửi Thông Báo";
+"Can not load alert methods. Please try again" = "Không thể tải phương thức thông báo. Hãy thử lại.";
+"Reload" = "Thử lại";
+"Updating" = "Đang cập nhật";
+"Updated alert methods successfully!" = "Thay đổi phương thức thông báo thành công!";
+"Can not update alert methods!" = "Không thể thay đổi phương thức thông báo lúc này!";
+"Triggered: \n%@" = "Kích hoạt: \n%@";
+"We can not update current price of this token pair" = "Không thể cập nhật giá hiện tại của token vào lúc này";
+"Your target price should be from 1% to 10000% of current price" = "Mức giá nên từ 1% đến 10000% so với mức giá hiện tại";
+"Can not select pair ETH/ETH" = "Không thể chọn cặp ETH/ETH";
+"Please enter your target price to be alerted" = "Hãy điền mức giá bạn muốn được thông báo";
+"New alert has been added successfully!" = "Thông báo mới đã được thêm thành công!";
+"Updated alert successfully!" = "Cập nhật thông báo thành công!";
+
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
 "Promo code has expired." = "Mã khuyến mãi đã hết hạn.";

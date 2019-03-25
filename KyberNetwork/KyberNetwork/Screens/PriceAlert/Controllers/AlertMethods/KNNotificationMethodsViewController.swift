@@ -104,7 +104,7 @@ class KNNotificationMethodsViewController: KNBaseViewController {
       message: "Can not load alert methods. Please try again".toBeLocalised(),
       preferredStyle: .alert
     )
-    alert.addAction(UIAlertAction(title: "Reload".toBeLocalised(), style: .default, handler: { _ in
+    alert.addAction(UIAlertAction(title: NSLocalizedString("reload", value: "Reload", comment: ""), style: .default, handler: { _ in
       self.reloadAlertMethods()
     }))
     alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in

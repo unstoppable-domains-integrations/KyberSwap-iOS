@@ -50,6 +50,9 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var rateTextLabel: UILabel!
   @IBOutlet weak var exchangeRateLabel: UILabel!
 
+  @IBOutlet weak var warningRateContainerView: UIView!
+  @IBOutlet weak var warningRatePercent: UIButton!
+
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
   @IBOutlet weak var heightConstraintForAdvacedSettingsView: NSLayoutConstraint!
 
@@ -157,7 +160,7 @@ class KSwapViewController: KNBaseViewController {
       }
     )
 
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.updateExchangeRateField()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -277,6 +280,15 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
+  }
+
+  @IBAction func warningRateButtonPressed(_ sender: Any) {
+    guard let string = self.viewModel.differentRatePercentageDisplay else { return }
+    self.showWarningTopBannerMessage(
+      with: "Warning".toBeLocalised(),
+      message: String(format: "This rate is %@ lower than current Market rate".toBeLocalised(), string),
+      time: 2.0
+    )
   }
 
   /*
@@ -412,19 +424,26 @@ class KSwapViewController: KNBaseViewController {
       )
       return true
     }
+    guard self.viewModel.isCapEnough else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
+        message: NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: ""),
+        time: 2.0
+      )
+      return true
+    }
+    if self.viewModel.estRate?.isZero == true {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: "")
+      )
+      return true
+    }
     if isConfirming {
       guard self.viewModel.isHavingEnoughETHForFee else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
           message: NSLocalizedString("not.have.enought.eth.to.pay.transaction.fee", value: "Not have enough ETH to pay for transaction fee", comment: "")
-        )
-        return true
-      }
-      guard self.viewModel.isCapEnough else {
-        self.showWarningTopBannerMessage(
-          with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-          message: NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: ""),
-          time: 2.0
         )
         return true
       }
@@ -484,7 +503,8 @@ extension KSwapViewController {
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.balanceLabelTapped(_:)))
     self.balanceLabel.addGestureRecognizer(tapBalanceGesture)
 
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.updateExchangeRateField()
+
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.toAmountTextField.textColor = UIColor.Kyber.mirage
@@ -501,6 +521,13 @@ extension KSwapViewController {
 
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.view.layoutIfNeeded()
+  }
+
+  fileprivate func updateExchangeRateField() {
+    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    let warningRate: String? = self.viewModel.differentRatePercentageDisplay
+    self.warningRateContainerView.isHidden = warningRate == nil
+    self.warningRatePercent.setTitle(warningRate, for: .normal)
   }
 
   fileprivate func updateAdvancedSettingsView() {
@@ -580,7 +607,7 @@ extension KSwapViewController {
       rate: rate,
       slippageRate: slippageRate
     )
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.updateExchangeRateField()
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
@@ -699,11 +726,13 @@ extension KSwapViewController {
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    self.updateExchangeRateField()
     self.view.layoutIfNeeded()
   }
 
   func coordinatorTrackerRateDidUpdate() {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    self.updateExchangeRateField()
   }
 
   /*
@@ -787,6 +816,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    self.updateExchangeRateField()
     self.view.layoutIfNeeded()
   }
 }

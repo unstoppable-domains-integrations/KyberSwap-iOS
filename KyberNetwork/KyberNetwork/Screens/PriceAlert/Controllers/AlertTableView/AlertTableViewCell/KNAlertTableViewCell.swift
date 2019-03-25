@@ -57,7 +57,7 @@ class KNAlertTableViewCell: UITableViewCell {
     self.pairLabel.numberOfLines = 0
 
     let percentageChange = alert.currentPrice == 0.0 ? 0.0 : 100.0 * fabs(alert.price - alert.currentPrice) / alert.currentPrice
-    let percentageString = NumberFormatterUtil.shared.percentageFormatter.string(from: NSNumber(value: percentageChange)) ?? "0.00"
+    let percentageString = NumberFormatterUtil.shared.displayPercentage(from: percentageChange)
     self.changeButton.setTitle("\(percentageString)%", for: .normal)
     self.changeButton.setTitleColor(
       alert.state == .triggered ? UIColor.Kyber.grayChateau : UIColor(red: 90, green: 94, blue: 103),

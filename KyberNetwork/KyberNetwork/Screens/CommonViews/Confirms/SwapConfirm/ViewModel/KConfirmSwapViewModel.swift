@@ -43,6 +43,25 @@ struct KConfirmSwapViewModel {
     return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol)"
   }
 
+  var percentageRateDiff: Double {
+    guard let rate = KNRateCoordinator.shared.getRate(from: self.transaction.from, to: self.transaction.to), !rate.rate.isZero else {
+      return 0.0
+    }
+    if self.transaction.expectedRate.isZero { return 0.0 }
+    let marketRateDouble = Double(rate.rate) / pow(10.0, Double(self.transaction.to.decimals))
+    let estimatedRateDouble = Double(self.transaction.expectedRate) / pow(10.0, Double(self.transaction.to.decimals))
+    let change = (estimatedRateDouble - marketRateDouble) / marketRateDouble * 100.0
+    if change >= -0.1 { return 0.0 }
+    return change
+  }
+
+  var warningRateMessage: String? {
+    let change = self.percentageRateDiff
+    if change > -1.0 { return nil }
+    let display = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
+    return "This rate is \(display)% lower than current Market".toBeLocalised()
+  }
+
   var minRateString: String {
     let minRate = self.transaction.minRate ?? BigInt(0)
     return minRate.displayRate(decimals: self.transaction.to.decimals)

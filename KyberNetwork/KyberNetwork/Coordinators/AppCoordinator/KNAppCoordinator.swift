@@ -200,7 +200,7 @@ extension KNAppCoordinator {
       KNPriceAlertCoordinator.shared.startLoadingListPriceAlerts(nil)
       return
     }
-    let action = notification.payload.additionalData["action"] as? String ?? "OK".toBeLocalised()
+    let action = notification.payload.additionalData["action"] as? String ?? NSLocalizedString("ok", value: "OK", comment: "")
     let desc = notification.payload.body ?? ""
     let controller = KNNotificationAlertPopupViewController(
       alert: alert,

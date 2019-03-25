@@ -127,6 +127,7 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
     self.rootViewController.coordinatorTrackerRateDidUpdate()
     self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
+    self.confirmSwapVC?.coordinatorUpdateCurrentMarketRate()
   }
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {

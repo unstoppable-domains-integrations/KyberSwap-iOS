@@ -27,7 +27,9 @@ class KNRateCoordinator {
   fileprivate var isLoadingExchangeTokenRates: Bool = false
 
   func getRate(from: TokenObject, to: TokenObject) -> KNRate? {
-    if let rate = self.cacheRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol }) { return rate }
+    if let rate = self.cacheRates.first(where: { $0.source == from.symbol && $0.dest == to.symbol }) {
+      return rate
+    }
     if from.isETH {
       if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: to) {
         return KNRate(

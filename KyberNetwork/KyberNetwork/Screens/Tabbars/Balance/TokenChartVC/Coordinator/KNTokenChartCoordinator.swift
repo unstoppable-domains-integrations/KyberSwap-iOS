@@ -102,7 +102,7 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
           message: "You can only have maximum of 10 alerts".toBeLocalised(),
           preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "OK".toBeLocalised(), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
         self.navigationController.present(alertController, animated: true, completion: nil)
         return
       }
