@@ -81,8 +81,7 @@ extension String {
 extension String {
 
   func toBeLocalised() -> String {
-    // TODO: For easier changing localised string later
-    return self
+    return NSLocalizedString(self, value: self, comment: "")
   }
 
   var jsonValue: Any? {

@@ -21,6 +21,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var firstSeparatorView: UIView!
 
+  @IBOutlet weak var warningMessageLabel: UILabel!
   @IBOutlet weak var expectedRateLabel: UILabel!
   @IBOutlet weak var minAcceptableRateLabel: UILabel!
 
@@ -77,6 +78,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
+    self.warningMessageLabel.text = self.viewModel.warningRateMessage
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
     self.expectedRateLabel.addLetterSpacing()
     self.minAcceptableRateLabel.text = self.viewModel.minRateString
@@ -161,5 +163,9 @@ class KConfirmSwapViewController: KNBaseViewController {
       for: .normal
     )
     self.view.layoutIfNeeded()
+  }
+
+  func coordinatorUpdateCurrentMarketRate() {
+    self.warningMessageLabel.text = self.viewModel.warningRateMessage
   }
 }

@@ -541,9 +541,9 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
     case .update(let height):
       self.updatePriceAlertsView(tableViewHeight: height)
     case .delete(let alert):
-      let alertController = UIAlertController(title: "Delete?".toBeLocalised(), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
+      let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-      alertController.addAction(UIAlertAction(title: "Delete".toBeLocalised(), style: .destructive, handler: { _ in
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
         self.deleteAnAlert(alert)
       }))
       self.present(alertController, animated: true, completion: nil)

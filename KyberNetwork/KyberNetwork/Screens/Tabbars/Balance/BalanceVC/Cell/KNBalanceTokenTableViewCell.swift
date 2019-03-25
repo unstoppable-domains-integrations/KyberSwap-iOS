@@ -109,8 +109,7 @@ struct KNBalanceTokenTableViewCellModel {
       if self.currencyType == .eth { return tracker.changeETH24h }
       return tracker.changeUSD24h
     }()
-    let numberFormatter = NumberFormatterUtil.shared.percentageFormatter
-    let string = numberFormatter.string(from: NSNumber(value: change)) ?? "0.00"
+    let string = NumberFormatterUtil.shared.displayPercentage(from: change)
     return "\(string)%"
   }
 
