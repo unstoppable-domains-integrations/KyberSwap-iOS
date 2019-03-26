@@ -30,11 +30,19 @@ class KNManageAlertCoordinator: Coordinator {
 }
 
 extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
-  func manageAlertsViewControllerShouldBack() {
-    self.stop()
+  func manageAlertsViewController(_ viewController: KNManageAlertsViewController, run event: KNManageAlertsViewEvent) {
+    switch event {
+    case .back: self.stop()
+    case .addNewAlert:
+      self.openAddNewAlert()
+    case .alertMethod:
+      self.openAlertMethod()
+    case .leaderBoard:
+      self.openLeaderBoard()
+    }
   }
 
-  func manageAlertsViewControllerAddNewAlert() {
+  func openAddNewAlert() {
     if KNAlertStorage.shared.isMaximumAlertsReached {
       let alertController = UIAlertController(
         title: "Cap reached".toBeLocalised(),
@@ -50,7 +58,21 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     }
   }
 
-  func manageAlertsViewControllerRunEvent(_ event: KNAlertTableViewEvent) {
+  func openAlertMethod() {
+    let alertMethodsVC = KNNotificationMethodsViewController()
+    alertMethodsVC.loadViewIfNeeded()
+    self.navigationController.pushViewController(alertMethodsVC, animated: true)
+  }
+
+  func openLeaderBoard() {
+    guard IEOUserStorage.shared.user != nil else { return }
+    let leaderBoardVC = KNAlertLeaderBoardViewController()
+    leaderBoardVC.loadViewIfNeeded()
+    leaderBoardVC.delegate = self
+    self.navigationController.pushViewController(leaderBoardVC, animated: true)
+  }
+
+  func manageAlertsViewController(_ viewController: KNManageAlertsViewController, run event: KNAlertTableViewEvent) {
     switch event {
     case .delete(let alert):
       let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: "Do you want to delete this alert?".toBeLocalised(), preferredStyle: .alert)
@@ -71,7 +93,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "delete_alert"])
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading()
-    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alert: alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alertID: alert.id) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch result {
@@ -102,5 +124,11 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     self.navigationController.pushViewController(self.newAlertController!, animated: true) {
       self.newAlertController?.updateEditAlert(alert)
     }
+  }
+}
+
+extension KNManageAlertCoordinator: KNAlertLeaderBoardViewControllerDelegate {
+  func alertLeaderBoardViewControllerShouldBack() {
+    self.navigationController.popViewController(animated: true)
   }
 }

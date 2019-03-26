@@ -258,7 +258,7 @@ class KNNewAlertViewController: KNBaseViewController {
       isAbove: self.viewModel.targetPrice > self.viewModel.currentPrice
     )
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.addNewAlert(accessToken: accessToken, alert: alert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.addNewAlert(accessToken: accessToken, jsonData: alert.json) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       switch result {
@@ -302,7 +302,7 @@ class KNNewAlertViewController: KNBaseViewController {
     ]
     let newAlert = KNAlertObject(json: json)
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.updateAlert(accessToken: accessToken, alert: newAlert) { [weak self] result in
+    KNPriceAlertCoordinator.shared.updateAlert(accessToken: accessToken, jsonData: newAlert.json) { [weak self] result in
       guard let `self` = self else { return }
       self.hideLoading()
       switch result {

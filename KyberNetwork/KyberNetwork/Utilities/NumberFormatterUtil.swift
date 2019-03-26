@@ -25,4 +25,10 @@ class NumberFormatterUtil {
   func displayPercentage(from number: Double) -> String {
     return self.percentageFormatter.string(from: NSNumber(value: number)) ?? "0.00"
   }
+
+  func displayAlertPrice(from number: Double) -> String {
+    let string = self.alertPriceFormatter.string(from: NSNumber(value: number)) ?? "0.00"
+    if number < 1 { return string }
+    return "\(string.prefix(11))"
+  }
 }

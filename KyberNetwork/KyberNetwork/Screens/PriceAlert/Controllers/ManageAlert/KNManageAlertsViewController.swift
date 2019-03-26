@@ -2,10 +2,16 @@
 
 import UIKit
 
+enum KNManageAlertsViewEvent {
+  case back
+  case addNewAlert
+  case alertMethod
+  case leaderBoard
+}
+
 protocol KNManageAlertsViewControllerDelegate: class {
-  func manageAlertsViewControllerShouldBack()
-  func manageAlertsViewControllerAddNewAlert()
-  func manageAlertsViewControllerRunEvent(_ event: KNAlertTableViewEvent)
+  func manageAlertsViewController(_ viewController: KNManageAlertsViewController, run event: KNManageAlertsViewEvent)
+  func manageAlertsViewController(_ viewController: KNManageAlertsViewController, run event: KNAlertTableViewEvent)
 }
 
 class KNManageAlertsViewController: KNBaseViewController {
@@ -50,7 +56,7 @@ class KNManageAlertsViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     if IEOUserStorage.shared.user == nil {
-      self.delegate?.manageAlertsViewControllerShouldBack()
+      self.delegate?.manageAlertsViewController(self, run: .back)
     }
   }
 
@@ -74,18 +80,26 @@ class KNManageAlertsViewController: KNBaseViewController {
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
       KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "screen_edge_pan_back"])
-      self.delegate?.manageAlertsViewControllerShouldBack()
+      self.delegate?.manageAlertsViewController(self, run: .back)
     }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "back_button_pressed"])
-    self.delegate?.manageAlertsViewControllerShouldBack()
+    self.delegate?.manageAlertsViewController(self, run: .back)
   }
 
   @IBAction func addAlertButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "add_alert_button_pressed"])
-    self.delegate?.manageAlertsViewControllerAddNewAlert()
+    self.delegate?.manageAlertsViewController(self, run: .addNewAlert)
+  }
+
+  @IBAction func alertMethodButtonPressed(_ sender: Any) {
+    self.delegate?.manageAlertsViewController(self, run: .alertMethod)
+  }
+
+  @IBAction func alertLeaderBoardButtonPressed(_ sender: Any) {
+    self.delegate?.manageAlertsViewController(self, run: .leaderBoard)
   }
 }
 
@@ -97,7 +111,7 @@ extension KNManageAlertsViewController: KNAlertTableViewDelegate {
       self.emptyStateContainerView.isHidden = !alerts.isEmpty
       self.alertTableView.isHidden = alerts.isEmpty
     default:
-      self.delegate?.manageAlertsViewControllerRunEvent(event)
+      self.delegate?.manageAlertsViewController(self, run: event)
     }
   }
 }
