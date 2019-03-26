@@ -20,9 +20,11 @@ class TransactionsStorage {
     }
 
     var objects: [Transaction] {
-        return realm.objects(Transaction.self)
-            .sorted(byKeyPath: "date", ascending: false)
+      let data: [Transaction] = realm.objects(Transaction.self)
             .filter { !$0.id.isEmpty }
+      return data.sorted(by: { (tx0, tx1) -> Bool in
+        return tx0.date > tx1.date
+      })
     }
 
     var completedObjects: [Transaction] {

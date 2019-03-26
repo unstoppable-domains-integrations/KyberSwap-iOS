@@ -336,6 +336,9 @@ extension KNTransactionCoordinator {
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
     let objects = self.transactionStorage.kyberPendingTransactions
+    if objects.isEmpty {
+      self.transactionStorage.deleteAllKyberTransactions()
+    }
     objects.forEach {
       if self.isLoadingEnabled { self.updatePendingTransaction($0) }
     }
