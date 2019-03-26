@@ -28,8 +28,8 @@ class KNRate: NSObject {
       if let rateDouble = dictionary["price"] as? Double,
         let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == symbol }) {
         let minRateDouble = rateDouble * 97.0 / 100.0
-        rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue)) / BigInt(10).power(18 - to.decimals)
-        minRate = BigInt(minRateDouble) / BigInt(10).power(18 - to.decimals)
+        rate = BigInt(rateDouble * Double(EthereumUnit.ether.rawValue))
+        minRate = BigInt(minRateDouble)
         if isDebug {
           print("Rate from \(source) to \(dest): \(rate.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 10))")
         }
