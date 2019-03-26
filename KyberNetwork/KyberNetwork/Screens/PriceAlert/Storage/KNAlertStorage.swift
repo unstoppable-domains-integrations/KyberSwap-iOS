@@ -56,6 +56,12 @@ class KNAlertStorage {
     self.deleteAlerts([alert])
   }
 
+  func deleteAlert(with ID: Int) {
+    if self.realm == nil { return }
+    guard let alert = self.getObject(primaryKey: ID) else { return }
+    self.deleteAlert(alert)
+  }
+
   func deleteAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()

@@ -63,8 +63,8 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
-  func addNewAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    self.provider.request(.addNewAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
+  func addNewAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.provider.request(.addNewAlert(accessToken: accessToken, jsonData: jsonData)) { [weak self] result in
       guard let _ = self else { return }
       DispatchQueue.main.async {
         switch result {
@@ -83,15 +83,15 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
-  func updateAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    self.provider.request(.updateAlert(accessToken: accessToken, alert: alert)) { [weak self] result in
+  func updateAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.provider.request(.updateAlert(accessToken: accessToken, jsonData: jsonData)) { [weak self] result in
       guard let _ = self else { return }
       DispatchQueue.main.async {
         switch result {
         case .success(let data):
           do {
             let _ = try data.filterSuccessfulStatusCodes()
-            KNAlertStorage.shared.updateAlert(alert)
+            KNAlertStorage.shared.updateAlert(KNAlertObject(json: jsonData))
             self?.startLoadingListPriceAlerts(nil)
             completion(.success(""))
           } catch let error {
@@ -104,19 +104,41 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
-  func removeAnAlert(accessToken: String, alert: KNAlertObject, completion: @escaping (Result<String, AnyError>) -> Void) {
-    let id = alert.id
+  func removeAnAlert(accessToken: String, alertID: Int, completion: @escaping (Result<String, AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.removeAnAlert(accessToken: accessToken, alertID: id)) { [weak self] result in
+      self.provider.request(.removeAnAlert(accessToken: accessToken, alertID: alertID)) { [weak self] result in
         guard let _ = self else { return }
         DispatchQueue.main.async {
           switch result {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
-              KNAlertStorage.shared.deleteAlert(alert)
+              KNAlertStorage.shared.deleteAlert(with: alertID)
               self?.startLoadingListPriceAlerts(nil)
               completion(.success(""))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+      }
+    }
+  }
+
+  func loadLeaderBoardData(accessToken: String, completion: @escaping (Result<[JSONDictionary], AnyError>) -> Void) {
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getLeaderBoardData(accessToken: accessToken)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let jsonData = try data.mapJSON() as? JSONDictionary ?? [:]
+              let jsonArr = jsonData["data"] as? [JSONDictionary] ?? []
+              completion(.success(jsonArr))
             } catch let error {
               completion(.failure(AnyError(error)))
             }

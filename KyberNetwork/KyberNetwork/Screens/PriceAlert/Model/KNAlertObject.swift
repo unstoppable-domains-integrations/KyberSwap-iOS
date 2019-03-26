@@ -67,6 +67,21 @@ class KNAlertObject: Object {
     }()
   }
 
+  var json: JSONDictionary {
+    return [
+      "id": self.id,
+      "symbol": self.token,
+      "base": self.currency == "ETH" ? 0 : 1,
+      "alert_type": 0, // type: 0 (price), 1 (percent)
+      "status": 0, // active: 0, triggered: 1
+      "alert_price": self.price,
+      "created_at_price": self.currentPrice,
+      "updated_at": self.updatedDate,
+      "created_at": self.createdDate,
+      "is_above": self.isAbove,
+    ]
+  }
+
   var state: KNAlertState { return KNAlertState(rawValue: self.stateValue) ?? .active }
 
   override class func primaryKey() -> String? {
