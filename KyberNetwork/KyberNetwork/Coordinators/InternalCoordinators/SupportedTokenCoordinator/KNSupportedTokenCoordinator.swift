@@ -41,6 +41,7 @@ class KNSupportedTokenCoordinator {
           switch result {
           case .success(let response):
             do {
+              _ = try response.filterSuccessfulStatusCodes()
               let respJSON: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let jsonArr: [JSONDictionary] = respJSON["data"] as? [JSONDictionary] ?? []
               let tokenObjects = jsonArr.map({ return TokenObject(apiDict: $0) })
