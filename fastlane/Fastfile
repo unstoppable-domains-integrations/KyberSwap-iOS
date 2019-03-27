@@ -107,6 +107,29 @@ platform :ios do
     )
   end
 
+  desc "Upload current build to TestFlight"
+  lane :upload_testflight do
+    ensure_git_branch(branch: "kyberswap_ios_production")
+    ensure_git_status_clean
+    old_build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+    notification(subtitle: "Built Successfully!", message: "Start uploading build " + old_build_number + " to TestFlight.")
+    upload_to_testflight(
+	skip_waiting_for_build_processing: true,
+    )
+    notification(subtitle: "Uploaded Successfully!", message: "New build (" + old_build_number + ") has been uploaded successfully to TestFlight. Waiting for processing.")
+    increment_build_number()
+    git_add
+    version_number = get_version_number(xcodeproj: "KyberNetwork.xcodeproj")
+    build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+    git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "Increase build number " + build_number + " version " + version_number)
+    push_to_git_remote(
+      remote: "origin",
+      local_branch: "kyberswap_ios_production",
+      remote_branch: "kyberswap_ios_production",
+      tags: false
+    )
+  end
+
   desc "Deploy a new version to the App Store"
   lane :release do
     cocoapods(use_bundle_exec: false)
