@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Bold.ttf">
+            <string>Montserrat-Bold</string>
+        </array>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSplashScreenViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="debugInfoView" destination="TMc-CX-IYy" id="RDO-18-zqn"/>
+                <outlet property="networkLabel" destination="KNP-IC-fk6" id="yng-wr-Du5"/>
+                <outlet property="splashLogoImageView" destination="CIL-wK-q9N" id="vp2-mA-oUE"/>
+                <outlet property="versionLabel" destination="AB4-Xa-UFS" id="xBg-pe-bJQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_kyber_logo" translatesAutoresizingMaskIntoConstraints="NO" id="CIL-wK-q9N">
+                    <rect key="frame" x="141" y="257" width="93" height="133"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMc-CX-IYy">
+                    <rect key="frame" x="0.0" y="570.5" width="375" height="96.5"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version: 1.01" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AB4-Xa-UFS">
+                            <rect key="frame" x="16" y="63" width="82.5" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network: Ropsten" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNP-IC-fk6">
+                            <rect key="frame" x="16" y="41.5" width="127.5" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debug Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJ1-dF-pLz">
+                            <rect key="frame" x="16" y="16" width="82.5" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="kJ1-dF-pLz" firstAttribute="top" secondItem="TMc-CX-IYy" secondAttribute="top" constant="16" id="JXe-i9-HPb"/>
+                        <constraint firstAttribute="bottom" secondItem="AB4-Xa-UFS" secondAttribute="bottom" constant="16" id="P1r-bg-AH4"/>
+                        <constraint firstItem="AB4-Xa-UFS" firstAttribute="top" secondItem="KNP-IC-fk6" secondAttribute="bottom" constant="4" id="S2d-U2-qaW"/>
+                        <constraint firstItem="KNP-IC-fk6" firstAttribute="leading" secondItem="AB4-Xa-UFS" secondAttribute="leading" id="gA9-lW-DH8"/>
+                        <constraint firstItem="KNP-IC-fk6" firstAttribute="top" secondItem="kJ1-dF-pLz" secondAttribute="bottom" constant="8" id="gOJ-2m-RG8"/>
+                        <constraint firstItem="kJ1-dF-pLz" firstAttribute="leading" secondItem="TMc-CX-IYy" secondAttribute="leading" constant="16" id="qjU-hN-i0y"/>
+                        <constraint firstItem="kJ1-dF-pLz" firstAttribute="leading" secondItem="KNP-IC-fk6" secondAttribute="leading" id="xaj-Od-ST7"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="CIL-wK-q9N" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-20" id="Beh-nl-rTs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TMc-CX-IYy" secondAttribute="trailing" id="MNe-on-S4b"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TMc-CX-IYy" secondAttribute="bottom" id="nvx-Tq-t3i"/>
+                <constraint firstItem="CIL-wK-q9N" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="nx4-QN-XeD"/>
+                <constraint firstItem="TMc-CX-IYy" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="y5h-LV-iIZ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="launch_kyber_logo" width="93" height="133"/>
+    </resources>
+</document>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomPaddingConstraintForTableView" destination="fPU-Qc-GQ7" id="K07-PO-QRu"/>
+                <outlet property="headerContainerView" destination="vL2-AA-W03" id="gdG-2O-37t"/>
+                <outlet property="navTitleLabel" destination="xmh-i9-3kJ" id="uUG-Br-Uu8"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletTableView" destination="TaA-Qi-UUl" id="0Yx-am-FGE"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vL2-AA-W03">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmh-i9-3kJ">
+                            <rect key="frame" x="118.5" y="46" width="138" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwE-Ad-dkO">
+                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                            <state key="normal" image="back_white_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="hEe-8M-jca"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX3-sw-7fy">
+                            <rect key="frame" x="333" y="44" width="26" height="26"/>
+                            <state key="normal" image="add_icon_white"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="mdG-Ct-2ma"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="pwE-Ad-dkO" firstAttribute="leading" secondItem="vL2-AA-W03" secondAttribute="leading" constant="16" id="CVA-4d-QTk"/>
+                        <constraint firstAttribute="trailing" secondItem="KX3-sw-7fy" secondAttribute="trailing" constant="16" id="KCF-xF-lvM"/>
+                        <constraint firstItem="pwE-Ad-dkO" firstAttribute="centerY" secondItem="xmh-i9-3kJ" secondAttribute="centerY" id="MuR-cL-Wif"/>
+                        <constraint firstItem="xmh-i9-3kJ" firstAttribute="centerX" secondItem="vL2-AA-W03" secondAttribute="centerX" id="V2v-Fz-213"/>
+                        <constraint firstAttribute="bottom" secondItem="xmh-i9-3kJ" secondAttribute="bottom" constant="16" id="ar5-KR-p1k"/>
+                        <constraint firstItem="KX3-sw-7fy" firstAttribute="centerY" secondItem="xmh-i9-3kJ" secondAttribute="centerY" id="pJi-96-uqp"/>
+                        <constraint firstAttribute="height" constant="84" id="vQQ-JE-uBe"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="TaA-Qi-UUl">
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="vL2-AA-W03" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5ko-aD-cdh"/>
+                <constraint firstItem="TaA-Qi-UUl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8FL-qF-vxS"/>
+                <constraint firstAttribute="trailing" secondItem="vL2-AA-W03" secondAttribute="trailing" id="JNE-fg-WZh"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TaA-Qi-UUl" secondAttribute="trailing" id="Ncx-8J-13i"/>
+                <constraint firstItem="TaA-Qi-UUl" firstAttribute="top" secondItem="vL2-AA-W03" secondAttribute="bottom" id="RsG-IW-mMu"/>
+                <constraint firstItem="vL2-AA-W03" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V3S-Xc-Orm"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TaA-Qi-UUl" secondAttribute="bottom" id="fPU-Qc-GQ7"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="UeW-F6-I1o" appends="YES" id="EpA-uK-Tlr"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="UeW-F6-I1o">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="tPY-Ug-sdJ"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="add_icon_white" width="26" height="26"/>
+        <image name="back_white_icon" width="38" height="19"/>
+    </resources>
+</document>

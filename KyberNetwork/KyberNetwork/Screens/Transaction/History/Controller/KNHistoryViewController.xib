@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNHistoryViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomPaddingConstraintForRateMightChange" destination="Na8-5b-l4C" id="ku1-nH-Z1H"/>
+                <outlet property="emptyStateContainerView" destination="38H-s2-1f5" id="bfP-jC-EnZ"/>
+                <outlet property="emptyStateDescLabel" destination="bv9-ei-Ioj" id="w0I-rt-Qt3"/>
+                <outlet property="headerContainerView" destination="gaQ-YO-jy8" id="h9d-J7-cNA"/>
+                <outlet property="rateMightChangeContainerView" destination="Cib-c5-K25" id="gqz-Jg-Jq7"/>
+                <outlet property="ratesMightChangeDescTextLabel" destination="2F0-jD-9pg" id="3hL-Xc-euX"/>
+                <outlet property="ratesMightChangeTextLabel" destination="hTR-To-g6P" id="HYS-C7-ylB"/>
+                <outlet property="segmentedControl" destination="2QL-Po-GGO" id="vBa-Gm-mU8"/>
+                <outlet property="transactionCollectionView" destination="oeZ-dP-Rut" id="TzK-da-nmD"/>
+                <outlet property="transactionCollectionViewBottomConstraint" destination="b18-BJ-adl" id="Igp-c2-CDB"/>
+                <outlet property="transactionsTextLabel" destination="GYJ-ao-QW0" id="3yV-HB-UvF"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gaQ-YO-jy8">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transactions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYJ-ao-QW0">
+                            <rect key="frame" x="129.5" y="46" width="116.5" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1R-53-YNK">
+                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                            <state key="normal" image="back_white_icon"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="esS-rv-P2Q"/>
+                            </connections>
+                        </button>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2QL-Po-GGO">
+                            <rect key="frame" x="16" y="92" width="343" height="47"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="iWK-xZ-DrK"/>
+                            </constraints>
+                            <segments>
+                                <segment title="Pending"/>
+                                <segment title="Mined"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="segmentedControlValueDidChange:" destination="-1" eventType="valueChanged" id="owZ-w1-ts3"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="top" secondItem="GYJ-ao-QW0" secondAttribute="bottom" constant="24" id="2sN-bz-oI5"/>
+                        <constraint firstAttribute="height" constant="160" id="88A-PP-VnU"/>
+                        <constraint firstAttribute="bottom" secondItem="2QL-Po-GGO" secondAttribute="bottom" constant="22" id="Fcy-Xn-t8j"/>
+                        <constraint firstItem="GYJ-ao-QW0" firstAttribute="centerX" secondItem="gaQ-YO-jy8" secondAttribute="centerX" id="QLv-5r-OC9"/>
+                        <constraint firstItem="n1R-53-YNK" firstAttribute="centerY" secondItem="GYJ-ao-QW0" secondAttribute="centerY" id="RPI-Uw-uMB"/>
+                        <constraint firstItem="n1R-53-YNK" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="16" id="V3u-bQ-Yy9"/>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="16" id="alW-rr-ZX9"/>
+                        <constraint firstItem="2QL-Po-GGO" firstAttribute="centerX" secondItem="gaQ-YO-jy8" secondAttribute="centerX" id="nxV-z5-KXl"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="oeZ-dP-Rut">
+                    <rect key="frame" x="0.0" y="160" width="375" height="497"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bEn-sP-ATM">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38H-s2-1f5">
+                    <rect key="frame" x="0.0" y="216" width="375" height="451"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You do not have any pending transactions." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bv9-ei-Ioj">
+                            <rect key="frame" x="44" y="90" width="287" height="34.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="bv9-ei-Ioj" firstAttribute="top" secondItem="38H-s2-1f5" secondAttribute="top" constant="90" id="GWs-5I-L8S"/>
+                        <constraint firstAttribute="trailing" secondItem="bv9-ei-Ioj" secondAttribute="trailing" constant="44" id="H5D-8F-Jt0"/>
+                        <constraint firstItem="bv9-ei-Ioj" firstAttribute="centerX" secondItem="38H-s2-1f5" secondAttribute="centerX" id="rfJ-2B-791"/>
+                        <constraint firstItem="bv9-ei-Ioj" firstAttribute="leading" secondItem="38H-s2-1f5" secondAttribute="leading" constant="44" id="uqa-W7-QHB"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cib-c5-K25">
+                    <rect key="frame" x="0.0" y="475" width="375" height="192"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_blue_icon" translatesAutoresizingMaskIntoConstraints="NO" id="gas-Vk-KfZ">
+                            <rect key="frame" x="32" y="42" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="7D0-KF-7om"/>
+                                <constraint firstAttribute="height" constant="20" id="iuq-2A-m85"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rates might change" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTR-To-g6P">
+                            <rect key="frame" x="74" y="42" width="165.5" height="20"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                            <color key="textColor" red="0.1803921568627451" green="0.22352941176470587" blue="0.3411764705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rates for token swap are not final until swapping transactions are completed (mined)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2F0-jD-9pg">
+                            <rect key="frame" x="74" y="67" width="267" height="51.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLX-cS-Gk9">
+                            <rect key="frame" x="0.0" y="172" width="375" height="20"/>
+                            <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="C3M-lb-vBG"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qo2-n6-OVB">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="10"/>
+                            <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="10" id="JjK-5S-Gpi"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="RLX-cS-Gk9" firstAttribute="leading" secondItem="Cib-c5-K25" secondAttribute="leading" id="4TJ-oo-Irw"/>
+                        <constraint firstItem="gas-Vk-KfZ" firstAttribute="leading" secondItem="Cib-c5-K25" secondAttribute="leading" constant="32" id="84U-cW-091"/>
+                        <constraint firstItem="qo2-n6-OVB" firstAttribute="top" secondItem="Cib-c5-K25" secondAttribute="top" id="Gsw-hD-ebS"/>
+                        <constraint firstAttribute="bottom" secondItem="RLX-cS-Gk9" secondAttribute="bottom" id="I8P-Lj-9cH"/>
+                        <constraint firstItem="qo2-n6-OVB" firstAttribute="leading" secondItem="Cib-c5-K25" secondAttribute="leading" id="RUH-D1-TxK"/>
+                        <constraint firstAttribute="trailing" secondItem="RLX-cS-Gk9" secondAttribute="trailing" id="UhA-N3-V5z"/>
+                        <constraint firstAttribute="trailing" secondItem="2F0-jD-9pg" secondAttribute="trailing" constant="34" id="Xiy-wh-oLD"/>
+                        <constraint firstItem="hTR-To-g6P" firstAttribute="centerY" secondItem="gas-Vk-KfZ" secondAttribute="centerY" id="feE-uo-XeC"/>
+                        <constraint firstItem="2F0-jD-9pg" firstAttribute="leading" secondItem="hTR-To-g6P" secondAttribute="leading" id="jbJ-pA-b6m"/>
+                        <constraint firstAttribute="height" constant="192" id="l8l-lQ-qEG"/>
+                        <constraint firstItem="hTR-To-g6P" firstAttribute="leading" secondItem="gas-Vk-KfZ" secondAttribute="trailing" constant="22" id="nUy-xG-Z2e"/>
+                        <constraint firstItem="2F0-jD-9pg" firstAttribute="top" secondItem="hTR-To-g6P" secondAttribute="bottom" constant="5" id="nzv-9i-ezg"/>
+                        <constraint firstAttribute="trailing" secondItem="qo2-n6-OVB" secondAttribute="trailing" id="oum-96-EKR"/>
+                        <constraint firstItem="gas-Vk-KfZ" firstAttribute="top" secondItem="Cib-c5-K25" secondAttribute="top" constant="42" id="rp3-Im-Yw9"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oeZ-dP-Rut" secondAttribute="trailing" id="1Fs-os-FYt"/>
+                <constraint firstItem="gaQ-YO-jy8" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4iH-ac-bj8"/>
+                <constraint firstItem="oeZ-dP-Rut" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="6gp-my-uKn"/>
+                <constraint firstItem="Cib-c5-K25" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BDS-1f-YEo"/>
+                <constraint firstItem="38H-s2-1f5" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="56" id="Eug-JB-gbB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Cib-c5-K25" secondAttribute="bottom" id="Na8-5b-l4C"/>
+                <constraint firstItem="oeZ-dP-Rut" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" id="TIC-6A-T0J"/>
+                <constraint firstItem="Cib-c5-K25" firstAttribute="centerX" secondItem="38H-s2-1f5" secondAttribute="centerX" id="VRp-0v-1uB"/>
+                <constraint firstItem="oeZ-dP-Rut" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Wt6-vY-Pvn"/>
+                <constraint firstItem="gaQ-YO-jy8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XdV-ZB-MLR"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="oeZ-dP-Rut" secondAttribute="bottom" constant="10" id="b18-BJ-adl"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="38H-s2-1f5" secondAttribute="bottom" id="e8U-7c-Htz"/>
+                <constraint firstItem="gaQ-YO-jy8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="i5I-Lc-hlp"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="38H-s2-1f5" secondAttribute="trailing" id="jng-wq-nZT"/>
+                <constraint firstItem="38H-s2-1f5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="n6F-Rq-SnA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cib-c5-K25" secondAttribute="trailing" id="qVL-Rk-80P"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gaQ-YO-jy8" secondAttribute="trailing" id="zIp-Ed-MuD"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="VdG-mg-CZs" appends="YES" id="JWl-Bh-pEd"/>
+            </connections>
+            <point key="canvasLocation" x="17.5" y="51.5"/>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="VdG-mg-CZs">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="01a-Eg-PSy"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="38" height="19"/>
+        <image name="info_blue_icon" width="19" height="18"/>
+    </resources>
+</document>

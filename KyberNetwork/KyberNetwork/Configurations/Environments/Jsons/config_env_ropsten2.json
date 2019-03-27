@@ -1,0 +1,61 @@
+{
+  "connections": {
+    "http": [
+      {
+        "endPoint" : "https://ropsten-cache.kyber.network",
+        "type": "cached"
+      },
+      {
+        "endPoint" : "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
+        "type": "prune"
+      }
+    ],
+    "ws": "wss://ropsten.kyber.network/ws/"
+  },
+  "api_usd":"https://api.coinmarketcap.com",
+  "tokens": {
+    "ETH": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "icon": "eth",
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "decimals": 18,
+      "usd_id":"ethereum",
+      "gasLimit": "0"
+    },
+    "KNC": {
+      "name": "KyberNetwork",
+      "symbol": "KNC",
+      "icon": "knc",
+      "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
+      "decimals": 18,
+      "usd_id":"kyber-network"
+    },
+    "MTC": {
+      "name": "MiThaCoin",
+      "symbol": "MTC",
+      "icon": "mtc",
+      "address": "0xb91985a805453a08b7f7be883f2532cfd0f300f3",
+      "decimals": 18,
+      "usd_id":"mithacoin"
+    }
+  },
+  "ethScanUrl": "https://ropsten.etherscan.io/",
+  "reserve": "0xf13ca246ed7f26dfaf5443ea8debccfa899f947c",
+  "network": "0x431366a34b97b9aadb38f32e19b627868294f083",
+  "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",
+  "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
+  "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
+  "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
+  "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
+  "averageBlockTime": 6000,
+  "networkId": 3,
+  "chainName": "Ropsten",
+  "faucet":"https://faucet.kyber.network/",
+  "server_logs": {
+    "url": "ropsten.etherscan.io",
+    "api_key": "D8YAEQ3V4THAPDA9YSB1YGA1QY9KAMHY6M"
+  },
+  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
+  "tracker":"https://tracker.kyber.network"
+}

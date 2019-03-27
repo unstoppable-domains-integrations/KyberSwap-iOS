@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPromoCodeViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="applyButton" destination="bMr-6l-dfi" id="IbM-lO-dTK"/>
+                <outlet property="enterPromoCodeTextField" destination="N0m-1u-8vJ" id="bLf-7V-PdO"/>
+                <outlet property="headerContainerView" destination="zeB-US-vS0" id="MF2-HP-sfx"/>
+                <outlet property="navTitleLabel" destination="c1n-5c-3l1" id="l8L-E0-yqM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletNameTextField" destination="1zB-lR-XL9" id="mYx-Cl-7Uw"/>
+                <outlet property="yourPromoCodeTextLabel" destination="MoB-zf-9Ya" id="3Ir-nH-2Wz"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zeB-US-vS0">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promo Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c1n-5c-3l1">
+                            <rect key="frame" x="64" y="44" width="247" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zho-Z5-ods">
+                            <rect key="frame" x="16" y="44" width="38" height="22"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_white_icon">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="Q3p-Rj-AxK"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="c1n-5c-3l1" firstAttribute="centerX" secondItem="zeB-US-vS0" secondAttribute="centerX" id="04X-En-2cS"/>
+                        <constraint firstAttribute="trailing" secondItem="c1n-5c-3l1" secondAttribute="trailing" constant="64" id="9ky-zm-rLO"/>
+                        <constraint firstItem="Zho-Z5-ods" firstAttribute="leading" secondItem="zeB-US-vS0" secondAttribute="leading" constant="16" id="B8f-di-elR"/>
+                        <constraint firstItem="c1n-5c-3l1" firstAttribute="leading" secondItem="zeB-US-vS0" secondAttribute="leading" constant="64" id="DT2-KG-Drf"/>
+                        <constraint firstItem="Zho-Z5-ods" firstAttribute="centerY" secondItem="c1n-5c-3l1" secondAttribute="centerY" id="DxP-V9-7pT"/>
+                        <constraint firstAttribute="height" constant="82" id="dII-mL-rhH"/>
+                        <constraint firstAttribute="bottom" secondItem="c1n-5c-3l1" secondAttribute="bottom" constant="16" id="g5g-9l-zoV"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Promo code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MoB-zf-9Ya">
+                    <rect key="frame" x="24" y="126" width="125" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter your promo code here" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="N0m-1u-8vJ">
+                    <rect key="frame" x="24" y="167.5" width="327" height="48"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="LfN-rE-Ub2"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMf-pD-Dym">
+                    <rect key="frame" x="24" y="203.5" width="327" height="1"/>
+                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="K3f-6Z-pnm"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of your wallet (optional)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1zB-lR-XL9">
+                    <rect key="frame" x="24" y="239.5" width="327" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="fNe-VW-Fig"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lqB-XJ-zi7">
+                    <rect key="frame" x="24" y="272.5" width="327" height="1"/>
+                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="IWT-Vs-p6N"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bMr-6l-dfi">
+                    <rect key="frame" x="24" y="348.5" width="327" height="46"/>
+                    <color key="backgroundColor" red="0.97254901959999995" green="0.62352941179999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="uw2-pS-Qkg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Apply">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="applyButtonPressed:" destination="-1" eventType="touchUpInside" id="9r4-Bs-b9q"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="N0m-1u-8vJ" firstAttribute="bottom" secondItem="iMf-pD-Dym" secondAttribute="top" constant="12" id="3IH-55-9r5"/>
+                <constraint firstItem="iMf-pD-Dym" firstAttribute="trailing" secondItem="N0m-1u-8vJ" secondAttribute="trailing" id="4Q2-IU-RiO"/>
+                <constraint firstItem="lqB-XJ-zi7" firstAttribute="leading" secondItem="1zB-lR-XL9" secondAttribute="leading" id="7yb-mJ-zQC"/>
+                <constraint firstItem="N0m-1u-8vJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="9Cm-xs-2kK"/>
+                <constraint firstAttribute="trailing" secondItem="zeB-US-vS0" secondAttribute="trailing" id="Afr-sl-Esu"/>
+                <constraint firstItem="MoB-zf-9Ya" firstAttribute="top" secondItem="zeB-US-vS0" secondAttribute="bottom" constant="44" id="CSe-Cb-Y8C"/>
+                <constraint firstItem="zeB-US-vS0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KIQ-r8-I6Z"/>
+                <constraint firstItem="1zB-lR-XL9" firstAttribute="top" secondItem="N0m-1u-8vJ" secondAttribute="bottom" constant="24" id="NRR-yB-PJj"/>
+                <constraint firstItem="lqB-XJ-zi7" firstAttribute="trailing" secondItem="1zB-lR-XL9" secondAttribute="trailing" id="Toq-US-1qU"/>
+                <constraint firstItem="zeB-US-vS0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TtW-eB-utL"/>
+                <constraint firstItem="N0m-1u-8vJ" firstAttribute="top" secondItem="MoB-zf-9Ya" secondAttribute="bottom" constant="24" id="Zwr-SN-RIe"/>
+                <constraint firstItem="bMr-6l-dfi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="bJv-Gy-94z"/>
+                <constraint firstItem="lqB-XJ-zi7" firstAttribute="top" secondItem="1zB-lR-XL9" secondAttribute="bottom" constant="-12" id="eCl-5j-HzT"/>
+                <constraint firstItem="bMr-6l-dfi" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="eXa-NU-vWj"/>
+                <constraint firstItem="1zB-lR-XL9" firstAttribute="leading" secondItem="N0m-1u-8vJ" secondAttribute="leading" id="mBb-0I-mKo"/>
+                <constraint firstItem="bMr-6l-dfi" firstAttribute="top" secondItem="1zB-lR-XL9" secondAttribute="bottom" constant="64" id="n5d-Vt-jpp"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bMr-6l-dfi" secondAttribute="trailing" constant="24" id="oRw-dz-Xlp"/>
+                <constraint firstItem="iMf-pD-Dym" firstAttribute="leading" secondItem="N0m-1u-8vJ" secondAttribute="leading" id="sB1-BW-jJa"/>
+                <constraint firstItem="MoB-zf-9Ya" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="vNm-4c-1lo"/>
+                <constraint firstItem="1zB-lR-XL9" firstAttribute="trailing" secondItem="N0m-1u-8vJ" secondAttribute="trailing" id="xBz-P1-zhY"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="N0m-1u-8vJ" secondAttribute="trailing" constant="24" id="zGP-eW-i3a"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="38" height="19"/>
+    </resources>
+</document>

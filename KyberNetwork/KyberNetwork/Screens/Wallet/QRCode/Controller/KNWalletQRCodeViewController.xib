@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="addressLabel" destination="6US-bk-Sk8" id="3IM-nn-s6r"/>
+                <outlet property="bottomPaddingConstraintForButton" destination="bZ6-Zb-aFm" id="DhS-Zs-cr7"/>
+                <outlet property="copyWalletButton" destination="soD-bJ-naO" id="5ZJ-k4-TLi"/>
+                <outlet property="headerContainerView" destination="ayx-K1-otl" id="Kxh-Ft-jfa"/>
+                <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
+                <outlet property="shareButton" destination="JIX-CP-yTw" id="MFa-T3-VWJ"/>
+                <outlet property="titleLabel" destination="hYE-MU-J4V" id="9Ja-R7-3uA"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9wd-Gg-Jw3">
+                    <rect key="frame" x="40" y="122" width="295" height="295"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.25409881161971831" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="9wd-Gg-Jw3" secondAttribute="height" multiplier="1:1" id="QMN-E6-rvI"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
+                    <rect key="frame" x="24" y="437" width="327" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
+                    <rect key="frame" x="24" y="585" width="155.5" height="42"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="BRe-wW-oV6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Copy">
+                        <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="copyWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="h0W-Mv-Cm6"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
+                    <rect key="frame" x="195.5" y="585" width="155.5" height="42"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Share">
+                        <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="JmG-TI-t25"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-K1-otl">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYE-MU-J4V">
+                            <rect key="frame" x="64" y="44" width="247" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Sw-3K-xlS">
+                            <rect key="frame" x="16" y="44" width="38" height="22"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_white_icon">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="ANB-VG-Vp4"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="hYE-MU-J4V" secondAttribute="bottom" constant="16" id="2o4-65-RXf"/>
+                        <constraint firstAttribute="height" constant="82" id="XY1-26-aan"/>
+                        <constraint firstItem="hYE-MU-J4V" firstAttribute="centerX" secondItem="ayx-K1-otl" secondAttribute="centerX" id="ZLB-uL-H9l"/>
+                        <constraint firstItem="1Sw-3K-xlS" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="16" id="hYc-eb-FJg"/>
+                        <constraint firstItem="hYE-MU-J4V" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="64" id="mE3-Wk-V7d"/>
+                        <constraint firstItem="1Sw-3K-xlS" firstAttribute="centerY" secondItem="hYE-MU-J4V" secondAttribute="centerY" id="v3Y-iU-yt3"/>
+                        <constraint firstAttribute="trailing" secondItem="hYE-MU-J4V" secondAttribute="trailing" constant="64" id="xei-Nd-E9t"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9wd-Gg-Jw3" secondAttribute="trailing" constant="40" id="2NF-n6-IWo"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="centerX" secondItem="9wd-Gg-Jw3" secondAttribute="centerX" id="4kr-OG-qRU"/>
+                <constraint firstItem="ayx-K1-otl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6eF-M5-M9U"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="Eeo-DQ-7Nc"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="leading" secondItem="soD-bJ-naO" secondAttribute="trailing" constant="16" id="H16-tq-ng7"/>
+                <constraint firstAttribute="trailing" secondItem="ayx-K1-otl" secondAttribute="trailing" id="JfO-Oq-F8g"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="centerY" secondItem="soD-bJ-naO" secondAttribute="centerY" id="M0g-23-9y8"/>
+                <constraint firstItem="ayx-K1-otl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="N8r-ht-opl"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="height" secondItem="soD-bJ-naO" secondAttribute="height" id="SRB-eM-8qB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="soD-bJ-naO" secondAttribute="bottom" constant="40" id="bZ6-Zb-aFm"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="gG8-g7-PB4"/>
+                <constraint firstItem="soD-bJ-naO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="lUU-ga-ji4"/>
+                <constraint firstItem="6US-bk-Sk8" firstAttribute="top" secondItem="9wd-Gg-Jw3" secondAttribute="bottom" constant="20" id="pyT-Hn-dZW"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="width" secondItem="soD-bJ-naO" secondAttribute="width" id="sdp-ir-Zws"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="top" secondItem="ayx-K1-otl" secondAttribute="bottom" constant="40" id="tUq-P1-uC9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JIX-CP-yTw" secondAttribute="trailing" constant="24" id="z1c-k1-lqL"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="MLM-j8-skU" appends="YES" id="573-7t-weZ"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="MLM-j8-skU">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanGestureAction:" destination="-1" id="vnI-cZ-vEe"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="38" height="19"/>
+    </resources>
+</document>

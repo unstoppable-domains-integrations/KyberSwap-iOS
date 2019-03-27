@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportJSONViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="enterPasswordTextField" destination="5OF-yq-LyQ" id="8PM-fi-EUJ"/>
+                <outlet property="importJSONButton" destination="Kef-NW-6Ru" id="JJq-I7-DXO"/>
+                <outlet property="nameWalletTextField" destination="iET-Mn-45p" id="nzd-Oi-pbV"/>
+                <outlet property="nextButton" destination="6bU-jo-KwQ" id="vJx-Fq-aJt"/>
+                <outlet property="secureTextButton" destination="1UL-D2-Ny2" id="GqO-Cc-CuF"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-NW-6Ru">
+                    <rect key="frame" x="25" y="52" width="325" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="3pq-40-kHc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                    <state key="normal" title="Import your JSON file">
+                        <color key="titleColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="importJSONButtonPressed:" destination="-1" eventType="touchUpInside" id="LeI-gO-ebg"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Password to Decrypt" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5OF-yq-LyQ">
+                    <rect key="frame" x="25" y="129" width="281" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="zhE-NE-AZW"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bU-jo-KwQ">
+                    <rect key="frame" x="35" y="587" width="305" height="45"/>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Orv-wj-DvP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                    <state key="normal" title="Import Wallet">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="cAa-Pw-2K3"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QMj-hS-EVR">
+                    <rect key="frame" x="25" y="162" width="325" height="1"/>
+                    <color key="backgroundColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="1TN-9R-csO"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1UL-D2-Ny2">
+                    <rect key="frame" x="328" y="140.5" width="22" height="22"/>
+                    <state key="normal" image="hide_secure_text"/>
+                    <connections>
+                        <action selector="secureTextButtonPressed:" destination="-1" eventType="touchUpInside" id="OdI-FO-tgy"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of your wallet (optional)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="iET-Mn-45p">
+                    <rect key="frame" x="25" y="206" width="325" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="4FO-HO-d5b"/>
+                    </constraints>
+                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bue-n7-iMe">
+                    <rect key="frame" x="25" y="239" width="325" height="1"/>
+                    <color key="backgroundColor" red="0.67450980390000004" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="3T0-2L-tHw"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="iET-Mn-45p" firstAttribute="top" secondItem="5OF-yq-LyQ" secondAttribute="bottom" constant="32" id="5yd-Ic-Q5c"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="top" secondItem="Kef-NW-6Ru" secondAttribute="bottom" constant="32" id="6LB-Qh-PnU"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="leading" secondItem="iET-Mn-45p" secondAttribute="leading" id="AbI-3d-A3q"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="leading" secondItem="Kef-NW-6Ru" secondAttribute="leading" id="BAw-hJ-3Mp"/>
+                <constraint firstItem="QMj-hS-EVR" firstAttribute="trailing" secondItem="Bue-n7-iMe" secondAttribute="trailing" id="CHa-zf-eNg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6bU-jo-KwQ" secondAttribute="trailing" constant="35" id="Fp8-HT-KIW"/>
+                <constraint firstItem="iET-Mn-45p" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="25" id="JGt-zZ-wwS"/>
+                <constraint firstItem="6bU-jo-KwQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="KQz-fQ-CQN"/>
+                <constraint firstItem="QMj-hS-EVR" firstAttribute="top" secondItem="5OF-yq-LyQ" secondAttribute="bottom" constant="-12" id="Peb-X4-utu"/>
+                <constraint firstItem="Bue-n7-iMe" firstAttribute="trailing" secondItem="iET-Mn-45p" secondAttribute="trailing" id="VBk-Z6-fth"/>
+                <constraint firstItem="Bue-n7-iMe" firstAttribute="leading" secondItem="iET-Mn-45p" secondAttribute="leading" id="Y8m-Rn-dY5"/>
+                <constraint firstItem="QMj-hS-EVR" firstAttribute="leading" secondItem="5OF-yq-LyQ" secondAttribute="leading" id="Zmw-dd-jSk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iET-Mn-45p" secondAttribute="trailing" constant="25" id="bsH-Sw-xpt"/>
+                <constraint firstItem="Bue-n7-iMe" firstAttribute="top" secondItem="iET-Mn-45p" secondAttribute="bottom" constant="-12" id="cBP-gu-onk"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="eUD-Pe-bad"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="h3o-l0-VhK"/>
+                <constraint firstItem="1UL-D2-Ny2" firstAttribute="centerY" secondItem="5OF-yq-LyQ" secondAttribute="centerY" id="h4e-PV-cHO"/>
+                <constraint firstItem="Kef-NW-6Ru" firstAttribute="trailing" secondItem="iET-Mn-45p" secondAttribute="trailing" id="ow8-yU-Npu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="6bU-jo-KwQ" secondAttribute="bottom" constant="35" id="rCV-JK-cNi"/>
+                <constraint firstItem="5OF-yq-LyQ" firstAttribute="trailing" secondItem="Kef-NW-6Ru" secondAttribute="trailing" constant="-44" id="uAf-7s-R9U"/>
+                <constraint firstItem="1UL-D2-Ny2" firstAttribute="trailing" secondItem="iET-Mn-45p" secondAttribute="trailing" id="vWW-Xm-ihB"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="25.5" y="51.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="hide_secure_text" width="22" height="19"/>
+    </resources>
+</document>

@@ -1,0 +1,22 @@
+{
+  "data": [
+  {
+           "icon": "welcome_tokenized",
+           "title": "welcome.first.screen.title",
+           "subtitle": "welcome.first.screen.description",
+           "position": 0
+  },
+  {
+           "icon": "welcome_kyberswap",
+           "title": "welcome.second.screen.title",
+           "subtitle": "welcome.second.screen.description",
+           "position": 1
+  },
+  {
+           "icon": "welcome_kybergo",
+           "title": "welcome.third.screen.title",
+           "subtitle": "welcome.third.screen.description",
+           "position": 2
+  }
+  ]
+}

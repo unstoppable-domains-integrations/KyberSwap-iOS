@@ -1,40 +1,31 @@
-# Trust - Ethereum Wallet for iOS
+# KyberSwap for iOS
 
-[![Build Status](https://travis-ci.org/TrustWallet/trust-wallet-ios.svg?branch=master)](https://travis-ci.org/TrustWallet/trust-wallet-ios)
-[![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/TrustWallet/trust-wallet-ios/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/TrustWallet/trust-wallet-ios/branches/master)
-[![License](https://img.shields.io/badge/license-GPL3-green.svg?style=flat)](https://github.com/fastlane/fastlane/blob/master/LICENSE)
 
-[<img src="https://raw.githubusercontent.com/TrustWallet/trust-wallet-ios/master/resources/iphone_cover.png">](https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409)
+### Download app on AppStore 
+[<img src="https://raw.githubusercontent.com/KyberNetwork/KyberSwap-iOS/master/resources/app-store-badge.png">](https://itunes.apple.com/us/app/kyberswap/id1453691309)
 
-[<img src=resources/app-store-badge.png height="88">](https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409)
+KyberSwap DEX is now available as a mobile app. In addition to our popular token swap service, App also features a smart crypto wallet that employs innovative security measures to turn your smartphone into a secure Ethereum wallet. 
 
-Welcome to Trust's open source iOS app!
+1. Trade
+A decentralized exchange on your phone. Exchange (such as ETH -> KNC, DAI -> ETH, BNT -> KNC etc) among 70+ tokens supported by Kyber
 
-## Getting Started
+2. Transfer
+One click service to transfer tokens from one wallet to another wallet. QR code scanner available.
 
-1. [Download](https://developer.apple.com/xcode/download/) the Xcode 9 release.
-1. Clone this repository.
-1. Run `make bootstrap` to install tools and dependencies.
+3. Gift Cards
+Redeem or unlock gift cards and claim tokens
 
-## Contributing
+4. Live prices and charts
+Live prices and charts are available for popular tokens
 
-We intend for this project to be an educational resource: we are excited to
-share our wins, mistakes, and methodology of iOS development as we work
-in the open. Our primary focus is to continue improving the app for our users in
-line with our roadmap.
+5. Price alerts
+Never miss your chance to earn with live price alerts
 
-The best way to submit feedback and report bugs is to open a GitHub issue.
-Please be sure to include your operating system, device, version number, and
-steps to reproduce reported bugs. Keep in mind that all participants will be
-expected to follow our code of conduct.
+6. Import / create wallets
+Import JSON wallet easily in your mobile phone. Don’t understand JSON ? No worry, You can easily create a new wallet.
 
-## Code of Conduct
+7. 12 words and a pen
+In case your device gets lost, you can secure your wallet and coins with just 12 words written on paper. The master phrase can restore your wallet and funds on any other device.
 
-We aim to share our knowledge and findings as we work daily to improve our
-product, for our community, in a safe and open space. We work as we live, as
-kind and considerate human beings who learn and grow from giving and receiving
-positive, constructive feedback. We reserve the right to delete or ban any
-behavior violating this base foundation of respect.
-
-Help with localization?
-Here is a public link to join localization project: https://lokalise.co/signup/3947163159df13df851b51.98101647/all/
+8. No ads. No tracking. Always free. Always private.
+No tracking, no ads or privacy concerns. That’s our promise.

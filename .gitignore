@@ -2,9 +2,14 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+## Secret
+KNSecret.swift
+GoogleService-Info.plist
+
 ## Build generated
 build/
 DerivedData/
+xcshareddata/
 
 ## Ignore when build
 .DS_Store

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTestBackUpStatusViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="containerView" destination="y0y-zQ-l9R" id="WiC-0g-0cz"/>
+                <outlet property="firstButton" destination="Z0B-hj-7l8" id="Lhy-KP-jbS"/>
+                <outlet property="messageLabel" destination="SWU-7O-zO9" id="Nd1-2N-r89"/>
+                <outlet property="paddingConstraintForButtons" destination="Hxv-8W-9cl" id="YZJ-5A-Rbi"/>
+                <outlet property="secondButton" destination="CL6-fZ-du6" id="kMr-e0-ttO"/>
+                <outlet property="secondButtonWidthConstraint" destination="msI-ml-s0g" id="jnD-tx-Wp2"/>
+                <outlet property="titleLabel" destination="5WQ-tn-CFc" id="JED-ES-Aq6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y0y-zQ-l9R">
+                    <rect key="frame" x="16" y="228" width="343" height="171.5"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wrong Backup" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WQ-tn-CFc">
+                            <rect key="frame" x="25" y="25" width="293" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your backup words are incorrect. Please try again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWU-7O-zO9">
+                            <rect key="frame" x="25" y="57" width="293" height="34.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0B-hj-7l8">
+                            <rect key="frame" x="16" y="111.5" width="123.5" height="44"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Seo-tC-m3u"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Retry">
+                                <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="firstButtonPressed:" destination="-1" eventType="touchUpInside" id="2ef-Wx-Mat"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CL6-fZ-du6">
+                            <rect key="frame" x="155.5" y="111.5" width="171.5" height="44"/>
+                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="172" id="msI-ml-s0g"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                            <state key="normal" title="Backup Again">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="secondButtonPressed:" destination="-1" eventType="touchUpInside" id="h0Q-AV-tCk"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Z0B-hj-7l8" secondAttribute="bottom" constant="16" id="0kc-u1-YgN"/>
+                        <constraint firstItem="SWU-7O-zO9" firstAttribute="leading" secondItem="5WQ-tn-CFc" secondAttribute="leading" id="7l5-xc-M74"/>
+                        <constraint firstItem="Z0B-hj-7l8" firstAttribute="top" secondItem="SWU-7O-zO9" secondAttribute="bottom" constant="20" id="AVX-K1-wex"/>
+                        <constraint firstItem="CL6-fZ-du6" firstAttribute="centerY" secondItem="Z0B-hj-7l8" secondAttribute="centerY" id="CmO-eY-3ds"/>
+                        <constraint firstItem="CL6-fZ-du6" firstAttribute="leading" secondItem="Z0B-hj-7l8" secondAttribute="trailing" constant="16" id="Hxv-8W-9cl"/>
+                        <constraint firstItem="Z0B-hj-7l8" firstAttribute="leading" secondItem="y0y-zQ-l9R" secondAttribute="leading" constant="16" id="Jv6-Ng-y4N"/>
+                        <constraint firstItem="5WQ-tn-CFc" firstAttribute="top" secondItem="y0y-zQ-l9R" secondAttribute="top" constant="25" id="NPm-Yb-gFZ"/>
+                        <constraint firstItem="SWU-7O-zO9" firstAttribute="trailing" secondItem="5WQ-tn-CFc" secondAttribute="trailing" id="OzH-Lw-d2M"/>
+                        <constraint firstItem="5WQ-tn-CFc" firstAttribute="leading" secondItem="y0y-zQ-l9R" secondAttribute="leading" constant="25" id="TJo-JC-nl7"/>
+                        <constraint firstItem="SWU-7O-zO9" firstAttribute="top" secondItem="5WQ-tn-CFc" secondAttribute="bottom" constant="10" id="X7I-FX-3wK"/>
+                        <constraint firstAttribute="trailing" secondItem="CL6-fZ-du6" secondAttribute="trailing" constant="16" id="ehJ-6P-cvt"/>
+                        <constraint firstItem="CL6-fZ-du6" firstAttribute="height" secondItem="Z0B-hj-7l8" secondAttribute="height" id="nWm-JE-RFm"/>
+                        <constraint firstAttribute="trailing" secondItem="5WQ-tn-CFc" secondAttribute="trailing" constant="25" id="qX8-W7-j66"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="y0y-zQ-l9R" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-30" id="1Oh-gY-mxX"/>
+                <constraint firstItem="y0y-zQ-l9R" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="89f-qP-Sav"/>
+                <constraint firstItem="y0y-zQ-l9R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="m1b-9T-nwJ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="40.5" y="53.5"/>
+        </view>
+    </objects>
+</document>

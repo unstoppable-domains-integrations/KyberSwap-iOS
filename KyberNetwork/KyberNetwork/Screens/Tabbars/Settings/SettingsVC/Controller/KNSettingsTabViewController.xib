@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="aboutButton" destination="0Wu-3X-xy0" id="yur-6n-epM"/>
+                <outlet property="alertMethodsButton" destination="400-Y7-DXM" id="xEe-j2-A0A"/>
+                <outlet property="bottomPaddingVersionLabelConstraint" destination="5pD-cH-Lq6" id="QdI-t5-dMr"/>
+                <outlet property="changePINButton" destination="c9Z-ZK-Ucl" id="Y2q-9i-4VJ"/>
+                <outlet property="community" destination="sSk-u8-Y8q" id="dBQ-wW-leP"/>
+                <outlet property="contactButton" destination="XDo-Po-iWz" id="gEu-eC-2gh"/>
+                <outlet property="headerContainerView" destination="LAf-Nx-GiM" id="KdF-SZ-Hhs"/>
+                <outlet property="manageAlerts" destination="Z43-SL-69M" id="iEQ-3g-tgh"/>
+                <outlet property="manageWalletButton" destination="OVZ-jU-hlZ" id="yMe-nI-3CH"/>
+                <outlet property="navTitleLabel" destination="BS7-Ut-PSh" id="Czb-hZ-Lfr"/>
+                <outlet property="rateOurAppButton" destination="JvF-yd-iWq" id="Xul-ju-DHD"/>
+                <outlet property="reportBugsButton" destination="0f5-D1-b9i" id="tvb-JT-ppe"/>
+                <outlet property="shareWithFriendsButton" destination="Z6O-Km-0S7" id="Ug8-Xt-Krq"/>
+                <outlet property="supportButton" destination="N5S-5z-7Ii" id="yoL-lw-iBU"/>
+                <outlet property="topPaddingConstraintForContactButton" destination="Trp-EE-9QD" id="TNW-PQ-1iu"/>
+                <outlet property="versionLabel" destination="rGf-Ii-F5o" id="TGu-U8-69f"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LAf-Nx-GiM">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BS7-Ut-PSh">
+                            <rect key="frame" x="149.5" y="46" width="76" height="22"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="BS7-Ut-PSh" secondAttribute="bottom" constant="16" id="3om-Qa-TuQ"/>
+                        <constraint firstAttribute="height" constant="84" id="XGd-Zo-BPF"/>
+                        <constraint firstItem="BS7-Ut-PSh" firstAttribute="centerX" secondItem="LAf-Nx-GiM" secondAttribute="centerX" id="teP-nv-fM3"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVZ-jU-hlZ">
+                    <rect key="frame" x="24" y="108" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="UT8-Ef-DBa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Manage Wallet">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="manageWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="JSQ-er-z2P"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDo-Po-iWz">
+                    <rect key="frame" x="24" y="216" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="uxN-7F-6cv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Contact">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="contactButtonPressed:" destination="-1" eventType="touchUpInside" id="y2z-qg-4o2"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N5S-5z-7Ii">
+                    <rect key="frame" x="24" y="252" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="JTo-XI-MHq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Support">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="supportButtonPressed:" destination="-1" eventType="touchUpInside" id="TpW-cG-Db5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9Z-ZK-Ucl">
+                    <rect key="frame" x="24" y="288" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="eCr-lg-9wf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Change PIN">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="changePasscodeButtonPressed:" destination="-1" eventType="touchUpInside" id="J3Y-yX-hQu"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wu-3X-xy0">
+                    <rect key="frame" x="24" y="324" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="5bn-5l-4ED"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="About">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="aboutButtonPressed:" destination="-1" eventType="touchUpInside" id="mha-5P-Lnr"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSk-u8-Y8q">
+                    <rect key="frame" x="24" y="360" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="5Yc-3G-Y8k"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Community">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="communityButtonPressed:" destination="-1" eventType="touchUpInside" id="VrC-gm-7wP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pd0-VK-ek2">
+                    <rect key="frame" x="24" y="400" width="32" height="33"/>
+                    <state key="normal" image="telegram"/>
+                    <connections>
+                        <action selector="telegramButtonPressed:" destination="-1" eventType="touchUpInside" id="p4f-5L-GGt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-Nk-EbV">
+                    <rect key="frame" x="108" y="400.5" width="32" height="32"/>
+                    <state key="normal" image="github"/>
+                    <connections>
+                        <action selector="githubButtonPressed:" destination="-1" eventType="touchUpInside" id="9gv-8L-EJL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdX-Yv-Ujd">
+                    <rect key="frame" x="150" y="400" width="32" height="33"/>
+                    <state key="normal" image="twitter"/>
+                    <connections>
+                        <action selector="twitterButtonPressed:" destination="-1" eventType="touchUpInside" id="UVE-ys-1R6"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSF-Hs-lsq">
+                    <rect key="frame" x="192" y="400" width="32" height="33"/>
+                    <state key="normal" image="facebook"/>
+                    <connections>
+                        <action selector="facebookButtonPressed:" destination="-1" eventType="touchUpInside" id="WRG-lA-KWI"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlK-9e-kdZ">
+                    <rect key="frame" x="234" y="400" width="32" height="33"/>
+                    <state key="normal" image="medium"/>
+                    <connections>
+                        <action selector="mediumButtonPressed:" destination="-1" eventType="touchUpInside" id="Ksb-1Y-6lt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPD-eE-njQ">
+                    <rect key="frame" x="276" y="400" width="32" height="33"/>
+                    <state key="normal" image="reddit"/>
+                    <connections>
+                        <action selector="redditButtonPressed:" destination="-1" eventType="touchUpInside" id="kXc-54-myd"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYu-os-Pb3">
+                    <rect key="frame" x="318" y="400" width="32" height="33"/>
+                    <state key="normal" image="linkedin"/>
+                    <connections>
+                        <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-Km-0S7">
+                    <rect key="frame" x="24" y="441" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="Q4W-8X-DHG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Share with friends">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="shareWithFriendButtonPressed:" destination="-1" eventType="touchUpInside" id="x8f-72-BNt"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 1.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGf-Ii-F5o">
+                    <rect key="frame" x="144.5" y="625.5" width="86.5" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80r-ho-KCH">
+                    <rect key="frame" x="66" y="400.5" width="32" height="32"/>
+                    <state key="normal" image="tele_dev_group"/>
+                    <connections>
+                        <action selector="telegramDevButtonPressed:" destination="-1" eventType="touchUpInside" id="0ze-VG-Xif"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f5-D1-b9i">
+                    <rect key="frame" x="24" y="477" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="iyx-iq-67d"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Report Bugs">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="reportBugsButtonPressed:" destination="-1" eventType="touchUpInside" id="Thl-wk-Mvw"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvF-yd-iWq">
+                    <rect key="frame" x="24" y="513" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="AJz-bO-L3w"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Rate our App">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="rateOurAppButtonPressed:" destination="-1" eventType="touchUpInside" id="Pr7-jz-tQ5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z43-SL-69M">
+                    <rect key="frame" x="24" y="144" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="3Yu-KT-OTn"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Manage Alerts">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="manageAlertsButtonPressed:" destination="-1" eventType="touchUpInside" id="H5k-rw-l7b"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="400-Y7-DXM">
+                    <rect key="frame" x="24" y="180" width="327" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="fxx-aU-yXU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <state key="normal" title="Alert Methods">
+                        <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="notificationsButtonPressed:" destination="-1" eventType="touchUpInside" id="MKs-rH-7dK"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tdX-Yv-Ujd" firstAttribute="centerY" secondItem="P8S-Nk-EbV" secondAttribute="centerY" id="2Yy-dT-BJs"/>
+                <constraint firstItem="JvF-yd-iWq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="4P2-Xo-DDQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="rGf-Ii-F5o" secondAttribute="bottom" constant="24" id="5pD-cH-Lq6"/>
+                <constraint firstItem="Z43-SL-69M" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="4" id="7DV-1O-yxE"/>
+                <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="leading" secondItem="N5S-5z-7Ii" secondAttribute="leading" id="8bi-DU-dg9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OVZ-jU-hlZ" secondAttribute="trailing" constant="24" id="8hZ-R1-B5K"/>
+                <constraint firstItem="P8S-Nk-EbV" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="8ns-Ya-Pg8"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="trailing" secondItem="sSk-u8-Y8q" secondAttribute="trailing" id="9Go-rk-iEA"/>
+                <constraint firstItem="N5S-5z-7Ii" firstAttribute="top" secondItem="XDo-Po-iWz" secondAttribute="bottom" constant="4" id="APY-Ut-By2"/>
+                <constraint firstItem="tdX-Yv-Ujd" firstAttribute="leading" secondItem="P8S-Nk-EbV" secondAttribute="trailing" constant="10" id="BTn-Ua-GBZ"/>
+                <constraint firstItem="JvF-yd-iWq" firstAttribute="top" secondItem="0f5-D1-b9i" secondAttribute="bottom" constant="4" id="BWR-Y0-cY2"/>
+                <constraint firstItem="N5S-5z-7Ii" firstAttribute="leading" secondItem="XDo-Po-iWz" secondAttribute="leading" id="CYv-Hc-6Z8"/>
+                <constraint firstAttribute="trailing" secondItem="LAf-Nx-GiM" secondAttribute="trailing" id="ECK-0Y-Hux"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="trailing" secondItem="OVZ-jU-hlZ" secondAttribute="trailing" id="EwU-7q-Da8"/>
+                <constraint firstItem="P8S-Nk-EbV" firstAttribute="leading" secondItem="80r-ho-KCH" secondAttribute="trailing" constant="10" id="GE5-XZ-5CP"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QPD-eE-njQ" secondAttribute="trailing" constant="10" id="GdZ-Ic-y9t"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="OVZ-jU-hlZ" secondAttribute="leading" id="JrF-tz-6Wh"/>
+                <constraint firstItem="0Wu-3X-xy0" firstAttribute="trailing" secondItem="c9Z-ZK-Ucl" secondAttribute="trailing" id="JyF-Mh-lTr"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="KAx-Gb-p8P"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JvF-yd-iWq" secondAttribute="trailing" constant="24" id="Lih-Hm-jd9"/>
+                <constraint firstItem="0f5-D1-b9i" firstAttribute="top" secondItem="Z6O-Km-0S7" secondAttribute="bottom" constant="4" id="Mch-hY-jX9"/>
+                <constraint firstItem="N5S-5z-7Ii" firstAttribute="trailing" secondItem="XDo-Po-iWz" secondAttribute="trailing" id="Nlb-ey-zwt"/>
+                <constraint firstItem="sSk-u8-Y8q" firstAttribute="top" secondItem="0Wu-3X-xy0" secondAttribute="bottom" constant="4" id="OEN-KH-Gaf"/>
+                <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
+                <constraint firstItem="0Wu-3X-xy0" firstAttribute="top" secondItem="c9Z-ZK-Ucl" secondAttribute="bottom" constant="4" id="Q9G-MX-kME"/>
+                <constraint firstItem="Z43-SL-69M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="RpI-iu-DEb"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
+                <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="76" id="Trp-EE-9QD"/>
+                <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
+                <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="400-Y7-DXM" secondAttribute="trailing" constant="24" id="WqP-r2-LSA"/>
+                <constraint firstItem="0Wu-3X-xy0" firstAttribute="leading" secondItem="c9Z-ZK-Ucl" secondAttribute="leading" id="Wwf-N9-2mk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0f5-D1-b9i" secondAttribute="trailing" constant="24" id="YmC-i0-h7e"/>
+                <constraint firstItem="400-Y7-DXM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="ZUG-Hx-Ulv"/>
+                <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
+                <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
+                <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
+                <constraint firstItem="80r-ho-KCH" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="cO0-Wt-ivJ"/>
+                <constraint firstItem="QPD-eE-njQ" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="10" id="czA-ja-bKb"/>
+                <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="trailing" secondItem="N5S-5z-7Ii" secondAttribute="trailing" id="eac-HY-dQQ"/>
+                <constraint firstItem="rGf-Ii-F5o" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="g6i-zV-3Ht"/>
+                <constraint firstItem="80r-ho-KCH" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="10" id="gvn-9c-87f"/>
+                <constraint firstItem="sSk-u8-Y8q" firstAttribute="trailing" secondItem="0Wu-3X-xy0" secondAttribute="trailing" id="iAl-hq-TaO"/>
+                <constraint firstItem="dSF-Hs-lsq" firstAttribute="leading" secondItem="tdX-Yv-Ujd" secondAttribute="trailing" constant="10" id="jMz-at-VSR"/>
+                <constraint firstItem="Pd0-VK-ek2" firstAttribute="leading" secondItem="sSk-u8-Y8q" secondAttribute="leading" id="jPe-po-0Zf"/>
+                <constraint firstItem="OVZ-jU-hlZ" firstAttribute="top" secondItem="LAf-Nx-GiM" secondAttribute="bottom" constant="24" id="lbc-Wh-kf2"/>
+                <constraint firstItem="QlK-9e-kdZ" firstAttribute="centerY" secondItem="dSF-Hs-lsq" secondAttribute="centerY" id="m0j-Lt-miy"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z43-SL-69M" secondAttribute="trailing" constant="24" id="oh0-Yn-SKp"/>
+                <constraint firstItem="dSF-Hs-lsq" firstAttribute="centerY" secondItem="tdX-Yv-Ujd" secondAttribute="centerY" id="ojW-qs-WkJ"/>
+                <constraint firstItem="LAf-Nx-GiM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="or9-IV-hJj"/>
+                <constraint firstItem="0f5-D1-b9i" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="rvB-RT-5Tz"/>
+                <constraint firstItem="QlK-9e-kdZ" firstAttribute="leading" secondItem="dSF-Hs-lsq" secondAttribute="trailing" constant="10" id="vyO-U7-A4N"/>
+                <constraint firstItem="Z6O-Km-0S7" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="leading" id="yiS-GU-7WV"/>
+                <constraint firstItem="400-Y7-DXM" firstAttribute="top" secondItem="Z43-SL-69M" secondAttribute="bottom" constant="4" id="zmv-Zy-AFP"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="facebook" width="32" height="33"/>
+        <image name="github" width="32" height="32"/>
+        <image name="linkedin" width="32" height="33"/>
+        <image name="medium" width="32" height="33"/>
+        <image name="reddit" width="32" height="33"/>
+        <image name="tele_dev_group" width="32" height="32"/>
+        <image name="telegram" width="32" height="33"/>
+        <image name="twitter" width="32" height="33"/>
+    </resources>
+</document>

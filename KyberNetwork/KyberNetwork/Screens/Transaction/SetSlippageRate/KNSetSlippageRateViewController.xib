@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSetSlippageRateViewController" customModule="Trust" customModuleProvider="target">
+            <connections>
+                <outlet property="currentValueLabel" destination="wyz-eQ-YAo" id="odQ-gn-AP9"/>
+                <outlet property="doneButton" destination="kSD-Ie-sjM" id="mMf-fR-znA"/>
+                <outlet property="leadingConstraintForCurrentValueLabel" destination="np5-AR-gCI" id="dPo-EB-4wP"/>
+                <outlet property="maxValueLabel" destination="hn5-w4-5FK" id="iFm-gB-gBf"/>
+                <outlet property="navTitleLabel" destination="2Da-Bh-w30" id="hBO-tQ-30h"/>
+                <outlet property="slider" destination="Si2-3R-g3K" id="hto-2r-ta0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5H-6l-fbF">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slippage Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Da-Bh-w30">
+                            <rect key="frame" x="132.5" y="41" width="110.5" height="21"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8q-ZN-Fut">
+                            <rect key="frame" x="16" y="30" width="24" height="24"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_white_icon">
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="kwa-Xu-J0I"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.035294117647058823" green="0.15686274509803921" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="J8q-ZN-Fut" firstAttribute="leading" secondItem="T5H-6l-fbF" secondAttribute="leading" constant="16" id="2Ib-7m-aje"/>
+                        <constraint firstAttribute="bottom" secondItem="2Da-Bh-w30" secondAttribute="bottom" constant="18" id="C92-2K-8Ko"/>
+                        <constraint firstAttribute="height" constant="80" id="kAx-0X-2Pv"/>
+                        <constraint firstItem="2Da-Bh-w30" firstAttribute="centerX" secondItem="T5H-6l-fbF" secondAttribute="centerX" id="liv-2f-NW3"/>
+                        <constraint firstItem="J8q-ZN-Fut" firstAttribute="top" secondItem="T5H-6l-fbF" secondAttribute="top" constant="30" id="p3P-RZ-HHM"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slippage_rate_icon" translatesAutoresizingMaskIntoConstraints="NO" id="acc-2n-B5C">
+                    <rect key="frame" x="137.5" y="138" width="100" height="91"/>
+                </imageView>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="30" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="Si2-3R-g3K" customClass="CustomSlider" customModule="Trust" customModuleProvider="target">
+                    <rect key="frame" x="73" y="289" width="229" height="31"/>
+                    <color key="tintColor" red="0.40000000000000002" green="0.67843137249999996" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="minimumTrackTintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="maximumTrackTintColor" red="0.047058823529411764" green="0.0" blue="0.20000000000000001" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="thumbTintColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <action selector="sliderValueDidChange:" destination="-1" eventType="valueChanged" id="L7R-AX-Sf1"/>
+                    </connections>
+                </slider>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hn5-w4-5FK">
+                    <rect key="frame" x="280.5" y="329" width="19.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyz-eQ-YAo">
+                    <rect key="frame" x="195" y="262" width="19.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is Slippage Rate?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uyY-SC-PYb">
+                    <rect key="frame" x="30" y="406" width="315" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSD-Ie-sjM">
+                    <rect key="frame" x="52" y="595" width="271" height="42"/>
+                    <color key="backgroundColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="doH-s7-blT"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="dkJ-WE-oXO"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="kSD-Ie-sjM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="52" id="0oI-mr-5JH"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="uyY-SC-PYb" secondAttribute="trailing" constant="30" id="1J4-Ce-Cjj"/>
+                <constraint firstAttribute="trailing" secondItem="T5H-6l-fbF" secondAttribute="trailing" id="6Jv-yL-k0n"/>
+                <constraint firstItem="T5H-6l-fbF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8qz-b9-Y9v"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kSD-Ie-sjM" secondAttribute="trailing" constant="52" id="Cle-0R-QbE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="kSD-Ie-sjM" secondAttribute="bottom" constant="30" id="KU0-D3-YtW"/>
+                <constraint firstItem="Si2-3R-g3K" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="75" id="LIr-yP-U1x"/>
+                <constraint firstItem="uyY-SC-PYb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="N6o-bH-mAp"/>
+                <constraint firstItem="uyY-SC-PYb" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="PoI-e3-08d"/>
+                <constraint firstItem="acc-2n-B5C" firstAttribute="top" secondItem="T5H-6l-fbF" secondAttribute="bottom" constant="58" id="Rs3-3U-KTm"/>
+                <constraint firstItem="acc-2n-B5C" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Tkg-2r-2t2"/>
+                <constraint firstItem="T5H-6l-fbF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ZQ4-Jg-Fia"/>
+                <constraint firstItem="Si2-3R-g3K" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="ZXO-KQ-ksE"/>
+                <constraint firstItem="Si2-3R-g3K" firstAttribute="top" secondItem="acc-2n-B5C" secondAttribute="bottom" constant="60" id="aIN-vh-dir"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Si2-3R-g3K" secondAttribute="trailing" constant="75" id="cNk-1e-HDB"/>
+                <constraint firstItem="hn5-w4-5FK" firstAttribute="trailing" secondItem="Si2-3R-g3K" secondAttribute="trailing" id="gPv-oS-uWA"/>
+                <constraint firstItem="uyY-SC-PYb" firstAttribute="top" secondItem="hn5-w4-5FK" secondAttribute="bottom" constant="60" id="jf8-6r-ZWO"/>
+                <constraint firstItem="Si2-3R-g3K" firstAttribute="top" secondItem="wyz-eQ-YAo" secondAttribute="bottom" constant="10" id="joh-lL-e1S"/>
+                <constraint firstItem="wyz-eQ-YAo" firstAttribute="leading" secondItem="Si2-3R-g3K" secondAttribute="leading" constant="120" id="np5-AR-gCI"/>
+                <constraint firstItem="hn5-w4-5FK" firstAttribute="top" secondItem="Si2-3R-g3K" secondAttribute="bottom" constant="10" id="pay-w8-z3v"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="Mz5-Yn-Yvm" appends="YES" id="g53-Ea-CnW"/>
+            </connections>
+        </view>
+        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Mz5-Yn-Yvm">
+            <rectEdge key="edges" left="YES"/>
+            <connections>
+                <action selector="screenEdgePanAction:" destination="-1" id="BcB-9U-EQC"/>
+            </connections>
+        </screenEdgePanGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="back_white_icon" width="24" height="24"/>
+        <image name="slippage_rate_icon" width="100" height="91"/>
+    </resources>
+</document>
