@@ -46,7 +46,9 @@ class KNAlertStorage {
   func updateAlertsFromServer(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.delete(self.alerts) // remove all old alerts
+    // filter removed alerts
+    let removedAlerts = self.alerts.filter({ return !alerts.contains($0) })
+    self.realm.delete(removedAlerts)
     self.realm.add(alerts, update: true)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
