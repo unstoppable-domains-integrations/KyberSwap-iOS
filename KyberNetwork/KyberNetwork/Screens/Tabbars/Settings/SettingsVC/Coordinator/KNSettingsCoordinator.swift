@@ -182,7 +182,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
     case .rateOurApp:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "rate_our_app"])
-      self.navigationController.openSafari(with: "https://goo.gl/forms/RkvyT7MpTYV93gV02")
+      self.navigationController.openSafari(with: "https://apple.co/2USHOtx")
     }
   }
 
