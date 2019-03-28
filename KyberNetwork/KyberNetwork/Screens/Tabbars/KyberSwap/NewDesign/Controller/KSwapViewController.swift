@@ -49,6 +49,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var rateTextLabel: UILabel!
   @IBOutlet weak var exchangeRateLabel: UILabel!
+  @IBOutlet weak var loadingRateIndicator: UIActivityIndicatorView!
 
   @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
   @IBOutlet weak var heightConstraintForAdvacedSettingsView: NSLayoutConstraint!
@@ -127,7 +128,7 @@ class KSwapViewController: KNBaseViewController {
     self.isErrorMessageEnabled = true
     // start update est rate
     self.estRateTimer?.invalidate()
-    self.updateEstimatedRate(showError: true)
+    self.updateEstimatedRate(showError: true, showLoading: true)
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
       repeats: true,
@@ -362,7 +363,9 @@ class KSwapViewController: KNBaseViewController {
     self.updateAdvancedSettingsView()
   }
 
-  fileprivate func updateEstimatedRate(showError: Bool = false) {
+  fileprivate func updateEstimatedRate(showError: Bool = false, showLoading: Bool = false) {
+    self.loadingRateIndicator.startAnimating()
+    if showLoading { self.loadingRateIndicator.isHidden = false }
     let event = KSwapViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -495,7 +498,7 @@ extension KSwapViewController {
     }
     self.viewModel.updateEstimatedRateFromCachedIfNeeded()
     // call update est rate from node
-    self.updateEstimatedRate(showError: updatedFrom || updatedTo)
+    self.updateEstimatedRate(showError: updatedFrom || updatedTo, showLoading: updatedFrom || updatedTo)
 
     self.balanceLabel.text = self.viewModel.balanceText
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.balanceLabelTapped(_:)))
@@ -595,7 +598,7 @@ extension KSwapViewController {
    Update UIs according to new values
    */
   func coordinatorDidUpdateEstimateRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
-    self.viewModel.updateExchangeRate(
+    let updated = self.viewModel.updateExchangeRate(
       for: from,
       to: to,
       amount: amount,
@@ -620,6 +623,7 @@ extension KSwapViewController {
 
     self.updateAdvancedSettingsView()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    if updated { self.loadingRateIndicator.isHidden = true }
     self.view.layoutIfNeeded()
   }
 
@@ -754,7 +758,7 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
     self.updateViewAmountDidChange()
-    self.updateEstimatedRate(showError: true)
+    self.updateEstimatedRate(showError: true, showLoading: true)
     return false
   }
 
@@ -802,7 +806,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
-    self.updateEstimatedRate()
+    self.updateEstimatedRate(showLoading: true)
     self.updateEstimatedGasLimit()
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
