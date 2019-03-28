@@ -410,11 +410,14 @@ class KSwapViewModel {
     self.selectedGasPriceType = .custom
   }
 
-  func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
+  @discardableResult
+  func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) -> Bool {
     if from == self.from, to == self.to, amount == self.amountFromBigInt {
       self.estRate = rate
       self.slippageRate = slippageRate
+      return true
     }
+    return false
   }
 
   func updateExchangeMinRatePercent(_ percent: Double) {
