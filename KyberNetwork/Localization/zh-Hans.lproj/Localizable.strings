@@ -400,6 +400,7 @@
 "invalid password" = "无效的密码";
 "can.not.transfer.this.token" = "无法转移此令牌";
 "new" = "新";
+"can.not.update.exchange.rate" = "无法更新汇率";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";

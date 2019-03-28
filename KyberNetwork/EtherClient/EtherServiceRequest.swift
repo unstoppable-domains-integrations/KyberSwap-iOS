@@ -11,7 +11,7 @@ struct EtherServiceRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
 
     var baseURL: URL {
       // Change to KyberNetwork endpoint
-      if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint) {
+      if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
         return path
       }
       let config = Config()

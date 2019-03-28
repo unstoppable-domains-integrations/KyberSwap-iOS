@@ -407,6 +407,7 @@
 "skip" = "Skip";
 "you.can.backup.your.wallet.later" = "You can backup your wallet later";
 "new" = "New";
+"can.not.update.exchange.rate" = "Can not update exchange rate";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";

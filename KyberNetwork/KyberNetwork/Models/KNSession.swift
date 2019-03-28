@@ -27,7 +27,7 @@ class KNSession {
        wallet: Wallet) {
     self.keystore = keystore
     self.wallet = wallet
-    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint) {
+    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
       self.web3Swift = Web3Swift(url: path)
     } else {
       self.web3Swift = Web3Swift()
