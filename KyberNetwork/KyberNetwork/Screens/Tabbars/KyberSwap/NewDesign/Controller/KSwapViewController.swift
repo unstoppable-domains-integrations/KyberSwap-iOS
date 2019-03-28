@@ -9,7 +9,7 @@ import Crashlytics
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt)
+  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool)
   case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
   case getUserCapInWei
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
@@ -130,7 +130,7 @@ class KSwapViewController: KNBaseViewController {
     self.isErrorMessageEnabled = true
     // start update est rate
     self.estRateTimer?.invalidate()
-    self.updateEstimatedRate()
+    self.updateEstimatedRate(showError: true)
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
       repeats: true,
@@ -365,11 +365,12 @@ class KSwapViewController: KNBaseViewController {
     self.updateAdvancedSettingsView()
   }
 
-  fileprivate func updateEstimatedRate() {
+  fileprivate func updateEstimatedRate(showError: Bool = false) {
     let event = KSwapViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountFromBigInt
+      amount: self.viewModel.amountFromBigInt,
+      showError: showError
     )
     self.delegate?.kSwapViewController(self, run: event)
   }
@@ -497,7 +498,7 @@ extension KSwapViewController {
     }
     self.viewModel.updateEstimatedRateFromCachedIfNeeded()
     // call update est rate from node
-    self.updateEstimatedRate()
+    self.updateEstimatedRate(showError: updatedFrom || updatedTo)
 
     self.balanceLabel.text = self.viewModel.balanceText
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.balanceLabelTapped(_:)))
@@ -759,6 +760,7 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
     self.updateViewAmountDidChange()
+    self.updateEstimatedRate(showError: true)
     return false
   }
 
@@ -792,6 +794,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
+    self.updateEstimatedRate(showError: true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
     }

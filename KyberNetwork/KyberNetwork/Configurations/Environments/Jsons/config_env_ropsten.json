@@ -6,7 +6,7 @@
              "type": "cached"
              },
              {
-             "endPoint" : "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
+             "endPoint" : "https://eth-ropsten.alchemyapi.io/jsonrpc/mDdZDw4H-9Hsl28A_fgFolv5Fh9IzYUt",
              "type": "prune"
              }
              ],
@@ -243,7 +243,7 @@
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
   "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
   "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
-  "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
+  "endpoint": "https://ropsten.infura.io/v3/",
   "averageBlockTime": 6000,
   "networkId": 3,
   "chainName": "Ropsten",
