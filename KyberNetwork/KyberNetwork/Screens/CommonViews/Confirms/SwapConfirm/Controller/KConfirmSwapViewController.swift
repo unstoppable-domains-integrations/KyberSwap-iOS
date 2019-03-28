@@ -80,6 +80,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.warningMessageLabel.text = self.viewModel.warningRateMessage
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
+    self.warningMessageLabel.isHidden = true
     self.expectedRateLabel.addLetterSpacing()
     self.minAcceptableRateLabel.text = self.viewModel.minRateString
     self.minAcceptableRateLabel.addLetterSpacing()

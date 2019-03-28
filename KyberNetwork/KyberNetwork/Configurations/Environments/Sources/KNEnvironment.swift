@@ -151,4 +151,6 @@ enum KNEnvironment: Int {
     case .staging: return KNSecret.oneSignalAppIDStaging
     }
   }
+
+  var nodeEndpoint: String { return "" }
 }

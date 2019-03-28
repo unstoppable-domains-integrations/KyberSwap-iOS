@@ -285,8 +285,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     switch event {
     case .searchToken(let from, let to, let isSource):
       self.openSearchToken(from: from, to: to, isSource: isSource)
-    case .estimateRate(let from, let to, let amount):
-      self.updateEstimatedRate(from: from, to: to, amount: amount)
+    case .estimateRate(let from, let to, let amount, let showError):
+      self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
     case .estimateGas(let from, let to, let amount, let gasPrice):
       self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
     case .getUserCapInWei:
@@ -347,7 +347,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     var errorMessage: String?
     let group = DispatchGroup()
     group.enter()
-    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount) { error in
+    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount, showError: false) { error in
       if let err = error { errorMessage = err.prettyError }
       group.leave()
     }
@@ -392,7 +392,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.navigationController.pushViewController(self.confirmSwapVC!, animated: true)
   }
 
-  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, completion: ((Error?) -> Void)? = nil) {
+  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool, completion: ((Error?) -> Void)? = nil) {
     if from == to {
       let rate = BigInt(10).power(from.decimals)
       self.rootViewController.coordinatorDidUpdateEstimateRate(
@@ -426,6 +426,20 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           )
           completion?(nil)
         case .failure(let error):
+          if showError {
+            self?.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", value: "Error", comment: ""),
+              message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
+              time: 1.5
+            )
+            self?.rootViewController.coordinatorDidUpdateEstimateRate(
+              from: from,
+              to: to,
+              amount: amount,
+              rate: BigInt(0),
+              slippageRate: BigInt(0)
+            )
+          }
           completion?(error)
         }
     }

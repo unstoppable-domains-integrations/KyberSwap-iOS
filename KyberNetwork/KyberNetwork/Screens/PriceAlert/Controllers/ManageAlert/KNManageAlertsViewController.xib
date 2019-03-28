@@ -71,11 +71,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQp-f4-Dfg" customClass="KNAlertTableView" customModule="KyberNetwork" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="132" width="375" height="535"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVW-qx-o4j">
-                    <rect key="frame" x="0.0" y="132" width="375" height="535"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send you notifications when prices go above or below your targets" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzQ-Yj-nfO">
                             <rect key="frame" x="20" y="100" width="335" height="39.5"/>
@@ -112,14 +112,14 @@
                         <outletCollection property="gestureRecognizers" destination="SEO-kQ-KtZ" appends="YES" id="r2P-81-9OH"/>
                     </connections>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ia8-Ql-61y">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ia8-Ql-61y">
                     <rect key="frame" x="335" y="96" width="24" height="24"/>
                     <state key="normal" image="settings_alert"/>
                     <connections>
                         <action selector="alertMethodButtonPressed:" destination="-1" eventType="touchUpInside" id="n99-jB-BBP"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUm-EU-hZn">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUm-EU-hZn">
                     <rect key="frame" x="299" y="97" width="20" height="22"/>
                     <state key="normal" image="leaderboard"/>
                     <connections>
@@ -132,6 +132,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="lQp-f4-Dfg" secondAttribute="bottom" id="05h-rF-gDi"/>
                 <constraint firstItem="mVW-qx-o4j" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="0eR-cb-gzK"/>
                 <constraint firstItem="Ia8-Ql-61y" firstAttribute="leading" secondItem="aUm-EU-hZn" secondAttribute="trailing" constant="16" id="0yI-tf-hep"/>
+                <constraint firstItem="mVW-qx-o4j" firstAttribute="top" secondItem="GsY-yb-KFs" secondAttribute="bottom" id="2Y7-8s-pOx"/>
                 <constraint firstItem="Ia8-Ql-61y" firstAttribute="top" secondItem="GsY-yb-KFs" secondAttribute="bottom" constant="12" id="5VW-c0-f3q"/>
                 <constraint firstItem="aUm-EU-hZn" firstAttribute="centerY" secondItem="Ia8-Ql-61y" secondAttribute="centerY" id="9kr-kT-nDr"/>
                 <constraint firstItem="mVW-qx-o4j" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Aa7-1M-fu1"/>
@@ -141,9 +142,8 @@
                 <constraint firstItem="lQp-f4-Dfg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="KYC-eK-IKt"/>
                 <constraint firstAttribute="trailing" secondItem="GsY-yb-KFs" secondAttribute="trailing" id="LOp-aX-PkY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lQp-f4-Dfg" secondAttribute="trailing" id="QtY-dB-WrR"/>
-                <constraint firstItem="mVW-qx-o4j" firstAttribute="top" secondItem="Ia8-Ql-61y" secondAttribute="bottom" constant="12" id="RM3-By-x5H"/>
+                <constraint firstItem="lQp-f4-Dfg" firstAttribute="top" secondItem="GsY-yb-KFs" secondAttribute="bottom" id="d33-Dm-dQf"/>
                 <constraint firstItem="GsY-yb-KFs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="giG-c6-8AE"/>
-                <constraint firstItem="lQp-f4-Dfg" firstAttribute="top" secondItem="Ia8-Ql-61y" secondAttribute="bottom" constant="12" id="pmE-Fc-fbA"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="138.40000000000001" y="154.27286356821591"/>

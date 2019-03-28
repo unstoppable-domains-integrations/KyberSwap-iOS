@@ -6,7 +6,11 @@
              "type": "cached"
              },
              {
-             "endPoint": "https://mainnet.infura.io",
+               "endPoint": "https://eth-mainnet.alchemyapi.io/jsonrpc/mDdZDw4H-9Hsl28A_fgFolv5Fh9IzYUt",
+               "type": "prune"
+             },
+             {
+             "endPoint": "https://mainnet.infura.io/v3/7c000d80b38c40729e5677b42e9fd5e7",
              "type": "prune"
              },
              {
@@ -18,7 +22,7 @@
              "type": "prune"
              }
              ],
-    "ws": "wss://mainnet.infura.io/ws"
+    "ws": "wss://mainnet.infura.io/ws/7c000d80b38c40729e5677b42e9fd5e7"
   },
   "tokens": {
     "ETH": {

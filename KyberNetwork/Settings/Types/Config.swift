@@ -46,12 +46,12 @@ struct Config {
     var rpcURL: URL {
         let urlString: String = {
             switch server {
-            case .main: return "https://mainnet.infura.io"
+            case .main: return "https://mainnet.infura.io/v3/7c000d80b38c40729e5677b42e9fd5e7"
             case .classic: return "https://web3.gastracker.io"
             case .callisto: return "https://rpc.callisto.network"
-            case .kovan: return "https://kovan.infura.io/"
-            case .ropsten: return "https://ropsten.infura.io"
-            case .rinkeby: return "https://rinkeby.infura.io"
+            case .kovan: return "https://kovan.infura.io/v3/7c000d80b38c40729e5677b42e9fd5e7"
+            case .ropsten: return "https://ropsten.infura.io/v3/7c000d80b38c40729e5677b42e9fd5e7"
+            case .rinkeby: return "https://rinkeby.infura.io/v3/7c000d80b38c40729e5677b42e9fd5e7"
             case .poa: return "https://core.poa.network"
             case .sokol: return "https://sokol.poa.network"
             case .custom(let custom):
