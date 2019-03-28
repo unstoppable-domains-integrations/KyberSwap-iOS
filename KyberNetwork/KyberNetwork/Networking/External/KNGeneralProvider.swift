@@ -24,19 +24,21 @@ class KNGeneralProvider {
     return Address(string: KNEnvironment.default.knCustomRPC?.networkAddress ?? "")!
   }()
 
-  init() {
-    DispatchQueue.main.async { self.web3Swift.start() }
-  }
+  init() { DispatchQueue.main.async { self.web3Swift.start() } }
 
   // MARK: Balance
   func getETHBalanace(for address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
-    let request = EtherServiceRequest(batch: BatchFactory().create(BalanceRequest(address: address)))
-    Session.send(request) { result in
-      switch result {
-      case .success(let balance):
-        completion(.success(balance))
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
+    DispatchQueue.global().async {
+      let request = EtherServiceRequest(batch: BatchFactory().create(BalanceRequest(address: address)))
+      Session.send(request) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let balance):
+            completion(.success(balance))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
       }
     }
   }
@@ -49,13 +51,17 @@ class KNGeneralProvider {
         let request = EtherServiceRequest(
           batch: BatchFactory().create(CallRequest(to: contract.description, data: data))
         )
-        Session.send(request) { [weak self] result in
-          guard let `self` = self else { return }
-          switch result {
-          case .success(let balance):
-            self.getTokenBalanceDecodeData(from: balance, completion: completion)
-          case .failure(let error):
-            completion(.failure(AnyError(error)))
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let balance):
+                self.getTokenBalanceDecodeData(from: balance, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
           }
         }
       case .failure(let error):
@@ -70,12 +76,16 @@ class KNGeneralProvider {
       address: address,
       state: "latest"
     )))
-    Session.send(request) { result in
-      switch result {
-      case .success(let count):
-        completion(.success(count))
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
+    DispatchQueue.global().async {
+      Session.send(request) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let count):
+            completion(.success(count))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
       }
     }
   }
@@ -92,13 +102,17 @@ class KNGeneralProvider {
       case .success(let data):
         let callRequest = CallRequest(to: tokenAddress.description, data: data)
         let getAllowanceRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
-        Session.send(getAllowanceRequest) { [weak self] getAllowanceResult in
-          guard let `self` = self else { return }
-          switch getAllowanceResult {
-          case .success(let data):
-            self.getTokenAllowanceDecodeData(data, completion: completion)
-          case .failure(let error):
-            completion(.failure(AnyError(error)))
+        DispatchQueue.global().async {
+          Session.send(getAllowanceRequest) { [weak self] getAllowanceResult in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch getAllowanceResult {
+              case .success(let data):
+                self.getTokenAllowanceDecodeData(data, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
           }
         }
       case .failure(let error):
@@ -116,13 +130,17 @@ class KNGeneralProvider {
       case .success(let data):
         let callRequest = CallRequest(to: self.networkAddress.description, data: data)
         let getRateRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
-        Session.send(getRateRequest) { [weak self] getRateResult in
-          guard let `self` = self else { return }
-          switch getRateResult {
-          case .success(let rateData):
-            self.getExpectedRateDecodeData(rateData: rateData, completion: completion)
-          case .failure(let error):
-            completion(.failure(AnyError(error)))
+        DispatchQueue.global().async {
+          Session.send(getRateRequest) { [weak self] getRateResult in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch getRateResult {
+              case .success(let rateData):
+                self.getExpectedRateDecodeData(rateData: rateData, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
           }
         }
       case .failure(let error):
