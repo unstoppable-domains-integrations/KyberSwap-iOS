@@ -348,7 +348,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let group = DispatchGroup()
     group.enter()
     self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount, showError: false) { error in
-      if let err = error { errorMessage = err.prettyError }
+      if error != nil { errorMessage = NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate") }
       group.leave()
     }
     if KNEnvironment.default.isMainnet {
