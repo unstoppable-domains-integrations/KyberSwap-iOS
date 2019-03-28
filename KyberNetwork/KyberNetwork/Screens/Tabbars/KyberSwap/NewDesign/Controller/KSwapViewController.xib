@@ -33,6 +33,7 @@
                 <outlet property="hasPendingTxView" destination="fZ2-x6-Tfq" id="9Q5-HQ-HgX"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="heightConstraintForAdvacedSettingsView" destination="wBz-ex-E7d" id="rJI-1Q-yr8"/>
+                <outlet property="loadingRateIndicator" destination="cHn-lC-3yv" id="sm3-sy-m0v"/>
                 <outlet property="rateTextLabel" destination="X90-eT-lpz" id="3qW-0D-yLK"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
                 <outlet property="toAmountTextField" destination="2ue-dF-Sxj" id="dYw-AF-iPd"/>
@@ -256,10 +257,16 @@
                                 <constraint firstItem="ZHT-tt-DOw" firstAttribute="leading" secondItem="aYO-en-dvs" secondAttribute="leading" id="qiz-xs-BVs"/>
                             </constraints>
                         </view>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="cHn-lC-3yv">
+                            <rect key="frame" x="276.5" y="27" width="20" height="20"/>
+                            <color key="color" red="1" green="0.56470588239999997" blue="0.031372549020000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="cHn-lC-3yv" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="462-Mr-VTJ"/>
                         <constraint firstAttribute="trailing" secondItem="YJW-Oi-0g6" secondAttribute="trailing" constant="35" id="5vS-ye-aWT"/>
+                        <constraint firstItem="WYb-EV-F1u" firstAttribute="leading" secondItem="cHn-lC-3yv" secondAttribute="trailing" constant="4" id="8ed-p8-RRO"/>
                         <constraint firstAttribute="trailing" secondItem="aYO-en-dvs" secondAttribute="trailing" constant="24" id="8fA-2D-LiF"/>
                         <constraint firstItem="aYO-en-dvs" firstAttribute="top" secondItem="WYb-EV-F1u" secondAttribute="bottom" constant="8" id="9yj-rG-vv8"/>
                         <constraint firstItem="LN8-3r-cFX" firstAttribute="top" secondItem="P3a-OW-m6C" secondAttribute="top" constant="4" id="BpZ-3a-KUH"/>
