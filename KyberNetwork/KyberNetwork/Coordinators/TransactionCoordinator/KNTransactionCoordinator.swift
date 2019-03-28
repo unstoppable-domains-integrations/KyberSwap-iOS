@@ -142,6 +142,7 @@ extension KNTransactionCoordinator {
           switch result {
           case .success(let response):
             do {
+              _ = try response.filterSuccessfulStatusCodes()
               let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
               let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ return self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
@@ -210,6 +211,7 @@ extension KNTransactionCoordinator {
           switch result {
           case .success(let response):
             do {
+              _ = try response.filterSuccessfulStatusCodes()
               let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
               // Update last block loaded
@@ -250,6 +252,7 @@ extension KNTransactionCoordinator {
           switch result {
           case .success(let response):
             do {
+              _ = try response.filterSuccessfulStatusCodes()
               let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
               let lastBlockLoaded: Int = {

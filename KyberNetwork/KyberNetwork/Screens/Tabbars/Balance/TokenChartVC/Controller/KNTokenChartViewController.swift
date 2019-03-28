@@ -243,6 +243,7 @@ class KNTokenChartViewModel {
           switch response {
           case .success(let result):
             do {
+              _ = try result.filterSuccessfulStatusCodes()
               if let data = try result.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
                 self.updateData(data, symbol: token.symbol, resolution: type.resolution)
                 print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) ------")

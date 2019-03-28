@@ -127,6 +127,7 @@ class KNRateCoordinator {
           self.isLoadingExchangeTokenRates = false
           if case .success(let resp) = result {
             do {
+              _ = try resp.filterSuccessfulStatusCodes()
               guard let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary else { return }
               var rates: [KNTrackerRate] = []
               for value in json.values {

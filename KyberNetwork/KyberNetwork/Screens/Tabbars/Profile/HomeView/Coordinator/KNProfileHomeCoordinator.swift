@@ -477,6 +477,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
           case .success(let resp):
             var json: JSONDictionary = [:]
             do {
+              _ = try resp.filterSuccessfulStatusCodes()
               json = try resp.mapJSON() as? JSONDictionary ?? [:]
             } catch {} // ignore catch error
             let success = json["success"] as? Bool ?? false
