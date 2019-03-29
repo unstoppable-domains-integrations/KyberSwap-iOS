@@ -208,12 +208,10 @@ extension KNSendTokenViewCoordinator {
           hash: txHash,
           nounce: self.session.externalProvider.minTxCount
         )
-        if self.confirmVC == nil {
-          self.session.addNewPendingTransaction(tx)
-        } else {
+        self.session.addNewPendingTransaction(tx)
+        if self.confirmVC != nil {
           self.navigationController.popViewController(animated: true, completion: {
             self.confirmVC = nil
-            self.session.addNewPendingTransaction(tx)
           })
         }
       case .failure(let error):
