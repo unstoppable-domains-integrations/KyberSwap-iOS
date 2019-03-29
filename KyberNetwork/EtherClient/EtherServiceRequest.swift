@@ -23,7 +23,7 @@ struct EtherServiceRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
     }
 
     var path: String {
-        return "/"
+        return ""
     }
 
     var parameters: Any? {
