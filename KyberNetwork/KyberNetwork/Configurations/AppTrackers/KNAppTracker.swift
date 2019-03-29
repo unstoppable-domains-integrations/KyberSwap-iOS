@@ -31,6 +31,7 @@ class KNAppTracker {
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
+  static let minimumPriceAlertChangePercent: Double = 0.1 // min change 0.1%
   static let maximumPriceAlertPercent: Double = 10000.0
 
   static func internalCachedEnpoint() -> String {

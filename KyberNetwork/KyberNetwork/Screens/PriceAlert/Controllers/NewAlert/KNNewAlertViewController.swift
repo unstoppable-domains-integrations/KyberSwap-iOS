@@ -223,6 +223,14 @@ class KNNewAlertViewController: KNBaseViewController {
       )
       return
     }
+    if fabs(change) < KNAppTracker.minimumPriceAlertChangePercent {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Your target price should be different at least 0.1% from current price".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
     if self.viewModel.token == "ETH" && self.viewModel.currencyType == .eth {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),

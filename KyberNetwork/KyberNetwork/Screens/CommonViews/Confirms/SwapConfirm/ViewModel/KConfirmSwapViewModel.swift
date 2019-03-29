@@ -59,7 +59,9 @@ struct KConfirmSwapViewModel {
     let change = self.percentageRateDiff
     if change > -1.0 { return nil }
     let display = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
-    return "This rate is \(display)% lower than current Market".toBeLocalised()
+    let percent = "\(display)%"
+    let message = String(format: NSLocalizedString("This rate is %@ lower than current Market", value: "This rate is %@ lower than current Market", comment: ""), percent)
+    return message
   }
 
   var minRateString: String {
