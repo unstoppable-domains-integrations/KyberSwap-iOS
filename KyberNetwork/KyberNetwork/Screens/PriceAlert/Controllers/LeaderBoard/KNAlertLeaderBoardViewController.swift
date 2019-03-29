@@ -173,6 +173,9 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.noDataLabel.isHidden = !data.isEmpty
     self.view.layoutIfNeeded()
     if let user = IEOUserStorage.shared.user { self.updateUIWithUser(user) }
+    else {
+      self.delegate?.alertLeaderBoardViewControllerShouldBack()
+    }
   }
 
   @IBAction func screenEdgePanActionChanged(_ sender: UIScreenEdgePanGestureRecognizer) {
