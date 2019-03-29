@@ -172,8 +172,9 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.leadersCollectionView.isHidden = data.isEmpty
     self.noDataLabel.isHidden = !data.isEmpty
     self.view.layoutIfNeeded()
-    if let user = IEOUserStorage.shared.user { self.updateUIWithUser(user) }
-    else {
+    if let user = IEOUserStorage.shared.user {
+      self.updateUIWithUser(user)
+    } else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
     }
   }
