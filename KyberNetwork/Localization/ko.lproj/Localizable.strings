@@ -409,6 +409,7 @@
 "new" = "새로운";
 "can.not.update.exchange.rate" = "환율을 업데이트할 수 없습니다.";
 
+
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";
 "You can only have maximum of 10 alerts" = "You can only have maximum of 10 alerts";
@@ -434,6 +435,15 @@
 "Please enter your target price to be alerted" = "Please enter your target price to be alerted";
 "New alert has been added successfully!" = "New alert has been added successfully!";
 "Updated alert successfully!" = "Updated alert successfully!";
+"Your target price should be different at least 0.1% from current price" = "Your target price should be different at least 0.1% from current price";
+"Alert LeaderBoard" = "Alert LeaderBoard";
+"Pair" = "Pair";
+"Entry" = "Entry";
+"Target" = "Target";
+"Swing" = "Swing";
+"No data to show right now" = "No data to show right now";
+"Can not update leader board data right now" = "Can not update leader board data right now";
+"This rate is %@ lower than current Market" = "This rate is %@ lower than current Market";
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";
