@@ -176,10 +176,6 @@ class KNSettingsTabViewController: KNBaseViewController {
     self.delegate?.settingsTabViewController(self, run: .medium)
   }
 
-  @IBAction func redditButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .reddit)
-  }
-
   @IBAction func linkedInButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .linkedIn)
   }
