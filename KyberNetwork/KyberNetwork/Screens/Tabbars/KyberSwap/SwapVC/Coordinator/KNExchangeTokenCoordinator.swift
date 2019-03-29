@@ -202,12 +202,10 @@ extension KNExchangeTokenCoordinator {
           toAddr: self.session.externalProvider.networkAddress,
           nounce: self.session.externalProvider.minTxCount
         )
-        if self.confirmSwapVC == nil {
-          self.session.addNewPendingTransaction(transaction)
-        } else {
+        self.session.addNewPendingTransaction(transaction)
+        if self.confirmSwapVC != nil {
           self.navigationController.popViewController(animated: true, completion: {
             self.confirmSwapVC = nil
-            self.session.addNewPendingTransaction(transaction)
           })
         }
       case .failure(let error):
