@@ -14,6 +14,7 @@ enum KNProfileHomeViewEvent {
   case addPriceAlert
   case managePriceAlerts
   case editAlert(alert: KNAlertObject)
+  case leaderBoard
 }
 
 protocol KNProfileHomeViewControllerDelegate: class {
@@ -453,6 +454,11 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBAction func moreAlertsButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "more_alerts"])
     self.delegate?.profileHomeViewController(self, run: .managePriceAlerts)
+  }
+
+  @IBAction func leaderBoardButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "leader_board"])
+    self.delegate?.profileHomeViewController(self, run: .leaderBoard)
   }
 }
 

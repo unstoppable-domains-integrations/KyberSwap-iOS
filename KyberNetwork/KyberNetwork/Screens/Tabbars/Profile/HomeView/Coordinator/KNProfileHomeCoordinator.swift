@@ -416,6 +416,11 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       self.navigationController.pushViewController(self.newAlertController!, animated: true) {
         self.newAlertController?.updateEditAlert(alert)
       }
+    case .leaderBoard:
+      let leaderBoardVC = KNAlertLeaderBoardViewController()
+      leaderBoardVC.loadViewIfNeeded()
+      leaderBoardVC.delegate = self
+      self.navigationController.pushViewController(leaderBoardVC, animated: true)
     }
   }
 
@@ -527,5 +532,11 @@ extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
 
   func kycCoordinatorDidBack() {
     self.kycCoordinator = nil
+  }
+}
+
+extension KNProfileHomeCoordinator: KNAlertLeaderBoardViewControllerDelegate {
+  func alertLeaderBoardViewControllerShouldBack() {
+    self.navigationController.popViewController(animated: true)
   }
 }

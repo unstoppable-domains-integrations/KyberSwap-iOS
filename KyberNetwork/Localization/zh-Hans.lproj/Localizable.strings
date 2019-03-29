@@ -427,14 +427,14 @@
 "Please enter your target price to be alerted" = "请输入您的目标价格以设置提醒";
 "New alert has been added successfully!" = "新警报已成功添加";
 "Updated alert successfully!" = "更新警报成功!";
-"Your target price should be different at least 0.1% from current price" = "Your target price should be different at least 0.1% from current price";
+"Your target price should be different at least 0.1% from current price" = "您的目标价格需要与当前价格有0.1%的价差";
 "Alert LeaderBoard" = "警报排行榜";
 "Pair" = "交易对";
 "Entry" = "进入";
 "Target" = "目标";
 "Swing" = "波动";
 "No data to show right now" = "无数据可显示";
-"Can not update leader board data right now" = "现在无法更新排行榜数据";
+"Can not update leader board data right now" = "目前暂时无法更新排行榜";
 "This rate is %@ lower than current Market" = "此价格比目前的市场价低%@";
 
 "please.check.your.internet.connection" = "请检查您的互联网连接";

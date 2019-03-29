@@ -51,8 +51,12 @@
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="ZY4-5r-ByQ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfv-xQ-tWp">
-                            <rect key="frame" x="341" y="46" width="18" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zfv-xQ-tWp">
+                            <rect key="frame" x="327" y="41" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="1yZ-yC-Y1Q"/>
+                                <constraint firstAttribute="width" constant="32" id="bvF-vb-4TZ"/>
+                            </constraints>
                             <state key="normal" image="add_alert_icon"/>
                             <connections>
                                 <action selector="addAlertButtonPressed:" destination="-1" eventType="touchUpInside" id="XXS-Ze-ZKJ"/>
@@ -71,11 +75,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQp-f4-Dfg" customClass="KNAlertTableView" customModule="KyberNetwork" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="132" width="375" height="535"/>
+                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVW-qx-o4j">
-                    <rect key="frame" x="0.0" y="132" width="375" height="535"/>
+                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send you notifications when prices go above or below your targets" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzQ-Yj-nfO">
                             <rect key="frame" x="20" y="100" width="335" height="39.5"/>
@@ -112,15 +116,23 @@
                         <outletCollection property="gestureRecognizers" destination="SEO-kQ-KtZ" appends="YES" id="r2P-81-9OH"/>
                     </connections>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ia8-Ql-61y">
-                    <rect key="frame" x="335" y="96" width="24" height="24"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ia8-Ql-61y">
+                    <rect key="frame" x="327" y="96" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="CJ0-C1-ia4"/>
+                        <constraint firstAttribute="width" constant="32" id="Tfx-mG-Tg5"/>
+                    </constraints>
                     <state key="normal" image="settings_alert"/>
                     <connections>
                         <action selector="alertMethodButtonPressed:" destination="-1" eventType="touchUpInside" id="n99-jB-BBP"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUm-EU-hZn">
-                    <rect key="frame" x="299" y="97" width="20" height="22"/>
+                    <rect key="frame" x="283" y="96" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="lvf-CX-iqN"/>
+                        <constraint firstAttribute="width" constant="32" id="ucm-hs-NmC"/>
+                    </constraints>
                     <state key="normal" image="leaderboard"/>
                     <connections>
                         <action selector="alertLeaderBoardButtonPressed:" destination="-1" eventType="touchUpInside" id="yys-dZ-13b"/>
@@ -131,7 +143,7 @@
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="lQp-f4-Dfg" secondAttribute="bottom" id="05h-rF-gDi"/>
                 <constraint firstItem="mVW-qx-o4j" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="0eR-cb-gzK"/>
-                <constraint firstItem="Ia8-Ql-61y" firstAttribute="leading" secondItem="aUm-EU-hZn" secondAttribute="trailing" constant="16" id="0yI-tf-hep"/>
+                <constraint firstItem="Ia8-Ql-61y" firstAttribute="leading" secondItem="aUm-EU-hZn" secondAttribute="trailing" constant="12" id="0yI-tf-hep"/>
                 <constraint firstItem="Ia8-Ql-61y" firstAttribute="top" secondItem="GsY-yb-KFs" secondAttribute="bottom" constant="12" id="5VW-c0-f3q"/>
                 <constraint firstItem="aUm-EU-hZn" firstAttribute="centerY" secondItem="Ia8-Ql-61y" secondAttribute="centerY" id="9kr-kT-nDr"/>
                 <constraint firstItem="mVW-qx-o4j" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Aa7-1M-fu1"/>
