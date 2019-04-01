@@ -93,25 +93,24 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "delete_alert"])
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading()
-    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alertID: alert.id) { [weak self] result in
+    KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alertID: alert.id) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
-      switch result {
-      case .success:
+      if let error = error {
+        KNCrashlyticsUtil.logCustomEvent(
+          withName: "manage_alert",
+          customAttributes: ["type": "delete_alert_failed", "error": error]
+        )
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error,
+          time: 1.5
+        )
+      } else {
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
           message: "Alert deleted!".toBeLocalised(),
           time: 1.0
-        )
-      case .failure(let error):
-        KNCrashlyticsUtil.logCustomEvent(
-          withName: "manage_alert",
-          customAttributes: ["type": "delete_alert_failed", "error": error.prettyError]
-        )
-        self.navigationController.showErrorTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: error.prettyError,
-          time: 1.5
         )
       }
     }

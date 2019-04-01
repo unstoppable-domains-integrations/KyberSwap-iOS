@@ -220,10 +220,19 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func openMailSupport() {
-    let emailVC = MFMailComposeViewController()
-    emailVC.mailComposeDelegate = self
-    emailVC.setToRecipients(["support@kyber.network"])
-    self.navigationController.present(emailVC, animated: true, completion: nil)
+    if MFMailComposeViewController.canSendMail() {
+      let emailVC = MFMailComposeViewController()
+      emailVC.mailComposeDelegate = self
+      emailVC.setToRecipients(["support@kyber.network"])
+      self.navigationController.present(emailVC, animated: true, completion: nil)
+    } else {
+      let message = NSLocalizedString(
+        "please.send.your.request.to.support",
+        value: "Please send your request to support@kyber.network",
+        comment: ""
+      )
+      self.navigationController.showWarningTopBannerMessage(with: "", message: message, time: 1.5)
+    }
   }
 
   func settingsViewControllerOpenDebug() {

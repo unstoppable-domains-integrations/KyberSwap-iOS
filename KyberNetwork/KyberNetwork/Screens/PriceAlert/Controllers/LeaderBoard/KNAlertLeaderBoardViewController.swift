@@ -144,14 +144,11 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     }
     self.updateUIWithUser(user)
     if isFirstTime { self.displayLoading() }
-    KNPriceAlertCoordinator.shared.loadLeaderBoardData(accessToken: user.accessToken) { [weak self] result in
+    KNPriceAlertCoordinator.shared.loadLeaderBoardData(accessToken: user.accessToken) { [weak self] (data, error) in
       guard let `self` = self else { return }
       if isFirstTime { self.hideLoading() }
-      switch result {
-      case .success(let data):
-        self.updateLeaderBoardData(data)
-      case .failure(let error):
-        print("Load list leaderboard error: \(error.prettyError)")
+      if let error = error {
+        print("Load list leaderboard error: \(error)")
         let alertController = UIAlertController(
           title: NSLocalizedString("error", value: "Error", comment: ""),
           message: "Can not update leader board data right now".toBeLocalised(),
@@ -162,6 +159,8 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
           self.startUpdatingLeaderBoard(isFirstTime: true)
         }))
         self.present(alertController, animated: true, completion: nil)
+      } else {
+        self.updateLeaderBoardData(data)
       }
     }
   }

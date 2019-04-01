@@ -57,10 +57,10 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   fileprivate func reloadAlertMethods() {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.getAlertMethods(accessToken: accessToken) { [weak self] result in
+    KNPriceAlertCoordinator.shared.getAlertMethods(accessToken: accessToken) { [weak self] (resp, error) in
       guard let `self` = self else { return }
       self.hideLoading()
-      if case .success(let resp) = result {
+      if error == nil {
         self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? false
         self.isEmailEnabled = resp["email"] as? Bool ?? false
         self.isTelegramEnabled = resp["telegram"] as? Bool ?? false
@@ -155,10 +155,10 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   @IBAction func saveButtonPressed(_ sender: Any) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading(text: "Updating".toBeLocalised(), animated: true)
-    KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.isEmailEnabled, telegram: self.isTelegramEnabled, pushNoti: self.isPushNotiEnabled) { [weak self] result in
+    KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.isEmailEnabled, telegram: self.isTelegramEnabled, pushNoti: self.isPushNotiEnabled) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.hideLoading()
-      if case .success = result {
+      if error == nil {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
           message: "Updated alert methods successfully!".toBeLocalised(),
