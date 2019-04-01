@@ -2,6 +2,7 @@
 
 import UIKit
 import Crashlytics
+import MessageUI
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
@@ -11,7 +12,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectAddWallet()
 }
 
-class KNSettingsCoordinator: Coordinator {
+class KNSettingsCoordinator: NSObject, Coordinator {
 
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
@@ -134,7 +135,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "support"])
-      self.navigationController.openSafari(with: "https://bit.ly/2JpcGk3")
+      self.openMailSupport()
     case .about:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "about"])
       self.openCommunityURL("https://kyber.network/about/company")
@@ -216,6 +217,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     } else {
       KNPasscodeUtil.shared.deletePasscode()
     }
+  }
+
+  func openMailSupport() {
+    let emailVC = MFMailComposeViewController()
+    emailVC.mailComposeDelegate = self
+    emailVC.setToRecipients(["support@kyber.network"])
+    self.navigationController.present(emailVC, animated: true, completion: nil)
   }
 
   func settingsViewControllerOpenDebug() {
@@ -454,5 +462,14 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
 
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject) {
     self.settingsViewControllerBackUpButtonPressed(wallet: wallet)
+  }
+}
+
+extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
+  func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+    if case .sent = result {
+      KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["type": "support_email_sent"])
+    }
+    controller.dismiss(animated: true, completion: nil)
   }
 }
