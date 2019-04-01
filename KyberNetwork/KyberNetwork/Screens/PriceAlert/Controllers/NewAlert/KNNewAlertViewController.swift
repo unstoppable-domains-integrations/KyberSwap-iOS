@@ -266,24 +266,23 @@ class KNNewAlertViewController: KNBaseViewController {
       isAbove: self.viewModel.targetPrice > self.viewModel.currentPrice
     )
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.addNewAlert(accessToken: accessToken, jsonData: alert.json) { [weak self] result in
+    KNPriceAlertCoordinator.shared.addNewAlert(accessToken: accessToken, jsonData: alert.json) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.hideLoading()
-      switch result {
-      case .success:
+      if let error = error {
+        KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "create_new_alert_failed", "error": error])
+        self.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error,
+          time: 1.5
+        )
+      } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
           message: "New alert has been added successfully!".toBeLocalised(),
           time: 1.0
         )
         self.navigationController?.popViewController(animated: true)
-      case .failure(let error):
-        KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "create_new_alert_failed", "error": error.prettyError])
-        self.showErrorTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: error.prettyError,
-          time: 1.5
-        )
       }
     }
   }
@@ -310,24 +309,23 @@ class KNNewAlertViewController: KNBaseViewController {
     ]
     let newAlert = KNAlertObject(json: json)
     self.displayLoading()
-    KNPriceAlertCoordinator.shared.updateAlert(accessToken: accessToken, jsonData: newAlert.json) { [weak self] result in
+    KNPriceAlertCoordinator.shared.updateAlert(accessToken: accessToken, jsonData: newAlert.json) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.hideLoading()
-      switch result {
-      case .success:
+      if let error = error {
+        KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "update_alert_failed", "error": error])
+        self.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error,
+          time: 1.5
+        )
+      } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
           message: "Updated alert successfully!".toBeLocalised(),
           time: 1.0
         )
         self.navigationController?.popViewController(animated: true)
-      case .failure(let error):
-        KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "update_alert_failed", "error": error.prettyError])
-        self.showErrorTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: error.prettyError,
-          time: 1.5
-        )
       }
     }
   }

@@ -30,15 +30,15 @@ class KNPriceAlertCoordinator: NSObject {
 
   func startLoadingListPriceAlerts(_ sender: Any?) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-    self.loadListPriceAlerts(accessToken) { [weak self] result in
+    self.loadListPriceAlerts(accessToken) { [weak self] (_, error) in
       guard let _ = self else { return }
-      if case .success = result {
+      if error == nil {
         KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
       }
     }
   }
 
-  func loadListPriceAlerts(_ accessToken: String, completion: @escaping (Result<[KNAlertObject], AnyError>) -> Void) {
+  func loadListPriceAlerts(_ accessToken: String, completion: @escaping ([KNAlertObject], String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getListAlerts(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
@@ -48,22 +48,28 @@ class KNPriceAlertCoordinator: NSObject {
             do {
               let _ = try data.filterSuccessfulStatusCodes()
               let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let jsonArr = json["data"] as? [JSONDictionary] ?? []
-              let alerts = jsonArr.map({ return KNAlertObject(json: $0) })
-              KNAlertStorage.shared.updateAlertsFromServer(alerts)
-              completion(.success(alerts))
-            } catch let error {
-              completion(.failure(AnyError(error)))
+              let success = json["success"] as? Bool ?? true
+              if success {
+                let jsonArr = json["data"] as? [JSONDictionary] ?? []
+                let alerts = jsonArr.map({ return KNAlertObject(json: $0) })
+                KNAlertStorage.shared.updateAlertsFromServer(alerts)
+                completion(alerts, nil)
+              } else {
+                let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+                completion([], message)
+              }
+            } catch {
+              completion([], NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
             }
           case .failure(let error):
-            completion(.failure(AnyError(error)))
+            completion([], error.prettyError)
           }
         }
       }
     }
   }
 
-  func addNewAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func addNewAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (String, String?) -> Void) {
     self.provider.request(.addNewAlert(accessToken: accessToken, jsonData: jsonData)) { [weak self] result in
       guard let _ = self else { return }
       DispatchQueue.main.async {
@@ -71,19 +77,26 @@ class KNPriceAlertCoordinator: NSObject {
         case .success(let data):
           do {
             let _ = try data.filterSuccessfulStatusCodes()
-            self?.startLoadingListPriceAlerts(nil)
-            completion(.success(""))
-          } catch let error {
-            completion(.failure(AnyError(error)))
+            let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+            let success = json["success"] as? Bool ?? true
+            if success {
+              self?.startLoadingListPriceAlerts(nil)
+              completion("", nil)
+            } else {
+              let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+              completion("", message)
+            }
+          } catch {
+            completion("", NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
           }
         case .failure(let error):
-          completion(.failure(AnyError(error)))
+          completion("", error.prettyError)
         }
       }
     }
   }
 
-  func updateAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func updateAlert(accessToken: String, jsonData: JSONDictionary, completion: @escaping (String, String?) -> Void) {
     self.provider.request(.updateAlert(accessToken: accessToken, jsonData: jsonData)) { [weak self] result in
       guard let _ = self else { return }
       DispatchQueue.main.async {
@@ -91,20 +104,27 @@ class KNPriceAlertCoordinator: NSObject {
         case .success(let data):
           do {
             let _ = try data.filterSuccessfulStatusCodes()
-            KNAlertStorage.shared.updateAlert(KNAlertObject(json: jsonData))
-            self?.startLoadingListPriceAlerts(nil)
-            completion(.success(""))
-          } catch let error {
-            completion(.failure(AnyError(error)))
+            let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+            let success = json["success"] as? Bool ?? true
+            if success {
+              KNAlertStorage.shared.updateAlert(KNAlertObject(json: jsonData))
+              self?.startLoadingListPriceAlerts(nil)
+              completion("", nil)
+            } else {
+              let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+              completion("", message)
+            }
+          } catch {
+            completion("", NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
           }
         case .failure(let error):
-          completion(.failure(AnyError(error)))
+          completion("", error.prettyError)
         }
       }
     }
   }
 
-  func removeAnAlert(accessToken: String, alertID: Int, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func removeAnAlert(accessToken: String, alertID: Int, completion: @escaping (String, String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.removeAnAlert(accessToken: accessToken, alertID: alertID)) { [weak self] result in
         guard let _ = self else { return }
@@ -113,21 +133,28 @@ class KNPriceAlertCoordinator: NSObject {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
-              KNAlertStorage.shared.deleteAlert(with: alertID)
-              self?.startLoadingListPriceAlerts(nil)
-              completion(.success(""))
-            } catch let error {
-              completion(.failure(AnyError(error)))
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let success = json["success"] as? Bool ?? true
+              if success {
+                KNAlertStorage.shared.deleteAlert(with: alertID)
+                self?.startLoadingListPriceAlerts(nil)
+                completion("", nil)
+              } else {
+                let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+                completion("", message)
+              }
+            } catch {
+              completion("", NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
             }
           case .failure(let error):
-            completion(.failure(AnyError(error)))
+            completion("", error.prettyError)
           }
         }
       }
     }
   }
 
-  func loadLeaderBoardData(accessToken: String, completion: @escaping (Result<[JSONDictionary], AnyError>) -> Void) {
+  func loadLeaderBoardData(accessToken: String, completion: @escaping ([JSONDictionary], String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getLeaderBoardData(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
@@ -138,12 +165,12 @@ class KNPriceAlertCoordinator: NSObject {
               let _ = try data.filterSuccessfulStatusCodes()
               let jsonData = try data.mapJSON() as? JSONDictionary ?? [:]
               let jsonArr = jsonData["data"] as? [JSONDictionary] ?? []
-              completion(.success(jsonArr))
-            } catch let error {
-              completion(.failure(AnyError(error)))
+              completion(jsonArr, nil)
+            } catch {
+              completion([], NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
             }
           case .failure(let error):
-            completion(.failure(AnyError(error)))
+            completion([], error.prettyError)
           }
         }
       }
@@ -165,7 +192,7 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
-  func getAlertMethods(accessToken: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
+  func getAlertMethods(accessToken: String, completion: @escaping (JSONDictionary, String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getListAlertMethods(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
@@ -175,19 +202,25 @@ class KNPriceAlertCoordinator: NSObject {
             do {
               let _ = try data.filterSuccessfulStatusCodes()
               let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              completion(.success(json["data"] as? JSONDictionary ?? [:]))
-            } catch let error {
-              completion(.failure(AnyError(error)))
+              let success = json["success"] as? Bool ?? true
+              if success {
+                completion(json["data"] as? JSONDictionary ?? [:], nil)
+              } else {
+                let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+                completion([:], message)
+              }
+            } catch {
+              completion([:], NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
             }
           case .failure(let error):
-            completion(.failure(AnyError(error)))
+            completion([:], error.prettyError)
           }
         }
       }
     }
   }
 
-  func updateAlertMethods(accessToken: String, email: Bool, telegram: Bool, pushNoti: Bool, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func updateAlertMethods(accessToken: String, email: Bool, telegram: Bool, pushNoti: Bool, completion: @escaping (String, String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.setAlertMethods(accessToken: accessToken, email: email, telegram: telegram, pushNoti: pushNoti)) { [weak self] result in
         guard let _ = self else { return }
@@ -196,12 +229,19 @@ class KNPriceAlertCoordinator: NSObject {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
-              completion(.success(""))
-            } catch let error {
-              completion(.failure(AnyError(error)))
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let success = json["success"] as? Bool ?? true
+              if success {
+                completion("", nil)
+              } else {
+                let message = json["message"] as? String ?? NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: "")
+                completion("", message)
+              }
+            } catch {
+              completion("", NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
             }
           case .failure(let error):
-            completion(.failure(AnyError(error)))
+            completion("", error.prettyError)
           }
         }
       }
