@@ -171,15 +171,8 @@
                         <action selector="mediumButtonPressed:" destination="-1" eventType="touchUpInside" id="Ksb-1Y-6lt"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPD-eE-njQ">
-                    <rect key="frame" x="276" y="400" width="32" height="33"/>
-                    <state key="normal" image="reddit"/>
-                    <connections>
-                        <action selector="redditButtonPressed:" destination="-1" eventType="touchUpInside" id="kXc-54-myd"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYu-os-Pb3">
-                    <rect key="frame" x="318" y="400" width="32" height="33"/>
+                    <rect key="frame" x="276" y="400" width="32" height="33"/>
                     <state key="normal" image="linkedin"/>
                     <connections>
                         <action selector="linkedInButtonPressed:" destination="-1" eventType="touchUpInside" id="otz-4A-UAR"/>
@@ -280,7 +273,7 @@
                 <constraint firstAttribute="trailing" secondItem="LAf-Nx-GiM" secondAttribute="trailing" id="ECK-0Y-Hux"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="trailing" secondItem="OVZ-jU-hlZ" secondAttribute="trailing" id="EwU-7q-Da8"/>
                 <constraint firstItem="P8S-Nk-EbV" firstAttribute="leading" secondItem="80r-ho-KCH" secondAttribute="trailing" constant="10" id="GE5-XZ-5CP"/>
-                <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QPD-eE-njQ" secondAttribute="trailing" constant="10" id="GdZ-Ic-y9t"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="GSZ-uq-wU6"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="OVZ-jU-hlZ" secondAttribute="leading" id="JrF-tz-6Wh"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="trailing" secondItem="c9Z-ZK-Ucl" secondAttribute="trailing" id="JyF-Mh-lTr"/>
                 <constraint firstItem="Z6O-Km-0S7" firstAttribute="top" secondItem="Pd0-VK-ek2" secondAttribute="bottom" constant="8" id="KAx-Gb-p8P"/>
@@ -291,7 +284,6 @@
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="top" secondItem="N5S-5z-7Ii" secondAttribute="bottom" constant="4" id="ONT-gs-NGv"/>
                 <constraint firstItem="0Wu-3X-xy0" firstAttribute="top" secondItem="c9Z-ZK-Ucl" secondAttribute="bottom" constant="4" id="Q9G-MX-kME"/>
                 <constraint firstItem="Z43-SL-69M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="RpI-iu-DEb"/>
-                <constraint firstItem="cYu-os-Pb3" firstAttribute="centerY" secondItem="QPD-eE-njQ" secondAttribute="centerY" id="SbC-ps-cpL"/>
                 <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="76" id="Trp-EE-9QD"/>
                 <constraint firstItem="sSk-u8-Y8q" firstAttribute="leading" secondItem="0Wu-3X-xy0" secondAttribute="leading" id="UfZ-11-Ggf"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="WD4-jf-pfC"/>
@@ -301,9 +293,7 @@
                 <constraint firstItem="400-Y7-DXM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="ZUG-Hx-Ulv"/>
                 <constraint firstItem="LAf-Nx-GiM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ayY-28-rtZ"/>
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="top" secondItem="sSk-u8-Y8q" secondAttribute="bottom" constant="8" id="bM5-4x-Ld3"/>
-                <constraint firstItem="QPD-eE-njQ" firstAttribute="centerY" secondItem="QlK-9e-kdZ" secondAttribute="centerY" id="boO-15-sh0"/>
                 <constraint firstItem="80r-ho-KCH" firstAttribute="centerY" secondItem="Pd0-VK-ek2" secondAttribute="centerY" id="cO0-Wt-ivJ"/>
-                <constraint firstItem="QPD-eE-njQ" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="10" id="czA-ja-bKb"/>
                 <constraint firstItem="c9Z-ZK-Ucl" firstAttribute="trailing" secondItem="N5S-5z-7Ii" secondAttribute="trailing" id="eac-HY-dQQ"/>
                 <constraint firstItem="rGf-Ii-F5o" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="g6i-zV-3Ht"/>
                 <constraint firstItem="80r-ho-KCH" firstAttribute="leading" secondItem="Pd0-VK-ek2" secondAttribute="trailing" constant="10" id="gvn-9c-87f"/>
@@ -312,6 +302,7 @@
                 <constraint firstItem="Pd0-VK-ek2" firstAttribute="leading" secondItem="sSk-u8-Y8q" secondAttribute="leading" id="jPe-po-0Zf"/>
                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="top" secondItem="LAf-Nx-GiM" secondAttribute="bottom" constant="24" id="lbc-Wh-kf2"/>
                 <constraint firstItem="QlK-9e-kdZ" firstAttribute="centerY" secondItem="dSF-Hs-lsq" secondAttribute="centerY" id="m0j-Lt-miy"/>
+                <constraint firstItem="cYu-os-Pb3" firstAttribute="leading" secondItem="QlK-9e-kdZ" secondAttribute="trailing" constant="10" id="nbE-lv-SSh"/>
                 <constraint firstItem="JvF-yd-iWq" firstAttribute="top" secondItem="Z6O-Km-0S7" secondAttribute="bottom" constant="4" id="oJM-F7-3Fj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z43-SL-69M" secondAttribute="trailing" constant="24" id="oh0-Yn-SKp"/>
                 <constraint firstItem="dSF-Hs-lsq" firstAttribute="centerY" secondItem="tdX-Yv-Ujd" secondAttribute="centerY" id="ojW-qs-WkJ"/>
@@ -329,7 +320,6 @@
         <image name="github" width="32" height="32"/>
         <image name="linkedin" width="32" height="33"/>
         <image name="medium" width="32" height="33"/>
-        <image name="reddit" width="32" height="33"/>
         <image name="tele_dev_group" width="32" height="32"/>
         <image name="telegram" width="32" height="33"/>
         <image name="twitter" width="32" height="33"/>

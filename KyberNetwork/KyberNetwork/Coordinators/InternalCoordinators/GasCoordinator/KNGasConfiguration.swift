@@ -5,10 +5,10 @@ import BigInt
 
 public struct KNGasConfiguration {
   static let digixGasLimitDefault = BigInt(770_000)
-  static let exchangeTokensGasLimitDefault = BigInt(660_000)
-  static let exchangeETHTokenGasLimitDefault = BigInt(330_000)
-  static let approveTokenGasLimitDefault = BigInt(100_000)
-  static let transferTokenGasLimitDefault = BigInt(60_000)
+  static let exchangeTokensGasLimitDefault = BigInt(760_000)
+  static let exchangeETHTokenGasLimitDefault = BigInt(380_000)
+  static let approveTokenGasLimitDefault = BigInt(120_000)
+  static let transferTokenGasLimitDefault = BigInt(80_000)
   static let transferETHGasLimitDefault = BigInt(21_000)
   static let buytokenSaleByETHGasLimitDefault = BigInt(550_000)
   static let buyTokenSaleByTokenGasLimitDefault = BigInt(700_000)
