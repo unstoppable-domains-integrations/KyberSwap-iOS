@@ -402,6 +402,9 @@
 "new" = "新";
 "can.not.update.exchange.rate" = "无法更新汇率";
 
+"successfully.received" = "成功接收%@从%@";
+"received.token" = "收到%@";
+
 // MARK: Price alert feature
 "Cap reached" = "达到了限额";
 "Alert limit exceeded" = "超过警报限额";
