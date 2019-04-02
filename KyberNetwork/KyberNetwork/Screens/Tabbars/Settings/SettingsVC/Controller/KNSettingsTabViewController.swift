@@ -38,7 +38,6 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var manageAlerts: UIButton!
   @IBOutlet weak var alertMethodsButton: UIButton!
   @IBOutlet weak var contactButton: UIButton!
-  @IBOutlet weak var topPaddingConstraintForContactButton: NSLayoutConstraint!
   @IBOutlet weak var supportButton: UIButton!
   @IBOutlet weak var changePINButton: UIButton!
   @IBOutlet weak var aboutButton: UIButton!
@@ -47,7 +46,6 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var reportBugsButton: UIButton!
   @IBOutlet weak var rateOurAppButton: UIButton!
   @IBOutlet weak var versionLabel: UILabel!
-  @IBOutlet weak var bottomPaddingVersionLabelConstraint: NSLayoutConstraint!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,7 +62,6 @@ class KNSettingsTabViewController: KNBaseViewController {
     self.alertMethodsButton.setTitle("Alert Method".toBeLocalised(), for: .normal)
     self.alertMethodsButton.addTextSpacing()
     self.alertMethodsButton.isHidden = !KNAppTracker.isPriceAlertEnabled
-    self.topPaddingConstraintForContactButton.constant = KNAppTracker.isPriceAlertEnabled ? 76.0 : 4.0
     self.contactButton.setTitle(
       NSLocalizedString("contact", value: "Contact", comment: ""),
       for: .normal
@@ -107,7 +104,6 @@ class KNSettingsTabViewController: KNBaseViewController {
     version += " - \(Bundle.main.buildNumber ?? "")"
     version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
-    self.bottomPaddingVersionLabelConstraint.constant = 24.0 + self.bottomPaddingSafeArea()
   }
 
   override func viewDidLayoutSubviews() {
