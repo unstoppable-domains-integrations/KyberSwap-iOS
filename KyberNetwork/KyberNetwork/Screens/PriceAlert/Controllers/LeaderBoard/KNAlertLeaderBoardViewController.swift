@@ -28,6 +28,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   @IBOutlet weak var swingsTextLabel: UILabel!
   @IBOutlet weak var swingsLabel: UILabel!
 
+  @IBOutlet weak var topPaddingCollectionViewConstraint: NSLayoutConstraint!
   @IBOutlet weak var leadersCollectionView: UICollectionView!
   @IBOutlet weak var noDataLabel: UILabel!
 
@@ -72,6 +73,9 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = "Alert LeaderBoard".toBeLocalised()
 
+    self.topPaddingCollectionViewConstraint.constant = 0.0
+    self.currentUserDataContainerView.isHidden = true
+
     self.pairTextLabel.text = "Pair".toBeLocalised().uppercased()
     self.entryTextLabel.text = "Entry".toBeLocalised().uppercased()
     self.targetTextLabel.text = "Target".toBeLocalised().uppercased()
@@ -97,11 +101,16 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   }
 
   fileprivate func resetCurrentUserData() {
-    self.userRankLabel.text = "X"
-    self.pairLabel.text = "X"
-    self.entryLabel.text = "X"
-    self.targetLabel.text = "X"
-    self.swingsLabel.text = "X"
+    UIView.animate(withDuration: 0.25) {
+      self.userRankLabel.text = "X"
+      self.pairLabel.text = "X"
+      self.entryLabel.text = "X"
+      self.targetLabel.text = "X"
+      self.swingsLabel.text = "X"
+      self.currentUserDataContainerView.isHidden = true
+      self.topPaddingCollectionViewConstraint.constant = 0.0
+      self.view.layoutIfNeeded()
+    }
   }
 
   fileprivate func updateUIWithUser(_ user: IEOUser) {
@@ -134,7 +143,12 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.userRankLabel.text = "\(rank)"
     self.userRankLabel.textColor = rank <= 3 ? UIColor.Kyber.shamrock : UIColor.Kyber.grayChateau
     self.userInfoContainerView.backgroundColor = rank <= 3 ? UIColor.Kyber.shamrock : UIColor.Kyber.grayChateau
-    self.view.layoutIfNeeded()
+
+    UIView.animate(withDuration: 0.25) {
+      self.currentUserDataContainerView.isHidden = false
+      self.topPaddingCollectionViewConstraint.constant = 142.0
+      self.view.layoutIfNeeded()
+    }
   }
 
   fileprivate func startUpdatingLeaderBoard(isFirstTime: Bool = false) {
