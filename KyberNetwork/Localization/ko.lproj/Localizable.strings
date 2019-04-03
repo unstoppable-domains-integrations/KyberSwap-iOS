@@ -412,6 +412,8 @@
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";
+"Alert limit exceeded" = "Alert limit exceeded";
+"You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one" = "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one";
 "You can only have maximum of 10 alerts" = "You can only have maximum of 10 alerts";
 "Price Alerts" = "Price Alerts";
 "We will send you notifications when prices go above or below your targets" = "We will send you notifications when prices go above or below your targets";

@@ -404,6 +404,8 @@
 
 // MARK: Price alert feature
 "Cap reached" = "达到了限额";
+"Alert limit exceeded" = "Alert limit exceeded";
+"You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one" = "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one";
 "You can only have maximum of 10 alerts" = "您最多只能有10个提醒";
 "Price Alerts" = "价格提醒";
 "We will send you notifications when prices go above or below your targets" = "当价格高于或低于您的目标时，我们会向您发送通知";

@@ -424,6 +424,8 @@
 
 // MARK: Price alert feature
 "Cap reached" = "Đạt mức cho phép";
+"Alert limit exceeded" = "Vượt quá số lượng thông báo";
+"You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one" = "Bạn đã có 10 (tối đa) số lượng thông báo. Vui lòng xoá bớt thông báo hiện có để thêm thông báo mới.";
 "You can only have maximum of 10 alerts" = "Bạn chỉ có thể có tối đa 10 thông báo";
 "Price Alerts" = "Thông báo giá";
 "We will send you notifications when prices go above or below your targets" = "Chúng tôi sẽ gửi cho bạn thông báo khi giá vượt quá hoặc thấp hơn mục tiêu của bạn";
