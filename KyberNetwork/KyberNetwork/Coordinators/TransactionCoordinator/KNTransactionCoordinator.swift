@@ -353,7 +353,7 @@ extension KNTransactionCoordinator {
       guard let `self` = self else { return }
       self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
         guard let `self` = self else { return }
-        guard let trans = self.transactionStorage.get(forPrimaryKey: transaction.id) else { return }
+        guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id) else { return }
         if trans.state != .pending {
           // Prevent the notification is called multiple time due to timer runs
           return
