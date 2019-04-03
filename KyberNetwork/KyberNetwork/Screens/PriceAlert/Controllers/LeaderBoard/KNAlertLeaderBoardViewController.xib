@@ -33,6 +33,7 @@
                 <outlet property="swingsTextLabel" destination="TLq-bs-BwP" id="efh-St-mnX"/>
                 <outlet property="targetLabel" destination="TUZ-HA-dGH" id="LqI-Ki-Ug4"/>
                 <outlet property="targetTextLabel" destination="Zo8-A7-F7H" id="vHY-bA-cfx"/>
+                <outlet property="topPaddingCollectionViewConstraint" destination="aIP-7B-5CZ" id="JRN-Pe-DxY"/>
                 <outlet property="userContactMethodLabel" destination="lnC-B8-Vcy" id="CO3-Re-Ic5"/>
                 <outlet property="userInfoContainerView" destination="Xk0-l0-mFG" id="zIW-Vn-tI1"/>
                 <outlet property="userNameLabel" destination="hah-WC-lls" id="vr4-FD-00e"/>
@@ -189,7 +190,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="QsX-1N-RAs">
-                    <rect key="frame" x="0.0" y="225.5" width="375" height="441.5"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                     <color key="backgroundColor" red="0.94901960784313721" green="0.95294117647058818" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1Ts-Oo-ain">
                         <size key="itemSize" width="50" height="50"/>
@@ -199,7 +200,7 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data to show right now" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bA6-K6-VKn">
-                    <rect key="frame" x="79.5" y="436.5" width="216" height="20"/>
+                    <rect key="frame" x="79.5" y="365.5" width="216" height="20"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -215,7 +216,7 @@
                 <constraint firstItem="JC2-VL-J3H" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="SVW-fa-zpQ"/>
                 <constraint firstItem="JC2-VL-J3H" firstAttribute="top" secondItem="uCs-28-NLH" secondAttribute="bottom" constant="8" id="TaV-g7-Vm4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="QsX-1N-RAs" secondAttribute="bottom" id="W9Z-Kf-JMk"/>
-                <constraint firstItem="QsX-1N-RAs" firstAttribute="top" secondItem="JC2-VL-J3H" secondAttribute="bottom" constant="8" id="ZcY-DT-n87"/>
+                <constraint firstItem="QsX-1N-RAs" firstAttribute="top" secondItem="uCs-28-NLH" secondAttribute="bottom" id="aIP-7B-5CZ"/>
                 <constraint firstItem="QsX-1N-RAs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="i0p-Pd-AMP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="QsX-1N-RAs" secondAttribute="trailing" id="jxE-L4-ngK"/>
                 <constraint firstItem="uCs-28-NLH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="y0d-Q0-E4P"/>
