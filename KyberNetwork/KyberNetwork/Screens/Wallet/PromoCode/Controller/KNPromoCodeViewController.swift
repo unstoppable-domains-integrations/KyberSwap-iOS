@@ -30,6 +30,7 @@ class KNPromoCodeViewController: KNBaseViewController {
 
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
     self.applyButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.applyButton.frame.height))
+    self.applyButton.applyGradient()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -46,6 +47,8 @@ class KNPromoCodeViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.applyButton.removeSublayer(at: 0)
+    self.applyButton.applyGradient()
   }
 
   func resetUI() {
