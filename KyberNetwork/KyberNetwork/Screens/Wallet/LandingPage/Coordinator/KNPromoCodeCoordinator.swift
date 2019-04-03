@@ -131,13 +131,11 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
       message: String(format: NSLocalizedString("you.have.successfully.unlocked.your.promo.code", value: "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@", comment: ""), expiredString),
       time: 2.5
     )
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-      self.delegate?.promoCodeCoordinatorDidCreate(
-        wallet,
-        expiredDate: expiredDate,
-        destinationToken: destinationToken,
-        name: name
-      )
-    }
+    self.delegate?.promoCodeCoordinatorDidCreate(
+      wallet,
+      expiredDate: expiredDate,
+      destinationToken: destinationToken,
+      name: name
+    )
   }
 }
