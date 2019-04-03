@@ -201,6 +201,8 @@
 		2582332022549420007D5480 /* KNPromoSwapConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2582331E22549420007D5480 /* KNPromoSwapConfirmViewController.swift */; };
 		2582332122549420007D5480 /* KNPromoSwapConfirmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2582331F22549420007D5480 /* KNPromoSwapConfirmViewController.xib */; };
 		2582332522549AAE007D5480 /* KNPromoSwapConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2582332422549AAE007D5480 /* KNPromoSwapConfirmViewModel.swift */; };
+		2582331A22548C60007D5480 /* NumberFormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2582331922548C60007D5480 /* NumberFormatterUtil.swift */; };
+		2582331C22548DB0007D5480 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2582331B22548DB0007D5480 /* StringExtension.swift */; };
 		258711E62226433800B5906C /* KNPriceAlertCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258711E52226433800B5906C /* KNPriceAlertCoordinator.swift */; };
 		258711EA2227DA9900B5906C /* KNNotificationAlertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */; };
 		258711EB2227DA9900B5906C /* KNNotificationAlertPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */; };
@@ -763,6 +765,8 @@
 		2582331E22549420007D5480 /* KNPromoSwapConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPromoSwapConfirmViewController.swift; sourceTree = "<group>"; };
 		2582331F22549420007D5480 /* KNPromoSwapConfirmViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPromoSwapConfirmViewController.xib; sourceTree = "<group>"; };
 		2582332422549AAE007D5480 /* KNPromoSwapConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPromoSwapConfirmViewModel.swift; sourceTree = "<group>"; };
+		2582331922548C60007D5480 /* NumberFormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterUtil.swift; sourceTree = "<group>"; };
+		2582331B22548DB0007D5480 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		258711E52226433800B5906C /* KNPriceAlertCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPriceAlertCoordinator.swift; sourceTree = "<group>"; };
 		258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationAlertPopupViewController.swift; sourceTree = "<group>"; };
 		258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationAlertPopupViewController.xib; sourceTree = "<group>"; };
@@ -1221,7 +1225,7 @@
 		2511FF6B225351EB00872653 /* KyberSwap Widget */ = {
 			isa = PBXGroup;
 			children = (
-				2511FF802253631800872653 /* Extensions */,
+				2511FF802253631800872653 /* Utils */,
 				2511FF79225358CC00872653 /* DataCell */,
 				2511FF6C225351EB00872653 /* TodayViewController.swift */,
 				2511FF6E225351EB00872653 /* MainInterface.storyboard */,
@@ -1240,12 +1244,14 @@
 			path = DataCell;
 			sourceTree = "<group>";
 		};
-		2511FF802253631800872653 /* Extensions */ = {
+		2511FF802253631800872653 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				2511FF812253632600872653 /* UIColorExtension.swift */,
+				2582331922548C60007D5480 /* NumberFormatterUtil.swift */,
+				2582331B22548DB0007D5480 /* StringExtension.swift */,
 			);
-			path = Extensions;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
@@ -4136,7 +4142,9 @@
 			files = (
 				2511FF6D225351EB00872653 /* TodayViewController.swift in Sources */,
 				2511FF7C225358E300872653 /* TokenTableViewCell.swift in Sources */,
+				2582331C22548DB0007D5480 /* StringExtension.swift in Sources */,
 				2511FF822253632600872653 /* UIColorExtension.swift in Sources */,
+				2582331A22548C60007D5480 /* NumberFormatterUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

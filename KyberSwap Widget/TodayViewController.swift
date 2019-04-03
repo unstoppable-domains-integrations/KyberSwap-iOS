@@ -35,7 +35,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     self.tokenDataTableView.dataSource = self
 
     self.reloadData(nil)
-    self.timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] _ in
+    self.timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: { [weak self] _ in
       self?.reloadData(nil)
     })
   }
