@@ -45,8 +45,8 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   func openAddNewAlert() {
     if KNAlertStorage.shared.isMaximumAlertsReached {
       let alertController = UIAlertController(
-        title: "Cap reached".toBeLocalised(),
-        message: "You can only have maximum of 10 alerts".toBeLocalised(),
+        title: "Alert limit exceeded".toBeLocalised(),
+        message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
         preferredStyle: .alert
       )
       alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
