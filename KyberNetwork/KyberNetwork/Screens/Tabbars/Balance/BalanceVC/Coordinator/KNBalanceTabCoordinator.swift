@@ -276,6 +276,6 @@ extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
 
 extension KNBalanceTabCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
-    self.historyCoordinator = nil
+//    self.historyCoordinator = nil
   }
 }
