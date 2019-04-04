@@ -531,7 +531,7 @@ extension KNProfileHomeCoordinator: KYCCoordinatorDelegate {
   }
 
   func kycCoordinatorDidBack() {
-    self.kycCoordinator = nil
+//    self.kycCoordinator = nil
   }
 }
 

@@ -612,6 +612,6 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
 
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
-    self.historyCoordinator = nil
+//    self.historyCoordinator = nil
   }
 }
