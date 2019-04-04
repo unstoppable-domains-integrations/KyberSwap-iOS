@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationUsageDescription</key>
-	<string>Access location to improve our service</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Access location to improve our service</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Access location to improve our service</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Access location to improve our service</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -38,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>18</string>
+	<string>25</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -73,6 +65,14 @@
 	<string>QR Scan</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Access your wallet</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Access location to improve our service</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Access location to improve our service</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Access location to improve our service</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Access location to improve our service</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Sending QR Code to your contacts</string>
 	<key>NSPhotoLibraryUsageDescription</key>
