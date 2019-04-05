@@ -369,9 +369,9 @@
 "rejected.reason" = "Lý do từ chối";
 "profile.is.rejected" = "Hồ sơ của bạn bị từ chối";
 "can.not.send.to" = "Không thể gửi %@ đến %@";
-"can.not.convert.from.to" = "Không thể chuyển đổi từ %@ thành %@";
-"successfully.converted.to" = "%@ thành công chuyển đổi sang %@";
-"successfully.sent.to" = "%@ đã được gửi tới %@";
+"can.not.convert.from.to" = "Không thể trao đổi từ %@ sang %@";
+"successfully.converted.to" = "Trao đổi thành công từ %@ sang %@";
+"successfully.sent.to" = "%@ đã được gửi đến %@";
 "do.you.want.to.log.out?" = "Bạn có muốn đăng xuất không?";
 
 "info.income" = "Thông tin thu nhập";
@@ -428,7 +428,7 @@
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";
 "please.send.your.request.to.support" = "Vui lòng gửi yêu cầu của bạn đến support@kyber.network";
 
-"successfully.received" = "Thành công nhận được %@ từ %@";
+"successfully.received" = "Bạn đã nhận được %@ từ %@";
 "received.token" = "Đã nhận %@";
 
 // MARK: Price alert feature

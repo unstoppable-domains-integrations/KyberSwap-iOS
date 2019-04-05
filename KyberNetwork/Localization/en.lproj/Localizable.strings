@@ -370,7 +370,7 @@
 "profile.is.rejected" = "Your Profile is rejected";
 "can.not.send.to" = "Can not send %@ to %@";
 "can.not.convert.from.to" = "Can not convert from %@ to %@";
-"successfully.converted.to" = "%@ successfully converted to %@";
+"successfully.converted.to" = "Swapped successfully from %@ to %@";
 "successfully.sent.to" = "%@ successfully sent to %@";
 "do.you.want.to.log.out?" = "Do you want to log out?";
 
@@ -449,7 +449,7 @@
 "can.not.decode.data" = "Can not decode data";
 "something.went.wrong.please.try.again" = "Something went wrong, please try again";
 "please.send.your.request.to.support" = "Please send your request to support@kyber.network";
-"successfully.received" = "Successfully received %@ from %@";
+"successfully.received" = "You have received %@ from %@";
 "received.token" = "Received %@";
 "1 Gift" = "1 Gift";
 "You are swapping to receive a gift" = "You are swapping to receive a gift";
