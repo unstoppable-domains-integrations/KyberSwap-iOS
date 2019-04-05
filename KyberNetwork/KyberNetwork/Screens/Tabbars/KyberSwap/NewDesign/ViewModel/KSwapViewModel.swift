@@ -75,6 +75,13 @@ class KSwapViewModel {
     return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
+  var amountToEstimate: BigInt {
+    if self.amountFromBigInt.isZero, let smallAmount = EtherNumberFormatter.short.number(from: "0.001", decimals: self.from.decimals) {
+      return smallAmount
+    }
+    return self.amountFromBigInt
+  }
+
   var equivalentUSDAmount: BigInt? {
     if let usdRate = KNRateCoordinator.shared.usdRate(for: self.to) {
       return usdRate.rate * self.amountToBigInt / BigInt(10).power(self.to.decimals)
@@ -412,7 +419,12 @@ class KSwapViewModel {
 
   @discardableResult
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) -> Bool {
-    if from == self.from, to == self.to, amount == self.amountFromBigInt {
+    let isAmountChanged: Bool = {
+      if self.amountFromBigInt == amount { return false }
+      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
+      return doubleValue != 0.001
+    }()
+    if from == self.from, to == self.to, !isAmountChanged {
       self.estRate = rate
       self.slippageRate = slippageRate
       return true
@@ -425,7 +437,12 @@ class KSwapViewModel {
   }
 
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    if from == self.from, to == self.to, amount == self.amountFromBigInt {
+    let isAmountChanged: Bool = {
+      if self.amountFromBigInt == amount { return false }
+      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
+      return doubleValue != 0.001
+    }()
+    if from == self.from, to == self.to, !isAmountChanged {
       self.estimateGasLimit = gasLimit
     }
   }
