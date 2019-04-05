@@ -63,6 +63,7 @@ class KNLeaderBoardCollectionViewCell: UICollectionViewCell {
       self.userInfoContainerView.backgroundColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor(red: 158, green: 161, blue: 170)
     } else {
       self.rankLabel.text = "\(rank)"
+      self.rankLabel.textColor = .white
       self.rankLabel.backgroundColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor(red: 158, green: 161, blue: 170)
       self.userContactLabel.text = {
         if let tele = data["telegram_account"] as? String { return tele }
