@@ -70,6 +70,10 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
+
+    if UIDevice.isIphone5 {
+      self.navigationController.displaySuccess(title: "", message: "We are not fully supported iphone5 or small screen size. Some UIs might be broken.")
+    }
   }
 
   fileprivate func addMissingWalletObjects() {
