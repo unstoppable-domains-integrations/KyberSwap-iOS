@@ -328,7 +328,8 @@ extension KNTransactionCoordinator {
     if transactions.isEmpty { return }
     if KNAppTracker.transactionLoadState(for: wallet.address) != .done { return }
     let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.address.description.lowercased() && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
-    if let latestReceiveTx = receivedTxs.first {
+    // last transaction is received, and less than 5 mins ago
+    if let latestReceiveTx = receivedTxs.first, Date().timeIntervalSince(latestReceiveTx.date) <= 5.0 * 60.0 {
       let title = NSLocalizedString("received.token", value: "Received %@", comment: "")
       let message = NSLocalizedString("successfully.received", value: "Successfully received %@ from %@", comment: "")
       if self.transactionStorage.getKyberTransaction(forPrimaryKey: latestReceiveTx.id) != nil { return } // swap/transfer transaction
