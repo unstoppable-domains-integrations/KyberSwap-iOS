@@ -149,7 +149,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.passcodeCoordinator.start()
     case .community:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "community"])
-      let url = KNAppTracker.getKyberProfileBaseString() + "/community"
+      let url = "https://kyber.network/community"
       self.openCommunityURL(url)
     case .shareWithFriends:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "share_with_friends"])

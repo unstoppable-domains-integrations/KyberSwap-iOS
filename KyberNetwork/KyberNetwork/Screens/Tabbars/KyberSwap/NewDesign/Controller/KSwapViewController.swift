@@ -374,7 +374,7 @@ class KSwapViewController: KNBaseViewController {
     let event = KSwapViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountFromBigInt,
+      amount: self.viewModel.amountToEstimate,
       showError: showError
     )
     self.delegate?.kSwapViewController(self, run: event)
@@ -384,7 +384,7 @@ class KSwapViewController: KNBaseViewController {
     let event = KSwapViewEvent.estimateGas(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountFromBigInt,
+      amount: self.viewModel.amountToEstimate,
       gasPrice: self.viewModel.gasPrice
     )
     self.delegate?.kSwapViewController(self, run: event)
