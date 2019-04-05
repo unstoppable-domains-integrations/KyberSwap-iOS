@@ -155,6 +155,9 @@
                         <color key="titleColor" red="0.098039215690000001" green="0.78240327379999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_gray" translatesAutoresizingMaskIntoConstraints="NO" id="03W-KX-Ybc">
+                    <rect key="frame" x="339" y="247" width="12" height="9"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -163,6 +166,7 @@
                 <constraint firstItem="7nf-vu-oSv" firstAttribute="top" secondItem="gb1-zJ-r5B" secondAttribute="bottom" constant="32" id="581-4B-J4L"/>
                 <constraint firstItem="81o-ve-UZB" firstAttribute="top" secondItem="8Hj-wb-IqP" secondAttribute="bottom" id="9VH-l8-UWY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f54-xh-WQl" secondAttribute="trailing" constant="24" id="Aef-VV-7o6"/>
+                <constraint firstItem="03W-KX-Ybc" firstAttribute="trailing" secondItem="8Hj-wb-IqP" secondAttribute="trailing" id="DyK-Ed-jTT"/>
                 <constraint firstItem="YG9-3W-sZA" firstAttribute="top" secondItem="jCA-40-FOp" secondAttribute="bottom" id="GB2-k3-9GG"/>
                 <constraint firstItem="f54-xh-WQl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="GZs-fa-xxW"/>
                 <constraint firstItem="7nf-vu-oSv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="IVS-gN-3l1"/>
@@ -183,6 +187,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jCA-40-FOp" secondAttribute="trailing" constant="24" id="moV-UN-Wtu"/>
                 <constraint firstAttribute="trailing" secondItem="81o-ve-UZB" secondAttribute="trailing" constant="24" id="nI6-eZ-NEy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8Hj-wb-IqP" secondAttribute="trailing" constant="24" id="nLn-0h-0hq"/>
+                <constraint firstItem="03W-KX-Ybc" firstAttribute="centerY" secondItem="8Hj-wb-IqP" secondAttribute="centerY" id="pHi-WI-gmy"/>
                 <constraint firstItem="kf2-GN-eqI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="qZ3-Do-Pia"/>
                 <constraint firstItem="jCA-40-FOp" firstAttribute="top" secondItem="7nf-vu-oSv" secondAttribute="bottom" constant="16" id="riI-GD-AUP"/>
                 <constraint firstItem="Pf0-zV-HDl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="shL-ug-7Ys"/>
@@ -204,6 +209,7 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
+        <image name="arrow_down_gray" width="12" height="9"/>
         <image name="back_white_icon" width="38" height="19"/>
         <image name="change_up" width="11" height="11"/>
         <image name="knc" width="36" height="36"/>
