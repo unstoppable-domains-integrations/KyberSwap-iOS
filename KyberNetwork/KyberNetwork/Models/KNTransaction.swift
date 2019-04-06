@@ -203,8 +203,9 @@ extension KNTransaction {
 
 extension TransactionsStorage {
   var kyberTransactions: [KNTransaction] {
-    return realm.objects(KNTransaction.self)
-      .filter { !$0.id.isEmpty }
+    return realm.objects(KNTransaction.self).sorted(by: {
+      return $0.date > $1.date
+    }).filter { !$0.id.isEmpty }
   }
 
   var kyberPendingTransactions: [KNTransaction] {
