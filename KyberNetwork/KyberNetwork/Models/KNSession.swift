@@ -42,7 +42,7 @@ class KNSession {
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
     self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
-    if let tx = self.transactionStorage.objects.first, let nonce = Int(tx.nonce) {
+    if let tx = self.transactionStorage.pendingObjects.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
       self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
     }
   }
@@ -92,6 +92,9 @@ class KNSession {
       wallet: self.wallet
     )
     self.transacionCoordinator?.start()
+    if let tx = self.transactionStorage.pendingObjects.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
+      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+    }
   }
 
   // Remove a wallet, it should not be a current wallet
