@@ -13,6 +13,7 @@ class KNAlertStorage {
 
   var alerts: [KNAlertObject] {
     if self.realm == nil { return [] }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return [] }
     return self.realm.objects(KNAlertObject.self)
       .filter({ return $0.id != -1 })
   }

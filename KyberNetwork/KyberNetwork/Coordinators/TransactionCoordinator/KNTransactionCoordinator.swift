@@ -375,9 +375,11 @@ extension KNTransactionCoordinator {
   }
 
   func updatePendingTransaction(_ transaction: KNTransaction) {
+    if transaction.isInvalidated { return }
     self.checkTransactionReceipt(transaction) { [weak self] error in
       if error == nil { return }
       guard let `self` = self else { return }
+      if transaction.isInvalidated { return }
       self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
         guard let `self` = self else { return }
         guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id) else { return }
@@ -385,6 +387,7 @@ extension KNTransactionCoordinator {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
+        if trans.isInvalidated { return }
         if let error = sessionError {
           // Failure
           if case .responseError(let err) = error, let respError = err as? JSONRPCError {
@@ -418,6 +421,7 @@ extension KNTransactionCoordinator {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
+        if newTx.isInvalidated { return }
         self?.transactionStorage.addKyberTransactions([newTx])
         if newTx.state == .error || newTx.state == .failed {
           self?.transactionStorage.add([newTx.toTransaction()])
@@ -535,18 +539,20 @@ extension TransactionsStorage {
   }
 
   func deleteHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
-    try! self.realm.write {
-      self.realm.delete(transactions)
-    }
+    self.realm.beginWrite()
+    self.realm.delete(transactions)
+    try! self.realm.commitWrite()
   }
 
   func deleteAllHistoryTransactions() {
-    try! self.realm.write {
-      self.realm.delete(self.realm.objects(KNHistoryTransaction.self))
-    }
+    if self.realm.objects(KNHistoryTransaction.self).isInvalidated { return }
+    self.realm.beginWrite()
+    self.realm.delete(self.realm.objects(KNHistoryTransaction.self))
+    try! self.realm.commitWrite()
   }
 
   var historyTransactions: [KNHistoryTransaction] {
+    if self.realm.objects(KNHistoryTransaction.self).isInvalidated { return [] }
     return self.realm.objects(KNHistoryTransaction.self)
       .sorted(byKeyPath: "blockTimestamp", ascending: false)
       .filter { return !$0.id.isEmpty }

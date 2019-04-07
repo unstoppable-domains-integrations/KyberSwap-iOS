@@ -17,6 +17,7 @@ class IEOUserStorage {
 
   var objects: [IEOUser] {
     if self.realm == nil { return [] }
+    if self.realm.objects(IEOUser.self).isInvalidated { return [] }
     return self.realm.objects(IEOUser.self)
       .filter { return $0.userID != -1 }
   }
@@ -35,14 +36,14 @@ class IEOUserStorage {
   @discardableResult
   func updateToken(object: IEOUser, type: String, accessToken: String, refreshToken: String, expireTime: Double) -> IEOUser {
     if self.realm == nil { return object }
-    try! self.realm.write {
-      object.updateToken(
-        type: type,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        expireTime: expireTime
-      )
-    }
+    self.realm.beginWrite()
+    object.updateToken(
+      type: type,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      expireTime: expireTime
+    )
+    try! self.realm.commitWrite()
     return object
   }
 
@@ -57,9 +58,9 @@ class IEOUserStorage {
       $0.removeKYCStep()
       IEOUserStorage.shared.deleteKYCDetails(for: $0.userID)
     }
-    try! self.realm.write {
-      self.realm.delete(objects)
-    }
+    self.realm.beginWrite()
+    self.realm.delete(objects)
+    try! self.realm.commitWrite()
   }
 
   func signedOut() {
@@ -85,6 +86,7 @@ class IEOUserStorage {
 extension IEOUserStorage {
   var kycDetailObjects: [UserKYCDetailsInfo] {
     if self.realm == nil { return [] }
+    if self.realm.objects(UserKYCDetailsInfo.self).isInvalidated { return [] }
     return self.realm.objects(UserKYCDetailsInfo.self)
       .filter { return $0.userID != -1 }
   }
@@ -96,9 +98,9 @@ extension IEOUserStorage {
   func deleteKYCDetails(for userID: Int) {
     if self.realm == nil { return }
     if let object = self.getKYCDetails(for: userID) {
-      try! self.realm.write {
-        self.realm.delete(object)
-      }
+      self.realm.beginWrite()
+      self.realm.delete(object)
+      try! self.realm.commitWrite()
     }
   }
 

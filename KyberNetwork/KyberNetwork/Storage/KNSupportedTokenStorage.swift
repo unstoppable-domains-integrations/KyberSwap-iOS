@@ -23,6 +23,7 @@ class KNSupportedTokenStorage {
   }
 
   var supportedTokens: [TokenObject] {
+    if self.realm.objects(TokenObject.self).isInvalidated { return [] }
     return self.realm.objects(TokenObject.self)
       .filter { return !$0.contract.isEmpty }
   }
@@ -81,6 +82,9 @@ class KNSupportedTokenStorage {
   }
 
   func deleteAll() {
-    try! self.realm.write { realm.delete(realm.objects(TokenObject.self)) }
+    if self.realm.objects(TokenObject.self).isInvalidated { return }
+    self.realm.beginWrite()
+    self.realm.delete(realm.objects(TokenObject.self))
+    try! self.realm.commitWrite()
   }
 }

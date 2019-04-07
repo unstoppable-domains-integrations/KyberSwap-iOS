@@ -15,6 +15,7 @@ class KNContactStorage {
 
   var contacts: [KNContact] {
     if self.realm == nil { return [] }
+    if self.realm.objects(KNContact.self).isInvalidated { return [] }
     return self.realm.objects(KNContact.self)
       .sorted(byKeyPath: "lastUsed", ascending: false)
       .filter { return !$0.address.isEmpty }
@@ -39,9 +40,9 @@ class KNContactStorage {
 
   func updateLastUsed(contact: KNContact) {
     if self.realm == nil { return }
-    try! self.realm.write {
-      contact.lastUsed = Date()
-    }
+    self.realm.beginWrite()
+    contact.lastUsed = Date()
+    try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
@@ -55,9 +56,10 @@ class KNContactStorage {
 
   func deleteAll() {
     if self.realm == nil { return }
-    try! realm.write {
-      realm.delete(realm.objects(KNContact.self))
-      KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
-    }
+    if realm.objects(KNContact.self).isInvalidated { return }
+    self.realm.beginWrite()
+    self.realm.delete(realm.objects(KNContact.self))
+    try! self.realm.commitWrite()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 }

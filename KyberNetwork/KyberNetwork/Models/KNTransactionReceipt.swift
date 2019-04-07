@@ -60,8 +60,10 @@ extension KNTransactionReceipt {
 extension KNTransactionReceipt {
 
   func toTransaction(from transaction: KNTransaction, logsDict: JSONDictionary?) -> KNTransaction {
+    if transaction.isInvalidated { return transaction }
     let localObjects: [LocalizedOperationObject] = {
       guard let json = logsDict else {
+        if transaction.localizedOperations.isInvalidated { return [] }
         return Array(transaction.localizedOperations)
       }
       let (valueString, decimals): (String, Int) = {

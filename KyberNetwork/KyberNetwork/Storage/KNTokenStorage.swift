@@ -27,14 +27,15 @@ class KNTokenStorage {
     // new list of supported has been updated, update list of tokens in the wallet
     for token in self.tokens {
       if token.isSupported, supportedTokens.first(where: { $0.contract == token.contract }) == nil {
-        try! self.realm.write {
-          token.isSupported = false
-        }
+        self.realm.beginWrite()
+        token.isSupported = false
+        try! self.realm.commitWrite()
       }
     }
   }
 
   var tokens: [TokenObject] {
+    if self.realm.objects(TokenObject.self).isInvalidated { return [] }
     return self.realm.objects(TokenObject.self)
       .filter { return !$0.contract.isEmpty }
   }
@@ -72,16 +73,18 @@ class KNTokenStorage {
   }
 
   func updateBalance(for token: TokenObject, balance: BigInt) {
-    try! self.realm.write {
-      token.value = balance.description
-    }
+    if token.isInvalidated { return }
+    self.realm.beginWrite()
+    token.value = balance.description
+    try! self.realm.commitWrite()
   }
 
   func updateBalance(for address: Address, balance: BigInt) {
     if let token = self.tokens.first(where: { $0.contract == address.description.lowercased() }) {
-      try! self.realm.write {
-        token.value = balance.description
-      }
+      if token.isInvalidated { return }
+      self.realm.beginWrite()
+      token.value = balance.description
+      try! self.realm.commitWrite()
     }
   }
 
@@ -92,8 +95,9 @@ class KNTokenStorage {
   }
 
   func deleteAll() {
-    try! realm.write {
-      realm.delete(realm.objects(TokenObject.self))
-    }
+    if realm.objects(TokenObject.self).isInvalidated { return }
+    self.realm.beginWrite()
+    self.realm.delete(realm.objects(TokenObject.self))
+    try! self.realm.commitWrite()
   }
 }
