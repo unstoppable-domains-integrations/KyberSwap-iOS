@@ -550,13 +550,21 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func openSendTokenView() {
-    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
-      navigationController: self.navigationController,
-      session: self.session,
-      balances: self.balances,
-      from: self.session.tokenStorage.ethToken
-    )
-    self.sendTokenCoordinator?.start()
+    if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
+      self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+        navigationController: self.navigationController,
+        session: self.session,
+        balances: self.balances,
+        from: self.session.tokenStorage.ethToken
+      )
+      self.sendTokenCoordinator?.start()
+    } else {
+      self.navigationController.showWarningTopBannerMessage(
+        with: "",
+        message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+        time: 2.0
+      )
+    }
   }
 
   fileprivate func openPromoCodeView() {

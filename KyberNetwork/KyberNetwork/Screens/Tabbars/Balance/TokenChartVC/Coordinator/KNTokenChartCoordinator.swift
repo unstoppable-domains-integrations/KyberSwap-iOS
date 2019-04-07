@@ -84,13 +84,21 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
     case .sell(let token):
       self.delegate?.tokenChartCoordinator(sell: token)
     case .send(let token):
-      self.sendTokenCoordinator = KNSendTokenViewCoordinator(
-        navigationController: self.navigationController,
-        session: self.session,
-        balances: self.balances,
-        from: token
-      )
-      self.sendTokenCoordinator?.start()
+      if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
+        self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+          navigationController: self.navigationController,
+          session: self.session,
+          balances: self.balances,
+          from: token
+        )
+        self.sendTokenCoordinator?.start()
+      } else {
+        self.navigationController.showWarningTopBannerMessage(
+          with: "",
+          message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+          time: 2.0
+        )
+      }
     case .openEtherscan(let token):
       if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(token.contract)") {
         self.navigationController.openSafari(with: url)
