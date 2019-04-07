@@ -17,6 +17,7 @@ class KNTrackerRateStorage {
 
   var rates: [KNTrackerRate] {
     if self.realm == nil { return [] }
+    if self.realm.objects(KNTrackerRate.self).isInvalidated { return [] }
     return self.realm.objects(KNTrackerRate.self)
       .filter { return !$0.tokenAddress.isEmpty }
   }
@@ -33,11 +34,13 @@ class KNTrackerRateStorage {
   }
 
   func update(rates: [KNTrackerRate]) {
+    if self.realm.objects(KNTrackerRate.self).isInvalidated { return }
     self.add(rates: rates)
   }
 
   func updateCachedRates(cachedRates: [KNRate]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNTrackerRate.self).isInvalidated { return }
     self.realm.beginWrite()
     // Note: Might need to improve this one
     self.rates.forEach({ trackerRate in
@@ -61,6 +64,7 @@ class KNTrackerRateStorage {
 
   func deleteAll() {
     if self.realm == nil { return }
+    if realm.objects(KNTrackerRate.self).isInvalidated { return }
     try! realm.write {
       realm.delete(realm.objects(KNTrackerRate.self))
     }

@@ -173,6 +173,7 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   func balance(for token: TokenObject) -> Balance? {
+    if token.isInvalidated { return nil }
     if let balance = self.balances[token.contract] { return balance }
     if let amount = token.value.shortBigInt(decimals: 0) {
       return Balance(value: amount)

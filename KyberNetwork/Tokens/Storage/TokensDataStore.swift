@@ -16,17 +16,20 @@ enum TokenAction {
 
 class TokensDataStore {
     var tokens: Results<TokenObject> {
+        if realm.objects(TokenObject.self).isInvalidated { return realm.objects(TokenObject.self) }
         return realm.objects(TokenObject.self).filter(NSPredicate(format: "isDisabled == NO"))
             .sorted(byKeyPath: "contract", ascending: true)
     }
     let config: Config
     let realm: Realm
     var objects: [TokenObject] {
+        if realm.objects(TokenObject.self).isInvalidated { return [] }
         return realm.objects(TokenObject.self)
             .sorted(byKeyPath: "contract", ascending: true)
             .filter { !$0.contract.isEmpty }
     }
     var enabledObject: [TokenObject] {
+        if realm.objects(TokenObject.self).isInvalidated { return [] }
         return realm.objects(TokenObject.self)
             .sorted(byKeyPath: "contract", ascending: true)
             .filter { !$0.isDisabled }
@@ -67,6 +70,7 @@ class TokensDataStore {
         try! realm.commitWrite()
     }
     func deleteAll() {
+        if realm.objects(TokenObject.self).isInvalidated { return }
         try! realm.write {
             realm.delete(realm.objects(TokenObject.self))
         }

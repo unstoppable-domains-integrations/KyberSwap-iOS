@@ -20,6 +20,7 @@ class TransactionsStorage {
     }
 
     var objects: [Transaction] {
+      if realm.objects(Transaction.self).isInvalidated { return [] }
       let data: [Transaction] = realm.objects(Transaction.self)
             .filter { !$0.id.isEmpty }
       return data.sorted(by: { (tx0, tx1) -> Bool in
@@ -62,6 +63,7 @@ class TransactionsStorage {
     }
 
     func removeTransactions(for states: [TransactionState]) {
+        if realm.objects(Transaction.self).isInvalidated { return }
         let objects = realm.objects(Transaction.self).filter { states.contains($0.state) }
         try! realm.write {
             realm.delete(objects)
@@ -76,6 +78,7 @@ class TransactionsStorage {
     }
 
     func deleteAllTransactions() {
+      if realm.objects(Transaction.self).isInvalidated { return }
       try! realm.write {
         realm.delete(realm.objects(Transaction.self))
       }

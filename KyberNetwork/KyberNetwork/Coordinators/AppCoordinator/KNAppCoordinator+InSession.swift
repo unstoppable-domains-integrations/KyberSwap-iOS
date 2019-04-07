@@ -94,8 +94,13 @@ extension KNAppCoordinator {
 
     self.addObserveNotificationFromSession()
     self.updateLocalData()
+
     KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+
+    let transactions = self.session.transactionStorage.kyberPendingTransactions
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
   func stopAllSessions() {
@@ -151,6 +156,10 @@ extension KNAppCoordinator {
     self.updateLocalData()
     KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+
+    let transactions = self.session.transactionStorage.kyberPendingTransactions
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
   // Remove a wallet

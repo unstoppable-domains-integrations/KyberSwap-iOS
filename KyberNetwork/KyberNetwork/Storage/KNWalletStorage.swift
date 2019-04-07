@@ -17,6 +17,7 @@ class KNWalletStorage {
 
   var wallets: [KNWalletObject] {
     if self.realm == nil { return [] }
+    if self.realm.objects(KNWalletObject.self).isInvalidated { return [] }
     return self.realm.objects(KNWalletObject.self)
       .filter { return !$0.address.isEmpty }
   }
@@ -50,6 +51,7 @@ class KNWalletStorage {
 
   func deleteAll() {
     if self.realm == nil { return }
+    if realm.objects(KNWalletObject.self).isInvalidated { return }
     try! realm.write {
       realm.delete(realm.objects(KNWalletObject.self))
     }

@@ -203,6 +203,7 @@ extension KNTransaction {
 
 extension TransactionsStorage {
   var kyberTransactions: [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     return realm.objects(KNTransaction.self).sorted(by: {
       return $0.date > $1.date
     }).filter { !$0.id.isEmpty }

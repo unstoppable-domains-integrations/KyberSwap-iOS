@@ -215,7 +215,6 @@ class KSwapViewController: KNBaseViewController {
 
   fileprivate func setupHamburgerMenu() {
     self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
-    self.hasPendingTxView.isHidden = true
     self.hamburgerMenu.hideMenu(animated: false)
   }
 
