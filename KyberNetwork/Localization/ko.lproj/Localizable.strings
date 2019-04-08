@@ -454,6 +454,7 @@
 "After swapping, please transfer your token to your personal wallet before %@" = "After swapping, please transfer your token to your personal wallet before %@";
 "This alert is eligible for a reward from the current competition. Do you still want to delete?" = "This alert is eligible for a reward from the current competition. Do you still want to delete?";
 "This alert is eligible for a reward from the current competition. Do you still want to update?" = "This alert is eligible for a reward from the current competition. Do you still want to update?";
+"Currency" = "통화";
 
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";
