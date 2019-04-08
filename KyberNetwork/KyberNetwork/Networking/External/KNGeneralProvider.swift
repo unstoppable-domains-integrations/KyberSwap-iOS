@@ -20,6 +20,22 @@ class KNGeneralProvider {
     }
   }()
 
+  lazy var web3SwiftKyber: Web3Swift = {
+    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpointKyber + KNEnvironment.default.nodeEndpoint) {
+      return Web3Swift(url: path)
+    } else {
+      return Web3Swift()
+    }
+  }()
+
+  lazy var web3SwiftAlchemy: Web3Swift = {
+    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
+      return Web3Swift(url: path)
+    } else {
+      return Web3Swift()
+    }
+  }()
+
   lazy var networkAddress: Address = {
     return Address(string: KNEnvironment.default.knCustomRPC?.networkAddress ?? "")!
   }()
@@ -71,10 +87,10 @@ class KNGeneralProvider {
   }
 
   // MARK: Transaction count
-  func getTransactionCount(for address: String, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func getTransactionCount(for address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
     let request = EtherServiceRequest(batch: BatchFactory().create(GetTransactionCountRequest(
       address: address,
-      state: "latest"
+      state: state
     )))
     DispatchQueue.global().async {
       Session.send(request) { result in

@@ -7,6 +7,8 @@ struct CustomRPC {
     let name: String
     let symbol: String
     let endpoint: String
+    let endpointKyber: String
+    let endpointAlchemy: String
 }
 
 extension CustomRPC: Equatable {
@@ -15,6 +17,8 @@ extension CustomRPC: Equatable {
             lhs.chainID == rhs.chainID &&
             lhs.name == rhs.name &&
             lhs.symbol == rhs.symbol &&
-            lhs.endpoint == rhs.symbol
+            lhs.endpoint == rhs.symbol &&
+            lhs.endpointKyber == rhs.endpointKyber &&
+            lhs.endpointAlchemy == rhs.endpointAlchemy
     }
 }
