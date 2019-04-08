@@ -253,8 +253,93 @@ class KNGeneralProvider {
   }
 
   func sendSignedTransactionData(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    var error: Error?
+    var transactionID: String?
+    var hasCompletionCalled: Bool = false
+    let group = DispatchGroup()
+    group.enter()
+    self.sendRawTransactionWithInfura(data) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let ID):
+        transactionID = ID
+        if !hasCompletionCalled {
+          hasCompletionCalled = true
+          completion(.success(ID))
+        }
+      case .failure(let er):
+        error = er
+      }
+      group.leave()
+    }
+    group.enter()
+    self.sendRawTransactionWithAlchemy(data) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let ID):
+        transactionID = ID
+        if !hasCompletionCalled {
+          hasCompletionCalled = true
+          completion(.success(ID))
+        }
+      case .failure(let er):
+        error = er
+      }
+      group.leave()
+    }
+    group.enter()
+    self.sendRawTransactionWithKyber(data) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let ID):
+        transactionID = ID
+        if !hasCompletionCalled {
+          hasCompletionCalled = true
+          completion(.success(ID))
+        }
+      case .failure(let er):
+        error = er
+      }
+      group.leave()
+    }
+    group.notify(queue: .main) {
+      if let id = transactionID {
+        if !hasCompletionCalled { completion(.success(id)) }
+      } else if let err = error {
+        completion(.failure(AnyError(err)))
+      }
+    }
+  }
+
+  private func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
     let request = EtherServiceRequest(batch: batch)
+    Session.send(request) { result in
+      switch result {
+      case .success(let transactionID):
+        completion(.success(transactionID))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  private func sendRawTransactionWithAlchemy(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
+    let request = EtherServiceAlchemyRequest(batch: batch)
+    Session.send(request) { result in
+      switch result {
+      case .success(let transactionID):
+        completion(.success(transactionID))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  private func sendRawTransactionWithKyber(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
+    let request = EtherServiceKyberRequest(batch: batch)
     Session.send(request) { result in
       switch result {
       case .success(let transactionID):

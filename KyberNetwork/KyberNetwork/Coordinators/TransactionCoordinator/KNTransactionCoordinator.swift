@@ -402,7 +402,7 @@ extension KNTransactionCoordinator {
               self.transactionStorage.delete([trans])
             case .resultObjectParseError:
               // transaction seems to be removed
-              if transaction.date.addingTimeInterval(60) < Date() {
+              if transaction.date.addingTimeInterval(300) < Date() {
                 self.updateTransactionStateIfNeeded(transaction, state: .failed)
               }
             default: break
