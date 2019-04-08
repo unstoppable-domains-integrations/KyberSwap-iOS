@@ -423,6 +423,7 @@
 "After swapping, please transfer your token to your personal wallet before %@" = "Sau khi trao đổi, hãy chuyển toàn bộ token vào ví riêng của bạn trước %@";
 "This alert is eligible for a reward from the current competition. Do you still want to delete?" = "Thông báo này đủ điều kiện nhận phần thưởng từ cuộc thi hiện tại. Bạn vẫn muốn xoá?";
 "This alert is eligible for a reward from the current competition. Do you still want to update?" = "Thông báo này đủ điều kiện nhận phần thưởng từ cuộc thi hiện tại. Bạn vẫn muốn cập nhật lại?";
+"Currency" = "Đơn vị";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";

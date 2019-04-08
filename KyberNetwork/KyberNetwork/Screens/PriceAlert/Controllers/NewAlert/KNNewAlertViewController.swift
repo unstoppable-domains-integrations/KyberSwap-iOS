@@ -71,6 +71,11 @@ class KNNewAlertViewModel {
     }()
   }
 
+  func updateCurrencyType(_ type: KWalletCurrencyType) {
+    self.currencyType = type
+    self.updateCurrentPrice()
+  }
+
   func switchCurrencyType() {
     self.currencyType = self.currencyType == .usd ? .eth : .usd
     self.updateCurrentPrice()
@@ -83,7 +88,13 @@ class KNNewAlertViewController: KNBaseViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var tokenTextLabel: UILabel!
   @IBOutlet weak var tokenButton: UIButton!
-  @IBOutlet weak var currencyButton: UIButton!
+
+  @IBOutlet weak var currencyLabel: UILabel!
+  @IBOutlet weak var usdButton: UIButton!
+  @IBOutlet weak var usdLabel: UILabel!
+  @IBOutlet weak var ethButton: UIButton!
+  @IBOutlet weak var ethLabel: UILabel!
+
   @IBOutlet weak var alertPriceTextLabel: UILabel!
   @IBOutlet weak var alertPriceTextField: UITextField!
   @IBOutlet weak var currentPriceTextLabel: UILabel!
@@ -98,8 +109,16 @@ class KNNewAlertViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
+    self.currencyLabel.text = "Currency".toBeLocalised()
+
+    let tabUSDGesture = UITapGestureRecognizer(target: self, action: #selector(self.usdButtonPressed(_:)))
+    self.usdLabel.addGestureRecognizer(tabUSDGesture)
+
+    let tabETHGesture = UITapGestureRecognizer(target: self, action: #selector(self.ethButtonPressed(_:)))
+    self.ethLabel.addGestureRecognizer(tabETHGesture)
+
     self.updateUIs()
+
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "currency_\(self.viewModel.currencyType.rawValue)"])
     self.alertPriceTextField.delegate = self
     self.viewModel.updateCurrentPrice()
@@ -164,16 +183,38 @@ class KNNewAlertViewController: KNBaseViewController {
       self.percentageChange.setTitle(self.viewModel.percentageChangeDisplay, for: .normal)
       self.percentageChange.setTitleColor(self.viewModel.percentageChangeColor, for: .normal)
       self.tokenButton.setTitle(self.viewModel.displayTokenTitle, for: .normal)
-      self.currencyButton.setTitle(self.viewModel.displayCurrencyTitle, for: .normal)
+
+      self.usdButton.rounded(
+        color: self.viewModel.currencyType == .usd ? UIColor.Kyber.enygold : UIColor.Kyber.border,
+        width: self.viewModel.currencyType == .usd ? 6.0 : 1.0,
+        radius: 12.0
+      )
+      self.ethButton.rounded(
+        color: self.viewModel.currencyType == .eth ? UIColor.Kyber.enygold : UIColor.Kyber.border,
+        width: self.viewModel.currencyType == .eth ? 6.0 : 1.0,
+        radius: 12.0
+      )
+
       self.currentPriceTextLabel.text = self.viewModel.currentPriceDisplay
       self.view.layoutIfNeeded()
     }
   }
-
-  @IBAction func switchCurrencyTypePressed(_ sender: Any) {
-    self.viewModel.switchCurrencyType()
+  @IBAction func usdButtonPressed(_ sender: Any) {
+    if self.viewModel.currencyType == .eth {
+      self.viewModel.updateTargetPrice(0)
+      self.alertPriceTextField.text = ""
+    }
+    self.viewModel.updateCurrencyType(.usd)
     self.updateUIs()
-    KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "currency_\(self.viewModel.currencyType.rawValue)"])
+  }
+
+  @IBAction func ethButtonPressed(_ sender: Any) {
+    if self.viewModel.currencyType == .usd {
+      self.viewModel.updateTargetPrice(0)
+      self.alertPriceTextField.text = ""
+    }
+    self.viewModel.updateCurrencyType(.eth)
+    self.updateUIs()
   }
 
   @IBAction func selectTokenButtonPressed(_ sender: Any) {
