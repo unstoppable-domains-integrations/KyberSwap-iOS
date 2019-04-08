@@ -148,14 +148,22 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func send(transaction: UnconfirmedTransaction) {
-    self.confirmVC = {
-      let viewModel = KConfirmSendViewModel(transaction: transaction)
-      let controller = KConfirmSendViewController(viewModel: viewModel)
-      controller.delegate = self
-      controller.loadViewIfNeeded()
-      return controller
-    }()
-    self.navigationController.pushViewController(self.confirmVC!, animated: true)
+    if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
+      self.confirmVC = {
+        let viewModel = KConfirmSendViewModel(transaction: transaction)
+        let controller = KConfirmSendViewController(viewModel: viewModel)
+        controller.delegate = self
+        controller.loadViewIfNeeded()
+        return controller
+      }()
+      self.navigationController.pushViewController(self.confirmVC!, animated: true)
+    } else {
+      self.navigationController.showWarningTopBannerMessage(
+        with: "",
+        message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+        time: 2.0
+      )
+    }
   }
 
   fileprivate func openNewContact(address: String) {
