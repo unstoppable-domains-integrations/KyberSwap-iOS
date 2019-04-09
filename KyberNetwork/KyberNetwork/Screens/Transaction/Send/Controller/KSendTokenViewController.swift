@@ -400,6 +400,7 @@ extension KSendTokenViewController {
   func updateUIAddressQRCode() {
     self.addressTextField.text = self.viewModel.displayAddress
     self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
+    self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
   }
 }
