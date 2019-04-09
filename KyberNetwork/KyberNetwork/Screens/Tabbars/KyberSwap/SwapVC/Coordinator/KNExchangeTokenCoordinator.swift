@@ -378,12 +378,15 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       group.enter()
       DispatchQueue.global(qos: .background).async {
         let provider = MoyaProvider<KNTrackerService>()
-        provider.request(.getUserTradable(address: address)) { result in
+        provider.request(.getUserCap(address: address)) { result in
           if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-            let data = json["data"] as? Bool ?? false
-            if data {
-              errorMessage = NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: "")
+            let cap = json["cap"] as? Double ?? 0.0
+            if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
+              let equivalentETH = rate.rate * data.amount / BigInt(10).power(data.from.decimals)
+              if Double(equivalentETH) > cap {
+                errorMessage = NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: "")
+              }
             }
           }
           group.leave()
@@ -521,12 +524,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         DispatchQueue.main.async {
           if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
-            let capData = json["data"] as? JSONDictionary,
-            let capTx = capData["TxLimit"] as? Double {
-            if let rateUSD = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken)?.rateUSDBigInt, rateUSD != 0 {
-              let cap = BigInt(capTx) * BigInt(10).power(36) / rateUSD
-              self.rootViewController.coordinatorUpdateUserCapInWei(cap: cap)
-            }
+            let capData = json["cap"] as? Double {
+            self.rootViewController.coordinatorUpdateUserCapInWei(cap: BigInt(capData))
           }
         }
       }
