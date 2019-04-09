@@ -36,8 +36,7 @@ class KNExchangeTokenCoordinator: Coordinator {
     let (from, to): (TokenObject, TokenObject) = {
       let address = self.session.wallet.address.description
       let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address)
-      if let dest = destToken {
-        let from = KNSupportedTokenStorage.shared.ptToken
+      if let dest = destToken, let from = KNSupportedTokenStorage.shared.ptToken {
         let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == dest.uppercased() }) ?? KNSupportedTokenStorage.shared.ethToken
         return (from, to)
       }

@@ -318,8 +318,8 @@ class KSwapViewModel {
     let address = wallet.address.description
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
 
-    if let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) {
-      self.from = KNSupportedTokenStorage.shared.ptToken
+    if let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address), let ptToken = KNSupportedTokenStorage.shared.ptToken {
+      self.from = ptToken
       self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken }) ?? self.eth
     } else {
       // not a promo wallet
