@@ -36,8 +36,8 @@ class KNSupportedTokenStorage {
     return self.supportedTokens.first(where: { $0.isKNC })!
   }
 
-  var ptToken: TokenObject {
-    return self.supportedTokens.first(where: { $0.isPromoToken })!
+  var ptToken: TokenObject? {
+    return self.supportedTokens.first(where: { $0.isPromoToken })
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {

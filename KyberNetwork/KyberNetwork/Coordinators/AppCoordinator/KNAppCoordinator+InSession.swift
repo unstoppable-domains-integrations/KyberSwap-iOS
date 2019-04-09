@@ -164,6 +164,7 @@ extension KNAppCoordinator {
 
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
+    self.navigationController.displayLoading()
     if self.keystore.wallets.count == 1 {
       self.stopAllSessions()
       return
