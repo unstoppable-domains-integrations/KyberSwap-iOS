@@ -60,7 +60,6 @@ enum KNTrackerService {
   case getChartHistory(symbol: String, resolution: String, from: Int64, to: Int64, rateType: String)
   case getRates
   case getUserCap(address: String)
-  case getUserTradable(address: String)
 }
 
 extension KNTrackerService: TargetType {
@@ -69,8 +68,6 @@ extension KNTrackerService: TargetType {
     switch self {
     case .getUserCap(let address):
       return URL(string: "\(KNSecret.userCapURL)\(address)")!
-    case .getUserTradable(let address):
-      return URL(string: "\(KNSecret.userCanTradeURL)\(address)")!
     case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
       let url = "\(KNSecret.getChartHistory)?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!
