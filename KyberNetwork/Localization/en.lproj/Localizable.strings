@@ -466,6 +466,12 @@
 "Campaign(s)" = "Campaign(s)";
 "Campaign has ended." = "Campaign has ended.";
 "See the winners" = "See the winners";
+"Triggered" = "Triggered";
+"Active" = "Active";
+
+"REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
+"Start: %@" = "Start: %@";
+"End: %@" = "End: %@";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";

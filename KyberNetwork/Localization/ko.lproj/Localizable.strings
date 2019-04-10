@@ -463,6 +463,12 @@
 "Campaign(s)" = "캠페인";
 "Campaign has ended." = "캠페인 종료되었습니다.";
 "See the winners" = "결과보기";
+"Triggered" = "Triggered";
+"Active" = "Active";
+
+"REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
+"Start: %@" = "Start: %@";
+"End: %@" = "End: %@";
 
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";

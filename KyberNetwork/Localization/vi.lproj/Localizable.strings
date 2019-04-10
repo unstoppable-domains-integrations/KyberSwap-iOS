@@ -432,6 +432,12 @@
 "Campaign(s)" = "Các chương trình";
 "Campaign has ended." = "Chương trình đã kết thúc.";
 "See the winners" = "Xem kết quả";
+"Triggered" = "Đã kích hoạt";
+"Active" = "Đang hoạt động";
+
+"REWARD CURRENCY: %@" = "TIỀN THƯỞNG: %@";
+"Start: %@" = "Từ: %@";
+"End: %@" = "Đến: %@";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";

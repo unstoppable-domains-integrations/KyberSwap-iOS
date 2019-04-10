@@ -62,8 +62,10 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   }
 
   deinit {
-    self.timer?.invalidate()
-    self.timer = nil
+    if !self.isShowingResult {
+      self.timer?.invalidate()
+      self.timer = nil
+    }
   }
 
   override func viewDidLoad() {
@@ -74,16 +76,20 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.startUpdatingLeaderBoard(isFirstTime: true)
-    self.timer?.invalidate()
-    self.timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] _ in
-      self?.startUpdatingLeaderBoard()
-    })
+    if !self.isShowingResult {
+      self.timer?.invalidate()
+      self.timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block: { [weak self] _ in
+        self?.startUpdatingLeaderBoard()
+      })
+    }
   }
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.timer?.invalidate()
-    self.timer = nil
+    if !self.isShowingResult {
+      self.timer?.invalidate()
+      self.timer = nil
+    }
   }
 
   override func viewDidLayoutSubviews() {
@@ -174,7 +180,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.campaignDescLabel.text = json["description"] as? String
       self.rewardCurrencyLabel.text = {
         let unit = json["reward_unit"] as? String ?? ""
-        return String(format: NSLocalizedString("leader.board.reward.unit", value: "REWARD CURRENCY: %@", comment: ""), unit)
+        return String(format: NSLocalizedString("REWARD CURRENCY: %@", value: "REWARD CURRENCY: %@", comment: ""), unit)
       }()
       self.startTimeLabel.text = {
         let startTime = json["start_time"] as? String ?? ""
@@ -289,6 +295,10 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
         var json = alert
         json["current_user_name"] = user.name
         self.leaderBoardData.insert(json, at: 0)
+      }
+    } else {
+      if let user = IEOUserStorage.shared.user, let index = self.leaderBoardData.firstIndex(where: { ($0["user_id"] as? Int ?? 0) == user.userID }) {
+        self.leaderBoardData[index]["current_user_name"] = user.name
       }
     }
 
