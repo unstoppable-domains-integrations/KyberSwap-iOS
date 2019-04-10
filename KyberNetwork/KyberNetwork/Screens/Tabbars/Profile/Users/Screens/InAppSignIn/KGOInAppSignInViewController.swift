@@ -49,6 +49,9 @@ class KGOInAppSignInViewController: KNBaseViewController {
 extension KGOInAppSignInViewController: UIWebViewDelegate {
   func webViewDidStartLoad(_ webView: UIWebView) {
     self.displayLoading(text: "\(NSLocalizedString("loading", value: "Loading", comment: ""))...", animated: true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+      self.hideLoading()
+    }
   }
 
   func webViewDidFinishLoad(_ webView: UIWebView) {
