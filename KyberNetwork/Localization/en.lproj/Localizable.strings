@@ -432,7 +432,7 @@
 "Triggered: \n%@" = "Triggered: \n%@";
 "We can not update current price of this token pair" = "We can not update current price of this token pair";
 "Your target price should be from 1% to 10000% of current price" = "Your target price should be from 1% to 10000% of current price";
-"Can not select pair ETH/ETH" = "Can not select pair ETH/ETH";
+"Can not select pair ETH/ETH, WETH/ETH" = "Can not select pair ETH/ETH, WETH/ETH";
 "Please enter your target price to be alerted" = "Please enter your target price to be alerted";
 "New alert has been added successfully!" = "New alert has been added successfully!";
 "Updated alert successfully!" = "Updated alert successfully!";

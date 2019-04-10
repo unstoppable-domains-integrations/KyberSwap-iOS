@@ -221,6 +221,7 @@ extension KNAppCoordinator {
   }
 
   func showForceAppUpdateAvailableIfNeeded() {
+    if isDebug { return }
     DispatchQueue.global().async {
       do {
         let update = try Bundle.isUpdateAvailable()

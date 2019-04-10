@@ -428,7 +428,7 @@
 "Triggered: \n%@" = "触发:  \n%@";
 "We can not update current price of this token pair" = "我们无法更新此交易对的当前价格";
 "Your target price should be from 1% to 10000% of current price" = "你们的目标价格应该是当前价格的1%到10000%";
-"Can not select pair ETH/ETH" = "不能选择交易对ETH/ETH";
+"Can not select pair ETH/ETH, WETH/ETH" = "不能选择交易对ETH/ETH, WETH/ETH";
 "Please enter your target price to be alerted" = "请输入您的目标价格以设置提醒";
 "New alert has been added successfully!" = "新警报已成功添加";
 "Updated alert successfully!" = "更新警报成功!";
