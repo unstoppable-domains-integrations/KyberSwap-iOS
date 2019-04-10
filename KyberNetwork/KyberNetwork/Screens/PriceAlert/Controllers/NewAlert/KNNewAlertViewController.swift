@@ -272,10 +272,10 @@ class KNNewAlertViewController: KNBaseViewController {
       )
       return
     }
-    if self.viewModel.token == "ETH" && self.viewModel.currencyType == .eth {
+    if (self.viewModel.token == "ETH" || self.viewModel.token == "WETH") && self.viewModel.currencyType == .eth {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Can not select pair ETH/ETH".toBeLocalised(),
+        message: "Can not select pair ETH/ETH, WETH/ETH".toBeLocalised(),
         time: 1.5
       )
       return

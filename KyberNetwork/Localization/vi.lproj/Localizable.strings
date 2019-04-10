@@ -458,7 +458,7 @@
 "Triggered: \n%@" = "Kích hoạt: \n%@";
 "We can not update current price of this token pair" = "Không thể cập nhật giá hiện tại của token vào lúc này";
 "Your target price should be from 1% to 10000% of current price" = "Mức giá nên từ 1% đến 10000% so với mức giá hiện tại";
-"Can not select pair ETH/ETH" = "Không thể chọn cặp ETH/ETH";
+"Can not select pair ETH/ETH, WETH/ETH" = "Không thể chọn cặp ETH/ETH, WETH/ETH";
 "Please enter your target price to be alerted" = "Hãy điền mức giá bạn muốn được thông báo";
 "New alert has been added successfully!" = "Thông báo mới đã được thêm thành công!";
 "Updated alert successfully!" = "Cập nhật thông báo thành công!";
