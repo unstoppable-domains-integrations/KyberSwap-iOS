@@ -629,9 +629,9 @@ extension KSendTokenViewController: KAdvancedSettingsViewDelegate {
           }
         }
       )
-    case .gasPriceChanged(let type):
+    case .gasPriceChanged(let type, let value):
       self.viewModel.updateSelectedGasPriceType(type)
-      self.updateAdvancedSettingsView()
+      self.viewModel.updateGasPrice(value)
     default: break
     }
   }
