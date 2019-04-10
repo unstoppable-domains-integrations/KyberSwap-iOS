@@ -391,36 +391,42 @@ class KAdvancedSettingsView: XibLoaderView {
     self.viewModel.updateSelectedType(.fast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast, value: self.viewModel.fast))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
+    self.updateGasPriceUIs()
   }
 
   @IBAction func mediumGasButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectedType(.medium)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium, value: self.viewModel.medium))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
+    self.updateGasPriceUIs()
   }
 
   @IBAction func slowGasButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow, value: self.viewModel.slow))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
+    self.updateGasPriceUIs()
   }
 
   @objc func userTappedFastFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.fast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast, value: self.viewModel.fast))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "fast"])
+    self.updateGasPriceUIs()
   }
 
   @objc func userTappedMediumFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.medium)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium, value: self.viewModel.medium))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "regular"])
+    self.updateGasPriceUIs()
   }
 
   @objc func userTappedSlowFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow, value: self.viewModel.slow))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["type": "select_gas", "value": "slow"])
+    self.updateGasPriceUIs()
   }
 
   @IBAction func threePercentButtonPressed(_ sender: Any) {
