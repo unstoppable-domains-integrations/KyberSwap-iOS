@@ -17,14 +17,19 @@ class KNAlertTableView: XibLoaderView {
 
   @IBOutlet weak var alertTableView: UITableView!
   let kAlertTableViewCellID: String = "kAlertTableViewCellID"
+  let kAlertHeaderTableViewID: String = "kAlertHeaderTableViewID"
 
   fileprivate var alerts: [KNAlertObject] = []
+  fileprivate var activeAlerts: [KNAlertObject] = []
+  fileprivate var triggeredAlerts: [KNAlertObject] = []
   fileprivate var isFull: Bool = false
 
   override func commonInit() {
     super.commonInit()
     let nib = UINib(nibName: KNAlertTableViewCell.className, bundle: nil)
     self.alertTableView.register(nib, forCellReuseIdentifier: kAlertTableViewCellID)
+    let headerNib = UINib(nibName: KNListAlertHeaderView.className, bundle: nil)
+    self.alertTableView.register(headerNib, forHeaderFooterViewReuseIdentifier: kAlertHeaderTableViewID)
     self.alertTableView.rowHeight = KNAlertTableViewCell.height
     self.alertTableView.delegate = self
     self.alertTableView.dataSource = self
@@ -70,10 +75,19 @@ class KNAlertTableView: XibLoaderView {
       return alert1.updatedDate > alert2.updatedDate
     })
     if !isFull { self.alerts = Array(self.alerts.prefix(2)) }
+    if self.isFull {
+      self.activeAlerts = self.alerts.filter({ return $0.state == .active })
+      self.triggeredAlerts = self.alerts.filter({ return $0.state != .active })
+    }
+    let height: CGFloat = {
+      if !isFull { return self.alertTableView.rowHeight * CGFloat(self.alerts.count) }
+      if self.triggeredAlerts.isEmpty { return self.alertTableView.rowHeight * CGFloat(self.activeAlerts.count) }
+      return self.alertTableView.rowHeight * CGFloat(self.alerts.count) + 40.0 // triggered section height
+    }()
     self.alertTableView.reloadData()
     self.delegate?.alertTableView(
       self.alertTableView,
-      run: .update(height: self.alertTableView.rowHeight * CGFloat(self.alerts.count))
+      run: .update(height: height)
     )
   }
 }
@@ -81,29 +95,84 @@ class KNAlertTableView: XibLoaderView {
 extension KNAlertTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    let alerts: KNAlertObject = {
+      if !self.isFull { return self.alerts[indexPath.row] }
+      if indexPath.section == 0 {
+        // either active or triggered depends on number active alerts
+        if self.activeAlerts.isEmpty { return self.triggeredAlerts[indexPath.row] }
+        return self.activeAlerts[indexPath.row]
+      }
+      // triggered section
+      return self.triggeredAlerts[indexPath.row]
+    }()
     self.delegate?.alertTableView(
       tableView,
-      run: .select(alert: self.alerts[indexPath.row])
+      run: .select(alert: alerts)
     )
   }
 }
 
 extension KNAlertTableView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+    if !self.isFull { return 1 }
+    let numSections: Int = {
+      if self.activeAlerts.isEmpty && self.triggeredAlerts.isEmpty { return 0 }
+      if !self.activeAlerts.isEmpty && !self.triggeredAlerts.isEmpty { return 2 }
+      return 1
+    }()
+    return numSections
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.alerts.count
+    if !self.isFull { return self.alerts.count }
+    if self.activeAlerts.isEmpty && self.triggeredAlerts.isEmpty { return 0 }
+    if !self.activeAlerts.isEmpty && !self.triggeredAlerts.isEmpty {
+      return section == 0 ? self.activeAlerts.count : self.triggeredAlerts.count
+    }
+    return self.activeAlerts.isEmpty ? self.triggeredAlerts.count : self.activeAlerts.count
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
 
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.0
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if !self.isFull { return 0.0 }
+    if self.triggeredAlerts.isEmpty { return 0.0 }
+    if !self.activeAlerts.isEmpty && section == 0 { return 0.0 }
+    return 40.0
+  }
+
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if !self.isFull { return nil }
+    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: kAlertHeaderTableViewID) as! KNListAlertHeaderView
+    let backgroundView = UIView(frame: view.bounds)
+    backgroundView.backgroundColor = UIColor(red: 239, green: 239, blue: 239)
+    view.backgroundView = backgroundView
+    if self.activeAlerts.isEmpty || section == 1 {
+      view.updateText("Triggered".toBeLocalised().uppercased())
+    } else {
+      view.updateText("Active".toBeLocalised().uppercased())
+    }
+    return view
+  }
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kAlertTableViewCellID, for: indexPath) as! KNAlertTableViewCell
-    let alert: KNAlertObject = self.alerts[indexPath.row]
+    let alert: KNAlertObject = {
+      if !self.isFull { return self.alerts[indexPath.row] }
+      if indexPath.section == 0 {
+        // either active or triggered depends on number active alerts
+        if self.activeAlerts.isEmpty { return self.triggeredAlerts[indexPath.row] }
+        return self.activeAlerts[indexPath.row]
+      }
+      // triggered section
+      return self.triggeredAlerts[indexPath.row]
+    }()
     cell.updateCell(with: alert, index: indexPath.row)
     return cell
   }
@@ -113,17 +182,27 @@ extension KNAlertTableView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    let alert: KNAlertObject = {
+      if !self.isFull { return self.alerts[indexPath.row] }
+      if indexPath.section == 0 {
+        // either active or triggered depends on number active alerts
+        if self.activeAlerts.isEmpty { return self.triggeredAlerts[indexPath.row] }
+        return self.activeAlerts[indexPath.row]
+      }
+      // triggered section
+      return self.triggeredAlerts[indexPath.row]
+    }()
     let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
       self.delegate?.alertTableView(
         tableView,
-        run: .edit(alert: self.alerts[indexPath.row])
+        run: .edit(alert: alert)
       )
     }
     edit.backgroundColor = UIColor.Kyber.blueGreen
     let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
       self.delegate?.alertTableView(
         tableView,
-        run: .delete(alert: self.alerts[indexPath.row])
+        run: .delete(alert: alert)
       )
     }
     delete.backgroundColor = UIColor.Kyber.strawberry

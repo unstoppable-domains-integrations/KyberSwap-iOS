@@ -456,6 +456,12 @@
 "Campaign(s)" = "运动";
 "Campaign has ended." = "广告系列已结束.";
 "See the winners" = "看到结果";
+"Triggered" = "触发";
+"Active" = "Active";
+
+"REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
+"Start: %@" = "Start: %@";
+"End: %@" = "End: %@";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
