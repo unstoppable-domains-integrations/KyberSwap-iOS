@@ -852,9 +852,9 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
           }
         }
       )
-    case .gasPriceChanged(let type):
+    case .gasPriceChanged(let type, let value):
       self.viewModel.updateSelectedGasPriceType(type)
-      self.updateAdvancedSettingsView()
+      self.viewModel.updateGasPrice(value)
     case .minRatePercentageChanged(let percent):
       self.viewModel.updateExchangeMinRatePercent(Double(percent))
       self.updateAdvancedSettingsView()
