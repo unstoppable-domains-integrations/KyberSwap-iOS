@@ -66,7 +66,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
 
   func openLeaderBoard() {
     guard IEOUserStorage.shared.user != nil else { return }
-    let leaderBoardVC = KNAlertLeaderBoardViewController()
+    let leaderBoardVC = KNAlertLeaderBoardViewController(isShowingResult: false)
     leaderBoardVC.loadViewIfNeeded()
     leaderBoardVC.delegate = self
     self.navigationController.pushViewController(leaderBoardVC, animated: true)
@@ -130,5 +130,13 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
 extension KNManageAlertCoordinator: KNAlertLeaderBoardViewControllerDelegate {
   func alertLeaderBoardViewControllerShouldBack() {
     self.navigationController.popViewController(animated: true)
+  }
+
+  func alertLeaderBoardViewControllerOpenCampaignResult() {
+    guard IEOUserStorage.shared.user != nil else { return }
+    let leaderBoardVC = KNAlertLeaderBoardViewController(isShowingResult: true)
+    leaderBoardVC.loadViewIfNeeded()
+    leaderBoardVC.delegate = self
+    self.navigationController.pushViewController(leaderBoardVC, animated: true)
   }
 }

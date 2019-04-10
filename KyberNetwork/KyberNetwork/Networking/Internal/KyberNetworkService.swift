@@ -112,6 +112,7 @@ enum UserInfoService {
   case getListAlertMethods(accessToken: String)
   case setAlertMethods(accessToken: String, email: Bool, telegram: Bool, pushNoti: Bool)
   case getLeaderBoardData(accessToken: String)
+  case getLatestCampaignResult(accessToken: String)
 }
 
 extension UserInfoService: TargetType {
@@ -137,6 +138,8 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/set_alert_methods")!
     case .getLeaderBoardData:
       return URL(string: "\(baseString)/api/alerts/ranks")!
+    case .getLatestCampaignResult:
+      return URL(string: "\(baseString)/api/alerts/campaign_prizes")!
     }
   }
 
@@ -144,7 +147,7 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getUserInfo, .getListAlerts, .getListAlertMethods, .getLeaderBoardData: return .get
+    case .getUserInfo, .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult: return .get
     case .removeAnAlert: return .delete
     case .setAlertMethods, .addPushToken, .updateAlert: return .patch
     default: return .post
@@ -224,6 +227,12 @@ extension UserInfoService: TargetType {
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .getLeaderBoardData(let accessToken):
+      let json: JSONDictionary = [
+        "access_token": accessToken,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .getLatestCampaignResult(let accessToken):
       let json: JSONDictionary = [
         "access_token": accessToken,
       ]
