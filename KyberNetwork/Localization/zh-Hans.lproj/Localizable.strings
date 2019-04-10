@@ -451,6 +451,11 @@
 "Update Available!" = "可用更新!";
 "New version is available, please open AppStore to update KyberSwap now." = "新版本可用，请立即打开AppStore更新KyberSwap。";
 "Open AppStore" = "打开AppStore";
+"Result" = "结果";
+"Alert(s)" = "警报";
+"Campaign(s)" = "运动";
+"Campaign has ended." = "广告系列已结束.";
+"See the winners" = "看到结果";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";

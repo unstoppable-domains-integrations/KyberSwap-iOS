@@ -176,6 +176,28 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
+  func loadLatestCampaignResultData(accessToken: String, completion: @escaping (JSONDictionary, String?) -> Void) {
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getLatestCampaignResult(accessToken: accessToken)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let jsonData = try data.mapJSON() as? JSONDictionary ?? [:]
+              completion(jsonData, nil)
+            } catch {
+              completion([:], NSLocalizedString("can.not.decode.data", value: "Can not decode data", comment: ""))
+            }
+          case .failure(let error):
+            completion([:], error.prettyError)
+          }
+        }
+      }
+    }
+  }
+
   func updateUserSignedInPushTokenWithRetry() {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken, let pushToken = KNAppTracker.getPushNotificationToken() else { return }
     DispatchQueue.global(qos: .background).async {

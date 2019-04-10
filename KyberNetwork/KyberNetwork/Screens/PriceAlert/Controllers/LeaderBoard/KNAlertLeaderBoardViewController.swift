@@ -4,19 +4,20 @@ import UIKit
 
 protocol KNAlertLeaderBoardViewControllerDelegate: class {
   func alertLeaderBoardViewControllerShouldBack()
+  func alertLeaderBoardViewControllerOpenCampaignResult()
 }
 
 class KNAlertLeaderBoardViewController: KNBaseViewController {
 
   let kLeaderBoardCellID: String = "kLeaderBoardCellID"
 
-  fileprivate let kCampaignDetailsPadding: CGFloat = 176
-  fileprivate let kUserInfoDetailsPadding: CGFloat = 142
-
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
 
+  @IBOutlet weak var campaignHeaderTopPaddingConstraints: NSLayoutConstraint!
   @IBOutlet weak var campaignContainerView: UIView!
+  @IBOutlet weak var campaignTextLabel: UILabel!
+  @IBOutlet weak var campaignHeaderView: UIView!
   @IBOutlet weak var campaignNameLabel: UILabel!
   @IBOutlet weak var startTimeLabel: UILabel!
   @IBOutlet weak var endTimeLabel: UILabel!
@@ -24,37 +25,41 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   @IBOutlet weak var campaignDescLabel: UILabel!
   @IBOutlet weak var campaignActionButton: UIButton!
   @IBOutlet var campaignPaddingConstraints: [NSLayoutConstraint]!
+  @IBOutlet var campaignDetailsTopBottomPaddings: [NSLayoutConstraint]!
+  @IBOutlet weak var separatorView: UIView!
+  @IBOutlet weak var separatorHeightConstraint: NSLayoutConstraint!
 
-  @IBOutlet var topPaddingUserInfoToCampaignDetailsConstraint: NSLayoutConstraint!
-  @IBOutlet var topPaddingUserInfoContainerViewConstraint: NSLayoutConstraint!
-  @IBOutlet weak var userInfoContainerView: UIView!
-  @IBOutlet weak var currentUserDataContainerView: UIView!
-  @IBOutlet weak var userRankLabel: UILabel!
-  @IBOutlet weak var userNameLabel: UILabel!
-  @IBOutlet weak var userContactMethodLabel: UILabel!
+  @IBOutlet var latestCampaignTopBottomPaddings: [NSLayoutConstraint]!
+  @IBOutlet weak var latestCampaignPaddingConstraints: NSLayoutConstraint!
+  @IBOutlet weak var latestCampaignTitleLabel: UILabel!
+  @IBOutlet weak var latestCampaignEndedTextLabel: UILabel!
+  @IBOutlet weak var seeTheWinnersButton: UIButton!
+  @IBOutlet weak var seeTheWinnersButtonHeight: NSLayoutConstraint!
 
-  @IBOutlet weak var pairTextLabel: UILabel!
-  @IBOutlet weak var pairLabel: UILabel!
-  @IBOutlet weak var entryTextLabel: UILabel!
-  @IBOutlet weak var entryLabel: UILabel!
-  @IBOutlet weak var targetTextLabel: UILabel!
-  @IBOutlet weak var targetLabel: UILabel!
-  @IBOutlet weak var swingsTextLabel: UILabel!
-  @IBOutlet weak var swingsLabel: UILabel!
-
-  @IBOutlet var topPaddingCollectionViewToUserInfoConstraint: NSLayoutConstraint!
-  @IBOutlet var topPaddingCollectionViewToCampaignDetailConstraint: NSLayoutConstraint!
-  @IBOutlet var topPaddingCollectionViewConstraint: NSLayoutConstraint!
+  @IBOutlet weak var alertsHeaderViewTopPadding: NSLayoutConstraint!
+  @IBOutlet weak var alertsTextLabel: UILabel!
   @IBOutlet weak var leadersCollectionView: UICollectionView!
   @IBOutlet weak var noDataLabel: UILabel!
 
   fileprivate var leaderBoardData: [JSONDictionary] = []
   fileprivate var campaignDetails: JSONDictionary?
+  fileprivate var latestCampaignTitle: String?
   fileprivate var campaignDetailsExpanded: Bool = true
+
+  fileprivate let isShowingResult: Bool
 
   weak var delegate: KNAlertLeaderBoardViewControllerDelegate?
 
   fileprivate var timer: Timer?
+
+  init(isShowingResult: Bool) {
+    self.isShowingResult = isShowingResult
+    super.init(nibName: KNAlertLeaderBoardViewController.className, bundle: nil)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   deinit {
     self.timer?.invalidate()
@@ -85,27 +90,22 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
   }
 
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.navTitleLabel.text = "Alert LeaderBoard".toBeLocalised()
+    self.navTitleLabel.text = {
+      if self.isShowingResult { return "Result".toBeLocalised() }
+      return "Alert LeaderBoard".toBeLocalised()
+    }()
 
-    self.campaignContainerView.rounded(radius: 4.0)
     self.campaignContainerView.isHidden = true
 
-    self.topPaddingUserInfoContainerViewConstraint.constant = 8.0
-    self.topPaddingCollectionViewConstraint.constant = 0.0
-    self.currentUserDataContainerView.isHidden = true
-
-    self.pairTextLabel.text = "Pair".toBeLocalised().uppercased()
-    self.entryTextLabel.text = "Entry".toBeLocalised().uppercased()
-    self.targetTextLabel.text = "Target".toBeLocalised().uppercased()
-    self.swingsTextLabel.text = "Swing".toBeLocalised().uppercased()
-
-    self.userInfoContainerView.rounded(radius: 4.0)
-    self.currentUserDataContainerView.rounded(radius: 5.0)
-    self.userRankLabel.rounded(radius: self.userRankLabel.frame.width / 2.0)
+    self.campaignTextLabel.text = "Campaign(s)".toBeLocalised().uppercased()
+    let tapCampaignHeader = UITapGestureRecognizer(target: self, action: #selector(self.campaignActionButtonPressed(_:)))
+    self.campaignHeaderView.addGestureRecognizer(tapCampaignHeader)
+    self.campaignHeaderView.isUserInteractionEnabled = true
 
     let cellNib = UINib(nibName: KNLeaderBoardCollectionViewCell.className, bundle: nil)
     self.leadersCollectionView.register(cellNib, forCellWithReuseIdentifier: kLeaderBoardCellID)
@@ -114,79 +114,117 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.leadersCollectionView.isHidden = true
     self.noDataLabel.text = "No data to show right now".toBeLocalised()
     self.noDataLabel.isHidden = false
+    self.alertsTextLabel.text = "Alert(s)".toBeLocalised().uppercased()
+    self.separatorView.backgroundColor = .clear
+    self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
     guard IEOUserStorage.shared.user != nil else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
       return
     }
-    self.resetCurrentUserData()
+    self.updateCampaignDetailsWithAnimation()
   }
 
   fileprivate func updateCampaignDetails() {
-    guard let json = self.campaignDetails else {
-      self.campaignContainerView.isHidden = true
+    if self.campaignDetails == nil && self.latestCampaignTitle == nil {
+      // no campaign to show
+      self.hideCampaignDetails(isCurrentHidden: true, isLatestHidden: true)
+      self.alertsHeaderViewTopPadding.constant = 0.0
+      self.campaignHeaderTopPaddingConstraints.constant = -42.0 // its height
+      self.campaignHeaderView.isHidden = true
       return
     }
+    // campaign details will be shown
+    self.alertsHeaderViewTopPadding.constant = 1.0
+    self.campaignHeaderTopPaddingConstraints.constant = 0.0
+    self.campaignHeaderView.isHidden = false
     if !self.campaignDetailsExpanded {
       self.campaignActionButton.setImage(UIImage(named: "arrow_down_gray"), for: .normal)
+      self.hideCampaignDetails(
+        isCurrentHidden: true,
+        isLatestHidden: true
+      )
+      return
+    }
+    self.campaignActionButton.setImage(UIImage(named: "arrow_up_gray"), for: .normal)
+    self.hideCampaignDetails(
+      isCurrentHidden: self.campaignDetails == nil,
+      isLatestHidden: self.latestCampaignTitle == nil
+    )
+    self.campaignContainerView.isHidden = false
+  }
+
+  fileprivate func hideCampaignDetails(isCurrentHidden: Bool, isLatestHidden: Bool) {
+    if isCurrentHidden {
+      self.campaignNameLabel.text = nil
       self.campaignDescLabel.text = nil
       self.rewardCurrencyLabel.text = nil
       self.startTimeLabel.text = nil
       self.endTimeLabel.text = nil
       self.campaignPaddingConstraints.forEach({ $0.constant = 0 })
-      return
+      self.campaignDetailsTopBottomPaddings.forEach({ $0.constant = 0.0 })
+      self.separatorView.isHidden = true
+      self.separatorHeightConstraint.constant = 0.0
+    } else {
+      let json = self.campaignDetails ?? [:]
+      self.campaignPaddingConstraints.forEach({ $0.constant = 6.0 })
+      self.campaignDetailsTopBottomPaddings.forEach({ $0.constant = 16.0 })
+      self.campaignActionButton.setImage(UIImage(named: "arrow_up_gray"), for: .normal)
+      self.campaignNameLabel.text = json["title"] as? String
+      self.campaignDescLabel.text = json["description"] as? String
+      self.rewardCurrencyLabel.text = {
+        let unit = json["reward_unit"] as? String ?? ""
+        return String(format: NSLocalizedString("leader.board.reward.unit", value: "REWARD CURRENCY: %@", comment: ""), unit)
+      }()
+      self.startTimeLabel.text = {
+        let startTime = json["start_time"] as? String ?? ""
+        if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: startTime) {
+          let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
+          return String(format: "Start: %@".toBeLocalised(), string)
+        }
+        return nil
+      }()
+      self.endTimeLabel.text = {
+        let endTime = json["end_time"] as? String ?? ""
+        if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: endTime) {
+          let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
+          return String(format: "End: %@".toBeLocalised(), string)
+        }
+        return nil
+      }()
+      if !isLatestHidden {
+        self.separatorView.isHidden = false
+        self.separatorHeightConstraint.constant = 4.0
+      }
     }
-    self.campaignPaddingConstraints.forEach({ $0.constant = 6.0 })
-    self.campaignActionButton.setImage(UIImage(named: "arrow_up_gray"), for: .normal)
-    self.campaignNameLabel.text = json["title"] as? String
-    self.campaignDescLabel.text = json["description"] as? String
-    self.rewardCurrencyLabel.text = {
-      let unit = json["reward_unit"] as? String ?? ""
-      return String(format: NSLocalizedString("leader.board.reward.unit", value: "REWARD CURRENCY: %@", comment: ""), unit)
-    }()
-    self.startTimeLabel.text = {
-      let startTime = json["start_time"] as? String ?? ""
-      if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: startTime) {
-        let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
-        return String(format: "Start: %@".toBeLocalised(), string)
-      }
-      return nil
-    }()
-    self.endTimeLabel.text = {
-      let endTime = json["end_time"] as? String ?? ""
-      if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: endTime) {
-        let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
-        return String(format: "End: %@".toBeLocalised(), string)
-      }
-      return nil
-    }()
-    self.campaignContainerView.isHidden = false
+    if isLatestHidden {
+      self.separatorView.isHidden = true
+      self.separatorHeightConstraint.constant = 0.0
+      self.latestCampaignTopBottomPaddings.forEach({ $0.constant = 0.0 })
+      self.latestCampaignPaddingConstraints.constant = 0.0
+      self.latestCampaignTitleLabel.text = nil
+      self.latestCampaignEndedTextLabel.text = nil
+      self.seeTheWinnersButton.setTitle(nil, for: .normal)
+      self.seeTheWinnersButtonHeight.constant = 0.0
+      self.seeTheWinnersButton.isHidden = true
+    } else {
+      self.latestCampaignTopBottomPaddings.forEach({ $0.constant = 16.0 })
+      self.latestCampaignPaddingConstraints.constant = 6.0
+      self.latestCampaignTitleLabel.text = self.latestCampaignTitle
+      self.latestCampaignEndedTextLabel.text = "Campaign has ended.".toBeLocalised()
+      self.seeTheWinnersButton.setTitle(
+        "See the winners".toBeLocalised().uppercased(),
+        for: .normal
+      )
+      self.seeTheWinnersButton.isHidden = false
+      self.seeTheWinnersButtonHeight.constant = 32.0
+    }
+    self.campaignContainerView.isHidden = isCurrentHidden && isLatestHidden
   }
 
-  fileprivate func resetCurrentUserData() {
-    UIView.animate(withDuration: 0.25) {
-      self.userRankLabel.text = "X"
-      self.pairLabel.text = "X"
-      self.entryLabel.text = "X"
-      self.targetLabel.text = "X"
-      self.swingsLabel.text = "X"
-      self.currentUserDataContainerView.isHidden = true
+  fileprivate func updateCampaignDetailsWithAnimation(duration: TimeInterval = 0.25) {
+    UIView.animate(withDuration: duration) {
       self.updateCampaignDetails()
-      if self.campaignDetails == nil {
-        self.topPaddingUserInfoContainerViewConstraint.isActive = false
-        self.topPaddingUserInfoToCampaignDetailsConstraint.isActive = false
-        self.topPaddingCollectionViewConstraint.isActive = true
-        self.topPaddingCollectionViewConstraint.constant = 0.0
-        self.topPaddingCollectionViewToUserInfoConstraint.isActive = false
-        self.topPaddingCollectionViewToCampaignDetailConstraint.isActive = false
-      } else {
-        self.topPaddingUserInfoContainerViewConstraint.isActive = false
-        self.topPaddingUserInfoToCampaignDetailsConstraint.isActive = false
-        self.topPaddingCollectionViewConstraint.isActive = false
-        self.topPaddingCollectionViewToUserInfoConstraint.isActive = false
-        self.topPaddingCollectionViewToCampaignDetailConstraint.isActive = true
-        self.topPaddingCollectionViewToCampaignDetailConstraint.constant = 8.0
-      }
       self.view.layoutIfNeeded()
     }
   }
@@ -196,25 +234,47 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
       return
     }
-    self.resetCurrentUserData()
+    self.updateCampaignDetailsWithAnimation()
     if isFirstTime { self.displayLoading() }
-    KNPriceAlertCoordinator.shared.loadLeaderBoardData(accessToken: user.accessToken) { [weak self] (data, error) in
-      guard let `self` = self else { return }
-      if isFirstTime { self.hideLoading() }
-      if let error = error {
-        print("Load list leaderboard error: \(error)")
-        let alertController = UIAlertController(
-          title: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "Can not update leader board data right now".toBeLocalised(),
-          preferredStyle: .alert
-        )
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
-          self.startUpdatingLeaderBoard(isFirstTime: true)
-        }))
-        self.present(alertController, animated: true, completion: nil)
-      } else {
-        self.updateLeaderBoardData(data)
+    if self.isShowingResult {
+      KNPriceAlertCoordinator.shared.loadLatestCampaignResultData(accessToken: user.accessToken) { [weak self] (data, error) in
+        guard let `self` = self else { return }
+        if isFirstTime { self.hideLoading() }
+        if let error = error {
+          print("Load list leaderboard error: \(error)")
+          let alertController = UIAlertController(
+            title: NSLocalizedString("error", value: "Error", comment: ""),
+            message: "Can not update leader board data right now".toBeLocalised(),
+            preferredStyle: .alert
+          )
+          alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+          alertController.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
+            self.startUpdatingLeaderBoard(isFirstTime: true)
+          }))
+          self.present(alertController, animated: true, completion: nil)
+        } else {
+          self.updateLeaderBoardData(data)
+        }
+      }
+    } else {
+      KNPriceAlertCoordinator.shared.loadLeaderBoardData(accessToken: user.accessToken) { [weak self] (data, error) in
+        guard let `self` = self else { return }
+        if isFirstTime { self.hideLoading() }
+        if let error = error {
+          print("Load list leaderboard error: \(error)")
+          let alertController = UIAlertController(
+            title: NSLocalizedString("error", value: "Error", comment: ""),
+            message: "Can not update leader board data right now".toBeLocalised(),
+            preferredStyle: .alert
+          )
+          alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+          alertController.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
+            self.startUpdatingLeaderBoard(isFirstTime: true)
+          }))
+          self.present(alertController, animated: true, completion: nil)
+        } else {
+          self.updateLeaderBoardData(data)
+        }
       }
     }
   }
@@ -222,11 +282,14 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   fileprivate func updateLeaderBoardData(_ data: JSONDictionary) {
     self.campaignDetails = data["campaign_info"] as? JSONDictionary
     self.leaderBoardData = data["data"] as? [JSONDictionary] ?? []
+    self.latestCampaignTitle = data["last_campaign_title"] as? String
 
-    if let user = IEOUserStorage.shared.user, let alert = self.leaderBoardData.first(where: { ($0["user_id"] as? Int ?? 0) == user.userID }) {
-      var json = alert
-      json["current_user_name"] = user.name
-      self.leaderBoardData.insert(json, at: 0)
+    if !self.isShowingResult {
+      if let user = IEOUserStorage.shared.user, let alert = self.leaderBoardData.first(where: { ($0["user_id"] as? Int ?? 0) == user.userID }) {
+        var json = alert
+        json["current_user_name"] = user.name
+        self.leaderBoardData.insert(json, at: 0)
+      }
     }
 
     self.leadersCollectionView.reloadData()
@@ -234,7 +297,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.noDataLabel.isHidden = !self.leaderBoardData.isEmpty
     self.view.layoutIfNeeded()
     if IEOUserStorage.shared.user != nil {
-      self.resetCurrentUserData()
+      self.updateCampaignDetailsWithAnimation()
     } else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
     }
@@ -256,6 +319,10 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.updateCampaignDetails()
       self.view.layoutIfNeeded()
     }
+  }
+
+  @IBAction func seeTheWinnerButtonPressed(_ sender: Any) {
+    self.delegate?.alertLeaderBoardViewControllerOpenCampaignResult()
   }
 }
 
