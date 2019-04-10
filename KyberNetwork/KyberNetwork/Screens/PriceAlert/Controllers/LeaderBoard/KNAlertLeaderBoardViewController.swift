@@ -115,11 +115,11 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.noDataLabel.text = "No data to show right now".toBeLocalised()
     self.noDataLabel.isHidden = false
 
-    guard let user = IEOUserStorage.shared.user else {
+    guard IEOUserStorage.shared.user != nil else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
       return
     }
-    self.updateUIWithUser(user)
+    self.resetCurrentUserData()
   }
 
   fileprivate func updateCampaignDetails() {
@@ -191,69 +191,12 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     }
   }
 
-  fileprivate func updateUIWithUser(_ user: IEOUser) {
-    self.resetCurrentUserData()
-//    self.userNameLabel.text = user.name
-//    self.userContactMethodLabel.text = user.contactID
-//    guard let data = self.leaderBoardData.first(where: {
-//      return ($0["user_id"] as? Int ?? 0) == user.userID
-//    }) else {
-//      self.resetCurrentUserData()
-//      return
-//    }
-//    self.pairLabel.text = {
-//      let symbol = data["symbol"] as? String ?? ""
-//      let base = data["base"] as? String ?? ""
-//      return "\(symbol)/\(base)"
-//    }()
-//    self.entryLabel.text = {
-//      let price = data["created_at_price"] as? Double ?? 0.0
-//      return NumberFormatterUtil.shared.displayAlertPrice(from: price)
-//    }()
-//    self.targetLabel.text = {
-//      let target = data["alert_price"] as? Double ?? 0.0
-//      return NumberFormatterUtil.shared.displayAlertPrice(from: target)
-//    }()
-//    self.swingsLabel.text = {
-//      let change = data["percent_change"] as? Double ?? 0.0
-//      return NumberFormatterUtil.shared.displayPercentage(from: change) + "%"
-//    }()
-//    let reward = data["reward"] as? String
-//    let rank = data["rank"] as? Int ?? 0
-//    self.userRankLabel.text = "\(rank)"
-//    self.userRankLabel.textColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor.Kyber.grayChateau
-//    self.userInfoContainerView.backgroundColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor.Kyber.grayChateau
-//
-//    UIView.animate(withDuration: 0.25) {
-//      self.currentUserDataContainerView.isHidden = false
-//      self.campaignContainerView.isHidden = self.campaignDetails == nil
-//      self.updateCampaignDetails()
-//
-//      if self.campaignDetails == nil {
-//        self.topPaddingUserInfoContainerViewConstraint.isActive = true
-//        self.topPaddingUserInfoContainerViewConstraint.constant = 8.0
-//        self.topPaddingUserInfoToCampaignDetailsConstraint.isActive = false
-//      } else {
-//        self.topPaddingUserInfoContainerViewConstraint.isActive = false
-//        self.topPaddingUserInfoToCampaignDetailsConstraint.isActive = true
-//        self.topPaddingUserInfoToCampaignDetailsConstraint.constant = 8.0
-//      }
-//
-//      self.topPaddingCollectionViewConstraint.isActive = false
-//      self.topPaddingCollectionViewToCampaignDetailConstraint.isActive = false
-//      self.topPaddingCollectionViewToUserInfoConstraint.isActive = true
-//      self.topPaddingCollectionViewToUserInfoConstraint.constant = 8.0
-//
-//      self.view.layoutIfNeeded()
-//    }
-  }
-
   fileprivate func startUpdatingLeaderBoard(isFirstTime: Bool = false) {
     guard let user = IEOUserStorage.shared.user else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
       return
     }
-    self.updateUIWithUser(user)
+    self.resetCurrentUserData()
     if isFirstTime { self.displayLoading() }
     KNPriceAlertCoordinator.shared.loadLeaderBoardData(accessToken: user.accessToken) { [weak self] (data, error) in
       guard let `self` = self else { return }
@@ -290,8 +233,8 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.leadersCollectionView.isHidden = self.leaderBoardData.isEmpty
     self.noDataLabel.isHidden = !self.leaderBoardData.isEmpty
     self.view.layoutIfNeeded()
-    if let user = IEOUserStorage.shared.user {
-      self.updateUIWithUser(user)
+    if IEOUserStorage.shared.user != nil {
+      self.resetCurrentUserData()
     } else {
       self.delegate?.alertLeaderBoardViewControllerShouldBack()
     }
