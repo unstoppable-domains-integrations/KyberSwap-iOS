@@ -149,7 +149,7 @@ extension KNAppCoordinator {
     if let noti = result?.notification,
        let data = noti.payload.additionalData,
       let type = data["type"] as? String, type == "swap", self.tabbarController != nil {
-      self.handleOpenKyberSwapPushNotification(noti)
+      self.handleOpenKyberSwapPushNotification(noti, isPriceAlert: false)
       return
     }
     if let data = result?.notification.payload.additionalData, let urlString = data["open_url"] as? String, let url = URL(string: urlString) {
@@ -170,14 +170,20 @@ extension KNAppCoordinator {
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
-  fileprivate func handleOpenKyberSwapPushNotification(_ notification: OSNotification) {
+  fileprivate func handleOpenKyberSwapPushNotification(_ notification: OSNotification, isPriceAlert: Bool = true) {
     self.tabbarController.selectedIndex = 1
-    let base = notification.payload.additionalData["base"] as? String ?? ""
-    let from: String = {
-      if base == "USD" { return "ETH" }
-      return notification.payload.additionalData["token"] as? String ?? ""
-    }()
-    let to = base == "USD" ? "KNC" : "ETH"
+    if isPriceAlert {
+      let base = notification.payload.additionalData["base"] as? String ?? ""
+      let from: String = {
+        if base == "USD" { return "ETH" }
+        return notification.payload.additionalData["token"] as? String ?? ""
+      }()
+      let to = base == "USD" ? "KNC" : "ETH"
+      self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
+      return
+    }
+    let from: String = notification.payload.additionalData["from"] as? String ?? ""
+    let to: String = notification.payload.additionalData["to"] as? String ?? ""
     self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
 
@@ -199,7 +205,7 @@ extension KNAppCoordinator {
       self.tabbarController.selectedIndex = 0
       self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session, resetRoot: true)
     } else if view == "kyberswap" {
-      self.handleOpenKyberSwapPushNotification(notification)
+      self.handleOpenKyberSwapPushNotification(notification, isPriceAlert: true)
     }
     let alertID = notification.payload.additionalData["alert_id"] as? Int ?? -1
     guard let alert = KNAlertStorage.shared.alerts.first(where: { $0.id == alertID }) else {
