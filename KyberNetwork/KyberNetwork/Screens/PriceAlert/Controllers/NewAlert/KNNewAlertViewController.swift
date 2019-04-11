@@ -5,7 +5,11 @@ import BigInt
 
 class KNNewAlertViewModel {
   lazy var numberFormatter: NumberFormatter = {
-    return NumberFormatterUtil.shared.percentageFormatter
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 6
+    formatter.minimumFractionDigits = 2
+    return formatter
   }()
 
   lazy var priceNumberFormatter: NumberFormatter = {
