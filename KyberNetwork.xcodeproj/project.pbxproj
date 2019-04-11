@@ -107,6 +107,10 @@
 		254CD0F121492E1D0079EA7A /* KYCPersonalInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254CD0EF21492E1D0079EA7A /* KYCPersonalInfoViewController.xib */; };
 		254CD0F621492F590079EA7A /* KYCCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254CD0F521492F590079EA7A /* KYCCoordinator.swift */; };
 		254EAB2A221D9EFD00C0EDC8 /* KyberNetwork.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 29AD8A071F93E1F0008E10E7 /* KyberNetwork.entitlements */; };
+		254EBED1225F5BA500042FA2 /* KNEligibleTokensViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254EBECF225F5BA500042FA2 /* KNEligibleTokensViewController.swift */; };
+		254EBED2225F5BA500042FA2 /* KNEligibleTokensViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254EBED0225F5BA500042FA2 /* KNEligibleTokensViewController.xib */; };
+		254EBED6225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254EBED4225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift */; };
+		254EBED7225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254EBED5225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib */; };
 		255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255709BD20DCB50800B5BC9E /* KNNewContactViewController.swift */; };
 		255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */; };
 		25577AE920F72A9700A54607 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E14FDA1F7F4F3D00185568 /* Transaction.swift */; };
@@ -639,6 +643,10 @@
 		254CD0EE21492E1D0079EA7A /* KYCPersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCPersonalInfoViewController.swift; sourceTree = "<group>"; };
 		254CD0EF21492E1D0079EA7A /* KYCPersonalInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCPersonalInfoViewController.xib; sourceTree = "<group>"; };
 		254CD0F521492F590079EA7A /* KYCCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCCoordinator.swift; sourceTree = "<group>"; };
+		254EBECF225F5BA500042FA2 /* KNEligibleTokensViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNEligibleTokensViewController.swift; sourceTree = "<group>"; };
+		254EBED0225F5BA500042FA2 /* KNEligibleTokensViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNEligibleTokensViewController.xib; sourceTree = "<group>"; };
+		254EBED4225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNEligibleTokensTableViewCell.swift; sourceTree = "<group>"; };
+		254EBED5225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNEligibleTokensTableViewCell.xib; sourceTree = "<group>"; };
 		255709BD20DCB50800B5BC9E /* KNNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNewContactViewController.swift; sourceTree = "<group>"; };
 		255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNewContactViewController.xib; sourceTree = "<group>"; };
 		25577AEA20F8619D00A54607 /* UIButton+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Kyber.swift"; sourceTree = "<group>"; };
@@ -1160,6 +1168,7 @@
 		25117D3B2248D66800B5C495 /* LeaderBoard */ = {
 			isa = PBXGroup;
 			children = (
+				254EBECE225F5B8200042FA2 /* EligibleTokensView */,
 				25117D402248D68D00B5C495 /* LeaderBoardCell */,
 				25117D3C2248D68300B5C495 /* KNAlertLeaderBoardViewController.swift */,
 				25117D3D2248D68300B5C495 /* KNAlertLeaderBoardViewController.xib */,
@@ -1639,6 +1648,25 @@
 				254CD0F521492F590079EA7A /* KYCCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		254EBECE225F5B8200042FA2 /* EligibleTokensView */ = {
+			isa = PBXGroup;
+			children = (
+				254EBED3225F5D6E00042FA2 /* EligibleTokensCell */,
+				254EBECF225F5BA500042FA2 /* KNEligibleTokensViewController.swift */,
+				254EBED0225F5BA500042FA2 /* KNEligibleTokensViewController.xib */,
+			);
+			path = EligibleTokensView;
+			sourceTree = "<group>";
+		};
+		254EBED3225F5D6E00042FA2 /* EligibleTokensCell */ = {
+			isa = PBXGroup;
+			children = (
+				254EBED4225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift */,
+				254EBED5225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib */,
+			);
+			path = EligibleTokensCell;
 			sourceTree = "<group>";
 		};
 		255709BC20DCB4F500B5BC9E /* NewContact */ = {
@@ -3711,6 +3739,7 @@
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
 				25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */,
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
+				254EBED2225F5BA500042FA2 /* KNEligibleTokensViewController.xib in Resources */,
 				25AAE7DA214B8C2C00231A85 /* KYCSubmitInfoViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
@@ -3750,6 +3779,7 @@
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				259BF5C821919492004D70F9 /* KYCSelectOptionViewController.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
+				254EBED7225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
 				259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */,
 				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
@@ -4076,6 +4106,7 @@
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				254CD0F621492F590079EA7A /* KYCCoordinator.swift in Sources */,
 				2582332522549AAE007D5480 /* KNPromoSwapConfirmViewModel.swift in Sources */,
+				254EBED1225F5BA500042FA2 /* KNEligibleTokensViewController.swift in Sources */,
 				25AAE7DE214BA2D800231A85 /* KYCProfileVerificationStatusViewController.swift in Sources */,
 				259EC46920E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift in Sources */,
 				25A4B4B321242DE000924351 /* KNCreateWalletViewController.swift in Sources */,
@@ -4273,6 +4304,7 @@
 				254CD0E62148F7930079EA7A /* KNProfileHomeCoordinator.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
+				254EBED6225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift in Sources */,
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,

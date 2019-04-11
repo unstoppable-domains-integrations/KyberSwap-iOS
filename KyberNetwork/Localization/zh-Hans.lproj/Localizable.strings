@@ -462,6 +462,7 @@
 "REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
+"Eligible Tokens" = "Eligible Tokens";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";

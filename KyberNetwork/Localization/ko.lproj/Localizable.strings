@@ -469,6 +469,7 @@
 "REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
+"Eligible Tokens" = "Eligible Tokens";
 
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";

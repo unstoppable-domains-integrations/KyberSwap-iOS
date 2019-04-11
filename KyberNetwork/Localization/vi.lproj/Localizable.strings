@@ -438,6 +438,7 @@
 "REWARD CURRENCY: %@" = "TIỀN THƯỞNG: %@";
 "Start: %@" = "Từ: %@";
 "End: %@" = "Đến: %@";
+"Eligible Tokens" = "Tokens Hợp Lệ";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";

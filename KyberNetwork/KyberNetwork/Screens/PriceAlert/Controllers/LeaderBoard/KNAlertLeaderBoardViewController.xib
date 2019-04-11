@@ -29,6 +29,8 @@
                 <outlet property="campaignHeaderView" destination="och-Ay-waL" id="KqR-h8-yuv"/>
                 <outlet property="campaignNameLabel" destination="id3-0i-yNE" id="roc-Cz-uw0"/>
                 <outlet property="campaignTextLabel" destination="0hH-BW-XKh" id="Zb8-Ph-inb"/>
+                <outlet property="eligibleTokensButton" destination="LrY-Ih-zby" id="bf3-J9-XV6"/>
+                <outlet property="eligibleTokensButtonHeightConstraint" destination="xR8-Bo-JGU" id="5TX-Ni-uBm"/>
                 <outlet property="endTimeLabel" destination="DtJ-h3-YV6" id="ZJj-DV-zYn"/>
                 <outlet property="headerContainerView" destination="uCs-28-NLH" id="GHD-80-FnF"/>
                 <outlet property="latestCampaignEndedTextLabel" destination="uvE-Hu-Fjy" id="whh-h7-Puu"/>
@@ -48,9 +50,10 @@
                 <outletCollection property="campaignPaddingConstraints" destination="SaE-O7-N38" collectionClass="NSMutableArray" id="S3L-hi-qbJ"/>
                 <outletCollection property="campaignPaddingConstraints" destination="5Fw-eH-jPn" collectionClass="NSMutableArray" id="Xrn-zj-gKr"/>
                 <outletCollection property="campaignDetailsTopBottomPaddings" destination="Vul-fS-qpI" collectionClass="NSMutableArray" id="Z5p-pE-cMv"/>
-                <outletCollection property="campaignDetailsTopBottomPaddings" destination="jfi-JA-ft5" collectionClass="NSMutableArray" id="wny-gb-WAG"/>
                 <outletCollection property="latestCampaignTopBottomPaddings" destination="LBg-PD-B5P" collectionClass="NSMutableArray" id="aK2-cm-8KH"/>
                 <outletCollection property="latestCampaignTopBottomPaddings" destination="sSB-Tq-QOw" collectionClass="NSMutableArray" id="7hS-HU-ASZ"/>
+                <outletCollection property="campaignPaddingConstraints" destination="Wg0-sf-Lsx" collectionClass="NSMutableArray" id="1xW-LM-CWW"/>
+                <outletCollection property="campaignDetailsTopBottomPaddings" destination="kaz-yc-46D" collectionClass="NSMutableArray" id="4BG-RL-0aN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -88,7 +91,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="QsX-1N-RAs">
-                    <rect key="frame" x="0.0" y="417" width="375" height="250"/>
+                    <rect key="frame" x="0.0" y="455" width="375" height="212"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1Ts-Oo-ain">
                         <size key="itemSize" width="50" height="50"/>
@@ -98,13 +101,13 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data to show right now" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bA6-K6-VKn">
-                    <rect key="frame" x="79.5" y="532" width="216" height="20"/>
+                    <rect key="frame" x="79.5" y="551" width="216" height="20"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ubl-CA-9tG">
-                    <rect key="frame" x="0.0" y="126" width="375" height="248"/>
+                    <rect key="frame" x="0.0" y="126" width="375" height="286"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Campaign Name Campaign Name Campaign Name Campaign Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="id3-0i-yNE">
                             <rect key="frame" x="16" y="16" width="343" height="44"/>
@@ -137,26 +140,26 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qMr-gP-dpg">
-                            <rect key="frame" x="16" y="160" width="343" height="4"/>
+                            <rect key="frame" x="16" y="198" width="343" height="4"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="4" id="fWM-2p-UGf"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latest campaign Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2K-sA-0SZ">
-                            <rect key="frame" x="16" y="180" width="343" height="22"/>
+                            <rect key="frame" x="16" y="218" width="343" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Campaign has ended." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uvE-Hu-Fjy">
-                            <rect key="frame" x="16" y="208" width="144.5" height="16"/>
+                            <rect key="frame" x="16" y="246" width="144.5" height="16"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="13"/>
                             <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hk-fF-T86">
-                            <rect key="frame" x="242" y="200" width="117" height="32"/>
+                            <rect key="frame" x="242" y="238" width="117" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="LXX-SZ-qum"/>
                             </constraints>
@@ -166,6 +169,19 @@
                             </state>
                             <connections>
                                 <action selector="seeTheWinnerButtonPressed:" destination="-1" eventType="touchUpInside" id="8is-dV-Hqg"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrY-Ih-zby">
+                            <rect key="frame" x="16" y="150" width="93" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="xR8-Bo-JGU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
+                            <state key="normal" title="Eligible Tokens">
+                                <color key="titleColor" red="1" green="0.56470588235294117" blue="0.031372549019607843" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="eligibleTokensPressed:" destination="-1" eventType="touchUpInside" id="VqR-dd-Vyk"/>
                             </connections>
                         </button>
                     </subviews>
@@ -182,12 +198,14 @@
                         <constraint firstItem="uvE-Hu-Fjy" firstAttribute="top" secondItem="a2K-sA-0SZ" secondAttribute="bottom" constant="6" id="RiM-Ve-1fm"/>
                         <constraint firstItem="Myz-0t-CgY" firstAttribute="top" secondItem="x5x-os-dTC" secondAttribute="bottom" constant="8" id="SaE-O7-N38"/>
                         <constraint firstItem="qMr-gP-dpg" firstAttribute="leading" secondItem="ubl-CA-9tG" secondAttribute="leading" constant="16" id="TUt-eX-3Qv"/>
+                        <constraint firstItem="LrY-Ih-zby" firstAttribute="leading" secondItem="ubl-CA-9tG" secondAttribute="leading" constant="16" id="TZ9-8z-lbs"/>
                         <constraint firstItem="id3-0i-yNE" firstAttribute="top" secondItem="ubl-CA-9tG" secondAttribute="top" constant="16" id="Vul-fS-qpI"/>
+                        <constraint firstItem="LrY-Ih-zby" firstAttribute="top" secondItem="Yoc-VQ-Gmy" secondAttribute="bottom" constant="6" id="Wg0-sf-Lsx"/>
                         <constraint firstAttribute="trailing" secondItem="Yoc-VQ-Gmy" secondAttribute="trailing" constant="16" id="aZC-2v-5ZD"/>
                         <constraint firstAttribute="trailing" secondItem="DtJ-h3-YV6" secondAttribute="trailing" constant="16" id="chY-EE-pEp"/>
                         <constraint firstAttribute="trailing" secondItem="id3-0i-yNE" secondAttribute="trailing" constant="16" id="eXy-jh-8JE"/>
-                        <constraint firstItem="qMr-gP-dpg" firstAttribute="top" secondItem="Yoc-VQ-Gmy" secondAttribute="bottom" constant="16" id="jfi-JA-ft5"/>
                         <constraint firstItem="a2K-sA-0SZ" firstAttribute="leading" secondItem="ubl-CA-9tG" secondAttribute="leading" constant="16" id="kVi-kQ-Fpc"/>
+                        <constraint firstItem="qMr-gP-dpg" firstAttribute="top" secondItem="LrY-Ih-zby" secondAttribute="bottom" constant="16" id="kaz-yc-46D"/>
                         <constraint firstItem="x5x-os-dTC" firstAttribute="top" secondItem="id3-0i-yNE" secondAttribute="bottom" constant="6" id="lIi-8V-yO9"/>
                         <constraint firstItem="Yoc-VQ-Gmy" firstAttribute="leading" secondItem="ubl-CA-9tG" secondAttribute="leading" constant="16" id="oB8-4u-fot"/>
                         <constraint firstAttribute="trailing" secondItem="qMr-gP-dpg" secondAttribute="trailing" constant="16" id="qni-h3-RSi"/>
@@ -227,7 +245,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X78-JH-zNs">
-                    <rect key="frame" x="0.0" y="375" width="375" height="42"/>
+                    <rect key="frame" x="0.0" y="413" width="375" height="42"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALERT(S)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OBW-W7-9Tb">
                             <rect key="frame" x="16" y="13.5" width="56" height="15"/>
