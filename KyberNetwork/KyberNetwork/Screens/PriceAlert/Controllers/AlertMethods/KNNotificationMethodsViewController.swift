@@ -30,14 +30,23 @@ class KNNotificationMethodsViewController: KNBaseViewController {
     let tapPushNoti = UITapGestureRecognizer(target: self, action: #selector(self.pushNotiButtonPressed(_:)))
     self.pushNotiContainerView.addGestureRecognizer(tapPushNoti)
     self.pushNotiContainerView.isUserInteractionEnabled = true
+    self.pushNotiContainerView.isHidden = true
+    self.pushNotificationTextLabel.isHidden = true
+    self.pushNotiButton.isHidden = true
 
     let tapEmail = UITapGestureRecognizer(target: self, action: #selector(self.emailButtonPressed(_:)))
     self.emailContainerView.addGestureRecognizer(tapEmail)
     self.emailContainerView.isUserInteractionEnabled = true
+    self.emailContainerView.isHidden = true
+    self.emailTextLabel.isHidden = true
+    self.emailButton.isHidden = true
 
     let tapTelegram = UITapGestureRecognizer(target: self, action: #selector(self.telegramButtonPressed(_:)))
     self.telegramContainerView.addGestureRecognizer(tapTelegram)
     self.telegramContainerView.isUserInteractionEnabled = true
+    self.telegramContainerView.isHidden = true
+    self.telegramTextLabel.isHidden = true
+    self.telegramButton.isHidden = true
 
     self.updateUIs()
   }
