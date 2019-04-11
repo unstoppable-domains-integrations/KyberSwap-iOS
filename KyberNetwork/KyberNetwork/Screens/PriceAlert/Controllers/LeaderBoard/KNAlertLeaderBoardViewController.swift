@@ -177,7 +177,17 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.campaignDetailsTopBottomPaddings.forEach({ $0.constant = 16.0 })
       self.campaignActionButton.setImage(UIImage(named: "arrow_up_gray"), for: .normal)
       self.campaignNameLabel.text = json["title"] as? String
-      self.campaignDescLabel.text = json["description"] as? String
+      self.campaignDescLabel.text = {
+        let desc = json["description"] as? String ?? ""
+        let eligibleTokens: String = {
+          let eligible = json["eligible_tokens"] as? String ?? "All tokens"
+          return String(
+            format: NSLocalizedString("Eligible token: %@", value: "Eligible token: %@", comment: ""),
+            eligible
+          )
+        }()
+        return "\(desc)\n\n\(eligibleTokens)"
+      }()
       self.rewardCurrencyLabel.text = {
         let unit = json["reward_unit"] as? String ?? ""
         return String(format: NSLocalizedString("REWARD CURRENCY: %@", value: "REWARD CURRENCY: %@", comment: ""), unit)
