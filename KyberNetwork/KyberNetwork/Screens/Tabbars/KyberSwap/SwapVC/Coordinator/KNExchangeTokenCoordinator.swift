@@ -162,7 +162,7 @@ extension KNExchangeTokenCoordinator {
     guard let from = self.session.tokenStorage.tokens.first(where: { return $0.symbol == from }),
       let to = self.session.tokenStorage.tokens.first(where: { return $0.symbol == to }) else { return }
     self.navigationController.popToRootViewController(animated: false)
-    self.rootViewController.coordinatorUpdateSelectedToken(from, isSource: true)
+    self.rootViewController.coordinatorUpdateSelectedToken(from, isSource: true, isWarningShown: false)
     self.rootViewController.coordinatorUpdateSelectedToken(to, isSource: false)
   }
 }
