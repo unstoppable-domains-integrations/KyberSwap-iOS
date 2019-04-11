@@ -472,6 +472,7 @@
 "REWARD CURRENCY: %@" = "REWARD CURRENCY: %@";
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
+"Eligible Tokens" = "Eligible Tokens";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";

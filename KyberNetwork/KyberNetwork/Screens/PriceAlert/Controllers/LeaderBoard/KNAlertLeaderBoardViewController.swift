@@ -28,6 +28,8 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   @IBOutlet var campaignDetailsTopBottomPaddings: [NSLayoutConstraint]!
   @IBOutlet weak var separatorView: UIView!
   @IBOutlet weak var separatorHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var eligibleTokensButton: UIButton!
+  @IBOutlet weak var eligibleTokensButtonHeightConstraint: NSLayoutConstraint!
 
   @IBOutlet var latestCampaignTopBottomPaddings: [NSLayoutConstraint]!
   @IBOutlet weak var latestCampaignPaddingConstraints: NSLayoutConstraint!
@@ -171,27 +173,21 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.campaignDetailsTopBottomPaddings.forEach({ $0.constant = 0.0 })
       self.separatorView.isHidden = true
       self.separatorHeightConstraint.constant = 0.0
+      self.eligibleTokensButton.setTitle(nil, for: .normal)
+      self.eligibleTokensButtonHeightConstraint.constant = 0.0
     } else {
       let json = self.campaignDetails ?? [:]
       self.campaignPaddingConstraints.forEach({ $0.constant = 6.0 })
       self.campaignDetailsTopBottomPaddings.forEach({ $0.constant = 16.0 })
       self.campaignActionButton.setImage(UIImage(named: "arrow_up_gray"), for: .normal)
       self.campaignNameLabel.text = json["title"] as? String
-      self.campaignDescLabel.text = {
-        let desc = json["description"] as? String ?? ""
-        let eligibleTokens: String = {
-          let eligible = json["eligible_tokens"] as? String ?? "All tokens"
-          return String(
-            format: NSLocalizedString("Eligible token: %@", value: "Eligible token: %@", comment: ""),
-            eligible
-          )
-        }()
-        return "\(desc)\n\n\(eligibleTokens)"
-      }()
+      self.campaignDescLabel.text = json["description"] as? String ?? ""
       self.rewardCurrencyLabel.text = {
         let unit = json["reward_unit"] as? String ?? ""
         return String(format: NSLocalizedString("REWARD CURRENCY: %@", value: "REWARD CURRENCY: %@", comment: ""), unit)
       }()
+      self.eligibleTokensButton.setTitle("Eligible Tokens".toBeLocalised(), for: .normal)
+      self.eligibleTokensButtonHeightConstraint.constant = 32.0
       self.startTimeLabel.text = {
         let startTime = json["start_time"] as? String ?? ""
         if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: startTime) {
@@ -339,6 +335,19 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.updateCampaignDetails()
       self.view.layoutIfNeeded()
     }
+  }
+
+  @IBAction func eligibleTokensPressed(_ sender: Any) {
+    guard let json = self.campaignDetails else { return }
+    let data: String = {
+      if let tokens = json["eligible_tokens"] as? String { return tokens }
+      return KNSupportedTokenStorage.shared.supportedTokens.map({ return $0.symbol }).joined(separator: ",")
+    }()
+    let eligibleTokensVC = KNEligibleTokensViewController(data: data)
+    eligibleTokensVC.loadViewIfNeeded()
+    eligibleTokensVC.modalPresentationStyle = .overFullScreen
+    eligibleTokensVC.modalTransitionStyle = .crossDissolve
+    self.present(eligibleTokensVC, animated: true, completion: nil)
   }
 
   @IBAction func seeTheWinnerButtonPressed(_ sender: Any) {
