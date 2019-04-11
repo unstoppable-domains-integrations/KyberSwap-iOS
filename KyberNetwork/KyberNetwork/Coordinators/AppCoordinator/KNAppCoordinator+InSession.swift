@@ -164,7 +164,6 @@ extension KNAppCoordinator {
 
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
-    self.navigationController.displayLoading()
     if self.keystore.wallets.count == 1 {
       self.stopAllSessions()
       return
@@ -175,33 +174,37 @@ extension KNAppCoordinator {
       return
     }
     let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
+    var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
       guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
       self.restartNewSession(newWallet)
+      delayTime = 1.0
     }
     self.loadBalanceCoordinator?.exit()
-    if self.session.removeWallet(wallet) {
-      self.loadBalanceCoordinator?.restartNewSession(self.session)
-      self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
-        self.session,
-        resetRoot: isRemovingCurrentWallet
-      )
-      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
-        self.session,
-        resetRoot: isRemovingCurrentWallet
-      )
-      self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(
-        self.session,
-        resetRoot: isRemovingCurrentWallet
-      )
-      KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
-      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-    } else {
-      self.loadBalanceCoordinator?.restartNewSession(self.session)
-      self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
-      )
+    DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
+      if self.session.removeWallet(wallet) {
+        self.loadBalanceCoordinator?.restartNewSession(self.session)
+        self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+        self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+        self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+        KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      } else {
+        self.loadBalanceCoordinator?.restartNewSession(self.session)
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
+        )
+      }
     }
   }
 
