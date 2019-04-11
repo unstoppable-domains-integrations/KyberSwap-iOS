@@ -670,7 +670,7 @@ extension KSwapViewController {
    - isSource: true if selected token is from, otherwise it is to
    Update UIs according to new values
    */
-  func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool) {
+  func coordinatorUpdateSelectedToken(_ token: TokenObject, isSource: Bool, isWarningShown: Bool = true) {
     if isSource, !self.fromTokenButton.isEnabled { return }
     if !isSource, !self.toTokenButton.isEnabled { return }
     if isSource, self.viewModel.from == token { return }
@@ -697,7 +697,7 @@ extension KSwapViewController {
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
     self.updateTokensView(updatedFrom: isSource, updatedTo: isUpdatedTo)
-    if self.viewModel.from == self.viewModel.to {
+    if self.viewModel.from == self.viewModel.to && isWarningShown {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
         message: NSLocalizedString("can.not.swap.same.token", value: "Can not swap the same token", comment: ""),
