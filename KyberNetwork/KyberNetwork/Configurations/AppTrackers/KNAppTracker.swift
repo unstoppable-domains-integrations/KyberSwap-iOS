@@ -28,6 +28,9 @@ class KNAppTracker {
   static let kAppStyle: String = "kAppStyle"
 
   static let kPushNotificationTokenKey: String = "kPushNotificationTokenKey"
+
+  static let kForceUpdateAlertKey: String = "kForceUpdateAlertKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
@@ -188,4 +191,18 @@ class KNAppTracker {
   }
 
   static var isPriceAlertEnabled: Bool { return true }
+
+  // MARK: App style
+  static func updateForceUpdateShownTime() {
+    userDefaults.set(Date().timeIntervalSince1970, forKey: kForceUpdateAlertKey)
+    userDefaults.synchronize()
+  }
+
+  static func shouldShowForceUpdate() -> Bool {
+    if let time = userDefaults.object(forKey: kAppStyle) as Double {
+      let date = Date(timeIntervalSince1970: time)
+      return Date().timeIntervalSince(date) >= 24.0 * 60.0 * 60.0
+    }
+    return true
+  }
 }
