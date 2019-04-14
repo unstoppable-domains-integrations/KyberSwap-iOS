@@ -3700,6 +3700,7 @@
 				"zh-Hans",
 				vi,
 				ko,
+				Base,
 			);
 			mainGroup = 2912CCEC1F6A830700C6CBE3;
 			productRefGroup = 2912CCF61F6A830700C6CBE3 /* Products */;
