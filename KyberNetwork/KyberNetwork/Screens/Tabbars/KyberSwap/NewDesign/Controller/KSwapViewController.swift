@@ -287,7 +287,7 @@ class KSwapViewController: KNBaseViewController {
     guard let string = self.viewModel.differentRatePercentageDisplay else { return }
     let message = String(format: NSLocalizedString("This rate is %@ lower than current Market", value: "This rate is %@ lower than current Market", comment: ""), string)
     self.showWarningTopBannerMessage(
-      with: "Warning".toBeLocalised(),
+      with: "",
       message: message,
       time: 2.0
     )
@@ -415,6 +415,13 @@ class KSwapViewController: KNBaseViewController {
       )
       return true
     }
+    if self.viewModel.estRate?.isZero == true {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: "")
+      )
+      return true
+    }
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
@@ -434,13 +441,6 @@ class KSwapViewController: KNBaseViewController {
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
         message: NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: ""),
         time: 2.0
-      )
-      return true
-    }
-    if self.viewModel.estRate?.isZero == true {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: "")
       )
       return true
     }
