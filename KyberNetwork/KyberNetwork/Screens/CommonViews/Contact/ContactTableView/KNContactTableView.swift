@@ -55,7 +55,7 @@ class KNContactTableView: XibLoaderView {
   }
 
   @objc func shouldUpdateContacts(_ sender: Notification?) {
-    self.updateView(with: KNContactStorage.shared.contacts)
+    self.updateView(with: KNContactStorage.shared.contacts, isFull: self.isFull)
   }
 
   func updateView(with contacts: [KNContact], isFull: Bool = false) {
