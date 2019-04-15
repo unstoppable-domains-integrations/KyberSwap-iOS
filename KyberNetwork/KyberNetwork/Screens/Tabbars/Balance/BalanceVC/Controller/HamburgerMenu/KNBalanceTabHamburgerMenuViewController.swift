@@ -44,7 +44,11 @@ struct KNBalanceTabHamburgerMenuViewModel {
   }
 
   var walletTableViewHeight: CGFloat {
-    return min(400.0, self.walletCellRowHeight * CGFloat(self.numberWalletRows))
+    return min(330, self.walletCellRowHeight * CGFloat(self.numberWalletRows))
+  }
+
+  var tableHeightScrollEnabled: Bool {
+    return self.walletCellRowHeight * CGFloat(self.numberWalletRows) > 330.0
   }
 
   mutating func update(wallets: [KNWalletObject], currentWallet: KNWalletObject) {
@@ -121,6 +125,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.walletListTableView.delegate = self
     self.walletListTableView.dataSource = self
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
+    self.walletListTableView.isScrollEnabled = self.viewModel.tableHeightScrollEnabled
 
     self.numberPendingTxLabel.rounded(radius: self.numberPendingTxLabel.frame.height / 2.0)
     self.numberPendingTxLabel.text = "0"
@@ -159,6 +164,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   func update(walletObjects: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: walletObjects, currentWallet: currentWallet)
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
+    self.walletListTableView.isScrollEnabled = self.viewModel.tableHeightScrollEnabled
     self.walletListTableView.reloadData()
     self.view.layoutIfNeeded()
   }
