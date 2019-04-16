@@ -73,7 +73,7 @@ class KSwapViewModel {
   }
 
   var amountFromBigInt: BigInt {
-    return self.amountFrom.fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+    return self.amountFrom.removeGroupSeparator().fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
   var amountToEstimate: BigInt {
