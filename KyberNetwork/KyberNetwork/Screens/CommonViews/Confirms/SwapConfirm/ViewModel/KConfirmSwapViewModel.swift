@@ -22,7 +22,7 @@ struct KConfirmSwapViewModel {
 
   var equivalentUSDAmount: BigInt? {
     if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.to) {
-      let expectedReceive = self.transaction.amount * self.transaction.expectedRate / BigInt(10).power(self.transaction.to.decimals)
+      let expectedReceive = self.transaction.expectedReceive
       return usdRate.rate * expectedReceive / BigInt(10).power(self.transaction.to.decimals)
     }
     return nil
