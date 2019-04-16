@@ -5,6 +5,7 @@ import CryptoSwift
 
 enum KyberNetworkService: String {
   case getRate = "/token_price?currency=ETH"
+  case getCachedRate = "/rate"
   case getRateUSD = "/token_price?currency=USD"
   case getHistoryOneColumn = "/getHistoryOneColumn"
   case getLatestBlock = "/latestBlock"
@@ -18,6 +19,9 @@ extension KyberNetworkService: TargetType {
 
   var baseURL: URL {
     let baseURLString: String = {
+      if case .getCachedRate = self {
+        return KNEnvironment.default.cachedRateURL
+      }
       if case .supportedToken = self {
         return KNEnvironment.default.supportedTokenEndpoint
       }

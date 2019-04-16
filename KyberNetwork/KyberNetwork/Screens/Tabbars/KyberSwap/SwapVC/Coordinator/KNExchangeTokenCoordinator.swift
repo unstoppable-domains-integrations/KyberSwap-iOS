@@ -131,6 +131,11 @@ extension KNExchangeTokenCoordinator {
     self.confirmSwapVC?.coordinatorUpdateCurrentMarketRate()
   }
 
+  func appCoordinatorUpdateExchangeTokenRates() {
+    self.rootViewController.coordinatorUpdateProdCachedRates()
+    self.confirmSwapVC?.coordinatorUpdateCurrentMarketRate()
+  }
+
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
@@ -309,6 +314,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.openSearchToken(from: from, to: to, isSource: isSource)
     case .estimateRate(let from, let to, let amount, let showError):
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
+    case .estimateComparedRate(let from, let to):
+      self.updateComparedEstimateRate(from: from, to: to)
     case .estimateGas(let from, let to, let amount, let gasPrice):
       self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
     case .getUserCapInWei:
@@ -437,23 +444,75 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
+  // Update compared rate from node when prod cached failed to load
+  // This rate is to compare with current rate to show warning
+  fileprivate func updateComparedEstimateRate(from: TokenObject, to: TokenObject) {
+    // Using default amount equivalent to 0.5 ETH
+    let amount: BigInt = {
+      if from.isETH { return BigInt(10).power(from.decimals) / BigInt(2) }
+      if let rate = KNRateCoordinator.shared.ethRate(for: from), !rate.rate.isZero {
+        let ethAmount = BigInt(10).power(from.decimals) / BigInt(2)
+        let amount = ethAmount * BigInt(10).power(to.decimals) / rate.rate
+        return amount
+      }
+      return BigInt(10).power(from.decimals / 2)
+    }()
+    self.getExpectedExchangeRate(from: from, to: to, amount: amount) { [weak self] result in
+      if case .success(let data) = result, !data.0.isZero {
+        self?.rootViewController.coordinatorUpdateComparedRateFromNode(
+          from: from,
+          to: to,
+          rate: data.0
+        )
+      }
+    }
+  }
+
+  // Call contract to get estimate rate with src, dest, srcAmount
   fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool, completion: ((Error?) -> Void)? = nil) {
+    self.getExpectedExchangeRate(from: from, to: to, amount: amount) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let data):
+        self.rootViewController.coordinatorDidUpdateEstimateRate(
+          from: from,
+          to: to,
+          amount: amount,
+          rate: data.0,
+          slippageRate: data.1
+        )
+        completion?(nil)
+      case .failure(let error):
+        if showError {
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
+            time: 1.5
+          )
+          self.rootViewController.coordinatorDidUpdateEstimateRate(
+            from: from,
+            to: to,
+            amount: amount,
+            rate: BigInt(0),
+            slippageRate: BigInt(0)
+          )
+        }
+        completion?(error)
+      }
+    }
+  }
+
+  fileprivate func getExpectedExchangeRate(from: TokenObject, to: TokenObject, amount: BigInt, completion: ((Result<(BigInt, BigInt), AnyError>) -> Void)? = nil) {
     if from == to {
       let rate = BigInt(10).power(from.decimals)
-      self.rootViewController.coordinatorDidUpdateEstimateRate(
-        from: from,
-        to: to,
-        amount: amount,
-        rate: rate,
-        slippageRate: rate * BigInt(97) / BigInt(100)
-      )
-      completion?(nil)
+      let slippageRate = rate * BigInt(97) / BigInt(100)
+      completion?(.success((rate, slippageRate)))
       return
     }
     self.session.externalProvider.getExpectedRate(
       from: from,
       to: to,
-      amount: amount) { [weak self] (result) in
+      amount: amount) { (result) in
         var estRate: BigInt = BigInt(0)
         var slippageRate: BigInt = BigInt(0)
         switch result {
@@ -462,30 +521,9 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           slippageRate = data.1
           estRate /= BigInt(10).power(18 - to.decimals)
           slippageRate /= BigInt(10).power(18 - to.decimals)
-          self?.rootViewController.coordinatorDidUpdateEstimateRate(
-            from: from,
-            to: to,
-            amount: amount,
-            rate: estRate,
-            slippageRate: slippageRate
-          )
-          completion?(nil)
+          completion?(.success((estRate, slippageRate)))
         case .failure(let error):
-          if showError {
-            self?.navigationController.showErrorTopBannerMessage(
-              with: NSLocalizedString("error", value: "Error", comment: ""),
-              message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
-              time: 1.5
-            )
-            self?.rootViewController.coordinatorDidUpdateEstimateRate(
-              from: from,
-              to: to,
-              amount: amount,
-              rate: BigInt(0),
-              slippageRate: BigInt(0)
-            )
-          }
-          completion?(error)
+          completion?(.failure(error))
         }
     }
   }
