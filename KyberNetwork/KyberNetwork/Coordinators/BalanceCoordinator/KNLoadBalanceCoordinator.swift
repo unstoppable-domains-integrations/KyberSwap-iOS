@@ -26,7 +26,7 @@ class KNLoadBalanceCoordinator {
       if self.ethToken != nil, let ethRate = KNRateCoordinator.shared.usdRate(for: self.ethToken) {
         value = ethRate.rate * ethBalance.value / BigInt(EthereumUnit.ether.rawValue)
       }
-      let tokens = self.session.tokenStorage.tokens
+      let tokens = KNSupportedTokenStorage.shared.supportedTokens
       for token in tokens {
         if let balance = otherTokensBalance[token.contract], !balance.value.isZero, let rate = KNRateCoordinator.shared.usdRate(for: token) {
           value += rate.rate * balance.value / BigInt(10).power(token.decimals)
@@ -42,7 +42,7 @@ class KNLoadBalanceCoordinator {
       var value = self.ethBalance.value
       if self.ethToken == nil { return value }
 
-      let tokenObjects = self.session.tokenStorage.tokens
+      let tokenObjects = KNSupportedTokenStorage.shared.supportedTokens
 
       for tokenObj in tokenObjects {
         if let balance = otherTokensBalance[tokenObj.contract], !balance.value.isZero, let rate = KNRateCoordinator.shared.getRate(from: tokenObj, to: self.ethToken) {
