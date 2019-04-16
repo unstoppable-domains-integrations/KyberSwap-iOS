@@ -206,6 +206,7 @@ extension KNAlertTableView: UITableViewDataSource {
       )
     }
     delete.backgroundColor = UIColor.Kyber.strawberry
+    if alert.state == .triggered { return [delete] }
     return [delete, edit]
   }
 }
