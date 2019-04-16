@@ -176,6 +176,8 @@ class KNRateCoordinator {
           self.cachedProdTokenRates["\($0.source)_\($0.dest)"] = $0
         })
         KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+      } else {
+        KNNotificationUtil.postNotification(for: kProdCachedRateFailedToLoadNotiKey)
       }
     }
   }
