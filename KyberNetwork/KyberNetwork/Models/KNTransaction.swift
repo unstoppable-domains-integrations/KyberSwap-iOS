@@ -175,7 +175,7 @@ extension KNTransaction {
         return nil
       }()
       guard let from = storage?.get(forPrimaryKey: object.from) else { return status.statusDetails }
-      guard let amount = self.value.fullBigInt(decimals: from.decimals) else { return status.statusDetails }
+      guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return status.statusDetails }
       let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       if object.type.lowercased() == "transfer" {
         let localisedString: String = {
@@ -187,7 +187,7 @@ extension KNTransaction {
         return String(format: localisedString, arguments: ["\(amountFrom) \(from.symbol)", "\n\(self.to)"])
       }
       guard let to = storage?.get(forPrimaryKey: object.to) else { return status.statusDetails }
-      guard let expectedAmount = object.value.fullBigInt(decimals: object.decimals) else { return status.statusDetails }
+      guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return status.statusDetails }
       let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       let localisedString: String = {
         if status == .success {
