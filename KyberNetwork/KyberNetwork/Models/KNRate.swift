@@ -39,6 +39,19 @@ class KNRate: NSObject {
     }
   }
 
+  init(cachedDict: JSONDictionary) throws {
+    source = cachedDict["source"] as? String ?? ""
+    let tokenSymbol = cachedDict["dest"] as? String ?? ""
+    dest = tokenSymbol
+    if let rateString = cachedDict["rate"] as? String, let rateBig = BigInt(rateString),
+      let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == tokenSymbol }) {
+      rate = rateBig / BigInt(10).power(18 - token.decimals)
+      minRate = rate * BigInt(97) / BigInt(100)
+    } else {
+      throw CastError(actualValue: String.self, expectedType: BigInt.self)
+    }
+  }
+
   init(source: String, dest: String, rate: Double, decimals: Int) {
     self.source = source
     self.dest = dest
