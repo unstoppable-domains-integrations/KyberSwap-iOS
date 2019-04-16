@@ -21,6 +21,8 @@ let kOtherBalanceDidUpdateNotificationKey = "kOtherBalanceDidUpdateNotificationK
 // Rate
 let kExchangeTokenRateNotificationKey = "kExchangeTokenRateNotificationKey"
 let kExchangeUSDRateNotificationKey = "kExchangeUSDRateNotificationKey"
+
+let kProdCachedRateSuccessToLoadNotiKey = "kProdCachedRateSuccessToLoadNotiKey"
 let kProdCachedRateFailedToLoadNotiKey = "kProdCachedRateFailedToLoadNotiKey"
 
 let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotificationKey"
