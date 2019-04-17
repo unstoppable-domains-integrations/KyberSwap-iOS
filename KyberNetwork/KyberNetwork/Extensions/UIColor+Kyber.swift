@@ -83,7 +83,7 @@ extension UIColor {
 
     static var backgroundColors: [UIColor] = [
       UIColor.Kyber.enygold,
-      UIColor(red: 245, green: 40, blue: 128),
+      UIColor(hex: "F8566C"),
     ]
   }
 }
