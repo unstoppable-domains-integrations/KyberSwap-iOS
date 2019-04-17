@@ -28,7 +28,7 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   fileprivate func updateSelectedPageView(index: Int) {
     self.pageViews.forEach { view in
-      view.backgroundColor = view.tag == index ? .white : UIColor(red: 233, green: 0, blue: 0)
+      view.backgroundColor = view.tag == index ? .white : UIColor(red: 233.0/255.0, green: 90.0/255.0, blue: 74.0/255.0, alpha: 0.75)
     }
   }
 }
