@@ -166,6 +166,10 @@ class KNNewAlertViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIs() {
+    if self.viewModel.token == "ETH" || self.viewModel.token == "WETH" {
+      // always force to use usd
+      self.viewModel.updateCurrencyType(.usd)
+    }
     UIView.animate(withDuration: 0.16) {
       let placeHolder = UIImage(named: "default_token")
       let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(self.viewModel.token.lowercased()).png"
