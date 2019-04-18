@@ -74,17 +74,17 @@ class KNPromoSwapConfirmViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.yourWalletTextLabel.text = "Your Wallet".toBeLocalised()
+    self.yourWalletTextLabel.text = NSLocalizedString("Your Wallet", comment: "")
 
     self.walletDescLabel.text = self.viewModel.walletAddress
 
-    let transferFundsMessage = "After swapping, please transfer your token to your personal wallet before %@".toBeLocalised()
+    let transferFundsMessage = NSLocalizedString("After swapping, please transfer your token to your personal wallet before %@", comment: "")
     self.transferFundsMessageLabel.text = String(
       format: NSLocalizedString(transferFundsMessage, value: transferFundsMessage, comment: ""),
       self.viewModel.expireDateDisplay
     )
 
-    self.swapAndSendTextLabel.text = "Swap and Send to the Organizer".toBeLocalised()
+    self.swapAndSendTextLabel.text = NSLocalizedString("Swap and Send to the Organizer", comment: "")
 
     self.fromTextLabel.text = NSLocalizedString("from", value: "From", comment: "")
     self.fromValueLabel.text = self.viewModel.leftAmountString
@@ -93,7 +93,7 @@ class KNPromoSwapConfirmViewController: KNBaseViewController {
     self.toValueLabel.text = self.viewModel.rightAmountString
 
     self.receiveTextLabel.text = NSLocalizedString("receive", value: "Receive", comment: "")
-    self.receiveValueLabel.text = "1 Gift".toBeLocalised()
+    self.receiveValueLabel.text = NSLocalizedString("1 Gift", comment: "")
 
     if self.viewModel.isPayment {
       self.walletDescLabel.isHidden = true
@@ -103,7 +103,7 @@ class KNPromoSwapConfirmViewController: KNBaseViewController {
       self.receiveTextLabel.isHidden = false
       self.receiveValueLabel.isHidden = false
       self.receiveIcon.isHidden = false
-      self.yourWalletTextLabel.text = "You are swapping to receive a gift".toBeLocalised()
+      self.yourWalletTextLabel.text = NSLocalizedString("You are swapping to receive a gift", comment: "")
       self.topPaddingFirstSeparatorViewConstraint.constant = 20.0
       self.topPaddingSecondSeparatorViewConstraint.constant = 140.0
     } else {
@@ -114,7 +114,7 @@ class KNPromoSwapConfirmViewController: KNBaseViewController {
       self.receiveTextLabel.isHidden = true
       self.receiveValueLabel.isHidden = true
       self.receiveIcon.isHidden = true
-      self.yourWalletTextLabel.text = "Your Wallet".toBeLocalised()
+      self.yourWalletTextLabel.text = NSLocalizedString("Your Wallet", comment: "")
       self.topPaddingFirstSeparatorViewConstraint.constant = 112.0
       self.topPaddingSecondSeparatorViewConstraint.constant = 32.0
     }

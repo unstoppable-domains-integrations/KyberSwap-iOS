@@ -425,9 +425,10 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
   }
 
   fileprivate func showAlertMaximumPriceAlertsReached() {
+    let message = NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: "")
     let alertController = UIAlertController(
-      title: "Alert limit exceeded".toBeLocalised(),
-      message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+      title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
+      message: message,
       preferredStyle: .alert
     )
     alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))

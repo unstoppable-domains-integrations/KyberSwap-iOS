@@ -463,11 +463,15 @@ extension KSendTokenViewController {
   func coordinatorDidSelectContact(_ contact: KNContact) {
     self.viewModel.updateAddress(contact.address)
     self.updateUIAddressQRCode()
+    KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 
   func coordinatorSend(to address: String) {
     self.viewModel.updateAddress(address)
     self.updateUIAddressQRCode()
+    if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
+      KNContactStorage.shared.updateLastUsed(contact: contact)
+    }
   }
 
   func coordinatorUpdateTrackerRate() {

@@ -211,9 +211,12 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func setupPriceAlertsView() {
-    self.priceAlertsTextLabel.text = "Price Alerts".uppercased().toBeLocalised()
-    self.noPriceAlertMessageLabel.text = "We will send you notifications when prices go above or below your targets".toBeLocalised()
-    self.moreAlertsButton.setTitle("More Alerts".uppercased().toBeLocalised(), for: .normal)
+    self.priceAlertsTextLabel.text = NSLocalizedString("Price Alerts", value: "Price Alerts", comment: "").uppercased()
+    self.noPriceAlertMessageLabel.text = NSLocalizedString("We will send you notifications when prices go above or below your targets", value: "We will send you notifications when prices go above or below your targets", comment: "")
+    self.moreAlertsButton.setTitle(
+      NSLocalizedString("More Alerts", value: "More Alerts", comment: ""),
+      for: .normal
+    )
     self.priceAlertTableView.delegate = self
     self.priceAlertTableView.updateView(with: KNAlertStorage.shared.alerts, isFull: false)
     self.priceAlertTableView.updateScrolling(isEnabled: false)
@@ -547,7 +550,13 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
     case .update(let height):
       self.updatePriceAlertsView(tableViewHeight: height)
     case .delete(let alert):
-      let message = alert.hasReward ? "This alert is eligible for a reward from the current competition. Do you still want to delete?".toBeLocalised() : "Do you want to delete this alert?".toBeLocalised()
+      let warningMessage = NSLocalizedString(
+        "This alert is eligible for a reward from the current competition. Do you still want to delete?",
+        value: "This alert is eligible for a reward from the current competition. Do you still want to delete?",
+        comment: ""
+      )
+      let normalMessage = NSLocalizedString("Do you want to delete this alert?", value: "Do you want to delete this alert?", comment: "")
+      let message = alert.hasReward ? warningMessage : normalMessage
       let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: message, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
       alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
@@ -578,7 +587,7 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
       } else {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: "Alert deleted!".toBeLocalised(),
+          message: NSLocalizedString("Alert deleted!", value: "Alert deleted!", comment: ""),
           time: 1.0
         )
       }

@@ -56,10 +56,10 @@ class KNSettingsTabViewController: KNBaseViewController {
       for: .normal
     )
     self.manageWalletButton.addTextSpacing()
-    self.manageAlerts.setTitle("Manage Alert".toBeLocalised(), for: .normal)
+    self.manageAlerts.setTitle(NSLocalizedString("Manage Alert", comment: ""), for: .normal)
     self.manageAlerts.addTextSpacing()
     self.manageAlerts.isHidden = !KNAppTracker.isPriceAlertEnabled
-    self.alertMethodsButton.setTitle("Alert Method".toBeLocalised(), for: .normal)
+    self.alertMethodsButton.setTitle(NSLocalizedString("Alert Method", comment: ""), for: .normal)
     self.alertMethodsButton.addTextSpacing()
     self.alertMethodsButton.isHidden = !KNAppTracker.isPriceAlertEnabled
     self.contactButton.setTitle(

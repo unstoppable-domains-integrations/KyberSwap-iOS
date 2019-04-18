@@ -113,7 +113,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       } else {
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
           time: 1.5
         )
       }
@@ -126,7 +126,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       } else {
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
           time: 1.5
         )
       }
@@ -408,9 +408,10 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
       self.sendTokenCoordinator?.start()
       self.sendTokenCoordinator?.coordinatorOpenSendView(to: address)
     } else {
+      let message = NSLocalizedString("Please wait for other transactions to be mined before making a transfer", comment: "")
       self.navigationController.showWarningTopBannerMessage(
         with: "",
-        message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+        message: message,
         time: 2.0
       )
     }

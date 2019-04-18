@@ -45,8 +45,8 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   func openAddNewAlert() {
     if KNAlertStorage.shared.isMaximumAlertsReached {
       let alertController = UIAlertController(
-        title: "Alert limit exceeded".toBeLocalised(),
-        message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+        title: NSLocalizedString("Alert limit exceeded", comment: ""),
+        message: NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: ""),
         preferredStyle: .alert
       )
       alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
@@ -75,7 +75,9 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   func manageAlertsViewController(_ viewController: KNManageAlertsViewController, run event: KNAlertTableViewEvent) {
     switch event {
     case .delete(let alert):
-      let message = alert.hasReward ? "This alert is eligible for a reward from the current competition. Do you still want to delete?".toBeLocalised() : "Do you want to delete this alert?".toBeLocalised()
+      let warningMessage = NSLocalizedString("This alert is eligible for a reward from the current competition. Do you still want to delete?", comment: "")
+      let normalMessage = NSLocalizedString("Do you want to delete this alert?", comment: "")
+      let message = alert.hasReward ? warningMessage : normalMessage
       let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: message, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
       alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
@@ -110,7 +112,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
       } else {
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
-          message: "Alert deleted!".toBeLocalised(),
+          message: NSLocalizedString("Alert deleted!", comment: ""),
           time: 1.0
         )
       }

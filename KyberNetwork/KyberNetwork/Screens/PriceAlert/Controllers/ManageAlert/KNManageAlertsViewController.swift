@@ -40,15 +40,15 @@ class KNManageAlertsViewController: KNBaseViewController {
       isFull: true
     )
     self.alertTableView.updateScrolling(isEnabled: true)
-    self.navTitleLabel.text = "Manage Alert".toBeLocalised()
-    self.emptyAlertDescLabel.text = "We will send you notifications when prices go above or below your targets".toBeLocalised()
+    self.navTitleLabel.text = NSLocalizedString("Manage Alert", comment: "")
+    self.emptyAlertDescLabel.text = NSLocalizedString("We will send you notifications when prices go above or below your targets", comment: "")
 
     self.alertTableView.isHidden = alerts.isEmpty
     self.emptyStateContainerView.isHidden = !alerts.isEmpty
     self.addAlertButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.addAlertButton.frame.height))
     self.addAlertButton.applyGradient()
     self.addAlertButton.setTitle(
-      "Add Alert".toBeLocalised(),
+      NSLocalizedString("Add Alert", comment: ""),
       for: .normal
     )
   }

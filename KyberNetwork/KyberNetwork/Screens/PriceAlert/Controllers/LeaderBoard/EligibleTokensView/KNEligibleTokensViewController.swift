@@ -26,7 +26,7 @@ class KNEligibleTokensViewController: KNBaseViewController {
     super.viewDidLoad()
     self.containerView.rounded(radius: 5.0)
 
-    self.eligibleTextLabel.text = "Eligible Tokens".toBeLocalised()
+    self.eligibleTextLabel.text = NSLocalizedString("Eligible Tokens", comment: "")
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
     let nib = UINib(nibName: KNEligibleTokensTableViewCell.className, bundle: nil)
