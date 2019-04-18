@@ -259,16 +259,18 @@ class KWalletBalanceViewModel: NSObject {
     if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
     if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
 
+    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
+    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
+
     if self.tokensDisplayType == .balanceDesc || self.tokensDisplayType == .default {
       // sort by balance
       guard let balance0 = self.balance(for: left) else { return false }
       guard let balance1 = self.balance(for: right) else { return true }
       let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
       let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
+      if value0 == 0 && value1 == 0 { return tracker0.rateUSDNow > tracker1.rateUSDNow }
       return value0 > value1
     }
-    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
-    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
     // sort by price or change
     let change0: Double = {
       return self.currencyType == .eth ? tracker0.changeETH24h : tracker0.changeUSD24h
