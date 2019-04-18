@@ -184,18 +184,20 @@ class KNExternalProvider {
     self.sendApproveERCToken(
       for: exchangeTransaction.from,
       value: BigInt(2).power(255),
+      gasPrice: exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas,
       completion: completion
     )
   }
 
-  func sendApproveERCToken(for token: TokenObject, value: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
       token: token,
       value: value,
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: self.networkAddress
+      networkAddress: self.networkAddress,
+      gasPrice: gasPrice
     ) { [weak self] result in
         guard let `self` = self else { return }
         switch result {

@@ -173,17 +173,20 @@ extension TokenObject {
 class TokenExtraData: NSObject {
   let address: String
   let gasLimit: String
+  let gasApprove: Double
   let listingTime: TimeInterval
 
-  init(address: String, gasLimit: String, listingTime: TimeInterval) {
+  init(address: String, gasLimit: String, gasApprove: Double, listingTime: TimeInterval) {
     self.address = address
     self.gasLimit = gasLimit
+    self.gasApprove = gasApprove
     self.listingTime = listingTime
   }
 
   init(dict: JSONDictionary) {
     self.address = dict["address"] as? String ?? ""
     self.gasLimit = dict["gasLimit"] as? String ?? ""
+    self.gasApprove = dict["gasApprove"] as? Double ?? 0.0
     self.listingTime = dict["listing_time"] as? TimeInterval ?? 0.0
   }
 
@@ -191,6 +194,7 @@ class TokenExtraData: NSObject {
     return [
       "address": address,
       "gasLimit": gasLimit,
+      "gasApprove": gasApprove,
       "listing_time": listingTime,
     ]
   }
@@ -199,6 +203,11 @@ class TokenExtraData: NSObject {
     guard !self.gasLimit.isEmpty else { return nil }
     guard let value = self.gasLimit.shortBigInt(units: .wei), !value.isZero else { return nil }
     return value
+  }
+
+  var gasApproveDefault: BigInt? {
+    guard self.gasApprove != 0.0 else { return nil }
+    return BigInt(self.gasApprove)
   }
 
   var shouldShowAsNew: Bool {

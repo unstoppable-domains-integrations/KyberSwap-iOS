@@ -269,7 +269,12 @@ extension KNExchangeTokenCoordinator {
       completion(.success(true))
       return
     }
-    self.session.externalProvider.sendApproveERCToken(for: exchangeTransaction.from, value: BigInt(0)) { result in
+    let gasPrice = exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas
+    self.session.externalProvider.sendApproveERCToken(
+      for: exchangeTransaction.from,
+      value: BigInt(0),
+      gasPrice: gasPrice
+    ) { result in
       switch result {
       case .success:
         completion(.success(true))
