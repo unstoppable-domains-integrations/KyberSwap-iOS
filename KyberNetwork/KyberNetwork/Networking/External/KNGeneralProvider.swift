@@ -165,7 +165,7 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, value: BigInt = BigInt(2).power(255), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, value: BigInt = BigInt(2).power(255), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -197,22 +197,30 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(forApproving: token, account: account, nonce: txCount, data: encodeData, keystore: keystore, completion: { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let signData):
-          self.sendSignedTransactionData(signData, completion: { sendResult in
-            switch sendResult {
-            case .success:
-              completion(.success(txCount + 1))
-            case .failure(let error):
-              completion(.failure(error))
-            }
-          })
-        case .failure(let error):
-          completion(.failure(error))
+      self.signTransactionData(
+        forApproving: token,
+        account: account,
+        nonce: txCount,
+        data: encodeData,
+        keystore: keystore,
+        gasPrice: gasPrice,
+        completion: { [weak self] result in
+          guard let `self` = self else { return }
+          switch result {
+          case .success(let signData):
+            self.sendSignedTransactionData(signData, completion: { sendResult in
+              switch sendResult {
+              case .success:
+                completion(.success(txCount + 1))
+              case .failure(let error):
+                completion(.failure(error))
+              }
+            })
+          case .failure(let error):
+            completion(.failure(error))
+          }
         }
-      })
+      )
     }
   }
 
@@ -353,15 +361,19 @@ class KNGeneralProvider {
 
 // MARK: Sign transaction
 extension KNGeneralProvider {
-  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    let gasLimit: BigInt = {
+      if let gasApprove = token.extraData?.gasApproveDefault { return gasApprove }
+      return KNGasConfiguration.approveTokenGasLimitDefault
+    }()
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
       to: Address(string: token.contract),
       nonce: nonce,
       data: data,
-      gasPrice: KNGasConfiguration.gasPriceDefault,
-      gasLimit: KNGasConfiguration.exchangeTokensGasLimitDefault,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
       chainID: KNEnvironment.default.chainID
     )
     let signResult = keystore.signTransaction(signTransaction)
