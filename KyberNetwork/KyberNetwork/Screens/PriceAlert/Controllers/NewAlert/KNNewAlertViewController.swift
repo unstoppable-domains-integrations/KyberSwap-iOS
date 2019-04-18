@@ -32,8 +32,8 @@ class KNNewAlertViewModel {
   var currentPriceDisplay: String {
     let price = BigInt(currentPrice * pow(10.0, 18.0))
     let display = price.displayRate(decimals: 18)
-    return "Current Price: \(display)"
-
+    let string = NSLocalizedString("Current Price: %@", comment: "")
+    return String(format: string, display)
   }
 
   var isPercentageHidden: Bool { return self.percentageChange < 0.01 || currentPrice == 0.0 }
@@ -113,7 +113,7 @@ class KNNewAlertViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.currencyLabel.text = "Currency".toBeLocalised()
+    self.currencyLabel.text = NSLocalizedString("Currency", comment: "")
 
     let tabUSDGesture = UITapGestureRecognizer(target: self, action: #selector(self.usdButtonPressed(_:)))
     self.usdLabel.addGestureRecognizer(tabUSDGesture)
@@ -255,7 +255,7 @@ class KNNewAlertViewController: KNBaseViewController {
     if self.viewModel.currentPrice == 0.0 {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "We can not update current price of this token pair".toBeLocalised(),
+        message: NSLocalizedString("We can not update current price of this token pair", comment: ""),
         time: 1.5
       )
       return
@@ -267,7 +267,7 @@ class KNNewAlertViewController: KNBaseViewController {
     if change < KNAppTracker.minimumPriceAlertPercent || change > KNAppTracker.maximumPriceAlertPercent {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Your target price should be from 1% to 10000% of current price".toBeLocalised(),
+        message: NSLocalizedString("Your target price should be from 1% to 10000% of current price", comment: ""),
         time: 1.5
       )
       return
@@ -275,7 +275,7 @@ class KNNewAlertViewController: KNBaseViewController {
     if fabs(change) < KNAppTracker.minimumPriceAlertChangePercent {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Your target price should be different at least 0.1% from current price".toBeLocalised(),
+        message: NSLocalizedString("Your target price should be different at least 0.1% from current price", value: "Your target price should be different at least 0.1% from current price", comment: ""),
         time: 1.5
       )
       return
@@ -283,7 +283,7 @@ class KNNewAlertViewController: KNBaseViewController {
     if (self.viewModel.token == "ETH" || self.viewModel.token == "WETH") && self.viewModel.currencyType == .eth {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Can not select pair ETH/ETH, WETH/ETH".toBeLocalised(),
+        message: NSLocalizedString("Can not select pair ETH/ETH, WETH/ETH", value: "Can not select pair ETH/ETH, WETH/ETH", comment: ""),
         time: 1.5
       )
       return
@@ -292,7 +292,7 @@ class KNNewAlertViewController: KNBaseViewController {
     guard let price = targetPrice.fullBigInt(decimals: 18), !targetPrice.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Please enter your target price to be alerted".toBeLocalised(),
+        message: NSLocalizedString("Please enter your target price to be alerted", value: "Please enter your target price to be alerted", comment: ""),
         time: 1.5
       )
       return
@@ -328,7 +328,7 @@ class KNNewAlertViewController: KNBaseViewController {
       } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
-          message: "New alert has been added successfully!".toBeLocalised(),
+          message: NSLocalizedString("New alert has been added successfully!", comment: ""),
           time: 1.0
         )
         self.navigationController?.popViewController(animated: true)
@@ -339,7 +339,7 @@ class KNNewAlertViewController: KNBaseViewController {
   fileprivate func updateAlertWithWarningIfNeeded() {
     guard let alertID = self.viewModel.alertID else { return }
     if let alert = KNAlertStorage.shared.getObject(primaryKey: alertID), alert.hasReward {
-      let message = "This alert is eligible for a reward from the current competition. Do you still want to update?".toBeLocalised()
+      let message = NSLocalizedString("This alert is eligible for a reward from the current competition. Do you still want to update?", comment: "")
       let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
       alertController.addAction(UIAlertAction(title: NSLocalizedString("continue", value: "Continue", comment: ""), style: .destructive, handler: { _ in
@@ -386,7 +386,7 @@ class KNNewAlertViewController: KNBaseViewController {
       } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
-          message: "Updated alert successfully!".toBeLocalised(),
+          message: NSLocalizedString("Updated alert successfully!", comment: ""),
           time: 1.0
         )
         self.navigationController?.popViewController(animated: true)

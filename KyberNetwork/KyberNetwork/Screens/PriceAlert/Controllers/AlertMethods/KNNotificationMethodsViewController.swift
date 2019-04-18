@@ -24,8 +24,8 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.navTitleLabel.text = "Alert Method".toBeLocalised()
-    self.pushNotificationTextLabel.text = "Push Notification".toBeLocalised()
+    self.navTitleLabel.text = NSLocalizedString("Alert Method", comment: "")
+    self.pushNotificationTextLabel.text = NSLocalizedString("Push Notification", comment: "")
 
     let tapPushNoti = UITapGestureRecognizer(target: self, action: #selector(self.pushNotiButtonPressed(_:)))
     self.pushNotiContainerView.addGestureRecognizer(tapPushNoti)
@@ -110,7 +110,7 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   fileprivate func showAlertCanNotLoadAlertMethods() {
     let alert = UIAlertController(
       title: NSLocalizedString("error", value: "Error", comment: ""),
-      message: "Can not load alert methods. Please try again".toBeLocalised(),
+      message: NSLocalizedString("Can not load alert methods. Please try again", comment: ""),
       preferredStyle: .alert
     )
     alert.addAction(UIAlertAction(title: NSLocalizedString("reload", value: "Reload", comment: ""), style: .default, handler: { _ in
@@ -163,20 +163,20 @@ class KNNotificationMethodsViewController: KNBaseViewController {
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-    self.displayLoading(text: "Updating".toBeLocalised(), animated: true)
+    self.displayLoading(text: NSLocalizedString("Updating", comment: ""), animated: true)
     KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.isEmailEnabled, telegram: self.isTelegramEnabled, pushNoti: self.isPushNotiEnabled) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.hideLoading()
       if error == nil {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
-          message: "Updated alert methods successfully!".toBeLocalised(),
+          message: NSLocalizedString("Updated alert methods successfully!", comment: ""),
           time: 1.5
         )
       } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "Can not update alert methods!".toBeLocalised(),
+          message: NSLocalizedString("Can not update alert methods!", comment: ""),
           time: 1.5
         )
       }

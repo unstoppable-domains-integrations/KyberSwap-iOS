@@ -408,6 +408,7 @@
 "you.can.backup.your.wallet.later" = "You can backup your wallet later";
 "new" = "New";
 "can.not.update.exchange.rate" = "Can not update exchange rate";
+"Please wait for other transactions to be mined before making a transfer" = "Please wait for other transactions to be mined before making a transfer";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";
@@ -473,6 +474,7 @@
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
 "Eligible Tokens" = "Eligible Tokens";
+"Current Price: %@" = "Current Price: %@";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
@@ -504,3 +506,5 @@
 "welcome.second.screen.description" = "Swap between arbitrary token pairs. No deposit needed.";
 "welcome.third.screen.title" = "Profile";
 "welcome.third.screen.description" = "Profile process just got simpler. Straight from the app.";
+
+"Your Wallet" = "Your Wallet";

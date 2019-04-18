@@ -93,9 +93,14 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         )
         self.sendTokenCoordinator?.start()
       } else {
+        let message = NSLocalizedString(
+          "Please wait for other transactions to be mined before making a transfer",
+          value: "Please wait for other transactions to be mined before making a transfer",
+          comment: ""
+        )
         self.navigationController.showWarningTopBannerMessage(
           with: "",
-          message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+          message: message,
           time: 2.0
         )
       }
@@ -106,8 +111,8 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
     case .addNewAlert(let token):
       if KNAlertStorage.shared.isMaximumAlertsReached {
         let alertController = UIAlertController(
-          title: "Alert limit exceeded".toBeLocalised(),
-          message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+          title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
+          message: NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: ""),
           preferredStyle: .alert
         )
         alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
@@ -117,7 +122,7 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
       if IEOUserStorage.shared.user == nil {
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "You must sign in to use Price Alert feature".toBeLocalised(),
+          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
           time: 1.5
         )
         return

@@ -600,9 +600,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       )
       self.sendTokenCoordinator?.start()
     } else {
+      let message = NSLocalizedString("Please wait for other transactions to be mined before making a transfer", comment: "")
       self.navigationController.showWarningTopBannerMessage(
         with: "",
-        message: "Please wait for other transactions to be mined before making a transfer".toBeLocalised(),
+        message: message,
         time: 2.0
       )
     }

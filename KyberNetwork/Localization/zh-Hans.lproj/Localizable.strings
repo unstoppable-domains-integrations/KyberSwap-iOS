@@ -401,6 +401,7 @@
 "can.not.transfer.this.token" = "无法转移此令牌";
 "new" = "新";
 "can.not.update.exchange.rate" = "无法更新汇率";
+"Please wait for other transactions to be mined before making a transfer" = "Please wait for other transactions to be mined before making a transfer";
 
 "successfully.received" = "成功接收%@从%@";
 "received.token" = "收到%@";
@@ -463,6 +464,7 @@
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
 "Eligible Tokens" = "Eligible Tokens";
+"Current Price: %@" = "Current Price: %@";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
@@ -506,3 +508,5 @@
 "welcome.second.screen.description" = "在任意代币对之间切换。无需充币。";
 "welcome.third.screen.title" = "资料";
 "welcome.third.screen.description" = "资料验证变得更简单了。直接在app里就能搞定。";
+
+"Your Wallet" = "Your Wallet";

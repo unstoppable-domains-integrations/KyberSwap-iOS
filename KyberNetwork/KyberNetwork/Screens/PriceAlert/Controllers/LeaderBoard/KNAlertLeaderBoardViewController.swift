@@ -104,13 +104,13 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = {
-      if self.isShowingResult { return "Result".toBeLocalised() }
-      return "Alert LeaderBoard".toBeLocalised()
+      if self.isShowingResult { return NSLocalizedString("Result", comment: "") }
+      return NSLocalizedString("Alert LeaderBoard", comment: "")
     }()
 
     self.campaignContainerView.isHidden = true
 
-    self.campaignTextLabel.text = "Campaign(s)".toBeLocalised().uppercased()
+    self.campaignTextLabel.text = NSLocalizedString("Campaign(s)", comment: "").uppercased()
     let tapCampaignHeader = UITapGestureRecognizer(target: self, action: #selector(self.campaignActionButtonPressed(_:)))
     self.campaignHeaderView.addGestureRecognizer(tapCampaignHeader)
     self.campaignHeaderView.isUserInteractionEnabled = true
@@ -120,9 +120,9 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
     self.leadersCollectionView.delegate = self
     self.leadersCollectionView.dataSource = self
     self.leadersCollectionView.isHidden = true
-    self.noDataLabel.text = "No data to show right now".toBeLocalised()
+    self.noDataLabel.text = NSLocalizedString("No data to show right now", comment: "")
     self.noDataLabel.isHidden = false
-    self.alertsTextLabel.text = "Alert(s)".toBeLocalised().uppercased()
+    self.alertsTextLabel.text = NSLocalizedString("Alert(s)", comment: "").uppercased()
     self.separatorView.backgroundColor = .clear
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
@@ -186,13 +186,13 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
         let unit = json["reward_unit"] as? String ?? ""
         return String(format: NSLocalizedString("REWARD CURRENCY: %@", value: "REWARD CURRENCY: %@", comment: ""), unit)
       }()
-      self.eligibleTokensButton.setTitle("Eligible Tokens".toBeLocalised(), for: .normal)
+      self.eligibleTokensButton.setTitle(NSLocalizedString("Eligible Tokens", comment: ""), for: .normal)
       self.eligibleTokensButtonHeightConstraint.constant = 32.0
       self.startTimeLabel.text = {
         let startTime = json["start_time"] as? String ?? ""
         if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: startTime) {
           let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
-          return String(format: "Start: %@".toBeLocalised(), string)
+          return String(format: NSLocalizedString("Start: %@", comment: ""), string)
         }
         return nil
       }()
@@ -200,7 +200,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
         let endTime = json["end_time"] as? String ?? ""
         if let date = DateFormatterUtil.shared.promoCodeDateFormatter.date(from: endTime) {
           let string = DateFormatterUtil.shared.leaderBoardFormatter.string(from: date)
-          return String(format: "End: %@".toBeLocalised(), string)
+          return String(format: NSLocalizedString("End: %@", comment: ""), string)
         }
         return nil
       }()
@@ -223,9 +223,9 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
       self.latestCampaignTopBottomPaddings.forEach({ $0.constant = 16.0 })
       self.latestCampaignPaddingConstraints.constant = 6.0
       self.latestCampaignTitleLabel.text = self.latestCampaignTitle
-      self.latestCampaignEndedTextLabel.text = "Campaign has ended.".toBeLocalised()
+      self.latestCampaignEndedTextLabel.text = NSLocalizedString("Campaign has ended.", comment: "")
       self.seeTheWinnersButton.setTitle(
-        "See the winners".toBeLocalised().uppercased(),
+        NSLocalizedString("See the winners", comment: "").uppercased(),
         for: .normal
       )
       self.seeTheWinnersButton.isHidden = false
@@ -256,7 +256,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
           print("Load list leaderboard error: \(error)")
           let alertController = UIAlertController(
             title: NSLocalizedString("error", value: "Error", comment: ""),
-            message: "Can not update leader board data right now".toBeLocalised(),
+            message: NSLocalizedString("Can not update leader board data right now", comment: ""),
             preferredStyle: .alert
           )
           alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
@@ -276,7 +276,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
           print("Load list leaderboard error: \(error)")
           let alertController = UIAlertController(
             title: NSLocalizedString("error", value: "Error", comment: ""),
-            message: "Can not update leader board data right now".toBeLocalised(),
+            message: NSLocalizedString("Can not update leader board data right now", comment: ""),
             preferredStyle: .alert
           )
           alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))

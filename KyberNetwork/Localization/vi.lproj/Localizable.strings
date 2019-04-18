@@ -408,6 +408,8 @@
 "you.can.backup.your.wallet.later" = "Bạn có thể sao lưu ví của mình sau";
 "new" = "Mới";
 "can.not.update.exchange.rate" = "Không thể cập nhật tỷ giá";
+"Please wait for other transactions to be mined before making a transfer" = "Vui lòng đợi những giao dịch khác hoàn thành trước khi thực hiện chuyển token đi";
+
 "Your target price should be different at least 0.1% from current price" = "Giá bạn đặt phải khác ít nhất 0.1% so với giá hiện tại";
 "Alert LeaderBoard" = "Bảng xếp hạng";
 "Pair" = "Cặp";
@@ -439,6 +441,7 @@
 "Start: %@" = "Từ: %@";
 "End: %@" = "Đến: %@";
 "Eligible Tokens" = "Tokens Hợp Lệ";
+"Current Price: %@" = "Giá Hiện Tại: %@";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";
@@ -505,3 +508,5 @@
 "welcome.second.screen.description" = "Hoán đổi giữa các cặp token tùy ý một cách nhanh chóng. Không cần gửi tiền.";
 "welcome.third.screen.title" = "Hồ sơ";
 "welcome.third.screen.description" = "Xác minh hồ sơ đơn giản hơn. Trực tiếp từ ứng dụng";
+
+"Your Wallet" = "Địa chỉ ví";

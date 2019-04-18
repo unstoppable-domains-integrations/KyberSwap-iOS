@@ -154,9 +154,9 @@ extension KNAlertTableView: UITableViewDataSource {
     backgroundView.backgroundColor = UIColor(red: 239, green: 239, blue: 239)
     view.backgroundView = backgroundView
     if self.activeAlerts.isEmpty || section == 1 {
-      view.updateText("Triggered".toBeLocalised().uppercased())
+      view.updateText(NSLocalizedString("Triggered", comment: "").uppercased())
     } else {
-      view.updateText("Active".toBeLocalised().uppercased())
+      view.updateText(NSLocalizedString("Active", comment: "").uppercased())
     }
     return view
   }

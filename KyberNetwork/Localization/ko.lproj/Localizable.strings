@@ -411,6 +411,7 @@
 
 "successfully.received" = "%@ 에서 %@ 성공적으로 받았습니다.";
 "received.token" = "받은 %@";
+"Please wait for other transactions to be mined before making a transfer" = "Please wait for other transactions to be mined before making a transfer";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";
@@ -470,6 +471,7 @@
 "Start: %@" = "Start: %@";
 "End: %@" = "End: %@";
 "Eligible Tokens" = "Eligible Tokens";
+"Current Price: %@" = "Current Price: %@";
 
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";
@@ -505,3 +507,5 @@
 "welcome.second.screen.description" = "보증금 없이 토큰을 스왑합니다.";
 "welcome.third.screen.title" = "프로필";
 "welcome.third.screen.description" = "이제 앱에서 바로 본인 인증을 할 수 있습니다.";
+
+"Your Wallet" = "Your Wallet";

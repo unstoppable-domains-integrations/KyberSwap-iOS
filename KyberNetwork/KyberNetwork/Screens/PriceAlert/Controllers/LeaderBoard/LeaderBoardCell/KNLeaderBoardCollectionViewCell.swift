@@ -24,10 +24,10 @@ class KNLeaderBoardCollectionViewCell: UICollectionViewCell {
     // Initialization code
     self.userInfoContainerView.rounded(radius: 4.0)
     self.rankLabel.rounded(radius: self.rankLabel.frame.width / 2.0)
-    self.pairTextLabel.text = "Pair".toBeLocalised().uppercased()
-    self.entryTextLabel.text = "Entry".toBeLocalised().uppercased()
-    self.targetTextLabel.text = "Target".toBeLocalised().uppercased()
-    self.swingsTextLabel.text = "Swing".toBeLocalised().uppercased()
+    self.pairTextLabel.text = NSLocalizedString("Pair", comment: "").uppercased()
+    self.entryTextLabel.text = NSLocalizedString("Entry", comment: "").uppercased()
+    self.targetTextLabel.text = NSLocalizedString("Target", comment: "").uppercased()
+    self.swingsTextLabel.text = NSLocalizedString("Swing", comment: "").uppercased()
     self.rewardAmount.rounded(radius: 2.5)
     self.rounded(radius: 4.0)
   }
