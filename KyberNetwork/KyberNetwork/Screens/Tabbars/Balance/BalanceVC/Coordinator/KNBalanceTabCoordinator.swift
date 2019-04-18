@@ -84,11 +84,13 @@ extension KNBalanceTabCoordinator {
     self.newRootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     let pendingObjects = self.session.transactionStorage.kyberPendingTransactions
     self.newRootViewController.coordinatorUpdatePendingTransactions(pendingObjects)
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
+    if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+    }
     self.historyCoordinator?.delegate = self
     self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
   }

@@ -90,18 +90,20 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
-    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     if resetRoot {
       self.navigationController.popToRootViewController(animated: false)
     }
+    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
+    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
+    if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+    }
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
