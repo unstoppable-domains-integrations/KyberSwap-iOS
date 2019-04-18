@@ -123,7 +123,7 @@ class KSwapViewModel {
       let amount = self.amountToBigInt
       return amount * BigInt(10).power(self.from.decimals) / rate
     }()
-    return expectedExchange.string(decimals: self.from.decimals, minFractionDigits: 6, maxFractionDigits: 6)
+    return expectedExchange.string(decimals: self.from.decimals, minFractionDigits: 6, maxFractionDigits: 6).removeGroupSeparator()
   }
 
   fileprivate var cachedProdRate: BigInt?
@@ -181,7 +181,11 @@ class KSwapViewModel {
       let amount = self.amountFromBigInt
       return rate * amount / BigInt(10).power(self.from.decimals)
     }()
-    return expectedAmount.string(decimals: self.to.decimals, minFractionDigits: min(self.to.decimals, 6), maxFractionDigits: min(self.to.decimals, 6))
+    return expectedAmount.string(
+      decimals: self.to.decimals,
+      minFractionDigits: min(self.to.decimals, 6),
+      maxFractionDigits: min(self.to.decimals, 6)
+    ).removeGroupSeparator()
   }
 
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
