@@ -344,6 +344,7 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
+    self.userCapInWei = BigInt(2).power(255)
     self.updateProdCachedRate()
   }
 
