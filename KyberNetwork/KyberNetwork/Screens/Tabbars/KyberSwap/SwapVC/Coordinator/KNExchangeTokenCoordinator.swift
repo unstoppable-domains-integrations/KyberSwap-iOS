@@ -393,8 +393,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         let provider = MoyaProvider<KNTrackerService>()
         provider.request(.getUserCap(address: address)) { result in
           if case .success(let resp) = result,
-            let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-            let cap = json["cap"] as? Double ?? 0.0
+            let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+            let cap = json["cap"] as? Double {
             if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
               let equivalentETH = rate.rate * data.amount / BigInt(10).power(data.from.decimals)
               if Double(equivalentETH) > cap {
