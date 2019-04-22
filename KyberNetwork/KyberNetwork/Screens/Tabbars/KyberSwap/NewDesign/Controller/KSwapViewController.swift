@@ -738,6 +738,9 @@ extension KSwapViewController {
         time: 1.5
       )
     }
+    if isSource && !self.viewModel.isFocusingFromAmount {
+      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
+    }
     self.view.layoutIfNeeded()
   }
 
@@ -834,6 +837,7 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    let isFocusingSource = self.viewModel.isFocusingFromAmount
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     if self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = UIColor.Kyber.merigold
@@ -842,6 +846,10 @@ extension KSwapViewController: UITextFieldDelegate {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
       self.toAmountTextField.textColor = UIColor.Kyber.enygold
     }
+    if !self.viewModel.isFocusingFromAmount && isFocusingSource {
+      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
+    }
+    self.updateViewAmountDidChange()
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
@@ -881,9 +889,10 @@ extension KSwapViewController: UITextFieldDelegate {
     self.view.layoutIfNeeded()
   }
 
-  fileprivate func updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt) {
+  fileprivate func updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt, isForceLoad: Bool = false) {
     let destAmount = self.viewModel.amountToBigInt
     let isChanged: Bool = {
+      if isForceLoad { return true }
       if prevDest.isZero { return !destAmount.isZero }
       let percent = (Double(destAmount) - Double(prevDest)) / Double(prevDest) * 100.0
       return fabs(percent) >= 1.0

@@ -390,9 +390,9 @@ class KSwapViewModel {
   }
 
   func updateEstimatedRateFromCachedIfNeeded() {
-    guard let rate = KNRateCoordinator.shared.getRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
-    self.estRate = rate.rate
-    self.slippageRate = rate.minRate
+    guard let rate = KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
+    self.estRate = rate
+    self.slippageRate = rate * BigInt(97) / BigInt(100)
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -437,7 +437,7 @@ class KSwapViewModel {
     let isAmountChanged: Bool = {
       if self.amountFromBigInt == amount { return false }
       let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return doubleValue != 0.001
+      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
     }()
     if from == self.from, to == self.to, !isAmountChanged {
       self.estRate = rate
@@ -455,7 +455,7 @@ class KSwapViewModel {
     let isAmountChanged: Bool = {
       if self.amountFromBigInt == amount { return false }
       let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return doubleValue != 0.001
+      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
     }()
     if from == self.from, to == self.to, !isAmountChanged {
       self.estimateGasLimit = gasLimit
