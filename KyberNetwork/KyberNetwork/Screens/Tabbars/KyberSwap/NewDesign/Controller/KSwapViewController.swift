@@ -842,6 +842,11 @@ extension KSwapViewController: UITextFieldDelegate {
       let prevDestAmountBigInt = prevDest.removeGroupSeparator().fullBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0)
       self.updateRateDestAmountDidChangeIfNeeded(prevDest: prevDestAmountBigInt)
     }
+    if self.viewModel.isFocusingFromAmount {
+      self.fromAmountTextField.textColor = UIColor.Kyber.merigold
+    } else {
+      self.toAmountTextField.textColor = UIColor.Kyber.merigold
+    }
     return false
   }
 
@@ -853,7 +858,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.toAmountTextField.textColor = UIColor.Kyber.mirage
     } else {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-      self.toAmountTextField.textColor = UIColor.Kyber.enygold
+      self.toAmountTextField.textColor = UIColor.Kyber.merigold
     }
     if !self.viewModel.isFocusingFromAmount && isFocusingSource {
       self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
