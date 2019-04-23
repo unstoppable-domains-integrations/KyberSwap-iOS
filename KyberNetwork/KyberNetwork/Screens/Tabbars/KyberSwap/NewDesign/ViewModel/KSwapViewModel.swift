@@ -119,11 +119,19 @@ class KSwapViewModel {
       return ""
     }
     let expectedExchange: BigInt = {
-      if rate.isZero { return rate }
+      let exchangeRate: BigInt = {
+        if !rate.isZero { return rate }
+        return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
+      }()
+      if exchangeRate.isZero { return BigInt(0) }
       let amount = self.amountToBigInt
-      return amount * BigInt(10).power(self.from.decimals) / rate
+      return amount * BigInt(10).power(self.from.decimals) / exchangeRate
     }()
-    return expectedExchange.string(decimals: self.from.decimals, minFractionDigits: 6, maxFractionDigits: 6).removeGroupSeparator()
+    return expectedExchange.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 6,
+      maxFractionDigits: 6
+    ).removeGroupSeparator()
   }
 
   fileprivate var cachedProdRate: BigInt?
@@ -132,7 +140,6 @@ class KSwapViewModel {
     guard let rate = self.cachedProdRate ?? KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to), !rate.isZero else {
       return 0.0
     }
-    if self.estimatedRateDouble == 0 { return 0.0 }
     let marketRateDouble = Double(rate) / pow(10.0, Double(self.to.decimals))
     let change = (self.estimatedRateDouble - marketRateDouble) / marketRateDouble * 100.0
     if change > -0.1 { return 0.0 }
