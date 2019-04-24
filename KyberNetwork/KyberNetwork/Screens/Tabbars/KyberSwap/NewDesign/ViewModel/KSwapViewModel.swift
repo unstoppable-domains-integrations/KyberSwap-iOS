@@ -186,7 +186,7 @@ class KSwapViewModel {
       return ""
     }
     let rate: BigInt? = {
-      if let rate = self.estRate, !rate.isEmpty { return rate }
+      if let rate = self.estRate, !rate.isZero { return rate }
       return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
     }()
     guard let expectedRate = rate else { return "" }
