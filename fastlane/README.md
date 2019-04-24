@@ -37,6 +37,7 @@ fastlane ios beta
 ```
 TestFlight deployment to itunes connect
 ### ios upload_testflight
+
 ```
 fastlane ios upload_testflight
 ```
@@ -45,7 +46,6 @@ Upload current build to TestFlight
 ```
 fastlane ios release
 ```
-Deploy a new version to the App Store
 ### ios screenshots
 ```
 fastlane ios screenshots
