@@ -4,6 +4,12 @@ PODS:
     - Result (~> 3.0)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
   - Branch (0.25.11):
     - Branch/Core (= 0.25.11)
   - Branch/Core (0.25.11)
@@ -13,6 +19,31 @@ PODS:
   - EasyTipView (2.0.1)
   - Eureka (4.1.1)
   - Fabric (1.9.0)
+  - FacebookCore (0.3.3):
+    - Bolts (~> 1.9)
+    - FBSDKCoreKit (~> 4.36)
+  - FacebookLogin (0.3.3):
+    - Bolts (~> 1.9)
+    - FacebookCore (~> 0.3.3)
+    - FBSDKCoreKit (~> 4.36)
+    - FBSDKLoginKit (~> 4.36)
+  - FBSDKCoreKit (4.44.0):
+    - Bolts (~> 1.9)
+  - FBSDKLoginKit (4.44.0):
+    - FBSDKCoreKit
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.0):
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+  - GoogleToolboxForMac/Defines (2.2.0)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.0)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.0)
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
+  - GTMSessionFetcher/Core (1.2.1)
   - IQKeyboardManager (6.2.1)
   - JavaScriptKit (1.0.0):
     - Result (~> 3.1)
@@ -55,6 +86,9 @@ PODS:
     - CryptoSwift
     - TrezorCrypto
     - TrustCore
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.2):
+    - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
   - APIKit (~> 3.2.1)
@@ -65,6 +99,9 @@ DEPENDENCIES:
   - EasyTipView (~> 2.0.1)
   - Eureka (~> 4.1.1)
   - Fabric (~> 1.9.0)
+  - FacebookCore (~> 0.3.0)
+  - FacebookLogin (~> 0.3.0)
+  - GoogleSignIn (~> 4.4.0)
   - IQKeyboardManager (~> 6.2.1)
   - JavaScriptKit (~> 1.0.0)
   - JdenticonSwift (~> 0.0.1)
@@ -86,18 +123,27 @@ DEPENDENCIES:
   - SwiftMessages (~> 5.0.1)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
+  - TwitterKit (~> 3.4.2)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - APIKit
     - BigInt
+    - Bolts
     - Branch
     - Crashlytics
     - CryptoSwift
     - EasyTipView
     - Eureka
     - Fabric
+    - FacebookCore
+    - FacebookLogin
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
     - IQKeyboardManager
     - JavaScriptKit
     - JdenticonSwift
@@ -123,17 +169,27 @@ SPEC REPOS:
     - TrezorCrypto
     - TrustCore
     - TrustKeystore
+    - TwitterCore
+    - TwitterKit
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Branch: 3cc6dcfd726db42ced22c418c0fb09aa5e90a847
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EasyTipView: 1515544456d6e943240012e9be5d25d1bb766603
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  FacebookCore: 9ecbe48cfd37c91a93add7f8cec2b4a2c50a1eec
+  FacebookLogin: bdaea5789e9b364fa8a1990ba3bbba4fd2197415
+  FBSDKCoreKit: 8bcd4503afe43f28823c2175a6142a7f50f1bf28
+  FBSDKLoginKit: 93c5a407ab1a6a17b1b38cff57e89991f714d878
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
+  GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
   JavaScriptKit: 9ff565209e6efe21bcb9c6d6ca3e863a67a8ecf7
   JdenticonSwift: bc532f2761566eb29f26b085e5f72de25bc065ce
@@ -159,7 +215,9 @@ SPEC CHECKSUMS:
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 5a0838151a3d4818fc10097849bb695fa684deb7
+PODFILE CHECKSUM: 9b22a64d9f7f4c3dcdee78d4a9526522b7429924
 
 COCOAPODS: 1.5.3

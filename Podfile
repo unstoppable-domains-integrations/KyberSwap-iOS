@@ -36,6 +36,11 @@ target 'KyberNetwork' do
   pod 'EasyTipView', '~> 2.0.1'
   pod 'OneSignal', '~> 2.9.5'
 
+  pod 'FacebookCore', '~> 0.3.0'
+  pod 'FacebookLogin', '~> 0.3.0'
+  pod 'GoogleSignIn', '~> 4.4.0'
+  pod 'TwitterKit', '~> 3.4.2'
+
   target 'KyberNetworkTests' do
     inherit! :search_paths
     # Pods for testing
