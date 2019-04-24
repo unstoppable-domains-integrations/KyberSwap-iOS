@@ -833,7 +833,7 @@ extension KSwapViewController: UITextFieldDelegate {
       let bigInt = Double(text.fullBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0))
       return Double(bigInt) / pow(10.0, Double(self.viewModel.to.decimals))
     }()
-    if double > 1e9 { return false } // more than 1B tokens
+    if double > 1e9 && (textField.text?.count ?? 0) < text.count { return false } // more than 1B tokens
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
