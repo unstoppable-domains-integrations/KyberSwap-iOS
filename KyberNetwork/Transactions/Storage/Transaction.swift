@@ -143,6 +143,7 @@ extension Transaction {
 extension Transaction {
   static func swapTransation(sendTx: Transaction, receiveTx: Transaction, curWallet: String) -> Transaction? {
     if sendTx.id != receiveTx.id { return nil }
+    if sendTx.from.lowercased() != curWallet.lowercased() && receiveTx.from.lowercased() != curWallet.lowercased() { return nil }
     if sendTx.from.lowercased() != curWallet.lowercased() {
       return Transaction.swapTransation(sendTx: receiveTx, receiveTx: sendTx, curWallet: curWallet)
     }

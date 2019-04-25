@@ -55,9 +55,9 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func start() {
-    self.appCoordinatorTokensTransactionsDidUpdate()
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
+      self.appCoordinatorTokensTransactionsDidUpdate()
       self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
     }
     self.session.transacionCoordinator?.forceFetchTokenTransactions()
@@ -81,7 +81,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    var transactions: [Transaction] = self.session.transactionStorage.transferNonePendingObjects
+    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(2000))
     transactions.sort(by: { return $0.id < $1.id })
     var processedTxs: [Transaction] = []
     var id = 0
