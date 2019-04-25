@@ -65,7 +65,7 @@ extension KNTransactionDetailsCoordinator: KNTransactionDetailsViewControllerDel
       let urlString = "\(self.etherScanURL)tx/\(self.transaction?.id ?? "")"
       self.rootViewController.openSafari(with: urlString)
     case .openEnjinXScan:
-      let urlString = "\(self.enjinScanURL)tx/\(self.transaction?.id ?? "")"
+      let urlString = "\(self.enjinScanURL)eth/transaction/\(self.transaction?.id ?? "")"
       self.rootViewController.openSafari(with: urlString)
     }
   }
