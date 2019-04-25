@@ -10,6 +10,7 @@ struct KNCustomRPC {
   let tokenIEOAddress: String
   let reserveAddress: String
   let etherScanEndpoint: String
+  let enjinScanEndpoint: String
   let tradeTopic: String
 
   init(dictionary: JSONDictionary) {
@@ -40,6 +41,7 @@ struct KNCustomRPC {
     self.tokenIEOAddress = dictionary["token_ieo"] as? String ?? ""
     self.reserveAddress = dictionary["reserve"] as? String ?? ""
     self.etherScanEndpoint = dictionary["ethScanUrl"] as? String ?? ""
+    self.enjinScanEndpoint = dictionary["enjinx"] as? String ?? ""
     self.tradeTopic = dictionary["trade_topic"] as? String ?? ""
     self.customRPC = CustomRPC(
       chainID: chainID,

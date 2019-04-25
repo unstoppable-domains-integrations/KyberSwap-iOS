@@ -57,6 +57,10 @@ enum KNEnvironment: Int {
     return self.knCustomRPC?.etherScanEndpoint ?? ""
   }
 
+  var enjinXScanIOURLString: String {
+    return self.knCustomRPC?.enjinScanEndpoint ?? ""
+  }
+
   var customRPC: CustomRPC? {
     return self.knCustomRPC?.customRPC
   }

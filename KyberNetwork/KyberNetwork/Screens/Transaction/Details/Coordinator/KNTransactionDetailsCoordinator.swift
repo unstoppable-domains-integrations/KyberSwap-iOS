@@ -7,6 +7,7 @@ class KNTransactionDetailsCoordinator: Coordinator {
 
   let navigationController: UINavigationController
   let etherScanURL: String = KNEnvironment.default.etherScanIOURLString
+  let enjinScanURL: String = KNEnvironment.default.enjinXScanIOURLString
   fileprivate var transaction: Transaction?
   fileprivate var currentWallet: KNWalletObject
   var coordinators: [Coordinator] = []
@@ -62,6 +63,9 @@ extension KNTransactionDetailsCoordinator: KNTransactionDetailsViewControllerDel
     case .back: self.stop()
     case .openEtherScan:
       let urlString = "\(self.etherScanURL)tx/\(self.transaction?.id ?? "")"
+      self.rootViewController.openSafari(with: urlString)
+    case .openEnjinXScan:
+      let urlString = "\(self.enjinScanURL)tx/\(self.transaction?.id ?? "")"
       self.rootViewController.openSafari(with: urlString)
     }
   }

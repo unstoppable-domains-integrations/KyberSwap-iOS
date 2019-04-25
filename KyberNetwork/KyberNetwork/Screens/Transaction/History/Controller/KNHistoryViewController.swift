@@ -201,7 +201,7 @@ class KNHistoryViewController: KNBaseViewController {
       radius: style.buttonRadius(for: self.segmentedControl.frame.height)
     )
     self.segmentedControl.setTitle(NSLocalizedString("pending", value: "Pending", comment: ""), forSegmentAt: 0)
-    self.segmentedControl.setTitle(NSLocalizedString("mined", value: "Mined", comment: ""), forSegmentAt: 1)
+    self.segmentedControl.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), forSegmentAt: 1)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
   }

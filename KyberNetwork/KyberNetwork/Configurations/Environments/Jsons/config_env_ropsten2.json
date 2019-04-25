@@ -45,6 +45,7 @@
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",
+  "enjinx": "https://kyber.enjinx.io/",
   "reserve": "0xf13ca246ed7f26dfaf5443ea8debccfa899f947c",
   "network": "0x431366a34b97b9aadb38f32e19b627868294f083",
   "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",

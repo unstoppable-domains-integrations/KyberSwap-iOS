@@ -236,7 +236,7 @@
 "recent.contact" = "Gần đây";
 "more" = "Nhiều hơn";
 "amount.to.send" = "Số tiền chuyển";
-"mined" = "Hoàn tất";
+"completed" = "Hoàn tất";
 "contact" = "Danh bạ";
 "support" = "Hỗ trợ";
 "about" = "Giới thiệu";
@@ -318,7 +318,7 @@
 "transaction.success" = "Giao dịch thành công";
 "no.transaction.found" = "Không tìm thấy giao dịch";
 "please.enter.an.amount.to.continue" = "Vui lòng nhập một số để tiếp tục";
-"view.on.etherscan" = "Xem trên Etherscan";
+"view.on" = "Xem trên";
 "gas.fee.gwei" = "Phí GAS (Gwei)";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "Một lượng nhỏ ETH sẽ được sử dụng cho phí giao dịch";
 "not.in.contact" = "Không trong danh bạ";

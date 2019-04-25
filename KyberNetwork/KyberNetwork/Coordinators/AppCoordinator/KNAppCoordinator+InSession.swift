@@ -144,22 +144,21 @@ extension KNAppCoordinator {
     self.session.switchSession(wallet)
     self.loadBalanceCoordinator?.restartNewSession(self.session)
 
+    self.navigationController.displayLoading()
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.profileCoordinator?.updateSession(self.session)
     self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-
-    self.tabbarController.selectedIndex = 1
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
-
     self.addObserveNotificationFromSession()
     self.updateLocalData()
     KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.navigationController.hideLoading()
+    }
   }
 
   // Remove a wallet

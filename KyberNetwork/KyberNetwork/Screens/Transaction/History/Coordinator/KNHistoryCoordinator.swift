@@ -81,7 +81,7 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(2000))
+    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(1000))
     transactions.sort(by: { return $0.id < $1.id })
     var processedTxs: [Transaction] = []
     var id = 0

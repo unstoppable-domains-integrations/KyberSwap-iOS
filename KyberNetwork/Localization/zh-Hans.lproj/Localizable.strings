@@ -236,7 +236,7 @@
 "recent.contact" = "最近联系";
 "more" = "更多";
 "amount.to.send" = "发送金额";
-"mined" = "已被挖掘";
+"completed" = "已被挖掘";
 "contact" = "联系方式";
 "support" = "支持";
 "about" = "关于我们";
@@ -318,7 +318,7 @@
 "transaction.success" = "交易成功";
 "no.transaction.found" = "未找到任何交易";
 "please.enter.an.amount.to.continue" = "请输入要继续的数量";
-"view.on.etherscan" = "在Etherscan上查看";
+"view.on" = "在上查看";
 "gas.fee.gwei" = "燃料费用（Gwei）";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "少量的ETH将用于交易费用";
 "not.in.contact" = "不联系";

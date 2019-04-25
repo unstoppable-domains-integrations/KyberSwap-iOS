@@ -236,7 +236,7 @@
 "recent.contact" = "최근 연락처";
 "more" = "More";
 "amount.to.send" = "보낼 금액";
-"mined" = "채굴됨";
+"completed" = "채굴됨";
 "contact" = "연락처";
 "support" = "지원";
 "about" = "About";
@@ -318,7 +318,7 @@
 "transaction.success" = "트랜잭션 성공";
 "no.transaction.found" = "트랜잭션 없음";
 "please.enter.an.amount.to.continue" = "계속하려면 금액을 입력하십시오.";
-"view.on.etherscan" = "Etherscan에서보기";
+"view.on" = "에서보기";
 "gas.fee.gwei" = "가스 비용 (Gwei)";
 "a.small.amount.of.eth.is.used.for.transaction.fee" = "소액의 ETH가 거래 수수료로 사용됩니다.";
 "not.in.contact" = "연락처에 없음";

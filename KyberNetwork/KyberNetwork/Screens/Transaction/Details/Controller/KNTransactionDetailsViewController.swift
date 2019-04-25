@@ -7,6 +7,7 @@ import Crashlytics
 enum KNTransactionDetailsViewEvent {
   case back
   case openEtherScan
+  case openEnjinXScan
 }
 
 protocol KNTransactionDetailsViewControllerDelegate: class {
@@ -29,8 +30,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var dateTextLabel: UILabel!
-  @IBOutlet weak var viewOnEtherscanButton: UIButton!
-  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
+  @IBOutlet weak var viewOnTextLabel: UILabel!
 
   init(viewModel: KNTransactionDetailsViewModel) {
     self.viewModel = viewModel
@@ -55,12 +55,9 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.viewOnEtherscanButton.removeSublayer(at: 0)
-    self.viewOnEtherscanButton.applyGradient()
   }
 
   fileprivate func setupUI() {
-    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.fromTextLabel.text = NSLocalizedString("from", value: "From", comment: "")
     self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")
     self.dateTextLabel.text = NSLocalizedString("date", value: "Date", comment: "")
@@ -75,12 +72,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
     let txHashTapGes = UITapGestureRecognizer(target: self, action: #selector(self.txHashTapped(_:)))
     self.txHashLabel.addGestureRecognizer(txHashTapGes)
-    self.viewOnEtherscanButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.viewOnEtherscanButton.frame.height))
-    self.viewOnEtherscanButton.setTitle(
-      NSLocalizedString("view.on.etherscan", value: "View on Etherscan", comment: ""),
-      for: .normal
-    )
-    self.viewOnEtherscanButton.applyGradient()
+    self.viewOnTextLabel.text = NSLocalizedString("view.on", value: "View on", comment: "")
   }
 
   fileprivate func updateUI() {
@@ -156,5 +148,10 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "open_ether_scan"])
     self.delegate?.transactionDetailsViewController(self, run: .openEtherScan)
+  }
+
+  @IBAction func viewOnEnjinXButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "open_kyber_enjin_scan"])
+    self.delegate?.transactionDetailsViewController(self, run: .openEnjinXScan)
   }
 }
