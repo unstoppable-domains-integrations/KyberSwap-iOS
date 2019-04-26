@@ -112,7 +112,7 @@ extension KNAppCoordinator {
     )
     if !KNAppTracker.hasLoggedUserOutWithNativeSignIn() {
       if IEOUserStorage.shared.user != nil {
-        IEOUserStorage.shared.signedOut()
+        self.profileCoordinator?.signUserOut()
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("session.expired", value: "Session expired", comment: ""),
           message: NSLocalizedString("your.session.has.expired.sign.in.to.continue", value: "Your session has expired, please sign in again to continue", comment: ""),

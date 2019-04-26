@@ -330,6 +330,8 @@ class KNProfileHomeViewController: KNBaseViewController {
       if user.avatarURL.starts(with: "http") { return user.avatarURL }
       return "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)"
     }()
+    self.emailTextField.text = ""
+    self.passwordTextField.text = ""
     self.signInHeaderView.removeSublayer(at: 0)
     self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
     self.userImageView.setImage(

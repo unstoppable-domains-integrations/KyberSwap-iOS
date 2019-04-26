@@ -152,22 +152,26 @@ extension KNProfileHomeCoordinator {
     )
     alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("log.out", value: "Log Out", comment: ""), style: .default, handler: { _ in
-      // log user out of facebook
-      if AccessToken.current != nil { LoginManager().logOut() }
-      // logout google
-      GIDSignIn.sharedInstance().signOut()
-
-      // stop loading data
-      self.loadUserInfoTimer?.invalidate()
-      self.lastUpdatedUserInfo = nil
-
-      // remove user's data
-      IEOUserStorage.shared.signedOut()
-      Branch.getInstance().logout()
-      self.rootViewController.coordinatorDidSignOut()
-      if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
+      self.signUserOut()
     }))
     self.rootViewController.present(alertController, animated: true, completion: nil)
+  }
+
+  func signUserOut() {
+    // log user out of facebook
+    if AccessToken.current != nil { LoginManager().logOut() }
+    // logout google
+    GIDSignIn.sharedInstance().signOut()
+
+    // stop loading data
+    self.loadUserInfoTimer?.invalidate()
+    self.lastUpdatedUserInfo = nil
+
+    // remove user's data
+    IEOUserStorage.shared.signedOut()
+    Branch.getInstance().logout()
+    self.rootViewController.coordinatorDidSignOut()
+    if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
   }
 
   // Get current user's info data, to sync between mobile (iOS + Android) and web

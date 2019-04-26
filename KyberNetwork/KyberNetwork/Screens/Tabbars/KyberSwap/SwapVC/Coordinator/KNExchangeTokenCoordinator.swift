@@ -406,8 +406,13 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
               let equivalentETH = rate.rate * data.amount / BigInt(10).power(data.from.decimals)
               if Double(equivalentETH) > cap {
                 let display = equivalentETH.shortString(decimals: 18, maxFractionDigits: 4)
+                let text = NSLocalizedString(
+                  "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
+                  value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
+                  comment: ""
+                )
                 errorMessage = String(
-                  format: NSLocalizedString("Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", comment: ""),
+                  format: text,
                   "\(display) ETH")
               }
             }
