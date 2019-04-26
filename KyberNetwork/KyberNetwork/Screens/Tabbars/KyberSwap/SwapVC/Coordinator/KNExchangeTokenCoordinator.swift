@@ -395,10 +395,20 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
             let cap = json["cap"] as? Double {
-            if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
+            let rich = json["rich"] as? Bool ?? false
+            if rich {
+              errorMessage = NSLocalizedString(
+                "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+                value: "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+                comment: ""
+              )
+            } else if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
               let equivalentETH = rate.rate * data.amount / BigInt(10).power(data.from.decimals)
               if Double(equivalentETH) > cap {
-                errorMessage = NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: "")
+                let display = equivalentETH.shortString(decimals: 18, maxFractionDigits: 4)
+                errorMessage = String(
+                  format: NSLocalizedString("Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", comment: ""),
+                  "\(display) ETH")
               }
             }
           }
@@ -412,7 +422,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: message,
-          time: 1.5
+          time: 2.0
         )
       } else {
         self.rootViewController.coordinatorDidValidateRate()

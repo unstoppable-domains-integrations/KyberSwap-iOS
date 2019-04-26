@@ -97,7 +97,6 @@
 "amount.too.big" = "数额太大了";
 "balance.not.enough.to.make.transaction" = "您没有足够的余额来进行交易！";
 "updating.trade.cap.limit" = "我们正在更新您的兑换上限。";
-"your.cap.has.reached.increase.by.completing.kyc" = "你的兑换上限已达到。通过完成KYC来增加上限。";
 "invalid.min.rate" = "无效的最低可接受汇率";
 "your.min.rate.should.be.greater.than.zero" = "您的最低可接受汇率应大于零";
 "rate.might.change" = "汇率可能会改变";
@@ -469,6 +468,10 @@
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
 "please.send.your.request.to.support" = "请将您的请求发送至support@kyber.network";
+
+"Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "对不起，我们无法处理这么大的金额。请将金额减少到%@然后重试。";
+"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.";
+
 
 "please.check.your.internet.connection" = "请检查您的互联网连接";
 "address.has.already.been.taken" = "地址已经被采纳";

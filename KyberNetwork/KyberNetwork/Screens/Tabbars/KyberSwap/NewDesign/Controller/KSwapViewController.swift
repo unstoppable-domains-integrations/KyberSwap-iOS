@@ -456,9 +456,14 @@ class KSwapViewController: KNBaseViewController {
       return true
     }
     guard self.viewModel.isCapEnough else {
+      let cap = self.viewModel.userCapInWei.shortString(decimals: 18, maxFractionDigits: 4)
+      let errorMessage = String(
+        format: NSLocalizedString("Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.", comment: ""),
+        "\(cap) ETH"
+      )
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("your.cap.has.reached.increase.by.completing.kyc", value: "Your cap has reached. Increase your cap by completing KYC.", comment: ""),
+        message: errorMessage,
         time: 2.0
       )
       return true

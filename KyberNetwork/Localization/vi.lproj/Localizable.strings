@@ -97,7 +97,6 @@
 "amount.too.big" = "Số tiền quá lớn";
 "balance.not.enough.to.make.transaction" = "Số dư không đủ để thực hiện giao dịch";
 "updating.trade.cap.limit" = "Đang cập nhật giới hạn giao dịch của bạn.";
-"your.cap.has.reached.increase.by.completing.kyc" = "Đã đạt đến giới hạn của bạn. Tăng giới hạn của bạn bằng cách hoàn thành KYC.";
 "invalid.min.rate" = "Tỷ giá tối thiểu không hợp lệ";
 "your.min.rate.should.be.greater.than.zero" = "Tỷ giá tối thiểu phải lớn hơn không";
 "rate.might.change" = "Tỷ giá có thể thay đổi";
@@ -446,6 +445,10 @@
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";
 "please.send.your.request.to.support" = "Vui lòng gửi yêu cầu của bạn đến support@kyber.network";
+
+"Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "Xin lỗi, chúng tôi không thể xử lý số tiền lớn như vậy. Vui lòng giảm số tiền xuống dưới %@ và thử lại.";
+"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Xin lỗi, bạn đã đạt đến giới hạn hàng ngày. Vui lòng đợi trong vài giờ hoặc hoàn thành xác minh hồ sơ để trao đổi thêm";
+
 
 "successfully.received" = "Bạn đã nhận được %@ từ %@";
 "received.token" = "Đã nhận %@";

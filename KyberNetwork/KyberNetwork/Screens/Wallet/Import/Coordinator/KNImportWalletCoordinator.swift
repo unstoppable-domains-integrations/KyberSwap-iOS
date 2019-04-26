@@ -76,15 +76,13 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
         self.navigationController.showSuccessTopBannerMessage(
           with: NSLocalizedString("wallet.imported", value: "Wallet Imported", comment: ""),
           message: NSLocalizedString("you.have.successfully.imported.a.wallet", value: "You have successfully imported a wallet", comment: ""),
-          time: 1.5
+          time: 1
         )
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-          let walletName: String = {
-            if name == nil || name?.isEmpty == true { return "Untitled" }
-            return name ?? "Untitled"
-          }()
-          self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
-        })
+        let walletName: String = {
+          if name == nil || name?.isEmpty == true { return "Untitled" }
+          return name ?? "Untitled"
+        }()
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
       }

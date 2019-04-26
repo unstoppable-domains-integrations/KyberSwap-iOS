@@ -97,7 +97,6 @@
 "amount.too.big" = "금액이 너무 큼";
 "balance.not.enough.to.make.transaction" = "잔액만으로는 거래를 할 수 없습니다.";
 "updating.trade.cap.limit" = "귀하의 거래 한도를 업데이트하고 있습니다.";
-"your.cap.has.reached.increase.by.completing.kyc" = "귀하의 상한선에 도달했습니다. KYC를 완료하여 상한선을 늘리십시오.";
 "invalid.min.rate" = "유효하지 않은 최소 금액";
 "your.min.rate.should.be.greater.than.zero" = "최저 요금은 0보다 커야합니다.";
 "rate.might.change" = "비율이 변경 될 수 있습니다.";
@@ -476,6 +475,10 @@
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";
 "please.send.your.request.to.support" = "귀하의 요청을 support@kyber.network로 보내주시기 바랍니다.";
+
+"Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "죄송 합니다, 우리는 큰 금액을 처리 할 수 없습니다. 금액을% @ 이하로 줄이고 다시 시도 하십시오.";
+"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.";
+
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";

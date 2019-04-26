@@ -142,13 +142,11 @@ extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
             self.navigationController.showSuccessTopBannerMessage(
               with: NSLocalizedString("wallet.created", value: "Wallet Created", comment: ""),
               message: NSLocalizedString("you.have.successfully.created.a.new.wallet", value: "You have successfully created a new wallet!", comment: ""),
-              time: 1.5
+              time: 1
             )
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-              let wallet = Wallet(type: WalletType.real(account))
-              self.name = name
-              self.openBackUpWallet(wallet, name: name)
-            })
+            let wallet = Wallet(type: WalletType.real(account))
+            self.name = name
+            self.openBackUpWallet(wallet, name: name)
           }
         }
       }

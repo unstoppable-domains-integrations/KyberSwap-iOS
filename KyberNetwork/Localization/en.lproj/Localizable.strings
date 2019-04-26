@@ -97,7 +97,6 @@
 "amount.too.big" = "Amount too big";
 "balance.not.enough.to.make.transaction" = "Balance is not enough to make the transaction.";
 "updating.trade.cap.limit" = "We are updating your trade cap limit.";
-"your.cap.has.reached.increase.by.completing.kyc" = "Your cap has reached. Increase your cap by completing KYC.";
 "invalid.min.rate" = "Invalid min rate";
 "your.min.rate.should.be.greater.than.zero" = "Your min rate should be greater than zero";
 "rate.might.change" = "Rate might change";
@@ -450,6 +449,9 @@
 "can.not.decode.data" = "Can not decode data";
 "something.went.wrong.please.try.again" = "Something went wrong, please try again";
 "please.send.your.request.to.support" = "Please send your request to support@kyber.network";
+"Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.";
+"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.";
+
 "successfully.received" = "You have received %@ from %@";
 "received.token" = "Received %@";
 "1 Gift" = "1 Gift";
