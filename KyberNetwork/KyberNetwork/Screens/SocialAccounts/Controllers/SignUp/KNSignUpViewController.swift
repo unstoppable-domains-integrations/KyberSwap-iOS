@@ -184,7 +184,7 @@ class KNSignUpViewController: KNBaseViewController {
     guard let password = self.passwordTextField.text, password.isValidPassword() else {
       self.showErrorTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Password must be at least eight characters including one uppercase letter and alphanumeric characters.".toBeLocalised(),
+        message: "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters.".toBeLocalised(),
         time: 2.0
       )
       return
