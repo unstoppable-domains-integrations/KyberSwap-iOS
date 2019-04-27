@@ -29,9 +29,11 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1044466192425495</string>
+				<string>fb2060737157475877</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,7 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.562303760817-qj8f2gb17ull9imknsngb7utld7cr143</string>
+				<string>com.googleusercontent.apps.1038789996561-bvdeumt3g6geuffg99fu6v7dhe746aji</string>
 			</array>
 		</dict>
 		<dict>
@@ -47,7 +49,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>twitterkit-7QbZGF1e2voWm1Bv4RG6Rrgo3</string>
+				<string>twitterkit-QO1OSkEk257rKsESig5g2azie</string>
 			</array>
 		</dict>
 	</array>
@@ -68,9 +70,9 @@
 		</array>
 	</dict>
 	<key>FacebookAppID</key>
-	<string>1044466192425495</string>
+	<string>2060737157475877</string>
 	<key>FacebookDisplayName</key>
-	<string>StagingKyberUserDashboard</string>
+	<string>KyberSwap</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
