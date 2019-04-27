@@ -105,8 +105,7 @@ extension KNAlertTableView: UITableViewDelegate {
       // triggered section
       return self.triggeredAlerts[indexPath.row]
     }()
-    if alerts.state == .triggered {
-      // select a triggered alert -> delete only
+    if alerts.state == .triggered { // select a triggered alert -> delete only
       self.delegate?.alertTableView(
         tableView,
         run: .delete(alert: alerts)
