@@ -151,23 +151,37 @@ class KNRateCoordinator {
   }
 
   @objc func fetchCacheRate(_ sender: Any?) {
+    let group = DispatchGroup()
+    group.enter()
     KNInternalProvider.shared.getKNExchangeTokenRate { [weak self] result in
-      guard let `self` = self else { return }
+      guard let `self` = self else {
+        group.leave()
+        return
+      }
       if case .success(let rates) = result {
         rates.forEach({
           if $0.dest == "ETH" { self.cacheTokenETHRates[$0.source] = $0 }
         })
-        self.updateTrackerRateWithCachedRates(isUSD: false)
+        self.updateTrackerRateWithCachedRates(isUSD: false, isNotify: false)
       }
+      group.leave()
     }
+    group.enter()
     KNInternalProvider.shared.getKNExchangeRateUSD { [weak self] result in
-      guard let `self` = self else { return }
+      guard let `self` = self else {
+        group.leave()
+        return
+      }
       if case .success(let rates) = result {
         rates.forEach({
           if $0.dest == "USD" { self.cachedUSDRates[$0.source] = $0 }
         })
-        self.updateTrackerRateWithCachedRates(isUSD: true)
+        self.updateTrackerRateWithCachedRates(isUSD: true, isNotify: false)
       }
+      group.leave()
+    }
+    group.notify(queue: .main) {
+      KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
     }
     KNInternalProvider.shared.getProductionCachedRate { [weak self] result in
       guard let `self` = self else { return }
@@ -186,7 +200,7 @@ class KNRateCoordinator {
     KNTrackerRateStorage.shared.updateCachedRates(
       cachedRates: isUSD ? self.cachedUSDRates.map({ $0.1 }) : self.cacheTokenETHRates.map({ $0.1 })
     )
-    KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
+    if isNotify { KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey) }
   }
 
   func getCachedSourceAmount(from: TokenObject, to: TokenObject, destAmount: Double, completion: @escaping (Result<BigInt?, AnyError>) -> Void) {
