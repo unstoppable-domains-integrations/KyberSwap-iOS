@@ -36,14 +36,11 @@ Increase version and build number
 fastlane ios beta
 ```
 TestFlight deployment to itunes connect
-
 ### ios upload_testflight
-
 ```
 fastlane ios upload_testflight
 ```
 Upload current build to TestFlight
-
 ### ios release
 ```
 fastlane ios release
