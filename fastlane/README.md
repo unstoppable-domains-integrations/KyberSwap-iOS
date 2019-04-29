@@ -37,7 +37,6 @@ fastlane ios beta
 ```
 TestFlight deployment to itunes connect
 ### ios upload_testflight
-
 ```
 fastlane ios upload_testflight
 ```
