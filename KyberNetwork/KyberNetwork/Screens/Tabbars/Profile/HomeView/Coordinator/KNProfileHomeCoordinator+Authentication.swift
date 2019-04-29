@@ -372,6 +372,10 @@ extension KNProfileHomeCoordinator {
   }
 
   fileprivate func userDidSignInWithData(_ data: JSONDictionary) {
+    let cookieJar = HTTPCookieStorage.shared
+    for cookie in (cookieJar.cookies ?? []) {
+      cookieJar.deleteCookie(cookie)
+    }
     if let twoFactorAuthEnabled = data["2fa_required"] as? Bool, twoFactorAuthEnabled {
       self.openTwoFAConfirmView()
       return
@@ -407,7 +411,7 @@ extension KNProfileHomeCoordinator {
     )
     self.timerAccessTokenExpired()
     self.timerLoadUserInfo()
-    self.rootViewController.coordinatorUserDidSignInSuccessfully()
+    self.rootViewController.coordinatorUserDidSignInSuccessfully(isFirstTime: true)
     self.lastUpdatedUserInfo = Date()
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.updateUserSignedInPushTokenWithRetry() }
     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_successfully"])

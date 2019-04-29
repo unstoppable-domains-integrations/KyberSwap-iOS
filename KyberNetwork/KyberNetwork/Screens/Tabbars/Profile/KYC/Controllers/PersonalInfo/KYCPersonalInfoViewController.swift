@@ -102,7 +102,7 @@ class KYCPersonalInfoViewModel {
   }
 
   func getUserWallets(completion: @escaping (Result<[(String, String)], AnyError>) -> Void) {
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     provider.request(.userWallets(accessToken: self.user.accessToken)) { result in
       switch result {
       case .success(let resp):
@@ -135,7 +135,7 @@ class KYCPersonalInfoViewModel {
       completion(.success(true))
       return
     }
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     provider.request(.checkWalletExist(accessToken: user.accessToken, wallet: wallet)) { result in
       switch result {
       case .success(let resp):

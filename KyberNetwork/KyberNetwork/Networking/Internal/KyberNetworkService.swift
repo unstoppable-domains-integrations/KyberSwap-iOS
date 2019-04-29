@@ -3,6 +3,24 @@
 import Moya
 import CryptoSwift
 
+protocol MoyaCacheable {
+  typealias MoyaCacheablePolicy = URLRequest.CachePolicy
+  var cachePolicy: MoyaCacheablePolicy { get }
+  var httpShouldHandleCookies: Bool { get }
+}
+
+final class MoyaCacheablePlugin: PluginType {
+  func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
+    if let moyaCachableProtocol = target as? MoyaCacheable {
+      var cachableRequest = request
+      cachableRequest.cachePolicy = moyaCachableProtocol.cachePolicy
+      cachableRequest.httpShouldHandleCookies = moyaCachableProtocol.httpShouldHandleCookies
+      return cachableRequest
+    }
+    return request
+  }
+}
+
 enum KyberNetworkService: String {
   case getRate = "/token_price?currency=ETH"
   case getCachedRate = "/rate"
@@ -117,6 +135,11 @@ enum UserInfoService {
   case getLatestCampaignResult(accessToken: String)
 }
 
+extension UserInfoService: MoyaCacheable {
+  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+  var httpShouldHandleCookies: Bool { return false }
+}
+
 extension UserInfoService: TargetType {
   var baseURL: URL {
     let baseString = KNAppTracker.getKyberProfileBaseString()
@@ -223,6 +246,11 @@ enum NativeSignInUpService {
   case getUserAuthToken(email: String, password: String)
   case refreshToken(refreshToken: String)
   case getUserInfo(authToken: String)
+}
+
+extension NativeSignInUpService: MoyaCacheable {
+  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+  var httpShouldHandleCookies: Bool { return false }
 }
 
 extension NativeSignInUpService: TargetType {
@@ -396,6 +424,11 @@ enum ProfileKYCService {
     case .promoCode: return KNSecret.promoCode
     }
   }
+}
+
+extension ProfileKYCService: MoyaCacheable {
+  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+  var httpShouldHandleCookies: Bool { return false }
 }
 
 extension ProfileKYCService: TargetType {

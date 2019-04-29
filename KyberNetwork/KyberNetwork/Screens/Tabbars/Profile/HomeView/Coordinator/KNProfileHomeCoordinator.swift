@@ -56,6 +56,10 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
     self.timerAccessTokenExpired()
+    let cookieJar = HTTPCookieStorage.shared
+    for cookie in (cookieJar.cookies ?? []) {
+      cookieJar.deleteCookie(cookie)
+    }
     if IEOUserStorage.shared.user != nil {
       if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.resume() }
       self.timerLoadUserInfo()
@@ -104,7 +108,7 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
       showError: false
     ) { success in
         if success {
-          self.rootViewController.coordinatorUserDidSignInSuccessfully()
+          self.rootViewController.coordinatorUserDidSignInSuccessfully(isFirstTime: true)
         }
     }
 
@@ -172,6 +176,11 @@ extension KNProfileHomeCoordinator {
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
+
+    let cookieJar = HTTPCookieStorage.shared
+    for cookie in (cookieJar.cookies ?? []) {
+      cookieJar.deleteCookie(cookie)
+    }
   }
 
   // Get current user's info data, to sync between mobile (iOS + Android) and web
@@ -368,7 +377,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
     self.navigationController.displayLoading()
     let accessToken = user.accessToken
     DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<ProfileKYCService>()
+      let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
       provider.request(.resubmitKYC(accessToken: accessToken)) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {

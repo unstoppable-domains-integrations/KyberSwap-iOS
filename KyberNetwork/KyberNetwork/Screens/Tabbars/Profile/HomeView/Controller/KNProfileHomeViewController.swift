@@ -574,13 +574,15 @@ class KNProfileHomeViewController: KNBaseViewController {
 }
 
 extension KNProfileHomeViewController {
-  func coordinatorUserDidSignInSuccessfully() {
+  func coordinatorUserDidSignInSuccessfully(isFirstTime: Bool = false) {
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.updateUIUserDidSignedIn()
+    if isFirstTime { self.fetchWalletList() }
   }
 
   func coordinatorDidSignOut() {
+    self.viewModel.wallets = []
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
   }

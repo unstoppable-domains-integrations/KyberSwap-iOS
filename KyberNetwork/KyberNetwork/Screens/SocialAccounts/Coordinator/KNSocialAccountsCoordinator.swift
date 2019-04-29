@@ -21,7 +21,7 @@ enum KNSocialAccountsType {
 }
 
 class KNSocialAccountsCoordinator {
-  let provider = MoyaProvider<NativeSignInUpService>()
+  let provider = MoyaProvider<NativeSignInUpService>(plugins: [MoyaCacheablePlugin()])
 
   static let shared = KNSocialAccountsCoordinator()
 

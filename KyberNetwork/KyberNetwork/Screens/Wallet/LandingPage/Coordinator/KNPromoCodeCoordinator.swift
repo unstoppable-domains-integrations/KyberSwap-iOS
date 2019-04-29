@@ -49,7 +49,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
   func promoCodeViewController(_ controller: KNPromoCodeViewController, promoCode: String, name: String) {
     let nonce: UInt = UInt(round(Date().timeIntervalSince1970 * 1000.0))
     self.rootViewController.displayLoading()
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     DispatchQueue.global(qos: .background).async {
       provider.request(.promoCode(promoCode: promoCode, nonce: nonce), completion: { [weak self] result in
         guard let `self` = self else { return }

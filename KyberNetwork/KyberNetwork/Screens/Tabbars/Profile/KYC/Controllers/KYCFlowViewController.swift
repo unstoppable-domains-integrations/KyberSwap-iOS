@@ -639,7 +639,7 @@ extension KYCFlowViewController {
    */
   fileprivate func sendProfileServiceRequest(service: ProfileKYCService, completion: @escaping (Result<(Bool, String), AnyError>) -> Void) {
     self.isUpdatingData = true
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     DispatchQueue.global(qos: .background).async {
       provider.request(service, completion: { [weak self] result in
         guard let _ = self else { return }

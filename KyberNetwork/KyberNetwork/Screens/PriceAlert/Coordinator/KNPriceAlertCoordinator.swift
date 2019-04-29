@@ -7,7 +7,7 @@ import Moya
 class KNPriceAlertCoordinator: NSObject {
 
   static let shared: KNPriceAlertCoordinator = KNPriceAlertCoordinator()
-  let provider = MoyaProvider<UserInfoService>()
+  let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
 
   fileprivate var loadingTimer: Timer?
 

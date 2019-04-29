@@ -16,7 +16,7 @@ class KNProfileHomeViewModel: NSObject {
       completion(.success([]))
       return
     }
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     provider.request(.userWallets(accessToken: accessToken)) { result in
       switch result {
       case .success(let resp):
@@ -48,7 +48,7 @@ class KNProfileHomeViewModel: NSObject {
       completion(.success((false, NSLocalizedString("can.not.find.your.user", value: "Can not find your user", comment: ""))))
       return
     }
-    let provider = MoyaProvider<ProfileKYCService>()
+    let provider = MoyaProvider<ProfileKYCService>(plugins: [MoyaCacheablePlugin()])
     provider.request(.addWallet(accessToken: accessToken, label: label, address: address)) { result in
       switch result {
       case .success(let resp):
