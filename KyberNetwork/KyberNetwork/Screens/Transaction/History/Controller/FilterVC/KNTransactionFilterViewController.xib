@@ -21,6 +21,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTransactionFilterViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="applyButton" destination="l0F-xE-5oP" id="R1F-iZ-xhX"/>
+                <outlet property="bottomPaddingForButtonConstraint" destination="iZt-LN-TId" id="LyR-tC-OLR"/>
                 <outlet property="fromTextField" destination="SjL-4y-uiz" id="ax1-zq-l9n"/>
                 <outlet property="headerContainerView" destination="c5L-Rn-ihd" id="CR2-a2-PvM"/>
                 <outlet property="navTitleLabel" destination="bAy-go-jFV" id="O2U-gL-bVU"/>

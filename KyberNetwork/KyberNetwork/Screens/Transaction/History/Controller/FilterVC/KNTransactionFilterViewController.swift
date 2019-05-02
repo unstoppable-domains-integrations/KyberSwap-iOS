@@ -119,6 +119,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
 
   @IBOutlet weak var resetButton: UIButton!
   @IBOutlet weak var applyButton: UIButton!
+  @IBOutlet weak var bottomPaddingForButtonConstraint: NSLayoutConstraint!
 
   @IBOutlet var separatorViews: [UIView]!
 
@@ -191,7 +192,11 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.tokensTableView.allowsSelection = false
 
     self.fromTextField.inputView = self.fromDatePicker
+    self.fromTextField.delegate = self
     self.toTextField.inputView = self.toDatePicker
+    self.toTextField.delegate = self
+
+    self.bottomPaddingForButtonConstraint.constant = 24.0 + self.bottomPaddingSafeArea()
 
     self.updateUI()
   }
@@ -350,5 +355,16 @@ extension KNTransactionFilterViewController: KNTransactionFilterTableViewCellDel
   func transactionFilterTableViewCell(_ cell: KNTransactionFilterTableViewCell, select token: String) {
     self.viewModel.selectTokenSymbol(token)
     self.tokensTableView.reloadData()
+  }
+}
+
+extension KNTransactionFilterViewController: UITextFieldDelegate {
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if textField == self.fromTextField && (self.fromTextField.text ?? "").isEmpty {
+      self.fromDatePickerDidChange(self.fromDatePicker)
+    }
+    if textField == self.toTextField && (self.toTextField.text ?? "").isEmpty {
+      self.toDatePickerDidChange(self.toDatePicker)
+    }
   }
 }
