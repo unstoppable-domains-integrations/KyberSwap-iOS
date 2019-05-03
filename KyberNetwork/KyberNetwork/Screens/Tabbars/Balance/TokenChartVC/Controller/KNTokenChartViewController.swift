@@ -236,7 +236,7 @@ class KNTokenChartViewModel {
       to: to,
       rateType: "mid"
     )
-    print("------ Chart history: Fetching for \(token.symbol) resolution \(type.resolution) ------")
+    if isDebug { print("------ Chart history: Fetching for \(token.symbol) resolution \(type.resolution) ------") }
     DispatchQueue.global(qos: .background).async {
       provider.request(service) { response in
         DispatchQueue.main.async {
@@ -246,18 +246,18 @@ class KNTokenChartViewModel {
               _ = try result.filterSuccessfulStatusCodes()
               if let data = try result.mapJSON(failsOnEmptyData: false) as? JSONDictionary {
                 self.updateData(data, symbol: token.symbol, resolution: type.resolution)
-                print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) ------")
+                if isDebug { print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) ------") }
                 completion(.success(true))
               } else {
-                print("------ Chart history: Failed parse data for \(token.symbol) resolution \(type.resolution) ------")
+                if isDebug { print("------ Chart history: Failed parse data for \(token.symbol) resolution \(type.resolution) ------") }
                 completion(.success(false))
               }
             } catch let error {
-              print("------ Chart history: Failed map JSON data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError)------")
+              if isDebug { print("------ Chart history: Failed map JSON data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError)------") }
               completion(.failure(AnyError(error)))
             }
           case .failure(let error):
-            print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError) ------")
+            if isDebug { print("------ Chart history: Successfully load data for \(token.symbol) resolution \(type.resolution) error \(error.prettyError) ------") }
             completion(.failure(AnyError(error)))
           }
         }

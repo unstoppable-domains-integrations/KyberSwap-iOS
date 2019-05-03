@@ -253,7 +253,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
         guard let `self` = self else { return }
         if isFirstTime { self.hideLoading() }
         if let error = error {
-          print("Load list leaderboard error: \(error)")
+          if isDebug { print("Load list leaderboard error: \(error)") }
           let alertController = UIAlertController(
             title: NSLocalizedString("error", value: "Error", comment: ""),
             message: NSLocalizedString("Can not update leader board data right now", comment: ""),
@@ -273,7 +273,7 @@ class KNAlertLeaderBoardViewController: KNBaseViewController {
         guard let `self` = self else { return }
         if isFirstTime { self.hideLoading() }
         if let error = error {
-          print("Load list leaderboard error: \(error)")
+          if isDebug { print("Load list leaderboard error: \(error)") }
           let alertController = UIAlertController(
             title: NSLocalizedString("error", value: "Error", comment: ""),
             message: NSLocalizedString("Can not update leader board data right now", comment: ""),

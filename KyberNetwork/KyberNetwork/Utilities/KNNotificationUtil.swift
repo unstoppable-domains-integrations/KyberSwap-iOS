@@ -63,13 +63,13 @@ class KNNotificationUtil {
     content.body = body
     content.userInfo = userInfo
     if #available(iOS 12, *) {
-      print("Using iOS 12")
+      if isDebug { print("Using iOS 12") }
     } else {
       content.setValue("YES", forKey: "shouldAlwaysAlertWhileAppIsForeground")
     }
     let request = UNNotificationRequest(identifier: "localPushNotification", content: content, trigger: nil)
     UNUserNotificationCenter.current().add(request) { error in
-      NSLog("Error \(error.debugDescription)")
+      if isDebug { NSLog("Error \(error.debugDescription)") }
     }
   }
 }

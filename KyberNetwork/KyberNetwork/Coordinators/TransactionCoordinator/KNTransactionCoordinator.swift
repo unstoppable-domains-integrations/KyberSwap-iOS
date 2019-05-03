@@ -131,7 +131,7 @@ extension KNTransactionCoordinator {
     sort: String,
     completion: ((Result<[Transaction], AnyError>) -> Void)?
     ) {
-    print("---- ERC20 Token Transactions: Fetching ----")
+    if isDebug { print("---- ERC20 Token Transactions: Fetching ----") }
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListTokenTransactions(
       address: address,
@@ -151,14 +151,14 @@ extension KNTransactionCoordinator {
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
               let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ return self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
               self.updateListTokenTransactions(transactions)
-              print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----")
+              if isDebug { print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----") }
               completion?(.success(transactions))
             } catch let error {
-              print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              if isDebug { print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            if isDebug { print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -205,7 +205,7 @@ extension KNTransactionCoordinator {
 
   // Fetch all transactions, but extract only send ETH transactions
   fileprivate func fetchAllTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-    print("---- All Token Transactions: Fetching ----")
+    if isDebug { print("---- All Token Transactions: Fetching ----") }
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListTransactions(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
@@ -229,14 +229,14 @@ extension KNTransactionCoordinator {
               }()
               KNAppTracker.updateAllTransactionLastBlockLoad(lastBlockLoaded, for: self.wallet.address)
               let transactions = self.updateAllTransactions(address: address, data: data)
-              print("---- All Token Transactions: Loaded \(transactions.count) transactions ----")
+              if isDebug { print("---- All Token Transactions: Loaded \(transactions.count) transactions ----") }
               completion?(.success(transactions))
             } catch let error {
-              print("---- All Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              if isDebug { print("---- All Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            print("---- All Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            if isDebug { print("---- All Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -246,7 +246,7 @@ extension KNTransactionCoordinator {
 
   // Load internal transaction for receiving ETH only
   fileprivate func fetchInternalTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[Transaction], AnyError>) -> Void)?) {
-    print("---- Internal Token Transactions: Fetching ----")
+    if isDebug { print("---- Internal Token Transactions: Fetching ----") }
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListInternalTransactions(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
@@ -273,14 +273,14 @@ extension KNTransactionCoordinator {
               self.handleReceiveEtherOrToken(transactions)
               self.transactionStorage.add(transactions)
               KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
-              print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----")
+              if isDebug { print("---- Internal Token Transactions: Loaded \(transactions.count) transactions ----") }
               completion?(.success(transactions))
             } catch let error {
-              print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----")
+              if isDebug { print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----")
+            if isDebug { print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -393,7 +393,7 @@ extension KNTransactionCoordinator {
           if case .responseError(let err) = error, let respError = err as? JSONRPCError {
             switch respError {
             case .responseError(let code, let message, _):
-              NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)")
+              if isDebug { NSLog("Fetch pending transaction with hash \(transaction.id) failed with error code \(code) and message \(message)") }
               KNNotificationUtil.postNotification(
                 for: kTransactionDidUpdateNotificationKey,
                 object: respError,

@@ -34,7 +34,7 @@ class KNSupportedTokenCoordinator {
       return
     }
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
-    print("---- Supported Tokens: Start fetching data ----")
+    if isDebug { print("---- Supported Tokens: Start fetching data ----") }
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.supportedToken) { result in
         DispatchQueue.main.async {
@@ -48,12 +48,12 @@ class KNSupportedTokenCoordinator {
               if tokenObjects.isEmpty { return }
               KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokenObjects)
               KNAppTracker.updateSuccessfullyLoadSupportedTokens()
-              print("---- Supported Tokens: Load successfully")
+              if isDebug { print("---- Supported Tokens: Load successfully") }
             } catch let error {
-              print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----")
+              if isDebug { print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----") }
             }
           case .failure(let error):
-            print("---- Supported Tokens: Failed with error: \(error.prettyError)")
+            if isDebug { print("---- Supported Tokens: Failed with error: \(error.prettyError)") }
           }
         }
       }

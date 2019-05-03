@@ -271,7 +271,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     switch sender.state {
     case .began:
       //do nothing here
-      print("Pan gesture began")
+      if isDebug { print("Pan gesture began") }
     case .changed:
       let translationX = sender.translation(in: sender.view).x
       if translationX <= 0 {
