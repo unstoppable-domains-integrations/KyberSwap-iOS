@@ -20,6 +20,7 @@ class KNTransactionFilterViewModel {
   private(set) var tokens: [String] = []
   private(set) var supportedTokens: [String] = []
   private(set) var isSelectAll: Bool = true
+  var isSeeMore: Bool = false
 
   init(tokens: [String], filter: KNTransactionFilter) {
     self.from = filter.from
@@ -83,6 +84,8 @@ class KNTransactionFilterViewModel {
     self.isReceive = true
     self.isSwap = true
     self.tokens = self.supportedTokens
+    self.isSelectAll = true
+    self.isSeeMore = false
   }
 
   func updateSelectAll(_ isSelectAll: Bool) {
@@ -116,6 +119,8 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var selectButton: UIButton!
   @IBOutlet weak var tokenTextLabel: UILabel!
   @IBOutlet weak var tokensTableView: UITableView!
+  @IBOutlet weak var tokensTableViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var tokensViewActionButton: UIButton!
 
   @IBOutlet weak var resetButton: UIButton!
   @IBOutlet weak var applyButton: UIButton!
@@ -210,51 +215,67 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.applyButton.applyGradient()
   }
 
-  fileprivate func updateUI() {
-    self.selectButton.setTitle(
-      self.viewModel.isSelectAll ? "Deselect All".toBeLocalised() : "Select All".toBeLocalised(),
-      for: .normal
-    )
-    if self.viewModel.isSend {
-      self.sendButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
-      self.sendButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-      self.sendButton.backgroundColor = .white
-    } else {
-      self.sendButton.rounded(color: .clear, width: 0.0, radius: 4.0)
-      self.sendButton.setImage(nil, for: .normal)
-      self.sendButton.backgroundColor = .clear
+  fileprivate func updateUI(isUpdatingTokens: Bool = true) {
+    UIView.animate(withDuration: 0.16) {
+      self.selectButton.setTitle(
+        self.viewModel.isSelectAll ? "Deselect All".toBeLocalised() : "Select All".toBeLocalised(),
+        for: .normal
+      )
+      if isUpdatingTokens {
+        let btnTitle: String = self.viewModel.isSeeMore ? NSLocalizedString("see.less", value: "See less", comment: "") : NSLocalizedString("see.more", value: "See more", comment: "")
+        self.tokensViewActionButton.setTitle(
+          btnTitle,
+          for: .normal
+        )
+      }
+      if self.viewModel.isSend {
+        self.sendButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
+        self.sendButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
+        self.sendButton.backgroundColor = .white
+      } else {
+        self.sendButton.rounded(color: .clear, width: 0.0, radius: 4.0)
+        self.sendButton.setImage(nil, for: .normal)
+        self.sendButton.backgroundColor = .clear
+      }
+      if self.viewModel.isReceive {
+        self.receiveButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
+        self.receiveButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
+        self.receiveButton.backgroundColor = .white
+      } else {
+        self.receiveButton.rounded(color: .clear, width: 0.0, radius: 4.0)
+        self.receiveButton.setImage(nil, for: .normal)
+        self.receiveButton.backgroundColor = .clear
+      }
+      if self.viewModel.isSwap {
+        self.swapButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
+        self.swapButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
+        self.swapButton.backgroundColor = .white
+      } else {
+        self.swapButton.rounded(color: .clear, width: 0.0, radius: 4.0)
+        self.swapButton.setImage(nil, for: .normal)
+        self.swapButton.backgroundColor = .clear
+      }
+      if let date = self.viewModel.from {
+        self.fromDatePicker.setDate(date, animated: false)
+        self.fromDatePickerDidChange(self.fromDatePicker)
+      } else {
+        self.fromTextField.text = ""
+      }
+      if let date = self.viewModel.to {
+        self.toDatePicker.setDate(date, animated: false)
+        self.toDatePickerDidChange(self.toDatePicker)
+      } else {
+        self.toTextField.text = ""
+      }
+      if isUpdatingTokens {
+        self.tokensTableViewHeightConstraint.constant = {
+          let numberRows = self.viewModel.isSeeMore ? (self.viewModel.supportedTokens.count + 3) / 4 : 3
+          return CGFloat(numberRows) * self.tokensTableView.rowHeight
+        }()
+        self.tokensTableView.reloadData()
+      }
+      self.view.layoutIfNeeded()
     }
-    if self.viewModel.isReceive {
-      self.receiveButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
-      self.receiveButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-      self.receiveButton.backgroundColor = .white
-    } else {
-      self.receiveButton.rounded(color: .clear, width: 0.0, radius: 4.0)
-      self.receiveButton.setImage(nil, for: .normal)
-      self.receiveButton.backgroundColor = .clear
-    }
-    if self.viewModel.isSwap {
-      self.swapButton.rounded(color: UIColor.Kyber.enygold, width: 1.0, radius: 4.0)
-      self.swapButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-      self.swapButton.backgroundColor = .white
-    } else {
-      self.swapButton.rounded(color: .clear, width: 0.0, radius: 4.0)
-      self.swapButton.setImage(nil, for: .normal)
-      self.swapButton.backgroundColor = .clear
-    }
-    if let date = self.viewModel.from {
-      self.fromDatePicker.setDate(date, animated: false)
-      self.fromDatePickerDidChange(self.fromDatePicker)
-    } else {
-      self.fromTextField.text = ""
-    }
-    if let date = self.viewModel.to {
-      self.toDatePicker.setDate(date, animated: false)
-      self.toDatePickerDidChange(self.toDatePicker)
-    } else {
-      self.toTextField.text = ""
-    }
-    self.tokensTableView.reloadData()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -263,21 +284,27 @@ class KNTransactionFilterViewController: KNBaseViewController {
 
   @IBAction func sendButtonPressed(_ sender: Any) {
     self.viewModel.updateIsSend(!self.viewModel.isSend)
-    self.updateUI()
+    self.updateUI(isUpdatingTokens: false)
   }
 
   @IBAction func receiveButtonPressed(_ sender: Any) {
     self.viewModel.updateIsReceive(!self.viewModel.isReceive)
-    self.updateUI()
+    self.updateUI(isUpdatingTokens: false)
   }
 
   @IBAction func swapButtonPressed(_ sender: Any) {
     self.viewModel.updateIsSwap(!self.viewModel.isSwap)
-    self.updateUI()
+    self.updateUI(isUpdatingTokens: false)
   }
 
   @IBAction func selectButtonPressed(_ sender: Any) {
     self.viewModel.updateSelectAll(!self.viewModel.isSelectAll)
+    self.updateUI()
+  }
+
+  // See more/less
+  @IBAction func tokensActionButtonPressed(_ sender: Any) {
+    self.viewModel.isSeeMore = !self.viewModel.isSeeMore
     self.updateUI()
   }
 
@@ -335,7 +362,7 @@ extension KNTransactionFilterViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return (self.viewModel.supportedTokens.count + 3) / 4
+    return self.viewModel.isSeeMore ? (self.viewModel.supportedTokens.count + 3) / 4 : 3
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
