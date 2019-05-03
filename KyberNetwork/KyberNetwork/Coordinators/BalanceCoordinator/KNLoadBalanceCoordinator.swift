@@ -18,7 +18,11 @@ class KNLoadBalanceCoordinator {
 
   fileprivate var fetchOtherTokensBalanceTimer: Timer?
   fileprivate var isFetchingOtherTokensBalance: Bool = false
+
   var otherTokensBalance: [String: Balance] = [:]
+
+  fileprivate var fetchNonSupportedBalanceTimer: Timer?
+  fileprivate var isFetchNonSupportedBalance: Bool = false
 
   var totalBalanceInUSD: BigInt {
     let balanceValue: BigInt = {
@@ -113,6 +117,18 @@ class KNLoadBalanceCoordinator {
       self?.fetchOtherTokensBalance(timer)
       }
     )
+
+    fetchNonSupportedBalanceTimer?.invalidate()
+    isFetchNonSupportedBalance = false
+    fetchNonSupportedTokensBalance(nil)
+
+    fetchNonSupportedBalanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.loadingCoinTickerInterval,
+      repeats: true,
+      block: { [weak self] timer in
+        self?.fetchNonSupportedTokensBalance(timer)
+      }
+    )
   }
 
   func pause() {
@@ -123,6 +139,10 @@ class KNLoadBalanceCoordinator {
     fetchOtherTokensBalanceTimer?.invalidate()
     fetchOtherTokensBalanceTimer = nil
     isFetchingOtherTokensBalance = true
+
+    fetchNonSupportedBalanceTimer?.invalidate()
+    fetchNonSupportedBalanceTimer = nil
+    isFetchNonSupportedBalance = true
   }
 
   func exit() {
@@ -156,9 +176,7 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
     var isBalanceChanged: Bool = false
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH }).sorted { (token0, token1) -> Bool in
-      if !token1.isSupported { return true }
-      if !token0.isSupported { return false }
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).sorted { (token0, token1) -> Bool in
       if token0.value.isEmpty || token0.value == "0" { return false }
       if token1.value.isEmpty || token1.value == "0" { return true }
       return true
@@ -196,6 +214,53 @@ class KNLoadBalanceCoordinator {
     // notify when all load balances are done
     group.notify(queue: .main) {
       self.isFetchingOtherTokensBalance = false
+      if isBalanceChanged {
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      }
+    }
+  }
+
+  @objc func fetchNonSupportedTokensBalance(_ sender: Any?) {
+    if self.isFetchNonSupportedBalance { return }
+    var isBalanceChanged: Bool = false
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && !$0.isSupported }).sorted { (token0, token1) -> Bool in
+      if token0.value.isEmpty || token0.value == "0" { return false }
+      if token1.value.isEmpty || token1.value == "0" { return true }
+      return true
+    }.map({ $0.contract })
+    let currentWallet = self.session.wallet
+    let group = DispatchGroup()
+    var counter = 0
+    for contract in tokenContracts {
+      if let contractAddress = Address(string: contract) {
+        group.enter()
+        if self.session == nil { group.leave(); return }
+        self.session.externalProvider.getTokenBalance(for: contractAddress, completion: { [weak self] result in
+          guard let `self` = self else { group.leave(); return }
+          if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+          switch result {
+          case .success(let bigInt):
+            let balance = Balance(value: bigInt)
+            if self.otherTokensBalance[contract] == nil || self.otherTokensBalance[contract]!.value != bigInt {
+              isBalanceChanged = true
+            }
+            self.otherTokensBalance[contract] = balance
+            self.session.tokenStorage.updateBalance(for: contractAddress, balance: bigInt)
+            NSLog("---- Balance: Fetch token balance for contract \(contract) successfully: \(bigInt.shortString(decimals: 0))")
+          case .failure(let error):
+            NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+          }
+          counter += 1
+          if counter % 32 == 0 && isBalanceChanged {
+            KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+          }
+          group.leave()
+        })
+      }
+    }
+    // notify when all load balances are done
+    group.notify(queue: .main) {
+      self.isFetchNonSupportedBalance = false
       if isBalanceChanged {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       }

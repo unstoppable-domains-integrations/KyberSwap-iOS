@@ -7,6 +7,7 @@ class KNShowBackUpDataViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var warningMessageLabel: UILabel!
+  @IBOutlet weak var qrcodeImageView: UIImageView!
   @IBOutlet weak var dataLabel: UILabel!
   @IBOutlet weak var saveButton: UIButton!
 
@@ -32,6 +33,12 @@ class KNShowBackUpDataViewController: KNBaseViewController {
     self.saveButton.setTitle(NSLocalizedString("save", value: "Save", comment: ""), for: .normal)
     self.warningMessageLabel.text = NSLocalizedString("export.at.your.own.risk", value: "Export at your own risk!", comment: "")
     self.dataLabel.text = self.backupData
+    self.qrcodeImageView.image = nil
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.qrcodeImageView.image = UIImage.generateQRCode(from: self.backupData)
   }
 
   override func viewDidLayoutSubviews() {
