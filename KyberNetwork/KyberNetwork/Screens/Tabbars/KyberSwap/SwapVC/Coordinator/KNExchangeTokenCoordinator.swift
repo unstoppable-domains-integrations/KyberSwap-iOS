@@ -6,6 +6,7 @@ import TrustKeystore
 import TrustCore
 import Result
 import Moya
+import APIKit
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -506,11 +507,19 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         completion?(nil)
       case .failure(let error):
         if showError {
-          self.navigationController.showErrorTopBannerMessage(
-            with: NSLocalizedString("error", value: "Error", comment: ""),
-            message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
-            time: 1.5
-          )
+          if case let err as APIKit.SessionTaskError = error.error, case .connectionError = err {
+            self.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", value: "Error", comment: ""),
+              message: NSLocalizedString("please.check.your.internet.connection", value: "Please check your internet connection", comment: ""),
+              time: 1.5
+            )
+          } else {
+            self.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", value: "Error", comment: ""),
+              message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
+              time: 1.5
+            )
+          }
           self.rootViewController.coordinatorDidUpdateEstimateRate(
             from: from,
             to: to,

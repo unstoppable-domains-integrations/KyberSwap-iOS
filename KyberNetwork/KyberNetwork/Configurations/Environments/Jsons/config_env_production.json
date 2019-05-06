@@ -151,14 +151,6 @@
       "decimals": 8,
       "usd_id":"enigma-project"
     },
-    "SALT": {
-      "name":"Salt",
-      "address": "0x4156d3342d5c385a87d264f90653733592000581",
-      "symbol": "SALT",
-      "icon": "salt",
-      "decimals": 8,
-      "usd_id":"salt"
-    },
     "BQX": {
       "name" : "Ethos",
       "address": "0x5af2be193a6abca9c8817001f45744777db30756",
@@ -190,14 +182,6 @@
       "decimals": 18,
       "icon": "rcn",
       "usd_id": "ripio-credit-network"
-    },
-    "ZIL": {
-      "name": "Zilliqa",
-      "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
-      "symbol": "ZIL",
-      "decimals": 12,
-      "icon": "zil",
-      "usd_id":"zilliqa"
     },
     "LINK": {
       "name": "Chain Link",
@@ -389,13 +373,6 @@
       "symbol" : "MOC",
       "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
       "icon": "moc"
-    },
-    "BNB":{
-      "name": "Binance Coin",
-      "decimals": 18,
-      "symbol" : "BNB",
-      "address": "0xb8c77482e45f1f44de1745f52c74426c631bdd52",
-      "icon": "bnb"
     },
     "REP":{
       "name": "Augur",
