@@ -32,7 +32,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextField.rightViewMode = .always
     self.enterPrivateKeyTextField.delegate = self
 
-    self.privateKeyNoteLabel.text = NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: "")
+    self.privateKeyNoteLabel.text = "*\(NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: ""))"
     self.privateKeyNoteLabel.addLetterSpacing()
 
     let style = KNAppStyleType.current

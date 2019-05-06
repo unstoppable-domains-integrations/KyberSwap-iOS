@@ -20,6 +20,7 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var wordsCountLabel: UILabel!
   @IBOutlet weak var qrcodeButton: UIButton!
+  @IBOutlet weak var guideDescLabel: UILabel!
 
   @IBOutlet weak var nextButton: UIButton!
 
@@ -44,6 +45,8 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.seedsTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.addPlaceholderSpacing()
+
+    self.guideDescLabel.text = "*\(NSLocalizedString("Separate words with a space", value: "Separate words with a space", comment: ""))"
 
     self.resetUIs()
   }

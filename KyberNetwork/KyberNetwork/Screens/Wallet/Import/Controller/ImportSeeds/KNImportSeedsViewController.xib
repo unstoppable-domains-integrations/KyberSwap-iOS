@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,6 +21,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNImportSeedsViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="descLabel" destination="WhK-I2-j2i" id="yS3-eD-pSd"/>
+                <outlet property="guideDescLabel" destination="uya-oI-p2o" id="U5q-af-cKh"/>
                 <outlet property="nextButton" destination="F1b-jf-zFf" id="e4a-Tj-fzb"/>
                 <outlet property="qrcodeButton" destination="gSr-h0-m7v" id="3XM-4R-dIJ"/>
                 <outlet property="recoverSeedsLabel" destination="vYN-r3-AGA" id="kto-oO-YzR"/>
@@ -108,10 +109,17 @@
                         <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="PuU-iE-VqJ"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Separate words with a space" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uya-oI-p2o">
+                    <rect key="frame" x="24" y="159" width="179.5" height="15"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                    <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="0.648712588028169" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="ARF-7r-f6v" firstAttribute="trailing" secondItem="0HB-xF-UpI" secondAttribute="trailing" id="1L6-eq-VzM"/>
+                <constraint firstItem="uya-oI-p2o" firstAttribute="leading" secondItem="Ij9-VL-InI" secondAttribute="leading" id="3Sb-VM-5Wj"/>
                 <constraint firstItem="zAo-9A-uFg" firstAttribute="trailing" secondItem="ARF-7r-f6v" secondAttribute="trailing" id="8yf-wd-jt0"/>
                 <constraint firstItem="ARF-7r-f6v" firstAttribute="top" secondItem="0HB-xF-UpI" secondAttribute="bottom" constant="-12" id="AXG-FF-krC"/>
                 <constraint firstItem="Ij9-VL-InI" firstAttribute="top" secondItem="WhK-I2-j2i" secondAttribute="bottom" constant="32" id="BQU-aP-Syc"/>
@@ -121,6 +129,7 @@
                 <constraint firstItem="gSr-h0-m7v" firstAttribute="centerY" secondItem="Ij9-VL-InI" secondAttribute="centerY" id="Hsu-3d-Us2"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gSr-h0-m7v" secondAttribute="trailing" constant="24" id="Jao-00-FA7"/>
                 <constraint firstItem="WhK-I2-j2i" firstAttribute="top" secondItem="vYN-r3-AGA" secondAttribute="bottom" constant="12" id="JiU-E0-xys"/>
+                <constraint firstItem="uya-oI-p2o" firstAttribute="centerY" secondItem="bcy-tK-EEx" secondAttribute="centerY" id="KnG-eZ-JP5"/>
                 <constraint firstItem="WhK-I2-j2i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="MSp-x2-ECo"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0HB-xF-UpI" secondAttribute="trailing" constant="24" id="NMx-C8-wL0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bcy-tK-EEx" secondAttribute="trailing" constant="24" id="RMH-D0-zXf"/>
