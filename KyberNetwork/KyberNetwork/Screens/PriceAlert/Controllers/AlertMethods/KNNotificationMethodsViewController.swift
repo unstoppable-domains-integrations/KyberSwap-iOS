@@ -7,48 +7,86 @@ class KNNotificationMethodsViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var getAlertByTextLabel: UILabel!
-  @IBOutlet weak var pushNotificationTextLabel: UILabel!
-  @IBOutlet weak var pushNotiContainerView: UIView!
-  @IBOutlet weak var pushNotiButton: UIButton!
-  @IBOutlet weak var emailButton: UIButton!
-  @IBOutlet weak var emailTextLabel: UILabel!
-  @IBOutlet weak var emailContainerView: UIView!
-  @IBOutlet weak var telegramButton: UIButton!
-  @IBOutlet weak var telegramTextLabel: UILabel!
-  @IBOutlet weak var telegramContainerView: UIView!
 
-  fileprivate var isPushNotiEnabled: Bool = true
-  fileprivate var isEmailEnabled: Bool = true
-  fileprivate var isTelegramEnabled: Bool = true
+  @IBOutlet weak var emailTextLabel: UILabel!
+  @IBOutlet weak var emailTextField: UITextField!
+  @IBOutlet weak var chooseImageIcon: UIImageView!
+  @IBOutlet weak var emailTextFieldSeparator: UIView!
+
+  @IBOutlet weak var telegramTextLabel: UILabel!
+  @IBOutlet weak var telegramTextField: UITextField!
+  @IBOutlet weak var chooseTeleIcon: UIImageView!
+  @IBOutlet weak var teleTextFieldSeparator: UIView!
+  @IBOutlet weak var topPaddingEmailConstraint: NSLayoutConstraint!
+
+  fileprivate var emails: [JSONDictionary] = []
+  fileprivate var activeEmail: String?
+  fileprivate var telegrams: [JSONDictionary] = []
+  fileprivate var activeTelegram: String?
+
+  fileprivate var isSelectingEmail: Bool = false
+  fileprivate var fakeTextField: UITextField = UITextField(frame: CGRect.zero)
+  fileprivate var currentValue: String = ""
+
+  lazy var pickerView: UIPickerView = {
+    let pickerView = UIPickerView(frame: CGRect.zero)
+    pickerView.showsSelectionIndicator = true
+    pickerView.dataSource = self
+    pickerView.delegate = self
+    return pickerView
+  }()
+
+  lazy var toolBar: UIToolbar = {
+    let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)
+    let toolBar = UIToolbar(frame: frame)
+    toolBar.barStyle = .default
+    let doneBtn = UIBarButtonItem(
+      barButtonSystemItem: .done,
+      target: self,
+      action: #selector(self.dataPickerDonePressed(_:))
+    )
+    let flexibleSpaceBtn = UIBarButtonItem(
+      barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+      target: nil,
+      action: nil
+    )
+    doneBtn.tintColor = UIColor.Kyber.dark
+    let cancelBtn = UIBarButtonItem(
+      barButtonSystemItem: .cancel,
+      target: self,
+      action: #selector(self.dataPickerCancelPressed(_:))
+    )
+    cancelBtn.tintColor = UIColor.Kyber.dark
+    toolBar.setItems([cancelBtn, flexibleSpaceBtn, doneBtn], animated: false)
+    return toolBar
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("Alert Method", comment: "")
-    self.pushNotificationTextLabel.text = NSLocalizedString("Push Notification", comment: "")
 
-    let tapPushNoti = UITapGestureRecognizer(target: self, action: #selector(self.pushNotiButtonPressed(_:)))
-    self.pushNotiContainerView.addGestureRecognizer(tapPushNoti)
-    self.pushNotiContainerView.isUserInteractionEnabled = true
-    self.pushNotiContainerView.isHidden = true
-    self.pushNotificationTextLabel.isHidden = true
-    self.pushNotiButton.isHidden = true
-
-    let tapEmail = UITapGestureRecognizer(target: self, action: #selector(self.emailButtonPressed(_:)))
-    self.emailContainerView.addGestureRecognizer(tapEmail)
-    self.emailContainerView.isUserInteractionEnabled = true
-    self.emailContainerView.isHidden = true
     self.emailTextLabel.isHidden = true
-    self.emailButton.isHidden = true
+    self.emailTextField.isHidden = true
+    self.emailTextFieldSeparator.isHidden = true
+    self.chooseImageIcon.isHidden = true
+    self.emailTextField.delegate = self
 
-    let tapTelegram = UITapGestureRecognizer(target: self, action: #selector(self.telegramButtonPressed(_:)))
-    self.telegramContainerView.addGestureRecognizer(tapTelegram)
-    self.telegramContainerView.isUserInteractionEnabled = true
-    self.telegramContainerView.isHidden = true
+    let tapEmail = UITapGestureRecognizer(target: self, action: #selector(self.selectEmailPickerPresed(_:)))
+    self.chooseImageIcon.addGestureRecognizer(tapEmail)
+    self.chooseImageIcon.isUserInteractionEnabled = true
+
     self.telegramTextLabel.isHidden = true
-    self.telegramButton.isHidden = true
+    self.telegramTextField.isHidden = true
+    self.teleTextFieldSeparator.isHidden = true
+    self.chooseTeleIcon.isHidden = true
+    self.telegramTextField.delegate = self
 
-    self.updateUIs()
+    let tapTele = UITapGestureRecognizer(target: self, action: #selector(self.selectTelegramPickerPressed(_:)))
+    self.chooseTeleIcon.addGestureRecognizer(tapTele)
+    self.chooseTeleIcon.isUserInteractionEnabled = true
+
+    self.view.addSubview(self.fakeTextField)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -70,37 +108,48 @@ class KNNotificationMethodsViewController: KNBaseViewController {
       guard let `self` = self else { return }
       self.hideLoading()
       if error == nil {
-        self.isPushNotiEnabled = resp["push_notification"] as? Bool ?? false
-        self.isEmailEnabled = resp["email"] as? Bool ?? false
-        self.isTelegramEnabled = resp["telegram"] as? Bool ?? false
-        if resp["push_notification"] == nil {
-          self.pushNotiButton.isHidden = true
-          self.pushNotificationTextLabel.isHidden = true
-          self.pushNotiContainerView.isHidden = true
+        self.emails = resp["emails"] as? [JSONDictionary] ?? []
+        self.telegrams = {
+          if let tele = resp["telegram"] as? JSONDictionary { return [tele] }
+          return []
+        }()
+        if let email = self.emails.first(where: { return ($0["active"] as? Bool ?? false) }) {
+          self.activeEmail = email["id"] as? String
         } else {
-          self.pushNotiButton.isHidden = false
-          self.pushNotificationTextLabel.isHidden = false
-          self.pushNotiContainerView.isHidden = false
+          self.activeEmail = "Not enabled".toBeLocalised()
         }
-        if resp["email"] == nil {
-          self.emailButton.isHidden = true
+        self.emailTextField.text = self.activeEmail
+        if let tele = self.telegrams.first(where: { return ($0["active"] as? Bool ?? false) }) {
+          self.activeTelegram = tele["name"] as? String
+        } else {
+          self.activeTelegram = "Not enabled".toBeLocalised()
+        }
+        self.telegramTextField.text = self.activeTelegram
+        if resp["emails"] == nil || self.emails.isEmpty {
           self.emailTextLabel.isHidden = true
-          self.emailContainerView.isHidden = true
+          self.emailTextField.isHidden = true
+          self.emailTextFieldSeparator.isHidden = true
+          self.chooseImageIcon.isHidden = true
+          self.topPaddingEmailConstraint.constant = 0.0
         } else {
-          self.emailButton.isHidden = false
           self.emailTextLabel.isHidden = false
-          self.emailContainerView.isHidden = false
+          self.emailTextField.isHidden = false
+          self.emailTextFieldSeparator.isHidden = false
+          self.chooseImageIcon.isHidden = false
+          self.topPaddingEmailConstraint.constant = 44.0
         }
-        if resp["telegram"] == nil {
-          self.telegramButton.isHidden = true
+        if resp["telegram"] == nil || self.telegrams.isEmpty {
           self.telegramTextLabel.isHidden = true
-          self.telegramContainerView.isHidden = true
+          self.telegramTextField.isHidden = true
+          self.teleTextFieldSeparator.isHidden = true
+          self.chooseTeleIcon.isHidden = true
         } else {
-          self.telegramButton.isHidden = false
           self.telegramTextLabel.isHidden = false
-          self.telegramContainerView.isHidden = false
+          self.telegramTextField.isHidden = false
+          self.teleTextFieldSeparator.isHidden = false
+          self.chooseTeleIcon.isHidden = false
         }
-        self.updateUIs()
+        self.telegramTextField.text = self.activeTelegram
       } else {
         self.showAlertCanNotLoadAlertMethods()
       }
@@ -122,49 +171,73 @@ class KNNotificationMethodsViewController: KNBaseViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  fileprivate func updateUIs() {
-    if self.isPushNotiEnabled {
-      self.pushNotiButton.setImage(UIImage(named: "check_box_icon"), for: .normal)
-      self.pushNotiButton.rounded(color: UIColor.clear, width: 1.0, radius: 4.0)
+  @objc func selectEmailPickerPresed(_ sender: Any) {
+    self.isSelectingEmail = true
+    self.fakeTextField.inputView = self.pickerView
+    self.fakeTextField.inputAccessoryView = self.toolBar
+    self.currentValue = self.emailTextField.text ?? ""
+    self.pickerView.reloadAllComponents()
+
+    if let id = self.emails.firstIndex(where: { return ($0["id"] as? String ?? "") == self.currentValue }) {
+      self.pickerView.selectRow(id + 1, inComponent: 0, animated: false)
     } else {
-      self.pushNotiButton.setImage(nil, for: .normal)
-      self.pushNotiButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
+      self.currentValue = "Not enabled".toBeLocalised()
+      self.pickerView.selectRow(0, inComponent: 0, animated: false)
     }
-    if self.isEmailEnabled {
-      self.emailButton.setImage(UIImage(named: "check_box_icon"), for: .normal)
-      self.emailButton.rounded(color: UIColor.clear, width: 1.0, radius: 4.0)
-    } else {
-      self.emailButton.setImage(nil, for: .normal)
-      self.emailButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
-    }
-    if self.isTelegramEnabled {
-      self.telegramButton.setImage(UIImage(named: "check_box_icon"), for: .normal)
-      self.telegramButton.rounded(color: UIColor.clear, width: 1.0, radius: 4.0)
-    } else {
-      self.telegramButton.setImage(nil, for: .normal)
-      self.telegramButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
-    }
+    self.fakeTextField.becomeFirstResponder()
   }
 
-  @IBAction func pushNotiButtonPressed(_ sender: Any) {
-    self.isPushNotiEnabled = !self.isPushNotiEnabled
-    self.updateUIs()
+  @objc func selectTelegramPickerPressed(_ sender: Any) {
+    self.isSelectingEmail = false
+    self.fakeTextField.inputView = self.pickerView
+    self.fakeTextField.inputAccessoryView = self.toolBar
+    self.currentValue = self.telegramTextField.text ?? ""
+    self.pickerView.reloadAllComponents()
+
+    if let id = self.telegrams.firstIndex(where: { return ($0["name"] as? String ?? "") == self.currentValue }) {
+      self.pickerView.selectRow(id + 1, inComponent: 0, animated: false)
+    } else {
+      self.currentValue = "Not enabled".toBeLocalised()
+      self.pickerView.selectRow(0, inComponent: 0, animated: false)
+    }
+    self.fakeTextField.becomeFirstResponder()
   }
 
-  @IBAction func emailButtonPressed(_ sender: Any) {
-    self.isEmailEnabled = !self.isEmailEnabled
-    self.updateUIs()
+  @objc func dataPickerDonePressed(_ sender: Any) {
+    if self.isSelectingEmail {
+      self.emailTextField.text = self.currentValue
+    } else {
+      self.telegramTextField.text = self.currentValue
+    }
+    self.fakeTextField.resignFirstResponder()
   }
 
-  @IBAction func telegramButtonPressed(_ sender: Any) {
-    self.isTelegramEnabled = !self.isTelegramEnabled
-    self.updateUIs()
+  @objc func dataPickerCancelPressed(_ sender: Any) {
+    self.fakeTextField.resignFirstResponder()
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    self.emails = self.emails.map({
+      var json = $0
+      if let id = json["id"] as? String, let active = self.emailTextField.text, id == active {
+        json["active"] = true
+      } else {
+        json["active"] = false
+      }
+      return json
+    })
+    self.telegrams = self.telegrams.map({
+      var json = $0
+      if let id = json["name"] as? String, let active = self.telegramTextField.text, id == active {
+        json["active"] = true
+      } else {
+        json["active"] = false
+      }
+      return json
+    })
     self.displayLoading(text: NSLocalizedString("Updating", comment: ""), animated: true)
-    KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.isEmailEnabled, telegram: self.isTelegramEnabled, pushNoti: self.isPushNotiEnabled) { [weak self] (_, error) in
+    KNPriceAlertCoordinator.shared.updateAlertMethods(accessToken: accessToken, email: self.emails, telegram: self.telegrams) { [weak self] (message, error) in
       guard let `self` = self else { return }
       self.hideLoading()
       if error == nil {
@@ -176,7 +249,7 @@ class KNNotificationMethodsViewController: KNBaseViewController {
       } else {
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: NSLocalizedString("Can not update alert methods!", comment: ""),
+          message: message.isEmpty ? NSLocalizedString("Can not update alert methods!", value: "Can not update alert methods!", comment: "") : message,
           time: 1.5
         )
       }
@@ -189,5 +262,64 @@ class KNNotificationMethodsViewController: KNBaseViewController {
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     self.navigationController?.popViewController(animated: true)
+  }
+}
+
+extension KNNotificationMethodsViewController: UIPickerViewDelegate {
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    let string: String = {
+      if row == 0 { return "Not enabled".toBeLocalised() }
+      if self.isSelectingEmail {
+        return self.emails[row - 1]["id"] as? String ?? ""
+      }
+      return self.telegrams[row - 1]["name"] as? String ?? ""
+    }()
+    self.currentValue = string
+  }
+}
+
+extension KNNotificationMethodsViewController: UIPickerViewDataSource {
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return self.isSelectingEmail ? self.emails.count + 1 : self.telegrams.count + 1
+  }
+
+  func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    return 32
+  }
+
+  func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.dark,
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+    ]
+    let string: String = {
+      if row == 0 { return "Not enabled".toBeLocalised() }
+      if self.isSelectingEmail {
+        return self.emails[row - 1]["id"] as? String ?? ""
+      }
+      return self.telegrams[row - 1]["name"] as? String ?? ""
+    }()
+    let localisedString = NSLocalizedString(string, value: string, comment: "")
+    return NSAttributedString(
+      string: localisedString,
+      attributes: attributes
+    )
+  }
+}
+
+extension KNNotificationMethodsViewController: UITextFieldDelegate {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    if textField == self.emailTextField {
+      self.selectEmailPickerPresed(textField)
+      return false
+    } else if textField == self.telegramTextField {
+      self.selectTelegramPickerPressed(textField)
+      return false
+    }
+    return true
   }
 }
