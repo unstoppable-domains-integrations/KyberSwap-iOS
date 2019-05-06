@@ -79,6 +79,13 @@ class KWalletBalanceViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+    if KNReachability.shared.previousStatus == .notReachable {
+      self.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: NSLocalizedString("please.check.your.internet.connection", value: "Please check your internet connection", comment: ""),
+        time: 1.5
+      )
+    }
   }
 
   override func viewDidLayoutSubviews() {

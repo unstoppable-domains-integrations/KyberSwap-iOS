@@ -11,7 +11,7 @@ class KNReachability: NSObject {
   static let shared = KNReachability()
   let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
 
-  fileprivate var previousStatus: NetworkReachabilityManager.NetworkReachabilityStatus = .unknown
+  fileprivate(set) var previousStatus: NetworkReachabilityManager.NetworkReachabilityStatus = .unknown
   fileprivate var isListening: Bool = false
 
   func startNetworkReachabilityObserver() {
