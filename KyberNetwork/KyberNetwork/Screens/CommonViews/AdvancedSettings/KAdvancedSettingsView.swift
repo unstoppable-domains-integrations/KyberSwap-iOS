@@ -210,8 +210,14 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
 
   fileprivate var isPromo: Bool = false
-  fileprivate var viewModel: KAdvancedSettingsViewModel!
+  fileprivate(set) var viewModel: KAdvancedSettingsViewModel!
   weak var delegate: KAdvancedSettingsViewDelegate?
+
+  var isMinRateValid: Bool {
+    if case .threePercent = self.viewModel.minRateType { return true }
+    let custom = self.customRateTextField.text ?? ""
+    return !custom.isEmpty
+  }
 
   var height: CGFloat {
     if self.viewModel == nil { return 64.0 }
@@ -258,6 +264,11 @@ class KAdvancedSettingsView: XibLoaderView {
     self.advancedContainerView.isHidden = self.viewModel.isViewHidden
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
+  }
+
+  func updateMinRateCustomErrorShown(_ isShown: Bool) {
+    let borderColor = isShown ? UIColor.Kyber.strawberry : UIColor.Kyber.border
+    self.customRateTextField.rounded(color: borderColor, width: 1.0, radius: 2.5)
   }
 
   fileprivate func updateGasPriceUIs() {
@@ -329,6 +340,7 @@ class KAdvancedSettingsView: XibLoaderView {
       format: NSLocalizedString("transaction.will.be.reverted.if.rate.lower.than", value: "Transaction will be reverted if rate of %@ is lower than %@ (Current rate %@)", comment: ""),
       arguments: [self.viewModel.pairToken, self.viewModel.minRateDisplay, self.viewModel.currentRateDisplay]
     )
+    self.updateMinRateCustomErrorShown(!self.isMinRateValid)
     self.updateConstraints()
     self.layoutSubviews()
   }

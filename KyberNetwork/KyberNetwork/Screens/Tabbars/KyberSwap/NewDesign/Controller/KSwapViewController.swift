@@ -634,6 +634,17 @@ class KSwapViewController: KNBaseViewController {
         )
         return true
       }
+      guard self.advancedSettingsView.isMinRateValid else {
+        if self.advancedSettingsView.viewModel != nil && self.advancedSettingsView.viewModel.isViewHidden {
+          self.advancedSettingsView.displayViewButtonPressed(self)
+        }
+        self.advancedSettingsView.updateMinRateCustomErrorShown(true)
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: "Please enter a value between 0 and 100 for custom field in advanced settings view".toBeLocalised()
+        )
+        return true
+      }
       guard self.viewModel.estRate != nil, self.viewModel.estRate?.isZero == false else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("rate.might.change", value: "Rate might change", comment: ""),
