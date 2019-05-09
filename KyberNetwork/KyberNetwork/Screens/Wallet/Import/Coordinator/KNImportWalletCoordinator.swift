@@ -15,13 +15,6 @@ class KNImportWalletCoordinator: Coordinator {
   let keystore: Keystore
   var coordinators: [Coordinator] = []
 
-  lazy var rootViewController: KNImportWalletViewController = {
-    let controller = KNImportWalletViewController()
-    controller.delegate = self
-    controller.loadViewIfNeeded()
-    return controller
-  }()
-
   init(
     navigationController: UINavigationController,
     keystore: Keystore
@@ -32,8 +25,13 @@ class KNImportWalletCoordinator: Coordinator {
 
   func start() {
     KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: nil)
-    self.rootViewController.resetUIs()
-    self.navigationController.pushViewController(self.rootViewController, animated: true)
+    let importVC: KNImportWalletViewController = {
+      let controller = KNImportWalletViewController()
+      controller.delegate = self
+      controller.loadViewIfNeeded()
+      return controller
+    }()
+    self.navigationController.pushViewController(importVC, animated: true)
   }
 
   func stop(completion: (() -> Void)? = nil) {
