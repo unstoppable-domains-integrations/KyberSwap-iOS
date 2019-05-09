@@ -14,6 +14,7 @@ class KNEnterTwoFactorAuthenViewController: KNBaseViewController {
   @IBOutlet weak var tokenTextField: UITextField!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
+  @IBOutlet weak var pasteButton: UIButton!
 
   weak var delegate: KNEnterTwoFactorAuthenViewControllerDelegate?
 
@@ -57,6 +58,12 @@ class KNEnterTwoFactorAuthenViewController: KNBaseViewController {
     if position.x < self.containerView.frame.minX || position.x > self.containerView.frame.maxX
       || position.y < self.containerView.frame.minY || position.y > self.containerView.frame.maxY {
       self.dismiss(animated: true, completion: nil)
+    }
+  }
+
+  @IBAction func pasteButtonPressed(_ sender: Any) {
+    if let string = UIPasteboard.general.string {
+      self.tokenTextField.text = string
     }
   }
 

@@ -26,6 +26,7 @@
                 <outlet property="cancelButton" destination="hdT-kg-Rwf" id="tLR-vM-LXz"/>
                 <outlet property="containerView" destination="YxZ-cf-Tto" id="2bH-WS-aBg"/>
                 <outlet property="continueButton" destination="HqF-mg-qlI" id="PIH-Rt-sNj"/>
+                <outlet property="pasteButton" destination="DUl-Ja-cYn" id="Y8M-Wo-TcH"/>
                 <outlet property="tokenTextField" destination="o7i-Dh-NHx" id="TS1-ys-dpj"/>
                 <outlet property="twoFactorTextLabel" destination="3i6-nI-UZz" id="vc6-QM-SQh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -46,7 +47,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Token" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="o7i-Dh-NHx">
-                            <rect key="frame" x="18" y="70" width="342" height="44"/>
+                            <rect key="frame" x="18" y="70" width="296" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="7K4-Os-M4m"/>
                             </constraints>
@@ -88,6 +89,16 @@
                                 <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="5Sx-OC-CsM"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUl-Ja-cYn">
+                            <rect key="frame" x="320" y="77" width="40" height="30"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="Paste">
+                                <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="pasteButtonPressed:" destination="-1" eventType="touchUpInside" id="bmU-QK-tww"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -95,17 +106,19 @@
                         <constraint firstAttribute="trailing" secondItem="hdT-kg-Rwf" secondAttribute="trailing" constant="18" id="59F-1C-YEz"/>
                         <constraint firstItem="3i6-nI-UZz" firstAttribute="top" secondItem="YxZ-cf-Tto" secondAttribute="top" constant="24" id="6p4-tc-LF6"/>
                         <constraint firstAttribute="trailing" secondItem="3i6-nI-UZz" secondAttribute="trailing" constant="18" id="C6k-ud-rZz"/>
-                        <constraint firstItem="6if-Ij-b5S" firstAttribute="trailing" secondItem="o7i-Dh-NHx" secondAttribute="trailing" id="GCJ-Gr-YZo"/>
+                        <constraint firstAttribute="trailing" secondItem="6if-Ij-b5S" secondAttribute="trailing" constant="18" id="EpC-Pr-pFb"/>
                         <constraint firstItem="hdT-kg-Rwf" firstAttribute="leading" secondItem="YxZ-cf-Tto" secondAttribute="leading" constant="18" id="JuL-Pd-WEG"/>
                         <constraint firstAttribute="bottom" secondItem="hdT-kg-Rwf" secondAttribute="bottom" constant="16" id="Kw4-yJ-nes"/>
+                        <constraint firstItem="DUl-Ja-cYn" firstAttribute="centerY" secondItem="o7i-Dh-NHx" secondAttribute="centerY" id="a1w-xs-qtp"/>
                         <constraint firstItem="HqF-mg-qlI" firstAttribute="leading" secondItem="YxZ-cf-Tto" secondAttribute="leading" constant="18" id="aMo-ie-dHD"/>
                         <constraint firstAttribute="trailing" secondItem="HqF-mg-qlI" secondAttribute="trailing" constant="18" id="aSO-Ac-zVo"/>
                         <constraint firstItem="hdT-kg-Rwf" firstAttribute="top" secondItem="HqF-mg-qlI" secondAttribute="bottom" constant="16" id="bXa-Ev-CyB"/>
                         <constraint firstItem="o7i-Dh-NHx" firstAttribute="top" secondItem="3i6-nI-UZz" secondAttribute="bottom" constant="24" id="btc-Ay-tRl"/>
                         <constraint firstItem="3i6-nI-UZz" firstAttribute="leading" secondItem="YxZ-cf-Tto" secondAttribute="leading" constant="18" id="kDl-Yu-Rqr"/>
-                        <constraint firstAttribute="trailing" secondItem="o7i-Dh-NHx" secondAttribute="trailing" constant="18" id="tqa-qp-W3a"/>
+                        <constraint firstAttribute="trailing" secondItem="o7i-Dh-NHx" secondAttribute="trailing" constant="64" id="tqa-qp-W3a"/>
                         <constraint firstItem="HqF-mg-qlI" firstAttribute="top" secondItem="o7i-Dh-NHx" secondAttribute="bottom" constant="32" id="vEK-xb-yhq"/>
                         <constraint firstItem="6if-Ij-b5S" firstAttribute="top" secondItem="o7i-Dh-NHx" secondAttribute="bottom" constant="-10" id="vcV-2E-d01"/>
+                        <constraint firstAttribute="trailing" secondItem="DUl-Ja-cYn" secondAttribute="trailing" constant="18" id="wk5-Ew-a6j"/>
                         <constraint firstItem="6if-Ij-b5S" firstAttribute="leading" secondItem="o7i-Dh-NHx" secondAttribute="leading" id="zt4-JM-rCV"/>
                     </constraints>
                 </view>

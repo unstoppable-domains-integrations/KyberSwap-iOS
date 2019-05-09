@@ -57,7 +57,7 @@ class KNLeaderBoardCollectionViewCell: UICollectionViewCell {
       self.rankLabel.text = "\(rank)"
       self.rankLabel.backgroundColor = .white
       self.rankLabel.textColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor(red: 158, green: 161, blue: 170)
-      self.userContactLabel.text = userName
+      self.userContactLabel.text = "You".toBeLocalised() + " - \(userName)"
       self.userContactLabel.font = UIFont.Kyber.medium(with: 18)
       self.userContactLabel.textColor = .white
       self.userInfoContainerView.backgroundColor = (reward != nil) ? UIColor.Kyber.shamrock : UIColor(red: 158, green: 161, blue: 170)
