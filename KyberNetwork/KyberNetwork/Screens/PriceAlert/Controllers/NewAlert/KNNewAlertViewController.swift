@@ -400,6 +400,10 @@ extension KNNewAlertViewController: KNSearchTokenViewControllerDelegate {
     self.navigationController?.popViewController(animated: true, completion: {
       if case .select(let token) = event {
         self.viewModel.update(token: token.symbol, currencyType: self.viewModel.currencyType)
+
+        self.alertPriceTextField.text = ""
+        self.viewModel.updateTargetPrice(0)
+
         // for refetch token rates
         KNRateCoordinator.shared.fetchCacheRate(nil)
         self.updateUIs()
