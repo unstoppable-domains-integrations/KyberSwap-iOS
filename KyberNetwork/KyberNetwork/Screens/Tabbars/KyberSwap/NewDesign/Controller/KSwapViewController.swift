@@ -337,7 +337,7 @@ class KSwapViewController: KNBaseViewController {
       return
     }
     if let from = json["frm"] as? String, let to = json["to"] as? String {
-      suggestButton.setTitle("\(from)->\(to)", for: .normal)
+      suggestButton.setTitle("\(from) ➞ \(to)", for: .normal)
       suggestButton.isHidden = false
 
       if let type = json["tags"] as? String {
