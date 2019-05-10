@@ -490,11 +490,13 @@ class KSwapViewController: KNBaseViewController {
       return bal
     }()
 
-    // Rounded amount to at most 4 decimal digits
-    var amountFrom = min(amount, availableBal)
-    amountFrom = round(amountFrom * 10000.0) / 10000.0
-    if amountFrom == 0.0 { return } // no need to update if amount is zero to prevent showing warning
-    let amountString = "\(amountFrom)".removeGroupSeparator()
+    let amountFrom = min(amount, availableBal)
+    if amountFrom <= 0.0001 { return } // no need to update if amount is small to prevent showing warning
+    let amountString = BigInt(amountFrom * pow(10.0, Double(fromToken.decimals))).string(
+      decimals: fromToken.decimals,
+      minFractionDigits: 4,
+      maxFractionDigits: 4
+      ).removeGroupSeparator()
 
     // Update source amount data
     self.viewModel.updateFocusingField(true)
