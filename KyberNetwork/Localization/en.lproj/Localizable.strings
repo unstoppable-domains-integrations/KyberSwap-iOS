@@ -479,6 +479,8 @@
 "Current Price: %@" = "Current Price: %@";
 "Separate words with a space" = "Separate words with a space";
 
+"Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
+
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
 "Promo code has expired." = "Promo code has expired.";

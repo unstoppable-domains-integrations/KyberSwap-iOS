@@ -111,7 +111,7 @@ struct KNHistoryTransactionCollectionViewModel {
       }()
       let toText = "\(amountTo) \(localObject.name ?? "")"
 
-      return "\(fromText) -> \(toText)"
+      return "\(fromText) ➞ \(toText)"
     }
     let sign: String = self.isSent ? "-" : "+"
     return "\(sign)\(self.transaction.value.prefix(12)) \(localObject.symbol ?? "")"

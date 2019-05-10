@@ -23,7 +23,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var warningMessageLabel: UILabel!
   @IBOutlet weak var expectedRateLabel: UILabel!
-  @IBOutlet weak var minAcceptableRateLabel: UILabel!
+  @IBOutlet weak var minAcceptableRateValueButton: UIButton!
 
   @IBOutlet weak var secondSeparatorView: UIView!
 
@@ -81,8 +81,17 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.warningMessageLabel.text = self.viewModel.warningRateMessage
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
     self.expectedRateLabel.addLetterSpacing()
-    self.minAcceptableRateLabel.text = self.viewModel.minRateString
-    self.minAcceptableRateLabel.addLetterSpacing()
+    self.minAcceptableRateValueButton.setTitle(self.viewModel.minRateString, for: .normal)
+    self.minAcceptableRateValueButton.setTitleColor(
+      self.viewModel.warningMinAcceptableRateMessage == nil ? UIColor(red: 90, green: 94, blue: 103) : UIColor(red: 250, green: 101, blue: 102),
+      for: .normal
+    )
+    self.minAcceptableRateValueButton.isEnabled = self.viewModel.warningMinAcceptableRateMessage != nil
+    self.minAcceptableRateValueButton.semanticContentAttribute = .forceRightToLeft
+    self.minAcceptableRateValueButton.setImage(
+      self.viewModel.warningMinAcceptableRateMessage == nil ? nil : UIImage(named: "info_red_icon"),
+      for: .normal
+    )
 
     self.transactionFeeETHLabel.text = self.viewModel.feeETHString
     self.transactionFeeETHLabel.addLetterSpacing()
@@ -104,10 +113,10 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.toTextLabel.text = NSLocalizedString("transaction.to.text", value: "To", comment: "")
     self.minAcceptableRateTextLabel.text = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
-    self.minAcceptableRateLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
     self.transactionFeeTextLabel.addLetterSpacing()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+
     self.view.layoutIfNeeded()
   }
 
@@ -121,6 +130,16 @@ class KConfirmSwapViewController: KNBaseViewController {
       KNCrashlyticsUtil.logCustomEvent(withName: "confirm_swap", customAttributes: ["type": "screen_edge_pan_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
       self.delegate?.kConfirmSwapViewController(self, run: .cancel)
     }
+  }
+
+  @IBAction func tapMinAcceptableRateValue(_ sender: Any?) {
+    guard let message = self.viewModel.warningMinAcceptableRateMessage else { return }
+    self.showTopBannerView(
+      with: "",
+      message: message,
+      icon: UIImage(named: "info_red_icon"),
+      time: 2.0
+    )
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {

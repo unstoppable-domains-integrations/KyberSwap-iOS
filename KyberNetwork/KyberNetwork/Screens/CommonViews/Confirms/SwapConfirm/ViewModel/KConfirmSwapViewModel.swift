@@ -12,7 +12,7 @@ struct KConfirmSwapViewModel {
   }
 
   var titleString: String {
-    return "\(self.transaction.from.symbol) -> \(self.transaction.to.symbol)"
+    return "\(self.transaction.from.symbol) ➞ \(self.transaction.to.symbol)"
   }
 
   var leftAmountString: String {
@@ -63,6 +63,12 @@ struct KConfirmSwapViewModel {
     let percent = "\(display)%"
     let message = String(format: NSLocalizedString("This rate is %@ lower than current Market", value: "This rate is %@ lower than current Market", comment: ""), percent)
     return message
+  }
+
+  var warningMinAcceptableRateMessage: String? {
+    guard let minRate = self.transaction.minRate, minRate >= self.transaction.expectedRate else { return nil }
+    // min rate is zero
+    return "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.".toBeLocalised()
   }
 
   var minRateString: String {

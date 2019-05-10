@@ -443,6 +443,9 @@
 "Current Price: %@" = "Giá Hiện Tại: %@";
 "Separate words with a space" = "Dấu cách giữa các từ";
 
+"Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
+
+
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";
 "please.send.your.request.to.support" = "Vui lòng gửi yêu cầu của bạn đến support@kyber.network";

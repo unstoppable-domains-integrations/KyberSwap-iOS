@@ -473,6 +473,9 @@
 "Current Price: %@" = "Current Price: %@";
 "Separate words with a space" = "단어를 공백으로 분리하십시오.";
 
+"Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
+
+
 "can.not.decode.data" = "데이터를 디코딩 할 수 없습니다.";
 "something.went.wrong.please.try.again" = "문제가 발생했습니다. 다시 시도하십시오";
 "please.send.your.request.to.support" = "귀하의 요청을 support@kyber.network로 보내주시기 바랍니다.";
