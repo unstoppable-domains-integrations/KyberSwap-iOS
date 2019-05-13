@@ -474,6 +474,13 @@
       "address": "0xffa93aacf49297d51e211817452839052fdfb961",
       "icon": "dcc",
       "isNew": true
+    },
+    "WETH": {
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "decimals": 18,
+      "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
     }
   },
   "ethScanUrl": "https://etherscan.io/",

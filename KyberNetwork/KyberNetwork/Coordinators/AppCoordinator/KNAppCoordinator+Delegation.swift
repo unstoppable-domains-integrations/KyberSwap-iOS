@@ -54,11 +54,33 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 }
 
+// MARK: Limit Order Coordinator Delegate
+extension KNAppCoordinator: KNLimitOrderTabCoordinatorDelegate {
+  func limitOrderTabCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
+    guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
+    if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
+    self.restartNewSession(wallet)
+  }
+
+  func limitOrderTabCoordinatorRemoveWallet(_ wallet: Wallet) {
+    self.removeWallet(wallet)
+  }
+
+  func limitOrderTabCoordinatorDidSelectAddWallet() {
+    self.addNewWallet()
+  }
+
+  func limitOrderTabCoordinatorDidSelectPromoCode() {
+    self.addPromoCode()
+  }
+}
+
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidUpdateWalletObjects() {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.profileCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
@@ -84,7 +106,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isReceived)
     self.tabbarController.selectedIndex = 1
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
   }
 
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject) {

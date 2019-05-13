@@ -32,6 +32,10 @@ class KNSupportedTokenStorage {
     return self.supportedTokens.first(where: { return $0.isETH })!
   }
 
+  var wethToken: TokenObject? {
+    return self.supportedTokens.first(where: { return $0.isWETH })
+  }
+
   var kncToken: TokenObject {
     return self.supportedTokens.first(where: { $0.isKNC })!
   }
