@@ -21,7 +21,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
   internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-
+  internal var limitOrderCoordinator: KNLimitOrderTabCoordinator?
   internal var profileCoordinator: KNProfileHomeCoordinator?
 
   internal var tabbarController: KNTabBarController!
@@ -121,6 +121,15 @@ extension KNAppCoordinator {
       }
       KNAppTracker.updateHasLoggedUserOutWithNativeSignIn()
     }
+
+    UITabBarItem.appearance().setTitleTextAttributes(
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarNormal],
+      for: .normal
+    )
+    UITabBarItem.appearance().setTitleTextAttributes(
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarActive],
+      for: .selected
+    )
   }
 
   func appDidBecomeActive() {
