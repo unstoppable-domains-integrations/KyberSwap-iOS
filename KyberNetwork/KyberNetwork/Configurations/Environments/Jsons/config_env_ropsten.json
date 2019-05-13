@@ -232,12 +232,12 @@
       "icon": "mas",
       "isNew": true
     },
-    "PML": {
-      "name": "Permissionless",
+    "WETH": {
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
       "decimals": 18,
-      "symbol": "PML",
-      "address": "0x8a9a3a59eba6ca45d51ee6f3b33d5c4adb5f52dc",
-      "icon": "pml"
+      "id": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d"
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",

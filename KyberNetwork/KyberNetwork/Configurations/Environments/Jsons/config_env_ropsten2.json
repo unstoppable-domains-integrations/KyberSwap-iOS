@@ -42,6 +42,13 @@
       "address": "0xb91985a805453a08b7f7be883f2532cfd0f300f3",
       "decimals": 18,
       "usd_id":"mithacoin"
+    },
+    "WETH": {
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
+      "decimals": 18,
+      "id": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d"
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",

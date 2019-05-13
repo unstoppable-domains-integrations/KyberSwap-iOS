@@ -18,6 +18,13 @@
       "decimal": 18,
       "usd_id":"ethereum"
     },
+    "WETH": {
+      "name": "Wrapped Ether",
+      "decimals": 18,
+      "symbol" : "WETH",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "icon": "weth"
+    },
     "KNC": {
       "name": "KyberNetwork",
       "symbol": "KNC",
