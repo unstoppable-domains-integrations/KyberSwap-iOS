@@ -169,6 +169,9 @@ extension KNSession {
   }
 
   static func sessionID(from address: Address) -> String {
-    return "sessionID-\(address.description)"
+    if KNEnvironment.default == .production {
+      return "sessionID-\(address.description)"
+    }
+    return "sessionID-\(KNEnvironment.default.displayName)-\(address.description)"
   }
 }
