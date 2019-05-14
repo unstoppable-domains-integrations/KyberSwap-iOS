@@ -23,6 +23,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var navigationTitleLabel: UILabel!
   @IBOutlet weak var txStatusLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
+  @IBOutlet weak var exchangeRateLabel: UILabel!
   @IBOutlet weak var fromTextLabel: UILabel!
   @IBOutlet weak var fromLabel: UILabel!
   @IBOutlet weak var toLabel: UILabel!
@@ -96,6 +97,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
     self.amountLabel.text = self.viewModel.displayedAmountString
     self.amountLabel.textColor = self.viewModel.displayedAmountColor
+    self.exchangeRateLabel.text = self.viewModel.displayExchangeRate
 
     self.fromLabel.attributedText = self.viewModel.fromAttributedString()
     self.toLabel.attributedText = self.viewModel.toAttributedString()

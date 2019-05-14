@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 struct KNTransactionDetailsViewModel {
 
@@ -31,25 +32,15 @@ struct KNTransactionDetailsViewModel {
   }
 
   var displayedAmountString: String {
-    guard let transaction = self.transaction, let localObject = transaction.localizedOperations.first else { return "" }
-    if transaction.state == .error || transaction.state == .failed { return "" }
-    if self.isSwap {
-      let amountFrom: String = String(transaction.value.prefix(9))
-      let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
-
-      let amountTo: String = String(localObject.value.prefix(9))
-      let toText = "\(amountTo) \(localObject.name ?? "")"
-
-      return "\(fromText) ➞ \(toText)"
-    }
-    let sign: String = self.isSent ? "-" : "+"
-    return "\(sign)\(transaction.value.prefix(9)) \(localObject.symbol ?? "")"
+    return self.transaction?.displayedAmountString(curWallet: self.currentWallet.address) ?? ""
   }
 
   var displayedAmountColor: UIColor {
     if self.isSwap { return UIColor(red: 248, green: 159, blue: 80) }
     return self.isSent ? UIColor.Kyber.strawberry : UIColor.Kyber.shamrock
   }
+
+  var displayExchangeRate: String? { return self.transaction?.displayedExchangeRate }
 
   lazy var textAttachment: NSTextAttachment = {
     let attachment = NSTextAttachment()

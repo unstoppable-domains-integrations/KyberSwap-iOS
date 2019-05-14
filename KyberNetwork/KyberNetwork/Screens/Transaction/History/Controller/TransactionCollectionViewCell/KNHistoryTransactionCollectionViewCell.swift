@@ -68,8 +68,9 @@ struct KNHistoryTransactionCollectionViewModel {
   var descriptionLabelAttributedString: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     if self.isSwap {
-      attributedString.append(NSAttributedString(string: self.ownerWalletName, attributes: highlightedTextAttributes))
-      attributedString.append(NSAttributedString(string: "\n\(self.ownerAddress.prefix(8))....\(self.ownerAddress.suffix(6))", attributes: normalTextAttributes))
+      let name: String = self.ownerWalletName.formatName(maxLen: 10)
+      attributedString.append(NSAttributedString(string: name, attributes: highlightedTextAttributes))
+      attributedString.append(NSAttributedString(string: "\n\(self.ownerAddress.prefix(6))....\(self.ownerAddress.suffix(4))", attributes: normalTextAttributes))
       return attributedString
     }
 
@@ -81,7 +82,7 @@ struct KNHistoryTransactionCollectionViewModel {
       if self.isSent {
         return "\(self.transaction.to.prefix(8))....\(self.transaction.to.suffix(6))"
       }
-      return self.ownerWalletName
+      return self.ownerWalletName.formatName(maxLen: 32)
     }()
     attributedString.append(NSAttributedString(string: "\(NSLocalizedString("from", value: "From", comment: "")) ", attributes: normalTextAttributes))
     attributedString.append(NSAttributedString(string: fromText, attributes: highlightedTextAttributes))
@@ -91,30 +92,11 @@ struct KNHistoryTransactionCollectionViewModel {
   }
 
   var displayedAmountString: String {
-    guard let localObject = self.transaction.localizedOperations.first else { return "" }
-    if self.isSwap {
-      let amountFrom: String = {
-        if let double = Double(self.transaction.value),
-          let string = NumberFormatterUtil.shared.swapAmountFormatter.string(from: NSNumber(value: double)) {
-          return string
-        }
-        return String(self.transaction.value.prefix(12))
-      }()
-      let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
+    return self.transaction.displayedAmountString(curWallet: self.ownerAddress)
+  }
 
-      let amountTo: String = {
-        if let double = Double(localObject.value),
-          let string = NumberFormatterUtil.shared.swapAmountFormatter.string(from: NSNumber(value: double)) {
-          return string
-        }
-        return String(localObject.value.prefix(12))
-      }()
-      let toText = "\(amountTo) \(localObject.name ?? "")"
-
-      return "\(fromText) ➞ \(toText)"
-    }
-    let sign: String = self.isSent ? "-" : "+"
-    return "\(sign)\(self.transaction.value.prefix(12)) \(localObject.symbol ?? "")"
+  var displayedExchangeRate: String? {
+    return self.transaction.displayedExchangeRate
   }
 
   var displayedAmountColorHex: String {
@@ -135,6 +117,7 @@ class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var transactionStateTitleLabel: UILabel!
   @IBOutlet weak var transactionDescLabel: UILabel!
   @IBOutlet weak var transactionAmountLabel: UILabel!
+  @IBOutlet weak var transactionRateLabel: UILabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -152,6 +135,7 @@ class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
     self.transactionDescLabel.attributedText = model.descriptionLabelAttributedString
     self.transactionAmountLabel.text = model.displayedAmountString
     self.transactionAmountLabel.textColor = UIColor(hex: model.displayedAmountColorHex)
+    self.transactionRateLabel.text = model.displayedExchangeRate
     self.transactionAmountLabel.isHidden = model.isAmountTransactionHidden
     self.layoutIfNeeded()
   }

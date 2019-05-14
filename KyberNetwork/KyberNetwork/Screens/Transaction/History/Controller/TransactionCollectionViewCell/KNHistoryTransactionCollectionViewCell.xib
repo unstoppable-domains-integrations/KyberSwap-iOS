@@ -51,6 +51,12 @@
                         <color key="textColor" red="0.97254901960784312" green="0.62352941176470589" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="1 KNC = 0.002602 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4f-Li-Doz">
+                        <rect key="frame" x="205" y="32" width="154" height="17.5"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -60,7 +66,9 @@
                 <constraint firstAttribute="trailing" secondItem="gTI-Nj-zlU" secondAttribute="trailing" constant="16" id="DlG-d4-4xm"/>
                 <constraint firstItem="dMH-5M-3Ku" firstAttribute="top" secondItem="Zcf-Am-gYl" secondAttribute="top" id="NJI-7G-Afv"/>
                 <constraint firstItem="gTI-Nj-zlU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dMH-5M-3Ku" secondAttribute="trailing" constant="16" id="OFw-ed-LCj"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BPI-O7-QOZ" secondAttribute="trailing" constant="32" id="fVg-aK-sIB"/>
+                <constraint firstItem="g4f-Li-Doz" firstAttribute="top" secondItem="gTI-Nj-zlU" secondAttribute="bottom" constant="4" id="PH1-Kk-Ybh"/>
+                <constraint firstItem="g4f-Li-Doz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BPI-O7-QOZ" secondAttribute="trailing" constant="4" id="VWm-DA-9AT"/>
+                <constraint firstItem="g4f-Li-Doz" firstAttribute="trailing" secondItem="gTI-Nj-zlU" secondAttribute="trailing" id="agM-Tw-sQh"/>
                 <constraint firstItem="BPI-O7-QOZ" firstAttribute="top" secondItem="dMH-5M-3Ku" secondAttribute="bottom" constant="4" id="gi8-oM-epy"/>
                 <constraint firstItem="dMH-5M-3Ku" firstAttribute="leading" secondItem="Zcf-Am-gYl" secondAttribute="trailing" constant="16" id="hAm-AF-pYP"/>
                 <constraint firstItem="BPI-O7-QOZ" firstAttribute="leading" secondItem="dMH-5M-3Ku" secondAttribute="leading" id="nCU-ma-MVC"/>
@@ -71,6 +79,7 @@
                 <outlet property="stateImageView" destination="Zcf-Am-gYl" id="l9j-1a-Tht"/>
                 <outlet property="transactionAmountLabel" destination="gTI-Nj-zlU" id="hcT-Uc-LC5"/>
                 <outlet property="transactionDescLabel" destination="BPI-O7-QOZ" id="Ht0-6I-w6X"/>
+                <outlet property="transactionRateLabel" destination="g4f-Li-Doz" id="FWz-Fu-wu0"/>
                 <outlet property="transactionStateTitleLabel" destination="dMH-5M-3Ku" id="47x-fd-06J"/>
             </connections>
         </collectionViewCell>

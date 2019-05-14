@@ -244,10 +244,22 @@ extension KNExchangeTokenCoordinator {
     let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
     provider.request(.sendTxHash(authToken: accessToken, txHash: txHash)) { result in
       switch result {
-      case .success:
-        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": true])
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let success = json["success"] as? Bool ?? false
+          let message = json["message"] as? String ?? "Unknown"
+          if success {
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": true])
+          } else {
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": message])
+          }
+        } catch {
+          KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
+        }
       case .failure:
-        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": false])
+        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
       }
     }
   }

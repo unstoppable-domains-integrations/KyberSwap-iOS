@@ -242,7 +242,8 @@ class KWalletBalanceViewModel: NSObject {
       })
     }()
     self.displayTrackerRates = self.displayedTokens.map({
-      return self.trackerRateData[$0.identifier()]
+      if $0.isSupported { return  self.trackerRateData[$0.identifier()] }
+      return nil
     })
   }
 
