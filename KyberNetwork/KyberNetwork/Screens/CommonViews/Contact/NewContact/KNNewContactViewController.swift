@@ -74,6 +74,11 @@ class KNNewContactViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.nameTextField.becomeFirstResponder()
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.view.endEditing(true)

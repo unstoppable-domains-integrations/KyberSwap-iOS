@@ -147,6 +147,12 @@ class KNNewAlertViewController: KNBaseViewController {
     }
     // force reload current exchange rate
     KNRateCoordinator.shared.fetchCacheRate(nil)
+    self.alertPriceTextField.becomeFirstResponder()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.view.endEditing(true)
   }
 
   override func viewDidLayoutSubviews() {

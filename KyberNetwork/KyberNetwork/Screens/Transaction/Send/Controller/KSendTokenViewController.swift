@@ -121,6 +121,7 @@ class KSendTokenViewController: KNBaseViewController {
         self?.shouldUpdateEstimatedGasLimit(nil)
       }
     )
+    self.amountTextField.becomeFirstResponder()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
