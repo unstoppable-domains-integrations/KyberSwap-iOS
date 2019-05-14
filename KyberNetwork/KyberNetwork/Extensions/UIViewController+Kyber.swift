@@ -2,6 +2,7 @@
 
 import UIKit
 import SafariServices
+import MBProgressHUD
 
 extension UIViewController {
 
@@ -25,6 +26,13 @@ extension UIViewController {
     )
     alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
     self.present(alertController, animated: true, completion: nil)
+  }
+
+  func showMessageWithInterval(message: String, time: TimeInterval = 1.5) {
+    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+    hud.mode = .text
+    hud.label.text = message
+    hud.hide(animated: true, afterDelay: time)
   }
 
   func openSafari(with url: URL) {

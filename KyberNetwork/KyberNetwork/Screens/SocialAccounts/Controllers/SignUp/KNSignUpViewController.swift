@@ -28,7 +28,7 @@ class KNSignUpViewModel {
       ]
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: "Already a member? ".toBeLocalised(), attributes: normalAttributes))
-    attributedText.append(NSAttributedString(string: "Sign In", attributes: orangeAttributes)
+    attributedText.append(NSAttributedString(string: NSLocalizedString("sign.in", value: "Sign In", comment: ""), attributes: orangeAttributes)
     )
     return attributedText
   }()
@@ -63,6 +63,8 @@ class KNSignUpViewController: KNBaseViewController {
   @IBOutlet weak var agreeToTextLabel: UILabel!
   @IBOutlet weak var termsAndConditionsButton: UIButton!
 
+  @IBOutlet weak var bottomPaddingConstraint: NSLayoutConstraint!
+
   fileprivate var viewModel: KNSignUpViewModel
   weak var delegate: KNSignUpViewControllerDelegate?
 
@@ -78,6 +80,7 @@ class KNSignUpViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.navTitleLabel.text = NSLocalizedString("sign.up", value: "Sign Up", comment: "")
     self.separatorViews.forEach({
       $0.backgroundColor = .clear
       $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
@@ -85,6 +88,7 @@ class KNSignUpViewController: KNBaseViewController {
 
     self.topPaddingSocialIcon.constant = (UIDevice.isIphone5 || UIDevice.isIphone6) ? 24.0 : 40.0
 
+    self.orTextLabel.text = "or".toBeLocalised()
     self.confirmEmailTextLabel.text = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.".toBeLocalised()
     self.confirmEmailTextLabel.isHidden = true
     self.emailAddressTextField.placeholder = "Email Address".toBeLocalised()
@@ -95,9 +99,12 @@ class KNSignUpViewController: KNBaseViewController {
     self.secureTextButton.setImage(image, for: .normal)
     self.passwordGuideTextLabel.text = "At least 8 characters including upper case, lower case and digit.".toBeLocalised()
 
+    self.subscribeNewsLetters.setTitle("Subscribe to Newsletters".toBeLocalised(), for: .normal)
     self.subscribeButton.setImage(self.viewModel.isSubscribe ? UIImage(named: "check_box_icon") : nil, for: .normal)
     self.subscribeButton.rounded(color: self.viewModel.isSubscribe ? UIColor.clear : UIColor.Kyber.border, width: 1.0, radius: 2.5)
 
+    self.agreeToTextLabel.text = "Agree to".toBeLocalised()
+    self.termsAndConditionsButton.setTitle("Terms & Conditions".toBeLocalised(), for: .normal)
     self.selectTermConditionButton.setImage(self.viewModel.isAgreeTAC ? UIImage(named: "check_box_icon") : nil, for: .normal)
     self.selectTermConditionButton.rounded(color: self.viewModel.isAgreeTAC ? UIColor.clear : UIColor.Kyber.border, width: 1.0, radius: 2.5)
 
@@ -109,6 +116,8 @@ class KNSignUpViewController: KNBaseViewController {
       self.viewModel.alreadyMemberAttributedText,
       for: .normal
     )
+
+    self.bottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
   }
 
   override func viewDidAppear(_ animated: Bool) {

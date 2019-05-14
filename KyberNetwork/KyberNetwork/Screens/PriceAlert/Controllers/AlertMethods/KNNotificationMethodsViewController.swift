@@ -66,6 +66,8 @@ class KNNotificationMethodsViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("Alert Method", comment: "")
 
+    self.getAlertByTextLabel.text = "Get Alert notifications by:".toBeLocalised()
+
     self.emailTextLabel.isHidden = true
     self.emailTextField.isHidden = true
     self.emailTextFieldSeparator.isHidden = true

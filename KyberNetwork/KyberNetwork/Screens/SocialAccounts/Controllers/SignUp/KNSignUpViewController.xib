@@ -24,12 +24,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSignUpViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
                 <outlet property="agreeToTextLabel" destination="47u-ee-fpz" id="Kne-ep-W0x"/>
+                <outlet property="bottomPaddingConstraint" destination="cBQ-QR-9zP" id="U7f-Xn-tH6"/>
                 <outlet property="confirmEmailTextLabel" destination="1yd-hj-k90" id="kqK-vf-xtc"/>
                 <outlet property="displayNameTextField" destination="619-ad-6aO" id="De0-wu-Z5e"/>
                 <outlet property="emailAddressTextField" destination="9lG-gQ-1xN" id="9hW-op-Sx6"/>
                 <outlet property="headerContainerView" destination="vcl-Nv-WMJ" id="ykI-4f-OxB"/>
                 <outlet property="navTitleLabel" destination="Oov-94-Zq9" id="6Nn-Ba-B6k"/>
-                <outlet property="orTextLabel" destination="wTg-RL-S0h" id="Ftd-Jg-tQe"/>
+                <outlet property="orTextLabel" destination="wTg-RL-S0h" id="pbE-pv-SYu"/>
                 <outlet property="passwordGuideTextLabel" destination="PUM-Bp-yAe" id="IZz-m8-hb3"/>
                 <outlet property="passwordTextField" destination="k7g-p0-ZZa" id="0J1-j0-t4q"/>
                 <outlet property="secureTextButton" destination="hhL-NG-82A" id="gQf-4F-98y"/>

@@ -3,6 +3,7 @@
 import UIKit
 import SafariServices
 import Crashlytics
+import MBProgressHUD
 
 enum KNBalanceTabHamburgerMenuViewEvent {
   case select(wallet: KNWalletObject)
@@ -127,6 +128,10 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.walletListTableViewHeightConstraint.constant = viewModel.walletTableViewHeight
     self.walletListTableView.isScrollEnabled = self.viewModel.tableHeightScrollEnabled
 
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressedWalletTableView(_:)))
+    self.walletListTableView.addGestureRecognizer(longPressGesture)
+    self.walletListTableView.isUserInteractionEnabled = true
+
     self.numberPendingTxLabel.rounded(radius: self.numberPendingTxLabel.frame.height / 2.0)
     self.numberPendingTxLabel.text = "0"
 
@@ -236,6 +241,20 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectAllTransactions)
     }
     KNCrashlyticsUtil.logCustomEvent(withName: "hamburger_menu", customAttributes: ["type": "transaction"])
+  }
+
+  @objc func handleLongPressedWalletTableView(_ sender: UILongPressGestureRecognizer) {
+    if sender.state == .recognized {
+      let touch = sender.location(in: self.walletListTableView)
+      guard let indexPath = self.walletListTableView.indexPathForRow(at: touch) else { return }
+      if indexPath.row >= self.viewModel.wallets.count { return }
+      let wallet = self.viewModel.wallet(at: indexPath.row)
+      UIPasteboard.general.string = wallet.address
+
+      self.showMessageWithInterval(
+        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+      )
+    }
   }
 
   func gestureScreenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

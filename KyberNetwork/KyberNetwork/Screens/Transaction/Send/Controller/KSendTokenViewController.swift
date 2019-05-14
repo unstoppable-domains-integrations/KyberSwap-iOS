@@ -568,6 +568,10 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
         self.viewModel.updateAddress(address)
         self.updateUIAddressQRCode()
       }
+    case .copiedAddress:
+      self.showMessageWithInterval(
+        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+      )
     }
   }
 

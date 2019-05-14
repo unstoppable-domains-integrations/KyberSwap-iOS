@@ -111,6 +111,10 @@ extension KNListContactViewController: KNContactTableViewDelegate {
       self.openNewContact(address: contact.address)
     case .send(let address):
       self.delegate?.listContactViewController(self, run: .send(address: address))
+    case .copiedAddress:
+      self.showMessageWithInterval(
+        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+      )
     default:
       let contacts = KNContactStorage.shared.contacts
       self.emptyStateView.isHidden = !contacts.isEmpty

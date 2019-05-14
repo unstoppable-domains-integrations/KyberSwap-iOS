@@ -83,6 +83,11 @@ class KNListWalletsViewController: KNBaseViewController {
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
     self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
+
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressedWalletTableView(_:)))
+    self.walletTableView.addGestureRecognizer(longPressGesture)
+    self.walletTableView.isUserInteractionEnabled = true
+
     self.view.layoutIfNeeded()
   }
 
@@ -90,6 +95,20 @@ class KNListWalletsViewController: KNBaseViewController {
     self.viewModel.update(wallets: wallets, curWallet: currentWallet)
     self.walletTableView.reloadData()
     self.view.layoutIfNeeded()
+  }
+
+  @objc func handleLongPressedWalletTableView(_ sender: UILongPressGestureRecognizer) {
+    if sender.state == .recognized {
+      let touch = sender.location(in: self.walletTableView)
+      guard let indexPath = self.walletTableView.indexPathForRow(at: touch) else { return }
+      if indexPath.row >= self.viewModel.listWallets.count { return }
+      let wallet = self.viewModel.wallet(at: indexPath.row)
+      UIPasteboard.general.string = wallet.address
+
+      self.showMessageWithInterval(
+        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+      )
+    }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

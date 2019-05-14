@@ -85,10 +85,9 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   @IBAction func copyWalletButtonPressed(_ sender: Any) {
     UIPasteboard.general.string = self.viewModel.address
 
-    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-    hud.mode = .text
-    hud.label.text = NSLocalizedString("address.copied", value: "Address copied", comment: "")
-    hud.hide(animated: true, afterDelay: 1.5)
+    self.showMessageWithInterval(
+      message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+    )
   }
 
   @IBAction func shareButtonPressed(_ sender: UIButton) {

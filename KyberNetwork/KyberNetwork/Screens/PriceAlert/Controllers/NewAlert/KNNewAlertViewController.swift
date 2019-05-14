@@ -124,6 +124,7 @@ class KNNewAlertViewController: KNBaseViewController {
     self.updateUIs()
 
     KNCrashlyticsUtil.logCustomEvent(withName: "new_alert", customAttributes: ["type": "currency_\(self.viewModel.currencyType.rawValue)"])
+    self.alertPriceTextLabel.text = "Alert Price".toBeLocalised()
     self.alertPriceTextField.delegate = self
     self.viewModel.updateCurrentPrice()
     self.updateUIs()

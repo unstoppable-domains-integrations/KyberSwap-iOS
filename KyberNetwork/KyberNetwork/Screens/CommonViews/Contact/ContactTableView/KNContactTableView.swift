@@ -8,6 +8,7 @@ enum KNContactTableViewEvent {
   case delete(contact: KNContact)
   case edit(contact: KNContact)
   case update(height: CGFloat)
+  case copiedAddress
 }
 
 protocol KNContactTableViewDelegate: class {
@@ -40,6 +41,10 @@ class KNContactTableView: XibLoaderView {
     self.tableView.delegate = self
     self.tableView.dataSource = self
 
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressedContactTableView(_:)))
+    self.tableView.addGestureRecognizer(longPressGesture)
+    self.tableView.isUserInteractionEnabled = true
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.shouldUpdateContacts(_:)),
@@ -56,6 +61,17 @@ class KNContactTableView: XibLoaderView {
 
   @objc func shouldUpdateContacts(_ sender: Notification?) {
     self.updateView(with: KNContactStorage.shared.contacts, isFull: self.isFull)
+  }
+
+  @objc func handleLongPressedContactTableView(_ sender: UILongPressGestureRecognizer) {
+    if sender.state == .recognized {
+      let touch = sender.location(in: self.tableView)
+      guard let indexPath = self.tableView.indexPathForRow(at: touch) else { return }
+      if indexPath.row >= self.contacts.count { return }
+      let contact = self.contacts[indexPath.row]
+      UIPasteboard.general.string = contact.address
+      self.delegate?.contactTableView(self.tableView, run: .copiedAddress)
+    }
   }
 
   func updateView(with contacts: [KNContact], isFull: Bool = false) {

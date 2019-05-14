@@ -39,7 +39,7 @@ class KNSignInViewModel {
     ]
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: "Don't have an account? ".toBeLocalised(), attributes: normalAttributes))
-    attributedText.append(NSAttributedString(string: "Sign Up Now", attributes: orangeAttributes)
+    attributedText.append(NSAttributedString(string: "Sign Up Now".toBeLocalised(), attributes: orangeAttributes)
     )
     return attributedText
   }()
