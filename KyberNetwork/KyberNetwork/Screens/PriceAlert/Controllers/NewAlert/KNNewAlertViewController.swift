@@ -104,7 +104,16 @@ class KNNewAlertViewController: KNBaseViewController {
   @IBOutlet weak var currentPriceTextLabel: UILabel!
   @IBOutlet weak var percentageChange: UIButton!
 
-  let viewModel: KNNewAlertViewModel = KNNewAlertViewModel()
+  let viewModel: KNNewAlertViewModel = {
+    let viewModel = KNNewAlertViewModel()
+    if let alert = KNAlertStorage.shared.alerts.sorted(by: { return $0.updatedDate > $1.updatedDate }).first {
+      viewModel.update(
+        token: alert.token,
+        currencyType: KWalletCurrencyType.usd
+      )
+    }
+    return viewModel
+  }()
 
   deinit {
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kExchangeTokenRateNotificationKey), object: nil)
