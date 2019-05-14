@@ -400,7 +400,7 @@
 "can.not.transfer.this.token" = "无法转移此令牌";
 "new" = "新";
 "can.not.update.exchange.rate" = "无法更新汇率";
-"Please wait for other transactions to be mined before making a transfer" = "Please wait for other transactions to be mined before making a transfer";
+"Please wait for other transactions to be mined before making a transfer" = "请等待其他交易上链完成后再发起新的交易";
 
 "successfully.received" = "成功接收%@从%@";
 "received.token" = "收到%@";
@@ -442,11 +442,11 @@
 "Can not update leader board data right now" = "目前暂时无法更新排行榜";
 "This rate is %@ lower than current Market" = "此价格比目前的市场价低%@";
 "1 Gift" = "1 Gift";
-"You are swapping to receive a gift" = "You are swapping to receive a gift";
-"Swap and Send to the Organizer" = "Swap and Send to the Organizer";
-"After swapping, please transfer your token to your personal wallet before %@" = "After swapping, please transfer your token to your personal wallet before %@";
-"This alert is eligible for a reward from the current competition. Do you still want to delete?" = "This alert is eligible for a reward from the current competition. Do you still want to delete?";
-"This alert is eligible for a reward from the current competition. Do you still want to update?" = "This alert is eligible for a reward from the current competition. Do you still want to update?";
+"You are swapping to receive a gift" = "您正在兑换一个礼品";
+"Swap and Send to the Organizer" = "兑换并发送给主办方";
+"After swapping, please transfer your token to your personal wallet before %@" = "在兑换之后，请将您的代币在%@之前转移至您的私人钱包";
+"This alert is eligible for a reward from the current competition. Do you still want to delete?" = "这个警报可以参加目前的竞赛。您确定要删除吗？";
+"This alert is eligible for a reward from the current competition. Do you still want to update?" = "这个警报目前可以参加目前的竞赛。您确定要更新吗？";
 "Currency" = "货币";
 "Update Available!" = "可用更新!";
 "New version is available, please open AppStore to update KyberSwap now." = "新版本可用，请立即打开AppStore更新KyberSwap。";
@@ -466,14 +466,14 @@
 "Current Price: %@" = "Current Price: %@";
 "Separate words with a space" = "用空格分隔单词";
 
-"Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
+"Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "您设置的最低可接受汇率高于KyberNetwork的建议汇率。您的兑换很可能失败。";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
 "please.send.your.request.to.support" = "请将您的请求发送至support@kyber.network";
 
 "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "对不起，我们无法处理这么大的金额。请将金额减少到%@然后重试。";
-"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.";
+"Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "对不起，您已经达到了每日交易上限。请等几小时，完成个人验证后可以进行更多交易。";
 
 
 "please.check.your.internet.connection" = "请检查您的互联网连接";
@@ -483,6 +483,12 @@
 "skip" = "跳跃";
 "you.can.backup.your.wallet.later" = "您可以稍后备份您的钱包";
 
+"Filter" = "Filter";
+"Time" = "Time";
+"Transaction Type" = "Transaction Type";
+"Reset" = "Reset";
+"Deselect All" = "Deselect All";
+"Select All" = "Select All";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
@@ -515,7 +521,7 @@
 "welcome.third.screen.title" = "资料";
 "welcome.third.screen.description" = "轻松管理您的个人资料并解锁其他功能。直接从应用程序。";
 
-"Your Wallet" = "Your Wallet";
+"Your Wallet" = "您的钱包";
 "Switch Wallet" = "切换钱包";
 "Switch" = "开关";
 "Choose your action" = "选择你的行动";

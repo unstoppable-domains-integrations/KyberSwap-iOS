@@ -483,6 +483,13 @@
 "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again." = "죄송 합니다, 우리는 큰 금액을 처리 할 수 없습니다. 금액을% @ 이하로 줄이고 다시 시도 하십시오.";
 "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more." = "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.";
 
+"Filter" = "Filter";
+"Time" = "Time";
+"Transaction Type" = "Transaction Type";
+"Reset" = "Reset";
+"Deselect All" = "Deselect All";
+"Select All" = "Select All";
+
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";

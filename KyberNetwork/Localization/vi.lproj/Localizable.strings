@@ -485,6 +485,13 @@
 "New alert has been added successfully!" = "Thông báo mới đã được thêm thành công!";
 "Updated alert successfully!" = "Cập nhật thông báo thành công!";
 
+"Filter" = "Bộ lọc";
+"Time" = "Thời gian";
+"Transaction Type" = "Kiểu giao dịch";
+"Reset" = "Đặt lại";
+"Deselect All" = "Bỏ chọn hết";
+"Select All" = "Chọn hết";
+
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
 "Promo code has expired." = "Mã khuyến mãi đã hết hạn.";

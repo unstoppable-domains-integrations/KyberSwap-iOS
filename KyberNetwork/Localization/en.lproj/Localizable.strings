@@ -481,6 +481,13 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
 
+"Filter" = "Filter";
+"Time" = "Time";
+"Transaction Type" = "Transaction Type";
+"Reset" = "Reset";
+"Deselect All" = "Deselect All";
+"Select All" = "Select All";
+
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
 "Promo code has expired." = "Promo code has expired.";

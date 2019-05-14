@@ -178,6 +178,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = "Filter".toBeLocalised()
+    self.timeTextLabel.text = "Time".toBeLocalised()
     self.separatorViews.forEach({ $0.backgroundColor = .clear })
     self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
     self.transactionTypeTextLabel.text = "Transaction Type".toBeLocalised()
@@ -188,7 +189,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.resetButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
     self.resetButton.setTitle("Reset".toBeLocalised(), for: .normal)
     self.applyButton.applyGradient()
-    self.applyButton.setTitle("Apply".toBeLocalised(), for: .normal)
+    self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
     self.applyButton.rounded(radius: 4.0)
 
     let nib = UINib(nibName: KNTransactionFilterTableViewCell.className, bundle: nil)
