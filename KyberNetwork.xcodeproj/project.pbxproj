@@ -41,6 +41,7 @@
 		25117D3F2248D68300B5C495 /* KNAlertLeaderBoardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25117D3D2248D68300B5C495 /* KNAlertLeaderBoardViewController.xib */; };
 		25117D432248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25117D412248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.swift */; };
 		25117D442248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25117D422248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.xib */; };
+		25176129228A6A0200D53593 /* KNLimitOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25176128228A6A0200D53593 /* KNLimitOrder.swift */; };
 		2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519E10F20CFBB6A00D8AFC5 /* UIImageView+Kyber.swift */; };
 		251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251ABCA420578E630069687F /* KNNotificationUtil.swift */; };
 		251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */ = {isa = PBXBuildFile; fileRef = 251ABCAC20578F6D0069687F /* config_env_mainnet_test.json */; };
@@ -613,6 +614,7 @@
 		25117D3D2248D68300B5C495 /* KNAlertLeaderBoardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNAlertLeaderBoardViewController.xib; sourceTree = "<group>"; };
 		25117D412248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLeaderBoardCollectionViewCell.swift; sourceTree = "<group>"; };
 		25117D422248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNLeaderBoardCollectionViewCell.xib; sourceTree = "<group>"; };
+		25176128228A6A0200D53593 /* KNLimitOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLimitOrder.swift; sourceTree = "<group>"; };
 		2519E10F20CFBB6A00D8AFC5 /* UIImageView+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kyber.swift"; sourceTree = "<group>"; };
 		251ABCA420578E630069687F /* KNNotificationUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNNotificationUtil.swift; sourceTree = "<group>"; };
 		251ABCAC20578F6D0069687F /* config_env_mainnet_test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config_env_mainnet_test.json; sourceTree = "<group>"; };
@@ -1464,6 +1466,7 @@
 		25377B0A22842AA30012178F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				25176128228A6A0200D53593 /* KNLimitOrder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4538,6 +4541,7 @@
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
+				25176129228A6A0200D53593 /* KNLimitOrder.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				294DFBA31FE0E2EA004CEB56 /* TransactionValue.swift in Sources */,
 				C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */,

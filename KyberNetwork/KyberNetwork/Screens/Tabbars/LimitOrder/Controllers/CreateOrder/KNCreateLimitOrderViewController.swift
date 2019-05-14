@@ -8,7 +8,7 @@ enum KNCreateLimitOrderViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showWarning: Bool)
   case suggestBuyToken
-  case submitOrder(data: JSONDictionary)
+  case submitOrder(order: KNLimitOrder)
   case manageOrders
 }
 
@@ -260,7 +260,19 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBAction func submitOrderButtonPressed(_ sender: Any) {
     if !self.validateDataIfNeeded(isConfirming: true) { return }
-    self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(data: [:]))
+    if case .real(let account) = self.viewModel.wallet.type {
+      let order = KNLimitOrder(
+        from: self.viewModel.from,
+        to: self.viewModel.to,
+        account: account,
+        sender: self.viewModel.wallet.address,
+        srcAmount: self.viewModel.amountFromBigInt,
+        targetRate: self.viewModel.targetRateBigInt,
+        fee: self.viewModel.feeBigInt,
+        nonce: 0
+      )
+      self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(order: order))
+    }
   }
 
   @IBAction func manageOrderButtonPressed(_ sender: Any) {
@@ -380,14 +392,14 @@ extension KNCreateLimitOrderViewController {
         message: "Can not create an order with same token".toBeLocalised(),
         time: 1.5
       )
-      return true
+      return false
     }
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
         message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
       )
-      return true
+      return false
     }
     guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(
@@ -395,7 +407,7 @@ extension KNCreateLimitOrderViewController {
         message: "Amount too big, your amount should be between 0.5 ETH to 10 ETH in equivalent".toBeLocalised(),
         time: 1.5
       )
-      return true
+      return false
     }
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
@@ -403,7 +415,7 @@ extension KNCreateLimitOrderViewController {
         message: "Amount too small, your amount should be between 0.5 ETH to 10 ETH in equivalent".toBeLocalised(),
         time: 1.5
       )
-      return true
+      return false
     }
     if isConfirming {
       if self.viewModel.percentageRateDiff <= 0 {
@@ -414,7 +426,7 @@ extension KNCreateLimitOrderViewController {
         )
       }
     }
-    return false
+    return true
   }
 }
 
