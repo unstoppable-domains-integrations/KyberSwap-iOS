@@ -40,6 +40,10 @@ class KNGeneralProvider {
     return Address(string: KNEnvironment.default.knCustomRPC?.networkAddress ?? "")!
   }()
 
+  lazy var limitOrderAddress: Address = {
+    return Address(string: KNEnvironment.default.knCustomRPC?.limitOrderAddress ?? "")!
+  }()
+
   init() { DispatchQueue.main.async { self.web3Swift.start() } }
 
   // MARK: Balance
