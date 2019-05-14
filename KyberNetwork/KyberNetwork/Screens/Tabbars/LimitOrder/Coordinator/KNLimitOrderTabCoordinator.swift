@@ -168,20 +168,24 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func signAndSendOrder(_ order: KNLimitOrder) {
-    let result = self.session.keystore.signLimitOrder(order)
-    switch result {
-    case .success:
-      self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("success", comment: ""),
-        message: "Successfully signed the order data".toBeLocalised(),
-        time: 1.5
-      )
-    case .failure(let error):
-      self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", comment: ""),
-        message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
-        time: 1.5
-      )
+    self.navigationController.displayLoading()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+      let result = self.session.keystore.signLimitOrder(order)
+      self.navigationController.hideLoading()
+      switch result {
+      case .success:
+        self.navigationController.showSuccessTopBannerMessage(
+          with: NSLocalizedString("success", comment: ""),
+          message: "Successfully signed the order data".toBeLocalised(),
+          time: 1.5
+        )
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", comment: ""),
+          message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
+          time: 1.5
+        )
+      }
     }
   }
 
