@@ -29,6 +29,8 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var focusTextFieldTag: Int = 0
 
+  fileprivate(set) var relatedOrders: [KNLimitOrder] = []
+
   init(wallet: Wallet,
        from: TokenObject,
        to: TokenObject,
@@ -220,9 +222,11 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Fee
+  var feeBigInt: BigInt {
+    return self.amountFromBigInt / BigInt(1000)
+  }
   var displayFeeString: String {
-    let feeBigInt = self.amountFromBigInt / BigInt(1000)
-    return "Fee: \(feeBigInt.displayRate(decimals: self.from.decimals)) \(self.from.symbol) (0.1% of \(self.amountFromBigInt.displayRate(decimals: self.from.decimals)) \(self.from.symbol))"
+    return "Fee: \(self.feeBigInt.displayRate(decimals: self.from.decimals)) \(self.from.symbol) (0.1% of \(self.amountFromBigInt.displayRate(decimals: self.from.decimals)) \(self.from.symbol))"
   }
 
   var suggestBuyText: String {

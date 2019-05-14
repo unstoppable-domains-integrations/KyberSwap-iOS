@@ -58,6 +58,7 @@ class KSwapViewModel {
     self.to = to.clone()
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
     self.updateProdCachedRate()
+    self.updateRelatedOrders()
   }
 
   var headerBackgroundColor: UIColor { return KNAppStyleType.current.swapFlowHeaderColor }
@@ -384,6 +385,7 @@ class KSwapViewModel {
     self.userCapInWei = BigInt(2).power(255)
     self.updateProdCachedRate()
     self.swapSuggestion = nil
+    self.updateRelatedOrders()
   }
 
   func updateWalletObject() {
@@ -392,6 +394,10 @@ class KSwapViewModel {
 
   func updateProdCachedRate(_ rate: BigInt? = nil) {
     self.cachedProdRate = rate ?? KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
+  }
+
+  func updateRelatedOrders() {
+    // TODO
   }
 
   func swapTokens() {
@@ -406,6 +412,7 @@ class KSwapViewModel {
     self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
     self.updateProdCachedRate()
+    self.updateRelatedOrders()
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -427,6 +434,7 @@ class KSwapViewModel {
     self.estimateGasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
     self.updateProdCachedRate()
+    self.updateRelatedOrders()
   }
 
   func updateEstimatedRateFromCachedIfNeeded() {

@@ -2,10 +2,13 @@
 
 import BigInt
 import CryptoSwift
+import TrustCore
 
 protocol Signer {
     func hash(transaction: SignTransaction) -> Data
+    func hash(order: KNLimitOrder) -> Data
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt)
+    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt)
 }
 
 struct EIP155Signer: Signer {
@@ -27,6 +30,18 @@ struct EIP155Signer: Signer {
         ] as [Any])!
     }
 
+    func hash(order: KNLimitOrder) -> Data {
+      return rlpHash([
+        Address(string: order.from.contract)?.data ?? Data(),
+        Address(string: order.to.contract)?.data ?? Data(),
+        order.sender.data,
+        order.srcAmount,
+        order.targetRate,
+        order.fee,
+        order.nonce,
+        ] as [Any])!
+    }
+
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
         let (r, s, v) = HomesteadSigner().values(transaction: transaction, signature: signature)
         let newV: BigInt
@@ -36,6 +51,17 @@ struct EIP155Signer: Signer {
             newV = v
         }
         return (r, s, newV)
+    }
+
+    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
+      let (r, s, v) = HomesteadSigner().values(order: order, signature: signature)
+      let newV: BigInt
+      if chainId != 0 {
+        newV = BigInt(signature[64]) + 35 + chainId + chainId
+      } else {
+        newV = v
+      }
+      return (r, s, newV)
     }
 }
 
@@ -51,12 +77,32 @@ struct HomesteadSigner: Signer {
         ])!
     }
 
+    func hash(order: KNLimitOrder) -> Data {
+      return rlpHash([
+        Address(string: order.from.contract)?.data ?? Data(),
+        Address(string: order.to.contract)?.data ?? Data(),
+        order.sender.data,
+        order.srcAmount,
+        order.targetRate,
+        order.fee,
+        order.nonce,
+        ] as [Any])!
+    }
+
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
         precondition(signature.count == 65, "Wrong size for signature")
         let r = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[..<32])))
         let s = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[32..<64])))
         let v = BigInt(sign: .plus, magnitude: BigUInt(Data(bytes: [signature[64] + 27])))
         return (r, s, v)
+    }
+
+    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
+      precondition(signature.count == 65, "Wrong size for signature")
+      let r = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[..<32])))
+      let s = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[32..<64])))
+      let v = BigInt(sign: .plus, magnitude: BigUInt(Data(bytes: [signature[64] + 27])))
+      return (r, s, v)
     }
 }
 

@@ -394,6 +394,41 @@ open class EtherKeystore: Keystore {
         }
     }
 
+    func signLimitOrder(_ order: KNLimitOrder) -> Result<Data, KeystoreError> {
+      guard let account = keyStore.account(for: order.account.address) else {
+        return .failure(.failedToSignTransaction)
+      }
+      guard let password = getPassword(for: account) else {
+        return .failure(.failedToSignTransaction)
+      }
+
+      let chainID = KNEnvironment.default.chainID
+      let signer: Signer
+      if chainID == 0 {
+        signer = HomesteadSigner()
+      } else {
+        signer = EIP155Signer(chainId: BigInt(chainID))
+      }
+      do {
+        let hash = signer.hash(order: order)
+        let signature = try keyStore.signHash(hash, account: account, password: password)
+        let (r, s, v) = signer.values(order: order, signature: signature)
+        let data = RLP.encode([
+          Address(string: order.from.contract)?.data ?? Data(),
+          Address(string: order.to.contract)?.data ?? Data(),
+          order.sender.data,
+          order.srcAmount,
+          order.targetRate,
+          order.fee,
+          order.nonce,
+          v, r, s,
+        ])!
+        return .success(data)
+      } catch {
+        return .failure(.failedToSignTransaction)
+      }
+    }
+
     func getPassword(for account: Account) -> String? {
         return keychain.get(account.address.description.lowercased())
     }

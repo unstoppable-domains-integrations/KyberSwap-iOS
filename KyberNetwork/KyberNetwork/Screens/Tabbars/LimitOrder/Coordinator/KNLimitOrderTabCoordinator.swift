@@ -146,6 +146,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.openSearchToken(from: from, to: to, isSource: isSource)
     case .estimateRate(let from, let to, let amount, let showWarning):
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showWarning, completion: nil)
+    case .submitOrder(let order):
+      self.signAndSendOrder(order)
     default: break
     }
   }
@@ -162,6 +164,24 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.openPromoCodeView()
     case .selectAllTransactions:
       self.openHistoryTransactionsView()
+    }
+  }
+
+  fileprivate func signAndSendOrder(_ order: KNLimitOrder) {
+    let result = self.session.keystore.signLimitOrder(order)
+    switch result {
+    case .success:
+      self.navigationController.showSuccessTopBannerMessage(
+        with: NSLocalizedString("success", comment: ""),
+        message: "Successfully signed the order data".toBeLocalised(),
+        time: 1.5
+      )
+    case .failure(let error):
+      self.navigationController.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", comment: ""),
+        message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
+        time: 1.5
+      )
     }
   }
 
