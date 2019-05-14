@@ -15,6 +15,7 @@ class KNExternalProvider {
   let web3Swift: Web3Swift
   let knCustomRPC: KNCustomRPC!
   let networkAddress: Address!
+  let kyberswapAddress: Address!
 
   var minTxCount: Int {
     didSet {
@@ -30,6 +31,7 @@ class KNExternalProvider {
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
     self.minTxCount = 0
+    self.kyberswapAddress = Address(string: customRPC.networkAddress) // TODO: Replace with kyber swap address
   }
 
   func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {
