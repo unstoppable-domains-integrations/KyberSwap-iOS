@@ -168,25 +168,95 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func signAndSendOrder(_ order: KNLimitOrder) {
-    self.navigationController.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      let result = self.session.keystore.signLimitOrder(order)
+    self.navigationController.displayLoading(text: "Checking...".toBeLocalised(), animated: true)
+    self.sendApprovedIfNeeded(order: order) { [weak self] result in
+      guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch result {
-      case .success:
-        self.navigationController.showSuccessTopBannerMessage(
-          with: NSLocalizedString("success", comment: ""),
-          message: "Successfully signed the order data".toBeLocalised(),
-          time: 1.5
-        )
+      case .success(let isSuccess):
+        if !isSuccess {
+          self.navigationController.hideLoading()
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", comment: ""),
+            message: "Can not send approve token request".toBeLocalised(),
+            time: 1.5
+          )
+          return
+        }
+        self.navigationController.displayLoading(text: "Submitting order...".toBeLocalised(), animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.16, execute: {
+          let result = self.session.keystore.signLimitOrder(order)
+          self.navigationController.hideLoading()
+          switch result {
+          case .success:
+            self.navigationController.showSuccessTopBannerMessage(
+              with: NSLocalizedString("success", comment: ""),
+              message: "Successfully signed the order data".toBeLocalised(),
+              time: 1.5
+            )
+          case .failure(let error):
+            self.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", comment: ""),
+              message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
+              time: 1.5
+            )
+          }
+        })
       case .failure(let error):
-        self.navigationController.showErrorTopBannerMessage(
-          with: NSLocalizedString("error", comment: ""),
-          message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
-          time: 1.5
-        )
+        self.navigationController.hideLoading()
+        self.navigationController.displayError(error: error)
       }
     }
+  }
+
+  fileprivate func sendApprovedIfNeeded(order: KNLimitOrder, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    self.session.externalProvider.getAllowanceLimitOrder(token: order.from) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let remain):
+        if remain >= order.srcAmount {
+          completion(.success(true))
+        } else {
+          self.sendApprovedTransaction(order: order, remain: remain, completion: completion)
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func sendApprovedTransaction(order: KNLimitOrder, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    self.sendResetAllowanceIfNeeded(order: order, remain: remain) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let isSuccess):
+        if isSuccess {
+          self.session.externalProvider.sendApproveERCTokenLimitOrder(
+            for: order.from,
+            value: BigInt(2).power(255),
+            gasPrice: KNGasCoordinator.shared.fastKNGas,
+            completion: completion
+          )
+        } else {
+          completion(.success(false))
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func sendResetAllowanceIfNeeded(order: KNLimitOrder, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if remain.isZero {
+      completion(.success(true))
+      return
+    }
+    self.session.externalProvider.sendApproveERCTokenLimitOrder(
+      for: order.from,
+      value: BigInt(0),
+      gasPrice: KNGasCoordinator.shared.fastKNGas,
+      completion: completion
+    )
   }
 
   fileprivate func openPromoCodeView() {

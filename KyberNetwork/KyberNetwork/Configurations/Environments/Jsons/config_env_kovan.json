@@ -68,6 +68,7 @@
   "bank": "0x2eb59a43644451b279a2c1a44a9bfecb055527d0",
   "reserve": "0x2d1ceabd5a1cd16581ad199031601615a434a2cd",
   "network": "0x643211b405c9a14139142e1104250bbcd94bd0ef",
+  "limit_order": "0x880a6ad3df09b6220639856e64b4ab86f18f6095",
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
   "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",
   "wrapper": "0xa54f27b5a72fc1ddc5c4bc6ed50391f457e4a46a",
