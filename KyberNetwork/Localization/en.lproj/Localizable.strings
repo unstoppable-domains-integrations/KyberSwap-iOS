@@ -487,6 +487,8 @@
 "Reset" = "Reset";
 "Deselect All" = "Deselect All";
 "Select All" = "Select All";
+"From" = "From";
+"To" = "To";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";

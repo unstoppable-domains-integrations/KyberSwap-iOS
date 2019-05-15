@@ -491,6 +491,8 @@
 "Reset" = "Đặt lại";
 "Deselect All" = "Bỏ chọn hết";
 "Select All" = "Chọn hết";
+"From" = "Từ";
+"To" = "Đến";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";

@@ -489,6 +489,8 @@
 "Reset" = "Reset";
 "Deselect All" = "Deselect All";
 "Select All" = "Select All";
+"From" = "从";
+"To" = "至";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
