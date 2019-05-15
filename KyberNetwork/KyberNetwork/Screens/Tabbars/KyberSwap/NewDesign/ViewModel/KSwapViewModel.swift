@@ -238,7 +238,7 @@ class KSwapViewModel {
   }
 
   var balanceTextString: String {
-    let balanceText = NSLocalizedString("balance", value: "balance", comment: "")
+    let balanceText = NSLocalizedString("balance", value: "Balance", comment: "")
     return "\(self.from.symbol) \(balanceText)".uppercased()
   }
 

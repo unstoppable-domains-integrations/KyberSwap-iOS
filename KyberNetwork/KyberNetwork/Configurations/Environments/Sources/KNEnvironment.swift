@@ -193,4 +193,12 @@ enum KNEnvironment: Int {
     default: return KNSecret.devSourceAmountURL
     }
   }
+
+  var cachedUserCapURL: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.userCapURL
+    case .staging: return KNSecret.stagingCacheCapURL
+    default: return KNSecret.ropstenCacheCapURL
+    }
+  }
 }

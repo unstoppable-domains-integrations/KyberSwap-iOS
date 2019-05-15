@@ -87,7 +87,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var balanceText: String {
-    let balanceText = NSLocalizedString("balance", value: "balance", comment: "")
+    let balanceText = NSLocalizedString("balance", value: "Balance", comment: "")
     return "\(self.from.symbol.prefix(8)) \(balanceText)".uppercased()
   }
 

@@ -366,7 +366,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
     cell.backgroundColor = {
       return indexPath.row % 2 == 0 ? UIColor(red: 242, green: 243, blue: 246) : UIColor.Kyber.whisper
     }()
-    cell.accessoryType = wallet == self.viewModel.currentWallet ? .checkmark : .none
+    cell.accessoryType = wallet.address.lowercased() == self.viewModel.currentWallet.address.lowercased() ? .checkmark : .none
     return cell
   }
 }

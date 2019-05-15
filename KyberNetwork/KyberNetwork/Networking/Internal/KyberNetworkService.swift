@@ -91,7 +91,7 @@ extension KNTrackerService: TargetType {
     let baseURLString = KNEnvironment.internalTrackerEndpoint
     switch self {
     case .getUserCap(let address):
-      return URL(string: "\(KNSecret.userCapURL)\(address)")!
+      return URL(string: "\(KNEnvironment.default.cachedUserCapURL)\(address)")!
     case .getChartHistory(let symbol, let resolution, let from, let to, let rateType):
       let url = "\(KNSecret.getChartHistory)?symbol=\(symbol)&resolution=\(resolution)&from=\(from)&to=\(to)&rateType=\(rateType)"
       return URL(string: baseURLString + url)!

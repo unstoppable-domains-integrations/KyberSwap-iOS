@@ -232,6 +232,48 @@ extension Transaction {
     return "\(sign)\(self.value.prefix(9)) \(localObject.symbol ?? "")"
   }
 
+  func displayedAmountStringDetailsView(curWallet: String) -> String {
+    guard let localObject = self.localizedOperations.first else { return "" }
+    if self.state == .error || self.state == .failed { return "" }
+    let isSwap = self.localizedOperations.first?.type == "exchange"
+    if isSwap {
+      let amountFrom: String = {
+        if let double = Double(self.value),
+          let string = NumberFormatterUtil.shared.swapAmountFormatter.string(from: NSNumber(value: double)) {
+          return string
+        }
+        return String(self.value.prefix(12))
+      }()
+      let fromText: String = "\(amountFrom) \(localObject.symbol ?? "")"
+
+      let amountTo: String = {
+        if let double = Double(localObject.value),
+          let string = NumberFormatterUtil.shared.swapAmountFormatter.string(from: NSNumber(value: double)) {
+          return string
+        }
+        return String(localObject.value.prefix(12))
+      }()
+      let toText = "\(amountTo) \(localObject.name ?? "")"
+
+      return "\(fromText) ➞ \(toText)"
+    }
+    let isSent: Bool = {
+      if isSwap { return false }
+      return self.from.lowercased() == curWallet.lowercased()
+    }()
+    let sign: String = isSent ? "-" : "+"
+    return "\(sign)\(self.value.prefix(9)) \(localObject.symbol ?? "")"
+  }
+
+  func getTokenPair() -> (String, String) {
+    guard let localObject = self.localizedOperations.first else { return ("", "") }
+    if self.state == .error || self.state == .failed { return ("", "") }
+    let isSwap = self.localizedOperations.first?.type == "exchange"
+    if isSwap { return (localObject.symbol ?? "", localObject.name ?? "") }
+    return ("", "")
+  }
+
+
   var displayedExchangeRate: String? {
     let isSwap = self.localizedOperations.first?.type == "exchange"
     if !isSwap { return nil }
@@ -248,5 +290,26 @@ extension Transaction {
     let rate = amountTo * BigInt(10).power(decimals) / amountFrom
     let rateString = rate.displayRate(decimals: decimals)
     return "1 \(fromSymbol) = \(rateString) \(toSymbol)"
+  }
+
+  var exchangeRateDisplay: String? {
+    let isSwap = self.localizedOperations.first?.type == "exchange"
+    if !isSwap { return nil }
+    guard let localObject = self.localizedOperations.first else { return nil }
+    if self.state == .error || self.state == .failed { return nil }
+    guard
+      let amountFrom = self.value.removeGroupSeparator().fullBigInt(decimals: 18),
+      let amountTo = localObject.value.removeGroupSeparator().fullBigInt(decimals: 18)
+      else { return nil }
+    let decimals = localObject.decimals
+    if amountFrom.isZero { return nil }
+    let rate = amountTo * BigInt(10).power(decimals) / amountFrom
+    let rateString = rate.displayRate(decimals: decimals)
+    return rateString
+  }
+
+  var feeBigInt: BigInt? {
+    guard let gasPrice = self.gasPrice.fullBigInt(units: .wei), let gasUsed = self.gasUsed.fullBigInt(units: .wei) else { return nil }
+    return gasPrice * gasUsed
   }
 }
