@@ -75,6 +75,23 @@ class Transaction: Object {
     var state: TransactionState {
         return TransactionState(int: self.internalState)
     }
+
+  func clone() -> Transaction {
+    return Transaction(
+      id: self.id,
+      blockNumber: self.blockNumber,
+      from: self.from,
+      to: self.to,
+      value: self.value,
+      gas: self.gas,
+      gasPrice: self.gasPrice,
+      gasUsed: self.gasUsed,
+      nonce: self.nonce,
+      date: self.date,
+      localizedOperations: Array(self.localizedOperations).map({ return $0.clone() }),
+      state: self.state
+    )
+  }
 }
 
 extension Transaction {

@@ -39,6 +39,19 @@ class LocalizedOperationObject: Object {
     var operationType: OperationType {
         return OperationType(string: type)
     }
+
+  func clone() -> LocalizedOperationObject {
+    return LocalizedOperationObject(
+      from: self.from,
+      to: self.to,
+      contract: self.contract,
+      type: self.type,
+      value: self.value,
+      symbol: self.symbol,
+      name: self.name,
+      decimals: self.decimals
+    )
+  }
 }
 
 extension LocalizedOperationObject {

@@ -6,8 +6,8 @@ import BigInt
 class KSwapViewModel {
 
   let defaultTokenIconImg = UIImage(named: "default_token")
-  let eth = KNSupportedTokenStorage.shared.ethToken
-  let knc = KNSupportedTokenStorage.shared.kncToken
+  let eth = KNSupportedTokenStorage.shared.ethToken.clone()
+  let knc = KNSupportedTokenStorage.shared.kncToken.clone()
 
   fileprivate(set) var wallet: Wallet
   fileprivate(set) var walletObject: KNWalletObject
@@ -51,10 +51,10 @@ class KSwapViewModel {
     ) {
     self.wallet = wallet
     let addr = wallet.address.description
-    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr) ?? KNWalletObject(address: addr)
-    self.from = from
-    self.to = to
-    self.supportedTokens = supportedTokens
+    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr)?.clone() ?? KNWalletObject(address: addr)
+    self.from = from.clone()
+    self.to = to.clone()
+    self.supportedTokens = supportedTokens.map({ return $0.clone() })
     self.updateProdCachedRate()
   }
 
@@ -349,8 +349,8 @@ class KSwapViewModel {
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
 
     if let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address), let ptToken = KNSupportedTokenStorage.shared.ptToken {
-      self.from = ptToken
-      self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken }) ?? self.eth
+      self.from = ptToken.clone()
+      self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken })?.clone() ?? self.eth
     } else {
       // not a promo wallet
       self.from = self.eth
@@ -373,7 +373,7 @@ class KSwapViewModel {
   }
 
   func updateWalletObject() {
-    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address) ?? self.walletObject
+    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address)?.clone() ?? self.walletObject
   }
 
   func updateProdCachedRate(_ rate: BigInt? = nil) {
@@ -395,9 +395,9 @@ class KSwapViewModel {
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource {
-      self.from = token
+      self.from = token.clone()
     } else {
-      self.to = token
+      self.to = token.clone()
     }
     if self.isFocusingFromAmount && isSource {
       // focusing on from amount, and from token is changed, reset amount

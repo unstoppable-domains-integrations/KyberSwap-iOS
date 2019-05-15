@@ -102,5 +102,4 @@ class KNAlertObject: Object {
   override class func primaryKey() -> String? {
     return "id"
   }
-
 }

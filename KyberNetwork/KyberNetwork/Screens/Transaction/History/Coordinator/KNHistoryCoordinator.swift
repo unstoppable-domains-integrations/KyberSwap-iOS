@@ -60,8 +60,8 @@ class KNHistoryCoordinator: Coordinator {
       self.appCoordinatorTokensTransactionsDidUpdate()
       self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
       self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
+      self.session.transacionCoordinator?.forceFetchTokenTransactions()
     }
-    self.session.transacionCoordinator?.forceFetchTokenTransactions()
   }
 
   func stop() {
@@ -83,52 +83,57 @@ class KNHistoryCoordinator: Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
-    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(1000))
-    transactions.sort(by: { return $0.id < $1.id })
-    var processedTxs: [Transaction] = []
-    var id = 0
-    while id < transactions.count {
-      if id == transactions.count - 1 {
-        processedTxs.append(transactions[id])
-        break
-      }
-      if transactions[id].id == transactions[id + 1].id {
-        // merge 2 transactions
-        if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: self.currentWallet.address) {
-          processedTxs.append(swap)
-          id += 2
-          continue
+    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(1000)).map({ return $0.clone() })
+    let address = self.currentWallet.address
+    DispatchQueue.global(qos: .background).async {
+      transactions.sort(by: { return $0.id < $1.id })
+      var processedTxs: [Transaction] = []
+      var id = 0
+      while id < transactions.count {
+        if id == transactions.count - 1 {
+          processedTxs.append(transactions[id])
+          break
         }
+        if transactions[id].id == transactions[id + 1].id {
+          // merge 2 transactions
+          if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: address) {
+            processedTxs.append(swap)
+            id += 2
+            continue
+          }
+        }
+        processedTxs.append(transactions[id])
+        id += 1
       }
-      processedTxs.append(transactions[id])
-      id += 1
+
+      transactions = processedTxs.sorted(by: { return $0.date > $1.date })
+
+      let dates: [String] = {
+        let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+        var uniqueDates = [String]()
+        dates.forEach({
+          if !uniqueDates.contains($0) { uniqueDates.append($0) }
+        })
+        return uniqueDates
+      }()
+
+      let sectionData: [String: [Transaction]] = {
+        var data: [String: [Transaction]] = [:]
+        transactions.forEach { tx in
+          var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+          trans.append(tx)
+          data[self.dateFormatter.string(from: tx.date)] = trans
+        }
+        return data
+      }()
+      DispatchQueue.main.async {
+        self.rootViewController.coordinatorUpdateCompletedTransactions(
+          data: sectionData,
+          dates: dates,
+          currentWallet: self.currentWallet
+        )
+      }
     }
-
-    transactions = processedTxs.sorted(by: { return $0.date > $1.date })
-
-    let dates: [String] = {
-      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
-      var uniqueDates = [String]()
-      dates.forEach({
-        if !uniqueDates.contains($0) { uniqueDates.append($0) }
-      })
-      return uniqueDates
-    }()
-
-    let sectionData: [String: [Transaction]] = {
-      var data: [String: [Transaction]] = [:]
-      transactions.forEach { tx in
-        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
-        trans.append(tx)
-        data[self.dateFormatter.string(from: tx.date)] = trans
-      }
-      return data
-    }()
-    self.rootViewController.coordinatorUpdateCompletedTransactions(
-      data: sectionData,
-      dates: dates,
-      currentWallet: self.currentWallet
-    )
   }
 
   func appCoordinatorPendingTransactionDidUpdate(_ transactions: [KNTransaction]) {

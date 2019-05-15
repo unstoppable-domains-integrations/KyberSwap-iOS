@@ -42,6 +42,16 @@ class KNWalletObject: Object {
   override class func primaryKey() -> String? {
     return "address"
   }
+
+  func clone() -> KNWalletObject {
+    return KNWalletObject(
+      address: self.address,
+      name: self.name,
+      icon: self.icon,
+      date: self.date,
+      isBackedUp: self.isBackedUp
+    )
+  }
 }
 
 class KNWalletPromoInfoStorage: NSObject {
