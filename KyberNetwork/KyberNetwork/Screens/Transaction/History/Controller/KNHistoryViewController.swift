@@ -234,6 +234,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var transactionsTextLabel: UILabel!
 
+  @IBOutlet weak var currentAddressLabel: UILabel!
   @IBOutlet weak var emptyStateContainerView: UIView!
   @IBOutlet weak var emptyStateDescLabel: UILabel!
 
@@ -294,6 +295,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.segmentedControl.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), forSegmentAt: 1)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
+    self.currentAddressLabel.text = self.viewModel.currentWallet.address
   }
 
   fileprivate func setupCollectionView() {
@@ -316,6 +318,8 @@ class KNHistoryViewController: KNBaseViewController {
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
+    self.currentAddressLabel.isHidden = self.viewModel.isTransactionCollectionViewHidden
+    self.currentAddressLabel.text = self.viewModel.currentWallet.address
     self.transactionCollectionView.reloadData()
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraintsIfNeeded()

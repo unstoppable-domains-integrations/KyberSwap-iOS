@@ -92,7 +92,7 @@ extension KNBalanceTabCoordinator {
       )
     }
     self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingObjects)
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {

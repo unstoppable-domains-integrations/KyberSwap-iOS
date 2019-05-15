@@ -134,6 +134,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
 
     self.numberPendingTxLabel.rounded(radius: self.numberPendingTxLabel.frame.height / 2.0)
     self.numberPendingTxLabel.text = "0"
+    self.numberPendingTxLabel.isHidden = true
 
     self.sendTokenButton.setTitle(
       NSLocalizedString("send.token", value: "Send token", comment: ""),
@@ -177,6 +178,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   func update(transactions: [KNTransaction]) {
     self.viewModel.update(transactions: transactions)
     self.numberPendingTxLabel.text = "\(transactions.count)"
+    self.numberPendingTxLabel.isHidden = transactions.isEmpty
   }
 
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {

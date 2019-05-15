@@ -273,7 +273,6 @@ extension Transaction {
     return ("", "")
   }
 
-
   var displayedExchangeRate: String? {
     let isSwap = self.localizedOperations.first?.type == "exchange"
     if !isSwap { return nil }

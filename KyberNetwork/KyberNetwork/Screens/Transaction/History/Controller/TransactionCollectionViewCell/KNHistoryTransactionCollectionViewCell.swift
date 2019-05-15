@@ -32,25 +32,36 @@ struct KNHistoryTransactionCollectionViewModel {
     return self.transaction.from.lowercased() == self.ownerAddress.lowercased()
   }
 
-  var iconName: String {
-    if self.transaction.state == .error || self.transaction.state == .failed { return "error_icon" }
-    if self.isSwap { return "token_swap_icon" }
-    return self.isSent ? "out_icon" : "in_icon"
-  }
-
   var isAmountTransactionHidden: Bool {
     return self.transaction.state == .error || self.transaction.state == .failed
   }
 
-  var transactionTitleString: String {
+  var isError: Bool {
     if self.transaction.state == .error || self.transaction.state == .failed {
-      return "[\(NSLocalizedString("error", value: "Error", comment: ""))]"
+      return true
     }
+    return false
+  }
+
+  var transactionStatusString: String {
+    if isError { return NSLocalizedString("failed", value: "Failed", comment: "") }
+    return ""
+  }
+
+  var transactionTypeString: String {
     let typeString: String = {
       if self.isSwap { return NSLocalizedString("swap", value: "Swap", comment: "") }
       return self.isSent ? NSLocalizedString("send", value: "Send", comment: "") : NSLocalizedString("receive", value: "Receive", comment: "")
     }()
     return typeString
+  }
+
+  var transactionDetailsString: String {
+    if self.isSwap { return self.displayedExchangeRate ?? "" }
+    if self.isSent {
+      return NSLocalizedString("To", value: "To", comment: "") + ": \(self.transaction.to.prefix(12))...\(self.transaction.to.suffix(8))"
+    }
+    return NSLocalizedString("From", value: "From", comment: "") + ": \(self.transaction.from.prefix(12))...\(self.transaction.from.suffix(8))"
   }
 
   let normalTextAttributes: [NSAttributedStringKey: Any] = [
@@ -108,35 +119,33 @@ struct KNHistoryTransactionCollectionViewModel {
 class KNHistoryTransactionCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kHistoryTransactionCellID"
-  static let height: CGFloat = 84.0
+  static let height: CGFloat = 60.0
 
   weak var delegate: KNHistoryTransactionCollectionViewCellDelegate?
   fileprivate var viewModel: KNHistoryTransactionCollectionViewModel!
 
-  @IBOutlet weak var stateImageView: UIImageView!
-  @IBOutlet weak var transactionStateTitleLabel: UILabel!
-  @IBOutlet weak var transactionDescLabel: UILabel!
   @IBOutlet weak var transactionAmountLabel: UILabel!
-  @IBOutlet weak var transactionRateLabel: UILabel!
+  @IBOutlet weak var transactionDetailsLabel: UILabel!
+  @IBOutlet weak var transactionTypeLabel: UILabel!
+  @IBOutlet weak var transactionStatus: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
     // reset data
-    self.transactionStateTitleLabel.text = ""
-    self.transactionDescLabel.text = ""
     self.transactionAmountLabel.text = ""
+    self.transactionDetailsLabel.text = ""
+    self.transactionTypeLabel.text = ""
+    self.transactionStatus.rounded(radius: 10.0)
   }
 
   func updateCell(with model: KNHistoryTransactionCollectionViewModel) {
     self.viewModel = model
     self.backgroundColor = model.backgroundColor
-    self.stateImageView.image = UIImage(named: model.iconName)
-    self.transactionStateTitleLabel.text = model.transactionTitleString
-    self.transactionDescLabel.attributedText = model.descriptionLabelAttributedString
     self.transactionAmountLabel.text = model.displayedAmountString
-    self.transactionAmountLabel.textColor = UIColor(hex: model.displayedAmountColorHex)
-    self.transactionRateLabel.text = model.displayedExchangeRate
-    self.transactionAmountLabel.isHidden = model.isAmountTransactionHidden
+    self.transactionDetailsLabel.text = model.transactionDetailsString
+    self.transactionTypeLabel.text = model.transactionTypeString.uppercased()
+    self.transactionStatus.setTitle(model.transactionStatusString, for: .normal)
+    self.transactionStatus.isHidden = !model.isError
     self.layoutIfNeeded()
   }
 }
