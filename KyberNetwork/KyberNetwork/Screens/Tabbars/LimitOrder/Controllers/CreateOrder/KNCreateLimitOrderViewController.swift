@@ -68,6 +68,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet var submitButtonBottomPaddingToContainerViewConstraint: NSLayoutConstraint!
   @IBOutlet weak var scrollViewBottomPaddingConstraints: NSLayoutConstraint!
 
+  @IBOutlet weak var relatedOrderCollectionView: UICollectionView!
+
   lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
     let viewModel = KNBalanceTabHamburgerMenuViewModel(
       walletObjects: KNWalletStorage.shared.wallets,
@@ -180,6 +182,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
     self.scrollViewBottomPaddingConstraints.constant = self.bottomPaddingSafeArea()
 
+    let orderCellNib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
+    self.relatedOrderCollectionView.register(
+      orderCellNib,
+      forCellWithReuseIdentifier: KNLimitOrderCollectionViewCell.cellID
+    )
+    self.relatedOrderCollectionView.delegate = self
+    self.relatedOrderCollectionView.dataSource = self
     self.updateRelatedOrdersView()
 
     if let rate = self.viewModel.rateFromNode ?? self.viewModel.cachedProdRate, !rate.isZero {
@@ -236,6 +245,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.fromAmountTextField.text = amountDisplay
     self.viewModel.updateFocusTextField(0)
     self.updateViewAmountDidChange()
+    _ = self.validateDataIfNeeded()
   }
 
   @IBAction func secondPercentageButtonPressed(_ sender: Any) {
@@ -244,6 +254,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.fromAmountTextField.text = amountDisplay
     self.viewModel.updateFocusTextField(0)
     self.updateViewAmountDidChange()
+    _ = self.validateDataIfNeeded()
   }
 
   @IBAction func thirdPercentageButtonPressed(_ sender: Any) {
@@ -252,6 +263,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.fromAmountTextField.text = amountDisplay
     self.viewModel.updateFocusTextField(0)
     self.updateViewAmountDidChange()
+    _ = self.validateDataIfNeeded()
   }
 
   @IBAction func suggestBuyTokenButtonPressed(_ sender: Any) {
@@ -303,14 +315,24 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 extension KNCreateLimitOrderViewController {
   // Update related order view, hide or show related orders
   fileprivate func updateRelatedOrdersView() {
-    let isRelatedShown = arc4random() % 2 == 1 // TODO: Remove
-    if isRelatedShown {
+    // TODO: Remove
+    let orders = self.viewModel.relatedOrders.filter({
+      return $0.sourceToken == self.viewModel.from.symbol
+        && $0.destToken == self.viewModel.to.symbol
+        && $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
+    })
+    self.viewModel.updateRelatedOrders(orders)
+
+    let numberOrders = self.viewModel.relatedOrders.count
+    if numberOrders > 0 {
       self.submitButtonBottomPaddingToContainerViewConstraint.isActive = false
       self.submitButtonBottomPaddingToRelatedOrderViewConstraint.isActive = true
       self.submitButtonBottomPaddingToRelatedOrderViewConstraint.constant = 32.0
-      self.relatedOrderContainerViewHeightConstraint.constant = 60.0
+      let orderCellHeight = KNLimitOrderCollectionViewCell.height + 12.0 // height + bottom padding
+      self.relatedOrderContainerViewHeightConstraint.constant = 32.0 + CGFloat(numberOrders) * orderCellHeight // top padding + collection view height
       self.relatedOrdersContainerView.isHidden = false
       self.manageOrdersButton.isHidden = true
+      self.relatedOrderCollectionView.reloadData()
     } else {
       self.submitButtonBottomPaddingToContainerViewConstraint.isActive = true
       self.submitButtonBottomPaddingToContainerViewConstraint.constant = 88.0
@@ -377,6 +399,8 @@ extension KNCreateLimitOrderViewController {
     self.updateFeeNotesUI()
 
     self.updateViewAmountDidChange()
+    self.updateRelatedOrdersView()
+
     self.view.layoutIfNeeded()
   }
 }
@@ -417,15 +441,15 @@ extension KNCreateLimitOrderViewController {
       )
       return false
     }
-    if isConfirming {
-      if self.viewModel.percentageRateDiff <= 0 {
-        self.showWarningTopBannerMessage(
-          with: "Warning".toBeLocalised(),
-          message: "Your target rate is lower than current market rate".toBeLocalised(),
-          time: 1.5
-        )
-      }
-    }
+//    if isConfirming {
+//      if self.viewModel.percentageRateDiff <= 0 {
+//        self.showWarningTopBannerMessage(
+//          with: "Warning".toBeLocalised(),
+//          message: "Your target rate is lower than current market rate".toBeLocalised(),
+//          time: 1.5
+//        )
+//      }
+//    }
     return true
   }
 }
@@ -528,6 +552,7 @@ extension KNCreateLimitOrderViewController {
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
     }
+    self.updateViewAmountDidChange()
     self.view.layoutIfNeeded()
   }
 
@@ -566,6 +591,28 @@ extension KNCreateLimitOrderViewController {
     self.hamburgerMenu.update(transactions: transactions)
     self.hasPendingTxView.isHidden = transactions.isEmpty
     self.view.layoutIfNeeded()
+  }
+
+  // TODO: Remove
+  func coordinatorDoneSubmittingOrder(_ order: KNLimitOrder) {
+    var orders = self.viewModel.relatedOrders
+    let isFilled = arc4random() % 2 == 1
+    let object = KNOrderObject(
+      id: Int(arc4random()),
+      from: order.from.symbol,
+      to: order.to.symbol,
+      amount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
+      price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
+      fee: Double(order.fee) / pow(10.0, Double(order.from.decimals)),
+      sender: self.viewModel.walletObject.address,
+      createdDate: Date().timeIntervalSince1970,
+      updatedDate: Date().timeIntervalSince1970,
+      filledDate: isFilled ? Date().timeIntervalSince1970 : 0.0,
+      stateValue: 0
+    )
+    orders.append(object)
+    self.viewModel.updateRelatedOrders(orders)
+    self.updateRelatedOrdersView()
   }
 }
 
@@ -669,5 +716,86 @@ extension KNCreateLimitOrderViewController: KNCustomToolbarDelegate {
 
   func customToolbarRightButtonPressed(_ toolbar: KNCustomToolbar) {
     self.keyboardDoneButtonPressed(toolbar)
+  }
+}
+
+// MARK: Related orders
+extension KNCreateLimitOrderViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 12.0
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsets.zero
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return CGSize(
+      width: collectionView.frame.width,
+      height: KNLimitOrderCollectionViewCell.height
+    )
+  }
+}
+
+extension KNCreateLimitOrderViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: true)
+    let order = self.viewModel.relatedOrders[indexPath.row]
+    if let cancelOrder = self.viewModel.cancelOrder, cancelOrder.id == order.id {
+      self.viewModel.cancelOrder = nil
+      collectionView.reloadItems(at: [indexPath])
+    }
+  }
+}
+
+extension KNCreateLimitOrderViewController: UICollectionViewDataSource {
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
+    return 1
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return self.viewModel.relatedOrders.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: KNLimitOrderCollectionViewCell.cellID,
+      for: indexPath
+    ) as! KNLimitOrderCollectionViewCell
+    let order = self.viewModel.relatedOrders[indexPath.row]
+    let isReset: Bool = {
+      if let cancelBtnOrder = self.viewModel.cancelOrder {
+        return cancelBtnOrder.id != order.id
+      }
+      return true
+    }()
+    cell.updateCell(with: order, isReset: isReset)
+    cell.delegate = self
+    return cell
+  }
+}
+
+extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelegate {
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject) {
+    guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
+      return
+    }
+    let alertController = UIAlertController(
+      title: "".toBeLocalised(),
+      message: "Do you want to cancel this order?".toBeLocalised(),
+      preferredStyle: .alert
+    )
+    alertController.addAction(UIAlertAction(title: "Yes".toBeLocalised(), style: .default, handler: { _ in
+      self.viewModel.cancelOrder = nil
+      let indexPath = IndexPath(row: id, section: 0)
+      self.relatedOrderCollectionView.reloadItems(at: [indexPath])
+      self.showErrorTopBannerMessage(with: "", message: "Your order has been cancalled", time: 1.5)
+    }))
+    alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: { _ in
+      self.viewModel.cancelOrder = nil
+      let indexPath = IndexPath(row: id, section: 0)
+      self.relatedOrderCollectionView.reloadItems(at: [indexPath])
+    }))
+    self.present(alertController, animated: true, completion: nil)
   }
 }

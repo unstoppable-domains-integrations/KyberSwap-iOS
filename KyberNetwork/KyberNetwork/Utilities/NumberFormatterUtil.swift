@@ -30,6 +30,14 @@ class NumberFormatterUtil {
     return formatter
   }()
 
+  lazy var limitOrderFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumFractionDigits = 6
+    formatter.minimumFractionDigits = 0
+    return formatter
+  }()
+
   func displayPercentage(from number: Double) -> String {
     return self.percentageFormatter.string(from: NSNumber(value: number)) ?? "0.00"
   }
@@ -38,5 +46,11 @@ class NumberFormatterUtil {
     let string = self.alertPriceFormatter.string(from: NSNumber(value: number)) ?? "0.00"
     if number < 1 { return string }
     return "\(string.prefix(11))"
+  }
+
+  func displayLimitOrderValue(from number: Double) -> String {
+    let string = self.limitOrderFormatter.string(from: NSNumber(value: number)) ?? "0.00"
+    if number < 1 { return string }
+    return "\(string.prefix(10))"
   }
 }
