@@ -7,7 +7,7 @@ struct KNTransactionDetailsViewModel {
 
   lazy var dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm:ss Z"
+    formatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm:ss ZZZZ"
     return formatter
   }()
 
