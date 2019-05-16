@@ -47,18 +47,22 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lKw-GY-4dF">
-                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lKw-GY-4dF">
+                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="W5S-TM-FuV"/>
+                                <constraint firstAttribute="width" constant="46" id="sIo-ga-4iS"/>
+                            </constraints>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="3OI-3E-gIp"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Dz-Ao-ynU">
-                            <rect key="frame" x="327" y="41" width="32" height="32"/>
+                            <rect key="frame" x="327" y="39" width="32" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="HeF-tu-TEX"/>
-                                <constraint firstAttribute="height" constant="32" id="UIt-oD-VCS"/>
+                                <constraint firstAttribute="height" constant="36" id="UIt-oD-VCS"/>
                             </constraints>
                             <state key="normal" image="save_alert_icon"/>
                             <connections>

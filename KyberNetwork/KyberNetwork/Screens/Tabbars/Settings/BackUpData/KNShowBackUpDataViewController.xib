@@ -43,8 +43,12 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="It2-IA-8Ct">
-                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="It2-IA-8Ct">
+                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="aE8-Ev-apc"/>
+                                <constraint firstAttribute="width" constant="46" id="irX-t9-Egv"/>
+                            </constraints>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="3TV-jf-Blv"/>

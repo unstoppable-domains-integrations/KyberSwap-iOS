@@ -46,8 +46,12 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1R-53-YNK">
-                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1R-53-YNK">
+                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="AXF-jF-TqZ"/>
+                                <constraint firstAttribute="height" constant="36" id="E2B-ga-408"/>
+                            </constraints>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="esS-rv-P2Q"/>
@@ -69,9 +73,9 @@
                             </connections>
                         </segmentedControl>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bHG-74-IjS">
-                            <rect key="frame" x="327" y="41" width="32" height="32"/>
+                            <rect key="frame" x="327" y="39" width="32" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="32" id="F4X-qz-Bek"/>
+                                <constraint firstAttribute="height" constant="36" id="F4X-qz-Bek"/>
                                 <constraint firstAttribute="width" constant="32" id="j9Y-Mt-7hP"/>
                             </constraints>
                             <state key="normal" image="filter_icon"/>

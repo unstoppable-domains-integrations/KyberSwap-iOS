@@ -283,7 +283,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2pd-lu-Yff">
-                                    <rect key="frame" x="309" y="43.5" width="50" height="27"/>
+                                    <rect key="frame" x="309" y="39" width="50" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="36" id="g03-Dx-vNt"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <state key="normal" title="Log Out">
                                         <color key="titleColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

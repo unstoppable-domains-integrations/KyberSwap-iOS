@@ -53,8 +53,12 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abv-ZS-gyz">
-                            <rect key="frame" x="16" y="46" width="38" height="22"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abv-ZS-gyz">
+                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="Ros-Tx-1g9"/>
+                                <constraint firstAttribute="height" constant="36" id="dqu-iC-JDh"/>
+                            </constraints>
                             <state key="normal" image="back_white_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="lDa-sE-7jK"/>
