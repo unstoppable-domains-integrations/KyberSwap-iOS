@@ -36,4 +36,10 @@ class DateFormatterUtil {
     dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
     return dateFormatter
   }()
+
+  lazy var limitOrderFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd MMM yyyy"
+    return dateFormatter
+  }()
 }

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNLimitOrderCollectionViewCell" customModule="KyberNetwork" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="115"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="115"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pql-gB-Lpb">
+                        <rect key="frame" x="387" y="39.5" width="84" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="36" id="V3Z-fD-yCJ"/>
+                            <constraint firstAttribute="width" constant="84" id="tYR-Ps-xXE"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
+                        <state key="normal" title="Cancel">
+                            <color key="titleColor" red="0.98039215690000003" green="0.39607843139999999" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="cancelButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gRd-yg-0SG"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wN-cj-4tJ">
+                        <rect key="frame" x="12" y="0.0" width="351" height="115"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAe-iv-NaR">
+                                <rect key="frame" x="12" y="12" width="327" height="44"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH  ➞  KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOH-R7-a2W">
+                                        <rect key="frame" x="12" y="13.5" width="88.5" height="17.5"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                                        <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06 Jun 2019" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="La1-mb-3Fg">
+                                        <rect key="frame" x="140" y="14.5" width="71" height="15"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                        <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filled" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCf-Lb-rnn">
+                                        <rect key="frame" x="255" y="13" width="60" height="18"/>
+                                        <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="3jE-Xb-Uh6"/>
+                                            <constraint firstAttribute="width" constant="60" id="HtE-CD-80k"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="A0v-gH-1FP"/>
+                                    <constraint firstItem="VOH-R7-a2W" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="Btp-q0-VFr"/>
+                                    <constraint firstItem="La1-mb-3Fg" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="IAI-Pp-TKk"/>
+                                    <constraint firstItem="La1-mb-3Fg" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="140" id="g3T-uU-6kI"/>
+                                    <constraint firstAttribute="trailing" secondItem="vCf-Lb-rnn" secondAttribute="trailing" constant="12" id="hPZ-vn-T87"/>
+                                    <constraint firstItem="vCf-Lb-rnn" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="z90-eS-c3E"/>
+                                    <constraint firstItem="VOH-R7-a2W" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="zQY-5c-aOU"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FROM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJE-Rr-hfO">
+                                <rect key="frame" x="152" y="68" width="32" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="DxB-Jb-SDP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.004243 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7h-ac-cWl">
+                                <rect key="frame" x="266" y="88" width="73" height="12.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1234 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaZ-mW-KBg">
+                                <rect key="frame" x="152" y="88" width="55" height="12.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVv-Bu-ccZ">
+                                <rect key="frame" x="266" y="68" width="14.5" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Gar-Xe-u3f"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;= 0.00001438" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktp-ey-1Ta">
+                                <rect key="frame" x="12" y="88" width="73.5" height="12.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONDITION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WIK-dZ-5ot">
+                                <rect key="frame" x="12" y="68" width="61" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="BzX-RO-cHP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VJE-Rr-hfO" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="leading" constant="152" id="0Lc-q4-H1E"/>
+                            <constraint firstItem="CAe-iv-NaR" firstAttribute="top" secondItem="2wN-cj-4tJ" secondAttribute="top" constant="12" id="2p5-kw-1IV"/>
+                            <constraint firstItem="JaZ-mW-KBg" firstAttribute="top" secondItem="VJE-Rr-hfO" secondAttribute="bottom" constant="4" id="3CS-aj-iIr"/>
+                            <constraint firstItem="CAe-iv-NaR" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="leading" constant="12" id="9Gq-gU-2m1"/>
+                            <constraint firstItem="WIK-dZ-5ot" firstAttribute="top" secondItem="CAe-iv-NaR" secondAttribute="bottom" constant="12" id="HPD-TJ-EOy"/>
+                            <constraint firstItem="ktp-ey-1Ta" firstAttribute="leading" secondItem="WIK-dZ-5ot" secondAttribute="leading" id="HQz-U3-Awb"/>
+                            <constraint firstAttribute="trailing" secondItem="CAe-iv-NaR" secondAttribute="trailing" constant="12" id="I9p-AG-pcg"/>
+                            <constraint firstAttribute="trailing" secondItem="D7h-ac-cWl" secondAttribute="trailing" constant="12" id="InF-pF-QGe"/>
+                            <constraint firstItem="VJE-Rr-hfO" firstAttribute="centerY" secondItem="WIK-dZ-5ot" secondAttribute="centerY" id="Kmt-rZ-OcF"/>
+                            <constraint firstItem="JaZ-mW-KBg" firstAttribute="leading" secondItem="VJE-Rr-hfO" secondAttribute="leading" id="YqA-lv-7r1"/>
+                            <constraint firstItem="OVv-Bu-ccZ" firstAttribute="leading" secondItem="D7h-ac-cWl" secondAttribute="leading" id="nHg-QP-u2s"/>
+                            <constraint firstItem="WIK-dZ-5ot" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="leading" constant="12" id="nNd-2a-yz5"/>
+                            <constraint firstItem="ktp-ey-1Ta" firstAttribute="top" secondItem="WIK-dZ-5ot" secondAttribute="bottom" constant="4" id="pgm-3k-I9c"/>
+                            <constraint firstItem="D7h-ac-cWl" firstAttribute="top" secondItem="OVv-Bu-ccZ" secondAttribute="bottom" constant="4" id="r6H-Kj-Ce9"/>
+                            <constraint firstItem="OVv-Bu-ccZ" firstAttribute="centerY" secondItem="VJE-Rr-hfO" secondAttribute="centerY" id="z0M-yA-F01"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Pql-gB-Lpb" firstAttribute="centerY" secondItem="2wN-cj-4tJ" secondAttribute="centerY" id="3HH-jT-mjI"/>
+                <constraint firstItem="Pql-gB-Lpb" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="trailing" constant="24" id="G4s-ve-1Zd"/>
+                <constraint firstAttribute="bottom" secondItem="2wN-cj-4tJ" secondAttribute="bottom" id="LJy-EX-EoQ"/>
+                <constraint firstItem="2wN-cj-4tJ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="WsB-uf-MjK"/>
+                <constraint firstAttribute="trailing" secondItem="2wN-cj-4tJ" secondAttribute="trailing" constant="12" id="smo-rV-gsY"/>
+                <constraint firstItem="2wN-cj-4tJ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="tVW-U8-ibv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="cancelButton" destination="Pql-gB-Lpb" id="UBD-Mi-SbF"/>
+                <outlet property="conditionTextLabel" destination="WIK-dZ-5ot" id="BXl-Uh-2Vo"/>
+                <outlet property="containerView" destination="2wN-cj-4tJ" id="49Q-CM-ukf"/>
+                <outlet property="dateValueLabel" destination="La1-mb-3Fg" id="NU2-Kx-7dC"/>
+                <outlet property="destValueLabel" destination="D7h-ac-cWl" id="IaE-wH-yPG"/>
+                <outlet property="fromTextLabel" destination="VJE-Rr-hfO" id="QdJ-F4-IsA"/>
+                <outlet property="headerContainerView" destination="CAe-iv-NaR" id="W8W-No-5y7"/>
+                <outlet property="leadingSpaceToContainerViewConstraint" destination="tVW-U8-ibv" id="Y6O-2f-OHE"/>
+                <outlet property="orderConditionLabel" destination="ktp-ey-1Ta" id="i3N-Cb-YPg"/>
+                <outlet property="orderStatusLabel" destination="vCf-Lb-rnn" id="ewb-JS-Vjg"/>
+                <outlet property="pairValueLabel" destination="VOH-R7-a2W" id="m8K-Ln-WFy"/>
+                <outlet property="sourceValueLabel" destination="JaZ-mW-KBg" id="bcl-L7-Z8Y"/>
+                <outlet property="toTextLabel" destination="OVv-Bu-ccZ" id="5zH-Sh-IYU"/>
+                <outlet property="trailingSpaceToContainerViewConstraint" destination="smo-rV-gsY" id="Ded-sv-DLW"/>
+            </connections>
+            <point key="canvasLocation" x="48.550724637681164" y="47.879464285714285"/>
+        </collectionViewCell>
+    </objects>
+</document>
