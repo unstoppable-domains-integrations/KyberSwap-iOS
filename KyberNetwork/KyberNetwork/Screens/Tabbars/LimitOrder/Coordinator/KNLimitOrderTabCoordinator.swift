@@ -85,7 +85,7 @@ extension KNLimitOrderTabCoordinator {
       )
     }
     self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -168,7 +168,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func signAndSendOrder(_ order: KNLimitOrder) {
-    self.navigationController.displayLoading(text: "Checking...".toBeLocalised(), animated: true)
+    self.navigationController.displayLoading(text: "Checking".toBeLocalised(), animated: true)
     self.sendApprovedIfNeeded(order: order) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
@@ -183,7 +183,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           )
           return
         }
-        self.navigationController.displayLoading(text: "Submitting order...".toBeLocalised(), animated: true)
+        self.navigationController.displayLoading(text: "Submitting order".toBeLocalised(), animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.16, execute: {
           let result = self.session.keystore.signLimitOrder(order)
           self.navigationController.hideLoading()
@@ -194,6 +194,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
               message: "Successfully signed the order data".toBeLocalised(),
               time: 1.5
             )
+            self.rootViewController.coordinatorDoneSubmittingOrder(order)
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
               with: NSLocalizedString("error", comment: ""),

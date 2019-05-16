@@ -33,6 +33,7 @@
                 <outlet property="rateContainerView" destination="Q3i-im-2Ke" id="QA8-A1-vM8"/>
                 <outlet property="rateOfTextLabel" destination="jTA-cN-AJI" id="YZx-Qv-EEh"/>
                 <outlet property="relatedManageOrderButton" destination="bEd-lu-DtP" id="0uS-rV-rL2"/>
+                <outlet property="relatedOrderCollectionView" destination="Luh-UK-P2b" id="39T-v7-XD8"/>
                 <outlet property="relatedOrderContainerViewHeightConstraint" destination="gUH-dI-Wtn" id="Jpl-Wg-WHL"/>
                 <outlet property="relatedOrderTextLabel" destination="8fo-EP-ooI" id="JbC-f6-GH6"/>
                 <outlet property="relatedOrdersContainerView" destination="UPh-jv-v16" id="K5b-5F-j1h"/>
@@ -346,13 +347,19 @@
                             <rect key="frame" x="0.0" y="420.5" width="414" height="200"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RELATED ORDERS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fo-EP-ooI">
-                                    <rect key="frame" x="20" y="0.0" width="133.5" height="17.5"/>
+                                    <rect key="frame" x="20" y="2" width="133.5" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="qHd-6K-M0Q"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bEd-lu-DtP">
-                                    <rect key="frame" x="282" y="0.0" width="112" height="30"/>
+                                    <rect key="frame" x="282" y="0.0" width="112" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="ktO-Uu-bAx"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
                                     <state key="normal" title="Manage Orders">
                                         <color key="titleColor" red="1" green="0.56470588239999997" blue="0.031372549020000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -361,14 +368,28 @@
                                         <action selector="manageOrderButtonPressed:" destination="-1" eventType="touchUpInside" id="ypL-Uo-TQG"/>
                                     </connections>
                                 </button>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Luh-UK-P2b">
+                                    <rect key="frame" x="0.0" y="32" width="414" height="168"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ccQ-yz-08m">
+                                        <size key="itemSize" width="50" height="50"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                </collectionView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="bEd-lu-DtP" secondAttribute="trailing" constant="20" id="1zE-u5-tzA"/>
+                                <constraint firstAttribute="bottom" secondItem="Luh-UK-P2b" secondAttribute="bottom" id="EMD-MR-Ilv"/>
                                 <constraint firstItem="8fo-EP-ooI" firstAttribute="leading" secondItem="UPh-jv-v16" secondAttribute="leading" constant="20" id="O0c-fa-gOl"/>
+                                <constraint firstItem="Luh-UK-P2b" firstAttribute="top" secondItem="UPh-jv-v16" secondAttribute="top" constant="32" id="S8Q-Pc-sa5"/>
                                 <constraint firstItem="bEd-lu-DtP" firstAttribute="top" secondItem="UPh-jv-v16" secondAttribute="top" id="Z7d-C5-CYu"/>
+                                <constraint firstItem="Luh-UK-P2b" firstAttribute="leading" secondItem="UPh-jv-v16" secondAttribute="leading" id="eRb-Ik-CIE"/>
                                 <constraint firstAttribute="height" constant="200" id="gUH-dI-Wtn"/>
-                                <constraint firstItem="8fo-EP-ooI" firstAttribute="top" secondItem="UPh-jv-v16" secondAttribute="top" id="vbm-fq-zan"/>
+                                <constraint firstAttribute="trailing" secondItem="Luh-UK-P2b" secondAttribute="trailing" id="iZJ-Sz-f65"/>
+                                <constraint firstItem="8fo-EP-ooI" firstAttribute="top" secondItem="UPh-jv-v16" secondAttribute="top" constant="2" id="vbm-fq-zan"/>
                             </constraints>
                         </view>
                     </subviews>

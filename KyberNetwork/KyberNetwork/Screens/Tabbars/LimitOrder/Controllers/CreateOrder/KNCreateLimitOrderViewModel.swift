@@ -29,7 +29,8 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var focusTextFieldTag: Int = 0
 
-  fileprivate(set) var relatedOrders: [KNLimitOrder] = []
+  fileprivate(set) var relatedOrders: [KNOrderObject] = []
+  var cancelOrder: KNOrderObject?
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -139,12 +140,12 @@ class KNCreateLimitOrderViewModel {
       let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
       return cacheRate?.rate ?? BigInt(0)
     }()
-    let valueInETH = ethRate * self.amountFromBigInt
+    let valueInETH = ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     return valueInETH
   }
 
   var isAmountTooBig: Bool {
-    if !self.isBalanceEnough { return false }
+    if !self.isBalanceEnough { return true }
     let maxValueInETH = BigInt(10.0 * Double(EthereumUnit.ether.rawValue))
     return maxValueInETH < self.equivalentETHAmount
   }
@@ -326,5 +327,9 @@ class KNCreateLimitOrderViewModel {
       return true
     }
     return false
+  }
+
+  func updateRelatedOrders(_ orders: [KNOrderObject]) {
+    self.relatedOrders = orders
   }
 }
