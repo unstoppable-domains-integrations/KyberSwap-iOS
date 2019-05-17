@@ -220,7 +220,7 @@ extension KNPasscodeViewController {
   fileprivate var titleText: String {
     switch self.viewType {
     case .authenticate(let isUpdating):
-      return isUpdating ? NSLocalizedString("enter.your.old.pin", value: "Enter your old PIN", comment: "") : NSLocalizedString("verify.your.access", value: "Verify your access", comment: "")
+      return isUpdating ? NSLocalizedString("enter.your.old.pin", value: "Enter your current PIN", comment: "") : NSLocalizedString("verify.your.access", value: "Verify your access", comment: "")
     case .setPasscode:
       if self.firstPasscode != nil {
         return NSLocalizedString("repeat.pin", value: "Repeat PIN", comment: "")

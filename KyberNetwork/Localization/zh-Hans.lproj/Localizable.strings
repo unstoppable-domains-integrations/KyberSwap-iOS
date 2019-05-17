@@ -7,7 +7,7 @@
 "enter.pin" = "输入PIN";
 "use.touchid/faceid.to.secure.your.account" = "使用touchID/faceID保护您的帐户";
 "kyberswap" = "KyberSwap";
-"enter.your.old.pin" = "输入您旧的PIN";
+"enter.your.old.pin" = "输入您当前的PIN码";
 "verify.your.access" = "验证您的访问权限";
 "repeat.pin" = "再次输入PIN";
 "set.a.new.pin" = "设置新的PIN";

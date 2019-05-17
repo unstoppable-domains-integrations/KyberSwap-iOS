@@ -7,7 +7,7 @@
 "enter.pin" = "Enter PIN";
 "use.touchid/faceid.to.secure.your.account" = "Use touchID/faceID to secure your account";
 "kyberswap" = "KyberSwap";
-"enter.your.old.pin" = "Enter your old PIN";
+"enter.your.old.pin" = "Enter your current PIN";
 "verify.your.access" = "Verify your access";
 "repeat.pin" = "Repeat PIN";
 "set.a.new.pin" = "Set a new PIN";

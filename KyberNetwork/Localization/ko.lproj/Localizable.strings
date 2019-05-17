@@ -7,7 +7,7 @@
 "enter.pin" = "PIN 입력";
 "use.touchid/faceid.to.secure.your.account" = "터치 ID / faceID를 사용하여 계정 보안";
 "kyberswap" = "KyberSwap";
-"enter.your.old.pin" = "이전 PIN을 입력하십시오.";
+"enter.your.old.pin" = "현재 PIN을 입력하십시오.";
 "verify.your.access" = "내 액세스 확인";
 "repeat.pin" = "PIN 반복";
 "set.a.new.pin" = "새 PIN 설정";
