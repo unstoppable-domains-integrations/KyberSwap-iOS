@@ -766,22 +766,14 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
       return
     }
-    let alertController = UIAlertController(
-      title: "".toBeLocalised(),
-      message: "Do you want to cancel this order?".toBeLocalised(),
-      preferredStyle: .alert
-    )
-    alertController.addAction(UIAlertAction(title: "Yes".toBeLocalised(), style: .default, handler: { _ in
+    let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
+    cancelOrderVC.loadViewIfNeeded()
+    cancelOrderVC.modalTransitionStyle = .crossDissolve
+    cancelOrderVC.modalPresentationStyle = .overFullScreen
+    self.present(cancelOrderVC, animated: true) {
       self.viewModel.cancelOrder = nil
       let indexPath = IndexPath(row: id, section: 0)
       self.relatedOrderCollectionView.reloadItems(at: [indexPath])
-      self.showErrorTopBannerMessage(with: "", message: "Your order has been cancalled", time: 1.5)
-    }))
-    alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: { _ in
-      self.viewModel.cancelOrder = nil
-      let indexPath = IndexPath(row: id, section: 0)
-      self.relatedOrderCollectionView.reloadItems(at: [indexPath])
-    }))
-    self.present(alertController, animated: true, completion: nil)
+    }
   }
 }
