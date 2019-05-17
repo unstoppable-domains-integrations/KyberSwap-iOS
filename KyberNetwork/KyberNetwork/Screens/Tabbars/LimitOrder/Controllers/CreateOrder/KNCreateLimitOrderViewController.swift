@@ -596,21 +596,7 @@ extension KNCreateLimitOrderViewController {
   // TODO: Remove
   func coordinatorDoneSubmittingOrder(_ order: KNLimitOrder) {
     var orders = self.viewModel.relatedOrders
-    let isFilled = arc4random() % 2 == 1
-    let object = KNOrderObject(
-      id: Int(arc4random()),
-      from: order.from.symbol,
-      to: order.to.symbol,
-      amount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-      price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
-      fee: Double(order.fee) / pow(10.0, Double(order.from.decimals)),
-      sender: self.viewModel.walletObject.address,
-      createdDate: Date().timeIntervalSince1970,
-      updatedDate: Date().timeIntervalSince1970,
-      filledDate: isFilled ? Date().timeIntervalSince1970 : 0.0,
-      stateValue: 0
-    )
-    orders.append(object)
+    orders.append(KNOrderObject.getOrderObject(from: order))
     self.viewModel.updateRelatedOrders(orders)
     self.updateRelatedOrdersView()
   }
