@@ -148,6 +148,32 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showWarning, completion: nil)
     case .submitOrder(let order):
       self.signAndSendOrder(order)
+    case .manageOrders:
+      var orders: [KNOrderObject] = []
+      let tokenCount = self.tokens.count
+      var account: Account!
+      if case .real(let acc) = self.session.wallet.type { account = acc }
+      for id in 0..<10 {
+        let from = self.tokens[Int(arc4random() % UInt32(tokenCount))]
+        let to = self.tokens[Int(arc4random() % UInt32(tokenCount))]
+        let limitOrder = KNLimitOrder(
+          from: from,
+          to: to,
+          account: account,
+          sender: account.address,
+          srcAmount: BigInt(10) * BigInt(10).power(from.decimals),
+          targetRate: BigInt(1.24124 * pow(10.0, Double(to.decimals))),
+          fee: BigInt(10) * BigInt(10).power(from.decimals) / BigInt(1000),
+          nonce: id
+        )
+        orders.append(KNOrderObject.getOrderObject(from: limitOrder))
+      }
+      let manageOrdersVC = KNManageOrdersViewController(
+        viewModel: KNManageOrdersViewModel(orders: orders)
+      )
+      manageOrdersVC.loadViewIfNeeded()
+      manageOrdersVC.delegate = self
+      self.navigationController.pushViewController(manageOrdersVC, animated: true)
     default: break
     }
   }
@@ -407,4 +433,7 @@ extension KNLimitOrderTabCoordinator: KNSearchTokenViewControllerDelegate {
       }
     }
   }
+}
+
+extension KNLimitOrderTabCoordinator: KNManageOrdersViewControllerDelegate {
 }
