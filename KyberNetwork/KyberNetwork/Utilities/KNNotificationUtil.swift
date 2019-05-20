@@ -27,9 +27,6 @@ let kProdCachedRateFailedToLoadNotiKey = "kProdCachedRateFailedToLoadNotiKey"
 
 let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotificationKey"
 
-// Setup
-let kWalletHeaderViewDidChangeTypeNotificationKey = "kWalletHeaderViewDidChangeTypeNotificationKey"
-
 // Gas Price
 let kGasPriceDidUpdateNotificationKey = "kGasPriceDidUpdateNotificationKey"
 

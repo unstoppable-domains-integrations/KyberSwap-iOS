@@ -4,13 +4,12 @@ import UIKit
 import BigInt
 
 enum KWalletSortType {
-  case nameAsc
-  case nameDesc
+  case nameDesc // A -> Z
+  case balanceDesc
   case priceAsc
   case priceDesc
   case changeAsc
   case changeDesc
-  case balanceDesc
   case `default`
 }
 
@@ -20,6 +19,32 @@ enum KWalletCurrencyType: String {
 }
 
 class KWalletBalanceViewModel: NSObject {
+
+  let displayTypeNormalAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+    NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
+  ]
+
+  let displayTypeHighLightedAttributes: [NSAttributedStringKey: Any] = [
+    NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+    NSAttributedStringKey.foregroundColor: UIColor(red: 78, green: 80, blue: 99),
+  ]
+
+  lazy var arrowUpAttributedString: NSAttributedString = {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 22),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 78, green: 80, blue: 99),
+    ]
+    return NSAttributedString(string: "↑", attributes: attributes)
+  }()
+
+  lazy var arrowDownAttributedString: NSAttributedString = {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 22),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 78, green: 80, blue: 99),
+    ]
+    return NSAttributedString(string: "↓", attributes: attributes)
+  }()
 
   private(set) var isKyberList: Bool = true
   private(set) var wallet: KNWalletObject
@@ -69,6 +94,105 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   // MARK: Balance data
+
+  var displayNameAndBalance: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    if self.tokensDisplayType != .balanceDesc && self.tokensDisplayType != .nameDesc {
+      // not highlighted
+      let display = "Name | Bal"
+      return NSAttributedString(string: display, attributes: displayTypeNormalAttributes)
+    }
+    if self.tokensDisplayType == .balanceDesc {
+      attributedString.append(NSAttributedString(string: "Name | ", attributes: displayTypeNormalAttributes))
+      attributedString.append(NSAttributedString(string: "Bal ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowDownAttributedString)
+    } else {
+      attributedString.append(NSAttributedString(string: "Name ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowDownAttributedString)
+      attributedString.append(NSAttributedString(string: " | Bal", attributes: displayTypeNormalAttributes))
+    }
+    return attributedString
+  }
+
+  var nameAndBalanceCenterXConstant: CGFloat {
+    if self.tokensDisplayType != .balanceDesc && self.tokensDisplayType != .nameDesc {
+      return 0.0
+    }
+    return -3.0
+  }
+
+  var displayETHCurrency: NSAttributedString {
+    if self.currencyType == .usd {
+      return NSAttributedString(string: "ETH |", attributes: displayTypeNormalAttributes)
+    }
+    let attributedString = NSMutableAttributedString()
+    if self.tokensDisplayType == .priceDesc {
+      attributedString.append(NSAttributedString(string: "ETH ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowDownAttributedString)
+      return attributedString
+    }
+    if self.tokensDisplayType == .priceAsc {
+      attributedString.append(NSAttributedString(string: "ETH ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowUpAttributedString)
+      return attributedString
+    }
+    return NSAttributedString(string: "ETH", attributes: displayTypeHighLightedAttributes)
+  }
+
+  var currencyETHCenterXConstant: CGFloat {
+    if self.currencyType == .eth && (self.tokensDisplayType == .priceAsc || self.tokensDisplayType == .priceDesc) {
+      return -3.0
+    }
+    return 0.0
+  }
+
+  var displayUSDCurrency: NSAttributedString {
+    if self.currencyType == .eth {
+      return NSAttributedString(string: "| USD", attributes: displayTypeNormalAttributes)
+    }
+    let attributedString = NSMutableAttributedString()
+    if self.tokensDisplayType == .priceDesc {
+      attributedString.append(NSAttributedString(string: "USD ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowDownAttributedString)
+      return attributedString
+    }
+    if self.tokensDisplayType == .priceAsc {
+      attributedString.append(NSAttributedString(string: "USD ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowUpAttributedString)
+      return attributedString
+    }
+    return NSAttributedString(string: "USD", attributes: displayTypeHighLightedAttributes)
+  }
+
+  var currencyUSDCenterXConstant: CGFloat {
+    if self.currencyType == .usd && (self.tokensDisplayType == .priceAsc || self.tokensDisplayType == .priceDesc) {
+      return -3.0
+    }
+    return 0.0
+  }
+
+  var displayChange24h: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    if self.tokensDisplayType == .changeDesc {
+      attributedString.append(NSAttributedString(string: "24h ch% ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowDownAttributedString)
+      return attributedString
+    }
+    if self.tokensDisplayType == .changeAsc {
+      attributedString.append(NSAttributedString(string: "24h ch% ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(self.arrowUpAttributedString)
+      return attributedString
+    }
+    return NSAttributedString(string: "24h ch%", attributes: displayTypeNormalAttributes)
+  }
+
+  var change24hCenterXConstant: CGFloat {
+    if self.tokensDisplayType == .changeDesc || self.tokensDisplayType == .changeAsc {
+      return -3.0
+    }
+    return 0.0
+  }
+
   func updateCurrencyType(_ type: KWalletCurrencyType) -> Bool {
     if self.currencyType == type { return false }
     self.currencyType = type
@@ -120,21 +244,17 @@ class KWalletBalanceViewModel: NSObject {
   // 1: Click name
   // 2: Click price
   // 3: Click change 24h
-  func updateTokenDisplayType(positionClicked: Int) {
+  func updateTokenDisplayType(positionClicked: Int, isSwitched: Bool = true) {
     if positionClicked == 1 {
-      if self.tokensDisplayType == .nameAsc || self.tokensDisplayType == .nameDesc {
-        self.tokensDisplayType = self.tokensDisplayType == .nameAsc ? .nameDesc : .nameAsc
+      if self.tokensDisplayType == .balanceDesc {
+        self.tokensDisplayType = .nameDesc
       } else {
-        self.tokensDisplayType = .nameAsc
+        self.tokensDisplayType = .balanceDesc
       }
     } else if positionClicked == 2 {
-      self.tokensDisplayType = .balanceDesc
+      self.tokensDisplayType = (isSwitched || self.tokensDisplayType != .priceDesc) ? .priceDesc : .priceAsc
     } else {
-      if self.tokensDisplayType == .changeAsc || self.tokensDisplayType == .changeDesc {
-        self.tokensDisplayType = self.tokensDisplayType == .changeAsc ? .changeDesc : .changeAsc
-      } else {
-        self.tokensDisplayType = .changeAsc
-      }
+      self.tokensDisplayType = self.tokensDisplayType == .changeDesc ? .changeAsc : .changeDesc
     }
     self.createDisplayedData()
   }
@@ -257,21 +377,19 @@ class KWalletBalanceViewModel: NSObject {
       if right.extraData?.shouldShowAsNew == true { return false }
     }
     // sort by name
-    if self.tokensDisplayType == .nameAsc { return left.symbol < right.symbol }
-    if self.tokensDisplayType == .nameDesc { return left.symbol > right.symbol }
-
-    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
-    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
-
+    if self.tokensDisplayType == .nameDesc { return left.symbol < right.symbol }
     if self.tokensDisplayType == .balanceDesc || self.tokensDisplayType == .default {
       // sort by balance
       guard let balance0 = self.balance(for: left) else { return false }
       guard let balance1 = self.balance(for: right) else { return true }
       let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
       let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
-      if value0 == 0 && value1 == 0 { return tracker0.rateUSDNow > tracker1.rateUSDNow }
       return value0 > value1
     }
+
+    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
+    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
+
     // sort by price or change
     let change0: Double = {
       return self.currencyType == .eth ? tracker0.changeETH24h : tracker0.changeUSD24h

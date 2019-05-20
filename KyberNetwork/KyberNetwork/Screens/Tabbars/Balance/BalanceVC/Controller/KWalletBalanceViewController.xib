@@ -16,6 +16,9 @@
         <array key="Montserrat-Regular.ttf">
             <string>Montserrat-Regular</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KWalletBalanceViewController" customModule="KyberNetwork" customModuleProvider="target">
@@ -23,12 +26,18 @@
                 <outlet property="balanceTextLabel" destination="tNy-7j-Gt2" id="YYj-GO-LL8"/>
                 <outlet property="balanceValueLabel" destination="ztY-YM-0aU" id="mPu-J4-bRa"/>
                 <outlet property="bottomPaddingConstraintForTableView" destination="X3N-3J-Mg6" id="awZ-7P-hyp"/>
-                <outlet property="currencyButton" destination="61z-Hi-1ah" id="sZV-uz-9GS"/>
+                <outlet property="change24hButton" destination="EY4-fd-g0P" id="tj9-Re-e4D"/>
+                <outlet property="change24hCenterConstraint" destination="3as-Pg-Ytd" id="PNx-n3-szc"/>
+                <outlet property="currencyETHButton" destination="2FJ-V0-D8n" id="iR8-A1-owW"/>
+                <outlet property="currencyETHCenterConstraint" destination="dVC-Ji-zDD" id="H9R-2Z-S6H"/>
+                <outlet property="currencyUSDButton" destination="61z-Hi-1ah" id="r2L-iY-UPt"/>
+                <outlet property="currencyUSDCenterConstraint" destination="qgH-LY-ZDb" id="hdh-Tm-xq0"/>
                 <outlet property="emptyBalanceTextLabel" destination="6g5-Hf-gED" id="3Gk-qg-ib1"/>
                 <outlet property="emptyStateView" destination="xZA-fD-Wsm" id="eVR-RX-Cji"/>
                 <outlet property="hasPendingTxView" destination="WJc-fq-iX6" id="YJu-c2-U8H"/>
                 <outlet property="headerContainerView" destination="iQw-Mq-Z8D" id="D9T-OX-seg"/>
                 <outlet property="kyberListButton" destination="IPs-kS-P1d" id="0Gi-gV-cng"/>
+                <outlet property="nameAndBalCenterConstraint" destination="b2y-V0-TBh" id="jfq-lY-7e9"/>
                 <outlet property="nameTextButton" destination="G0q-wm-sdr" id="8jl-dW-pbi"/>
                 <outlet property="otherButton" destination="bfz-k4-GjU" id="pTY-mO-ycb"/>
                 <outlet property="searchTextField" destination="7gf-Oi-kKw" id="ehw-gh-DKG"/>
@@ -47,28 +56,28 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNy-7j-Gt2">
-                            <rect key="frame" x="20" y="44" width="74" height="22"/>
+                            <rect key="frame" x="20" y="44" width="65" height="21"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4,543.123 USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-YM-0aU">
-                            <rect key="frame" x="20" y="82" width="299" height="34.5"/>
+                            <rect key="frame" x="20" y="81" width="299" height="33"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="28"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlW-Mm-bZf">
-                            <rect key="frame" x="20" y="120.5" width="130.5" height="17.5"/>
+                            <rect key="frame" x="20" y="118" width="116" height="16.5"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="qr_code_white_small" translatesAutoresizingMaskIntoConstraints="NO" id="DHe-5I-0yd">
-                            <rect key="frame" x="154.5" y="121.5" width="16" height="16"/>
+                            <rect key="frame" x="140" y="118.5" width="16" height="16"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uX4-lo-QAu">
-                            <rect key="frame" x="327" y="31" width="48" height="48"/>
+                            <rect key="frame" x="327" y="30.5" width="48" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="2n9-aq-6Yy"/>
                                 <constraint firstAttribute="width" constant="48" id="f0j-l2-gg0"/>
@@ -79,11 +88,11 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LI-U8-W7j">
-                            <rect key="frame" x="20" y="44" width="299" height="94"/>
+                            <rect key="frame" x="20" y="44" width="299" height="90.5"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WJc-fq-iX6">
-                            <rect key="frame" x="356" y="60" width="10" height="10"/>
+                            <rect key="frame" x="356" y="59.5" width="10" height="10"/>
                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="10" id="N3t-VG-9JQ"/>
@@ -118,7 +127,7 @@
                     <rect key="frame" x="0.0" y="160" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPs-kS-P1d">
-                            <rect key="frame" x="20" y="5" width="88" height="30"/>
+                            <rect key="frame" x="20" y="5.5" width="79" height="29"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <state key="normal" title="Kyber Listed">
                                 <color key="titleColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -128,7 +137,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfz-k4-GjU">
-                            <rect key="frame" x="124" y="5" width="42" height="30"/>
+                            <rect key="frame" x="115" y="5.5" width="36" height="29"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                             <state key="normal" title="Other">
                                 <color key="titleColor" red="0.1803921568627451" green="0.22352941176470587" blue="0.3411764705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -150,7 +159,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7gf-Oi-kKw">
-                            <rect key="frame" x="199" y="10" width="120" height="20"/>
+                            <rect key="frame" x="199" y="10.5" width="120" height="19"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="120" id="a4e-4P-3Bk"/>
                             </constraints>
@@ -175,19 +184,25 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldd-eU-IaQ">
                     <rect key="frame" x="0.0" y="200" width="375" height="36"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0q-wm-sdr">
-                            <rect key="frame" x="16" y="3" width="44" height="30"/>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <state key="normal" title="Name">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0q-wm-sdr">
+                            <rect key="frame" x="16" y="0.0" width="59" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="LqQ-YA-Qqg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
+                            <state key="normal" title="Name | Bal">
                                 <color key="titleColor" red="0.30588235294117649" green="0.31372549019607843" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="sortNameButtonPressed:" destination="-1" eventType="touchUpInside" id="ONo-a4-Ugx"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
-                            <rect key="frame" x="303" y="3" width="60" height="30"/>
-                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
+                            <rect key="frame" x="310" y="0.0" width="53" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="bBq-ro-mjv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="13"/>
                             <state key="normal" title="24h ch%">
                                 <color key="titleColor" red="0.30588235294117649" green="0.31372549019607843" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -195,30 +210,46 @@
                                 <action selector="changeButtonPressed:" destination="-1" eventType="touchUpInside" id="lhA-pb-cHF"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61z-Hi-1ah">
-                            <rect key="frame" x="237" y="9" width="46" height="18"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61z-Hi-1ah">
+                            <rect key="frame" x="244" y="0.0" width="31" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="46" id="24B-7G-Hym"/>
+                                <constraint firstAttribute="height" constant="36" id="R2Q-ff-dAH"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="ETH" image="arrow_down_gray">
+                            <state key="normal" title="| USD">
                                 <color key="titleColor" red="0.30588235294117649" green="0.31372549019607843" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="currencyButtonPressed:" destination="-1" eventType="touchUpInside" id="o17-4g-rjV"/>
+                                <action selector="currencyUSDButtonPressed:" destination="-1" eventType="touchUpInside" id="t57-Yb-hqU"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2FJ-V0-D8n">
+                            <rect key="frame" x="206" y="0.0" width="30" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="Lq4-wz-Clc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="ETH">
+                                <color key="titleColor" red="0.30588235289999999" green="0.31372549020000001" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="currencyETHButtonPressed:" destination="-1" eventType="touchUpInside" id="94Y-Ar-ej3"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="61z-Hi-1ah" secondAttribute="trailing" constant="92" id="FHL-yj-Okx"/>
-                        <constraint firstItem="EY4-fd-g0P" firstAttribute="centerY" secondItem="G0q-wm-sdr" secondAttribute="centerY" id="QMI-AY-SSh"/>
+                        <constraint firstItem="EY4-fd-g0P" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="3as-Pg-Ytd"/>
+                        <constraint firstAttribute="trailing" secondItem="61z-Hi-1ah" secondAttribute="trailing" constant="100" id="FHL-yj-Okx"/>
                         <constraint firstItem="G0q-wm-sdr" firstAttribute="leading" secondItem="ldd-eU-IaQ" secondAttribute="leading" constant="16" id="XLv-P7-9lR"/>
                         <constraint firstAttribute="height" constant="36" id="XQa-0f-tCq"/>
                         <constraint firstItem="G0q-wm-sdr" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="b2y-V0-TBh"/>
-                        <constraint firstItem="61z-Hi-1ah" firstAttribute="centerY" secondItem="EY4-fd-g0P" secondAttribute="centerY" id="enR-Px-HXk"/>
+                        <constraint firstItem="2FJ-V0-D8n" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="dVC-Ji-zDD"/>
+                        <constraint firstItem="61z-Hi-1ah" firstAttribute="centerY" secondItem="ldd-eU-IaQ" secondAttribute="centerY" id="qgH-LY-ZDb"/>
                         <constraint firstAttribute="trailing" secondItem="EY4-fd-g0P" secondAttribute="trailing" constant="12" id="s0f-ww-htC"/>
+                        <constraint firstItem="61z-Hi-1ah" firstAttribute="leading" secondItem="2FJ-V0-D8n" secondAttribute="trailing" constant="8" id="xR1-2I-wfi"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FVh-O1-fs1">
@@ -229,7 +260,7 @@
                     <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g5-Hf-gED">
-                            <rect key="frame" x="111.5" y="106.5" width="152" height="22"/>
+                            <rect key="frame" x="120.5" y="106.5" width="134" height="21"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -277,7 +308,6 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="arrow_down_gray" width="12" height="9"/>
         <image name="menu_white_icon" width="18" height="10"/>
         <image name="qr_code_white_small" width="16" height="16"/>
         <image name="search_black_icon" width="15" height="16"/>

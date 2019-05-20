@@ -15,7 +15,7 @@ class KNWalletObject: Object {
     self.init()
     self.address = address
     self.name = name
-    self.icon = "wallet_icon_\((KNWalletStorage.shared.wallets.count + 1) % 6)"
+    self.icon = ""
     self.date = Date()
     self.isBackedUp = isBackedUp
   }

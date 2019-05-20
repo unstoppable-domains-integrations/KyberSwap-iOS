@@ -53,7 +53,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="0.0027463" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hGC-oV-nAd">
-                        <rect key="frame" x="200" y="22" width="83" height="20"/>
+                        <rect key="frame" x="192" y="22" width="83" height="20"/>
                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                         <color key="textColor" red="0.1137254902" green="0.18823529410000001" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -78,7 +78,7 @@
                     <constraint firstItem="Ctg-Ik-kyf" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Gwg-kt-R9G"/>
                     <constraint firstItem="d78-la-wVU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JqM-6S-1kt"/>
                     <constraint firstItem="hGC-oV-nAd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pir-L3-LFm" secondAttribute="trailing" constant="16" id="Ukf-pg-8Cb"/>
-                    <constraint firstAttribute="trailing" secondItem="hGC-oV-nAd" secondAttribute="trailing" constant="92" id="WL5-S4-W0q"/>
+                    <constraint firstAttribute="trailing" secondItem="hGC-oV-nAd" secondAttribute="trailing" constant="100" id="WL5-S4-W0q"/>
                     <constraint firstItem="pir-L3-LFm" firstAttribute="leading" secondItem="d78-la-wVU" secondAttribute="trailing" constant="8" id="ZdI-hs-Gal"/>
                     <constraint firstItem="d78-la-wVU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="bVA-sA-6Bw"/>
                     <constraint firstItem="pir-L3-LFm" firstAttribute="top" secondItem="d78-la-wVU" secondAttribute="top" id="dAl-pX-ehR"/>

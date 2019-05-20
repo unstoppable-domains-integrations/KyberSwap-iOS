@@ -35,8 +35,18 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var kyberListButton: UIButton!
   @IBOutlet weak var otherButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
-  @IBOutlet weak var currencyButton: UIButton!
+
+  @IBOutlet weak var currencyETHButton: UIButton!
+  @IBOutlet weak var currencyETHCenterConstraint: NSLayoutConstraint!
+
+  @IBOutlet weak var currencyUSDButton: UIButton!
+  @IBOutlet weak var currencyUSDCenterConstraint: NSLayoutConstraint!
+
+  @IBOutlet weak var change24hButton: UIButton!
+  @IBOutlet weak var change24hCenterConstraint: NSLayoutConstraint!
+
   @IBOutlet weak var nameTextButton: UIButton!
+  @IBOutlet weak var nameAndBalCenterConstraint: NSLayoutConstraint!
 
   @IBOutlet weak var tokensBalanceTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
@@ -159,8 +169,15 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func updateDisplayedDataType() {
-    self.currencyButton.semanticContentAttribute = .forceRightToLeft
-    self.currencyButton.setTitle(self.viewModel.currencyType.rawValue, for: .normal)
+    self.nameTextButton.setAttributedTitle(self.viewModel.displayNameAndBalance, for: .normal)
+    self.nameAndBalCenterConstraint.constant = self.viewModel.nameAndBalanceCenterXConstant
+    self.currencyETHButton.setAttributedTitle(self.viewModel.displayETHCurrency, for: .normal)
+    self.currencyETHCenterConstraint.constant = self.viewModel.currencyETHCenterXConstant
+    self.currencyUSDButton.setAttributedTitle(self.viewModel.displayUSDCurrency, for: .normal)
+    self.currencyUSDCenterConstraint.constant = self.viewModel.currencyUSDCenterXConstant
+    self.change24hButton.setAttributedTitle(self.viewModel.displayChange24h, for: .normal)
+    self.change24hCenterConstraint.constant = self.viewModel.change24hCenterXConstant
+
     self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
     self.kyberListButton.setTitle(
       NSLocalizedString("kyber.listed", value: "Kyber Listed", comment: ""),
@@ -210,23 +227,33 @@ class KWalletBalanceViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_name"])
     self.viewModel.updateTokenDisplayType(positionClicked: 1)
     self.tokensBalanceTableView.reloadData()
+    self.updateDisplayedDataType()
   }
 
   @IBAction func changeButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_change_24h"])
     self.viewModel.updateTokenDisplayType(positionClicked: 3)
     self.tokensBalanceTableView.reloadData()
+    self.updateDisplayedDataType()
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     self.hamburgerMenu.gestureScreenEdgePanAction(sender)
   }
 
-  @IBAction func currencyButtonPressed(_ sender: Any) {
-    let newType: KWalletCurrencyType = self.viewModel.currencyType == .usd ? .eth : .usd
+  @IBAction func currencyETHButtonPressed(_ sender: Any) {
+    let newType: KWalletCurrencyType = .eth
     KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "currency_changed_\(newType.rawValue)"])
-    _ = self.viewModel.updateCurrencyType(newType)
-    self.viewModel.updateTokenDisplayType(positionClicked: 2)
+    let isSwitched = self.viewModel.updateCurrencyType(newType)
+    self.viewModel.updateTokenDisplayType(positionClicked: 2, isSwitched: isSwitched)
+    self.updateDisplayedDataType()
+  }
+
+  @IBAction func currencyUSDButtonPressed(_ sender: Any) {
+    let newType: KWalletCurrencyType = .usd
+    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "currency_changed_\(newType.rawValue)"])
+    let isSwitched = self.viewModel.updateCurrencyType(newType)
+    self.viewModel.updateTokenDisplayType(positionClicked: 2, isSwitched: isSwitched)
     self.updateDisplayedDataType()
   }
 }
