@@ -100,6 +100,8 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate let appStyle = KNAppStyleType.current
 
+  fileprivate var isViewSetup: Bool = false
+
   init(viewModel: KNProfileHomeViewModel) {
     self.viewModel = viewModel
     self.signInViewModel = KNSignInViewModel()
@@ -110,13 +112,12 @@ class KNProfileHomeViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.setupUI()
-  }
-
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    if !self.isViewSetup {
+      self.isViewSetup = true
+      self.setupUI()
+    }
     self.updateUIUserDidSignedIn()
   }
 
@@ -173,6 +174,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     )
     self.signInButton.addTextSpacing()
     self.notSignInView.isHidden = self.viewModel.isUserSignedIn
+    self.view.layoutSubviews()
   }
 
   fileprivate func setupUserSignedInView() {
@@ -206,6 +208,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
     self.setupPriceAlertsView()
     self.updateUIUserDidSignedIn()
+    self.view.layoutSubviews()
   }
 
   fileprivate func setupPriceAlertsView() {

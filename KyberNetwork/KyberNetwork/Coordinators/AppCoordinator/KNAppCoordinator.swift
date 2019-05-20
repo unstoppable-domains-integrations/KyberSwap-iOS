@@ -130,7 +130,10 @@ extension KNAppCoordinator {
   }
 
   func appWillEnterForeground() {
-    self.authenticationCoordinator.start()
+    if KNAppTracker.shouldShowAuthenticate() {
+      self.authenticationCoordinator.start()
+      KNAppTracker.saveLastTimeAuthenticate()
+    }
   }
 
   func appDidEnterBackground() {

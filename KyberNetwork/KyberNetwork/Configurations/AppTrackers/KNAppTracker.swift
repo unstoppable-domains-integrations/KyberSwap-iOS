@@ -37,11 +37,14 @@ class KNAppTracker {
 
   static let kHistoryFilterKey: String = "kHistoryFilterKey"
 
+  static let kLastTimeAuthenticateKey: String = "kLastTimeAuthenticateKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
   static let minimumPriceAlertChangePercent: Double = 0.1 // min change 0.1%
   static let maximumPriceAlertPercent: Double = 10000.0
+  static let timeToAuthenticate: Double = 60.0 // 1 minute
 
   static func internalCachedEnpoint() -> String {
     return KNSecret.internalCachedEndpoint
@@ -263,5 +266,17 @@ class KNAppTracker {
       isSwap: true,
       tokens: KNSupportedTokenStorage.shared.supportedTokens.map({ return $0.symbol })
     )
+  }
+
+  static func saveLastTimeAuthenticate() {
+    userDefaults.set(Date().timeIntervalSince1970, forKey: kLastTimeAuthenticateKey)
+    userDefaults.synchronize()
+  }
+
+  static func shouldShowAuthenticate() -> Bool {
+    if let time = userDefaults.object(forKey: kLastTimeAuthenticateKey) as? Double {
+      return Date().timeIntervalSince(Date(timeIntervalSince1970: time)) >= timeToAuthenticate
+    }
+    return true
   }
 }
