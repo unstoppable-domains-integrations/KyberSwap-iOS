@@ -269,7 +269,7 @@
 "amount.to.send.greater.than.zero" = "发送金额应大于零";
 "invalid.address" = "无效地址";
 "sent" = "发送成功";
-"your.password.and.confirm.password.do.not.match" = "您的密码和确认密码不匹配";
+"your.PIN.and.confirm.PIN.do.not.match" = "您的PIN码和确认PIN码不匹配";
 "add.new.wallet" = "添加新钱包？";
 "create.a.new.wallet" = "创建一个新钱包";
 "import.a.wallet" = "导入钱包";

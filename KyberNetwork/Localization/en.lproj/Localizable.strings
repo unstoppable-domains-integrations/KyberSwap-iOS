@@ -269,7 +269,7 @@
 "amount.to.send.greater.than.zero" = "Amount to send should be greater than zero";
 "invalid.address" = "Invalid Address";
 "sent" = "sent";
-"your.password.and.confirm.password.do.not.match" = "Your password and confirm password do not match";
+"your.PIN.and.confirm.PIN.do.not.match" = "Your PIN and confirm PIN do not match";
 "add.new.wallet" = "Add new wallet?";
 "create.a.new.wallet" = "Create a new wallet";
 "import.a.wallet" = "Import a wallet";

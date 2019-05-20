@@ -208,7 +208,7 @@ class KNPasscodeViewController: KNBaseViewController {
         self.currentPasscode = ""
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: NSLocalizedString("your.password.and.confirm.password.do.not.match", value: "Your password and confirm password do not match", comment: ""),
+          message: NSLocalizedString("your.PIN.and.confirm.PIN.do.not.match", value: "Your PIN and confirm PIN do not match", comment: ""),
           time: 1.5
         )
       }

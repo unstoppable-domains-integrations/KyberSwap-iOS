@@ -269,7 +269,7 @@
 "amount.to.send.greater.than.zero" = "Số tiền chuyển phải lớn hơn 0";
 "invalid.address" = "Địa chỉ không hợp lệ";
 "sent" = "chuyển";
-"your.password.and.confirm.password.do.not.match" = "Mật khẩu và xác nhận mật khẩu không khớp";
+"your.PIN.and.confirm.PIN.do.not.match" = "Mã PIN và xác nhận mã PIN không khớp";
 "add.new.wallet" = "Thêm ví mới?";
 "create.a.new.wallet" = "Tạo ví mới";
 "import.a.wallet" = "Nhập ví";
