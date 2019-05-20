@@ -94,7 +94,7 @@ class KAdvancedSettingsViewModel: NSObject {
   var superFastGasString: NSAttributedString {
     return self.attributedString(
       for: self.superFast,
-      text: NSLocalizedString("Super Fast", value: "Super Fast", comment: "").uppercased()
+      text: NSLocalizedString("super.fast", value: "Super Fast", comment: "").uppercased()
     )
   }
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {

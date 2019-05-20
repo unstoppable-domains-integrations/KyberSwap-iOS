@@ -259,6 +259,7 @@
 "fee" = "Phí";
 "fast" = "Nhanh";
 "slow" = "Chậm";
+"super.fast" = "Rất Nhanh";
 "standard" = "Thường";
 "transaction.to.text" = "Thành";
 "search" = "Tìm kiếm";

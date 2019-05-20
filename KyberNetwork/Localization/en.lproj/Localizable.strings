@@ -259,6 +259,7 @@
 "fee" = "Fee";
 "fast" = "Fast";
 "slow" = "Slow";
+"super.fast" = "Super Fast";
 "standard" = "Standard";
 "transaction.to.text" = "To";
 "search" = "Search";

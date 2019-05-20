@@ -259,6 +259,7 @@
 "fee" = "费用";
 "fast" = "快速";
 "slow" = "慢";
+"super.fast" = "极速";
 "standard" = "标准";
 "transaction.to.text" = "至";
 "search" = "搜索";

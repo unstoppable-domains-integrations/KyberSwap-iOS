@@ -259,6 +259,7 @@
 "fee" = "수수료";
 "fast" = "빠른";
 "slow" = "느린";
+"super.fast" = "빠른 슈퍼";
 "standard" = "표준";
 "transaction.to.text" = "To";
 "search" = "검색";
