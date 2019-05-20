@@ -42,6 +42,12 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
   internal var signUpViewController: KNSignUpViewController?
   internal var confirmSignUpVC: KNConfirmSignUpViewController?
 
+  lazy var loginManager: LoginManager = {
+    let manager = LoginManager()
+    manager.loginBehavior = .native
+    return manager
+  }()
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession

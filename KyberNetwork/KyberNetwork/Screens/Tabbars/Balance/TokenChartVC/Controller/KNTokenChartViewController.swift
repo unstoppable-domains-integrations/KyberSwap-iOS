@@ -93,7 +93,7 @@ class KNTokenChartViewModel {
       return rate.displayRate(decimals: 18)
     }()
     let change24hString: String = {
-      let string = NumberFormatterUtil.shared.displayPercentage(from: trackerRate.changeETH24h)
+      let string = NumberFormatterUtil.shared.displayPercentage(from: fabs(trackerRate.changeETH24h))
       return "\(string)%"
     }()
     let changeColor: UIColor = {

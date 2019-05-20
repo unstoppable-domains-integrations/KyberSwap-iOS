@@ -76,7 +76,7 @@ extension KNProfileHomeCoordinator {
 // MARK: Handle Facebook authentication
 extension KNProfileHomeCoordinator {
   fileprivate func authenticateFacebook() {
-    LoginManager().logOut()
+    self.loginManager.logOut()
     self.retrieveFacebokAccessToken { (accessToken, isError) in
       guard let accessToken = accessToken else {
         if isError {
@@ -114,8 +114,7 @@ extension KNProfileHomeCoordinator {
       completion(accessToken, false)
       return
     }
-    let loginManager = LoginManager()
-    loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self.navigationController) { loginResult in
+    self.loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self.navigationController) { loginResult in
       switch loginResult {
       case .failed:
         completion(nil, true)
