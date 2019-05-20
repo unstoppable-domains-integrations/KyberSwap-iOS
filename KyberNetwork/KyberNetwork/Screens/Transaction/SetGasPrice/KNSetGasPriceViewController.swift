@@ -4,13 +4,6 @@ import UIKit
 import BigInt
 import MSCircularSlider
 
-enum KNSelectedGasPriceType: Int {
-  case fast = 0
-  case medium = 1
-  case slow = 2
-  case custom = 3
-}
-
 protocol KNSetGasPriceViewControllerDelegate: class {
   // gasPrice: nil if user pressed back, chosen value if user pressed done
   func setGasPriceViewControllerDidReturn(gasPrice: BigInt?)

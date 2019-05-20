@@ -25,10 +25,15 @@ class KNGasCoordinator {
   var standardKNGas: BigInt = KNGasConfiguration.gasPriceDefault
   var lowKNGas: BigInt = KNGasConfiguration.gasPriceMin
   var fastKNGas: BigInt = KNGasConfiguration.gasPriceMax
-  var maxKNGas: BigInt = KNGasConfiguration.gasPriceMax
+  var superFastKNGas: BigInt {
+    if fastKNGas < EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)! {
+      return KNGasConfiguration.gasPriceMax // 20 gwei
+    }
+    let maxGas = EtherNumberFormatter.full.number(from: "100", units: UnitConfiguration.gasPriceUnit)!
+    return min(fastKNGas * BigInt(2), maxGas)
+  }
 
-//  fileprivate var maxKNGasPriceFetchTimer: Timer?
-//  fileprivate var isLoadingMaxKNGasPrice: Bool = false
+  var maxKNGas: BigInt = KNGasConfiguration.gasPriceMax
 
   fileprivate var knGasPriceFetchTimer: Timer?
   fileprivate var isLoadingGasPrice: Bool = false
@@ -47,42 +52,13 @@ class KNGasCoordinator {
       userInfo: nil,
       repeats: true
     )
-
-//    maxKNGasPriceFetchTimer?.invalidate()
-//    isLoadingMaxKNGasPrice = false
-//    fetchKNMaxGasPrice(nil)
-//
-//    maxKNGasPriceFetchTimer = Timer.scheduledTimer(
-//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
-//      target: self,
-//      selector: #selector(fetchKNMaxGasPrice(_:)),
-//      userInfo: nil,
-//      repeats: true
-//    )
   }
 
   func pause() {
     knGasPriceFetchTimer?.invalidate()
     knGasPriceFetchTimer = nil
     isLoadingGasPrice = true
-
-//    maxKNGasPriceFetchTimer?.invalidate()
-//    maxKNGasPriceFetchTimer = nil
-//    isLoadingMaxKNGasPrice = true
   }
-
-//  @objc func fetchKNMaxGasPrice(_ sender: Timer?) {
-//    if isLoadingMaxKNGasPrice { return }
-//    isLoadingMaxKNGasPrice = true
-//    KNInternalProvider.shared.getKNCachedMaxGasPrice { [weak self] (result) in
-//      guard let `self` = self else { return }
-//      self.isLoadingMaxKNGasPrice = false
-//      if case .success(let data) = result {
-//        let dataString: String = data["data"] as? String ?? ""
-//        self.maxKNGas = dataString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.maxKNGas
-//      }
-//    }
-//  }
 
   @objc func fetchKNGasPrice(_ sender: Timer?) {
     if isLoadingGasPrice { return }

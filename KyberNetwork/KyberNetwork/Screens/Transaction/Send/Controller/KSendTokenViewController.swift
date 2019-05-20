@@ -194,7 +194,8 @@ class KSendTokenViewController: KNBaseViewController {
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
     )
     viewModel.updateViewHidden(isHidden: true)
     self.advancedSettingsView.updateViewModel(viewModel)
@@ -235,7 +236,8 @@ class KSendTokenViewController: KNBaseViewController {
     self.advancedSettingsView.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
     )
     self.view.layoutIfNeeded()
   }
