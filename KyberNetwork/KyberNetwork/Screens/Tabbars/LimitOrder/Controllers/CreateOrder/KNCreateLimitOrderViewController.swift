@@ -19,8 +19,11 @@ protocol KNCreateLimitOrderViewControllerDelegate: class {
 
 class KNCreateLimitOrderViewController: KNBaseViewController {
 
+  let kCancelOrdersCollectionViewCellID: String = "kCancelOrdersCollectionViewCellID"
+
   @IBOutlet weak var headerContainerView: UIView!
 
+  @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var limitOrderTextLabel: UILabel!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var hasPendingTxView: UIView!
@@ -58,6 +61,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var relatedManageOrderButton: UIButton!
 
   @IBOutlet weak var manageOrdersButton: UIButton!
+
+  @IBOutlet weak var cancelRelatedOrdersView: UIView!
+  @IBOutlet weak var warningMessageLabel: UILabel!
+  @IBOutlet weak var cancelOrdersCollectionView: UICollectionView!
+  @IBOutlet weak var confirmCancelButton: UIButton!
+  @IBOutlet weak var noCancelButton: UIButton!
+  @IBOutlet weak var cancelOrdersCollectionViewHeightConstraint: NSLayoutConstraint!
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
@@ -128,6 +138,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
     self.submitOrderButton.removeSublayer(at: 0)
     self.submitOrderButton.applyGradient()
+    self.confirmCancelButton.removeSublayer(at: 0)
+    self.confirmCancelButton.applyGradient()
 
     self.tokenDateContainerView.addShadow(
       color: UIColor.black.withAlphaComponent(0.6),
@@ -199,6 +211,18 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     // Update hamburger menu
     self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
     self.hamburgerMenu.hideMenu(animated: false)
+
+    self.warningMessageLabel.text = "This is the best rate you have chosen for \(self.viewModel.from.symbol)/\(self.viewModel.to.symbol). However, you have pending orders with other rates. Do you want to cancel them?".toBeLocalised()
+    self.confirmCancelButton.setTitle("Yes, please".toBeLocalised(), for: .normal)
+    self.confirmCancelButton.rounded(radius: 4.0)
+    self.confirmCancelButton.applyGradient()
+    self.noCancelButton.setTitle("No, thanks".toBeLocalised(), for: .normal)
+    self.cancelRelatedOrdersView.isHidden = true
+    self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+    let nib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
+    self.cancelOrdersCollectionView.register(nib, forCellWithReuseIdentifier: kCancelOrdersCollectionViewCellID)
+    self.cancelOrdersCollectionView.delegate = self
+    self.cancelOrdersCollectionView.dataSource = self
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
@@ -272,6 +296,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBAction func submitOrderButtonPressed(_ sender: Any) {
     if !self.validateDataIfNeeded(isConfirming: true) { return }
+    if self.showShouldCancelOtherOrdersIfNeeded() { return }
+    self.submitOrderDidVerifyData()
+  }
+
+  fileprivate func submitOrderDidVerifyData() {
     if case .real(let account) = self.viewModel.wallet.type {
       let order = KNLimitOrder(
         from: self.viewModel.from,
@@ -309,13 +338,45 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @objc func balanceLabelTapped(_ sender: Any) {
     self.keyboardSwapAllButtonPressed(sender)
   }
+
+  @IBAction func confirmCancelButtonPressed(_ sender: Any) {
+    UIView.animate(withDuration: 0.16) {
+      self.cancelRelatedOrdersView.isHidden = true
+      self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+      self.updateRelatedOrdersView()
+      self.rateContainerView.rounded(radius: 4.0)
+      self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+      self.submitOrderDidVerifyData()
+      self.view.layoutIfNeeded()
+    }
+  }
+
+  @IBAction func noCancelButtonPressed(_ sender: Any) {
+    UIView.animate(withDuration: 0.16) {
+      self.cancelRelatedOrdersView.isHidden = true
+      self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+      self.updateRelatedOrdersView()
+      self.rateContainerView.rounded(radius: 4.0)
+      self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+      self.submitOrderDidVerifyData()
+      self.view.layoutIfNeeded()
+    }
+  }
 }
 
 // MARK: Update UIs
 extension KNCreateLimitOrderViewController {
   // Update related order view, hide or show related orders
   fileprivate func updateRelatedOrdersView() {
-    // TODO: Remove
+    if !self.cancelRelatedOrdersView.isHidden {
+      self.submitButtonBottomPaddingToContainerViewConstraint.isActive = true
+      self.submitButtonBottomPaddingToContainerViewConstraint.constant = 88.0
+      self.submitButtonBottomPaddingToRelatedOrderViewConstraint.isActive = false
+      self.relatedOrdersContainerView.isHidden = true
+      self.manageOrdersButton.isHidden = false
+      self.view.layoutIfNeeded()
+      return
+    }
     let orders = self.viewModel.relatedOrders.filter({
       return $0.sourceToken == self.viewModel.from.symbol
         && $0.destToken == self.viewModel.to.symbol
@@ -340,6 +401,7 @@ extension KNCreateLimitOrderViewController {
       self.relatedOrdersContainerView.isHidden = true
       self.manageOrdersButton.isHidden = false
     }
+    self.view.layoutIfNeeded()
   }
 
   // Update current martket rate with rate from node or cached
@@ -401,6 +463,7 @@ extension KNCreateLimitOrderViewController {
     self.updateViewAmountDidChange()
     self.updateRelatedOrdersView()
 
+    self.warningMessageLabel.text = "This is the best rate you have chosen for \(self.viewModel.from.symbol)/\(self.viewModel.to.symbol). However, you have pending orders with other rates. Do you want to cancel them?".toBeLocalised()
     self.view.layoutIfNeeded()
   }
 }
@@ -441,15 +504,26 @@ extension KNCreateLimitOrderViewController {
       )
       return false
     }
-//    if isConfirming {
-//      if self.viewModel.percentageRateDiff <= 0 {
-//        self.showWarningTopBannerMessage(
-//          with: "Warning".toBeLocalised(),
-//          message: "Your target rate is lower than current market rate".toBeLocalised(),
-//          time: 1.5
-//        )
-//      }
-//    }
+    return true
+  }
+
+  fileprivate func showShouldCancelOtherOrdersIfNeeded() -> Bool {
+    if self.viewModel.cancelSuggestOrders.isEmpty { return false }
+    self.rateContainerView.rounded(
+      color: UIColor(red: 239, green: 129, blue: 2),
+      width: 1.0,
+      radius: 4.0
+    )
+    self.cancelRelatedOrdersView.isHidden = false
+    self.cancelOrdersCollectionView.reloadData()
+
+    let orderHeight = KNLimitOrderCollectionViewCell.height + 12.0
+    let numberOrders = self.viewModel.cancelSuggestOrders.count
+    self.cancelOrdersCollectionViewHeightConstraint.constant = orderHeight * CGFloat(numberOrders)
+
+    self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    self.updateRelatedOrdersView()
+
     return true
   }
 }
@@ -596,7 +670,10 @@ extension KNCreateLimitOrderViewController {
   // TODO: Remove
   func coordinatorDoneSubmittingOrder(_ order: KNLimitOrder) {
     var orders = self.viewModel.relatedOrders
-    orders.append(KNOrderObject.getOrderObject(from: order))
+    let object = KNOrderObject.getOrderObject(from: order)
+    object.stateValue = KNOrderState.open.rawValue
+    object.filledDate = 0.0
+    orders.append(object)
     self.viewModel.updateRelatedOrders(orders)
     self.updateRelatedOrdersView()
   }
@@ -726,7 +803,10 @@ extension KNCreateLimitOrderViewController: UICollectionViewDelegateFlowLayout {
 extension KNCreateLimitOrderViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: true)
-    let order = self.viewModel.relatedOrders[indexPath.row]
+    let order: KNOrderObject = {
+      if collectionView == self.relatedOrderCollectionView { return self.viewModel.relatedOrders[indexPath.row] }
+      return self.viewModel.cancelSuggestOrders[indexPath.row]
+    }()
     if let cancelOrder = self.viewModel.cancelOrder, cancelOrder.id == order.id {
       self.viewModel.cancelOrder = nil
       collectionView.reloadItems(at: [indexPath])
@@ -740,15 +820,28 @@ extension KNCreateLimitOrderViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.viewModel.relatedOrders.count
+    return collectionView == self.relatedOrderCollectionView ? self.viewModel.relatedOrders.count : self.viewModel.cancelSuggestOrders.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: KNLimitOrderCollectionViewCell.cellID,
-      for: indexPath
-    ) as! KNLimitOrderCollectionViewCell
-    let order = self.viewModel.relatedOrders[indexPath.row]
+    let cell: KNLimitOrderCollectionViewCell = {
+      if collectionView == self.relatedOrderCollectionView {
+        // related orders
+        return collectionView.dequeueReusableCell(
+          withReuseIdentifier: KNLimitOrderCollectionViewCell.cellID,
+          for: indexPath
+          ) as! KNLimitOrderCollectionViewCell
+      }
+      // suggest cancel
+      return collectionView.dequeueReusableCell(
+        withReuseIdentifier: kCancelOrdersCollectionViewCellID,
+        for: indexPath
+        ) as! KNLimitOrderCollectionViewCell
+    }()
+    let order: KNOrderObject = {
+      if collectionView == self.relatedOrderCollectionView { return self.viewModel.relatedOrders[indexPath.row] }
+      return self.viewModel.cancelSuggestOrders[indexPath.row]
+    }()
     let isReset: Bool = {
       if let cancelBtnOrder = self.viewModel.cancelOrder {
         return cancelBtnOrder.id != order.id
@@ -763,7 +856,21 @@ extension KNCreateLimitOrderViewController: UICollectionViewDataSource {
 
 extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelegate {
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject) {
-    guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
+    if self.cancelRelatedOrdersView.isHidden {
+      guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
+        return
+      }
+      let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
+      cancelOrderVC.loadViewIfNeeded()
+      cancelOrderVC.modalTransitionStyle = .crossDissolve
+      cancelOrderVC.modalPresentationStyle = .overFullScreen
+      self.present(cancelOrderVC, animated: true) {
+        self.viewModel.cancelOrder = nil
+        let indexPath = IndexPath(row: id, section: 0)
+        self.relatedOrderCollectionView.reloadItems(at: [indexPath])
+      }
+    }
+    guard let id = self.viewModel.cancelSuggestOrders.firstIndex(where: { $0.id == order.id }) else {
       return
     }
     let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
@@ -773,7 +880,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     self.present(cancelOrderVC, animated: true) {
       self.viewModel.cancelOrder = nil
       let indexPath = IndexPath(row: id, section: 0)
-      self.relatedOrderCollectionView.reloadItems(at: [indexPath])
+      self.cancelOrdersCollectionView.reloadItems(at: [indexPath])
     }
   }
 }
