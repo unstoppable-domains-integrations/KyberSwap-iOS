@@ -212,11 +212,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
     self.hamburgerMenu.hideMenu(animated: false)
 
-    self.warningMessageLabel.text = "This is the best rate you have chosen for \(self.viewModel.from.symbol)/\(self.viewModel.to.symbol). However, you have pending orders with other rates. Do you want to cancel them?".toBeLocalised()
+    self.warningMessageLabel.text = "This new order has a lower rate than some orders you have created. Below orders will be canceled when you submited this order".toBeLocalised()
     self.confirmCancelButton.setTitle("Yes, please".toBeLocalised(), for: .normal)
     self.confirmCancelButton.rounded(radius: 4.0)
     self.confirmCancelButton.applyGradient()
-    self.noCancelButton.setTitle("No, thanks".toBeLocalised(), for: .normal)
+    self.noCancelButton.setTitle("Change Rate".toBeLocalised(), for: .normal)
     self.cancelRelatedOrdersView.isHidden = true
     self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
     let nib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
@@ -358,7 +358,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       self.updateRelatedOrdersView()
       self.rateContainerView.rounded(radius: 4.0)
       self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-      self.submitOrderDidVerifyData()
+      self.targetRateTextField.becomeFirstResponder()
       self.view.layoutIfNeeded()
     }
   }
@@ -463,7 +463,6 @@ extension KNCreateLimitOrderViewController {
     self.updateViewAmountDidChange()
     self.updateRelatedOrdersView()
 
-    self.warningMessageLabel.text = "This is the best rate you have chosen for \(self.viewModel.from.symbol)/\(self.viewModel.to.symbol). However, you have pending orders with other rates. Do you want to cancel them?".toBeLocalised()
     self.view.layoutIfNeeded()
   }
 }

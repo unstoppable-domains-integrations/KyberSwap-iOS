@@ -402,9 +402,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55E-GN-yF0">
                             <rect key="frame" x="0.0" y="169" width="414" height="483.5"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5d-Cq-wAF">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This new order has a lower rate than some orders you have created. Below orders will be canceled when you submited this order" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5d-Cq-wAF">
                                     <rect key="frame" x="16" y="0.0" width="382" height="279.5"/>
-                                    <string key="text">This is the best rate you have chosen for KNC/ETH. However, you have pending orders with other rates. Do you want to cancel them?</string>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                     <color key="textColor" red="0.93725490196078431" green="0.50588235294117645" blue="0.0078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
