@@ -30,6 +30,7 @@ class KNCreateLimitOrderViewModel {
   fileprivate(set) var focusTextFieldTag: Int = 0
 
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
+  fileprivate(set) var cancelSuggestOrders: [KNOrderObject] = []
   var cancelOrder: KNOrderObject?
 
   init(wallet: Wallet,
@@ -137,8 +138,8 @@ class KNCreateLimitOrderViewModel {
       return self.amountToBigInt
     }
     let ethRate: BigInt = {
-      let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
-      return cacheRate?.rate ?? BigInt(0)
+      let cacheRate = KNTrackerRateStorage.shared.trackerRate(for: self.from)
+      return BigInt((cacheRate?.rateETHNow ?? 0.0) * pow(10.0, 18.0))
     }()
     let valueInETH = ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     return valueInETH
@@ -158,6 +159,10 @@ class KNCreateLimitOrderViewModel {
   // MARK: Rate
   var targetRateBigInt: BigInt {
     return self.targetRate.removeGroupSeparator().fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+  }
+
+  var targetRateDouble: Double {
+    return Double(targetRateBigInt) / pow(10.0, Double(self.to.decimals))
   }
 
   var estimateTargetRateBigInt: BigInt {
@@ -289,6 +294,7 @@ class KNCreateLimitOrderViewModel {
 
   func updateTargetRate(_ rate: String) {
     self.targetRate = rate
+    self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -330,6 +336,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
-    self.relatedOrders = orders
+    self.relatedOrders = orders.filter({ return $0.state == .open })
+    self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
   }
 }

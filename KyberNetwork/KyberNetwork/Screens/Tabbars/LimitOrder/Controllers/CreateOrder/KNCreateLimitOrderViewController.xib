@@ -20,7 +20,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNCreateLimitOrderViewController" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
+                <outlet property="cancelOrdersCollectionView" destination="YGz-GV-5be" id="XgE-9Q-rbI"/>
+                <outlet property="cancelOrdersCollectionViewHeightConstraint" destination="Aab-bl-0ku" id="cpp-VR-Ugc"/>
+                <outlet property="cancelRelatedOrdersView" destination="55E-GN-yF0" id="IVJ-zy-Bur"/>
                 <outlet property="compareMarketRateLabel" destination="moT-pm-yUu" id="eW4-f6-Ily"/>
+                <outlet property="confirmCancelButton" destination="IK2-ZP-KRs" id="fCY-wK-1OU"/>
                 <outlet property="currentRateLabel" destination="vwX-Ds-mOc" id="liJ-kh-YLe"/>
                 <outlet property="feeNoteLabel" destination="pOO-P0-SC5" id="m9P-Sl-fZq"/>
                 <outlet property="fromAmountTextField" destination="aLc-j5-6n4" id="iKF-0U-BEJ"/>
@@ -29,6 +33,7 @@
                 <outlet property="headerContainerView" destination="eqO-O8-aqZ" id="3wV-2Y-Vrl"/>
                 <outlet property="limitOrderTextLabel" destination="fu2-is-Uye" id="dxW-hw-bZm"/>
                 <outlet property="manageOrdersButton" destination="Kdy-cw-Tpy" id="yb4-2n-CEm"/>
+                <outlet property="noCancelButton" destination="09L-0g-a69" id="Llt-oO-Riy"/>
                 <outlet property="pairTokensLabel" destination="qqg-VL-FZK" id="mH7-oS-cxT"/>
                 <outlet property="rateContainerView" destination="Q3i-im-2Ke" id="QA8-A1-vM8"/>
                 <outlet property="rateOfTextLabel" destination="jTA-cN-AJI" id="YZx-Qv-EEh"/>
@@ -37,6 +42,7 @@
                 <outlet property="relatedOrderContainerViewHeightConstraint" destination="gUH-dI-Wtn" id="Jpl-Wg-WHL"/>
                 <outlet property="relatedOrderTextLabel" destination="8fo-EP-ooI" id="JbC-f6-GH6"/>
                 <outlet property="relatedOrdersContainerView" destination="UPh-jv-v16" id="K5b-5F-j1h"/>
+                <outlet property="scrollContainerView" destination="aJ0-BY-cWi" id="Tuo-gz-0Ci"/>
                 <outlet property="scrollViewBottomPaddingConstraints" destination="0bZ-T2-xTX" id="JUX-2w-yyu"/>
                 <outlet property="separatorView" destination="vgW-pV-6A2" id="oro-fr-wYX"/>
                 <outlet property="sourceBalanceTextLabel" destination="h4i-M9-cm7" id="OTd-xi-E62"/>
@@ -51,6 +57,7 @@
                 <outlet property="tokenDateContainerView" destination="JFm-au-vdC" id="kgO-dm-olR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameLabel" destination="u02-H8-lcK" id="RId-Qg-6qu"/>
+                <outlet property="warningMessageLabel" destination="M5d-Cq-wAF" id="CQ4-rC-j4m"/>
                 <outletCollection property="percentageButtons" destination="mXb-b6-Qjb" collectionClass="NSMutableArray" id="sw3-EH-4sE"/>
                 <outletCollection property="percentageButtons" destination="18h-QM-Wt0" collectionClass="NSMutableArray" id="dKk-Ks-LfM"/>
                 <outletCollection property="percentageButtons" destination="k74-4n-plt" collectionClass="NSMutableArray" id="6xZ-Hd-40l"/>
@@ -392,6 +399,75 @@
                                 <constraint firstItem="8fo-EP-ooI" firstAttribute="top" secondItem="UPh-jv-v16" secondAttribute="top" constant="2" id="vbm-fq-zan"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55E-GN-yF0">
+                            <rect key="frame" x="0.0" y="169" width="414" height="483.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5d-Cq-wAF">
+                                    <rect key="frame" x="16" y="0.0" width="382" height="279.5"/>
+                                    <string key="text">This is the best rate you have chosen for KNC/ETH. However, you have pending orders with other rates. Do you want to cancel them?</string>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                    <color key="textColor" red="0.93725490196078431" green="0.50588235294117645" blue="0.0078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="YGz-GV-5be">
+                                    <rect key="frame" x="0.0" y="303.5" width="414" height="10"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="10" id="Aab-bl-0ku"/>
+                                    </constraints>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="we3-9d-BeO">
+                                        <size key="itemSize" width="50" height="50"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                </collectionView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IK2-ZP-KRs">
+                                    <rect key="frame" x="16" y="343.5" width="382" height="46"/>
+                                    <color key="backgroundColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="46" id="8bt-4B-uWn"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                                    <state key="normal" title="Yes, please">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="confirmCancelButtonPressed:" destination="-1" eventType="touchUpInside" id="Cry-Hg-aAg"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09L-0g-a69">
+                                    <rect key="frame" x="16" y="405.5" width="382" height="46"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="46" id="mbA-nz-9wS"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="16"/>
+                                    <state key="normal" title="No, thanks">
+                                        <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="noCancelButtonPressed:" destination="-1" eventType="touchUpInside" id="z1e-He-GdL"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="YGz-GV-5be" firstAttribute="top" secondItem="M5d-Cq-wAF" secondAttribute="bottom" constant="24" id="2wV-w6-euc"/>
+                                <constraint firstAttribute="trailing" secondItem="M5d-Cq-wAF" secondAttribute="trailing" constant="16" id="591-SL-cYS"/>
+                                <constraint firstItem="IK2-ZP-KRs" firstAttribute="leading" secondItem="55E-GN-yF0" secondAttribute="leading" constant="16" id="8yX-S9-jLh"/>
+                                <constraint firstItem="IK2-ZP-KRs" firstAttribute="top" secondItem="YGz-GV-5be" secondAttribute="bottom" constant="30" id="A4Q-ds-ZbN"/>
+                                <constraint firstItem="YGz-GV-5be" firstAttribute="leading" secondItem="55E-GN-yF0" secondAttribute="leading" id="Fzx-Dk-LnA"/>
+                                <constraint firstAttribute="trailing" secondItem="IK2-ZP-KRs" secondAttribute="trailing" constant="16" id="W4K-j3-BYu"/>
+                                <constraint firstItem="M5d-Cq-wAF" firstAttribute="leading" secondItem="55E-GN-yF0" secondAttribute="leading" constant="16" id="Ynx-JI-7JE"/>
+                                <constraint firstItem="09L-0g-a69" firstAttribute="leading" secondItem="55E-GN-yF0" secondAttribute="leading" constant="16" id="bGy-QA-g3c"/>
+                                <constraint firstAttribute="trailing" secondItem="09L-0g-a69" secondAttribute="trailing" constant="16" id="f3C-PP-3uc"/>
+                                <constraint firstItem="M5d-Cq-wAF" firstAttribute="top" secondItem="55E-GN-yF0" secondAttribute="top" id="fy9-fE-4i4"/>
+                                <constraint firstItem="09L-0g-a69" firstAttribute="top" secondItem="IK2-ZP-KRs" secondAttribute="bottom" constant="16" id="sce-dt-06p"/>
+                                <constraint firstAttribute="bottom" secondItem="09L-0g-a69" secondAttribute="bottom" constant="32" id="tXI-s5-XKM"/>
+                                <constraint firstAttribute="trailing" secondItem="YGz-GV-5be" secondAttribute="trailing" id="zh6-Ck-zqE"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -415,6 +491,7 @@
                         <constraint firstAttribute="trailing" secondItem="Q3i-im-2Ke" secondAttribute="trailing" constant="12" id="NhN-JV-GPO"/>
                         <constraint firstItem="vwX-Ds-mOc" firstAttribute="top" secondItem="Q3i-im-2Ke" secondAttribute="bottom" constant="24" id="Psq-9x-b8N"/>
                         <constraint firstItem="Kdy-cw-Tpy" firstAttribute="top" secondItem="MvJ-fy-UmM" secondAttribute="bottom" constant="24" id="RHU-99-m43"/>
+                        <constraint firstItem="55E-GN-yF0" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" id="TIS-Tt-OB3"/>
                         <constraint firstItem="k74-4n-plt" firstAttribute="top" secondItem="aJ0-BY-cWi" secondAttribute="top" constant="15" id="VNB-GM-fbr"/>
                         <constraint firstItem="vgW-pV-6A2" firstAttribute="centerX" secondItem="aJ0-BY-cWi" secondAttribute="centerX" id="Wh2-FR-bD0"/>
                         <constraint firstItem="vwX-Ds-mOc" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" constant="34" id="X8B-VZ-JIa"/>
@@ -424,6 +501,7 @@
                         <constraint firstItem="k74-4n-plt" firstAttribute="leading" secondItem="18h-QM-Wt0" secondAttribute="trailing" constant="16" id="bUa-PO-Gks"/>
                         <constraint firstItem="pOO-P0-SC5" firstAttribute="top" secondItem="vgW-pV-6A2" secondAttribute="bottom" constant="24" id="bhl-KK-X51"/>
                         <constraint firstItem="pOO-P0-SC5" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" constant="34" id="c0O-Pf-JtG"/>
+                        <constraint firstAttribute="bottom" secondItem="55E-GN-yF0" secondAttribute="bottom" id="cW7-4v-5S1"/>
                         <constraint firstItem="18h-QM-Wt0" firstAttribute="centerY" secondItem="k74-4n-plt" secondAttribute="centerY" id="dgA-ip-fQD"/>
                         <constraint firstItem="MvJ-fy-UmM" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" constant="20" id="fOU-Vx-25S"/>
                         <constraint firstItem="UPh-jv-v16" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" id="gA9-te-kbp"/>
@@ -431,11 +509,13 @@
                         <constraint firstItem="h4i-M9-cm7" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" constant="20" id="htu-Df-s2w"/>
                         <constraint firstAttribute="trailing" secondItem="UPh-jv-v16" secondAttribute="trailing" id="iBm-7s-4AY"/>
                         <constraint firstItem="gAv-6K-1qI" firstAttribute="top" secondItem="pOO-P0-SC5" secondAttribute="bottom" constant="4" id="j4f-Kx-gjx"/>
+                        <constraint firstItem="55E-GN-yF0" firstAttribute="top" secondItem="Q3i-im-2Ke" secondAttribute="bottom" constant="24" id="jFo-Nt-bGv"/>
                         <constraint firstItem="h4i-M9-cm7" firstAttribute="top" secondItem="aJ0-BY-cWi" secondAttribute="top" constant="4" id="lY9-ou-EkH"/>
                         <constraint firstAttribute="trailing" secondItem="k74-4n-plt" secondAttribute="trailing" constant="12" id="nGl-nE-0gJ"/>
                         <constraint firstItem="gAv-6K-1qI" firstAttribute="leading" secondItem="aJ0-BY-cWi" secondAttribute="leading" constant="34" id="tVv-vJ-eMc"/>
                         <constraint firstItem="Q3i-im-2Ke" firstAttribute="top" secondItem="18h-QM-Wt0" secondAttribute="bottom" constant="24" id="vmR-YZ-bas"/>
                         <constraint firstItem="moT-pm-yUu" firstAttribute="top" secondItem="vwX-Ds-mOc" secondAttribute="bottom" constant="4" id="ytn-iB-vUZ"/>
+                        <constraint firstAttribute="trailing" secondItem="55E-GN-yF0" secondAttribute="trailing" id="z4c-6q-Fdv"/>
                     </constraints>
                 </scrollView>
             </subviews>
