@@ -482,7 +482,11 @@ class KSwapViewModel {
       return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
     }()
     if from == self.from, to == self.to, !isAmountChanged {
-      self.estimateGasLimit = max(gasLimit, KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to))
+      if let specialGasLimit = KNGasConfiguration.specialGasLimitDefault(from: from, to: to) {
+        self.estimateGasLimit = max(gasLimit, specialGasLimit)
+      } else {
+        self.estimateGasLimit = gasLimit
+      }
     }
   }
 

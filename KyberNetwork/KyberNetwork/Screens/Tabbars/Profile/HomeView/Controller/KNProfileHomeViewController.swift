@@ -112,6 +112,12 @@ class KNProfileHomeViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     if !self.isViewSetup {

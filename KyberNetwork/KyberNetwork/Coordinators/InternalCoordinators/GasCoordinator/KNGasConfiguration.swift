@@ -4,7 +4,7 @@ import UIKit
 import BigInt
 
 public struct KNGasConfiguration {
-  static let digixGasLimitDefault = BigInt(770_000)
+  static let digixGasLimitDefault = BigInt(750_000)
   static let exchangeTokensGasLimitDefault = BigInt(760_000)
   static let exchangeETHTokenGasLimitDefault = BigInt(380_000)
   static let approveTokenGasLimitDefault = BigInt(120_000)
@@ -13,16 +13,23 @@ public struct KNGasConfiguration {
   static let transferGasLimitDefault = BigInt(100_000)
   static let buytokenSaleByETHGasLimitDefault = BigInt(550_000)
   static let buyTokenSaleByTokenGasLimitDefault = BigInt(700_000)
-  static let daiGasLimitDefault = BigInt(450_000)
+  static let daiGasLimitDefault = BigInt(500_000)
   static let makerGasLimitDefault = BigInt(400_000)
   static let propyGasLimitDefault = BigInt(500_000)
   static let promotionTokenGasLimitDefault = BigInt(380_000)
-  static let trueUSDTokenGasLimitDefault = BigInt(500_000)
+  static let trueUSDTokenGasLimitDefault = BigInt(550_000)
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMax: BigInt = EtherNumberFormatter.full.number(from: "20", units: UnitConfiguration.gasPriceUnit)!
   static let extraGasPromoWallet: BigInt = EtherNumberFormatter.full.number(from: "2", units: UnitConfiguration.gasPriceUnit)!
+
+  static func specialGasLimitDefault(from: TokenObject, to: TokenObject) -> BigInt? {
+    if from.isDAI || from.isTUSD || to.isDAI || to.isTUSD {
+      return self.calculateDefaultGasLimit(from: from, to: to)
+    }
+    return nil
+  }
 
   static func calculateDefaultGasLimit(from: TokenObject, to: TokenObject) -> BigInt {
     if from == to {
