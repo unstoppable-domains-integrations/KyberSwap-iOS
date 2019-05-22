@@ -32,6 +32,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 
   fileprivate var confirmVC: KNConfirmLimitOrderViewController?
+  fileprivate var manageOrdersVC: KNManageOrdersViewController?
 
   lazy var rootViewController: KNCreateLimitOrderViewController = {
     let (from, to): (TokenObject, TokenObject) = {
@@ -170,12 +171,16 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         )
         orders.append(KNOrderObject.getOrderObject(from: limitOrder))
       }
-      let manageOrdersVC = KNManageOrdersViewController(
-        viewModel: KNManageOrdersViewModel(orders: orders)
-      )
-      manageOrdersVC.loadViewIfNeeded()
-      manageOrdersVC.delegate = self
-      self.navigationController.pushViewController(manageOrdersVC, animated: true)
+      if self.manageOrdersVC == nil {
+        self.manageOrdersVC = KNManageOrdersViewController(
+          viewModel: KNManageOrdersViewModel(orders: orders)
+        )
+        self.manageOrdersVC?.loadViewIfNeeded()
+        self.manageOrdersVC?.delegate = self
+      }
+      self.navigationController.pushViewController(self.manageOrdersVC!, animated: true) {
+        self.manageOrdersVC?.updateListOrders(orders)
+      }
     default: break
     }
   }

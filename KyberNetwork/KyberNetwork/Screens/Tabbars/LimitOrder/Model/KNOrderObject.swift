@@ -72,7 +72,7 @@ class KNOrderObject: Object {
       price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
       fee: Double(order.fee) / pow(10.0, Double(order.from.decimals)),
       sender: order.account.address.description,
-      createdDate: Date().timeIntervalSince1970,
+      createdDate: Date().timeIntervalSince1970 - Double(arc4random() % 100) * 24.0 * 60.0 * 60.0,
       updatedDate: Date().timeIntervalSince1970,
       filledDate: isFilled ? Date().timeIntervalSince1970 : 0.0,
       stateValue: isFilled ? KNOrderState.filled.rawValue : KNOrderState.open.rawValue
