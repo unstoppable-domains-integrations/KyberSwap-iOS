@@ -501,13 +501,31 @@ extension KNCreateLimitOrderViewController {
       )
       return false
     }
-    guard !self.viewModel.isAmountTooSmall else {
+    guard !(self.viewModel.isAmountTooSmall && !self.viewModel.amountFrom.isEmpty && !self.viewModel.amountTo.isEmpty) else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
         message: "Amount too small, your amount should be between 0.5 ETH to 10 ETH in equivalent".toBeLocalised(),
         time: 1.5
       )
       return false
+    }
+    if isConfirming {
+      if self.viewModel.amountFrom.isEmpty {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+          message: "Please enter an amount to continue".toBeLocalised(),
+          time: 1.5
+        )
+        return false
+      }
+      if self.viewModel.amountTo.isEmpty || self.viewModel.targetRate.isEmpty {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+          message: "Please enter your target rate to continue".toBeLocalised(),
+          time: 1.5
+        )
+        return false
+      }
     }
     return true
   }
