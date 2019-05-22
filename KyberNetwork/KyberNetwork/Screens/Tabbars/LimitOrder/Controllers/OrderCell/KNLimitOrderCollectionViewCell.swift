@@ -36,6 +36,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
   var pan: UIPanGestureRecognizer!
   var order: KNOrderObject!
+  var hasAction: Bool = true
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -60,8 +61,9 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.addGestureRecognizer(swipeRightGesture)
   }
 
-  func updateCell(with order: KNOrderObject, isReset: Bool) {
+  func updateCell(with order: KNOrderObject, isReset: Bool, hasAction: Bool = true) {
     self.order = order
+    self.hasAction = hasAction
     self.pairValueLabel.text = "\(order.sourceToken)  ➞  \(order.destToken)"
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     switch order.state {
@@ -82,15 +84,18 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(order.sourceToken)"
     self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(order.destToken)"
-    if order.state != .open {
-      self.updateCancelButtonUI(isShowing: false, callFromSuper: true)
-    } else {
-      self.updateCancelButtonUI(isShowing: !isReset, callFromSuper: true)
+    if hasAction {
+      if order.state != .open {
+        self.updateCancelButtonUI(isShowing: false, callFromSuper: true)
+      } else {
+        self.updateCancelButtonUI(isShowing: !isReset, callFromSuper: true)
+      }
     }
   }
 
   @objc func onSwipe(_ gesture: UISwipeGestureRecognizer) {
     if self.order != nil && self.order.state != .open { return }
+    if !self.hasAction { return }
     if gesture.state == .ended {
       self.updateCancelButtonUI(isShowing: gesture.direction == .left)
     }
@@ -123,6 +128,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
     if self.order == nil { return }
+    if !self.hasAction { return }
     self.delegate?.limitOrderCollectionViewCell(self, cancelPressed: self.order)
   }
 }

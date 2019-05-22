@@ -179,6 +179,10 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.toAmountTextField.inputAccessoryView = self.toolBar
     self.toAmountTextField.delegate = self
 
+    let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.balanceLabelTapped(_:)))
+    self.sourceBalanceValueLabel.isUserInteractionEnabled = true
+    self.sourceBalanceValueLabel.addGestureRecognizer(tapBalanceGesture)
+
     self.rateContainerView.rounded(radius: 4.0)
     self.targetRateTextField.text = ""
     self.targetRateTextField.adjustsFontSizeToFitWidth = true
@@ -804,10 +808,8 @@ extension KNCreateLimitOrderViewController: UICollectionViewDelegateFlowLayout {
 extension KNCreateLimitOrderViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: true)
-    let order: KNOrderObject = {
-      if collectionView == self.relatedOrderCollectionView { return self.viewModel.relatedOrders[indexPath.row] }
-      return self.viewModel.cancelSuggestOrders[indexPath.row]
-    }()
+    if collectionView == self.cancelOrdersCollectionView { return }
+    let order: KNOrderObject = self.viewModel.relatedOrders[indexPath.row]
     if let cancelOrder = self.viewModel.cancelOrder, cancelOrder.id == order.id {
       self.viewModel.cancelOrder = nil
       collectionView.reloadItems(at: [indexPath])
@@ -849,7 +851,11 @@ extension KNCreateLimitOrderViewController: UICollectionViewDataSource {
       }
       return true
     }()
-    cell.updateCell(with: order, isReset: isReset)
+    cell.updateCell(
+      with: order,
+      isReset: isReset,
+      hasAction: collectionView == self.relatedOrderCollectionView
+    )
     cell.delegate = self
     return cell
   }
@@ -857,21 +863,7 @@ extension KNCreateLimitOrderViewController: UICollectionViewDataSource {
 
 extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelegate {
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject) {
-    if self.cancelRelatedOrdersView.isHidden {
-      guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
-        return
-      }
-      let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
-      cancelOrderVC.loadViewIfNeeded()
-      cancelOrderVC.modalTransitionStyle = .crossDissolve
-      cancelOrderVC.modalPresentationStyle = .overFullScreen
-      self.present(cancelOrderVC, animated: true) {
-        self.viewModel.cancelOrder = nil
-        let indexPath = IndexPath(row: id, section: 0)
-        self.relatedOrderCollectionView.reloadItems(at: [indexPath])
-      }
-    }
-    guard let id = self.viewModel.cancelSuggestOrders.firstIndex(where: { $0.id == order.id }) else {
+    guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
       return
     }
     let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
@@ -881,7 +873,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     self.present(cancelOrderVC, animated: true) {
       self.viewModel.cancelOrder = nil
       let indexPath = IndexPath(row: id, section: 0)
-      self.cancelOrdersCollectionView.reloadItems(at: [indexPath])
+      self.relatedOrderCollectionView.reloadItems(at: [indexPath])
     }
   }
 }
