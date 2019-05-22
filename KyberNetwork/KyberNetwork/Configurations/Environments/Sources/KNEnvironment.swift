@@ -159,21 +159,24 @@ enum KNEnvironment: Int {
   var googleSignInClientID: String {
     switch KNEnvironment.default {
     case .mainnetTest, .production: return KNSecret.prodGoogleClientID
-    case .ropsten, .rinkeby, .kovan, .staging: return KNSecret.devGoogleClientID
+    case .staging: return KNSecret.stagingGoolgeClientID
+    case .ropsten, .rinkeby, .kovan: return KNSecret.devGoogleClientID
     }
   }
 
   var twitterConsumerID: String {
     switch KNEnvironment.default {
     case .mainnetTest, .production: return KNSecret.prodTwitterConsumerID
-    case .ropsten, .rinkeby, .kovan, .staging: return KNSecret.devTwitterConsumerID
+    case .ropsten, .rinkeby, .kovan: return KNSecret.devTwitterConsumerID
+    case .staging: return KNSecret.stagingTwitterConsumerID
     }
   }
 
   var twitterSecretKey: String {
     switch KNEnvironment.default {
     case .mainnetTest, .production: return KNSecret.prodTwitterSecretKey
-    case .ropsten, .rinkeby, .kovan, .staging: return KNSecret.devTwitterSecretKey
+    case .staging: return KNSecret.stagingTwitterSecretKey
+    case .ropsten, .rinkeby, .kovan: return KNSecret.devTwitterSecretKey
     }
   }
 
