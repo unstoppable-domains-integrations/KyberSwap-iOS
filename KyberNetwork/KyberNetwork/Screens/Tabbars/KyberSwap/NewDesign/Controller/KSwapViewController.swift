@@ -405,9 +405,10 @@ class KSwapViewController: KNBaseViewController {
   @IBAction func warningRateButtonPressed(_ sender: Any) {
     guard let string = self.viewModel.differentRatePercentageDisplay else { return }
     let message = String(format: NSLocalizedString("This rate is %@ lower than current Market", value: "This rate is %@ lower than current Market", comment: ""), string)
-    self.showWarningTopBannerMessage(
+    self.showTopBannerView(
       with: "",
       message: message,
+      icon: UIImage(named: "info_blue_icon"),
       time: 2.0
     )
   }

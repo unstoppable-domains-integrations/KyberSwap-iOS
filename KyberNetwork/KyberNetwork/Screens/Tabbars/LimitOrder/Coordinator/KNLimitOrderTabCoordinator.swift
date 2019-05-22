@@ -31,6 +31,8 @@ class KNLimitOrderTabCoordinator: Coordinator {
   fileprivate var searchTokensViewController: KNSearchTokenViewController?
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 
+  fileprivate var confirmVC: KNConfirmLimitOrderViewController?
+
   lazy var rootViewController: KNCreateLimitOrderViewController = {
     let (from, to): (TokenObject, TokenObject) = {
       let address = self.session.wallet.address.description
@@ -147,7 +149,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .estimateRate(let from, let to, let amount, let showWarning):
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showWarning, completion: nil)
     case .submitOrder(let order):
-      self.signAndSendOrder(order)
+      self.openConfirmOrder(order)
     case .manageOrders:
       var orders: [KNOrderObject] = []
       let tokenCount = self.tokens.count
@@ -193,7 +195,14 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     }
   }
 
-  fileprivate func signAndSendOrder(_ order: KNLimitOrder) {
+  fileprivate func openConfirmOrder(_ order: KNLimitOrder) {
+    self.confirmVC = KNConfirmLimitOrderViewController(order: order)
+    self.confirmVC?.delegate = self
+    self.confirmVC?.loadViewIfNeeded()
+    self.navigationController.pushViewController(self.confirmVC!, animated: true)
+  }
+
+  fileprivate func signAndSendOrder(_ order: KNLimitOrder, completion: ((Bool) -> Void)?) {
     self.navigationController.displayLoading(text: "Checking".toBeLocalised(), animated: true)
     self.sendApprovedIfNeeded(order: order) { [weak self] result in
       guard let `self` = self else { return }
@@ -207,6 +216,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
             message: "Can not send approve token request".toBeLocalised(),
             time: 1.5
           )
+          completion?(false)
           return
         }
         self.navigationController.displayLoading(text: "Submitting order".toBeLocalised(), animated: true)
@@ -221,17 +231,20 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
               time: 1.5
             )
             self.rootViewController.coordinatorDoneSubmittingOrder(order)
+            completion?(true)
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
               with: NSLocalizedString("error", comment: ""),
               message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
               time: 1.5
             )
+            completion?(false)
           }
         })
       case .failure(let error):
         self.navigationController.hideLoading()
         self.navigationController.displayError(error: error)
+        completion?(false)
       }
     }
   }
@@ -436,4 +449,21 @@ extension KNLimitOrderTabCoordinator: KNSearchTokenViewControllerDelegate {
 }
 
 extension KNLimitOrderTabCoordinator: KNManageOrdersViewControllerDelegate {
+}
+
+extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate {
+  func confirmLimitOrderViewControllerDidBack() {
+    self.confirmVC = nil
+  }
+
+  func confirmLimitOrderViewController(_ controller: KNConfirmLimitOrderViewController, order: KNLimitOrder) {
+    self.signAndSendOrder(order) { [weak self] isSuccess in
+      guard let `self` = self else { return }
+      if isSuccess && self.confirmVC != nil {
+        self.navigationController.popViewController(animated: true, completion: {
+          self.confirmVC = nil
+        })
+      }
+    }
+  }
 }
