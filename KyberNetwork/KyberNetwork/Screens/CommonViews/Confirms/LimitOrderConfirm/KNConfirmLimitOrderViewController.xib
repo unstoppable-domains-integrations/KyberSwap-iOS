@@ -77,7 +77,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LpT-O0-co1">
-                    <rect key="frame" x="20" y="732" width="374" height="45"/>
+                    <rect key="frame" x="20" y="700" width="374" height="45"/>
                     <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="XFc-lh-7qj"/>
@@ -91,7 +91,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5k-xm-qHo">
-                    <rect key="frame" x="20" y="785" width="374" height="45"/>
+                    <rect key="frame" x="20" y="753" width="374" height="45"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="bdm-LR-RW0"/>
@@ -142,7 +142,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cRh-Ny-O2e">
-                    <rect key="frame" x="258" y="366" width="124" height="18"/>
+                    <rect key="frame" x="258" y="357" width="124" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="Bbq-Jt-Pwy"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="0.03123123 ETH" image="info_blue_icon">
@@ -191,7 +194,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OvD-lf-bXU" secondAttribute="trailing" constant="32" id="vYR-gS-YZR"/>
                 <constraint firstItem="7Vc-hi-pzz" firstAttribute="top" secondItem="Qiy-v7-BfP" secondAttribute="bottom" constant="32" id="vs2-76-26Y"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7Vc-hi-pzz" secondAttribute="trailing" constant="32" id="yOC-C1-vW4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="X5k-xm-qHo" secondAttribute="bottom" constant="32" id="yfD-dJ-Pux"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="X5k-xm-qHo" secondAttribute="bottom" constant="64" id="yfD-dJ-Pux"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="140.57971014492756" y="144.64285714285714"/>
