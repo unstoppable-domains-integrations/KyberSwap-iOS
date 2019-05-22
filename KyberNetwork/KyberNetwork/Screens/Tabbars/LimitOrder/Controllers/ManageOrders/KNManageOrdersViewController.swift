@@ -5,12 +5,60 @@ import UIKit
 class KNManageOrdersViewModel {
   fileprivate(set) var orders: [KNOrderObject] = []
   fileprivate(set) var displayedOrders: [KNOrderObject] = []
-  fileprivate var cancelOrder: KNOrderObject?
+  var cancelOrder: KNOrderObject?
+
+  var isDateDesc: Bool = true {
+    didSet { self.updateDisplayOrders() }
+  }
+  var timeIntervalType: Int = 0 { // 1 day/1 week/1 month/3 months
+    didSet { self.updateDisplayOrders() }
+  }
+
+  var fromTime: TimeInterval {
+    if self.timeIntervalType == 0 { return Date().timeIntervalSince1970 - 24.0 * 60.0 * 60.0 }
+    if self.timeIntervalType == 1 { return Date().timeIntervalSince1970 - 7.0 * 24.0 * 60.0 * 60.0 }
+    let months = self.timeIntervalType == 2 ? -1 : -3
+    if let date = Calendar.current.date(byAdding: .month, value: months, to: Date()) {
+      return date.timeIntervalSince1970
+    }
+    return Date().timeIntervalSince1970 - Double(months) * 30.0 * 24.0 * 60.0 * 60.0
+  }
+
+  var selectedPairs: [String]? {
+    didSet { self.updateDisplayOrders() }
+  }
+  var selectedStates: [Int] = [0] { // default only open
+    didSet { self.updateDisplayOrders() }
+  }
 
   init(orders: [KNOrderObject]) {
     self.orders = orders
-    self.displayedOrders = orders
     self.cancelOrder = nil
+    self.updateDisplayOrders()
+  }
+
+  fileprivate func updateDisplayOrders() {
+    let fromTime = self.fromTime
+    self.displayedOrders = self.orders.filter({
+      // filter pairs
+      let pair = "\($0.sourceToken)->\($0.destToken)"
+      return self.selectedPairs == nil || self.selectedPairs?.contains(pair) == true
+    }).filter({
+      // filter states
+      return self.selectedStates.contains($0.stateValue) == true
+    }).filter({
+      // filter date
+      return $0.createdDate >= fromTime
+    }).sorted(by: {
+      // sort
+      if self.isDateDesc { return $0.createdDate > $1.createdDate }
+      return $0.createdDate < $1.createdDate
+    })
+  }
+
+  func updateOrders(_ orders: [KNOrderObject]) {
+    self.orders = orders
+    self.updateDisplayOrders()
   }
 }
 
@@ -74,8 +122,14 @@ class KNManageOrdersViewController: KNBaseViewController {
 
     self.pairButton.setTitle("Pair".toBeLocalised(), for: .normal)
     self.pairButton.semanticContentAttribute = .forceRightToLeft
+
     self.dateButton.setTitle("Date".toBeLocalised(), for: .normal)
     self.dateButton.semanticContentAttribute = .forceRightToLeft
+    self.dateButton.setImage(
+      UIImage(named: self.viewModel.isDateDesc ? "date_sort_desc" : "date_sort_asc"),
+      for: .normal
+    )
+
     self.statusButton.setTitle("Status".toBeLocalised(), for: .normal)
     self.statusButton.semanticContentAttribute = .forceRightToLeft
 
@@ -87,6 +141,31 @@ class KNManageOrdersViewController: KNBaseViewController {
 
     self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea()
 
+    self.updateDisplayTimeInterval(0)
+  }
+
+  fileprivate func updateDisplayTimeInterval(_ type: Int) {
+    self.viewModel.timeIntervalType = type
+
+    let normalColor = UIColor(red: 90, green: 94, blue: 103)
+    let highLightedColor = UIColor(red: 255, green: 144, blue: 8)
+
+    self.oneDayButton.setTitleColor(
+      type == 0 ? highLightedColor : normalColor,
+      for: .normal
+    )
+    self.oneWeekButton.setTitleColor(
+      type == 1 ? highLightedColor : normalColor,
+      for: .normal
+    )
+    self.oneMonthButton.setTitleColor(
+      type == 2 ? highLightedColor : normalColor,
+      for: .normal
+    )
+    self.threeMonthButton.setTitleColor(
+      type == 3 ? highLightedColor : normalColor,
+      for: .normal
+    )
     self.updateCollectionView()
   }
 
@@ -96,29 +175,49 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.orderCollectionView.reloadData()
   }
 
+  fileprivate func openFilterView() {
+  }
+
+  func updateListOrders(_ orders: [KNOrderObject]) {
+    self.viewModel.updateOrders(orders)
+    self.updateCollectionView()
+  }
+
   @IBAction func backButtonPressed(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
   }
 
   @IBAction func oneDayButtonPressed(_ sender: Any) {
+    self.updateDisplayTimeInterval(0)
   }
 
   @IBAction func oneWeekButtonPressed(_ sender: Any) {
+    self.updateDisplayTimeInterval(1)
   }
 
   @IBAction func oneMonthButtonPressed(_ sender: Any) {
+    self.updateDisplayTimeInterval(2)
   }
 
   @IBAction func threeMonthButtonPressed(_ sender: Any) {
+    self.updateDisplayTimeInterval(3)
   }
 
   @IBAction func pairButtonPressed(_ sender: Any) {
+    self.openFilterView()
   }
 
   @IBAction func dateButtonPressed(_ sender: Any) {
+    self.viewModel.isDateDesc = !self.viewModel.isDateDesc
+    self.dateButton.setImage(
+      UIImage(named: self.viewModel.isDateDesc ? "date_sort_desc" : "date_sort_asc"),
+      for: .normal
+    )
+    self.updateCollectionView()
   }
 
   @IBAction func statusButtonPressed(_ sender: Any) {
+    self.openFilterView()
   }
 }
 
