@@ -31,6 +31,7 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
   fileprivate(set) var cancelSuggestOrders: [KNOrderObject] = []
+
   var cancelOrder: KNOrderObject?
 
   init(wallet: Wallet,
@@ -336,7 +337,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
-    self.relatedOrders = orders.filter({ return $0.state == .open })
+    self.relatedOrders = orders.filter({ return $0.state == .open }).sorted(by: { return $0.createdDate > $1.createdDate })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
   }
 }
