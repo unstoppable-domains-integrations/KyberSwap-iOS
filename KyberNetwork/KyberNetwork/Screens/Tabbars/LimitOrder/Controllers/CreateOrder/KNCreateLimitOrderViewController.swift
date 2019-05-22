@@ -214,7 +214,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
     self.warningMessageLabel.text = "This new order has a lower rate than some orders you have created. Below orders will be canceled when you submited this order".toBeLocalised()
     self.confirmCancelButton.setTitle("Yes, please".toBeLocalised(), for: .normal)
-    self.confirmCancelButton.rounded(radius: 4.0)
+    self.confirmCancelButton.rounded(
+      radius: self.confirmCancelButton.frame.height / 2.0
+    )
     self.confirmCancelButton.applyGradient()
     self.noCancelButton.setTitle("Change Rate".toBeLocalised(), for: .normal)
     self.cancelRelatedOrdersView.isHidden = true

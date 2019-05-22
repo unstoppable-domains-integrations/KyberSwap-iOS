@@ -107,7 +107,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-VI-kTC">
-                            <rect key="frame" x="32" y="467" width="309" height="45"/>
+                            <rect key="frame" x="20" y="467" width="333" height="45"/>
                             <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="ye2-sT-d8f"/>
@@ -121,7 +121,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fei-mH-Sde">
-                            <rect key="frame" x="32" y="520" width="309" height="45"/>
+                            <rect key="frame" x="20" y="520" width="333" height="45"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="AMW-KH-TSM"/>
@@ -270,8 +270,8 @@
                         <constraint firstItem="fei-mH-Sde" firstAttribute="leading" secondItem="Hga-VI-kTC" secondAttribute="leading" id="o4w-ub-Zqp"/>
                         <constraint firstItem="y8Y-mg-bDx" firstAttribute="top" secondItem="it2-dF-LJ5" secondAttribute="bottom" constant="26" id="sPx-Te-3Pq"/>
                         <constraint firstItem="EQT-OP-JSN" firstAttribute="centerY" secondItem="nxb-9C-k8p" secondAttribute="centerY" id="tEI-ci-GQe"/>
-                        <constraint firstItem="Hga-VI-kTC" firstAttribute="leading" secondItem="r5j-Nd-zyY" secondAttribute="leading" constant="32" id="uqE-7r-VpB"/>
-                        <constraint firstAttribute="trailing" secondItem="Hga-VI-kTC" secondAttribute="trailing" constant="32" id="v5N-BP-fbU"/>
+                        <constraint firstItem="Hga-VI-kTC" firstAttribute="leading" secondItem="r5j-Nd-zyY" secondAttribute="leading" constant="20" id="uqE-7r-VpB"/>
+                        <constraint firstAttribute="trailing" secondItem="Hga-VI-kTC" secondAttribute="trailing" constant="20" id="v5N-BP-fbU"/>
                         <constraint firstItem="g0c-RM-zeC" firstAttribute="top" secondItem="iQS-Zh-2bl" secondAttribute="bottom" constant="20" id="weW-oN-Apc"/>
                         <constraint firstItem="sNF-dM-eSJ" firstAttribute="top" secondItem="X45-sp-HI0" secondAttribute="top" id="yXB-K8-R7n"/>
                         <constraint firstItem="it2-dF-LJ5" firstAttribute="centerY" secondItem="tYc-FH-Gf3" secondAttribute="centerY" id="z6B-YZ-kpP"/>
