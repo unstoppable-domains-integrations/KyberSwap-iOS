@@ -216,8 +216,8 @@ extension KNProfileHomeCoordinator: GIDSignInDelegate, GIDSignInUIDelegate {
 // MARK: Handle Twitter authentication
 extension KNProfileHomeCoordinator {
   fileprivate func authenticateTwitter() {
-    TWTRTwitter.sharedInstance().logIn { [weak self] (session, error) in
-      guard let `self` = self else { return }
+    TWTRTwitter.sharedInstance().logIn { (session, error) in
+//      guard let `self` = self else { return }
       guard let session = session, error == nil else {
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),

@@ -97,6 +97,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
   fileprivate func didFinishEvaluatingWithBio() {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
+    KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.passcodeCoordinatorDidEvaluatePIN()
   }
 
@@ -108,6 +109,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
     if currentPasscode == passcode {
       KNPasscodeUtil.shared.deleteNumberAttempts()
       KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
+      KNAppTracker.saveLastTimeAuthenticate()
       self.delegate?.passcodeCoordinatorDidEvaluatePIN()
     } else {
       KNPasscodeUtil.shared.recordNewAttempt()

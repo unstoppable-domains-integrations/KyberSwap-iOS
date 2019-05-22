@@ -440,7 +440,6 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   }
 
   func passcodeCoordinatorDidEvaluatePIN() {
-    KNAppTracker.saveLastTimeAuthenticate()
     self.passcodeCoordinator.stop {
       self.passcodeCoordinator = KNPasscodeCoordinator(
         navigationController: self.navigationController,

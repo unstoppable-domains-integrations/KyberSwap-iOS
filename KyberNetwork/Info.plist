@@ -29,6 +29,10 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>fb_staging</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1044466192425495</string>
@@ -37,6 +41,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>gg_staging</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.562303760817-qj8f2gb17ull9imknsngb7utld7cr143</string>
@@ -45,9 +51,71 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>tw_staging</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>twitterkit-7QbZGF1e2voWm1Bv4RG6Rrgo3</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>fb_dev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb407390806708717</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>gg_dev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.66732966024-rkqv3m2emqtvm290u9is1v5s2hu1q7rr</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>tw_dev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>twitterkit-dxUUgdoFVhqvTTssFoEzJkZAg</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>fb_prod</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb2060737157475877</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>tw_prod</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>twitterkit-QO1OSkEk257rKsESig5g2azie</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>gg_prod</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1038789996561-bvdeumt3g6geuffg99fu6v7dhe746aji</string>
 			</array>
 		</dict>
 	</array>
@@ -68,9 +136,9 @@
 		</array>
 	</dict>
 	<key>FacebookAppID</key>
-	<string>1044466192425495</string>
+	<string>407390806708717</string>
 	<key>FacebookDisplayName</key>
-	<string>StagingKyberUserDashboard</string>
+	<string>DevelopmentKyberSwap</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -78,10 +146,10 @@
 		<string>tg</string>
 		<string>fb</string>
 		<string>twitter</string>
-    <string>fbapi</string>
-    <string>fb-messenger-share-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 		<string>org-appextension-feature-password-management</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>

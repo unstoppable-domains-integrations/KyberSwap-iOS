@@ -356,16 +356,19 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   @IBAction func facebookButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
+    KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithFacebook)
   }
 
   @IBAction func googleButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
+    KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithGoogle)
   }
 
   @IBAction func twitterButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
+    KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithTwitter)
   }
 
