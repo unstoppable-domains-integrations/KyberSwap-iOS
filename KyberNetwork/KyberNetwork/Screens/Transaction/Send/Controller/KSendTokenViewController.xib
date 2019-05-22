@@ -113,7 +113,11 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,232.83" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFJ-lO-7Sq">
-                            <rect key="frame" x="16" y="199" width="61" height="20"/>
+                            <rect key="frame" x="16" y="191" width="61" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="hVX-5n-B9G"/>
+                                <constraint firstAttribute="height" constant="32" id="pQV-Jw-4Fm"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -133,7 +137,7 @@
                         <constraint firstAttribute="height" constant="230" id="GOK-pp-JII"/>
                         <constraint firstItem="5nF-2S-cLG" firstAttribute="top" secondItem="3JI-9Y-K6Q" secondAttribute="bottom" constant="21" id="Hmg-3d-BbL"/>
                         <constraint firstItem="5nF-2S-cLG" firstAttribute="leading" secondItem="2bX-gH-E8o" secondAttribute="leading" constant="16" id="LM5-Zd-KWl"/>
-                        <constraint firstItem="SFJ-lO-7Sq" firstAttribute="top" secondItem="djb-R5-aB5" secondAttribute="bottom" constant="8" id="NjM-Ap-iwc"/>
+                        <constraint firstItem="SFJ-lO-7Sq" firstAttribute="top" secondItem="djb-R5-aB5" secondAttribute="bottom" id="NjM-Ap-iwc"/>
                         <constraint firstItem="vpg-CJ-CvH" firstAttribute="leading" secondItem="2bX-gH-E8o" secondAttribute="leading" constant="16" id="Q6a-A2-sox"/>
                         <constraint firstItem="vpg-CJ-CvH" firstAttribute="centerY" secondItem="3JI-9Y-K6Q" secondAttribute="centerY" id="QYb-hO-pe5"/>
                         <constraint firstItem="djb-R5-aB5" firstAttribute="leading" secondItem="5nF-2S-cLG" secondAttribute="leading" id="RW8-j1-r2a"/>
