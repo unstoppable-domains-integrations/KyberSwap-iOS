@@ -232,10 +232,9 @@ class KNCreateLimitOrderViewModel {
   var feePercentage: Int { return 10 } // uint: 10000 as in SC
 
   var displayFeeString: String {
-    let feeBigInt = self.amountFromBigInt * BigInt(feePercentage) / BigInt(10000)
+    let feeBigInt = BigInt(Double(self.amountFromBigInt) * Double(feePercentage) / 10000.0)
     let feeDisplay = feeBigInt.displayRate(decimals: self.from.decimals)
-    let amountDisplay = self.amountFromBigInt.displayRate(decimals: self.from.decimals)
-    return "Fee: \(feeDisplay) \(self.from.symbol) (\(feePercentage)% of \(amountDisplay) \(self.from.symbol))"
+    return "Fee: \(feeDisplay) \(self.from.symbol) (\(feePercentage)% of \(self.amountFrom) \(self.from.symbol))"
   }
 
   var suggestBuyText: String {
