@@ -181,6 +181,13 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.navigationController.pushViewController(self.manageOrdersVC!, animated: true) {
         self.manageOrdersVC?.updateListOrders(orders)
       }
+    case .estimateFee(let src, let dest, let srcAmount, let destAmount):
+      self.getExpectedFee(
+        src: src,
+        dest: dest,
+        srcAmount: srcAmount,
+        destAmount: destAmount
+      )
     default: break
     }
   }
@@ -205,6 +212,36 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.confirmVC?.delegate = self
     self.confirmVC?.loadViewIfNeeded()
     self.navigationController.pushViewController(self.confirmVC!, animated: true)
+  }
+
+  fileprivate func getExpectedFee(src: String, dest: String, srcAmount: Double, destAmount: Double) {
+    KNLimitOrderServerCoordinator.shared.getFee(
+      src: src,
+      dest: dest,
+      srcAmount: srcAmount,
+      destAmount: destAmount) { [weak self] result in
+      if case .success(let fee) = result {
+        self?.rootViewController.coordinatorUpdateEstimateFee(fee)
+      }
+    }
+  }
+
+  fileprivate func getCurrentNonce(address: String, src: String, dest: String) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    KNLimitOrderServerCoordinator.shared.getNonce(
+      accessToken: accessToken,
+      addr: address,
+      src: src,
+      dest: dest) { [weak self] result in
+      if case .success(let nonce) = result {
+        self?.rootViewController.coordinatorUpdateCurrentNonce(
+          nonce,
+          addr: address,
+          src: src,
+          dest: dest
+        )
+      }
+    }
   }
 
   fileprivate func signAndSendOrder(_ order: KNLimitOrder, completion: ((Bool) -> Void)?) {

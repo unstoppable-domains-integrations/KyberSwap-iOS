@@ -16,6 +16,7 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var from: TokenObject
   fileprivate(set) var to: TokenObject
+  fileprivate(set) var nonce: Int?
 
   fileprivate(set) var balances: [String: Balance] = [:]
   fileprivate(set) var balance: Balance?
@@ -44,6 +45,8 @@ class KNCreateLimitOrderViewModel {
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr) ?? KNWalletObject(address: addr)
     self.from = from
     self.to = to
+    self.feePercentage = 10
+    self.nonce = nil
     self.supportedTokens = supportedTokens
     self.updateProdCachedRate()
   }
@@ -229,12 +232,13 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Fee
-  var feePercentage: Int { return 10 } // uint: 10000 as in SC
+  var feePercentage: Int = 10 // uint: 10000 as in SC
 
   var displayFeeString: String {
     let feeBigInt = BigInt(Double(self.amountFromBigInt) * Double(feePercentage) / 10000.0)
     let feeDisplay = feeBigInt.displayRate(decimals: self.from.decimals)
-    return "Fee: \(feeDisplay) \(self.from.symbol) (\(feePercentage)% of \(self.amountFrom) \(self.from.symbol))"
+    let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
+    return "Fee: \(feeDisplay) \(self.from.symbol) (\(Double(feePercentage)/100.0)% of \(amountString.prefix(12)) \(self.from.symbol))"
   }
 
   var suggestBuyText: String {
@@ -260,6 +264,9 @@ class KNCreateLimitOrderViewModel {
     self.amountTo = ""
     self.targetRate = ""
 
+    self.feePercentage = 10
+    self.nonce = nil
+
     self.balances = [:]
     self.balance = nil
 
@@ -281,6 +288,8 @@ class KNCreateLimitOrderViewModel {
     self.amountTo = ""
     self.targetRate = ""
     self.balance = self.balances[self.from.contract]
+    self.feePercentage = 10
+    self.nonce = nil
 
     self.rateFromNode = nil
     self.updateProdCachedRate()
@@ -302,9 +311,11 @@ class KNCreateLimitOrderViewModel {
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource {
       self.from = token
+      self.feePercentage = 10
     } else {
       self.to = token
     }
+    self.nonce = nil
     self.balance = self.balances[self.from.contract]
     self.rateFromNode = nil
     self.updateProdCachedRate()
@@ -340,5 +351,13 @@ class KNCreateLimitOrderViewModel {
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
     self.relatedOrders = orders.filter({ return $0.state == .open }).sorted(by: { return $0.createdDate > $1.createdDate })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
+  }
+
+  func updateNonce(address: String, src: String, dest: String, nonce: Int) {
+    if address.lowercased() == self.walletObject.address.lowercased()
+    && src.lowercased() == self.from.contract.lowercased()
+      && dest.lowercased() == self.to.contract.lowercased() {
+      self.nonce = nonce
+    }
   }
 }
