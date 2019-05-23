@@ -240,7 +240,11 @@ class KNRateHelper {
     if rate.isZero { return "0.0000" }
     var string = rate.string(decimals: decimals, minFractionDigits: decimals, maxFractionDigits: decimals)
     let separator = EtherNumberFormatter.full.decimalSeparator
-    if let _ = string.firstIndex(of: separator[separator.startIndex]) { string = string + "0000" }
+    if let _ = string.firstIndex(of: separator[separator.startIndex]) {
+      string += "0000"
+    } else {
+      return rate.string(decimals: decimals, minFractionDigits: min(decimals, 4), maxFractionDigits: min(decimals, 4))
+    }
     var start = false
     var cnt = 0
     var separatorIndex = 0

@@ -10,6 +10,8 @@ enum KNCreateLimitOrderViewEvent {
   case suggestBuyToken
   case submitOrder(order: KNLimitOrder)
   case manageOrders
+  case estimateFee(src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case getExpectedNonce(address: String, src: String, dest: String)
 }
 
 protocol KNCreateLimitOrderViewControllerDelegate: class {
@@ -73,6 +75,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   fileprivate var isErrorMessageEnabled: Bool = false
   fileprivate var viewModel: KNCreateLimitOrderViewModel
   weak var delegate: KNCreateLimitOrderViewControllerDelegate?
+  fileprivate var updateFeeTimer: Timer?
 
   @IBOutlet var submitButtonBottomPaddingToRelatedOrderViewConstraint: NSLayoutConstraint!
   @IBOutlet var submitButtonBottomPaddingToContainerViewConstraint: NSLayoutConstraint!
@@ -128,7 +131,17 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.isErrorMessageEnabled = true
-    self.updateEstimateRate(showWarning: false)
+    self.updateEstimateRateFromNetwork(showWarning: false)
+
+    self.updateEstimateFeeFromServer()
+    self.updateFeeTimer?.invalidate()
+    self.updateFeeTimer = Timer.scheduledTimer(
+      withTimeInterval: 15.0,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.updateEstimateFeeFromServer()
+      }
+    )
   }
 
   override func viewDidLayoutSubviews() {
@@ -159,6 +172,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     super.viewWillDisappear(animated)
     self.isErrorMessageEnabled = false
     self.view.endEditing(true)
+    self.updateFeeTimer?.invalidate()
+    self.updateFeeTimer = nil
   }
 
   fileprivate func setupUI() {
@@ -256,7 +271,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.toAmountTextField.text = ""
     self.targetRateTextField.text = ""
     self.updateTokensView()
-    self.updateEstimateRate(showWarning: true)
+    self.updateEstimateRateFromNetwork(showWarning: true)
   }
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -301,6 +316,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func submitOrderButtonPressed(_ sender: Any) {
+    if !self.validateUserHasSignedIn() { return }
     if !self.validateDataIfNeeded(isConfirming: true) { return }
     if self.showShouldCancelOtherOrdersIfNeeded() { return }
     self.submitOrderDidVerifyData()
@@ -323,6 +339,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func manageOrderButtonPressed(_ sender: Any) {
+    if !self.validateUserHasSignedIn() { return }
     self.delegate?.kCreateLimitOrderViewController(self, run: .manageOrders)
   }
 
@@ -423,12 +440,31 @@ extension KNCreateLimitOrderViewController {
   }
 
   // Call update estimate rate from node
-  fileprivate func updateEstimateRate(showWarning: Bool = false) {
+  fileprivate func updateEstimateRateFromNetwork(showWarning: Bool = false) {
     let event = KNCreateLimitOrderViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
       amount: self.viewModel.amountFromBigInt,
       showWarning: showWarning
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
+  }
+
+  fileprivate func updateEstimateFeeFromServer() {
+    let event = KNCreateLimitOrderViewEvent.estimateFee(
+      src: self.viewModel.from.contract,
+      dest: self.viewModel.to.contract,
+      srcAmount: Double(self.viewModel.amountFromBigInt) / pow(10.0, Double(self.viewModel.from.decimals)),
+      destAmount: Double(self.viewModel.amountToBigInt) / pow(10.0, Double(self.viewModel.to.decimals))
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
+  }
+
+  fileprivate func updateExpectedNonceFromServer() {
+    let event = KNCreateLimitOrderViewEvent.getExpectedNonce(
+      address: self.viewModel.walletObject.address,
+      src: self.viewModel.from.contract,
+      dest: self.viewModel.to.contract
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
   }
@@ -475,6 +511,20 @@ extension KNCreateLimitOrderViewController {
 
 // MARK: Data validation
 extension KNCreateLimitOrderViewController {
+  fileprivate func validateUserHasSignedIn() -> Bool {
+    if IEOUserStorage.shared.user == nil {
+      // user not sign in
+      self.tabBarController?.selectedIndex = 3
+      self.showWarningTopBannerMessage(
+        with: "Sign in required".toBeLocalised(),
+        message: "You must sign in to user Limit Order feature".toBeLocalised(),
+        time: 1.5
+      )
+      return false
+    }
+    return true
+  }
+
   fileprivate func validateDataIfNeeded(isConfirming: Bool = false) -> Bool {
     if !isConfirming && !self.isErrorMessageEnabled || !self.hamburgerMenu.view.isHidden { return false }
     if !isConfirming && (self.fromAmountTextField.isEditing || self.toAmountTextField.isEditing) { return false }
@@ -700,6 +750,15 @@ extension KNCreateLimitOrderViewController {
     self.viewModel.updateRelatedOrders(orders)
     self.updateRelatedOrdersView()
   }
+
+  func coordinatorUpdateEstimateFee(_ fee: Int) {
+    self.viewModel.feePercentage = fee
+    self.updateFeeNotesUI()
+  }
+
+  func coordinatorUpdateCurrentNonce(_ nonce: Int, addr: String, src: String, dest: String) {
+    self.viewModel.updateNonce(address: addr, src: src, dest: dest, nonce: nonce)
+  }
 }
 
 // MARK: UITextField delegation
@@ -713,7 +772,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
       self.viewModel.updateTargetRate("")
     }
     self.updateViewAmountDidChange()
-    self.updateEstimateRate(showWarning: true)
+    self.updateEstimateRateFromNetwork(showWarning: true)
     return false
   }
 
@@ -760,8 +819,9 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.viewModel.updateFocusTextField(textField.tag)
-    self.updateEstimateRate(showWarning: true)
+    self.updateEstimateRateFromNetwork(showWarning: true)
     self.updateViewAmountDidChange()
+    self.updateEstimateFeeFromServer()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.validateDataIfNeeded()
     }
@@ -782,7 +842,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
       self.viewModel.updateTargetRate(rateDisplay)
     }
     self.updateFeeNotesUI()
-    self.updateEstimateRate(showWarning: false)
+    self.updateEstimateRateFromNetwork(showWarning: false)
     self.view.layoutIfNeeded()
   }
 }
