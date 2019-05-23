@@ -107,6 +107,8 @@
 		25485B042272F938004B7454 /* KNTransactionFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25485B022272F938004B7454 /* KNTransactionFilterTableViewCell.swift */; };
 		25485B052272F938004B7454 /* KNTransactionFilterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25485B032272F938004B7454 /* KNTransactionFilterTableViewCell.xib */; };
 		2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */ = {isa = PBXBuildFile; fileRef = 2549B285219EA3DA00B7564E /* config_env_rinkeby.json */; };
+		254A70192296ADC700890B8F /* KNConvertSuggestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254A70172296ADC700890B8F /* KNConvertSuggestionViewController.swift */; };
+		254A701A2296ADC700890B8F /* KNConvertSuggestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254A70182296ADC700890B8F /* KNConvertSuggestionViewController.xib */; };
 		254BB32F211BEC8200B8E75D /* KWalletBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB32D211BEC8200B8E75D /* KWalletBalanceViewController.swift */; };
 		254BB330211BEC8200B8E75D /* KWalletBalanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 254BB32E211BEC8200B8E75D /* KWalletBalanceViewController.xib */; };
 		254BB333211BFAF200B8E75D /* KWalletBalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254BB332211BFAF200B8E75D /* KWalletBalanceViewModel.swift */; };
@@ -695,6 +697,8 @@
 		25485B022272F938004B7454 /* KNTransactionFilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionFilterTableViewCell.swift; sourceTree = "<group>"; };
 		25485B032272F938004B7454 /* KNTransactionFilterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionFilterTableViewCell.xib; sourceTree = "<group>"; };
 		2549B285219EA3DA00B7564E /* config_env_rinkeby.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config_env_rinkeby.json; sourceTree = "<group>"; };
+		254A70172296ADC700890B8F /* KNConvertSuggestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConvertSuggestionViewController.swift; sourceTree = "<group>"; };
+		254A70182296ADC700890B8F /* KNConvertSuggestionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConvertSuggestionViewController.xib; sourceTree = "<group>"; };
 		254BB32D211BEC8200B8E75D /* KWalletBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWalletBalanceViewController.swift; sourceTree = "<group>"; };
 		254BB32E211BEC8200B8E75D /* KWalletBalanceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KWalletBalanceViewController.xib; sourceTree = "<group>"; };
 		254BB332211BFAF200B8E75D /* KWalletBalanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWalletBalanceViewModel.swift; sourceTree = "<group>"; };
@@ -1407,6 +1411,7 @@
 		2528B409228D59FA003EEA32 /* ManageOrders */ = {
 			isa = PBXGroup;
 			children = (
+				25C40CA82295580B0090003C /* Filter */,
 				2528B40A228D5A14003EEA32 /* KNManageOrdersViewController.swift */,
 				2528B40B228D5A14003EEA32 /* KNManageOrdersViewController.xib */,
 			);
@@ -1513,7 +1518,7 @@
 		25377B0B22842AAA0012178F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				25C40CA82295580B0090003C /* Filter */,
+				254A70162296ADA700890B8F /* ConvertSuggest */,
 				25864CFE228EC97800D159B5 /* OrderCancelConfirm */,
 				2528B409228D59FA003EEA32 /* ManageOrders */,
 				254550FE228C307900D5E55D /* OrderCell */,
@@ -1709,6 +1714,15 @@
 				25485B032272F938004B7454 /* KNTransactionFilterTableViewCell.xib */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		254A70162296ADA700890B8F /* ConvertSuggest */ = {
+			isa = PBXGroup;
+			children = (
+				254A70172296ADC700890B8F /* KNConvertSuggestionViewController.swift */,
+				254A70182296ADC700890B8F /* KNConvertSuggestionViewController.xib */,
+			);
+			path = ConvertSuggest;
 			sourceTree = "<group>";
 		};
 		254BB34F211D9A2300B8E75D /* Confirms */ = {
@@ -4064,6 +4078,7 @@
 				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
 				254CD0DA21425F300079EA7A /* KNBalanceTokenTableViewCell.xib in Resources */,
 				259D646422630DE000A9CA52 /* KNForgotPasswordViewController.xib in Resources */,
+				254A701A2296ADC700890B8F /* KNConvertSuggestionViewController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				25929C9820DA5CC10045CFA3 /* SFCompactText-Semibold.otf in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
@@ -4657,6 +4672,7 @@
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
 				2545C8EA2223EEAF00CA99C5 /* KNAlertObject.swift in Sources */,
 				254BB358211D9F1400B8E75D /* KConfirmSendViewController.swift in Sources */,
+				254A70192296ADC700890B8F /* KNConvertSuggestionViewController.swift in Sources */,
 				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
 				2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
