@@ -315,7 +315,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         sender: self.viewModel.wallet.address,
         srcAmount: self.viewModel.amountFromBigInt,
         targetRate: self.viewModel.targetRateBigInt,
-        fee: self.viewModel.feeBigInt,
+        fee: self.viewModel.feePercentage,
         nonce: 0
       )
       self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(order: order))

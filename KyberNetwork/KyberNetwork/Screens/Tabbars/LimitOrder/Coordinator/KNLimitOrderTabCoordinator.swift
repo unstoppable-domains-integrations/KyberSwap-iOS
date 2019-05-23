@@ -166,7 +166,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           sender: account.address,
           srcAmount: BigInt(10) * BigInt(10).power(from.decimals),
           targetRate: BigInt(1.24124 * pow(10.0, Double(to.decimals))),
-          fee: BigInt(10) * BigInt(10).power(from.decimals) / BigInt(1000),
+          fee: 10,
           nonce: id
         )
         orders.append(KNOrderObject.getOrderObject(from: limitOrder))
