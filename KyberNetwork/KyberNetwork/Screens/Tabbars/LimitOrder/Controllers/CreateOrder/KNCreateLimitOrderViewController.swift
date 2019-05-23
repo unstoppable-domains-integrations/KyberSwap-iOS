@@ -76,6 +76,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   fileprivate var viewModel: KNCreateLimitOrderViewModel
   weak var delegate: KNCreateLimitOrderViewControllerDelegate?
   fileprivate var updateFeeTimer: Timer?
+  fileprivate var convertVC: KNConvertSuggestionViewController?
 
   @IBOutlet var submitButtonBottomPaddingToRelatedOrderViewConstraint: NSLayoutConstraint!
   @IBOutlet var submitButtonBottomPaddingToContainerViewConstraint: NSLayoutConstraint!
@@ -319,6 +320,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     if !self.validateUserHasSignedIn() { return }
     if !self.validateDataIfNeeded(isConfirming: true) { return }
     if self.showShouldCancelOtherOrdersIfNeeded() { return }
+    if self.showConvertETHToWETHIfNeeded() { return }
     self.submitOrderDidVerifyData()
   }
 
@@ -401,8 +403,8 @@ extension KNCreateLimitOrderViewController {
       return
     }
     let orders = self.viewModel.relatedOrders.filter({
-      return $0.sourceToken == self.viewModel.from.symbol
-        && $0.destToken == self.viewModel.to.symbol
+      return $0.sourceToken.lowercased() == self.viewModel.from.contract.lowercased()
+        && $0.destToken.lowercased() == self.viewModel.to.contract.lowercased()
         && $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
     })
     self.viewModel.updateRelatedOrders(orders)
@@ -424,12 +426,13 @@ extension KNCreateLimitOrderViewController {
       self.relatedOrdersContainerView.isHidden = true
       self.manageOrdersButton.isHidden = false
     }
+    self.sourceBalanceValueLabel.text = self.viewModel.balanceText
     self.view.layoutIfNeeded()
   }
 
   // Update current martket rate with rate from node or cached
   fileprivate func updateCurrentMarketRateUI() {
-    self.currentRateLabel.text = String(format: "Current Rate: %@", self.viewModel.exchangeRateText)
+    self.currentRateLabel.text = String(format: "Current Rate: %@".toBeLocalised(), self.viewModel.exchangeRateText)
     self.compareMarketRateLabel.attributedText = self.viewModel.displayRateCompareAttributedString
   }
 
@@ -599,6 +602,18 @@ extension KNCreateLimitOrderViewController {
 
     return true
   }
+
+  fileprivate func showConvertETHToWETHIfNeeded() -> Bool {
+    if !self.viewModel.isConvertingETHToWETHNeeded { return false }
+    self.convertVC = KNConvertSuggestionViewController()
+    self.convertVC?.loadViewIfNeeded()
+    self.navigationController?.pushViewController(self.convertVC!, animated: true, completion: {
+      self.convertVC?.updateAddress(self.viewModel.walletObject.address)
+      self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
+      self.convertVC?.updateAmountToConvert(self.viewModel.minAmountToConvert)
+    })
+    return true
+  }
 }
 
 // MARK: Update from coordinator
@@ -621,6 +636,8 @@ extension KNCreateLimitOrderViewController {
       currentWallet: self.viewModel.walletObject
     )
     self.hamburgerMenu.hideMenu(animated: false)
+    self.convertVC?.updateAddress(self.viewModel.walletObject.address)
+    self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
     self.view.layoutIfNeeded()
   }
 
@@ -637,6 +654,7 @@ extension KNCreateLimitOrderViewController {
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.sourceBalanceValueLabel.text = self.viewModel.balanceText
+    self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
     self.view.layoutIfNeeded()
   }
 

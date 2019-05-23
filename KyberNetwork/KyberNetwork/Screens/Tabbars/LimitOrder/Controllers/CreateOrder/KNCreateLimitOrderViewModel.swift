@@ -56,15 +56,6 @@ class KNCreateLimitOrderViewModel {
 
   // MARK: From Token
   var allFromTokenBalanceString: String {
-    if self.from.isETH {
-      let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
-      let string = balance.string(
-        decimals: self.from.decimals,
-        minFractionDigits: 0,
-        maxFractionDigits: min(self.from.decimals, 6)
-      )
-      return "\(string.prefix(12))"
-    }
     return self.balanceText
   }
 
@@ -73,7 +64,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   func amountFromWithPercentage(_ percentage: Int) -> BigInt {
-    return (self.balance?.value ?? BigInt(0)) * BigInt(percentage) / BigInt(100)
+    return self.availableBalance * BigInt(percentage) / BigInt(100)
   }
 
   var amountToBigInt: BigInt {
@@ -113,8 +104,28 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Balance
+  var availableBalance: BigInt {
+    let balance: BigInt = {
+      if self.from.isWETH {
+        let wethBalance = self.balance?.value ?? BigInt(0)
+        let ethBalance = self.balances[self.eth.contract]?.value ?? BigInt(0)
+        return wethBalance + ethBalance
+      }
+      return self.balance?.value ?? BigInt(0)
+    }()
+    var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
+    let allOrders = self.relatedOrders // TODO: Update with all orders
+    allOrders.forEach({
+      if $0.state == .open && $0.sourceToken.lowercased() == self.from.contract.lowercased() {
+        availableAmount -= $0.sourceAmount
+      }
+    })
+    availableAmount = max(availableAmount, 0.0)
+    return BigInt(availableAmount * pow(10.0, Double(self.from.decimals)))
+  }
+
   var balanceText: String {
-    let bal: BigInt = self.balance?.value ?? BigInt(0)
+    let bal: BigInt = self.availableBalance
     let string = bal.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
@@ -124,12 +135,11 @@ class KNCreateLimitOrderViewModel {
   }
 
   var balanceTextString: String {
-    let balanceText = NSLocalizedString("balance", value: "balance", comment: "")
-    return "\(self.from.symbol) \(balanceText)".uppercased()
+    return "\(self.from.symbol) Available".toBeLocalised().uppercased()
   }
 
   var isBalanceEnough: Bool {
-    if self.amountFromBigInt > self.balance?.value ?? BigInt(0) { return false }
+    if self.amountFromBigInt > self.availableBalance { return false }
     return true
   }
 
@@ -147,6 +157,19 @@ class KNCreateLimitOrderViewModel {
     }()
     let valueInETH = ethRate * self.amountFromBigInt / BigInt(10).power(self.from.decimals)
     return valueInETH
+  }
+
+  var isConvertingETHToWETHNeeded: Bool {
+    if !self.from.isWETH { return false }
+    let balance = self.balance?.value ?? BigInt(0)
+    return balance < self.amountFromBigInt
+  }
+
+  var minAmountToConvert: BigInt {
+    if !self.from.isWETH { return BigInt(0) }
+    let balance = self.balance?.value ?? BigInt(0)
+    if balance < self.amountFromBigInt { return self.amountFromBigInt - balance }
+    return BigInt(0)
   }
 
   var isAmountTooBig: Bool {
@@ -242,7 +265,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var suggestBuyText: String {
-    return "Buy 3000 KNC to discount 50% for 20 orders".toBeLocalised()
+    return "Hold KNC to get discount up to 50%".toBeLocalised()
   }
 
   // MARK: Update data

@@ -67,7 +67,10 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
     let rate = BigInt(order.targetPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
 
-    self.pairValueLabel.text = "\(order.sourceToken)  ➞  \(order.destToken) >= \(rate)"
+    let srcTokenSymbol = order.srcTokenSymbol
+    let destTokenSymbol = order.destTokenSymbol
+
+    self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
 
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     switch order.state {
@@ -87,10 +90,10 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
       let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
       return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
     }()
-    self.feeValueLabel.text = feeDisplay
+    self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(order.sourceToken)"
-    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(order.destToken)"
+    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
+    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(destTokenSymbol)"
     if hasAction {
       if order.state != .open {
         self.updateCancelButtonUI(isShowing: false, callFromSuper: true)

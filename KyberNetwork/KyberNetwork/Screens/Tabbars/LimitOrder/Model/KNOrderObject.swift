@@ -79,6 +79,14 @@ class KNOrderObject: NSObject {
     return Date(timeIntervalSince1970: self.createdDate)
   }
 
+  var srcTokenSymbol: String {
+    return KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract.lowercased() == self.sourceToken.lowercased() })?.symbol ?? ""
+  }
+
+  var destTokenSymbol: String {
+    return KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract.lowercased() == self.destToken.lowercased() })?.symbol ?? ""
+  }
+
 //  override class func primaryKey() -> String? {
 //    return "id"
 //  }
@@ -87,8 +95,8 @@ class KNOrderObject: NSObject {
     let isFilled = arc4random() % 2 == 1
     let object = KNOrderObject(
       id: Int(arc4random()),
-      from: order.from.symbol,
-      to: order.to.symbol,
+      from: order.from.contract,
+      to: order.to.contract,
       amount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
       price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
       fee: 10,
