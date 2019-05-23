@@ -41,7 +41,7 @@ class KNManageOrdersViewModel {
     let fromTime = self.fromTime
     self.displayedOrders = self.orders.filter({
       // filter pairs
-      let pair = "\($0.sourceToken)->\($0.destToken)"
+      let pair = "\($0.sourceToken) ➞ \($0.destToken)"
       return self.selectedPairs == nil || self.selectedPairs?.contains(pair) == true
     }).filter({
       // filter states
@@ -88,6 +88,7 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   fileprivate(set) var viewModel: KNManageOrdersViewModel
   weak var delegate: KNManageOrdersViewControllerDelegate?
+  fileprivate(set) var filterVC: KNFilterLimitOrderViewController?
 
   init(viewModel: KNManageOrdersViewModel) {
     self.viewModel = viewModel
@@ -139,7 +140,7 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.orderCollectionView.delegate = self
     self.orderCollectionView.dataSource = self
 
-    self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea()
+    self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea() + 12.0
 
     self.updateDisplayTimeInterval(0)
   }
@@ -176,6 +177,19 @@ class KNManageOrdersViewController: KNBaseViewController {
   }
 
   fileprivate func openFilterView() {
+    let allPairs = self.viewModel.orders.map({ return "\($0.sourceToken) ➞ \($0.destToken)" }).unique
+    let viewModel = KNFilterLimitOrderViewModel(
+      pairs: self.viewModel.selectedPairs,
+      status: self.viewModel.selectedStates,
+      allPairs: allPairs
+    )
+    self.filterVC = KNFilterLimitOrderViewController(viewModel: viewModel)
+    self.filterVC?.delegate = self
+    self.filterVC?.loadViewIfNeeded()
+
+    self.filterVC?.modalPresentationStyle = .overFullScreen
+    self.filterVC?.modalTransitionStyle = .crossDissolve
+    self.present(self.filterVC!, animated: true, completion: nil)
   }
 
   func updateListOrders(_ orders: [KNOrderObject]) {
@@ -291,5 +305,13 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
       let indexPath = IndexPath(row: id, section: 0)
       self.orderCollectionView.reloadItems(at: [indexPath])
     }
+  }
+}
+
+extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate {
+  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int]) {
+    self.viewModel.selectedPairs = pairs
+    self.viewModel.selectedStates = status
+    self.updateCollectionView()
   }
 }

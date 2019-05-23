@@ -138,10 +138,11 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iZv-Qc-kOI">
-                    <rect key="frame" x="24" y="171" width="43" height="36"/>
+                    <rect key="frame" x="32" y="171" width="41" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="Qhx-VG-fTd"/>
                     </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="-16" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Pair" image="arrow_down_gray">
                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
@@ -151,10 +152,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ay-EB-kQc">
-                    <rect key="frame" x="162" y="171" width="50" height="36"/>
+                    <rect key="frame" x="162" y="171" width="47" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="O9j-a5-L91"/>
                     </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="-16" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Date" image="arrow_down_gray">
                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
@@ -164,10 +166,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G70-rH-9sY">
-                    <rect key="frame" x="310" y="171" width="64" height="36"/>
+                    <rect key="frame" x="332" y="171" width="58" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="47n-kW-D9R"/>
                     </constraints>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="-16" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Status" image="arrow_down_gray">
                         <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
@@ -176,7 +179,7 @@
                         <action selector="statusButtonPressed:" destination="-1" eventType="touchUpInside" id="uPd-eG-enx"/>
                     </connections>
                 </button>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UNz-z3-5jB">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UNz-z3-5jB">
                     <rect key="frame" x="0.0" y="223" width="414" height="639"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="OxO-2x-lwv">
@@ -208,7 +211,7 @@
                 <constraint firstItem="iZv-Qc-kOI" firstAttribute="top" secondItem="A5J-qO-zaL" secondAttribute="bottom" constant="16" id="J3J-xN-xCk"/>
                 <constraint firstItem="vk3-ns-uic" firstAttribute="centerX" secondItem="UNz-z3-5jB" secondAttribute="centerX" id="KiX-dJ-zIf"/>
                 <constraint firstItem="VjK-w6-naT" firstAttribute="leading" secondItem="iXd-eS-v2d" secondAttribute="trailing" constant="10" id="Lwa-XQ-gyz"/>
-                <constraint firstItem="iZv-Qc-kOI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="Mbc-eZ-2cP"/>
+                <constraint firstItem="iZv-Qc-kOI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="Mbc-eZ-2cP"/>
                 <constraint firstItem="UNz-z3-5jB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Mor-Pr-Dvq"/>
                 <constraint firstItem="vk3-ns-uic" firstAttribute="centerY" secondItem="UNz-z3-5jB" secondAttribute="centerY" id="VRC-tq-RWW"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="UNz-z3-5jB" secondAttribute="bottom" id="WY2-Lq-lAs"/>
@@ -217,7 +220,7 @@
                 <constraint firstItem="NWJ-Rj-KZt" firstAttribute="centerY" secondItem="lMr-OA-iXC" secondAttribute="centerY" id="f6u-92-1gL"/>
                 <constraint firstItem="lMr-OA-iXC" firstAttribute="centerY" secondItem="iXd-eS-v2d" secondAttribute="centerY" id="hio-R0-fEf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UNz-z3-5jB" secondAttribute="trailing" id="kwg-bF-Rfu"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="G70-rH-9sY" secondAttribute="trailing" constant="40" id="nPq-xs-nWZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="G70-rH-9sY" secondAttribute="trailing" constant="24" id="nPq-xs-nWZ"/>
                 <constraint firstItem="UNz-z3-5jB" firstAttribute="top" secondItem="3ay-EB-kQc" secondAttribute="bottom" constant="16" id="puw-F3-zAN"/>
                 <constraint firstItem="VjK-w6-naT" firstAttribute="centerY" secondItem="1T0-Me-bwc" secondAttribute="centerY" id="rIU-8a-0vV"/>
                 <constraint firstItem="1T0-Me-bwc" firstAttribute="top" secondItem="5P8-Vm-M9D" secondAttribute="bottom" constant="24" id="s7o-UC-Gs1"/>
