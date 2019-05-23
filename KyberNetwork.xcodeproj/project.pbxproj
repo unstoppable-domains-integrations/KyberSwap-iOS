@@ -179,6 +179,8 @@
 		25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */; };
 		25696F6D20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */; };
 		25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */; };
+		256ADD4922964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256ADD4722964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.swift */; };
+		256ADD4A22964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256ADD4822964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.xib */; };
 		256BD3F3214A22900085DE55 /* KYCFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256BD3F1214A22900085DE55 /* KYCFlowViewController.swift */; };
 		256BD3F4214A22900085DE55 /* KYCFlowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256BD3F2214A22900085DE55 /* KYCFlowViewController.xib */; };
 		256BD3F7214A3F030085DE55 /* kyc_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 256BD3F6214A3F030085DE55 /* kyc_data.json */; };
@@ -318,6 +320,8 @@
 		25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25BE329B209096E800D760FB /* KNListWalletsViewController.xib */; };
 		25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */; };
 		25C151C420C5414500A6F684 /* KNCreateWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */; };
+		25C40CAB2295582C0090003C /* KNFilterLimitOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C40CA92295582C0090003C /* KNFilterLimitOrderViewController.swift */; };
+		25C40CAC2295582C0090003C /* KNFilterLimitOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25C40CAA2295582C0090003C /* KNFilterLimitOrderViewController.xib */; };
 		25C45ABE20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */; };
 		25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */; };
 		25C45AC420AC3D9F00CDA1FF /* KNLandingPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */; };
@@ -762,6 +766,8 @@
 		25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenViewController.xib; sourceTree = "<group>"; };
 		25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSearchTokenTableViewCell.swift; sourceTree = "<group>"; };
 		25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenTableViewCell.xib; sourceTree = "<group>"; };
+		256ADD4722964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNFilterLimitOrderSelectPairTableViewCell.swift; sourceTree = "<group>"; };
+		256ADD4822964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNFilterLimitOrderSelectPairTableViewCell.xib; sourceTree = "<group>"; };
 		256BD3F1214A22900085DE55 /* KYCFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCFlowViewController.swift; sourceTree = "<group>"; };
 		256BD3F2214A22900085DE55 /* KYCFlowViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KYCFlowViewController.xib; sourceTree = "<group>"; };
 		256BD3F6214A3F030085DE55 /* kyc_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyc_data.json; sourceTree = "<group>"; };
@@ -903,6 +909,8 @@
 		25BE329B209096E800D760FB /* KNListWalletsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListWalletsViewController.xib; sourceTree = "<group>"; };
 		25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListWalletsCoordinator.swift; sourceTree = "<group>"; };
 		25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCreateWalletCoordinator.swift; sourceTree = "<group>"; };
+		25C40CA92295582C0090003C /* KNFilterLimitOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNFilterLimitOrderViewController.swift; sourceTree = "<group>"; };
+		25C40CAA2295582C0090003C /* KNFilterLimitOrderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNFilterLimitOrderViewController.xib; sourceTree = "<group>"; };
 		25C45ABD20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSupportedTokenCoordinator.swift; sourceTree = "<group>"; };
 		25C45AC120AC3D9F00CDA1FF /* KNLandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNLandingPageViewController.swift; sourceTree = "<group>"; };
 		25C45AC220AC3D9F00CDA1FF /* KNLandingPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNLandingPageViewController.xib; sourceTree = "<group>"; };
@@ -1505,6 +1513,7 @@
 		25377B0B22842AAA0012178F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				25C40CA82295580B0090003C /* Filter */,
 				25864CFE228EC97800D159B5 /* OrderCancelConfirm */,
 				2528B409228D59FA003EEA32 /* ManageOrders */,
 				254550FE228C307900D5E55D /* OrderCell */,
@@ -2190,6 +2199,15 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
+		256ADD4B22964C49001F12F1 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				256ADD4822964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.xib */,
+				256ADD4722964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		256BD3F5214A3EF10085DE55 /* Resouces */ = {
 			isa = PBXGroup;
 			children = (
@@ -2844,6 +2862,16 @@
 				25BE32A02090970F00D760FB /* KNListWalletsCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		25C40CA82295580B0090003C /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				25C40CA92295582C0090003C /* KNFilterLimitOrderViewController.swift */,
+				25C40CAA2295582C0090003C /* KNFilterLimitOrderViewController.xib */,
+				256ADD4B22964C49001F12F1 /* Cell */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		25C45ABC20AC215F00CDA1FF /* SupportedTokenCoordinator */ = {
@@ -4006,6 +4034,7 @@
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
 				25455102228C310300D5E55D /* KNLimitOrderCollectionViewCell.xib in Resources */,
 				258711EB2227DA9900B5906C /* KNNotificationAlertPopupViewController.xib in Resources */,
+				256ADD4A22964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.xib in Resources */,
 				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				2588513C2297E2F100DD66F9 /* GoogleService-Info.plist in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
@@ -4027,6 +4056,7 @@
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
+				25C40CAC2295582C0090003C /* KNFilterLimitOrderViewController.xib in Resources */,
 				25073D25211AF20D00833C92 /* OFL.txt in Resources */,
 				2545C8F82223F48500CA99C5 /* KNAlertTableView.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -4417,6 +4447,7 @@
 				254BB353211D9A5500B8E75D /* KConfirmSendViewModel.swift in Sources */,
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
+				25C40CAB2295582C0090003C /* KNFilterLimitOrderViewController.swift in Sources */,
 				25117D3E2248D68300B5C495 /* KNAlertLeaderBoardViewController.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
@@ -4573,6 +4604,7 @@
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				29CA4B791F6FBFD50032313D /* Balance.swift in Sources */,
 				291F52A71F6B766100B369AB /* BalanceRequest.swift in Sources */,
+				256ADD4922964C45001F12F1 /* KNFilterLimitOrderSelectPairTableViewCell.swift in Sources */,
 				251ABCBC205790210069687F /* KNEnvironment.swift in Sources */,
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
