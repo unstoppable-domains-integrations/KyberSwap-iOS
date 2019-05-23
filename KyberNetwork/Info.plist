@@ -45,7 +45,7 @@
 			<string>gg_staging</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1038789996561-bvdeumt3g6geuffg99fu6v7dhe746aji</string>
+				<string>com.googleusercontent.apps.562303760817-qj8f2gb17ull9imknsngb7utld7cr143</string>
 			</array>
 		</dict>
 		<dict>
@@ -75,7 +75,7 @@
 			<string>gg_dev</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1038789996561-bvdeumt3g6geuffg99fu6v7dhe746aji</string>
+				<string>com.googleusercontent.apps.66732966024-rkqv3m2emqtvm290u9is1v5s2hu1q7rr</string>
 			</array>
 		</dict>
 		<dict>
