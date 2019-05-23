@@ -19,8 +19,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var dateValueLabel: UILabel!
   @IBOutlet weak var orderStatusLabel: UILabel!
 
-  @IBOutlet weak var conditionTextLabel: UILabel!
-  @IBOutlet weak var orderConditionLabel: UILabel!
+  @IBOutlet weak var feeTextLabel: UILabel!
+  @IBOutlet weak var feeValueLabel: UILabel!
 
   @IBOutlet weak var fromTextLabel: UILabel!
   @IBOutlet weak var sourceValueLabel: UILabel!
@@ -44,7 +44,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.containerView.rounded(radius: 5.0)
     self.headerContainerView.rounded(radius: 2.5)
     self.orderStatusLabel.rounded(radius: 2.5)
-    self.conditionTextLabel.text = "Condition".toBeLocalised().uppercased()
+    self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
     self.toTextLabel.text = NSLocalizedString("To", value: "To", comment: "").uppercased()
     self.cancelButton.setTitle(
@@ -64,7 +64,11 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
   func updateCell(with order: KNOrderObject, isReset: Bool, hasAction: Bool = true) {
     self.order = order
     self.hasAction = hasAction
-    self.pairValueLabel.text = "\(order.sourceToken)  ➞  \(order.destToken)"
+
+    let rate = BigInt(order.targetPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
+
+    self.pairValueLabel.text = "\(order.sourceToken)  ➞  \(order.destToken) >= \(rate)"
+
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     switch order.state {
     case .open:
@@ -79,8 +83,11 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
       self.orderStatusLabel.isHidden = true
     }
 
-    let rate = BigInt(order.targetPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
-    self.orderConditionLabel.text = ">= \(rate)"
+    let feeDisplay: String = {
+      let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
+      return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
+    }()
+    self.feeValueLabel.text = feeDisplay
 
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(order.sourceToken)"
     self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(order.destToken)"
