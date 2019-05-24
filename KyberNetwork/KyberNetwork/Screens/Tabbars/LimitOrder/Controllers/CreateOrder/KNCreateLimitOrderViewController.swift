@@ -32,6 +32,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBOutlet weak var tokenDateContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
+  @IBOutlet weak var fromTokenInfoButton: UIButton!
   @IBOutlet weak var fromAmountTextField: UITextField!
   @IBOutlet weak var toTokenButton: UIButton!
   @IBOutlet weak var toAmountTextField: UITextField!
@@ -250,6 +251,16 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "from_token_pressed"])
     self.delegate?.kCreateLimitOrderViewController(self, run: .searchToken(from: self.viewModel.from, to: self.viewModel.to, isSource: true))
+  }
+
+  @IBAction func fromTokenInfoButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "from_token_info_pressed"])
+    self.showTopBannerView(
+      with: "",
+      message: "Ether that is compatible to ERC20 standard. 1 WETH = 1 ETH. Limit Order works with WETH only (not ETH)".toBeLocalised(),
+      icon: UIImage(named: "info_blue_icon"),
+      time: 3.0
+    )
   }
 
   @IBAction func toTokenButtonPressed(_ sender: Any) {
@@ -484,10 +495,11 @@ extension KNCreateLimitOrderViewController {
         for: .normal
       )
       self.fromTokenButton.setTokenImage(
-        token: self.viewModel.from,
+        token: self.viewModel.from.isWETH ? self.viewModel.eth : self.viewModel.from,
         size: self.viewModel.defaultTokenIconImg?.size
       )
       self.sourceBalanceTextLabel.text = self.viewModel.balanceTextString
+      self.fromTokenInfoButton.isHidden = !(self.viewModel.from.isETH || self.viewModel.from.isWETH)
     }
     if updatedTo {
       self.toTokenButton.setAttributedTitle(
@@ -500,7 +512,7 @@ extension KNCreateLimitOrderViewController {
       )
     }
     self.sourceBalanceValueLabel.text = self.viewModel.balanceText
-    self.pairTokensLabel.text = "\(self.viewModel.from.symbol) ➞ \(self.viewModel.to.symbol)"
+    self.pairTokensLabel.text = "\(self.viewModel.fromSybol) ➞ \(self.viewModel.to.symbol)"
 
     self.updateCurrentMarketRateUI()
     self.updateFeeNotesUI()
