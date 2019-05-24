@@ -40,6 +40,8 @@ target 'KyberNetwork' do
   pod 'FacebookLogin', '~> 0.3.0'
   pod 'GoogleSignIn', '~> 4.4.0'
   pod 'TwitterKit', '~> 3.4.2'
+  pod 'Firebase/Core'
+  pod 'Firebase/Analytics'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

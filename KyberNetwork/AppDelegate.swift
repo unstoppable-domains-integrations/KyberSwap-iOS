@@ -12,6 +12,7 @@ import TwitterKit
 import FacebookCore
 import FacebookLogin
 import GoogleSignIn
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -64,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     )
     OneSignal.inFocusDisplayType = .notification
     SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+    FirebaseApp.configure()
     return true
   }
 

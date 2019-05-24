@@ -186,11 +186,15 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.receiveButton.setTitle(NSLocalizedString("receive", value: "Receive", comment: ""), for: .normal)
     self.swapButton.setTitle(NSLocalizedString("swap", value: "Swap", comment: ""), for: .normal)
     self.tokenTextLabel.text = "Token".toBeLocalised()
-    self.resetButton.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 4.0)
+    self.resetButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: self.resetButton.frame.height / 2.0
+    )
     self.resetButton.setTitle("Reset".toBeLocalised(), for: .normal)
     self.applyButton.applyGradient()
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
-    self.applyButton.rounded(radius: 4.0)
+    self.applyButton.rounded(radius: self.applyButton.frame.height / 2.0)
 
     let nib = UINib(nibName: KNTransactionFilterTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kFilterTokensTableViewCellID)
