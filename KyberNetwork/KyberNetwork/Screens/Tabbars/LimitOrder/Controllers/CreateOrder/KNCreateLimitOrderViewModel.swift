@@ -307,6 +307,7 @@ class KNCreateLimitOrderViewModel {
 
   func swapTokens() {
     swap(&self.from, &self.to)
+    if self.from.isETH, let weth = self.weth { self.from = weth } // switch to weth
     self.amountFrom = ""
     self.amountTo = ""
     self.targetRate = ""
@@ -372,7 +373,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
-    self.relatedOrders = orders.filter({ return $0.state == .open }).sorted(by: { return $0.createdDate > $1.createdDate })
+    self.relatedOrders = orders.filter({ return $0.state == .open || $0.state == .inProgress }).sorted(by: { return $0.createdDate > $1.createdDate })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
   }
 
