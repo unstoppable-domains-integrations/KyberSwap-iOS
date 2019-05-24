@@ -5,8 +5,10 @@ import RealmSwift
 
 enum KNOrderState: Int {
   case open
+  case inProgress
   case filled
   case cancelled
+  case invalidated
   case unknown
 }
 
@@ -92,6 +94,7 @@ class KNOrderObject: NSObject {
 //  }
 
   static func getOrderObject(from order: KNLimitOrder) -> KNOrderObject {
+    let state = Int(arc4random() % 5)
     let isFilled = arc4random() % 2 == 1
     let object = KNOrderObject(
       id: Int(arc4random()),
@@ -103,7 +106,7 @@ class KNOrderObject: NSObject {
       sender: order.account.address.description,
       createdDate: Date().timeIntervalSince1970 - Double(arc4random() % 100) * 24.0 * 60.0 * 60.0,
       filledDate: isFilled ? Date().timeIntervalSince1970 : 0.0,
-      stateValue: isFilled ? KNOrderState.filled.rawValue : KNOrderState.open.rawValue
+      stateValue: state
     )
     return object
   }

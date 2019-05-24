@@ -52,6 +52,8 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var statusOpenButton: UIButton!
   @IBOutlet weak var statusFilledButton: UIButton!
   @IBOutlet weak var statusCanceledButton: UIButton!
+  @IBOutlet weak var statusInProgressButton: UIButton!
+  @IBOutlet weak var statusInvalidatedButton: UIButton!
 
   @IBOutlet weak var resetButton: UIButton!
   @IBOutlet weak var applyButton: UIButton!
@@ -136,22 +138,40 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
       self.viewModel.status.contains(0) ? UIImage(named: "check_box_icon") : nil,
       for: .normal
     )
-    self.statusFilledButton.rounded(
+    self.statusInProgressButton.rounded(
       color: self.viewModel.status.contains(1) ? UIColor.clear : UIColor.Kyber.border,
       width: 1.0,
       radius: 2.5
     )
-    self.statusFilledButton.setImage(
+    self.statusInProgressButton.setImage(
       self.viewModel.status.contains(1) ? UIImage(named: "check_box_icon") : nil,
       for: .normal
     )
-    self.statusCanceledButton.rounded(
+    self.statusFilledButton.rounded(
       color: self.viewModel.status.contains(2) ? UIColor.clear : UIColor.Kyber.border,
       width: 1.0,
       radius: 2.5
     )
-    self.statusCanceledButton.setImage(
+    self.statusFilledButton.setImage(
       self.viewModel.status.contains(2) ? UIImage(named: "check_box_icon") : nil,
+      for: .normal
+    )
+    self.statusCanceledButton.rounded(
+      color: self.viewModel.status.contains(3) ? UIColor.clear : UIColor.Kyber.border,
+      width: 1.0,
+      radius: 2.5
+    )
+    self.statusCanceledButton.setImage(
+      self.viewModel.status.contains(3) ? UIImage(named: "check_box_icon") : nil,
+      for: .normal
+    )
+    self.statusInvalidatedButton.rounded(
+      color: self.viewModel.status.contains(4) ? UIColor.clear : UIColor.Kyber.border,
+      width: 1.0,
+      radius: 2.5
+    )
+    self.statusInvalidatedButton.setImage(
+      self.viewModel.status.contains(4) ? UIImage(named: "check_box_icon") : nil,
       for: .normal
     )
   }
@@ -194,7 +214,7 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.updateStatusView()
   }
 
-  @IBAction func statusFilledButtonPressed(_ sender: Any) {
+  @IBAction func statusInProgressButtonPressed(_ sender: Any) {
     if let id = self.viewModel.status.firstIndex(of: 1) {
       self.viewModel.status.remove(at: id)
     } else {
@@ -203,7 +223,7 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.updateStatusView()
   }
 
-  @IBAction func statusCancelledButtonPressed(_ sender: Any) {
+  @IBAction func statusFilledButtonPressed(_ sender: Any) {
     if let id = self.viewModel.status.firstIndex(of: 2) {
       self.viewModel.status.remove(at: id)
     } else {
@@ -212,10 +232,28 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.updateStatusView()
   }
 
+  @IBAction func statusCancelledButtonPressed(_ sender: Any) {
+    if let id = self.viewModel.status.firstIndex(of: 3) {
+      self.viewModel.status.remove(at: id)
+    } else {
+      self.viewModel.status.append(3)
+    }
+    self.updateStatusView()
+  }
+
+  @IBAction func statusInvalidateButtonPressed(_ sender: Any) {
+    if let id = self.viewModel.status.firstIndex(of: 4) {
+      self.viewModel.status.remove(at: id)
+    } else {
+      self.viewModel.status.append(4)
+    }
+    self.updateStatusView()
+  }
+
   @IBAction func resetButtonPressed(_ sender: Any) {
     self.viewModel.isSortAsc = true
     self.viewModel.pairs = nil
-    self.viewModel.status = [0]
+    self.viewModel.status = [0, 1]
 
     self.updateSortPairView()
     self.updateStatusView()

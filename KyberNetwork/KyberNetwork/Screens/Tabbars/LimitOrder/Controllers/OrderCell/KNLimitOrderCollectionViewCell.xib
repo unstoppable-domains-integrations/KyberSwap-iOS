@@ -53,23 +53,24 @@
                                         <color key="textColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filled" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCf-Lb-rnn">
-                                        <rect key="frame" x="255" y="13" width="60" height="18"/>
-                                        <color key="backgroundColor" red="0.1176470588" green="0.53725490200000003" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="3jE-Xb-Uh6"/>
-                                            <constraint firstAttribute="width" constant="60" id="HtE-CD-80k"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="10"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06 Jun 2019" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="La1-mb-3Fg">
                                         <rect key="frame" x="12" y="25" width="59.5" height="12.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="10"/>
                                         <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vJe-gu-d7V">
+                                        <rect key="frame" x="238" y="13" width="77" height="18"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="D1f-GQ-NAQ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="10"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="In Progress">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -77,8 +78,8 @@
                                     <constraint firstItem="La1-mb-3Fg" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="BAS-VG-hEm"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" constant="-6" id="Btp-q0-VFr"/>
                                     <constraint firstItem="La1-mb-3Fg" firstAttribute="top" secondItem="VOH-R7-a2W" secondAttribute="bottom" id="HMi-ZA-ooV"/>
-                                    <constraint firstAttribute="trailing" secondItem="vCf-Lb-rnn" secondAttribute="trailing" constant="12" id="hPZ-vn-T87"/>
-                                    <constraint firstItem="vCf-Lb-rnn" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="z90-eS-c3E"/>
+                                    <constraint firstItem="vJe-gu-d7V" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="ayD-vX-QhH"/>
+                                    <constraint firstAttribute="trailing" secondItem="vJe-gu-d7V" secondAttribute="trailing" constant="12" id="lRD-zH-fhr"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="zQY-5c-aOU"/>
                                 </constraints>
                             </view>
@@ -169,7 +170,7 @@
                 <outlet property="fromTextLabel" destination="VJE-Rr-hfO" id="QdJ-F4-IsA"/>
                 <outlet property="headerContainerView" destination="CAe-iv-NaR" id="W8W-No-5y7"/>
                 <outlet property="leadingSpaceToContainerViewConstraint" destination="tVW-U8-ibv" id="Y6O-2f-OHE"/>
-                <outlet property="orderStatusLabel" destination="vCf-Lb-rnn" id="ewb-JS-Vjg"/>
+                <outlet property="orderStatusLabel" destination="vJe-gu-d7V" id="Odd-ef-lCn"/>
                 <outlet property="pairValueLabel" destination="VOH-R7-a2W" id="m8K-Ln-WFy"/>
                 <outlet property="sourceValueLabel" destination="JaZ-mW-KBg" id="bcl-L7-Z8Y"/>
                 <outlet property="toTextLabel" destination="OVv-Bu-ccZ" id="5zH-Sh-IYU"/>

@@ -259,7 +259,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBAction func swapTokensButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "swap_2_tokens"])
-    if self.viewModel.to.isETH {
+    if self.viewModel.to.isETH && self.viewModel.weth == nil {
       self.showWarningTopBannerMessage(
         with: "Unsupported".toBeLocalised(),
         message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
@@ -686,14 +686,19 @@ extension KNCreateLimitOrderViewController {
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
     if isSource, token.isETH {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
-        time: 2.0
-      )
+      if let wethToken = self.viewModel.weth {
+        self.viewModel.updateSelectedToken(wethToken, isSource: isSource)
+      } else {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
+          message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
+          time: 2.0
+        )
+      }
       return
+    } else {
+      self.viewModel.updateSelectedToken(token, isSource: isSource)
     }
-    self.viewModel.updateSelectedToken(token, isSource: isSource)
     if isSource && self.viewModel.focusTextFieldTag == 0 {
       self.viewModel.updateAmount("", isSource: isSource)
       self.fromAmountTextField.text = ""

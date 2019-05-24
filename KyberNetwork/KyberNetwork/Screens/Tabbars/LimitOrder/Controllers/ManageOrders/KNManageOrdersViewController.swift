@@ -27,7 +27,7 @@ class KNManageOrdersViewModel {
   var selectedPairs: [String]? {
     didSet { self.updateDisplayOrders() }
   }
-  var selectedStates: [Int] = [0] { // default only open
+  var selectedStates: [Int] = [0, 1] { // default only open
     didSet { self.updateDisplayOrders() }
   }
 
@@ -177,7 +177,7 @@ class KNManageOrdersViewController: KNBaseViewController {
   }
 
   fileprivate func openFilterView() {
-    let allPairs = self.viewModel.orders.map({ return "\($0.sourceToken) ➞ \($0.destToken)" }).unique
+    let allPairs = self.viewModel.orders.map({ return "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)" }).unique
     let viewModel = KNFilterLimitOrderViewModel(
       pairs: self.viewModel.selectedPairs,
       status: self.viewModel.selectedStates,

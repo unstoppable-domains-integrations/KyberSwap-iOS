@@ -17,7 +17,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet weak var pairValueLabel: UILabel!
   @IBOutlet weak var dateValueLabel: UILabel!
-  @IBOutlet weak var orderStatusLabel: UILabel!
+  @IBOutlet weak var orderStatusLabel: UIButton!
 
   @IBOutlet weak var feeTextLabel: UILabel!
   @IBOutlet weak var feeValueLabel: UILabel!
@@ -43,7 +43,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     // Initialization code
     self.containerView.rounded(radius: 5.0)
     self.headerContainerView.rounded(radius: 2.5)
-    self.orderStatusLabel.rounded(radius: 2.5)
+    self.orderStatusLabel.rounded(radius: self.orderStatusLabel.frame.height / 2.0)
     self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
     self.toTextLabel.text = NSLocalizedString("To", value: "To", comment: "").uppercased()
@@ -73,19 +73,26 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
 
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
+    self.orderStatusLabel.isHidden = false
     switch order.state {
     case .open:
-      self.orderStatusLabel.isHidden = false
-      self.orderStatusLabel.text = "Open".toBeLocalised()
+      self.orderStatusLabel.setTitle("Open".toBeLocalised(), for: .normal)
       self.orderStatusLabel.backgroundColor = UIColor.Kyber.shamrock
+    case .inProgress:
+      self.orderStatusLabel.setTitle("In progress".toBeLocalised(), for: .normal)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 248, green: 159, blue: 80)
     case .filled:
-      self.orderStatusLabel.isHidden = false
-      self.orderStatusLabel.text = "Filled".toBeLocalised()
+      self.orderStatusLabel.setTitle("Filled".toBeLocalised(), for: .normal)
       self.orderStatusLabel.backgroundColor = UIColor.Kyber.blueGreen
+    case .cancelled:
+      self.orderStatusLabel.setTitle("Cancelled".toBeLocalised(), for: .normal)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 190, green: 190, blue: 190)
+    case .invalidated:
+      self.orderStatusLabel.setTitle("Invalidated".toBeLocalised(), for: .normal)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 70, green: 73, blue: 80)
     default:
       self.orderStatusLabel.isHidden = true
     }
-
     let feeDisplay: String = {
       let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
       return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
