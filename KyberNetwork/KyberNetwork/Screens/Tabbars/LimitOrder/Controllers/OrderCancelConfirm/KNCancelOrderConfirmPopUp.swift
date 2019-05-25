@@ -11,10 +11,10 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var pairValueLabel: UILabel!
   @IBOutlet weak var dateValueLabel: UILabel!
-  @IBOutlet weak var statusValueLabel: UILabel!
+  @IBOutlet weak var statusValueLabel: UIButton!
 
-  @IBOutlet weak var conditionTextLabel: UILabel!
-  @IBOutlet weak var rateValueLabel: UILabel!
+  @IBOutlet weak var feeTextLabel: UILabel!
+  @IBOutlet weak var feeValueLabel: UILabel!
 
   @IBOutlet weak var fromTextLabel: UILabel!
   @IBOutlet weak var sourceValueLabel: UILabel!
@@ -44,7 +44,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     self.statusValueLabel.rounded(radius: 2.5)
 
     self.titleTextLabel.text = "You are cancelling this order".toBeLocalised()
-    self.conditionTextLabel.text = "Condition".toBeLocalised().uppercased()
+    self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
     self.toTextLabel.text = NSLocalizedString("To", value: "To", comment: "").uppercased()
     self.cancelButton.setTitle(
@@ -63,26 +63,40 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
     self.confirmButton.applyGradient()
 
-    self.pairValueLabel.text = "\(order.sourceToken)  ➞  \(order.destToken)"
+    let srcTokenSymbol = order.srcTokenSymbol
+    let destTokenSymbol = order.destTokenSymbol
+    let rate = BigInt(order.targetPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
+
+    self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     switch order.state {
     case .open:
-      self.statusValueLabel.isHidden = false
-      self.statusValueLabel.text = "Open".toBeLocalised()
+      self.statusValueLabel.setTitle("Open".toBeLocalised(), for: .normal)
       self.statusValueLabel.backgroundColor = UIColor.Kyber.shamrock
+    case .inProgress:
+      self.statusValueLabel.setTitle("In progress".toBeLocalised(), for: .normal)
+      self.statusValueLabel.backgroundColor = UIColor(red: 248, green: 159, blue: 80)
     case .filled:
-      self.statusValueLabel.isHidden = false
-      self.statusValueLabel.text = "Filled".toBeLocalised()
+      self.statusValueLabel.setTitle("Filled".toBeLocalised(), for: .normal)
       self.statusValueLabel.backgroundColor = UIColor.Kyber.blueGreen
+    case .cancelled:
+      self.statusValueLabel.setTitle("Cancelled".toBeLocalised(), for: .normal)
+      self.statusValueLabel.backgroundColor = UIColor(red: 190, green: 190, blue: 190)
+    case .invalidated:
+      self.statusValueLabel.setTitle("Invalidated".toBeLocalised(), for: .normal)
+      self.statusValueLabel.backgroundColor = UIColor(red: 70, green: 73, blue: 80)
     default:
       self.statusValueLabel.isHidden = true
     }
 
-    let rate = BigInt(order.targetPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
-    self.rateValueLabel.text = ">= \(rate)"
+    let feeDisplay: String = {
+      let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
+      return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
+    }()
+    self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(order.sourceToken)"
-    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(order.destToken)"
+    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
+    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(destTokenSymbol)"
   }
 
   override func viewDidLayoutSubviews() {
