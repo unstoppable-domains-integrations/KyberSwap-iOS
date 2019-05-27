@@ -25,7 +25,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Ethereum" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oye-zW-Mfw">
-                        <rect key="frame" x="97" y="12" width="72" height="19.5"/>
+                        <rect key="frame" x="97" y="14" width="72" height="17.5"/>
                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                         <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -38,7 +38,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ggf-xt-sxh">
-                        <rect key="frame" x="48" y="12" width="29" height="20"/>
+                        <rect key="frame" x="48" y="14" width="29" height="16"/>
                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -57,7 +57,7 @@
                     <constraint firstItem="jR8-tJ-3vy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oye-zW-Mfw" secondAttribute="trailing" constant="8" id="6aE-k5-qIG"/>
                     <constraint firstItem="cpk-F3-XLg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ATC-iO-Gmn"/>
                     <constraint firstItem="Ggf-xt-sxh" firstAttribute="centerY" secondItem="cpk-F3-XLg" secondAttribute="centerY" id="FFm-iU-dBg"/>
-                    <constraint firstItem="oye-zW-Mfw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="KHA-0P-mUV"/>
+                    <constraint firstItem="oye-zW-Mfw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="KHA-0P-mUV"/>
                     <constraint firstAttribute="trailing" secondItem="jR8-tJ-3vy" secondAttribute="trailing" constant="16" id="LT2-1K-5fm"/>
                     <constraint firstItem="cpk-F3-XLg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="O9O-wi-A1m"/>
                     <constraint firstAttribute="bottom" secondItem="oye-zW-Mfw" secondAttribute="bottom" constant="14" id="Qoi-gX-4kc"/>
