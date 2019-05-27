@@ -12,6 +12,7 @@ enum KNCreateLimitOrderViewEvent {
   case manageOrders
   case estimateFee(src: String, dest: String, srcAmount: Double, destAmount: Double)
   case getExpectedNonce(address: String, src: String, dest: String)
+  case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt)
 }
 
 protocol KNCreateLimitOrderViewControllerDelegate: class {
@@ -77,7 +78,6 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   fileprivate var viewModel: KNCreateLimitOrderViewModel
   weak var delegate: KNCreateLimitOrderViewControllerDelegate?
   fileprivate var updateFeeTimer: Timer?
-  fileprivate var convertVC: KNConvertSuggestionViewController?
 
   @IBOutlet var submitButtonBottomPaddingToRelatedOrderViewConstraint: NSLayoutConstraint!
   @IBOutlet var submitButtonBottomPaddingToContainerViewConstraint: NSLayoutConstraint!
@@ -287,6 +287,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.toAmountTextField.text = ""
     self.targetRateTextField.text = ""
     self.updateTokensView()
+
+    if let rate = self.viewModel.cachedProdRate, !rate.isZero {
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      self.targetRateTextField.text = rateString
+      self.viewModel.updateTargetRate(rateString)
+    }
+
     self.updateEstimateRateFromNetwork(showWarning: true)
   }
 
@@ -630,13 +637,12 @@ extension KNCreateLimitOrderViewController {
 
   fileprivate func showConvertETHToWETHIfNeeded() -> Bool {
     if !self.viewModel.isConvertingETHToWETHNeeded { return false }
-    self.convertVC = KNConvertSuggestionViewController()
-    self.convertVC?.loadViewIfNeeded()
-    self.navigationController?.pushViewController(self.convertVC!, animated: true, completion: {
-      self.convertVC?.updateAddress(self.viewModel.walletObject.address)
-      self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
-      self.convertVC?.updateAmountToConvert(self.viewModel.minAmountToConvert)
-    })
+    let event = KNCreateLimitOrderViewEvent.openConvertWETH(
+      address: self.viewModel.walletObject.address,
+      ethBalance: self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0),
+      amount: self.viewModel.minAmountToConvert
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
     return true
   }
 }
@@ -661,8 +667,6 @@ extension KNCreateLimitOrderViewController {
       currentWallet: self.viewModel.walletObject
     )
     self.hamburgerMenu.hideMenu(animated: false)
-    self.convertVC?.updateAddress(self.viewModel.walletObject.address)
-    self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
     self.view.layoutIfNeeded()
   }
 
@@ -679,7 +683,6 @@ extension KNCreateLimitOrderViewController {
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.sourceBalanceValueLabel.text = self.viewModel.balanceText
-    self.convertVC?.updateETHBalance(self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0))
     self.view.layoutIfNeeded()
   }
 

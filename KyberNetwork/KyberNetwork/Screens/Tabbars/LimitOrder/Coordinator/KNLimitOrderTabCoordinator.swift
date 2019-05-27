@@ -1,5 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+//swiftlint:disable file_length
 import UIKit
 import BigInt
 import TrustKeystore
@@ -33,6 +34,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
 
   fileprivate var confirmVC: KNConfirmLimitOrderViewController?
   fileprivate var manageOrdersVC: KNManageOrdersViewController?
+  fileprivate var convertVC: KNConvertSuggestionViewController?
 
   lazy var rootViewController: KNCreateLimitOrderViewController = {
     let (from, to): (TokenObject, TokenObject) = {
@@ -78,6 +80,7 @@ extension KNLimitOrderTabCoordinator {
     if resetRoot {
       self.navigationController.popToRootViewController(animated: false)
     }
+    self.balances = [:]
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
@@ -89,6 +92,10 @@ extension KNLimitOrderTabCoordinator {
     }
     self.historyCoordinator?.delegate = self
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+
+    self.convertVC?.updateAddress(session.wallet.address.description)
+    self.convertVC?.updateETHBalance(BigInt(0))
+    self.convertVC?.updateWETHBalance(self.balances)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -105,6 +112,7 @@ extension KNLimitOrderTabCoordinator {
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
     self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
     self.searchTokensViewController?.updateBalances(otherTokensBalance)
+    self.convertVC?.updateWETHBalance(otherTokensBalance)
   }
 
   func appCoordinatorETHBalanceDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, ethBalance: Balance) {
@@ -114,6 +122,7 @@ extension KNLimitOrderTabCoordinator {
       self.rootViewController.coordinatorUpdateTokenBalance([eth.contract: ethBalance])
     }
     self.sendTokenCoordinator?.coordinatorETHBalanceDidUpdate(ethBalance: ethBalance)
+    self.convertVC?.updateETHBalance(ethBalance.value)
   }
 
   func appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
@@ -188,6 +197,12 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         srcAmount: srcAmount,
         destAmount: destAmount
       )
+    case .openConvertWETH(let address, let ethBalance, let amount):
+      self.openConvertWETHView(
+        address: address,
+        ethBalance: ethBalance,
+        amount: amount
+      )
     default: break
     }
   }
@@ -205,6 +220,18 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .selectAllTransactions:
       self.openHistoryTransactionsView()
     }
+  }
+
+  fileprivate func openConvertWETHView(address: String, ethBalance: BigInt, amount: BigInt) {
+    self.convertVC = KNConvertSuggestionViewController()
+    self.convertVC?.loadViewIfNeeded()
+    self.convertVC?.delegate = self
+    self.navigationController.pushViewController(self.convertVC!, animated: true, completion: {
+      self.convertVC?.updateAddress(address)
+      self.convertVC?.updateETHBalance(ethBalance)
+      self.convertVC?.updateWETHBalance(self.balances)
+      self.convertVC?.updateAmountToConvert(amount)
+    })
   }
 
   fileprivate func openConfirmOrder(_ order: KNLimitOrder) {
@@ -516,7 +543,19 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
     case .estimateGasLimit(let from, let to, let amount):
       self.updateEstimatedGasLimit(from: from, to: to, amount: amount)
     case .confirmSwap(let transaction):
-      self.sendExchangeTransaction(transaction)
+      self.navigationController.displayLoading(text: "Sending...".toBeLocalised(), animated: true)
+      self.checkUserCapIfNeeded(exchange: transaction) { [weak self] error in
+        if let errorMessage = error {
+          self?.navigationController.hideLoading()
+          self?.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: errorMessage,
+            time: 2.0
+          )
+        } else {
+          self?.sendExchangeTransaction(transaction)
+        }
+      }
     }
   }
 
@@ -539,8 +578,41 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
     }
   }
 
+  fileprivate func checkUserCapIfNeeded(exchange: KNDraftExchangeTransaction, completion: @escaping (String?) -> Void) {
+    self.sendGetUserTradeCapRequest(completion: { result in
+      if case .success(let resp) = result,
+        let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+        let cap = json["cap"] as? Double {
+        let rich = json["rich"] as? Bool ?? false
+        if rich {
+          let errorMessage = NSLocalizedString(
+            "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+            value: "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+            comment: ""
+          )
+          completion(errorMessage)
+          return
+        } else {
+          if Double(exchange.amount) > cap {
+            let display = BigInt(cap).shortString(decimals: 18, maxFractionDigits: 4)
+            let text = NSLocalizedString(
+              "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
+              value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
+              comment: ""
+            )
+            let errorMessage = String(
+              format: text,
+              "\(display) ETH")
+            completion(errorMessage)
+            return
+          }
+        }
+      }
+      completion(nil)
+    })
+  }
+
   fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
-    self.navigationController.displayLoading(text: "Sending...".toBeLocalised(), animated: true)
     self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()

@@ -105,6 +105,7 @@ extension KNExchangeTokenCoordinator {
     if resetRoot {
       self.navigationController.popToRootViewController(animated: false)
     }
+    self.balances = [:]
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
