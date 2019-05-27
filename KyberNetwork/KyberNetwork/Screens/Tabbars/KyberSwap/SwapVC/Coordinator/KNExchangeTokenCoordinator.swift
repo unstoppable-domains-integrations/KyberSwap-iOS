@@ -413,44 +413,42 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       if let err = error { errorMessage = err.prettyError }
       group.leave()
     }
-    if !(data.from.isETH && data.to.isWETH) && !(data.from.isWETH && data.to.isETH) {
-      group.enter()
-      self.sendGetUserTradeCapRequest(completion: { result in
-        if case .success(let resp) = result,
-          let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
-          let cap = json["cap"] as? Double {
-          let rich = json["rich"] as? Bool ?? false
-          if rich {
-            errorMessage = NSLocalizedString(
-              "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
-              value: "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+    group.enter()
+    self.sendGetUserTradeCapRequest(completion: { result in
+      if case .success(let resp) = result,
+        let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+        let cap = json["cap"] as? Double {
+        let rich = json["rich"] as? Bool ?? false
+        if rich {
+          errorMessage = NSLocalizedString(
+            "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+            value: "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
+            comment: ""
+          )
+        } else {
+          let equivalentETH: BigInt = {
+            if data.from.isETH || data.from.isWETH { return data.amount }
+            if data.to.isETH || data.to.isWETH { return data.expectedReceive }
+            if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
+              return rate.rate * data.amount / BigInt(10).power(data.from.decimals)
+            }
+            return BigInt(0)
+          }()
+          if Double(equivalentETH) > cap {
+            let display = equivalentETH.shortString(decimals: 18, maxFractionDigits: 4)
+            let text = NSLocalizedString(
+              "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
+              value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
               comment: ""
             )
-          } else {
-            let equivalentETH: BigInt = {
-              if data.from.isETH || data.from.isWETH { return data.amount }
-              if data.to.isETH || data.to.isWETH { return data.expectedReceive }
-              if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
-                return rate.rate * data.amount / BigInt(10).power(data.from.decimals)
-              }
-              return BigInt(0)
-            }()
-            if Double(equivalentETH) > cap {
-              let display = equivalentETH.shortString(decimals: 18, maxFractionDigits: 4)
-              let text = NSLocalizedString(
-                "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
-                value: "Sorry, we are unable to handle such a big amount. Please reduce the amount to less than %@ and try again.",
-                comment: ""
-              )
-              errorMessage = String(
-                format: text,
-                "\(display) ETH")
-            }
+            errorMessage = String(
+              format: text,
+              "\(display) ETH")
           }
         }
-        group.leave()
-      })
-    }
+      }
+      group.leave()
+    })
     group.notify(queue: .main) {
       self.navigationController.hideLoading()
       if let message = errorMessage {
