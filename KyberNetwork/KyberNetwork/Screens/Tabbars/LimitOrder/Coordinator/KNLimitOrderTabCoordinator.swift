@@ -29,7 +29,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
   fileprivate var balances: [String: Balance] = [:]
 
   fileprivate var historyCoordinator: KNHistoryCoordinator?
-  fileprivate var searchTokensViewController: KNSearchTokenViewController?
+  fileprivate var searchTokensViewController: KNLimitOrderSearchTokenViewController?
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 
   fileprivate var confirmVC: KNConfirmLimitOrderViewController?
@@ -395,11 +395,11 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
-      let viewModel = KNSearchTokenViewModel(
-        headerColor: KNAppStyleType.current.swapHeaderBackgroundColor,
+      let viewModel = KNLimitOrderSearchTokenViewModel(
+        isSource: isSource,
         supportedTokens: self.tokens
       )
-      let controller = KNSearchTokenViewController(viewModel: viewModel)
+      let controller = KNLimitOrderSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
       return controller
@@ -503,8 +503,8 @@ extension KNLimitOrderTabCoordinator: KNHistoryCoordinatorDelegate {
 }
 
 // MARK: Search token
-extension KNLimitOrderTabCoordinator: KNSearchTokenViewControllerDelegate {
-  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
+extension KNLimitOrderTabCoordinator: KNLimitOrderSearchTokenViewControllerDelegate {
+  func limitOrderSearchTokenViewController(_ controller: KNLimitOrderSearchTokenViewController, run event: KNLimitOrderSearchTokenEvent) {
     self.navigationController.popViewController(animated: true) {
       self.searchTokensViewController = nil
       if case .select(let token) = event {
