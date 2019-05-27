@@ -276,9 +276,17 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "swap_2_tokens"])
     if self.viewModel.to.isETH && self.viewModel.weth == nil {
       self.showWarningTopBannerMessage(
-        with: "Unsupported".toBeLocalised(),
+        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
         message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
         time: 2.0
+      )
+      return
+    }
+    if self.viewModel.from.isWETH && (self.viewModel.to.isETH || self.viewModel.to.isWETH) {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
+        message: "Can not create an order with same token".toBeLocalised(),
+        time: 1.5
       )
       return
     }
@@ -730,8 +738,8 @@ extension KNCreateLimitOrderViewController {
           message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
           time: 2.0
         )
+        return
       }
-      return
     } else {
       self.viewModel.updateSelectedToken(token, isSource: isSource)
     }
@@ -745,7 +753,7 @@ extension KNCreateLimitOrderViewController {
     // support for promo wallet
     let isUpdatedTo: Bool = !isSource
     self.updateTokensView(updatedFrom: isSource, updatedTo: isUpdatedTo)
-    if self.viewModel.from == self.viewModel.to && isWarningShown {
+    if (self.viewModel.from == self.viewModel.to || (self.viewModel.from.isWETH && self.viewModel.to.isETH))  && isWarningShown {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
         message: "Can not create an order with same token".toBeLocalised(),
