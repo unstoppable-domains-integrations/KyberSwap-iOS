@@ -149,10 +149,10 @@ class KNCreateLimitOrderViewModel {
 
   var equivalentETHAmount: BigInt {
     if self.amountFromBigInt <= BigInt(0) { return BigInt(0) }
-    if self.from.isETH {
+    if self.from.isETH || self.from.isWETH {
       return self.amountFromBigInt
     }
-    if self.to.isETH {
+    if self.to.isETH || self.to.isWETH {
       return self.amountToBigInt
     }
     let ethRate: BigInt = {
