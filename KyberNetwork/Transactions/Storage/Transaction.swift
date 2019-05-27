@@ -308,7 +308,7 @@ extension Transaction {
   }
 
   var feeBigInt: BigInt? {
-    guard let gasPrice = self.gasPrice.fullBigInt(units: .wei), let gasUsed = self.gasUsed.fullBigInt(units: .wei) else { return nil }
-    return gasPrice * gasUsed
+    guard let gasPrice = self.gasPrice.fullBigInt(units: .wei), let gasLimit = self.gasUsed.fullBigInt(units: .wei) ?? self.gas.fullBigInt(units: .wei) else { return nil }
+    return gasPrice * gasLimit
   }
 }
