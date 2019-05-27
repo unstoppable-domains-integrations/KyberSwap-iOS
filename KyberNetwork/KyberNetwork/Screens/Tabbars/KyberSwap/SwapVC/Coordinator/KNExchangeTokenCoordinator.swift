@@ -426,8 +426,15 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
               value: "Sorry, you have already reached your daily limit. Please wait for few hours or complete your profile verification to swap more.",
               comment: ""
             )
-          } else if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
-            let equivalentETH = rate.rate * data.amount / BigInt(10).power(data.from.decimals)
+          } else {
+            let equivalentETH: BigInt = {
+              if data.from.isETH || data.from.isWETH { return data.amount }
+              if data.to.isETH || data.to.isWETH { return data.expectedReceive }
+              if let rate = KNRateCoordinator.shared.ethRate(for: data.from) {
+                return rate.rate * data.amount / BigInt(10).power(data.from.decimals)
+              }
+              return BigInt(0)
+            }()
             if Double(equivalentETH) > cap {
               let display = equivalentETH.shortString(decimals: 18, maxFractionDigits: 4)
               let text = NSLocalizedString(

@@ -269,10 +269,10 @@ class KSwapViewModel {
   // Amount should > 0 and <= balance
   var isAmountTooSmall: Bool {
     if self.amountFromBigInt <= BigInt(0) { return true }
-    if self.from.isETH {
+    if self.from.isETH || self.from.isWETH {
       return self.amountFromBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
-    if self.to.isETH {
+    if self.to.isETH || self.to.isWETH {
       return self.amountToBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
     let ethRate: BigInt = {
@@ -291,8 +291,8 @@ class KSwapViewModel {
 
   var isCapEnough: Bool {
     let ethAmount: BigInt = {
-      if self.from.isETH { return self.amountFromBigInt }
-      if self.to.isETH { return self.amountToBigInt }
+      if self.from.isETH || self.from.isWETH { return self.amountFromBigInt }
+      if self.to.isETH || self.to.isWETH { return self.amountToBigInt }
       let ethRate: BigInt = {
         let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
         return cacheRate?.rate ?? BigInt(0)
