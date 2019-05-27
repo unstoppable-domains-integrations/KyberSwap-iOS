@@ -233,6 +233,10 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
     self.hamburgerMenu.hideMenu(animated: false)
 
+    let tapCurrentRate = UITapGestureRecognizer(target: self, action: #selector(self.currentRateDidTapped(_:)))
+    self.currentRateLabel.addGestureRecognizer(tapCurrentRate)
+    self.currentRateLabel.isUserInteractionEnabled = true
+
     self.warningMessageLabel.text = "This new order has a lower rate than some orders you have created. Below orders will be canceled when you submited this order".toBeLocalised()
     self.confirmCancelButton.setTitle("Yes, please".toBeLocalised(), for: .normal)
     self.confirmCancelButton.rounded(
@@ -373,6 +377,15 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @objc func balanceLabelTapped(_ sender: Any) {
     self.keyboardSwapAllButtonPressed(sender)
+  }
+
+  @objc func currentRateDidTapped(_ sender: Any) {
+    guard let rate = self.viewModel.rateFromNode else { return }
+    let rateDisplay = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
+    self.targetRateTextField.text = rateDisplay
+    self.viewModel.updateTargetRate(rateDisplay)
+    self.viewModel.updateFocusTextField(2)
+    self.updateViewAmountDidChange()
   }
 
   @IBAction func confirmCancelButtonPressed(_ sender: Any) {
