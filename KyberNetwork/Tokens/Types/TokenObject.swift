@@ -67,6 +67,10 @@ class TokenObject: Object {
       return self.symbol == "ETH" && self.name.lowercased() == "ethereum"
     }
 
+    var isWETH: Bool {
+      return self.symbol == "WETH"
+    }
+
     var isPromoToken: Bool {
       let promoTokenSymbol: String = {
         if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest || KNEnvironment.default == .staging { return "PT" }
