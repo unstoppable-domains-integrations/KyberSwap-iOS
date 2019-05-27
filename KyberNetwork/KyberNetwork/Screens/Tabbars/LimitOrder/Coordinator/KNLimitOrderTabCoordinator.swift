@@ -509,3 +509,113 @@ extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate 
     }
   }
 }
+
+extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate {
+  func convertSuggestionViewController(_ controller: KNConvertSuggestionViewController, run event: KNConvertSuggestionViewEvent) {
+    switch event {
+    case .estimateGasLimit(let from, let to, let amount):
+      self.updateEstimatedGasLimit(from: from, to: to, amount: amount)
+    case .confirmSwap(let transaction):
+      self.sendExchangeTransaction(transaction)
+    }
+  }
+
+  fileprivate func updateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt) {
+    let exchangeTx = KNDraftExchangeTransaction(
+      from: from,
+      to: to,
+      amount: amount,
+      maxDestAmount: BigInt(2).power(255),
+      expectedRate: BigInt(0),
+      minRate: .none,
+      gasPrice: KNGasConfiguration.exchangeETHTokenGasLimitDefault,
+      gasLimit: .none,
+      expectedReceivedString: nil
+    )
+    self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { [weak self] result in
+      if case .success(let estimate) = result {
+        self?.convertVC?.updateEstimateGasLimit(estimate)
+      }
+    }
+  }
+
+  fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
+    self.navigationController.displayLoading(text: "Sending...".toBeLocalised(), animated: true)
+    self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
+      guard let `self` = self else { return }
+      self.navigationController.hideLoading()
+      switch result {
+      case .success(let txHash):
+        self.sendUserTxHashIfNeeded(txHash)
+        let transaction = exchage.toTransaction(
+          hash: txHash,
+          fromAddr: self.session.wallet.address,
+          toAddr: self.session.externalProvider.networkAddress,
+          nounce: self.session.externalProvider.minTxCount
+        )
+        self.session.addNewPendingTransaction(transaction)
+        if self.convertVC != nil {
+          self.navigationController.popViewController(animated: true, completion: {
+            self.convertVC = nil
+          })
+        }
+      case .failure(let error):
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
+      }
+    }
+  }
+
+  fileprivate func sendUserTxHashIfNeeded(_ txHash: String) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
+    provider.request(.sendTxHash(authToken: accessToken, txHash: txHash)) { result in
+      switch result {
+      case .success(let resp):
+        do {
+          _ = try resp.filterSuccessfulStatusCodes()
+          let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          let success = json["success"] as? Bool ?? false
+          let message = json["message"] as? String ?? "Unknown"
+          if success {
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": true])
+          } else {
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": message])
+          }
+        } catch {
+          KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
+        }
+      case .failure:
+        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
+      }
+    }
+  }
+
+  fileprivate func sendGetUserTradeCapRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
+    if let accessToken = IEOUserStorage.shared.user?.accessToken {
+      // New user trade cap
+      DispatchQueue.global(qos: .background).async {
+        let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
+        provider.request(.getUserTradeCap(authToken: accessToken)) { result in
+          DispatchQueue.main.async {
+            completion(result)
+          }
+        }
+      }
+    } else {
+      // Fallback to normal get user cap
+      let address = self.session.wallet.address.description
+      DispatchQueue.global(qos: .background).async {
+        let provider = MoyaProvider<KNTrackerService>()
+        provider.request(.getUserCap(address: address.lowercased())) { result in
+          DispatchQueue.main.async {
+            completion(result)
+          }
+        }
+      }
+    }
+  }
+}
