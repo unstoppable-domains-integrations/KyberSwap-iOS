@@ -3,7 +3,13 @@
 import UIKit
 import BigInt
 
+enum KNConvertSuggestionViewEvent {
+  case estimateGasLimit(from: TokenObject, to: TokenObject, amount: BigInt)
+  case confirmSwap(transaction: KNDraftExchangeTransaction)
+}
+
 protocol KNConvertSuggestionViewControllerDelegate: class {
+  func convertSuggestionViewController(_ controller: KNConvertSuggestionViewController, run event: KNConvertSuggestionViewEvent)
 }
 
 class KNConvertSuggestionViewController: KNBaseViewController {
@@ -27,8 +33,18 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   @IBOutlet weak var cancelButton: UIButton!
 
   fileprivate(set) var address: String = ""
-  fileprivate(set) var balance: BigInt = BigInt(0)
+  fileprivate(set) var ethBalance: BigInt = BigInt(0)
+  fileprivate(set) var wethBalance: BigInt = BigInt(0)
+
   fileprivate(set) var amountToConvert: BigInt = BigInt(0)
+  fileprivate(set) var estGasLimit: BigInt = KNGasConfiguration.exchangeETHTokenGasLimitDefault
+
+  let eth = KNSupportedTokenStorage.shared.ethToken
+  let weth = KNSupportedTokenStorage.shared.wethToken
+
+  fileprivate var timer: Timer?
+
+  weak var delegate: KNConvertSuggestionViewControllerDelegate?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,6 +72,24 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     self.cancelButton.setTitle(NSLocalizedString("cancel", comment: ""), for: .normal)
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.timer?.invalidate()
+    self.timer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.loadDataFromNode()
+      }
+    )
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.timer?.invalidate()
+    self.timer = nil
+  }
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
@@ -72,13 +106,35 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   }
 
   func updateETHBalance(_ balance: BigInt) {
-    self.balance = balance
-    self.balanceValueLabel.text = "\(balance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
+    self.ethBalance = balance
+
+    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
+    let wethBalanceDisplay = "\(self.wethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
+  }
+
+  func updateWETHBalance(_ balances: [String: Balance]) {
+    guard let weth = self.weth else { return }
+    self.wethBalance = balances[weth.contract]?.value ?? BigInt(0)
+    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
+    let wethBalanceDisplay = "\(self.wethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
   }
 
   func updateAmountToConvert(_ amount: BigInt) {
     self.amountToConvert = amount
     self.amountTextField.text = amount.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+  }
+
+  func updateEstimateGasLimit(_ gasLimit: BigInt) {
+    self.estGasLimit = gasLimit
+  }
+
+  fileprivate func loadDataFromNode() {
+    guard let weth = self.weth else { return }
+    let amount = self.amountTextField.text?.removeGroupSeparator().fullBigInt(decimals: 18) ?? BigInt(0)
+    let event = KNConvertSuggestionViewEvent.estimateGasLimit(from: eth, to: weth, amount: amount)
+    self.delegate?.convertSuggestionViewController(self, run: event)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -96,7 +152,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
       )
       return
     }
-    if amount > self.balance {
+    if amount > self.ethBalance {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
         message: "Your ETH balance is not enough to make the transaction".toBeLocalised(),
@@ -104,8 +160,8 @@ class KNConvertSuggestionViewController: KNBaseViewController {
       )
       return
     }
-    let feeBigInt = KNGasCoordinator.shared.fastKNGas * KNGasConfiguration.exchangeETHTokenGasLimitDefault
-    if amount + feeBigInt > self.balance {
+    let feeBigInt = KNGasCoordinator.shared.fastKNGas * self.estGasLimit
+    if amount + feeBigInt > self.ethBalance {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
         message: "You don't have enough ETH to pay for transaction fee of \(feeBigInt.displayRate(decimals: 18)) ETH".toBeLocalised(),
@@ -113,8 +169,21 @@ class KNConvertSuggestionViewController: KNBaseViewController {
       )
       return
     }
-    self.showSuccessTopBannerMessage(with: "Success", message: "Your convert transaction has been broadcasted", time: 1.5)
-    self.navigationController?.popViewController(animated: true)
+    let exchange = KNDraftExchangeTransaction(
+      from: self.eth,
+      to: self.weth!,
+      amount: amount,
+      maxDestAmount: BigInt(2).power(255),
+      expectedRate: BigInt(10).power(18),
+      minRate: BigInt(10).power(18) * BigInt(97) / BigInt(100),
+      gasPrice: KNGasCoordinator.shared.fastKNGas,
+      gasLimit: self.estGasLimit,
+      expectedReceivedString: self.amountTextField.text?.removeGroupSeparator()
+    )
+    self.delegate?.convertSuggestionViewController(
+      self,
+      run: .confirmSwap(transaction: exchange)
+    )
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
