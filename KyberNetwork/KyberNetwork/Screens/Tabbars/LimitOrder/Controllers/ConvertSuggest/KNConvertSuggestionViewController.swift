@@ -98,8 +98,8 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     }
     if amount > self.balance {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid Amount", comment: ""),
-        message: "Your balance is not enough to make the transaction".toBeLocalised(),
+        with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
+        message: "Your ETH balance is not enough to make the transaction".toBeLocalised(),
         time: 1.5
       )
       return
@@ -107,7 +107,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     let feeBigInt = KNGasCoordinator.shared.fastKNGas * KNGasConfiguration.exchangeETHTokenGasLimitDefault
     if amount + feeBigInt > self.balance {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid Amount", comment: ""),
+        with: NSLocalizedString("insufficient.eth", value: "Insufficient ETH", comment: ""),
         message: "You don't have enough ETH to pay for transaction fee of \(feeBigInt.displayRate(decimals: 18)) ETH".toBeLocalised(),
         time: 1.5
       )

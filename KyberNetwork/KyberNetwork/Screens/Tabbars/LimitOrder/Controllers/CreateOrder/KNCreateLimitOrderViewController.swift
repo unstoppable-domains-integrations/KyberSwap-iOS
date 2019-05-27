@@ -710,6 +710,14 @@ extension KNCreateLimitOrderViewController {
     if !isSource, !self.toTokenButton.isEnabled { return }
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
+    if self.viewModel.from.isWETH, !isSource, token.isETH || token.isWETH {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
+        message: "Can not create an order with same token".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
     if isSource, token.isETH {
       if let wethToken = self.viewModel.weth {
         self.viewModel.updateSelectedToken(wethToken, isSource: isSource)
