@@ -434,7 +434,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       group.leave()
     }
     if !((data.from.isETH && data.to.isWETH) || (data.from.isWETH && data.to.isETH)) {
-      // only need to check cap if not ETH <-> WETH trade
+      // only need to check cap if not ETH <-> WETH swap
       group.enter()
       self.sendGetUserTradeCapRequest(completion: { result in
         if case .success(let resp) = result,
