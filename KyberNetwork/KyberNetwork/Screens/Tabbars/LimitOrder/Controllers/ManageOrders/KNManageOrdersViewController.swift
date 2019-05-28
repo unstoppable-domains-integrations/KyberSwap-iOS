@@ -41,7 +41,7 @@ class KNManageOrdersViewModel {
     let fromTime = self.fromTime
     self.displayedOrders = self.orders.filter({
       // filter pairs
-      let pair = "\($0.sourceToken) ➞ \($0.destToken)"
+      let pair = "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)"
       return self.selectedPairs == nil || self.selectedPairs?.contains(pair) == true
     }).filter({
       // filter states

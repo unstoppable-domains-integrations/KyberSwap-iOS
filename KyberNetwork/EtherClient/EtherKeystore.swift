@@ -414,13 +414,14 @@ open class EtherKeystore: Keystore {
         let signature = try keyStore.signHash(hash, account: account, password: password)
         let (r, s, v) = signer.values(order: order, signature: signature)
         let data = RLP.encode([
-          Address(string: order.from.contract)?.data ?? Data(),
-          Address(string: order.to.contract)?.data ?? Data(),
-          order.sender.data,
-          order.srcAmount,
-          order.targetRate,
-          order.fee,
-          order.nonce,
+          order.sender.data, // sender
+          BigInt(order.nonce).hexEncoded, // nonce
+          Address(string: order.from.contract)?.data ?? Data(), // srcToken
+          order.srcAmount, // srcQty
+          Address(string: order.to.contract)?.data ?? Data(), // destToken
+          order.sender.data, // destAddress
+          order.targetRate.hexEncoded, // minConversionRate
+          BigInt(order.fee).hexEncoded, // feeInPrecision
           v, r, s,
         ])!
         return .success(data)

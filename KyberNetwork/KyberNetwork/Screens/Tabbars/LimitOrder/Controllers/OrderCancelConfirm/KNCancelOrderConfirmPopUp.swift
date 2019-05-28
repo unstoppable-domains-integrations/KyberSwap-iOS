@@ -111,16 +111,16 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-    self.displayLoading(text: "Cancelling".toBeLocalised(), animated: true)
+    self.displayLoading(text: "Cancelling...".toBeLocalised(), animated: true)
     KNLimitOrderServerCoordinator.shared.cancelOrder(
       accessToken: accessToken,
       orderID: order.id) { [weak self] result in
         guard let `self` = self else { return }
         self.hideLoading()
         switch result {
-        case .success:
+        case .success(let message):
           self.dismiss(animated: true, completion: nil)
-          self.showSuccessTopBannerMessage(with: "Success", message: "Your order has been cancelled", time: 1.5)
+          self.showSuccessTopBannerMessage(with: "", message: message, time: 1.5)
         case .failure(let error):
           self.displayError(error: error)
         }

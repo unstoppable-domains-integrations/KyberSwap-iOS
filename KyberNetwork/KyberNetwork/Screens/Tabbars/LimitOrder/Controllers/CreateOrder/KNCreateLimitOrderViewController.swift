@@ -10,7 +10,7 @@ enum KNCreateLimitOrderViewEvent {
   case suggestBuyToken
   case submitOrder(order: KNLimitOrder)
   case manageOrders
-  case estimateFee(src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case estimateFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case getExpectedNonce(address: String, src: String, dest: String)
   case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt)
 }
@@ -363,8 +363,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         sender: self.viewModel.wallet.address,
         srcAmount: self.viewModel.amountFromBigInt,
         targetRate: self.viewModel.targetRateBigInt,
-        fee: self.viewModel.feePercentage,
-        nonce: 0
+        fee: Int(floor(self.viewModel.feePercentage * 100)),
+        nonce: self.viewModel.nonce ?? 0
       )
       self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(order: order))
     }
@@ -415,7 +415,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     }
   }
 
-  @IBAction func noCancelButtonPressed(_ sender: Any) {
+  @IBAction func noCancelButtonPressed(_ sender: Any?) {
     UIView.animate(withDuration: 0.16) {
       self.cancelRelatedOrdersView.isHidden = true
       self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
@@ -442,8 +442,8 @@ extension KNCreateLimitOrderViewController {
       return
     }
     let orders = self.viewModel.relatedOrders.filter({
-      return $0.sourceToken.lowercased() == self.viewModel.from.contract.lowercased()
-        && $0.destToken.lowercased() == self.viewModel.to.contract.lowercased()
+      return $0.sourceToken.lowercased() == self.viewModel.from.symbol.lowercased()
+        && $0.destToken.lowercased() == self.viewModel.to.symbol.lowercased()
         && $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
     })
     self.viewModel.updateRelatedOrders(orders)
@@ -494,6 +494,7 @@ extension KNCreateLimitOrderViewController {
 
   fileprivate func updateEstimateFeeFromServer() {
     let event = KNCreateLimitOrderViewEvent.estimateFee(
+      address: self.viewModel.walletObject.address,
       src: self.viewModel.from.contract,
       dest: self.viewModel.to.contract,
       srcAmount: Double(self.viewModel.amountFromBigInt) / pow(10.0, Double(self.viewModel.from.decimals)),
@@ -675,6 +676,14 @@ extension KNCreateLimitOrderViewController {
       currentWallet: self.viewModel.walletObject
     )
     self.hamburgerMenu.hideMenu(animated: false)
+    // auto fill current rate
+    if let rate = self.viewModel.rateFromNode ?? self.viewModel.cachedProdRate, !rate.isZero {
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      self.targetRateTextField.text = rateString
+      self.viewModel.updateTargetRate(rateString)
+    }
+    self.updateViewAmountDidChange()
+    self.noCancelButtonPressed(nil)
     self.view.layoutIfNeeded()
   }
 
@@ -767,6 +776,13 @@ extension KNCreateLimitOrderViewController {
       self.viewModel.updateTargetRate(rateString)
     }
     self.updateViewAmountDidChange()
+
+    if !self.cancelRelatedOrdersView.isHidden {
+      self.cancelRelatedOrdersView.isHidden = true
+      self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+      self.rateContainerView.rounded(radius: 4.0)
+    }
+
     self.view.layoutIfNeeded()
   }
 
@@ -808,22 +824,19 @@ extension KNCreateLimitOrderViewController {
   }
 
   // TODO: Remove
-  func coordinatorDoneSubmittingOrder(_ order: KNLimitOrder) {
+  func coordinatorDoneSubmittingOrder(_ order: KNOrderObject) {
     var orders = self.viewModel.relatedOrders
-    let object = KNOrderObject.getOrderObject(from: order)
-    object.stateValue = KNOrderState.open.rawValue
-    object.filledDate = 0.0
-    orders.append(object)
+    orders.append(order)
     self.viewModel.updateRelatedOrders(orders)
     self.updateRelatedOrdersView()
   }
 
-  func coordinatorUpdateEstimateFee(_ fee: Int) {
+  func coordinatorUpdateEstimateFee(_ fee: Double) {
     self.viewModel.feePercentage = fee
     self.updateFeeNotesUI()
   }
 
-  func coordinatorUpdateCurrentNonce(_ nonce: Int, addr: String, src: String, dest: String) {
+  func coordinatorUpdateCurrentNonce(_ nonce: Int64, addr: String, src: String, dest: String) {
     self.viewModel.updateNonce(address: addr, src: src, dest: dest, nonce: nonce)
   }
 }

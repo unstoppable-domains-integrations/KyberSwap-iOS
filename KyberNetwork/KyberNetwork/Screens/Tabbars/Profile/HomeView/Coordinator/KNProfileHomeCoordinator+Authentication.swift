@@ -419,6 +419,7 @@ extension KNProfileHomeCoordinator {
     let message = String(format: text, name)
     self.navigationController.showSuccessTopBannerMessage(with: "", message: message)
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.resume() }
+    KNLimitOrderServerCoordinator.shared.resume()
   }
 
   fileprivate func proceedSignUp(accountType: KNSocialAccountsType) {
