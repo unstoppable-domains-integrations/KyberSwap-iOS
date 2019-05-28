@@ -69,6 +69,13 @@ class KNLimitOrderTabCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
+    if IEOUserStorage.shared.user != nil {
+      KNLimitOrderServerCoordinator.shared.resume()
+    }
+  }
+
+  func stop() {
+    KNLimitOrderServerCoordinator.shared.pause()
   }
 }
 
@@ -161,25 +168,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .submitOrder(let order):
       self.openConfirmOrder(order)
     case .manageOrders:
-      var orders: [KNOrderObject] = []
-      let tokenCount = self.tokens.count
-      var account: Account!
-      if case .real(let acc) = self.session.wallet.type { account = acc }
-      for id in 0..<10 {
-        let from = self.tokens[Int(arc4random() % UInt32(tokenCount))]
-        let to = self.tokens[Int(arc4random() % UInt32(tokenCount))]
-        let limitOrder = KNLimitOrder(
-          from: from,
-          to: to,
-          account: account,
-          sender: account.address,
-          srcAmount: BigInt(arc4random() % 100 + 10) * BigInt(10).power(from.decimals),
-          targetRate: BigInt(Double((arc4random() % 100 + 10)) / 50.0 * pow(10.0, Double(to.decimals))),
-          fee: Int(arc4random() % 10 + 5),
-          nonce: id
-        )
-        orders.append(KNOrderObject.getOrderObject(from: limitOrder))
-      }
+      let orders: [KNOrderObject] = KNLimitOrderServerCoordinator.shared.orders
       if self.manageOrdersVC == nil {
         self.manageOrdersVC = KNManageOrdersViewController(
           viewModel: KNManageOrdersViewModel(orders: orders)
@@ -190,8 +179,9 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.navigationController.pushViewController(self.manageOrdersVC!, animated: true) {
         self.manageOrdersVC?.updateListOrders(orders)
       }
-    case .estimateFee(let src, let dest, let srcAmount, let destAmount):
+    case .estimateFee(let address, let src, let dest, let srcAmount, let destAmount):
       self.getExpectedFee(
+        address: address,
         src: src,
         dest: dest,
         srcAmount: srcAmount,
@@ -241,14 +231,15 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.navigationController.pushViewController(self.confirmVC!, animated: true)
   }
 
-  fileprivate func getExpectedFee(src: String, dest: String, srcAmount: Double, destAmount: Double) {
+  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double) {
     KNLimitOrderServerCoordinator.shared.getFee(
+      address: address,
       src: src,
       dest: dest,
       srcAmount: srcAmount,
       destAmount: destAmount) { [weak self] result in
-      if case .success(let fee) = result {
-        self?.rootViewController.coordinatorUpdateEstimateFee(fee)
+      if case .success(let fee) = result, fee.1 == nil {
+        self?.rootViewController.coordinatorUpdateEstimateFee(fee.0)
       }
     }
   }
@@ -272,6 +263,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func signAndSendOrder(_ order: KNLimitOrder, completion: ((Bool) -> Void)?) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading(text: "Checking".toBeLocalised(), animated: true)
     self.sendApprovedIfNeeded(order: order) { [weak self] result in
       guard let `self` = self else { return }
@@ -293,14 +285,31 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           let result = self.session.keystore.signLimitOrder(order)
           self.navigationController.hideLoading()
           switch result {
-          case .success:
-            self.navigationController.showSuccessTopBannerMessage(
-              with: NSLocalizedString("success", comment: ""),
-              message: "Successfully signed the order data".toBeLocalised(),
-              time: 1.5
-            )
-            self.rootViewController.coordinatorDoneSubmittingOrder(order)
-            completion?(true)
+          case .success(let data):
+            KNLimitOrderServerCoordinator.shared.createNewOrder(accessToken: accessToken, order: order, signature: data, completion: { [weak self] result in
+              guard let `self` = self else { return }
+              switch result {
+              case .success(let resp):
+                if let objc = resp.0 {
+                  self.rootViewController.coordinatorDoneSubmittingOrder(objc)
+                  completion?(true)
+                } else {
+                  self.navigationController.showErrorTopBannerMessage(
+                    with: NSLocalizedString("error", comment: ""),
+                    message: resp.1 ?? "Something went wrong, please try again later".toBeLocalised(),
+                    time: 1.5
+                  )
+                  completion?(false)
+                }
+              case .failure(let error):
+                self.navigationController.showErrorTopBannerMessage(
+                  with: NSLocalizedString("error", comment: ""),
+                  message: "Can not submit your order, error: \(error.prettyError)".toBeLocalised(),
+                  time: 1.5
+                )
+                completion?(false)
+              }
+            })
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
               with: NSLocalizedString("error", comment: ""),

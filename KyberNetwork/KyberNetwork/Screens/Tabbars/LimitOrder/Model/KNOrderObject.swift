@@ -24,6 +24,7 @@ class KNOrderObject: NSObject {
   @objc dynamic var sender: String = ""
   @objc dynamic var createdDate: TimeInterval = 0.0
   @objc dynamic var filledDate: TimeInterval = 0.0
+  @objc dynamic var messages: String = ""
   @objc dynamic var txHash: String?
   @objc dynamic var stateValue: Int = KNOrderState.open.rawValue
 
@@ -65,13 +66,16 @@ class KNOrderObject: NSObject {
     self.stateValue = {
       let status = json["status"] as? String ?? ""
       if status == "active" { return 0 }
-      if status == "filled" { return 1 }
-      if status == "cancelle" { return 2 }
-      return 3
+      if status == "pending" { return 1 }
+      if status == "filled" { return 2 }
+      if status == "cancelled" { return 3 }
+      if status == "invalid" { return 4 }
+      return 5
     }()
     self.createdDate = json["created_at"] as? Double ?? 0.0
     self.filledDate = json["updated_at"] as? Double ?? 0.0
     self.txHash = json["tx_hash"] as? String
+    self.messages = json["messages"] as? String ?? ""
   }
 
   var state: KNOrderState { return KNOrderState(rawValue: self.stateValue) ?? .open }
@@ -82,11 +86,11 @@ class KNOrderObject: NSObject {
   }
 
   var srcTokenSymbol: String {
-    return KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract.lowercased() == self.sourceToken.lowercased() })?.symbol ?? ""
+    return self.sourceToken
   }
 
   var destTokenSymbol: String {
-    return KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.contract.lowercased() == self.destToken.lowercased() })?.symbol ?? ""
+    return self.destToken
   }
 
 //  override class func primaryKey() -> String? {
@@ -98,8 +102,8 @@ class KNOrderObject: NSObject {
     let isFilled = arc4random() % 2 == 1
     let object = KNOrderObject(
       id: Int(arc4random()),
-      from: order.from.contract,
-      to: order.to.contract,
+      from: order.from.symbol,
+      to: order.to.symbol,
       amount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
       price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
       fee: 10,

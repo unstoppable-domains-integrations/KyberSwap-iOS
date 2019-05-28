@@ -274,7 +274,7 @@ enum LimitOrderService {
   case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
   case cancelOrder(accessToken: String, id: String)
   case getNonce(accessToken: String, address: String, src: String, dest: String)
-  case getFee(src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
 }
 
 extension LimitOrderService: MoyaCacheable {
@@ -322,7 +322,7 @@ extension LimitOrderService: TargetType {
         "src_amount": Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
         "min_rate": Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
         "fee": order.fee,
-        "signature": signedData,
+        "signature": signedData.toHexString(),
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
@@ -334,8 +334,9 @@ extension LimitOrderService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getFee(let src, let dest, let srcAmount, let destAmount):
+    case .getFee(let address, let src, let dest, let srcAmount, let destAmount):
       let json: JSONDictionary = [
+        "user_addr": address,
         "src": src,
         "dst": dest,
         "src_amount": srcAmount,
