@@ -152,6 +152,7 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator?.stop()
     self.balanceTabCoordinator = nil
+    self.limitOrderCoordinator?.stop()
     self.limitOrderCoordinator = nil
     self.profileCoordinator?.stop()
     self.profileCoordinator = nil

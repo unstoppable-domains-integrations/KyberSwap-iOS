@@ -194,6 +194,7 @@ extension KNProfileHomeCoordinator {
     Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
+    KNLimitOrderServerCoordinator.shared.pause()
 
     let cookieJar = HTTPCookieStorage.shared
     for cookie in (cookieJar.cookies ?? []) {
@@ -305,6 +306,7 @@ extension KNProfileHomeCoordinator {
       IEOUserStorage.shared.signedOut()
       Branch.getInstance().logout()
       if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
+      KNLimitOrderServerCoordinator.shared.pause()
 
       self?.navigationController.popToRootViewController(animated: true)
       self?.rootViewController.coordinatorDidSignOut()

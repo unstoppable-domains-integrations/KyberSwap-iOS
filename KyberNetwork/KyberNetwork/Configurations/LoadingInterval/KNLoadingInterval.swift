@@ -13,5 +13,6 @@ class KNLoadingInterval {
   static let loadingListIEOInterval: TimeInterval = 60.0
   static let loadingListTransactions: TimeInterval = 60.0
   static let priceAlertLoadingInterval: TimeInterval = 30.0
+  static let limitOrderLoadingInterval: TimeInterval = 30.0
 
 }
