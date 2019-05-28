@@ -583,7 +583,7 @@ extension KNCreateLimitOrderViewController {
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
+        message: "Your balance is not enough to create the order".toBeLocalised()
       )
       return false
     }
