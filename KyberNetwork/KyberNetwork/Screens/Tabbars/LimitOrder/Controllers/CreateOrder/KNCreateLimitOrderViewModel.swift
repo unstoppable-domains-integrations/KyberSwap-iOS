@@ -120,7 +120,7 @@ class KNCreateLimitOrderViewModel {
     var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
     let allOrders = self.relatedOrders // TODO: Update with all orders
     allOrders.forEach({
-      if $0.state == .open && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
         availableAmount -= $0.sourceAmount
       }
     })
@@ -166,13 +166,35 @@ class KNCreateLimitOrderViewModel {
   var isConvertingETHToWETHNeeded: Bool {
     if !self.from.isWETH { return false }
     let balance = self.balance?.value ?? BigInt(0)
-    return balance < self.amountFromBigInt
+
+    var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
+    let allOrders = self.relatedOrders // TODO: Update with all orders
+    allOrders.forEach({
+      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+        availableAmount -= $0.sourceAmount
+      }
+    })
+    availableAmount = max(availableAmount, 0.0)
+
+    return BigInt(availableAmount * pow(10.0, 18.0)) < self.amountFromBigInt
   }
 
   var minAmountToConvert: BigInt {
     if !self.from.isWETH { return BigInt(0) }
     let balance = self.balance?.value ?? BigInt(0)
-    if balance < self.amountFromBigInt { return self.amountFromBigInt - balance }
+
+    var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
+    let allOrders = self.relatedOrders // TODO: Update with all orders
+    allOrders.forEach({
+      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+        availableAmount -= $0.sourceAmount
+      }
+    })
+    availableAmount = max(availableAmount, 0.0)
+
+    let availableBal = BigInt(availableAmount * pow(10.0, 18.0))
+
+    if availableBal < self.amountFromBigInt { return self.amountFromBigInt - availableBal }
     return BigInt(0)
   }
 
@@ -318,7 +340,7 @@ class KNCreateLimitOrderViewModel {
     self.amountTo = ""
     self.targetRate = ""
     self.balance = self.balances[self.from.contract]
-    self.feePercentage = 10
+    self.feePercentage = 0
     self.nonce = nil
 
     self.rateFromNode = nil
