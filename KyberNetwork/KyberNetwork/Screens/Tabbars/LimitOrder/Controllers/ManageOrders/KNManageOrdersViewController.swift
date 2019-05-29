@@ -51,8 +51,8 @@ class KNManageOrdersViewModel {
       return $0.createdDate >= fromTime
     }).sorted(by: {
       // sort
-      if self.isDateDesc { return $0.createdDate > $1.createdDate }
-      return $0.createdDate < $1.createdDate
+      if self.isDateDesc { return $0.dateToDisplay > $1.dateToDisplay }
+      return $0.dateToDisplay < $1.dateToDisplay
     })
   }
 
