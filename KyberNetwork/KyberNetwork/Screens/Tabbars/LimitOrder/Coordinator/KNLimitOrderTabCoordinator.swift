@@ -646,7 +646,16 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
     }
   }
 
+  // temporary no need to check cap for the transaction
   fileprivate func checkUserCapIfNeeded(exchange: KNDraftExchangeTransaction, completion: @escaping (String?) -> Void) {
+    if exchange.from.isETH && exchange.to.isWETH {
+      completion(nil)
+      return
+    }
+    if exchange.from.isWETH && exchange.to.isETH {
+      completion(nil)
+      return
+    }
     self.sendGetUserTradeCapRequest(completion: { result in
       if case .success(let resp) = result,
         let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
