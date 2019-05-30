@@ -412,19 +412,6 @@ open class EtherKeystore: Keystore {
       do {
         let hash = signer.hash(order: order)
         let signature = try keyStore.signHash(hash, account: account, password: password)
-//        let (r, s, v) = signer.values(order: order, signature: signature)
-//
-//        let data = RLP.encode([
-//          order.sender.data, // sender
-//          order.nonce, // nonce
-//          Address(string: order.from.contract)?.data ?? Data(), // srcToken
-//          order.srcAmount.hexEncoded, // srcQty
-//          Address(string: order.to.contract)?.data ?? Data(), // destToken
-//          order.sender.data, // destAddress
-//          order.targetRate.hexEncoded, // minConversionRate
-//          BigInt(order.fee).hexEncoded, // feeInPrecision
-//          v, r, s,
-//        ])!
         return .success(signature)
       } catch {
         return .failure(.failedToSignTransaction)
