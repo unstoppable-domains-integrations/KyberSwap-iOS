@@ -290,6 +290,8 @@ class KSwapViewModel {
   }
 
   var isCapEnough: Bool {
+    if self.from.isETH && self.to.isWETH { return true }
+    if self.from.isWETH && self.to.isETH { return true }
     let ethAmount: BigInt = {
       if self.from.isETH || self.from.isWETH { return self.amountFromBigInt }
       if self.to.isETH || self.to.isWETH { return self.amountToBigInt }

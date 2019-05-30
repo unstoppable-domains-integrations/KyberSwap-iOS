@@ -17,7 +17,7 @@ class KNApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var addressContainerView: UIView!
   @IBOutlet weak var addressTextLabel: UILabel!
   @IBOutlet weak var feeLabel: UILabel!
-  
+
   @IBOutlet weak var separatorView: UIView!
   @IBOutlet weak var approveButton: UIButton!
 

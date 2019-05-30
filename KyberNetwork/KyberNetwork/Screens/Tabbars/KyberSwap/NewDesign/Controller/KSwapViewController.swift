@@ -558,6 +558,10 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func updateUserCapInWei() {
+    if (self.viewModel.from.isETH && self.viewModel.to.isWETH)
+      || (self.viewModel.from.isWETH && self.viewModel.to.isETH) {
+      return
+    }
     self.delegate?.kSwapViewController(self, run: .getUserCapInWei)
   }
 
