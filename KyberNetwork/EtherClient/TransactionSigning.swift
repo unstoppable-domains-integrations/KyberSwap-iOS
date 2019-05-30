@@ -8,7 +8,6 @@ protocol Signer {
     func hash(transaction: SignTransaction) -> Data
     func hash(order: KNLimitOrder) -> Data
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt)
-    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt)
 }
 
 struct EIP155Signer: Signer {
@@ -53,17 +52,6 @@ struct EIP155Signer: Signer {
         }
         return (r, s, newV)
     }
-
-    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
-      let (r, s, v) = HomesteadSigner().values(order: order, signature: signature)
-      let newV: BigInt
-      if chainId != 0 {
-        newV = BigInt(signature[64]) + 35 + chainId + chainId
-      } else {
-        newV = v
-      }
-      return (r, s, newV)
-    }
 }
 
 struct HomesteadSigner: Signer {
@@ -97,14 +85,6 @@ struct HomesteadSigner: Signer {
         let s = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[32..<64])))
         let v = BigInt(sign: .plus, magnitude: BigUInt(Data(bytes: [signature[64] + 27])))
         return (r, s, v)
-    }
-
-    func values(order: KNLimitOrder, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
-      precondition(signature.count == 65, "Wrong size for signature")
-      let r = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[..<32])))
-      let s = BigInt(sign: .plus, magnitude: BigUInt(Data(signature[32..<64])))
-      let v = BigInt(sign: .plus, magnitude: BigUInt(Data(bytes: [signature[64] + 27])))
-      return (r, s, v)
     }
 }
 
