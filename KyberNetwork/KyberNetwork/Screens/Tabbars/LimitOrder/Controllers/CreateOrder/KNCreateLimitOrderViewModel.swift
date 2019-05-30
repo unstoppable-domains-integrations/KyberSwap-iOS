@@ -16,7 +16,7 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var from: TokenObject
   fileprivate(set) var to: TokenObject
-  fileprivate(set) var nonce: Int64?
+  fileprivate(set) var nonce: String?
 
   fileprivate(set) var balances: [String: Balance] = [:]
   fileprivate(set) var balance: Balance?
@@ -284,11 +284,12 @@ class KNCreateLimitOrderViewModel {
   var feePercentage: Double = 0 // 10000 as in SC
 
   var displayFeeString: String {
-    let feeBigInt = BigInt(Double(self.amountFromBigInt) * self.feePercentage / 100.0)
+    let feeBigInt = BigInt(Double(self.amountFromBigInt) * self.feePercentage)
     let feeDisplay = feeBigInt.displayRate(decimals: self.from.decimals)
     let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
     let fromSymbol = self.fromSybol
-    return "Fee: \(feeDisplay) \(fromSymbol) (\(Double(feePercentage)/100.0)% of \(amountString.prefix(12)) \(fromSymbol))"
+    let fee = NumberFormatterUtil.shared.displayPercentage(from: feePercentage * 100.0)
+    return "Fee: \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
   }
 
   var suggestBuyText: String {
@@ -403,13 +404,5 @@ class KNCreateLimitOrderViewModel {
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
     self.relatedOrders = orders.filter({ return $0.state == .open || $0.state == .inProgress }).sorted(by: { return $0.createdDate > $1.createdDate })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
-  }
-
-  func updateNonce(address: String, src: String, dest: String, nonce: Int64) {
-    if address.lowercased() == self.walletObject.address.lowercased()
-    && src.lowercased() == self.from.contract.lowercased()
-      && dest.lowercased() == self.to.contract.lowercased() {
-      self.nonce = nonce
-    }
   }
 }

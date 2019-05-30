@@ -48,7 +48,7 @@ class KNManageOrdersViewModel {
       return self.selectedStates.contains($0.stateValue) == true
     }).filter({
       // filter date
-      return $0.createdDate >= fromTime
+      return $0.dateToDisplay.timeIntervalSince1970 >= fromTime
     }).sorted(by: {
       // sort
       if self.isDateDesc { return $0.dateToDisplay > $1.dateToDisplay }
