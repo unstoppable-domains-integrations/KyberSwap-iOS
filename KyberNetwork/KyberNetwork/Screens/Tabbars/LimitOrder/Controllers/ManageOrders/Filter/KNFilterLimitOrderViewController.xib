@@ -257,12 +257,13 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="woY-Kl-Hdf">
-                            <rect key="frame" x="338" y="16" width="24" height="24"/>
+                            <rect key="frame" x="342" y="16" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="j6F-jA-isF"/>
                                 <constraint firstAttribute="width" constant="24" id="lE6-vl-QZv"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                             <state key="normal" image="close_button_black">
                                 <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -379,7 +380,7 @@
                         <constraint firstItem="wp2-yI-96b" firstAttribute="centerY" secondItem="TAA-JE-cy6" secondAttribute="centerY" id="lp8-eJ-RSz"/>
                         <constraint firstItem="Fjd-FY-vJj" firstAttribute="leading" secondItem="2Rc-Zq-q12" secondAttribute="leading" constant="20" id="mQL-69-5ag"/>
                         <constraint firstItem="cR0-Wv-LWf" firstAttribute="centerY" secondItem="TAA-JE-cy6" secondAttribute="centerY" id="nAv-Fe-yZm"/>
-                        <constraint firstAttribute="trailing" secondItem="woY-Kl-Hdf" secondAttribute="trailing" constant="20" id="nCG-9d-RsH"/>
+                        <constraint firstAttribute="trailing" secondItem="woY-Kl-Hdf" secondAttribute="trailing" constant="16" id="nCG-9d-RsH"/>
                         <constraint firstItem="2eY-CV-jbC" firstAttribute="leading" secondItem="2Rc-Zq-q12" secondAttribute="leading" constant="20" id="nSX-a3-hRl"/>
                         <constraint firstItem="WPg-Gv-JrS" firstAttribute="centerX" secondItem="NHD-1X-ju1" secondAttribute="centerX" id="nZl-lu-bDC"/>
                         <constraint firstAttribute="trailing" secondItem="1OA-B8-22Z" secondAttribute="trailing" constant="20" id="nyN-Ca-ZsH"/>
