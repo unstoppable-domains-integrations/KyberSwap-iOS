@@ -104,6 +104,11 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.setupUI()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.loadListOrders()
+  }
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
@@ -232,6 +237,33 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   @IBAction func statusButtonPressed(_ sender: Any) {
     self.openFilterView()
+  }
+
+  fileprivate func loadListOrders() {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
+      self.navigationController?.popViewController(animated: true)
+      return
+    }
+    self.displayLoading()
+    KNLimitOrderServerCoordinator.shared.getListOrders(accessToken: accessToken) { [weak self] result in
+      guard let `self` = self else { return }
+      self.hideLoading()
+      switch result {
+      case .success(let resp):
+        self.updateListOrders(resp)
+      case .failure:
+        let alertController = UIAlertController(
+          title: NSLocalizedString("error", value: "Error", comment: ""),
+          message: "Can not load your orders right now".toBeLocalised(),
+          preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
+          self.loadListOrders()
+        }))
+        self.present(alertController, animated: true, completion: nil)
+      }
+    }
   }
 }
 
