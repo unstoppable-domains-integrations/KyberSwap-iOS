@@ -32,12 +32,12 @@ struct EIP155Signer: Signer {
 
     func hash(order: KNLimitOrder) -> Data {
       return rlpHash([
-        order.sender.data, // sender
-        BigInt(order.nonce).hexEncoded, // nonce
-        Address(string: order.from.contract)?.data ?? Data(), // srcToken
-        order.srcAmount, // srcQty
-        Address(string: order.to.contract)?.data ?? Data(), // destToken
-        order.sender.data, // destAddress
+        order.sender.description.lowercased(), // sender
+        order.nonce, // nonce
+        order.from.contract.lowercased(), // srcToken
+        order.srcAmount.hexEncoded, // srcQty
+        order.to.contract.lowercased(), // destToken
+        order.sender.description.lowercased(), // destAddress
         order.targetRate.hexEncoded, // minConversionRate
         BigInt(order.fee).hexEncoded, // feeInPrecision
         ] as [Any])!
@@ -80,12 +80,12 @@ struct HomesteadSigner: Signer {
 
     func hash(order: KNLimitOrder) -> Data {
       return rlpHash([
-        order.sender.data, // sender
-        BigInt(order.nonce).hexEncoded, // nonce
-        Address(string: order.from.contract)?.data ?? Data(), // srcToken
-        order.srcAmount, // srcQty
-        Address(string: order.to.contract)?.data ?? Data(), // destToken
-        order.sender.data, // destAddress
+        order.sender.description.lowercased(), // sender
+        order.nonce, // nonce
+        order.from.contract.lowercased(), // srcToken
+        order.srcAmount.hexEncoded, // srcQty
+        order.to.contract.lowercased(), // destToken
+        order.sender.description.lowercased(), // destAddress
         order.targetRate.hexEncoded, // minConversionRate
         BigInt(order.fee).hexEncoded, // feeInPrecision
         ] as [Any])!

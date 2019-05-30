@@ -56,6 +56,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBOutlet weak var feeNoteLabel: UILabel!
   @IBOutlet weak var suggestBuyTokenButton: UIButton!
+  @IBOutlet weak var loadingFeeIndicator: UIActivityIndicatorView!
 
   @IBOutlet weak var submitOrderButton: UIButton!
 
@@ -135,7 +136,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.isErrorMessageEnabled = true
     self.updateEstimateRateFromNetwork(showWarning: false)
 
-    self.updateEstimateFeeFromServer()
+    self.updateEstimateFeeFromServer(isShowingIndicator: true)
     self.updateFeeTimer?.invalidate()
     self.updateFeeTimer = Timer.scheduledTimer(
       withTimeInterval: 15.0,
@@ -363,8 +364,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         sender: self.viewModel.wallet.address,
         srcAmount: self.viewModel.amountFromBigInt,
         targetRate: self.viewModel.targetRateBigInt,
-        fee: Int(floor(self.viewModel.feePercentage * 100)),
-        nonce: self.viewModel.nonce ?? 0
+        fee: Int(floor(self.viewModel.feePercentage * 10000)),
+        nonce: self.viewModel.nonce ?? ""
       )
       self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(order: order))
     }
@@ -492,7 +493,7 @@ extension KNCreateLimitOrderViewController {
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
   }
 
-  fileprivate func updateEstimateFeeFromServer() {
+  fileprivate func updateEstimateFeeFromServer(isShowingIndicator: Bool = false) {
     let event = KNCreateLimitOrderViewEvent.estimateFee(
       address: self.viewModel.walletObject.address,
       src: self.viewModel.from.contract,
@@ -501,6 +502,10 @@ extension KNCreateLimitOrderViewController {
       destAmount: Double(self.viewModel.amountToBigInt) / pow(10.0, Double(self.viewModel.to.decimals))
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
+    if isShowingIndicator {
+      self.loadingFeeIndicator.startAnimating()
+      self.loadingFeeIndicator.isHidden = true // TODO: Should be unhidden here
+    }
   }
 
   fileprivate func updateExpectedNonceFromServer() {
@@ -834,10 +839,8 @@ extension KNCreateLimitOrderViewController {
   func coordinatorUpdateEstimateFee(_ fee: Double) {
     self.viewModel.feePercentage = fee
     self.updateFeeNotesUI()
-  }
-
-  func coordinatorUpdateCurrentNonce(_ nonce: Int64, addr: String, src: String, dest: String) {
-    self.viewModel.updateNonce(address: addr, src: src, dest: dest, nonce: nonce)
+    self.loadingFeeIndicator.stopAnimating()
+    self.loadingFeeIndicator.isHidden = true
   }
 }
 
@@ -901,7 +904,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     self.viewModel.updateFocusTextField(textField.tag)
     self.updateEstimateRateFromNetwork(showWarning: true)
     self.updateViewAmountDidChange()
-    self.updateEstimateFeeFromServer()
+    self.updateEstimateFeeFromServer(isShowingIndicator: true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.validateDataIfNeeded()
     }

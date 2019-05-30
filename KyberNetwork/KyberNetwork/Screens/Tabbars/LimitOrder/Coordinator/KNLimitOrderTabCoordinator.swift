@@ -166,7 +166,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .estimateRate(let from, let to, let amount, let showWarning):
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showWarning, completion: nil)
     case .submitOrder(let order):
-      self.openConfirmOrder(order)
+      self.checkDataBeforeConfirmOrder(order)
     case .manageOrders:
       let orders: [KNOrderObject] = KNLimitOrderServerCoordinator.shared.orders
       if self.manageOrdersVC == nil {
@@ -224,6 +224,57 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     })
   }
 
+  fileprivate func checkDataBeforeConfirmOrder(_ order: KNLimitOrder) {
+
+    self.navigationController.displayLoading(text: "Checking...".toBeLocalised(), animated: true)
+    var feeValue: Int?
+    var nonceValue: String?
+    var errorMessage: String?
+
+    let group = DispatchGroup()
+
+    // Getting fee
+    group.enter()
+    let destAmount: Double = {
+      let amount = order.srcAmount * order.targetRate / BigInt(10).power(order.from.decimals)
+      return Double(amount) / pow(10.0, Double(order.to.decimals))
+    }()
+    self.getExpectedFee(
+      address: order.sender.description,
+      src: order.from.contract,
+      dest: order.to.contract,
+      srcAmount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
+      destAmount: destAmount) { (fee, error) in
+        if let err = error { errorMessage = err } else { feeValue = Int(floor((fee ?? 0.0) * 10000.0)) }
+        group.leave()
+    }
+
+    // Getting nonce
+    group.enter()
+    self.getCurrentNonce { (nonce, error) in
+        if let err = error { errorMessage = err } else { nonceValue = nonce }
+        group.leave()
+    }
+    group.notify(queue: .main) {
+      self.navigationController.hideLoading()
+      if let error = errorMessage {
+        self.navigationController.showWarningTopBannerMessage(with: "", message: error, time: 2.0)
+      } else {
+        let newOrder = KNLimitOrder(
+          from: order.from,
+          to: order.to,
+          account: order.account,
+          sender: order.sender,
+          srcAmount: order.srcAmount,
+          targetRate: order.targetRate,
+          fee: feeValue ?? order.fee,
+          nonce: nonceValue ?? order.nonce
+        )
+        self.openConfirmOrder(newOrder)
+      }
+    }
+  }
+
   fileprivate func openConfirmOrder(_ order: KNLimitOrder) {
     self.confirmVC = KNConfirmLimitOrderViewController(order: order)
     self.confirmVC?.delegate = self
@@ -231,34 +282,42 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.navigationController.pushViewController(self.confirmVC!, animated: true)
   }
 
-  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double) {
+  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, String?) -> Void)? = nil) {
     KNLimitOrderServerCoordinator.shared.getFee(
       address: address,
       src: src,
       dest: dest,
       srcAmount: srcAmount,
       destAmount: destAmount) { [weak self] result in
-      if case .success(let fee) = result, fee.1 == nil {
-        self?.rootViewController.coordinatorUpdateEstimateFee(fee.0)
-      }
+        switch result {
+        case .success(let data):
+          if data.1 == nil {
+            self?.rootViewController.coordinatorUpdateEstimateFee(data.0)
+            completion?(data.0, nil)
+          } else {
+            completion?(nil, data.1)
+          }
+        case .failure(let error):
+          completion?(nil, error.prettyError)
+        }
     }
   }
 
-  fileprivate func getCurrentNonce(address: String, src: String, dest: String) {
+  fileprivate func getCurrentNonce(completion: @escaping (String?, String?) -> Void) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     KNLimitOrderServerCoordinator.shared.getNonce(
-      accessToken: accessToken,
-      addr: address,
-      src: src,
-      dest: dest) { [weak self] result in
-      if case .success(let nonce) = result {
-        self?.rootViewController.coordinatorUpdateCurrentNonce(
-          nonce,
-          addr: address,
-          src: src,
-          dest: dest
-        )
-      }
+      accessToken: accessToken) { [weak self] result in
+        guard let _ = self else { return }
+        switch result {
+        case .success(let data):
+          if data.1.isEmpty {
+            completion(data.0, nil)
+          } else {
+            completion(nil, data.1)
+          }
+        case .failure(let error):
+          completion(nil, error.prettyError)
+        }
     }
   }
 
