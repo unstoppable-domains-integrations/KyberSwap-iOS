@@ -3,6 +3,7 @@
 import UIKit
 import Result
 import Moya
+import BigInt
 
 class KNLimitOrderServerCoordinator {
 
@@ -89,16 +90,20 @@ class KNLimitOrderServerCoordinator {
     }
   }
 
-  func getNonce(accessToken: String, addr: String, src: String, dest: String, completion: @escaping (Result<Int64, AnyError>) -> Void) {
-    self.provider.request(.getNonce(accessToken: accessToken, address: addr, src: src, dest: dest)) { [weak self] result in
+  func getNonce(accessToken: String, completion: @escaping (Result<(String, String), AnyError>) -> Void) {
+    self.provider.request(.getNonce(accessToken: accessToken)) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let data):
         do {
           let _ = try data.filterSuccessfulStatusCodes()
           let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let nonce = json["nonce"] as? Int64 ?? 0
-          completion(.success(nonce))
+          if let nonce = json["nonce"] as? String {
+            completion(.success((nonce, "")))
+          } else {
+            let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
+            completion(.success(("", message)))
+          }
         } catch let error {
           completion(.failure(AnyError(error)))
         }

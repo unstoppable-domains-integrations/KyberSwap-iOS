@@ -3,6 +3,7 @@
 //swiftlint:disable file_length
 import Moya
 import CryptoSwift
+import BigInt
 
 protocol MoyaCacheable {
   typealias MoyaCacheablePolicy = URLRequest.CachePolicy
@@ -273,7 +274,7 @@ enum LimitOrderService {
   case getOrders(accessToken: String)
   case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
   case cancelOrder(accessToken: String, id: String)
-  case getNonce(accessToken: String, address: String, src: String, dest: String)
+  case getNonce(accessToken: String)
   case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
 }
 
@@ -311,26 +312,19 @@ extension LimitOrderService: TargetType {
 
   var task: Task {
     switch self {
-    case .getOrders, .cancelOrder:
+    case .getOrders, .cancelOrder, .getNonce:
       return .requestPlain
     case .createOrder(_, let order, let signedData):
       let json: JSONDictionary = [
-        "addr": order.account.address.description,
+        "user_address": order.sender.description.lowercased(),
         "nonce": order.nonce,
-        "src": order.from.contract,
-        "dst": order.to.contract,
-        "src_amount": Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-        "min_rate": Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
-        "fee": order.fee,
-        "signature": signedData.toHexString(),
-      ]
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
-    case .getNonce(_, let address, let src, let dest):
-      let json: JSONDictionary = [
-        "addr": address,
-        "src": src,
-        "dst": dest,
+        "src_token": order.from.contract.lowercased(),
+        "dest_token": order.to.contract.lowercased(),
+        "dest_address": order.sender.description.lowercased(),
+        "src_amount": order.srcAmount.hexEncoded,
+        "min_rate": order.targetRate.hexEncoded,
+        "fee": BigInt(order.fee).hexEncoded,
+        "signature": signedData.hexEncoded,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
@@ -361,7 +355,7 @@ extension LimitOrderService: TargetType {
       json["Authorization"] = accessToken
     case .cancelOrder(let accessToken, _):
       json["Authorization"] = accessToken
-    case .getNonce(let accessToken, _, _, _):
+    case .getNonce(let accessToken):
       json["Authorization"] = accessToken
     default: break
     }
