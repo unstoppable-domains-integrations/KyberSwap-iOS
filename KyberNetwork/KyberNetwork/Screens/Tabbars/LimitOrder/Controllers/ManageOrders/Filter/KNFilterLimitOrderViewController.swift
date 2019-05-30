@@ -48,6 +48,8 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var sortPairDescButton: UIButton!
 
   @IBOutlet weak var listPairsTableView: UITableView!
+  @IBOutlet weak var listPairsTableViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var dontHaveAnyOrdersLabel: UILabel!
 
   @IBOutlet weak var statusOpenButton: UIButton!
   @IBOutlet weak var statusFilledButton: UIButton!
@@ -98,6 +100,9 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.listPairsTableView.rowHeight = kFilterLimitOrderSelectPairTableViewCellHeight
     self.listPairsTableView.dataSource = self
 
+    self.dontHaveAnyOrdersLabel.text = "You don't have any orders yet".toBeLocalised()
+    self.dontHaveAnyOrdersLabel.isHidden = true
+
     self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
@@ -125,7 +130,15 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
       width: !self.viewModel.isSortAsc ? 6.0 : 1.0,
       radius: self.sortPairDescButton.frame.height / 2.0
     )
+    self.dontHaveAnyOrdersLabel.isHidden = !self.viewModel.allPairs.isEmpty
+    self.listPairsTableView.isHidden = self.viewModel.allPairs.isEmpty
     self.listPairsTableView.reloadData()
+
+    self.listPairsTableViewHeightConstraint.constant = {
+      if self.viewModel.allPairs.isEmpty { return 60.0 }
+      return min(108.0, CGFloat((self.viewModel.allPairs.count + 1) / 2) * 36.0)
+    }()
+    self.view.layoutIfNeeded()
   }
 
   fileprivate func updateStatusView() {
