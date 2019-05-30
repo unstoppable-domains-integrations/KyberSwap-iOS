@@ -108,6 +108,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYk-sC-oZU">
                             <rect key="frame" x="336" y="20" width="24" height="24"/>
+                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                             <state key="normal" image="close_button_black"/>
                             <connections>
                                 <action selector="closeButtonPressed:" destination="-1" eventType="touchUpInside" id="cv9-BB-x8b"/>
