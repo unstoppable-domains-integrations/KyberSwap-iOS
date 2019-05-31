@@ -145,6 +145,14 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         self?.updateEstimateFeeFromServer()
       }
     )
+
+    self.listOrdersDidUpdate(nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.listOrdersDidUpdate(_:)),
+      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
+      object: nil
+    )
   }
 
   override func viewDidLayoutSubviews() {
@@ -177,6 +185,12 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.updateFeeTimer?.invalidate()
     self.updateFeeTimer = nil
+
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
+      object: nil
+    )
   }
 
   fileprivate func setupUI() {
@@ -303,6 +317,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       self.viewModel.updateTargetRate(rateString)
     }
 
+    self.listOrdersDidUpdate(nil)
+
     self.updateEstimateRateFromNetwork(showWarning: true)
   }
 
@@ -376,6 +392,30 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.delegate?.kCreateLimitOrderViewController(self, run: .manageOrders)
   }
 
+  @objc func listOrdersDidUpdate(_ sender: Any?) {
+    let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
+    let relatedOrders = orders.filter({
+      return $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
+      && $0.srcTokenSymbol.lowercased() == self.viewModel.from.symbol.lowercased()
+      && $0.destTokenSymbol.lowercased() == self.viewModel.to.symbol.lowercased()
+      && ($0.state == .open || $0.state == .inProgress)
+    })
+    self.viewModel.updateRelatedOrders(relatedOrders)
+
+    if !self.cancelRelatedOrdersView.isHidden {
+      if self.viewModel.cancelSuggestOrders.isEmpty {
+        self.cancelRelatedOrdersView.isHidden = true
+        self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+        self.rateContainerView.rounded(radius: 4.0)
+      } else {
+        self.cancelOrdersCollectionView.reloadData()
+      }
+    }
+
+    self.updateRelatedOrdersView()
+    self.view.layoutIfNeeded()
+  }
+
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "swap_all"])
     self.view.endEditing(true)
@@ -442,12 +482,6 @@ extension KNCreateLimitOrderViewController {
       self.view.layoutIfNeeded()
       return
     }
-    let orders = self.viewModel.relatedOrders.filter({
-      return $0.sourceToken.lowercased() == self.viewModel.from.symbol.lowercased()
-        && $0.destToken.lowercased() == self.viewModel.to.symbol.lowercased()
-        && $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
-    })
-    self.viewModel.updateRelatedOrders(orders)
 
     let numberOrders = self.viewModel.relatedOrders.count
     if numberOrders > 0 {
@@ -504,7 +538,7 @@ extension KNCreateLimitOrderViewController {
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
     if isShowingIndicator {
       self.loadingFeeIndicator.startAnimating()
-      self.loadingFeeIndicator.isHidden = true // TODO: Should be unhidden here
+      self.loadingFeeIndicator.isHidden = false
     }
   }
 
@@ -689,6 +723,8 @@ extension KNCreateLimitOrderViewController {
     }
     self.updateViewAmountDidChange()
     self.noCancelButtonPressed(nil)
+
+    self.listOrdersDidUpdate(nil)
     self.view.layoutIfNeeded()
   }
 
@@ -788,6 +824,8 @@ extension KNCreateLimitOrderViewController {
       self.rateContainerView.rounded(radius: 4.0)
     }
 
+    self.listOrdersDidUpdate(nil)
+
     self.view.layoutIfNeeded()
   }
 
@@ -828,12 +866,13 @@ extension KNCreateLimitOrderViewController {
     self.view.layoutIfNeeded()
   }
 
-  // TODO: Remove
   func coordinatorDoneSubmittingOrder(_ order: KNOrderObject) {
-    var orders = self.viewModel.relatedOrders
-    orders.append(order)
-    self.viewModel.updateRelatedOrders(orders)
-    self.updateRelatedOrdersView()
+    self.showSuccessTopBannerMessage(
+      with: NSLocalizedString("success", value: "Success", comment: ""),
+      message: "Your order has been submitted successfully".toBeLocalised(),
+      time: 1.5
+    )
+    self.listOrdersDidUpdate(nil)
   }
 
   func coordinatorUpdateEstimateFee(_ fee: Double) {

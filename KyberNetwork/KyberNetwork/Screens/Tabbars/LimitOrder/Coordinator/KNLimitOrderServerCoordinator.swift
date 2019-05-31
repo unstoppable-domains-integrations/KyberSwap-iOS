@@ -14,7 +14,6 @@ class KNLimitOrderServerCoordinator {
   }()
 
   fileprivate var loadingTimer: Timer?
-  fileprivate(set) var orders: [KNOrderObject] = []
 
   func resume() {
     self.loadingTimer?.invalidate()
@@ -54,7 +53,10 @@ class KNLimitOrderServerCoordinator {
           let success = json["success"] as? Bool ?? false
           let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
           if success {
-            let object = KNOrderObject(json: json)
+            let fields = json["fields"] as? [String] ?? []
+            let dataArr = json["order"] as? [Any] ?? []
+            let object = KNOrderObject(fields: fields, data: dataArr)
+            KNLimitOrderStorage.shared.addNewOrder(object)
             self?.startLoadingListOrders(nil)
             completion(.success((object, nil)))
           } else {
@@ -71,16 +73,19 @@ class KNLimitOrderServerCoordinator {
 
   func getListOrders(accessToken: String, completion: @escaping (Result<[KNOrderObject], AnyError>) -> Void) {
     self.provider.request(.getOrders(accessToken: accessToken)) { [weak self] result in
-      guard let `self` = self else { return }
+      guard let _ = self else { return }
       switch result {
       case .success(let data):
         do {
           let _ = try data.filterSuccessfulStatusCodes()
           let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let jsonArr = json["orders"] as? [JSONDictionary] ?? []
-          let objects = jsonArr.map({ return KNOrderObject(json: $0) })
-          self.orders = objects
-          completion(.success(objects))
+          if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
+            let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
+            KNLimitOrderStorage.shared.updateOrdersFromServer(objects)
+            completion(.success(objects))
+          } else {
+            completion(.success([]))
+          }
         } catch let error {
           completion(.failure(AnyError(error)))
         }
@@ -149,6 +154,7 @@ class KNLimitOrderServerCoordinator {
           let isCancelled = json["cancelled"] as? Bool ?? false
           if isCancelled {
             completion(.success("Your order has been cancelled".toBeLocalised()))
+            KNLimitOrderStorage.shared.updateOrderState(orderID, state: .cancelled)
             self?.startLoadingListOrders(nil)
           } else {
             completion(.success(json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()))

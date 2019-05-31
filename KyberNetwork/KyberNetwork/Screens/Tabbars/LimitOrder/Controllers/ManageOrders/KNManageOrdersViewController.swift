@@ -107,6 +107,22 @@ class KNManageOrdersViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.loadListOrders()
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.listOrdersDidUpdate(_:)),
+      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
+      object: nil
+    )
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
+      object: nil
+    )
   }
 
   override func viewDidLayoutSubviews() {
@@ -195,6 +211,11 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.filterVC?.modalPresentationStyle = .overFullScreen
     self.filterVC?.modalTransitionStyle = .crossDissolve
     self.present(self.filterVC!, animated: true, completion: nil)
+  }
+
+  @objc func listOrdersDidUpdate(_ sender: Any) {
+    let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
+    self.updateListOrders(orders)
   }
 
   func updateListOrders(_ orders: [KNOrderObject]) {
