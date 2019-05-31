@@ -12,15 +12,15 @@ enum KNOrderState: Int {
   case unknown
 }
 
-class KNOrderObject: NSObject {
+class KNOrderObject: Object {
 
   @objc dynamic var id: Int = -1
   @objc dynamic var sourceToken: String = ""
   @objc dynamic var destToken: String = ""
   @objc dynamic var targetPrice: Double = 0.0
   @objc dynamic var sourceAmount: Double = 0.0
-  @objc dynamic var fee: Int = 10
-  @objc dynamic var nonce: Int = 0
+  @objc dynamic var fee: Double = 0.0
+  @objc dynamic var nonce: String = ""
   @objc dynamic var sender: String = ""
   @objc dynamic var createdDate: TimeInterval = 0.0
   @objc dynamic var filledDate: TimeInterval = 0.0
@@ -34,10 +34,13 @@ class KNOrderObject: NSObject {
     to: String,
     amount: Double,
     price: Double,
-    fee: Int,
+    fee: Double,
+    nonce: String,
     sender: String,
     createdDate: TimeInterval = Date().timeIntervalSince1970,
     filledDate: TimeInterval = 0.0,
+    messages: String,
+    txHash: String?,
     stateValue: Int = KNOrderState.open.rawValue
     ) {
     self.init()
@@ -47,9 +50,12 @@ class KNOrderObject: NSObject {
     self.sourceAmount = amount
     self.targetPrice = price
     self.fee = fee
+    self.nonce = nonce
     self.sender = sender
     self.createdDate = createdDate
     self.filledDate = filledDate
+    self.messages = messages
+    self.txHash = txHash
     self.stateValue = stateValue
   }
 
@@ -60,22 +66,73 @@ class KNOrderObject: NSObject {
     self.destToken = json["dst"] as? String ?? ""
     self.sourceAmount = json["src_amount"] as? Double ?? 0.0
     self.targetPrice = json["min_rate"] as? Double ?? 0.0
-    self.fee = json["fee"] as? Int ?? 0
+    self.fee = json["fee"] as? Double ?? 0.0
     self.sender = json["addr"] as? String ?? ""
-    self.nonce = json["nonce"] as? Int ?? 0
+    self.nonce = json["nonce"] as? String ?? ""
     self.stateValue = {
       let status = json["status"] as? String ?? ""
-      if status == "active" { return 0 }
-      if status == "pending" { return 1 }
+      if status == "open" { return 0 }
+      if status == "in_progress" { return 1 }
       if status == "filled" { return 2 }
       if status == "cancelled" { return 3 }
-      if status == "invalid" { return 4 }
+      if status == "invalidated" { return 4 }
       return 5
     }()
     self.createdDate = json["created_at"] as? Double ?? 0.0
     self.filledDate = json["updated_at"] as? Double ?? 0.0
     self.txHash = json["tx_hash"] as? String
     self.messages = json["messages"] as? String ?? ""
+  }
+
+  convenience init(fields: [String], data: [Any]) {
+    self.init()
+    if let idx = fields.index(of: "id") {
+      self.id = data[idx] as? Int ?? -1
+    }
+    if let idx = fields.index(of: "addr") {
+      self.sender = data[idx] as? String ?? ""
+    }
+    if let idx = fields.index(of: "nonce") {
+      self.nonce = data[idx] as? String ?? ""
+    }
+    if let idx = fields.index(of: "src") {
+      self.sourceToken = data[idx] as? String ?? ""
+    }
+    if let idx = fields.index(of: "dst") {
+      self.destToken = data[idx] as? String ?? ""
+    }
+    if let idx = fields.index(of: "src_amount") {
+      self.sourceAmount = data[idx] as? Double ?? 0.0
+    }
+    if let idx = fields.index(of: "min_rate") {
+      self.targetPrice = data[idx] as? Double ?? 0.0
+    }
+    if let idx = fields.index(of: "fee") {
+      self.fee = data[idx] as? Double ?? 0.0
+    }
+    if let idx = fields.index(of: "status") {
+      self.stateValue = {
+        let status = data[idx] as? String ?? ""
+        if status == "open" { return 0 }
+        if status == "in_progress" { return 1 }
+        if status == "filled" { return 2 }
+        if status == "cancelled" { return 3 }
+        if status == "invalidated" { return 4 }
+        return 5
+      }()
+    }
+    if let idx = fields.index(of: "msg") {
+      self.messages = data[idx] as? String ?? ""
+    }
+    if let idx = fields.index(of: "tx_hash") {
+      self.txHash = data[idx] as? String
+    }
+    if let idx = fields.index(of: "created_at") {
+      self.createdDate = data[idx] as? Double ?? 0.0
+    }
+    if let idx = fields.index(of: "updated_at") {
+      self.filledDate = data[idx] as? Double ?? 0.0
+    }
   }
 
   var state: KNOrderState { return KNOrderState(rawValue: self.stateValue) ?? .open }
@@ -93,25 +150,25 @@ class KNOrderObject: NSObject {
     return self.destToken
   }
 
-//  override class func primaryKey() -> String? {
-//    return "id"
-//  }
+  override class func primaryKey() -> String? {
+    return "id"
+  }
 
-  static func getOrderObject(from order: KNLimitOrder) -> KNOrderObject {
-    let state = Int(arc4random() % 5)
-    let isFilled = arc4random() % 2 == 1
-    let object = KNOrderObject(
-      id: Int(arc4random()),
-      from: order.from.symbol,
-      to: order.to.symbol,
-      amount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-      price: Double(order.targetRate) / pow(10.0, Double(order.to.decimals)),
-      fee: 10,
-      sender: order.account.address.description,
-      createdDate: Date().timeIntervalSince1970 - Double(arc4random() % 100) * 24.0 * 60.0 * 60.0,
-      filledDate: isFilled ? Date().timeIntervalSince1970 : 0.0,
-      stateValue: state
+  func clone() -> KNOrderObject {
+    return KNOrderObject(
+      id: self.id,
+      from: self.sourceToken,
+      to: self.destToken,
+      amount: self.sourceAmount,
+      price: self.targetPrice,
+      fee: self.fee,
+      nonce: self.nonce,
+      sender: self.sender,
+      createdDate: self.createdDate,
+      filledDate: self.filledDate,
+      messages: self.messages,
+      txHash: self.txHash,
+      stateValue: self.stateValue
     )
-    return object
   }
 }

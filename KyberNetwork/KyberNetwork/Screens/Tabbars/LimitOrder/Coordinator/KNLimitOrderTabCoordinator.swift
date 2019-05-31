@@ -168,7 +168,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .submitOrder(let order):
       self.checkDataBeforeConfirmOrder(order)
     case .manageOrders:
-      let orders: [KNOrderObject] = KNLimitOrderServerCoordinator.shared.orders
+      let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
       if self.manageOrdersVC == nil {
         self.manageOrdersVC = KNManageOrdersViewController(
           viewModel: KNManageOrdersViewModel(orders: orders)
