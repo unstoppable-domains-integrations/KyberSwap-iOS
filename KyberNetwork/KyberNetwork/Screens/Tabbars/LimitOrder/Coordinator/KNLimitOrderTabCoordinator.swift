@@ -27,6 +27,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
   weak var delegate: KNLimitOrderTabCoordinatorDelegate?
 
   fileprivate var balances: [String: Balance] = [:]
+  fileprivate var approveTx: [String: TimeInterval] = [:]
 
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   fileprivate var searchTokensViewController: KNLimitOrderSearchTokenViewController?
@@ -88,6 +89,7 @@ extension KNLimitOrderTabCoordinator {
       self.navigationController.popToRootViewController(animated: false)
     }
     self.balances = [:]
+    self.approveTx = [:]
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
     if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
@@ -339,6 +341,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           completion?(false)
           return
         }
+        self.approveTx[order.from.contract] = Date().timeIntervalSince1970
         self.navigationController.displayLoading(text: "Submitting order".toBeLocalised(), animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.16, execute: {
           let result = self.session.keystore.signLimitOrder(order)
@@ -391,9 +394,23 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       guard let `self` = self else { return }
       switch result {
       case .success(let remain):
-        if remain >= order.srcAmount {
+        var actualAmount = order.srcAmount
+        let orders = KNLimitOrderStorage.shared.orders
+          .filter({ return $0.state == .open || $0.state == .inProgress })
+          .filter({ return $0.sender.lowercased() == order.sender.description.lowercased() })
+          .filter({ return $0.sourceToken.lowercased() == order.from.symbol.lowercased() })
+        orders.forEach({ actualAmount += BigInt($0.sourceAmount * pow(10.0, Double(order.from.decimals))) })
+        if remain >= actualAmount {
           completion(.success(true))
         } else {
+          if let time = self.approveTx[order.from.contract] {
+            let preDate = Date(timeIntervalSince1970: time)
+            if Date().timeIntervalSince(preDate) <= 5.0 * 60.0 {
+              // less than 5 mins ago
+              completion(.success(true))
+              return
+            }
+          }
           self.sendApprovedTransaction(order: order, remain: remain, completion: completion)
         }
       case .failure(let error):
