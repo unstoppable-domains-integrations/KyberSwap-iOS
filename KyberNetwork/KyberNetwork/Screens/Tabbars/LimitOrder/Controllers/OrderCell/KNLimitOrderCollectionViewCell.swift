@@ -94,7 +94,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
       self.orderStatusLabel.isHidden = true
     }
     let feeDisplay: String = {
-      let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
+      let feeDouble = order.fee * order.sourceAmount
       return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
