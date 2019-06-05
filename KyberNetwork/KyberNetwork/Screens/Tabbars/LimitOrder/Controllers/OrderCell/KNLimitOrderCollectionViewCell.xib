@@ -93,7 +93,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.004243 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7h-ac-cWl">
-                                <rect key="frame" x="152" y="88" width="73" height="12.5"/>
+                                <rect key="frame" x="142" y="88" width="73" height="12.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                                 <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -105,7 +105,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVv-Bu-ccZ">
-                                <rect key="frame" x="152" y="68" width="14.5" height="16"/>
+                                <rect key="frame" x="142" y="68" width="14.5" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Gar-Xe-u3f"/>
                                 </constraints>
@@ -140,7 +140,7 @@
                             <constraint firstAttribute="trailing" secondItem="CAe-iv-NaR" secondAttribute="trailing" constant="12" id="I9p-AG-pcg"/>
                             <constraint firstItem="Q8H-yp-XJJ" firstAttribute="centerY" secondItem="OVv-Bu-ccZ" secondAttribute="centerY" id="JYy-rU-hzk"/>
                             <constraint firstItem="Cfn-KC-y8W" firstAttribute="top" secondItem="Q8H-yp-XJJ" secondAttribute="bottom" constant="4" id="K7n-zR-AWk"/>
-                            <constraint firstItem="OVv-Bu-ccZ" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="leading" constant="152" id="OLw-7e-nOf"/>
+                            <constraint firstItem="OVv-Bu-ccZ" firstAttribute="leading" secondItem="2wN-cj-4tJ" secondAttribute="leading" constant="142" id="OLw-7e-nOf"/>
                             <constraint firstItem="JaZ-mW-KBg" firstAttribute="leading" secondItem="VJE-Rr-hfO" secondAttribute="leading" id="YqA-lv-7r1"/>
                             <constraint firstAttribute="trailing" secondItem="Cfn-KC-y8W" secondAttribute="trailing" constant="12" id="cDv-7e-gOy"/>
                             <constraint firstItem="OVv-Bu-ccZ" firstAttribute="leading" secondItem="D7h-ac-cWl" secondAttribute="leading" id="nHg-QP-u2s"/>

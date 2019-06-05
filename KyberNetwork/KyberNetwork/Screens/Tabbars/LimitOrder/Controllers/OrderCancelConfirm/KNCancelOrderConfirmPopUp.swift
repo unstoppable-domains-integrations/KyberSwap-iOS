@@ -90,7 +90,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     }
 
     let feeDisplay: String = {
-      let feeDouble = Double(order.fee) / 10000.0 * order.sourceAmount
+      let feeDouble = Double(order.fee) * order.sourceAmount
       return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
