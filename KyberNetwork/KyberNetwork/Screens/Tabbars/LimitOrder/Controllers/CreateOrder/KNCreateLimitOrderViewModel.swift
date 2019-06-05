@@ -118,7 +118,7 @@ class KNCreateLimitOrderViewModel {
       return self.balance?.value ?? BigInt(0)
     }()
     var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
-    let allOrders = self.relatedOrders // TODO: Update with all orders
+    let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
       if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
         availableAmount -= $0.sourceAmount
@@ -168,7 +168,7 @@ class KNCreateLimitOrderViewModel {
     let balance = self.balance?.value ?? BigInt(0)
 
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
-    let allOrders = self.relatedOrders // TODO: Update with all orders
+    let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
       if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
         availableAmount -= $0.sourceAmount
@@ -184,7 +184,7 @@ class KNCreateLimitOrderViewModel {
     let balance = self.balance?.value ?? BigInt(0)
 
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
-    let allOrders = self.relatedOrders // TODO: Update with all orders
+    let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
       if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
         availableAmount -= $0.sourceAmount
