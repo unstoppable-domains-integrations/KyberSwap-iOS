@@ -130,7 +130,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.004243 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BUZ-wk-cnv">
-                                    <rect key="frame" x="152" y="88" width="73" height="12.5"/>
+                                    <rect key="frame" x="142" y="88" width="73" height="12.5"/>
                                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -142,7 +142,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Lk-or-IN3">
-                                    <rect key="frame" x="152" y="68" width="14.5" height="16"/>
+                                    <rect key="frame" x="142" y="68" width="14.5" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="ZIS-YT-fLW"/>
                                     </constraints>
@@ -181,7 +181,7 @@
                                 <constraint firstItem="v8N-gS-OCT" firstAttribute="leading" secondItem="mk5-mC-Pr7" secondAttribute="leading" constant="12" id="dMj-9w-qf7"/>
                                 <constraint firstAttribute="trailing" secondItem="Ycp-1k-9tK" secondAttribute="trailing" constant="12" id="dQL-x5-FcB"/>
                                 <constraint firstItem="c7O-ak-cxj" firstAttribute="leading" secondItem="mk5-mC-Pr7" secondAttribute="leading" constant="12" id="dW3-b5-16b"/>
-                                <constraint firstItem="3Lk-or-IN3" firstAttribute="leading" secondItem="mk5-mC-Pr7" secondAttribute="leading" constant="152" id="pLt-s3-gbu"/>
+                                <constraint firstItem="3Lk-or-IN3" firstAttribute="leading" secondItem="mk5-mC-Pr7" secondAttribute="leading" constant="142" id="pLt-s3-gbu"/>
                                 <constraint firstItem="50I-rk-0OH" firstAttribute="leading" secondItem="Ycp-1k-9tK" secondAttribute="leading" id="rNd-QK-kII"/>
                                 <constraint firstItem="P0C-Mj-jrc" firstAttribute="top" secondItem="c7O-ak-cxj" secondAttribute="bottom" constant="4" id="vak-eI-nHN"/>
                             </constraints>

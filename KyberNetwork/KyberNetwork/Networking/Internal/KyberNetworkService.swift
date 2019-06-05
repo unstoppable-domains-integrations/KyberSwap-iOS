@@ -322,7 +322,7 @@ extension LimitOrderService: TargetType {
         "dest_token": order.to.contract.lowercased(),
         "dest_address": order.sender.description.lowercased(),
         "src_amount": order.srcAmount.hexEncoded,
-        "min_rate": order.targetRate.hexEncoded,
+        "min_rate": (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded,
         "fee": BigInt(order.fee).hexEncoded,
         "signature": signedData.hexEncoded,
       ]

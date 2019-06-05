@@ -37,7 +37,7 @@ struct EIP155Signer: Signer {
         order.srcAmount.hexEncoded, // srcQty
         order.to.contract.lowercased(), // destToken
         order.sender.description.lowercased(), // destAddress
-        order.targetRate.hexEncoded, // minConversionRate
+        (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded, // minConversionRate
         BigInt(order.fee).hexEncoded, // feeInPrecision
         ] as [Any])!
     }
@@ -74,7 +74,7 @@ struct HomesteadSigner: Signer {
         order.srcAmount.hexEncoded, // srcQty
         order.to.contract.lowercased(), // destToken
         order.sender.description.lowercased(), // destAddress
-        order.targetRate.hexEncoded, // minConversionRate
+        (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded, // minConversionRate
         BigInt(order.fee).hexEncoded, // feeInPrecision
         ] as [Any])!
     }
