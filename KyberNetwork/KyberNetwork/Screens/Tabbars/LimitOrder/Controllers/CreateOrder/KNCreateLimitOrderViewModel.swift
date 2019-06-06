@@ -28,6 +28,7 @@ class KNCreateLimitOrderViewModel {
   fileprivate(set) var rateFromNode: BigInt?
   fileprivate(set) var cachedProdRate: BigInt?
 
+  fileprivate(set) var prevFocusTextFieldTag: Int = 2
   fileprivate(set) var focusTextFieldTag: Int = 0
 
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
@@ -82,10 +83,18 @@ class KNCreateLimitOrderViewModel {
     return amountTo * BigInt(10).power(self.from.decimals) / rate
   }
 
+  var shouldAmountFromChange: Bool {
+    return self.prevFocusTextFieldTag != 0 && self.focusTextFieldTag != 0
+  }
+
   var estimateAmountToBigInt: BigInt {
     let rate = self.targetRateBigInt
     if rate.isZero { return BigInt(0) }
     return self.amountFromBigInt * rate / BigInt(10).power(self.from.decimals)
+  }
+
+  var shouldAmountToChange: Bool {
+    return self.prevFocusTextFieldTag != 1 && self.focusTextFieldTag != 1
   }
 
   func tokenButtonAttributedText(isSource: Bool) -> NSAttributedString {
@@ -225,6 +234,10 @@ class KNCreateLimitOrderViewModel {
     return amountTo * BigInt(10).power(self.from.decimals) / amountFrom
   }
 
+  var shouldTargetRateChange: Bool {
+    return self.prevFocusTextFieldTag != 2 && self.focusTextFieldTag != 2
+  }
+
   var exchangeRateText: String {
     let rate: BigInt? = self.rateFromNode ?? self.cachedProdRate
     if let rateText = rate?.displayRate(decimals: self.to.decimals) {
@@ -330,6 +343,8 @@ class KNCreateLimitOrderViewModel {
   }
 
   func updateFocusTextField(_ tag: Int) {
+    if self.focusTextFieldTag == tag { return }
+    self.prevFocusTextFieldTag = self.focusTextFieldTag
     self.focusTextFieldTag = tag
   }
 

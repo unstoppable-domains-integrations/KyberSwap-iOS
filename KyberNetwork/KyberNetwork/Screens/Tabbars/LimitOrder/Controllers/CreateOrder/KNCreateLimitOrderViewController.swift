@@ -463,7 +463,6 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       self.updateRelatedOrdersView()
       self.rateContainerView.rounded(radius: 4.0)
       self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-      self.targetRateTextField.becomeFirstResponder()
       self.view.layoutIfNeeded()
     }
   }
@@ -937,6 +936,9 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.updateFocusTextField(textField.tag)
     self.updateViewAmountDidChange()
+    if !self.cancelRelatedOrdersView.isHidden {
+      self.noCancelButtonPressed(nil)
+    }
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
@@ -950,18 +952,24 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
   }
 
   fileprivate func updateViewAmountDidChange() {
-    if self.viewModel.focusTextFieldTag != 1 {
-      // Focusing from text field
+    if self.viewModel.shouldAmountToChange {
+      // Focusing from and target text field
       let amountTo = self.viewModel.estimateAmountToBigInt
       let amountToString = amountTo.isZero ? "" : amountTo.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.toAmountTextField.text = amountToString
       self.viewModel.updateAmount(amountToString, isSource: false)
-    } else {
-      // Focusing to text field
+    } else if self.viewModel.shouldTargetRateChange {
+      // Focusing from and to text field
       let targetRate = self.viewModel.estimateTargetRateBigInt
       let rateDisplay = targetRate.isZero ? "" : targetRate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateDisplay
       self.viewModel.updateTargetRate(rateDisplay)
+    } else {
+      // Focusing to and target text field
+      let amountFrom = self.viewModel.estimateAmountFromBigInt
+      let amountFromString = amountFrom.isZero ? "" : amountFrom.displayRate(decimals: self.viewModel.from.decimals).removeGroupSeparator()
+      self.fromAmountTextField.text = amountFromString
+      self.viewModel.updateAmount(amountFromString, isSource: true)
     }
     self.updateFeeNotesUI()
     self.updateEstimateRateFromNetwork(showWarning: false)
