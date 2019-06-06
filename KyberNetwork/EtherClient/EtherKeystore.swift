@@ -398,24 +398,42 @@ open class EtherKeystore: Keystore {
       guard let account = keyStore.account(for: order.account.address) else {
         return .failure(.failedToSignTransaction)
       }
-      guard let password = getPassword(for: account) else {
+      guard let _ = getPassword(for: account) else {
         return .failure(.failedToSignTransaction)
       }
 
-      let chainID = KNEnvironment.default.chainID
-      let signer: Signer
-      if chainID == 0 {
-        signer = HomesteadSigner()
-      } else {
-        signer = EIP155Signer(chainId: BigInt(chainID))
-      }
-      do {
-        let hash = signer.hash(order: order)
-        let signature = try keyStore.signHash(hash, account: account, password: password)
-        return .success(signature)
-      } catch {
-        return .failure(.failedToSignTransaction)
-      }
+      let sha3 = SHA3(variant: .keccak256)
+
+      var data = [UInt8]()
+      // sender
+      data.append(contentsOf: order.sender.data.bytes)
+      // nonce
+      var numberArr = order.nonce.drop0x.hexaToBytes
+      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
+      data.append(contentsOf: numberArr)
+      // src token
+      data.append(contentsOf: order.from.address.data.bytes)
+      // src amount
+      numberArr = BigUInt(order.srcAmount).serialize().bytes
+      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
+      data.append(contentsOf: numberArr)
+      // dest token
+      data.append(contentsOf: order.to.address.data.bytes)
+      // dest address
+      data.append(contentsOf: order.sender.data.bytes)
+      // min rate
+      numberArr = BigUInt(order.targetRate * BigInt(10).power(18 - order.to.decimals)).serialize().bytes
+      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
+      data.append(contentsOf: numberArr)
+      // fee
+      numberArr = BigUInt(order.fee).serialize().bytes
+      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
+      data.append(contentsOf: numberArr)
+
+      // hash
+      let hashData = Data(bytes: sha3.calculate(for: data))
+      let prefix = "\u{19}Ethereum Signed Message:\n\(hashData.count)".data(using: .utf8)!
+      return signMessage(prefix + hashData, for: account)
     }
 
     func getPassword(for account: Account) -> String? {
