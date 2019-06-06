@@ -6,7 +6,6 @@ import TrustCore
 
 protocol Signer {
     func hash(transaction: SignTransaction) -> Data
-    func hash(order: KNLimitOrder) -> Data
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt)
 }
 
@@ -26,19 +25,6 @@ struct EIP155Signer: Signer {
             transaction.value,
             transaction.data,
             transaction.chainID, 0, 0,
-        ] as [Any])!
-    }
-
-    func hash(order: KNLimitOrder) -> Data {
-      return rlpHash([
-        order.sender.description.lowercased(), // sender
-        order.nonce, // nonce
-        order.from.contract.lowercased(), // srcToken
-        order.srcAmount.hexEncoded, // srcQty
-        order.to.contract.lowercased(), // destToken
-        order.sender.description.lowercased(), // destAddress
-        (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded, // minConversionRate
-        BigInt(order.fee).hexEncoded, // feeInPrecision
         ] as [Any])!
     }
 
@@ -64,19 +50,6 @@ struct HomesteadSigner: Signer {
             transaction.value,
             transaction.data,
         ])!
-    }
-
-    func hash(order: KNLimitOrder) -> Data {
-      return rlpHash([
-        order.sender.description.lowercased(), // sender
-        order.nonce, // nonce
-        order.from.contract.lowercased(), // srcToken
-        order.srcAmount.hexEncoded, // srcQty
-        order.to.contract.lowercased(), // destToken
-        order.sender.description.lowercased(), // destAddress
-        (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded, // minConversionRate
-        BigInt(order.fee).hexEncoded, // feeInPrecision
-        ] as [Any])!
     }
 
     func values(transaction: SignTransaction, signature: Data) -> (r: BigInt, s: BigInt, v: BigInt) {
