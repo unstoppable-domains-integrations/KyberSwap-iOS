@@ -58,8 +58,12 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: From Token
-  var fromSybol: String {
+  var fromSymbol: String {
     return self.from.isETH || self.from.isWETH ? "ETH*" : self.from.symbol
+  }
+
+  var toSymbol: String {
+    return self.to.isETH || self.to.isWETH ? "ETH*" : self.to.symbol
   }
 
   var allFromTokenBalanceString: String {
@@ -111,7 +115,7 @@ class KNCreateLimitOrderViewModel {
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.gray,
       NSAttributedStringKey.kern: 0.0,
     ]
-    let symbol: String = isSource ? self.fromSybol : self.to.symbol
+    let symbol: String = isSource ? self.fromSymbol : self.toSymbol
     let name = isSource ? self.from.name : self.to.name
     attributedString.append(NSAttributedString(string: symbol, attributes: symbolAttributes))
     attributedString.append(NSAttributedString(string: "\n\(name)", attributes: nameAttributes))
@@ -152,7 +156,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var balanceTextString: String {
-    return "\(self.fromSybol) Available".toBeLocalised().uppercased()
+    return "\(self.fromSymbol) Available".toBeLocalised().uppercased()
   }
 
   var isBalanceEnough: Bool {
@@ -249,7 +253,7 @@ class KNCreateLimitOrderViewModel {
   var exchangeRateText: String {
     let rate: BigInt? = self.rateFromNode ?? self.cachedProdRate
     if let rateText = rate?.displayRate(decimals: self.to.decimals) {
-      return "1 \(self.fromSybol) = \(rateText) \(self.to.symbol)"
+      return "1 \(self.fromSymbol) = \(rateText) \(self.toSymbol)"
     }
     return "---"
   }
@@ -308,7 +312,7 @@ class KNCreateLimitOrderViewModel {
     let feeBigInt = BigInt(Double(self.amountFromBigInt) * self.feePercentage)
     let feeDisplay = feeBigInt.displayRate(decimals: self.from.decimals)
     let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
-    let fromSymbol = self.fromSybol
+    let fromSymbol = self.fromSymbol
     let fee = NumberFormatterUtil.shared.displayPercentage(from: feePercentage * 100.0)
     return "Fee: \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
   }
@@ -326,7 +330,7 @@ class KNCreateLimitOrderViewModel {
     // promo wallet is not supported anw
     if let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address), let ptToken = KNSupportedTokenStorage.shared.ptToken {
       self.from = ptToken
-      self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken }) ?? self.eth
+      self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken }) ?? self.weth ?? self.eth
     }
 
     self.amountFrom = ""
@@ -356,7 +360,7 @@ class KNCreateLimitOrderViewModel {
   func swapTokens() {
     swap(&self.from, &self.to)
     if self.from.isETH, let weth = self.weth { self.from = weth } // switch to weth
-    if self.to.isWETH { self.to = eth }
+    if self.to.isETH, let weth = self.weth { self.to = weth }
     self.amountFrom = ""
     self.amountTo = ""
     self.targetRate = ""

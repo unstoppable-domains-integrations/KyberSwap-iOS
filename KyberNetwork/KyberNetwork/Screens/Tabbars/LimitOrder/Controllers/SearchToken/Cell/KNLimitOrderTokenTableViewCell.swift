@@ -17,7 +17,7 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
     self.tokenBalanceLabel.text = ""
   }
 
-  func updateCell(with token: TokenObject, balance: BigInt?, isSource: Bool) {
+  func updateCell(with token: TokenObject, balance: BigInt?) {
     if let image = UIImage(named: token.icon.lowercased()) {
       self.tokenIconImageView.image = image
     } else {
@@ -25,7 +25,7 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
         with: token.iconURL,
         placeholder: UIImage(named: "default_token"))
     }
-    let isETHStar = (token.isWETH || token.isETH) && isSource
+    let isETHStar = (token.isWETH || token.isETH)
     self.tokenSymbolLabel.text = isETHStar ? "ETH*" : "\(token.symbol.prefix(8))"
     self.tokenSymbolLabel.font = isETHStar ? UIFont.Kyber.semiBold(with: 14) : UIFont.Kyber.medium(with: 14)
     self.tokenSymbolLabel.addLetterSpacing()
