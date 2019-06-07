@@ -17,6 +17,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet weak var pairValueLabel: UILabel!
   @IBOutlet weak var dateValueLabel: UILabel!
+  @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var orderStatusLabel: UIButton!
 
   @IBOutlet weak var feeTextLabel: UILabel!
@@ -73,6 +74,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
 
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
+    self.addressLabel.text = "\(order.sender.prefix(8))..\(order.sender.suffix(4))"
+
     self.orderStatusLabel.isHidden = false
     switch order.state {
     case .open:
@@ -95,12 +98,13 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     }
     let feeDisplay: String = {
       let feeDouble = order.fee * order.sourceAmount
-      return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
+      return NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
-    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(destTokenSymbol)"
+    let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
+    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
+    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
     if hasAction {
       if order.state != .open {
         self.updateCancelButtonUI(isShowing: false, callFromSuper: true)
