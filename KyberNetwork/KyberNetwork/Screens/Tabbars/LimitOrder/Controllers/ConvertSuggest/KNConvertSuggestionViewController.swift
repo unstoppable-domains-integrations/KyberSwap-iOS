@@ -36,6 +36,17 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   fileprivate(set) var ethBalance: BigInt = BigInt(0)
   fileprivate(set) var wethBalance: BigInt = BigInt(0)
 
+  var availableWETHBalance: BigInt {
+    var balanceInOrder: BigInt = BigInt(0)
+    let orders = KNLimitOrderStorage.shared.orders
+      .filter({ return ($0.state == .open || $0.state == .inProgress) && $0.srcTokenSymbol == "WETH" })
+      .map({ return $0.clone() })
+    orders.forEach({
+      balanceInOrder += BigInt($0.sourceAmount * pow(10.0, 18.0))
+    })
+    return max(BigInt(0), self.wethBalance - balanceInOrder)
+  }
+
   fileprivate(set) var amountToConvert: BigInt = BigInt(0)
   fileprivate(set) var estGasLimit: BigInt = KNGasConfiguration.exchangeETHTokenGasLimitDefault
 
@@ -53,7 +64,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
 
     self.descTextLabel.text = "Your order can not be submitted because your WETH is not enough, please convert ETH to WETH to continue.".toBeLocalised()
     self.yourAddressTextLabel.text = "Your address".toBeLocalised()
-    self.yourBalanceTextLabel.text = "Your balance".toBeLocalised()
+    self.yourBalanceTextLabel.text = "Your available balance".toBeLocalised()
 
     self.wethContainerView.rounded(
       color: UIColor.Kyber.border,
@@ -109,7 +120,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     self.ethBalance = balance
 
     let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
-    let wethBalanceDisplay = "\(self.wethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
     self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
   }
 
@@ -117,7 +128,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     guard let weth = self.weth else { return }
     self.wethBalance = balances[weth.contract]?.value ?? BigInt(0)
     let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
-    let wethBalanceDisplay = "\(self.wethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
     self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
   }
 
