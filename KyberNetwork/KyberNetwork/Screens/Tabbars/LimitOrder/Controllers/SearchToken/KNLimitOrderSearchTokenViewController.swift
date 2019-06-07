@@ -17,7 +17,8 @@ class KNLimitOrderSearchTokenViewModel {
   let eth = KNSupportedTokenStorage.shared.ethToken
   let weth = KNSupportedTokenStorage.shared.wethToken
 
-  var isSource: Bool = true
+  let address: String
+
   var supportedTokens: [TokenObject] = []
   var balances: [String: Balance] = [:]
   var searchedText: String = "" {
@@ -27,15 +28,20 @@ class KNLimitOrderSearchTokenViewModel {
   }
   var displayedTokens: [TokenObject] = []
 
-  init(isSource: Bool, supportedTokens: [TokenObject]) {
-    self.isSource = isSource
-    self.supportedTokens = supportedTokens.filter({
-      return !isSource || !$0.isWETH
-    }).sorted(by: {
-      return $0.symbol < $1.symbol
-    })
+  var relatedOrders: [KNOrderObject] {
+    return KNLimitOrderStorage.shared.orders.filter({
+      return $0.sender.lowercased() == self.address.lowercased()
+        && ($0.state == .open || $0.state == .inProgress)
+    }).map({ return $0.clone() })
+  }
+
+  init(isSource: Bool, supportedTokens: [TokenObject], address: String) {
+    self.supportedTokens = supportedTokens
+      .filter({ return !$0.isWETH })
+      .sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
+    self.address = address
   }
 
   var isNoMatchingTokenHidden: Bool { return !self.displayedTokens.isEmpty }
@@ -61,11 +67,9 @@ class KNLimitOrderSearchTokenViewModel {
   }
 
   func updateListSupportedTokens(_ tokens: [TokenObject]) {
-    self.supportedTokens = tokens.filter({
-      return !isSource || !$0.isWETH
-    }).sorted(by: {
-      return $0.symbol < $1.symbol
-    })
+    self.supportedTokens = tokens
+      .filter({ return !$0.isWETH })
+      .sorted(by: { return $0.symbol < $1.symbol })
     self.updateDisplayedTokens()
   }
 
@@ -73,6 +77,24 @@ class KNLimitOrderSearchTokenViewModel {
     balances.forEach { (key, value) in
       self.balances[key] = value
     }
+  }
+
+  func getBalance(for token: TokenObject) -> BigInt? {
+    var balance: BigInt = {
+      if token.isETH {
+        let ethBal = self.balances[token.contract]?.value ?? BigInt(0)
+        let wethBal = self.balances[self.weth?.contract ?? ""]?.value ?? BigInt(0)
+        return ethBal + wethBal
+      }
+      return self.balances[token.contract]?.value ?? BigInt(0)
+    }()
+
+    let symbol = token.isETH ? "WETH" : token.symbol
+    let orders = self.relatedOrders.filter({ return $0.srcTokenSymbol == symbol })
+    orders.forEach({
+      balance -= BigInt($0.sourceAmount * pow(10.0, Double(token.decimals)))
+    })
+    return max(balance, BigInt(0))
   }
 }
 
@@ -259,15 +281,8 @@ extension KNLimitOrderSearchTokenViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kLimitOrderTokenTableViewCellID, for: indexPath) as! KNLimitOrderTokenTableViewCell
     let token = self.viewModel.displayedTokens[indexPath.row]
-    let balance: BigInt? = {
-      if token.isETH && self.viewModel.isSource {
-        let ethBal = self.viewModel.balances[token.contract]?.value ?? BigInt(0)
-        let wethBal = self.viewModel.balances[self.viewModel.weth?.contract ?? ""]?.value ?? BigInt(0)
-        return ethBal + wethBal
-      }
-      return self.viewModel.balances[token.contract]?.value
-    }()
-    cell.updateCell(with: token, balance: balance, isSource: self.viewModel.isSource)
+    let balance = self.viewModel.getBalance(for: token)
+    cell.updateCell(with: token, balance: balance)
     return cell
   }
 }
