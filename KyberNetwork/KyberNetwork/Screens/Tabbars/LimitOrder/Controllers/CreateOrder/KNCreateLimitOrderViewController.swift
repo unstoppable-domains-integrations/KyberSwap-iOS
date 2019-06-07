@@ -463,6 +463,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       self.updateRelatedOrdersView()
       self.rateContainerView.rounded(radius: 4.0)
       self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+      if sender != nil {
+        self.targetRateTextField.becomeFirstResponder()
+      }
       self.view.layoutIfNeeded()
     }
   }
