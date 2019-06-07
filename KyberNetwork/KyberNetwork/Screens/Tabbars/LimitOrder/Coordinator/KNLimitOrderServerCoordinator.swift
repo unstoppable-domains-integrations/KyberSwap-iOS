@@ -51,7 +51,12 @@ class KNLimitOrderServerCoordinator {
           let _ = try data.filterSuccessfulStatusCodes()
           let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let success = json["success"] as? Bool ?? false
-          let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
+          let message: String = {
+            if let errors = json["message"] as? JSONDictionary, let msg = (errors.values.first as? [String])?.first {
+              return msg
+            }
+            return "Something went wrong, please try again later".toBeLocalised()
+          }()
           if success {
             let fields = json["fields"] as? [String] ?? []
             let dataArr = json["order"] as? [Any] ?? []

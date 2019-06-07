@@ -53,7 +53,9 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Wallet name
-  var walletNameString: String { return "| \(self.walletObject.name)" }
+  var walletNameString: String {
+    return "| \(self.walletObject.name) - \(self.walletObject.address.prefix(6))...\(self.walletObject.address.suffix(4))"
+  }
 
   // MARK: From Token
   var fromSybol: String {
@@ -129,7 +131,9 @@ class KNCreateLimitOrderViewModel {
     var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
     let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+      if ($0.state == .open || $0.state == .inProgress)
+        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
+        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
         availableAmount -= $0.sourceAmount
       }
     })
@@ -179,7 +183,9 @@ class KNCreateLimitOrderViewModel {
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
     let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+      if ($0.state == .open || $0.state == .inProgress)
+        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
+        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
         availableAmount -= $0.sourceAmount
       }
     })
@@ -195,7 +201,9 @@ class KNCreateLimitOrderViewModel {
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
     let allOrders = KNLimitOrderStorage.shared.orders
     allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress) && $0.sourceToken.lowercased() == self.from.symbol.lowercased() {
+      if ($0.state == .open || $0.state == .inProgress)
+        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
+        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
         availableAmount -= $0.sourceAmount
       }
     })
@@ -413,6 +421,7 @@ class KNCreateLimitOrderViewModel {
     return false
   }
 
+  // Update order with same sender, src and dest address
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
     self.relatedOrders = orders.filter({ return $0.state == .open || $0.state == .inProgress }).sorted(by: { return $0.createdDate > $1.createdDate })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
