@@ -313,6 +313,11 @@ extension KNManageOrdersViewController: UICollectionViewDelegate {
     if let cancelOrder = self.viewModel.cancelOrder, cancelOrder.id == order.id {
       self.viewModel.cancelOrder = nil
       collectionView.reloadItems(at: [indexPath])
+    } else if order.state == .filled,
+      let hash = order.txHash,
+      let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint,
+      let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
+      self.openSafari(with: url)
     }
   }
 }

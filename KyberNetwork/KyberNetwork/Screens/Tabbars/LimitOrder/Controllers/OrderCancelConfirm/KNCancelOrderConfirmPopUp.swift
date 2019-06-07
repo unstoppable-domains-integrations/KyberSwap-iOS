@@ -11,6 +11,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var pairValueLabel: UILabel!
   @IBOutlet weak var dateValueLabel: UILabel!
+  @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var statusValueLabel: UIButton!
 
   @IBOutlet weak var feeTextLabel: UILabel!
@@ -69,6 +70,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
     self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
+    self.addressLabel.text = "\(self.order.sender.prefix(8))...\(self.order.sender.suffix(4))"
     switch order.state {
     case .open:
       self.statusValueLabel.setTitle("Open".toBeLocalised(), for: .normal)
@@ -91,12 +93,13 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
     let feeDisplay: String = {
       let feeDouble = Double(order.fee) * order.sourceAmount
-      return BigInt(feeDouble * pow(10.0, 18.0)).displayRate(decimals: 18)
+      return NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
-    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount * order.targetPrice)) \(destTokenSymbol)"
+    let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
+    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
+    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
   }
 
   override func viewDidLayoutSubviews() {

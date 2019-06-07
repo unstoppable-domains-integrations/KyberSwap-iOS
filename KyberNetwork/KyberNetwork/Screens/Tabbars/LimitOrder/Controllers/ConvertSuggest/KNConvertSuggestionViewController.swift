@@ -39,8 +39,11 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   var availableWETHBalance: BigInt {
     var balanceInOrder: BigInt = BigInt(0)
     let orders = KNLimitOrderStorage.shared.orders
-      .filter({ return ($0.state == .open || $0.state == .inProgress) && $0.srcTokenSymbol == "WETH" })
-      .map({ return $0.clone() })
+      .filter({
+        return ($0.state == .open || $0.state == .inProgress)
+        && $0.srcTokenSymbol == "WETH"
+        && $0.sender.lowercased() == self.address.lowercased()
+      }).map({ return $0.clone() })
     orders.forEach({
       balanceInOrder += BigInt($0.sourceAmount * pow(10.0, 18.0))
     })

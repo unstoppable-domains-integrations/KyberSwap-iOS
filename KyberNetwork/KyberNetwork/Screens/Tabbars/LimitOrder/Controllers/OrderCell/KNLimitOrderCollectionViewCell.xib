@@ -71,13 +71,21 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xBA65d0…891EF0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ha-qD-dJh">
+                                        <rect key="frame" x="79.5" y="23.5" width="114.5" height="15"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                        <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="A0v-gH-1FP"/>
                                     <constraint firstItem="La1-mb-3Fg" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="BAS-VG-hEm"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" constant="-6" id="Btp-q0-VFr"/>
+                                    <constraint firstItem="1ha-qD-dJh" firstAttribute="centerY" secondItem="La1-mb-3Fg" secondAttribute="centerY" id="EKr-2u-c5q"/>
                                     <constraint firstItem="La1-mb-3Fg" firstAttribute="top" secondItem="VOH-R7-a2W" secondAttribute="bottom" id="HMi-ZA-ooV"/>
+                                    <constraint firstItem="1ha-qD-dJh" firstAttribute="leading" secondItem="La1-mb-3Fg" secondAttribute="trailing" constant="8" id="UJA-ZP-QXR"/>
                                     <constraint firstItem="vJe-gu-d7V" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="ayD-vX-QhH"/>
                                     <constraint firstAttribute="trailing" secondItem="vJe-gu-d7V" secondAttribute="trailing" constant="12" id="lRD-zH-fhr"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="zQY-5c-aOU"/>
@@ -161,6 +169,7 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
+                <outlet property="addressLabel" destination="1ha-qD-dJh" id="jWf-Gg-usB"/>
                 <outlet property="cancelButton" destination="Pql-gB-Lpb" id="UBD-Mi-SbF"/>
                 <outlet property="containerView" destination="2wN-cj-4tJ" id="49Q-CM-ukf"/>
                 <outlet property="dateValueLabel" destination="La1-mb-3Fg" id="NU2-Kx-7dC"/>

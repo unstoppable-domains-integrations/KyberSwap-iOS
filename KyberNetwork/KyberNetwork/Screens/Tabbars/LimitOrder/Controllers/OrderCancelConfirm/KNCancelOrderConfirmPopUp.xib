@@ -20,6 +20,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNCancelOrderConfirmPopUp" customModule="KyberNetwork" customModuleProvider="target">
             <connections>
+                <outlet property="addressLabel" destination="cLh-8B-iDZ" id="Wfn-EO-T07"/>
                 <outlet property="cancelButton" destination="Tlg-PU-th4" id="BQM-Lu-tEi"/>
                 <outlet property="confirmButton" destination="vnN-8n-B2X" id="bir-Mb-vyV"/>
                 <outlet property="containerView" destination="tli-Fc-Xm4" id="Vl1-gB-0hE"/>
@@ -108,15 +109,23 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </state>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xBA65d0…891EF0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLh-8B-iDZ">
+                                            <rect key="frame" x="79.5" y="23.5" width="114.5" height="15"/>
+                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                            <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="U5h-Ih-e1e" firstAttribute="centerY" secondItem="v8N-gS-OCT" secondAttribute="centerY" id="9Kg-4G-ztn"/>
                                         <constraint firstItem="RB0-7a-9w3" firstAttribute="centerY" secondItem="v8N-gS-OCT" secondAttribute="centerY" constant="-6" id="EOF-UB-CxE"/>
                                         <constraint firstAttribute="height" constant="44" id="FoM-DM-f80"/>
+                                        <constraint firstItem="cLh-8B-iDZ" firstAttribute="leading" secondItem="0De-qj-euP" secondAttribute="trailing" constant="8" id="h4a-AQ-Fdn"/>
                                         <constraint firstItem="0De-qj-euP" firstAttribute="leading" secondItem="v8N-gS-OCT" secondAttribute="leading" constant="12" id="jFk-od-77t"/>
                                         <constraint firstItem="RB0-7a-9w3" firstAttribute="leading" secondItem="v8N-gS-OCT" secondAttribute="leading" constant="12" id="mwH-kE-mQa"/>
                                         <constraint firstItem="0De-qj-euP" firstAttribute="top" secondItem="RB0-7a-9w3" secondAttribute="bottom" id="nnE-q2-rh3"/>
+                                        <constraint firstItem="cLh-8B-iDZ" firstAttribute="centerY" secondItem="0De-qj-euP" secondAttribute="centerY" id="so8-fU-lkp"/>
                                         <constraint firstAttribute="trailing" secondItem="U5h-Ih-e1e" secondAttribute="trailing" constant="12" id="wE6-bQ-k79"/>
                                     </constraints>
                                 </view>
