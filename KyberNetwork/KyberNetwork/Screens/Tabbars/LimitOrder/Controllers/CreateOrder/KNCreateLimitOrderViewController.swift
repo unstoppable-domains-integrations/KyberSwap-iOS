@@ -577,12 +577,12 @@ extension KNCreateLimitOrderViewController {
         for: .normal
       )
       self.toTokenButton.setTokenImage(
-        token: self.viewModel.to,
+        token: self.viewModel.to.isWETH ? self.viewModel.eth : self.viewModel.to,
         size: self.viewModel.defaultTokenIconImg?.size
       )
     }
     self.sourceBalanceValueLabel.text = self.viewModel.balanceText
-    self.pairTokensLabel.text = "\(self.viewModel.fromSybol) ➞ \(self.viewModel.to.symbol)"
+    self.pairTokensLabel.text = "\(self.viewModel.fromSymbol) ➞ \(self.viewModel.toSymbol)"
 
     self.updateCurrentMarketRateUI()
     self.updateFeeNotesUI()

@@ -45,7 +45,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
         let to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == dest.uppercased() }) ?? KNSupportedTokenStorage.shared.ethToken
         return (from, to)
       }
-      return (KNSupportedTokenStorage.shared.kncToken, KNSupportedTokenStorage.shared.ethToken)
+      return (KNSupportedTokenStorage.shared.kncToken, KNSupportedTokenStorage.shared.wethToken ?? KNSupportedTokenStorage.shared.ethToken)
     }()
     let viewModel = KNCreateLimitOrderViewModel(
       wallet: self.session.wallet,
@@ -482,7 +482,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.searchTokensViewController = {
       let viewModel = KNLimitOrderSearchTokenViewModel(
         isSource: isSource,
-        supportedTokens: self.tokens
+        supportedTokens: self.tokens,
+        address: self.session.wallet.address.description
       )
       let controller = KNLimitOrderSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
