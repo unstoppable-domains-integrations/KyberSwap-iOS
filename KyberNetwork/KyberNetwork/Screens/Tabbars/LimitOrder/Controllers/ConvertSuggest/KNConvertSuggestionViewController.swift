@@ -119,16 +119,16 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   func updateETHBalance(_ balance: BigInt) {
     self.ethBalance = balance
 
-    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
-    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ETH"
+    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) WETH"
     self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
   }
 
   func updateWETHBalance(_ balances: [String: Balance]) {
     guard let weth = self.weth else { return }
     self.wethBalance = balances[weth.contract]?.value ?? BigInt(0)
-    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) ETH"
-    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)) WETH"
+    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ETH"
+    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) WETH"
     self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
   }
 
