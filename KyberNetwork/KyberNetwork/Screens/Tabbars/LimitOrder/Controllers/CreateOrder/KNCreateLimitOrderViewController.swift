@@ -661,6 +661,7 @@ extension KNCreateLimitOrderViewController {
         )
         return false
       }
+      if self.showWarningWalletIsNotSupportedIfNeeded() { return false }
     }
     return true
   }
@@ -694,6 +695,19 @@ extension KNCreateLimitOrderViewController {
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
     return true
+  }
+
+  fileprivate func showWarningWalletIsNotSupportedIfNeeded() -> Bool {
+    if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.viewModel.walletObject.address) != nil {
+      // it is a promo code wallet
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", comment: ""),
+        message: "This wallet is not supported to make an order".toBeLocalised(),
+        time: 2.0
+      )
+      return true
+    }
+    return false
   }
 }
 
