@@ -327,12 +327,6 @@ class KNCreateLimitOrderViewModel {
     let address = wallet.address.description
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
 
-    // promo wallet is not supported anw
-    if let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address), let ptToken = KNSupportedTokenStorage.shared.ptToken {
-      self.from = ptToken
-      self.to = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == destToken }) ?? self.weth ?? self.eth
-    }
-
     self.amountFrom = ""
     self.amountTo = ""
     self.targetRate = ""
