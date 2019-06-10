@@ -48,9 +48,6 @@ class KNTransactionDetailsCoordinator: Coordinator {
 
   func updatePendingTransactions(_ transactions: [KNTransaction], currentWallet: KNWalletObject) {
     guard let tran = transactions.map({ $0.toTransaction() }).first(where: { $0.compoundKey == (self.transaction?.compoundKey ?? "") }) else {
-      if let topVC = self.navigationController.topViewController, topVC is KNTransactionDetailsViewController {
-        self.stop()
-      }
       return
     }
     self.rootViewController.coordinator(update: tran, currentWallet: currentWallet)
