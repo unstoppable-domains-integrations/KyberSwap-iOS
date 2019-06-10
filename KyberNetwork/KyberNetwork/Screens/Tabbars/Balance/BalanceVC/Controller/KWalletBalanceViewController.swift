@@ -50,6 +50,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBOutlet weak var tokensBalanceTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
+  @IBOutlet weak var balanceDisplayControlButton: UIButton!
 
   fileprivate var viewModel: KWalletBalanceViewModel
   weak var delegate: KWalletBalanceViewControllerDelegate?
@@ -118,6 +119,11 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.balanceTextLabel.addLetterSpacing()
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openQRCodeViewPressed(_:)))
     self.walletDataView.addGestureRecognizer(tapGesture)
+
+    self.balanceDisplayControlButton.setImage(
+      UIImage(named: self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
+      for: .normal
+    )
     self.updateWalletBalanceUI()
     self.updateWalletInfoUI()
   }
@@ -256,6 +262,17 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.viewModel.updateTokenDisplayType(positionClicked: 2, isSwitched: isSwitched)
     self.updateDisplayedDataType()
   }
+
+  @IBAction func balanceDisplayControlButtonPressed(_ sender: Any) {
+    self.viewModel.updateIsBalanceShown(!self.viewModel.isBalanceShown)
+    self.balanceDisplayControlButton.setImage(
+      UIImage(named: self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
+      for: .normal
+    )
+    self.updateWalletBalanceUI()
+    self.tokensBalanceTableView.reloadData()
+    self.view.layoutIfNeeded()
+  }
 }
 
 // MARK: Update from coordinator
@@ -368,7 +385,8 @@ extension KWalletBalanceViewController: UITableViewDataSource {
       trackerRate: trackerRate,
       balance: balance,
       currencyType: self.viewModel.currencyType,
-      index: indexPath.row
+      index: indexPath.row,
+      isBalanceShown: self.viewModel.isBalanceShown
     )
     cell.updateCellView(with: cellModel)
     return cell

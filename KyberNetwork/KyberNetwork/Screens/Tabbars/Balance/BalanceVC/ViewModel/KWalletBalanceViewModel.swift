@@ -63,6 +63,8 @@ class KWalletBalanceViewModel: NSObject {
 
   private(set) var searchText: String = ""
 
+  private(set) var isBalanceShown: Bool = true
+
   init(wallet: KNWalletObject) {
     self.wallet = wallet
     super.init()
@@ -202,7 +204,20 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   var balanceDisplayAttributedString: NSAttributedString {
+    let valueAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 28),
+      NSAttributedStringKey.foregroundColor: UIColor.white,
+      NSAttributedStringKey.kern: 0.0,
+    ]
+
+    let currencyAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.white,
+      NSAttributedStringKey.kern: 0.0,
+    ]
+
     let value: String = {
+      if !self.isBalanceShown { return "******" }
       switch self.currencyType {
       case .usd:
         let usdValue = self.totalUSDBalance.shortString(units: .ether, maxFractionDigits: 2).prefix(11)
@@ -214,16 +229,6 @@ class KWalletBalanceViewModel: NSObject {
     }()
     let currency: String = "  \(self.currencyType.rawValue)"
 
-    let valueAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 28),
-      NSAttributedStringKey.foregroundColor: UIColor.white,
-      NSAttributedStringKey.kern: 0.0,
-    ]
-    let currencyAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor.white,
-      NSAttributedStringKey.kern: 0.0,
-    ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: value, attributes: valueAttributes))
     attributedString.append(NSAttributedString(string: currency, attributes: currencyAttributes))
@@ -324,6 +329,10 @@ class KWalletBalanceViewModel: NSObject {
     self.isKyberList = isDisplayKyberList
     self.createDisplayedData()
     return true
+  }
+
+  func updateIsBalanceShown(_ isShowing: Bool) {
+    self.isBalanceShown = isShowing
   }
 
   func updateTokenBalances(_ balances: [String: Balance]) -> Bool {

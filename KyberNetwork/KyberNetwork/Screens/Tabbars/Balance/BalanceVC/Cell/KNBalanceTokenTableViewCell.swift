@@ -9,19 +9,22 @@ struct KNBalanceTokenTableViewCellModel {
   let balance: Balance?
   let currencyType: KWalletCurrencyType
   let index: Int
+  let isBalanceShown: Bool
 
   init(
     token: TokenObject,
     trackerRate: KNTrackerRate?,
     balance: Balance?,
     currencyType: KWalletCurrencyType,
-    index: Int
+    index: Int,
+    isBalanceShown: Bool
     ) {
     self.token = token
     self.trackerRate = trackerRate
     self.balance = balance
     self.currencyType = currencyType
     self.index = index
+    self.isBalanceShown = isBalanceShown
   }
 
   var isNewTokenHidden: Bool {
@@ -61,6 +64,7 @@ struct KNBalanceTokenTableViewCellModel {
   }
 
   var displayAmountHoldingsText: String {
+    if !self.isBalanceShown { return "******" }
     return self.balance?.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) ?? "---"
   }
 
