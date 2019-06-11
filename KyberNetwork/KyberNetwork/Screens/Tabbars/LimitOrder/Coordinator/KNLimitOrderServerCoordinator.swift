@@ -52,8 +52,8 @@ class KNLimitOrderServerCoordinator {
           let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           let success = json["success"] as? Bool ?? false
           let message: String = {
-            if let errors = json["message"] as? JSONDictionary, let msg = (errors.values.first as? [String])?.first {
-              return msg
+            if let errors = json["message"] as? JSONDictionary, let key = errors.keys.first, let msg = (errors.values.first as? [String])?.first {
+              return "\(key) \(msg)"
             }
             return "Something went wrong, please try again later".toBeLocalised()
           }()
@@ -164,6 +164,24 @@ class KNLimitOrderServerCoordinator {
           } else {
             completion(.success(json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()))
           }
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func checkEligibleAddress(accessToken: String, address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    self.provider.request(.checkEligibleAddress(accessToken: accessToken, address: address)) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let data):
+        do {
+          let _ = try data.filterSuccessfulStatusCodes()
+          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          completion(.success(json["eligible_address"] as? Bool ?? true))
         } catch let error {
           completion(.failure(AnyError(error)))
         }

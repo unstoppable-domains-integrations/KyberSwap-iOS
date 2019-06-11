@@ -153,6 +153,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
       object: nil
     )
+
+    self.checkAddressEligible(nil)
   }
 
   override func viewDidLayoutSubviews() {
@@ -265,6 +267,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.cancelOrdersCollectionView.register(nib, forCellWithReuseIdentifier: kCancelOrdersCollectionViewCellID)
     self.cancelOrdersCollectionView.delegate = self
     self.cancelOrdersCollectionView.dataSource = self
+
+    self.checkAddressEligible(nil)
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
@@ -709,6 +713,22 @@ extension KNCreateLimitOrderViewController {
     }
     return false
   }
+
+  @objc func checkAddressEligible(_ sender: Any?) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    let address = self.viewModel.walletObject.address
+    KNLimitOrderServerCoordinator.shared.checkEligibleAddress(accessToken: accessToken, address: address) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let eligile) = result, !eligile {
+        // not eligible
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("error", comment: ""),
+          message: "This wallet has been used to submit an order with another account, please change your wallet to continue".toBeLocalised(),
+          time: 2.0
+        )
+      }
+    }
+  }
 }
 
 // MARK: Update from coordinator
@@ -741,6 +761,8 @@ extension KNCreateLimitOrderViewController {
     self.noCancelButtonPressed(nil)
 
     self.listOrdersDidUpdate(nil)
+
+    self.checkAddressEligible(nil)
     self.view.layoutIfNeeded()
   }
 
