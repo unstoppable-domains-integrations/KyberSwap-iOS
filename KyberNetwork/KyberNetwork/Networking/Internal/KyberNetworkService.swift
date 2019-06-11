@@ -276,6 +276,7 @@ enum LimitOrderService {
   case cancelOrder(accessToken: String, id: String)
   case getNonce(accessToken: String)
   case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case checkEligibleAddress(accessToken: String, address: String)
 }
 
 extension LimitOrderService: MoyaCacheable {
@@ -297,6 +298,8 @@ extension LimitOrderService: TargetType {
       return URL(string: "\(baseString)/api/orders/nonce")!
     case .getFee:
       return URL(string: "\(baseString)/api/orders/fee")!
+    case .checkEligibleAddress(_, let address):
+      return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
     }
   }
 
@@ -304,7 +307,7 @@ extension LimitOrderService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getOrders, .getFee, .getNonce: return .get
+    case .getOrders, .getFee, .getNonce, .checkEligibleAddress: return .get
     case .cancelOrder: return .put
     case .createOrder: return .post
     }
@@ -312,7 +315,7 @@ extension LimitOrderService: TargetType {
 
   var task: Task {
     switch self {
-    case .getOrders, .cancelOrder, .getNonce:
+    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress:
       return .requestPlain
     case .createOrder(_, let order, let signedData):
       let json: JSONDictionary = [
@@ -356,6 +359,8 @@ extension LimitOrderService: TargetType {
     case .cancelOrder(let accessToken, _):
       json["Authorization"] = accessToken
     case .getNonce(let accessToken):
+      json["Authorization"] = accessToken
+    case .checkEligibleAddress(let accessToken, _):
       json["Authorization"] = accessToken
     default: break
     }
