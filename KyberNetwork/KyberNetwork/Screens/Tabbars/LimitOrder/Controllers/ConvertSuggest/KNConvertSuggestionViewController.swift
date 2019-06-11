@@ -136,8 +136,8 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   }
 
   func updateAmountToConvert(_ amount: BigInt) {
-    self.amountToConvert = max(amount, BigInt(10).power(15)) // at least 0.001
-    self.amountTextField.text = self.amountToConvert.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+    self.amountToConvert = amount
+    self.amountTextField.text = self.amountToConvert.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18)
   }
 
   func updateEstimateGasLimit(_ gasLimit: BigInt) {
@@ -167,7 +167,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
       return
     }
     if amount < self.amountToConvert {
-      let amountString = self.amountToConvert.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 6)
+      let amountString = self.amountToConvert.string(units: .ether, minFractionDigits: 0, maxFractionDigits: 18)
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
         message: "You should convert at least \(amountString) ETH to continue with your order".toBeLocalised()
