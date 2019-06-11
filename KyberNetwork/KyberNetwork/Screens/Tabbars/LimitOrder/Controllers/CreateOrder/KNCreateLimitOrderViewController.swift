@@ -606,7 +606,7 @@ extension KNCreateLimitOrderViewController {
       self.tabBarController?.selectedIndex = 3
       self.showWarningTopBannerMessage(
         with: "Sign in required".toBeLocalised(),
-        message: "You must sign in to user Limit Order feature".toBeLocalised(),
+        message: "You must sign in to use Limit Order feature".toBeLocalised(),
         time: 1.5
       )
       return false
