@@ -5,6 +5,7 @@ import BigInt
 
 protocol KNLimitOrderCollectionViewCellDelegate: class {
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject)
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showWarning order: KNOrderObject)
 }
 
 class KNLimitOrderCollectionViewCell: UICollectionViewCell {
@@ -18,6 +19,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var pairValueLabel: UILabel!
   @IBOutlet weak var dateValueLabel: UILabel!
   @IBOutlet weak var addressLabel: UILabel!
+  @IBOutlet weak var orderWarningIcon: UIButton!
   @IBOutlet weak var orderStatusLabel: UIButton!
 
   @IBOutlet weak var feeTextLabel: UILabel!
@@ -73,6 +75,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
     self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
 
+    self.orderWarningIcon.isHidden = order.messages.isEmpty
     self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     self.addressLabel.text = "\(order.sender.prefix(8))..\(order.sender.suffix(4))"
 
@@ -151,5 +154,10 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     if self.order == nil { return }
     if !self.hasAction { return }
     self.delegate?.limitOrderCollectionViewCell(self, cancelPressed: self.order)
+  }
+
+  @IBAction func orderWarningButtonPressed(_ sender: Any) {
+    if self.order == nil { return }
+    self.delegate?.limitOrderCollectionViewCell(self, showWarning: self.order)
   }
 }
