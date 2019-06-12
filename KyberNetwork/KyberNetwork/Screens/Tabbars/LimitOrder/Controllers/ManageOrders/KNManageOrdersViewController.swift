@@ -207,10 +207,11 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   fileprivate func openFilterView() {
     let allPairs = self.viewModel.orders.map({ return "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)" }).unique
-    let allAddresses = self.viewModel.orders.map({ (order) -> String in
-      let addr = order.sender.lowercased()
-      return "\(addr.prefix(6))...\(addr.suffix(4))"
-    }).unique
+    let allAddresses = self.viewModel.orders
+      .map({ (order) -> String in
+        let addr = order.sender.lowercased()
+        return "\(addr.prefix(6))...\(addr.suffix(4))"
+      }).unique.sorted(by: { return $0 < $1 })
     let viewModel = KNFilterLimitOrderViewModel(
       pairs: self.viewModel.selectedPairs,
       status: self.viewModel.selectedStates,
