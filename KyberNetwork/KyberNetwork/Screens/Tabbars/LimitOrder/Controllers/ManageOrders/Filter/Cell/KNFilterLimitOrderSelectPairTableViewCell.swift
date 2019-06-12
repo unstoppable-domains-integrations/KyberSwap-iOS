@@ -3,7 +3,7 @@
 import UIKit
 
 protocol KNFilterLimitOrderSelectPairTableViewCellDelegate: class {
-  func filterLimitOrderSelectPairTableViewCell(_ cell: KNFilterLimitOrderSelectPairTableViewCell, didSelect pair: String)
+  func filterLimitOrderSelectPairTableViewCell(_ cell: KNFilterLimitOrderSelectPairTableViewCell, didSelect string: String, isPair: Bool)
 }
 
 class KNFilterLimitOrderSelectPairTableViewCell: UITableViewCell {
@@ -17,6 +17,7 @@ class KNFilterLimitOrderSelectPairTableViewCell: UITableViewCell {
   fileprivate var secondPair: String = ""
   fileprivate var isFirstPairSelected: Bool = false
   fileprivate var isSecondPairSelected: Bool = false
+  fileprivate var isPair: Bool = true
 
   weak var delegate: KNFilterLimitOrderSelectPairTableViewCellDelegate?
 
@@ -26,7 +27,8 @@ class KNFilterLimitOrderSelectPairTableViewCell: UITableViewCell {
     self.backgroundColor = .clear
   }
 
-  func updateCell(firstPair: String, isFirstPairSelected: Bool, secondPair: String, isSecondPairSelected: Bool) {
+  func updateCell(firstPair: String, isFirstPairSelected: Bool, secondPair: String, isSecondPairSelected: Bool, isPair: Bool) {
+    self.isPair = isPair
     self.firstPair = firstPair
     self.secondPair = secondPair
     self.isFirstPairSelected = isFirstPairSelected
@@ -72,14 +74,14 @@ class KNFilterLimitOrderSelectPairTableViewCell: UITableViewCell {
   @IBAction func firstPairSelectButtonPressed(_ sender: Any) {
     self.isFirstPairSelected = !self.isFirstPairSelected
     self.updateFirstPair(isFirstPairSelected: self.isFirstPairSelected)
-    self.delegate?.filterLimitOrderSelectPairTableViewCell(self, didSelect: self.firstPair)
+    self.delegate?.filterLimitOrderSelectPairTableViewCell(self, didSelect: self.firstPair, isPair: self.isPair)
     self.layoutIfNeeded()
   }
 
   @IBAction func secondPairSelectButtonPressed(_ sender: Any) {
     self.isSecondPairSelected = !self.isSecondPairSelected
     self.updateSecondPair(isSecondPairSelected: self.isSecondPairSelected)
-    self.delegate?.filterLimitOrderSelectPairTableViewCell(self, didSelect: self.secondPair)
+    self.delegate?.filterLimitOrderSelectPairTableViewCell(self, didSelect: self.secondPair, isPair: self.isPair)
     self.layoutIfNeeded()
   }
 }
