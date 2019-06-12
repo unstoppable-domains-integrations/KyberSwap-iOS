@@ -377,6 +377,15 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
       self.orderCollectionView.reloadItems(at: [indexPath])
     }
   }
+
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showWarning order: KNOrderObject) {
+    self.showTopBannerView(
+      with: "",
+      message: order.messages,
+      icon: UIImage(named: "warning_icon"),
+      time: 1.5
+    )
+  }
 }
 
 extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate {

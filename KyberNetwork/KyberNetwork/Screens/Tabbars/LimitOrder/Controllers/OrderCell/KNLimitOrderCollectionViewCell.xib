@@ -54,7 +54,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06 Jun 2019" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="La1-mb-3Fg">
-                                        <rect key="frame" x="12" y="25" width="59.5" height="12.5"/>
+                                        <rect key="frame" x="12" y="27" width="59.5" height="12"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="10"/>
                                         <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -72,11 +72,23 @@
                                         </state>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xBA65d0…891EF0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ha-qD-dJh">
-                                        <rect key="frame" x="79.5" y="23.5" width="114.5" height="15"/>
+                                        <rect key="frame" x="79.5" y="25.5" width="114.5" height="15"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                         <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k48-Xz-sOu">
+                                        <rect key="frame" x="104.5" y="0.0" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="NNF-N9-Sdz"/>
+                                            <constraint firstAttribute="width" constant="32" id="sFi-o3-xXh"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="8"/>
+                                        <state key="normal" image="warning_icon"/>
+                                        <connections>
+                                            <action selector="orderWarningButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="GwS-go-6ws"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -84,10 +96,12 @@
                                     <constraint firstItem="La1-mb-3Fg" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="BAS-VG-hEm"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" constant="-6" id="Btp-q0-VFr"/>
                                     <constraint firstItem="1ha-qD-dJh" firstAttribute="centerY" secondItem="La1-mb-3Fg" secondAttribute="centerY" id="EKr-2u-c5q"/>
-                                    <constraint firstItem="La1-mb-3Fg" firstAttribute="top" secondItem="VOH-R7-a2W" secondAttribute="bottom" id="HMi-ZA-ooV"/>
+                                    <constraint firstItem="La1-mb-3Fg" firstAttribute="top" secondItem="VOH-R7-a2W" secondAttribute="bottom" constant="2" id="HMi-ZA-ooV"/>
+                                    <constraint firstItem="k48-Xz-sOu" firstAttribute="centerY" secondItem="VOH-R7-a2W" secondAttribute="centerY" id="PeQ-UW-qgP"/>
                                     <constraint firstItem="1ha-qD-dJh" firstAttribute="leading" secondItem="La1-mb-3Fg" secondAttribute="trailing" constant="8" id="UJA-ZP-QXR"/>
                                     <constraint firstItem="vJe-gu-d7V" firstAttribute="centerY" secondItem="CAe-iv-NaR" secondAttribute="centerY" id="ayD-vX-QhH"/>
                                     <constraint firstAttribute="trailing" secondItem="vJe-gu-d7V" secondAttribute="trailing" constant="12" id="lRD-zH-fhr"/>
+                                    <constraint firstItem="k48-Xz-sOu" firstAttribute="leading" secondItem="VOH-R7-a2W" secondAttribute="trailing" constant="4" id="o8V-ld-q7F"/>
                                     <constraint firstItem="VOH-R7-a2W" firstAttribute="leading" secondItem="CAe-iv-NaR" secondAttribute="leading" constant="12" id="zQY-5c-aOU"/>
                                 </constraints>
                             </view>
@@ -101,13 +115,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.004243 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7h-ac-cWl">
-                                <rect key="frame" x="142" y="88" width="73" height="12.5"/>
+                                <rect key="frame" x="142" y="88" width="73" height="12"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                                 <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1234 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaZ-mW-KBg">
-                                <rect key="frame" x="12" y="88" width="55" height="12.5"/>
+                                <rect key="frame" x="12" y="88" width="55" height="12"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                                 <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -122,7 +136,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.004243 KNC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cfn-KC-y8W">
-                                <rect key="frame" x="266" y="88" width="73" height="12.5"/>
+                                <rect key="frame" x="266" y="88" width="73" height="12"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                                 <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -180,6 +194,7 @@
                 <outlet property="headerContainerView" destination="CAe-iv-NaR" id="W8W-No-5y7"/>
                 <outlet property="leadingSpaceToContainerViewConstraint" destination="tVW-U8-ibv" id="Y6O-2f-OHE"/>
                 <outlet property="orderStatusLabel" destination="vJe-gu-d7V" id="Odd-ef-lCn"/>
+                <outlet property="orderWarningIcon" destination="k48-Xz-sOu" id="SVf-SO-qPy"/>
                 <outlet property="pairValueLabel" destination="VOH-R7-a2W" id="m8K-Ln-WFy"/>
                 <outlet property="sourceValueLabel" destination="JaZ-mW-KBg" id="bcl-L7-Z8Y"/>
                 <outlet property="toTextLabel" destination="OVv-Bu-ccZ" id="5zH-Sh-IYU"/>
@@ -188,4 +203,7 @@
             <point key="canvasLocation" x="48.550724637681164" y="47.879464285714285"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="warning_icon" width="20" height="20"/>
+    </resources>
 </document>
