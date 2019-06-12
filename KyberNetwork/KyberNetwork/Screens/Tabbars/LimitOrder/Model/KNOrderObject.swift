@@ -81,7 +81,10 @@ class KNOrderObject: Object {
     self.createdDate = json["created_at"] as? Double ?? 0.0
     self.filledDate = json["updated_at"] as? Double ?? 0.0
     self.txHash = json["tx_hash"] as? String
-    self.messages = json["messages"] as? String ?? ""
+    self.messages = {
+      let msgs = json["messages"] as? [String] ?? []
+      return msgs.joined(separator: ". ")
+    }()
   }
 
   convenience init(fields: [String], data: [Any]) {
@@ -122,7 +125,10 @@ class KNOrderObject: Object {
       }()
     }
     if let idx = fields.index(of: "msg") {
-      self.messages = data[idx] as? String ?? ""
+      self.messages = {
+        let msgs = data[idx] as? [String] ?? []
+        return msgs.joined(separator: ". ")
+      }()
     }
     if let idx = fields.index(of: "tx_hash") {
       self.txHash = data[idx] as? String
