@@ -30,6 +30,9 @@ class KNManageOrdersViewModel {
   var selectedStates: [Int] = [0, 1] { // default only open
     didSet { self.updateDisplayOrders() }
   }
+  var selectedAddresses: [String]? {
+    didSet { self.updateDisplayOrders() }
+  }
 
   init(orders: [KNOrderObject]) {
     self.orders = orders
@@ -46,6 +49,11 @@ class KNManageOrdersViewModel {
     }).filter({
       // filter states
       return self.selectedStates.contains($0.stateValue) == true
+    }).filter({
+      // filter addresses
+      var addr = $0.sender.lowercased()
+      addr = "\(addr.prefix(6))...\(addr.suffix(4))"
+      return self.selectedAddresses == nil || self.selectedAddresses?.contains(addr) == true
     }).filter({
       // filter date
       return $0.dateToDisplay.timeIntervalSince1970 >= fromTime
@@ -136,7 +144,7 @@ class KNManageOrdersViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
-    self.filterTextLabel.text = "Filter".toBeLocalised().uppercased()
+    self.filterTextLabel.text = "Time".toBeLocalised().uppercased()
     self.oneDayButton.setTitle("1 Day".toBeLocalised(), for: .normal)
     self.oneWeekButton.setTitle("1 Week".toBeLocalised(), for: .normal)
     self.oneMonthButton.setTitle("1 Month".toBeLocalised(), for: .normal)
@@ -199,18 +207,22 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   fileprivate func openFilterView() {
     let allPairs = self.viewModel.orders.map({ return "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)" }).unique
+    let allAddresses = self.viewModel.orders.map({ (order) -> String in
+      let addr = order.sender.lowercased()
+      return "\(addr.prefix(6))...\(addr.suffix(4))"
+    }).unique
     let viewModel = KNFilterLimitOrderViewModel(
       pairs: self.viewModel.selectedPairs,
       status: self.viewModel.selectedStates,
-      allPairs: allPairs
+      addresses: self.viewModel.selectedAddresses,
+      allPairs: allPairs,
+      allAddresses: allAddresses
     )
     self.filterVC = KNFilterLimitOrderViewController(viewModel: viewModel)
     self.filterVC?.delegate = self
     self.filterVC?.loadViewIfNeeded()
 
-    self.filterVC?.modalPresentationStyle = .overFullScreen
-    self.filterVC?.modalTransitionStyle = .crossDissolve
-    self.present(self.filterVC!, animated: true, completion: nil)
+    self.navigationController?.pushViewController(self.filterVC!, animated: true)
   }
 
   @objc func listOrdersDidUpdate(_ sender: Any) {
@@ -367,9 +379,10 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
 }
 
 extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate {
-  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int]) {
+  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int], addresses: [String]?) {
     self.viewModel.selectedPairs = pairs
     self.viewModel.selectedStates = status
+    self.viewModel.selectedAddresses = addresses
     self.updateCollectionView()
   }
 }

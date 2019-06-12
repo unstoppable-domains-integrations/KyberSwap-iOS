@@ -3,24 +3,28 @@
 import UIKit
 
 protocol KNFilterLimitOrderViewControllerDelegate: class {
-  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int])
+  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int], addresses: [String]?)
 }
 
 class KNFilterLimitOrderViewModel {
   var pairs: [String]?
+  var addresses: [String]?
   var status: [Int] = [0]
   var isSortAsc: Bool = true {
     didSet { self.updateAllPairs(self.allPairs) }
   }
 
   var allPairs: [String] = []
+  var allAddresses: [String] = []
 
-  init(pairs: [String]?, status: [Int], allPairs: [String]) {
+  init(pairs: [String]?, status: [Int], addresses: [String]?, allPairs: [String], allAddresses: [String]) {
     self.pairs = pairs
     self.status = status
     self.allPairs = allPairs.sorted(by: {
       return $0 < $1 && self.isSortAsc
     })
+    self.addresses = addresses
+    self.allAddresses = allAddresses
   }
 
   func updateAllPairs(_ pairs: [String]) {
@@ -29,16 +33,25 @@ class KNFilterLimitOrderViewModel {
       return $0 > $1
     })
   }
+
+  func updateAllAddresses(_ addresses: [String]) {
+    self.allAddresses = addresses
+  }
 }
 
 class KNFilterLimitOrderViewController: KNBaseViewController {
 
   let kFilterLimitOrderSelectPairTableViewCellID = "kFilterLimitOrderSelectPairTableViewCell"
+  let kFilterLimitOrderAddressTableViewCellID = "kFilterLimitOrderAddressTableViewCellID"
   let kFilterLimitOrderSelectPairTableViewCellHeight: CGFloat = 36.0
 
-  @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var headerContainerView: UIView!
 
   @IBOutlet var separatorViews: [UIView]!
+
+  @IBOutlet weak var pairContainerView: UIView!
+  @IBOutlet weak var statusContainerView: UIView!
+  @IBOutlet weak var addressContainerView: UIView!
 
   @IBOutlet weak var filterTextLabel: UILabel!
   @IBOutlet weak var pairTextLabel: UILabel!
@@ -57,6 +70,9 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var statusInProgressButton: UIButton!
   @IBOutlet weak var statusInvalidatedButton: UIButton!
 
+  @IBOutlet weak var addressTableView: UITableView!
+  @IBOutlet weak var addressTableViewHeightConstraint: NSLayoutConstraint!
+
   @IBOutlet weak var resetButton: UIButton!
   @IBOutlet weak var applyButton: UIButton!
 
@@ -74,8 +90,8 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.containerView.rounded(radius: 5.0)
 
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.filterTextLabel.text = "Filter".toBeLocalised().uppercased()
     self.pairTextLabel.text = "Pair".toBeLocalised()
     self.statusTextLabel.text = "Status".toBeLocalised()
@@ -100,23 +116,42 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.listPairsTableView.rowHeight = kFilterLimitOrderSelectPairTableViewCellHeight
     self.listPairsTableView.dataSource = self
 
+    self.addressTableView.register(
+      nib,
+      forCellReuseIdentifier: kFilterLimitOrderAddressTableViewCellID
+    )
+    self.addressTableView.backgroundColor = .clear
+    self.addressTableView.rowHeight = kFilterLimitOrderSelectPairTableViewCellHeight
+    self.addressTableView.dataSource = self
+
     self.dontHaveAnyOrdersLabel.text = "You don't have any orders yet".toBeLocalised()
     self.dontHaveAnyOrdersLabel.isHidden = true
 
     self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
 
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
-    self.view.addGestureRecognizer(tapGesture)
-    self.view.isUserInteractionEnabled = true
+    self.pairContainerView.rounded(radius: 4.0)
+    self.statusContainerView.rounded(radius: 4.0)
+    self.addressContainerView.rounded(radius: 4.0)
 
     self.updateSortPairView()
     self.updateStatusView()
+    self.updateAddressView()
+    self.updateUIOrdersChanged()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.separatorViews.forEach({ $0.removeSublayer(at: 0) })
     self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
+    self.headerContainerView.removeSublayer(at: 0)
+    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
+  fileprivate func updateUIOrdersChanged() {
+    self.dontHaveAnyOrdersLabel.isHidden = !self.viewModel.allPairs.isEmpty
+    self.pairContainerView.isHidden = self.viewModel.allPairs.isEmpty
+    self.statusContainerView.isHidden = self.viewModel.allPairs.isEmpty
+    self.addressContainerView.isHidden = self.viewModel.allPairs.isEmpty
   }
 
   fileprivate func updateSortPairView() {
@@ -130,8 +165,7 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
       width: !self.viewModel.isSortAsc ? 6.0 : 1.0,
       radius: self.sortPairDescButton.frame.height / 2.0
     )
-    self.dontHaveAnyOrdersLabel.isHidden = !self.viewModel.allPairs.isEmpty
-    self.listPairsTableView.isHidden = self.viewModel.allPairs.isEmpty
+
     self.listPairsTableView.reloadData()
 
     self.listPairsTableViewHeightConstraint.constant = {
@@ -139,6 +173,14 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
       return min(108.0, CGFloat((self.viewModel.allPairs.count + 1) / 2) * 36.0)
     }()
     self.view.layoutIfNeeded()
+  }
+
+  fileprivate func updateAddressView() {
+    self.addressTableView.reloadData()
+    self.addressTableViewHeightConstraint.constant = {
+      if self.viewModel.allAddresses.isEmpty { return 60.0 }
+      return min(108.0, CGFloat((self.viewModel.allAddresses.count + 1) / 2) * 36.0)
+    }()
   }
 
   fileprivate func updateStatusView() {
@@ -193,19 +235,12 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.viewModel.updateAllPairs(pairs)
     self.viewModel.pairs = selectedPairs
     self.viewModel.status = status
+    self.updateUIOrdersChanged()
     self.updateSortPairView()
   }
 
-  @objc func tapOutSideToDismiss(_ sender: UITapGestureRecognizer) {
-    let touchPoint = sender.location(in: self.view)
-    if touchPoint.x < self.containerView.frame.minX || touchPoint.x > self.containerView.frame.maxX
-      || touchPoint.y < self.containerView.frame.minY || touchPoint.y > self.containerView.frame.maxY {
-      self.dismiss(animated: true, completion: nil)
-    }
-  }
-
   @IBAction func closeButtonPressed(_ sender: Any) {
-    self.dismiss(animated: true, completion: nil)
+    self.navigationController?.popViewController(animated: true)
   }
 
   @IBAction func pairSortAscButtonPressed(_ sender: Any) {
@@ -267,19 +302,22 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.viewModel.isSortAsc = true
     self.viewModel.pairs = nil
     self.viewModel.status = [0, 1]
+    self.viewModel.addresses = nil
 
     self.updateSortPairView()
     self.updateStatusView()
+    self.updateAddressView()
   }
 
   @IBAction func applyButtonPressed(_ sender: Any) {
-    self.dismiss(animated: true) {
+    self.navigationController?.popViewController(animated: true, completion: {
       self.delegate?.filterLimitOrderViewController(
         self,
         apply: self.viewModel.pairs,
-        status: self.viewModel.status
+        status: self.viewModel.status,
+        addresses: self.viewModel.addresses
       )
-    }
+    })
   }
 }
 
@@ -289,30 +327,52 @@ extension KNFilterLimitOrderViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    if tableView == self.addressTableView { return (self.viewModel.allAddresses.count + 1) / 2 }
     return (self.viewModel.allPairs.count + 1) / 2
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: kFilterLimitOrderSelectPairTableViewCellID,
-      for: indexPath
-    ) as! KNFilterLimitOrderSelectPairTableViewCell
+    let cell: KNFilterLimitOrderSelectPairTableViewCell = {
+      if tableView == self.addressTableView {
+        return tableView.dequeueReusableCell(
+          withIdentifier: kFilterLimitOrderAddressTableViewCellID,
+          for: indexPath
+        ) as! KNFilterLimitOrderSelectPairTableViewCell
+      }
+      return tableView.dequeueReusableCell(
+        withIdentifier: kFilterLimitOrderSelectPairTableViewCellID,
+        for: indexPath
+      ) as! KNFilterLimitOrderSelectPairTableViewCell
+    }()
     let row = indexPath.row
-    let firstPair = self.viewModel.allPairs[2 * row]
+
+    let isAddr = tableView == self.addressTableView
+
+    let firstPair = isAddr ? self.viewModel.allAddresses[2 * row] : self.viewModel.allPairs[2 * row]
     let isFirstPairSelected: Bool = {
+      if isAddr {
+        guard let addresses = self.viewModel.addresses else { return true }
+        return addresses.contains(firstPair)
+      }
       if let pairs = self.viewModel.pairs {
         return pairs.contains(firstPair)
       }
       return true
     }()
     let secondPair: String = {
-      if 2 * row + 1 < self.viewModel.allPairs.count {
-        return self.viewModel.allPairs[2 * row + 1]
+      if isAddr {
+        let hasData  = 2 * row + 1 < self.viewModel.allAddresses.count
+        return hasData ? self.viewModel.allAddresses[2 * row + 1] : ""
       }
-      return ""
+      let hasData = 2 * row + 1 < self.viewModel.allPairs.count
+      return hasData ? self.viewModel.allPairs[2 * row + 1] : ""
     }()
     let isSecondPairSelected: Bool = {
       if secondPair.isEmpty { return false }
+      if isAddr {
+        guard let addresses = self.viewModel.addresses else { return true }
+        return addresses.contains(secondPair)
+      }
       if let pairs = self.viewModel.pairs {
         return pairs.contains(secondPair)
       }
@@ -322,7 +382,8 @@ extension KNFilterLimitOrderViewController: UITableViewDataSource {
       firstPair: firstPair,
       isFirstPairSelected: isFirstPairSelected,
       secondPair: secondPair,
-      isSecondPairSelected: isSecondPairSelected
+      isSecondPairSelected: isSecondPairSelected,
+      isPair: !isAddr
     )
     cell.delegate = self
     return cell
@@ -330,21 +391,42 @@ extension KNFilterLimitOrderViewController: UITableViewDataSource {
 }
 
 extension KNFilterLimitOrderViewController: KNFilterLimitOrderSelectPairTableViewCellDelegate {
-  func filterLimitOrderSelectPairTableViewCell(_ cell: KNFilterLimitOrderSelectPairTableViewCell, didSelect pair: String) {
-    var pairs: [String] = {
-      if let pairs = self.viewModel.pairs { return pairs }
-      return self.viewModel.allPairs
+  func filterLimitOrderSelectPairTableViewCell(_ cell: KNFilterLimitOrderSelectPairTableViewCell, didSelect string: String, isPair: Bool) {
+    if isPair {
+      // select pair token
+      var pairs: [String] = {
+        if let pairs = self.viewModel.pairs { return pairs }
+        return self.viewModel.allPairs
+      }()
+      if let index = pairs.firstIndex(of: string) {
+        pairs.remove(at: index)
+      } else {
+        pairs.append(string)
+      }
+      if pairs.count == self.viewModel.allPairs.count {
+        self.viewModel.pairs = nil // select all
+      } else {
+        self.viewModel.pairs = pairs
+      }
+      self.listPairsTableView.reloadData()
+      return
+    }
+    // select address
+    var addresses: [String] = {
+      if let addresses = self.viewModel.addresses { return addresses }
+      return self.viewModel.allAddresses
     }()
-    if let index = pairs.firstIndex(of: pair) {
-      pairs.remove(at: index)
+    if let index = addresses.firstIndex(of: string) {
+      addresses.remove(at: index)
     } else {
-      pairs.append(pair)
+      addresses.append(string)
     }
-    if pairs.count == self.viewModel.allPairs.count {
-      self.viewModel.pairs = nil // select all
+    if addresses.count == self.viewModel.allAddresses.count {
+      self.viewModel.addresses = nil // select all
     } else {
-      self.viewModel.pairs = pairs
+      self.viewModel.addresses = addresses
     }
-    self.listPairsTableView.reloadData()
+    self.addressTableView.reloadData()
+    return
   }
 }
