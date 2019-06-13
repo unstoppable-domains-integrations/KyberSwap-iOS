@@ -3,21 +3,21 @@
 import UIKit
 
 protocol KNFilterLimitOrderViewControllerDelegate: class {
-  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int], addresses: [String]?)
+  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, isDateDesc: Bool, pairs: [String]?, status: [Int], addresses: [String]?)
 }
 
 class KNFilterLimitOrderViewModel {
+  var isDateDesc: Bool = true
   var pairs: [String]?
   var addresses: [String]?
   var status: [Int] = [0]
-  var isSortAsc: Bool = true {
-    didSet { self.updateAllPairs(self.allPairs) }
-  }
+  let isSortAsc: Bool = true
 
   var allPairs: [String] = []
   var allAddresses: [String] = []
 
-  init(pairs: [String]?, status: [Int], addresses: [String]?, allPairs: [String], allAddresses: [String]) {
+  init(isDateDesc: Bool, pairs: [String]?, status: [Int], addresses: [String]?, allPairs: [String], allAddresses: [String]) {
+    self.isDateDesc = isDateDesc
     self.pairs = pairs
     self.status = status
     self.allPairs = allPairs.sorted(by: {
@@ -47,7 +47,12 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
 
-  @IBOutlet var separatorViews: [UIView]!
+  @IBOutlet weak var dateContainerView: UIView!
+  @IBOutlet weak var dateTextLabel: UILabel!
+  @IBOutlet weak var latestSelectButton: UIButton!
+  @IBOutlet weak var latestTextButton: UIButton!
+  @IBOutlet weak var oldestTextButton: UIButton!
+  @IBOutlet weak var oldestSelectButton: UIButton!
 
   @IBOutlet weak var pairContainerView: UIView!
   @IBOutlet weak var statusContainerView: UIView!
@@ -56,9 +61,6 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var filterTextLabel: UILabel!
   @IBOutlet weak var pairTextLabel: UILabel!
   @IBOutlet weak var statusTextLabel: UILabel!
-
-  @IBOutlet weak var sortPairAscButton: UIButton!
-  @IBOutlet weak var sortPairDescButton: UIButton!
 
   @IBOutlet weak var listPairsTableView: UITableView!
   @IBOutlet weak var listPairsTableViewHeightConstraint: NSLayoutConstraint!
@@ -92,9 +94,15 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     super.viewDidLoad()
 
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.filterTextLabel.text = "Filter".toBeLocalised().uppercased()
+    self.dateTextLabel.text = "Date".toBeLocalised()
+    self.filterTextLabel.text = "Filter".toBeLocalised()
     self.pairTextLabel.text = "Pair".toBeLocalised()
     self.statusTextLabel.text = "Status".toBeLocalised()
+
+    self.latestTextButton.setTitle("Latest".toBeLocalised(), for: .normal)
+    self.oldestTextButton.setTitle("Oldest".toBeLocalised(), for: .normal)
+    self.latestSelectButton.backgroundColor = .white
+    self.oldestTextButton.backgroundColor = .white
 
     self.resetButton.rounded(
       color: UIColor.Kyber.border,
@@ -127,12 +135,12 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.dontHaveAnyOrdersLabel.text = "You don't have any orders yet".toBeLocalised()
     self.dontHaveAnyOrdersLabel.isHidden = true
 
-    self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
-
+    self.dateContainerView.rounded(radius: 4.0)
     self.pairContainerView.rounded(radius: 4.0)
     self.statusContainerView.rounded(radius: 4.0)
     self.addressContainerView.rounded(radius: 4.0)
 
+    self.updateDateView()
     self.updateSortPairView()
     self.updateStatusView()
     self.updateAddressView()
@@ -141,10 +149,21 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.separatorViews.forEach({ $0.removeSublayer(at: 0) })
-    self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  }
+
+  fileprivate func updateDateView() {
+    self.latestSelectButton.rounded(
+      color: self.viewModel.isDateDesc ? UIColor.Kyber.enygold : UIColor.Kyber.border,
+      width: self.viewModel.isDateDesc ? 6.0 : 1.0,
+      radius: self.latestSelectButton.frame.height / 2.0
+    )
+    self.oldestSelectButton.rounded(
+      color: !self.viewModel.isDateDesc ? UIColor.Kyber.enygold : UIColor.Kyber.border,
+      width: !self.viewModel.isDateDesc ? 6.0 : 1.0,
+      radius: self.oldestSelectButton.frame.height / 2.0
+    )
   }
 
   fileprivate func updateUIOrdersChanged() {
@@ -155,17 +174,6 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   }
 
   fileprivate func updateSortPairView() {
-    self.sortPairAscButton.rounded(
-      color: self.viewModel.isSortAsc ? UIColor.Kyber.enygold : UIColor.Kyber.border,
-      width: self.viewModel.isSortAsc ? 6.0 : 1.0,
-      radius: self.sortPairAscButton.frame.height / 2.0
-    )
-    self.sortPairDescButton.rounded(
-      color: !self.viewModel.isSortAsc ? UIColor.Kyber.enygold : UIColor.Kyber.border,
-      width: !self.viewModel.isSortAsc ? 6.0 : 1.0,
-      radius: self.sortPairDescButton.frame.height / 2.0
-    )
-
     self.listPairsTableView.reloadData()
 
     self.listPairsTableViewHeightConstraint.constant = {
@@ -243,14 +251,14 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true)
   }
 
-  @IBAction func pairSortAscButtonPressed(_ sender: Any) {
-    self.viewModel.isSortAsc = true
-    self.updateSortPairView()
+  @IBAction func latestButtonPressed(_ sender: Any) {
+    self.viewModel.isDateDesc = true
+    self.updateDateView()
   }
 
-  @IBAction func pairSortDescButtonPressed(_ sender: Any) {
-    self.viewModel.isSortAsc = false
-    self.updateSortPairView()
+  @IBAction func oldestButtonPressed(_ sender: Any) {
+    self.viewModel.isDateDesc = false
+    self.updateDateView()
   }
 
   @IBAction func statusOpenButtonPressed(_ sender: Any) {
@@ -299,7 +307,6 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func resetButtonPressed(_ sender: Any) {
-    self.viewModel.isSortAsc = true
     self.viewModel.pairs = nil
     self.viewModel.status = [0, 1]
     self.viewModel.addresses = nil
@@ -313,7 +320,8 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true, completion: {
       self.delegate?.filterLimitOrderViewController(
         self,
-        apply: self.viewModel.pairs,
+        isDateDesc: self.viewModel.isDateDesc,
+        pairs: self.viewModel.pairs,
         status: self.viewModel.status,
         addresses: self.viewModel.addresses
       )
