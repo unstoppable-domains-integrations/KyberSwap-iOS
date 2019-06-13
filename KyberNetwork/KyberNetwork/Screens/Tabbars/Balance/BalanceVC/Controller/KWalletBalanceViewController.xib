@@ -223,12 +223,12 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
-                            <rect key="frame" x="279" y="0.0" width="56" height="36"/>
+                            <rect key="frame" x="295" y="0.0" width="40" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="bBq-ro-mjv"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="13"/>
-                            <state key="normal" title="24h ch%">
+                            <state key="normal" title="24h %">
                                 <color key="titleColor" red="0.30588235294117649" green="0.31372549019607843" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>

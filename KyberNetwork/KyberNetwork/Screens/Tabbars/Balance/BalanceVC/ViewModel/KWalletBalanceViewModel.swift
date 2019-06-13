@@ -183,16 +183,16 @@ class KWalletBalanceViewModel: NSObject {
   var displayChange24h: NSAttributedString {
     let attributedString = NSMutableAttributedString()
     if self.tokensDisplayType == .changeDesc {
-      attributedString.append(NSAttributedString(string: "24h ch% ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(NSAttributedString(string: "24h% ", attributes: displayTypeHighLightedAttributes))
       attributedString.append(self.arrowDownAttributedString)
       return attributedString
     }
     if self.tokensDisplayType == .changeAsc {
-      attributedString.append(NSAttributedString(string: "24h ch% ", attributes: displayTypeHighLightedAttributes))
+      attributedString.append(NSAttributedString(string: "24h% ", attributes: displayTypeHighLightedAttributes))
       attributedString.append(self.arrowUpAttributedString)
       return attributedString
     }
-    return NSAttributedString(string: "24h ch%", attributes: displayTypeNormalAttributes)
+    return NSAttributedString(string: "24h%", attributes: displayTypeNormalAttributes)
   }
 
   var change24hCenterXConstant: CGFloat {
