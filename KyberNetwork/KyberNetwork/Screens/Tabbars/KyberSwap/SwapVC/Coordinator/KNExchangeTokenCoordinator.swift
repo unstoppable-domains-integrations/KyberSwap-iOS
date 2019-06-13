@@ -141,7 +141,15 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
-    self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
+    if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) != nil {
+      // promo wallet, keep old behaviour
+      self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived)
+    } else {
+      // normal wallet
+      let otherToken: TokenObject = token.isETH ? KNSupportedTokenStorage.shared.kncToken : KNSupportedTokenStorage.shared.ethToken
+      self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
+      self.rootViewController.coordinatorUpdateSelectedToken(otherToken, isSource: isReceived, isWarningShown: true)
+    }
     self.rootViewController.tabBarController?.selectedIndex = 1
   }
 
