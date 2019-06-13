@@ -493,6 +493,9 @@
 "From" = "从";
 "To" = "至";
 
+"Successfully added to your favorites" = "已成功添加到您的收藏夹";
+"Removed from your favorites" = "已删除您的收藏夹";
+
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
 "Promo code has expired." = "促销代码已过期。";

@@ -491,6 +491,9 @@
 "From" = "From";
 "To" = "To";
 
+"Successfully added to your favorites" = "Successfully added to your favorites";
+"Removed from your favorites" = "Removed from your favorites";
+
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
 "Promo code has expired." = "Promo code has expired.";

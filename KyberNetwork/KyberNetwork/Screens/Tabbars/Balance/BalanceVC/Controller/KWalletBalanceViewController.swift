@@ -196,6 +196,10 @@ class KWalletBalanceViewController: KNBaseViewController {
       self.viewModel.otherButtonTitle,
       for: .normal
     )
+    self.otherButton.setImage(
+      self.viewModel.tabOption == .kyberListed ? UIImage(named: "arrow_drop_down") : UIImage(named: "arrow_drop_down_selected"),
+      for: .normal
+    )
     self.updateWalletBalanceUI()
     self.view.layoutIfNeeded()
   }
@@ -292,6 +296,10 @@ extension KWalletBalanceViewController {
     self.hamburgerMenu.hideMenu(animated: false)
     self.kyberListButton.setTitleColor(self.viewModel.colorKyberListedButton, for: .normal)
     self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
+    self.otherButton.setImage(
+      self.viewModel.tabOption == .kyberListed ? UIImage(named: "arrow_drop_down") : UIImage(named: "arrow_drop_down_selected"),
+      for: .normal
+    )
     self.view.layoutIfNeeded()
   }
 
@@ -443,10 +451,12 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
 }
 
 extension KWalletBalanceViewController: KNBalanceTokenTableViewCellDelegate {
-  func balanceTokenTableViewCell(_ cell: KNBalanceTokenTableViewCell, updateFav token: TokenObject) {
+  func balanceTokenTableViewCell(_ cell: KNBalanceTokenTableViewCell, updateFav token: TokenObject, isFav: Bool) {
     if self.viewModel.tabOption == .favourite {
       self.viewModel.createDisplayedData()
       self.updateWalletBalanceUI()
     }
+    let message = isFav ? NSLocalizedString("Successfully added to your favorites", comment: "") : NSLocalizedString("Removed from your favorites", comment: "")
+    self.showTopBannerView(with: "", message: message, time: 1.0)
   }
 }

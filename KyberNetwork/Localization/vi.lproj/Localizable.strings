@@ -495,6 +495,9 @@
 "From" = "Từ";
 "To" = "Đến";
 
+"Successfully added to your favorites" = "Đã thêm vào mục yêu thích của bạn";
+"Removed from your favorites" = "Đã xoá khỏi mục yêu thích của bạn";
+
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
 "Promo code has expired." = "Mã khuyến mãi đã hết hạn.";
