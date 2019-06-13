@@ -18,6 +18,12 @@ enum KWalletCurrencyType: String {
   case eth = "ETH"
 }
 
+enum KTokenListType: Int {
+  case kyberListed
+  case favourite
+  case others
+}
+
 class KWalletBalanceViewModel: NSObject {
 
   let displayTypeNormalAttributes: [NSAttributedStringKey: Any] = [
@@ -46,7 +52,8 @@ class KWalletBalanceViewModel: NSObject {
     return NSAttributedString(string: "↓", attributes: attributes)
   }()
 
-  private(set) var isKyberList: Bool = true
+  private(set) var tabOption: KTokenListType = .kyberListed // 0: Kyber List, 1: Favourite, 2: Other
+  private(set) var preExtraTabOption: KTokenListType = .favourite // either 1 or 2, default 1
   private(set) var wallet: KNWalletObject
   private(set) var tokenObjects: [TokenObject] = []
   private(set) var tokensDisplayType: KWalletSortType = .default
@@ -236,13 +243,20 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   var colorKyberListedButton: UIColor {
-    if self.isKyberList { return UIColor.Kyber.enygold }
+    if self.tabOption == .kyberListed { return UIColor.Kyber.enygold }
     return UIColor(red: 29, green: 48, blue: 58)
   }
 
   var colorOthersButton: UIColor {
-    if !self.isKyberList { return UIColor.Kyber.enygold }
+    if self.tabOption != .kyberListed { return UIColor.Kyber.enygold } // Fav or Other
     return UIColor(red: 29, green: 48, blue: 58)
+  }
+
+  var otherButtonTitle: String {
+    if self.tabOption != .kyberListed {
+      return self.tabOption == .favourite ? "Favourite".toBeLocalised() : "Others".toBeLocalised()
+    }
+    return self.preExtraTabOption == .favourite ? "Favourite".toBeLocalised() : "Others".toBeLocalised()
   }
 
   // MARK: Update display data
@@ -275,7 +289,8 @@ class KWalletBalanceViewModel: NSObject {
     self.currencyType = currencyType
     KNAppTracker.updateCurrencyType(currencyType)
     self.tokensDisplayType = KWalletSortType.changeDesc
-    self.isKyberList = true
+    self.tabOption = .kyberListed
+    self.preExtraTabOption = .favourite
     self.createDisplayedData()
   }
 
@@ -324,9 +339,14 @@ class KWalletBalanceViewModel: NSObject {
     return true
   }
 
-  func updateDisplayKyberList(_ isDisplayKyberList: Bool) -> Bool {
-    if self.isKyberList == isDisplayKyberList { return false }
-    self.isKyberList = isDisplayKyberList
+  func updateDisplayTabOption(_ option: KTokenListType) -> Bool {
+    if self.tabOption == option { return false }
+    self.preExtraTabOption = {
+      if option == .kyberListed { return self.tabOption }
+      if option == .favourite { return .others }
+      return .favourite
+    }()
+    self.tabOption = option
     self.createDisplayedData()
     return true
   }
@@ -357,11 +377,18 @@ class KWalletBalanceViewModel: NSObject {
     self.createDisplayedData()
   }
 
-  fileprivate func createDisplayedData() {
+  func createDisplayedData() {
+    let favouriteTokens = KNAppTracker.getListFavouriteTokens()
     // Compute displayed token objects sorted by displayed type
     let tokenObjects = self.tokenObjects.filter({
-      return $0.contains(self.searchText) && $0.isSupported == self.isKyberList
+      return $0.contains(self.searchText)
     }).filter({
+      if self.tabOption == .kyberListed && $0.isSupported { return true }
+      if self.tabOption == .others && !$0.isSupported { return true }
+      if self.tabOption == .favourite && favouriteTokens.contains($0.contract.lowercased()) { return true }
+      return false
+    })
+      .filter({
       if $0.extraData?.isListed == false { return false }
       return true
     })
@@ -377,7 +404,7 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
-    if self.isKyberList {
+    if self.tabOption != .others { // not other tab
       if self.trackerRateData[left.identifier()] == nil { return false }
       if self.trackerRateData[right.identifier()] == nil { return true }
     }

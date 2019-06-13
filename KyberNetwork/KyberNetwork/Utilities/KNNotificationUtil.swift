@@ -17,6 +17,7 @@ let kSupportedTokenListDidUpdateNotificationKey = "kSupportedTokenListDidUpdateN
 // Balance Keys
 let kETHBalanceDidUpdateNotificationKey = "kETHBalanceDidUpdateNotificationKey"
 let kOtherBalanceDidUpdateNotificationKey = "kOtherBalanceDidUpdateNotificationKey"
+let kFavouriteTokensUpdateNotificationKey = "kFavouriteTokensUpdateNotificationKey"
 
 // Rate
 let kExchangeTokenRateNotificationKey = "kExchangeTokenRateNotificationKey"

@@ -39,6 +39,8 @@ class KNAppTracker {
 
   static let kLastTimeAuthenticateKey: String = "kLastTimeAuthenticateKey"
 
+  static let kFavouriteTokensKey: String = "kFavouriteTokensKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
@@ -278,5 +280,26 @@ class KNAppTracker {
       return Date().timeIntervalSince(Date(timeIntervalSince1970: time)) >= timeToAuthenticate
     }
     return true
+  }
+
+  static func getListFavouriteTokens() -> [String] {
+    let key = "\(KNEnvironment.default.displayName)-\(kFavouriteTokensKey)"
+    return userDefaults.object(forKey: key) as? [String] ?? []
+  }
+
+  static func isTokenFavourite(_ address: String) -> Bool {
+    return self.getListFavouriteTokens().contains(address.lowercased())
+  }
+
+  static func updateFavouriteToken(_ address: String, add: Bool) {
+    let key = "\(KNEnvironment.default.displayName)-\(kFavouriteTokensKey)"
+    var addresses = userDefaults.object(forKey: key) as? [String] ?? []
+    if add {
+      if !addresses.contains(address.lowercased()) { addresses.append(address) }
+    } else if let id = addresses.index(of: address.lowercased()) {
+      addresses.remove(at: id)
+    }
+    userDefaults.set(addresses, forKey: key)
+    userDefaults.synchronize()
   }
 }

@@ -171,6 +171,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.balanceValueLabel.attributedText = self.viewModel.balanceDisplayAttributedString
     self.tokensBalanceTableView.isHidden = self.viewModel.displayedTokens.isEmpty
     self.emptyStateView.isHidden = !self.viewModel.displayedTokens.isEmpty
+    self.tokensBalanceTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
@@ -189,13 +190,13 @@ class KWalletBalanceViewController: KNBaseViewController {
       NSLocalizedString("kyber.listed", value: "Kyber Listed", comment: ""),
       for: .normal
     )
+    self.otherButton.semanticContentAttribute = .forceRightToLeft
     self.otherButton.setTitleColor(self.viewModel.colorOthersButton, for: .normal)
     self.otherButton.setTitle(
-      NSLocalizedString("other", value: "Other", comment: ""),
+      self.viewModel.otherButtonTitle,
       for: .normal
     )
     self.updateWalletBalanceUI()
-    self.tokensBalanceTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
@@ -212,14 +213,18 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func kyberListButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "kyber_listed_tokens"])
-    if self.viewModel.updateDisplayKyberList(true) {
+    if self.viewModel.updateDisplayTabOption(.kyberListed) {
       self.updateDisplayedDataType()
     }
   }
 
   @IBAction func otherButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "other_tokens"])
-    if self.viewModel.updateDisplayKyberList(false) {
+    let newOption: KTokenListType = {
+      if self.viewModel.tabOption == .kyberListed { return self.viewModel.preExtraTabOption }
+      return self.viewModel.tabOption == .favourite ? .others : .favourite
+    }()
+    if self.viewModel.updateDisplayTabOption(newOption) {
       self.updateDisplayedDataType()
     }
   }
@@ -270,7 +275,6 @@ class KWalletBalanceViewController: KNBaseViewController {
       for: .normal
     )
     self.updateWalletBalanceUI()
-    self.tokensBalanceTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 }
@@ -281,7 +285,6 @@ extension KWalletBalanceViewController {
     self.viewModel = viewModel
     self.updateWalletBalanceUI()
     self.updateWalletInfoUI()
-    self.tokensBalanceTableView.reloadData()
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
       currentWallet: self.viewModel.wallet
@@ -305,14 +308,12 @@ extension KWalletBalanceViewController {
   func coordinatorUpdateTokenObjects(_ tokenObjects: [TokenObject]) {
     if self.viewModel.updateTokenObjects(tokenObjects) {
       self.updateWalletBalanceUI()
-      self.tokensBalanceTableView.reloadData()
     }
   }
 
   func coordinatorUpdateTokenBalances(_ balances: [String: Balance]) {
     if self.viewModel.updateTokenBalances(balances) {
       self.updateWalletBalanceUI()
-      self.tokensBalanceTableView.reloadData()
     }
   }
 
@@ -323,7 +324,6 @@ extension KWalletBalanceViewController {
     )
     self.updateWalletBalanceUI()
     self.viewModel.exchangeRatesDataUpdated()
-    self.tokensBalanceTableView.reloadData()
   }
 
   func coordinatorUpdatePendingTransactions(_ transactions: [KNTransaction]) {
@@ -389,6 +389,7 @@ extension KWalletBalanceViewController: UITableViewDataSource {
       isBalanceShown: self.viewModel.isBalanceShown
     )
     cell.updateCellView(with: cellModel)
+    cell.delegate = self
     return cell
   }
 
@@ -437,7 +438,15 @@ extension KWalletBalanceViewController: UITextFieldDelegate {
 
   fileprivate func searchAmountTextFieldChanged() {
     self.viewModel.updateSearchText((self.searchTextField.text ?? "").replacingOccurrences(of: " ", with: ""))
-    self.tokensBalanceTableView.reloadData()
     self.updateWalletBalanceUI()
+  }
+}
+
+extension KWalletBalanceViewController: KNBalanceTokenTableViewCellDelegate {
+  func balanceTokenTableViewCell(_ cell: KNBalanceTokenTableViewCell, updateFav token: TokenObject) {
+    if self.viewModel.tabOption == .favourite {
+      self.viewModel.createDisplayedData()
+      self.updateWalletBalanceUI()
+    }
   }
 }

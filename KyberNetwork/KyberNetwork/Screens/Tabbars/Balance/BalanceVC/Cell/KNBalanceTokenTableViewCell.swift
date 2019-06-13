@@ -3,6 +3,10 @@
 import UIKit
 import BigInt
 
+protocol KNBalanceTokenTableViewCellDelegate: class {
+  func balanceTokenTableViewCell(_ cell: KNBalanceTokenTableViewCell, updateFav token: TokenObject)
+}
+
 struct KNBalanceTokenTableViewCellModel {
   let token: TokenObject
   let trackerRate: KNTrackerRate?
@@ -10,6 +14,7 @@ struct KNBalanceTokenTableViewCellModel {
   let currencyType: KWalletCurrencyType
   let index: Int
   let isBalanceShown: Bool
+  let isFav: Bool
 
   init(
     token: TokenObject,
@@ -25,6 +30,7 @@ struct KNBalanceTokenTableViewCellModel {
     self.currencyType = currencyType
     self.index = index
     self.isBalanceShown = isBalanceShown
+    self.isFav = KNAppTracker.isTokenFavourite(token.contract.lowercased())
   }
 
   var isNewTokenHidden: Bool {
@@ -134,6 +140,11 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
   @IBOutlet weak var amountHoldingsLabel: UILabel!
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var change24h: UIButton!
+  @IBOutlet weak var favIcon: UIButton!
+
+  private(set) var isFav: Bool = false
+  private(set) var viewModel: KNBalanceTokenTableViewCellModel?
+  weak var delegate: KNBalanceTokenTableViewCellDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -147,6 +158,7 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
   }
 
   func updateCellView(with viewModel: KNBalanceTokenTableViewCellModel) {
+    self.viewModel = viewModel
     self.newTextLabel.isHidden = viewModel.isNewTokenHidden
     self.iconImageView.setTokenImage(
       token: viewModel.token,
@@ -168,5 +180,21 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
       for: .normal
     )
     self.change24h.setImage(viewModel.change24hImage, for: .normal)
+    self.isFav = viewModel.isFav
+    let favImg = self.isFav ? UIImage(named: "selected_fav_icon") : UIImage(named: "unselected_fav_icon")
+    self.favIcon.setImage(favImg, for: .normal)
+  }
+
+  @IBAction func favIconButtonPressed(_ sender: Any) {
+    self.isFav = !self.isFav
+    KNAppTracker.updateFavouriteToken(
+      self.viewModel?.token.contract.lowercased() ?? "",
+      add: self.isFav
+    )
+    let favImg = self.isFav ? UIImage(named: "selected_fav_icon") : UIImage(named: "unselected_fav_icon")
+    self.favIcon.setImage(favImg, for: .normal)
+    if let token = self.viewModel?.token {
+      self.delegate?.balanceTokenTableViewCell(self, updateFav: token)
+    }
   }
 }
