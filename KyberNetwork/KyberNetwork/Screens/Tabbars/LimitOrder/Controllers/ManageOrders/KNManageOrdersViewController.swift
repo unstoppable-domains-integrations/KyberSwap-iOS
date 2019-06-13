@@ -78,17 +78,11 @@ class KNManageOrdersViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
 
-  @IBOutlet weak var filterTextLabel: UILabel!
+  @IBOutlet weak var filterButton: UIButton!
   @IBOutlet weak var oneDayButton: UIButton!
   @IBOutlet weak var oneWeekButton: UIButton!
   @IBOutlet weak var oneMonthButton: UIButton!
   @IBOutlet weak var threeMonthButton: UIButton!
-
-  @IBOutlet weak var separatorView: UIView!
-
-  @IBOutlet weak var pairButton: UIButton!
-  @IBOutlet weak var dateButton: UIButton!
-  @IBOutlet weak var statusButton: UIButton!
 
   @IBOutlet weak var orderCollectionView: UICollectionView!
   @IBOutlet weak var emptyStateLabel: UILabel!
@@ -137,31 +131,15 @@ class KNManageOrdersViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.separatorView.removeSublayer(at: 0)
-    self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
   }
 
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
-    self.filterTextLabel.text = "Time".toBeLocalised().uppercased()
+    self.filterButton.setTitle("Filter".toBeLocalised(), for: .normal)
     self.oneDayButton.setTitle("1 Day".toBeLocalised(), for: .normal)
     self.oneWeekButton.setTitle("1 Week".toBeLocalised(), for: .normal)
     self.oneMonthButton.setTitle("1 Month".toBeLocalised(), for: .normal)
     self.threeMonthButton.setTitle("3 Months".toBeLocalised(), for: .normal)
-
-    self.pairButton.setTitle("Pair".toBeLocalised(), for: .normal)
-    self.pairButton.semanticContentAttribute = .forceRightToLeft
-
-    self.dateButton.setTitle("Date".toBeLocalised(), for: .normal)
-    self.dateButton.semanticContentAttribute = .forceRightToLeft
-    self.dateButton.setImage(
-      UIImage(named: self.viewModel.isDateDesc ? "date_sort_desc" : "date_sort_asc"),
-      for: .normal
-    )
-
-    self.statusButton.setTitle("Status".toBeLocalised(), for: .normal)
-    self.statusButton.semanticContentAttribute = .forceRightToLeft
 
     self.emptyStateLabel.text = "No order found".toBeLocalised()
     let nib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
@@ -206,13 +184,14 @@ class KNManageOrdersViewController: KNBaseViewController {
   }
 
   fileprivate func openFilterView() {
-    let allPairs = self.viewModel.orders.map({ return "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)" }).unique
+    let allPairs = self.viewModel.orders.map({ return "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)" }).unique.sorted(by: { return $0 < $1 })
     let allAddresses = self.viewModel.orders
       .map({ (order) -> String in
         let addr = order.sender.lowercased()
         return "\(addr.prefix(6))...\(addr.suffix(4))"
       }).unique.sorted(by: { return $0 < $1 })
     let viewModel = KNFilterLimitOrderViewModel(
+      isDateDesc: self.viewModel.isDateDesc,
       pairs: self.viewModel.selectedPairs,
       status: self.viewModel.selectedStates,
       addresses: self.viewModel.selectedAddresses,
@@ -256,20 +235,7 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.updateDisplayTimeInterval(3)
   }
 
-  @IBAction func pairButtonPressed(_ sender: Any) {
-    self.openFilterView()
-  }
-
-  @IBAction func dateButtonPressed(_ sender: Any) {
-    self.viewModel.isDateDesc = !self.viewModel.isDateDesc
-    self.dateButton.setImage(
-      UIImage(named: self.viewModel.isDateDesc ? "date_sort_desc" : "date_sort_asc"),
-      for: .normal
-    )
-    self.updateCollectionView()
-  }
-
-  @IBAction func statusButtonPressed(_ sender: Any) {
+  @IBAction func filterButtonPressed(_ sender: Any) {
     self.openFilterView()
   }
 
@@ -389,7 +355,8 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
 }
 
 extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate {
-  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, apply pairs: [String]?, status: [Int], addresses: [String]?) {
+  func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, isDateDesc: Bool, pairs: [String]?, status: [Int], addresses: [String]?) {
+    self.viewModel.isDateDesc = isDateDesc
     self.viewModel.selectedPairs = pairs
     self.viewModel.selectedStates = status
     self.viewModel.selectedAddresses = addresses
