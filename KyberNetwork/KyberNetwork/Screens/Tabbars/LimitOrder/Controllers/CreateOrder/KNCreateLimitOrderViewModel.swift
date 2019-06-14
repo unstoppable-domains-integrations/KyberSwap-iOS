@@ -54,7 +54,8 @@ class KNCreateLimitOrderViewModel {
 
   // MARK: Wallet name
   var walletNameString: String {
-    return "| \(self.walletObject.name) - \(self.walletObject.address.prefix(6))...\(self.walletObject.address.suffix(4))"
+    let addr = self.walletObject.address.lowercased()
+    return "| \(self.walletObject.name) - \(addr.prefix(6))...\(addr.suffix(4))"
   }
 
   // MARK: From Token
