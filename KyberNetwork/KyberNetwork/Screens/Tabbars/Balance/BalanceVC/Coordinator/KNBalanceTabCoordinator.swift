@@ -47,6 +47,10 @@ class KNBalanceTabCoordinator: Coordinator {
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var tokenChartCoordinator: KNTokenChartCoordinator?
 
+  deinit {
+    self.stop()
+  }
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -62,7 +66,12 @@ class KNBalanceTabCoordinator: Coordinator {
     self.navigationController.viewControllers = [self.newRootViewController]
   }
 
-  func stop() { }
+  func stop() {
+    self.navigationController.popToRootViewController(animated: false)
+    self.sendTokenCoordinator = nil
+    self.promoCodeCoordinator = nil
+    self.historyCoordinator = nil
+  }
 }
 
 // Update from appcoordinator

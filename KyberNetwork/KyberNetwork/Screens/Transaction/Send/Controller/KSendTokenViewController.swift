@@ -80,6 +80,12 @@ class KSendTokenViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    if self.recentContactTableView != nil {
+      self.recentContactTableView.removeNotificationObserve()
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
@@ -143,6 +149,12 @@ class KSendTokenViewController: KNBaseViewController {
     self.setupSendButton()
 
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
+  }
+
+  func removeObserveNotification() {
+    if self.recentContactTableView != nil {
+      self.recentContactTableView.removeNotificationObserve()
+    }
   }
 
   fileprivate func setupNavigationView() {

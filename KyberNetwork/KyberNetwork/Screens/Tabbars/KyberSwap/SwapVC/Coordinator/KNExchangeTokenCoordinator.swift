@@ -69,6 +69,10 @@ class KNExchangeTokenCoordinator: Coordinator {
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   fileprivate var searchTokensViewController: KNSearchTokenViewController?
 
+  deinit {
+    self.stop()
+  }
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -83,6 +87,13 @@ class KNExchangeTokenCoordinator: Coordinator {
   }
 
   func stop() {
+    self.navigationController.popToRootViewController(animated: false)
+    self.sendTokenCoordinator = nil
+    self.confirmSwapVC = nil
+    self.promoConfirmSwapVC = nil
+    self.promoCodeCoordinator = nil
+    self.historyCoordinator = nil
+    self.searchTokensViewController = nil
   }
 }
 

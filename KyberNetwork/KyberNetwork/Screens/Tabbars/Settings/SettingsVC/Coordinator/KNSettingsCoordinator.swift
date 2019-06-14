@@ -69,6 +69,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
+    self.navigationController.popToRootViewController(animated: false)
   }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {

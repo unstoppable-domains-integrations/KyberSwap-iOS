@@ -34,6 +34,10 @@ class KNSendTokenViewCoordinator: Coordinator {
     return controller
   }()
 
+  deinit {
+    self.rootViewController.removeObserveNotification()
+  }
+
   init(
     navigationController: UINavigationController,
     session: KNSession,

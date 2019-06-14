@@ -26,11 +26,7 @@ class KNContactTableView: XibLoaderView {
   weak var delegate: KNContactTableViewDelegate?
 
   deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(rawValue: kUpdateListContactNotificationKey),
-      object: nil
-    )
+    self.removeNotificationObserve()
   }
 
   override func commonInit() {
@@ -48,6 +44,14 @@ class KNContactTableView: XibLoaderView {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.shouldUpdateContacts(_:)),
+      name: NSNotification.Name(rawValue: kUpdateListContactNotificationKey),
+      object: nil
+    )
+  }
+
+  func removeNotificationObserve() {
+    NotificationCenter.default.removeObserver(
+      self,
       name: NSNotification.Name(rawValue: kUpdateListContactNotificationKey),
       object: nil
     )

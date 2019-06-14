@@ -48,6 +48,10 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
     return manager
   }()
 
+  deinit {
+    self.stop()
+  }
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -56,8 +60,6 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
     self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
-
-  deinit { self.stop() }
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
@@ -80,6 +82,16 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
 
     self.loadUserInfoTimer?.invalidate()
     self.loadUserInfoTimer = nil
+
+    self.navigationController.popToRootViewController(animated: false)
+
+    self.kycCoordinator = nil
+    self.manageAlertCoordinator = nil
+    self.newAlertController = nil
+    self.loadUserInfoTimer?.invalidate()
+    self.loadUserInfoTimer = nil
+    self.signUpViewController = nil
+    self.confirmSignUpVC = nil
   }
 
   internal func timerAccessTokenExpired() {

@@ -24,6 +24,12 @@ class KNListContactViewController: KNBaseViewController {
 
   weak var delegate: KNListContactViewControllerDelegate?
 
+  deinit {
+    if self.contactTableView != nil {
+      self.contactTableView.removeNotificationObserve()
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     let style = KNAppStyleType.current
@@ -66,6 +72,12 @@ class KNListContactViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.addContactButton.removeSublayer(at: 0)
     self.addContactButton.applyGradient()
+  }
+
+  func removeObserveNotification() {
+    if self.contactTableView != nil {
+      self.contactTableView.removeNotificationObserve()
+    }
   }
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {
