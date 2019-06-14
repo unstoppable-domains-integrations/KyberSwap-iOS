@@ -53,6 +53,10 @@ class KNLimitOrderTabCoordinator: Coordinator {
     return controller
   }()
 
+  deinit {
+    self.stop()
+  }
+
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -71,6 +75,13 @@ class KNLimitOrderTabCoordinator: Coordinator {
 
   func stop() {
     KNLimitOrderServerCoordinator.shared.pause()
+    self.navigationController.popToRootViewController(animated: false)
+    self.historyCoordinator = nil
+    self.searchTokensViewController = nil
+    self.sendTokenCoordinator = nil
+    self.confirmVC = nil
+    self.manageOrdersVC = nil
+    self.convertVC = nil
   }
 }
 
