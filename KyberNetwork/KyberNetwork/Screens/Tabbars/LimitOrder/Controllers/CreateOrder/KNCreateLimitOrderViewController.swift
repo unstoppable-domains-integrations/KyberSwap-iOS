@@ -828,6 +828,8 @@ extension KNCreateLimitOrderViewController {
         )
         return
       }
+    } else if token.isETH, let wethToken = self.viewModel.weth {
+      self.viewModel.updateSelectedToken(wethToken, isSource: isSource)
     } else {
       self.viewModel.updateSelectedToken(token, isSource: isSource)
     }
