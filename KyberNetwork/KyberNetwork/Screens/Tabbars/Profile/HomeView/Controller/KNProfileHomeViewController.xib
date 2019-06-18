@@ -375,7 +375,7 @@ Increase KyberSwap's trade limits</string>
                             <rect key="frame" x="0.0" y="84" width="375" height="583"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cb8-Ek-yja">
-                                    <rect key="frame" x="55.5" y="300" width="264" height="44"/>
+                                    <rect key="frame" x="55.5" y="312" width="264" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="vBO-gp-bqe"/>
                                     </constraints>
@@ -388,7 +388,7 @@ Increase KyberSwap's trade limits</string>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DtN-hp-SbL">
-                                    <rect key="frame" x="20" y="234" width="335" height="46"/>
+                                    <rect key="frame" x="20" y="242" width="335" height="46"/>
                                     <color key="backgroundColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="46" id="kvH-pZ-U1x"/>
@@ -402,7 +402,7 @@ Increase KyberSwap's trade limits</string>
                                     </connections>
                                 </button>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="okd-dX-AYx">
-                                    <rect key="frame" x="20" y="32" width="335" height="44"/>
+                                    <rect key="frame" x="20" y="40" width="335" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="FXE-gI-zBy"/>
                                     </constraints>
@@ -411,14 +411,14 @@ Increase KyberSwap's trade limits</string>
                                     <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2n2-4s-Vme">
-                                    <rect key="frame" x="20" y="66" width="335" height="1"/>
+                                    <rect key="frame" x="20" y="74" width="335" height="1"/>
                                     <color key="backgroundColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="h8m-1l-p9b"/>
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="BTo-af-uiK">
-                                    <rect key="frame" x="20" y="108" width="315" height="44"/>
+                                    <rect key="frame" x="20" y="116" width="315" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="W25-fr-cwz"/>
                                     </constraints>
@@ -427,21 +427,21 @@ Increase KyberSwap's trade limits</string>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-pT-KJt">
-                                    <rect key="frame" x="20" y="142" width="335" height="1"/>
+                                    <rect key="frame" x="20" y="150" width="335" height="1"/>
                                     <color key="backgroundColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="OOJ-m3-4ZS"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVF-1v-3Gm">
-                                    <rect key="frame" x="333" y="119" width="22" height="22"/>
+                                    <rect key="frame" x="333" y="127" width="22" height="22"/>
                                     <state key="normal" image="hide_secure_text"/>
                                     <connections>
                                         <action selector="secureTextButtonPressed:" destination="-1" eventType="touchUpInside" id="Ejr-vf-RU4"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1T-2r-j1L">
-                                    <rect key="frame" x="236" y="159" width="119" height="32"/>
+                                    <rect key="frame" x="236" y="167" width="119" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="32" id="ZKS-ly-mEX"/>
                                     </constraints>
@@ -454,7 +454,7 @@ Increase KyberSwap's trade limits</string>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xrR-bz-pSi">
-                                    <rect key="frame" x="21" y="376" width="333" height="60"/>
+                                    <rect key="frame" x="21" y="392" width="333" height="60"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jcu-c4-tjL">
                                             <rect key="frame" x="272.5" y="12" width="36" height="36"/>
@@ -525,8 +525,8 @@ Increase KyberSwap's trade limits</string>
                                 <constraint firstAttribute="trailing" secondItem="BTo-af-uiK" secondAttribute="trailing" constant="40" id="KWi-og-zki"/>
                                 <constraint firstAttribute="trailing" secondItem="okd-dX-AYx" secondAttribute="trailing" constant="20" id="OX3-zc-wiC"/>
                                 <constraint firstItem="2n2-4s-Vme" firstAttribute="trailing" secondItem="okd-dX-AYx" secondAttribute="trailing" id="Qlo-qx-3oV"/>
-                                <constraint firstItem="Cb8-Ek-yja" firstAttribute="top" secondItem="DtN-hp-SbL" secondAttribute="bottom" constant="20" id="ZUC-jd-gx7"/>
-                                <constraint firstItem="xrR-bz-pSi" firstAttribute="top" secondItem="Cb8-Ek-yja" secondAttribute="bottom" constant="32" id="cXD-6Q-skv"/>
+                                <constraint firstItem="Cb8-Ek-yja" firstAttribute="top" secondItem="DtN-hp-SbL" secondAttribute="bottom" constant="24" id="ZUC-jd-gx7"/>
+                                <constraint firstItem="xrR-bz-pSi" firstAttribute="top" secondItem="Cb8-Ek-yja" secondAttribute="bottom" constant="36" id="cXD-6Q-skv"/>
                                 <constraint firstItem="Xvc-pT-KJt" firstAttribute="top" secondItem="BTo-af-uiK" secondAttribute="bottom" constant="-10" id="fmt-Hd-Hqc"/>
                                 <constraint firstItem="DtN-hp-SbL" firstAttribute="top" secondItem="BTo-af-uiK" secondAttribute="bottom" constant="82" id="g71-7B-29b"/>
                                 <constraint firstItem="DtN-hp-SbL" firstAttribute="centerX" secondItem="Sfb-bU-6Tr" secondAttribute="centerX" id="n7f-xI-yjz"/>
@@ -535,7 +535,7 @@ Increase KyberSwap's trade limits</string>
                                 <constraint firstItem="okd-dX-AYx" firstAttribute="leading" secondItem="Sfb-bU-6Tr" secondAttribute="leading" constant="20" id="qSi-oC-cT6"/>
                                 <constraint firstItem="xrR-bz-pSi" firstAttribute="leading" secondItem="Sfb-bU-6Tr" secondAttribute="leading" constant="21" id="szN-Sq-oIp"/>
                                 <constraint firstItem="d1T-2r-j1L" firstAttribute="trailing" secondItem="okd-dX-AYx" secondAttribute="trailing" id="vrO-bO-Z3n"/>
-                                <constraint firstItem="okd-dX-AYx" firstAttribute="top" secondItem="Sfb-bU-6Tr" secondAttribute="top" constant="32" id="wDi-k2-08m"/>
+                                <constraint firstItem="okd-dX-AYx" firstAttribute="top" secondItem="Sfb-bU-6Tr" secondAttribute="top" constant="40" id="wDi-k2-08m"/>
                                 <constraint firstItem="Cb8-Ek-yja" firstAttribute="centerX" secondItem="Sfb-bU-6Tr" secondAttribute="centerX" id="wo0-Op-g3o"/>
                                 <constraint firstItem="BTo-af-uiK" firstAttribute="top" secondItem="okd-dX-AYx" secondAttribute="bottom" constant="32" id="xPA-Sh-Sng"/>
                             </constraints>
