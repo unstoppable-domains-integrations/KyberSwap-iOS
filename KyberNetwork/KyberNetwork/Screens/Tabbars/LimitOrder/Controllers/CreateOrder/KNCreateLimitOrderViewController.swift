@@ -427,6 +427,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     self.updateTokensView()
     self.updateViewAmountDidChange()
+    _ = self.validateDataIfNeeded()
     self.view.layoutIfNeeded()
   }
 

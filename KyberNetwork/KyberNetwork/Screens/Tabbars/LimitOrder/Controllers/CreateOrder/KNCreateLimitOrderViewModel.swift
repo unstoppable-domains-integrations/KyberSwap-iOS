@@ -68,7 +68,20 @@ class KNCreateLimitOrderViewModel {
   }
 
   var allFromTokenBalanceString: String {
-    return self.balanceText
+    if !(self.from.isETH || self.from.isWETH) { return self.balanceText }
+    let fee: BigInt = {
+      if let bal = self.balances[self.eth.contract]?.value, !bal.isZero {
+        return KNGasCoordinator.shared.fastKNGas * BigInt(600_000) // approve + convet if needed
+      }
+      return BigInt(0)
+    }()
+    let bal: BigInt = max(BigInt(0), self.availableBalance - fee)
+    let string = bal.string(
+      decimals: self.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(self.from.decimals, 6)
+    )
+    return "\(string.prefix(12))"
   }
 
   var amountFromBigInt: BigInt {
@@ -76,7 +89,15 @@ class KNCreateLimitOrderViewModel {
   }
 
   func amountFromWithPercentage(_ percentage: Int) -> BigInt {
-    return self.availableBalance * BigInt(percentage) / BigInt(100)
+    let amount = self.availableBalance * BigInt(percentage) / BigInt(100)
+    if !(self.from.isETH || self.from.isWETH) { return amount }
+    let fee: BigInt = {
+      if let bal = self.balances[self.eth.contract]?.value, !bal.isZero {
+        return KNGasCoordinator.shared.fastKNGas * BigInt(600_000) // approve + convet if needed
+      }
+      return BigInt(0)
+    }()
+    return min(amount, max(0, self.availableBalance - fee))
   }
 
   var amountToBigInt: BigInt {
@@ -152,7 +173,7 @@ class KNCreateLimitOrderViewModel {
       decimals: self.from.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(self.from.decimals, 6)
-    )
+    ).removeGroupSeparator()
     return "\(string.prefix(12))"
   }
 
