@@ -63,10 +63,10 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var secureTextButton: UIButton!
   @IBOutlet weak var dontHaveAnAccountButton: UIButton!
   @IBOutlet weak var signInButton: UIButton!
-  @IBOutlet var dashLineViews: [UIView]!
+
+  @IBOutlet weak var socialContainerView: UIView!
 
   @IBOutlet weak var signInHeaderView: UIView!
-  @IBOutlet weak var topPaddingForSocialIcon: NSLayoutConstraint!
   @IBOutlet weak var myProfileTextLabel: UILabel!
   @IBOutlet weak var signedInView: UIView!
   @IBOutlet weak var logOutButton: UIButton!
@@ -139,9 +139,6 @@ class KNProfileHomeViewController: KNBaseViewController {
 
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.dashLineViews.forEach({
-      $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    })
     self.signInButton.removeSublayer(at: 0)
     self.signInButton.applyGradient()
   }
@@ -155,13 +152,10 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func setupNotSignInView() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.dashLineViews.forEach({
-      $0.backgroundColor = .clear
-      $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    })
+    self.socialContainerView.rounded(radius: self.socialContainerView.frame.height / 2.0)
     self.signInButton.applyGradient()
     self.notSignInNavTitle.text = NSLocalizedString("sign.in", value: "Sign In", comment: "")
-    self.orTextLabel.text = "or".toBeLocalised()
+    self.orTextLabel.text = "Or sign in with".toBeLocalised()
     self.signInButton.setTitle(NSLocalizedString("sign.in", value: "Sign In", comment: ""), for: .normal)
     self.signInButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.signInButton.frame.height))
     self.emailTextField.placeholder = "Email Address".toBeLocalised()
@@ -185,7 +179,6 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func setupUserSignedInView() {
     self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.topPaddingForSocialIcon.constant = (UIDevice.isIphone5 || UIDevice.isIphone6) ? 24.0 : 40.0
     self.bottomPaddingConstraintForSignedInView.constant = self.bottomPaddingSafeArea()
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.myProfileTextLabel.text = NSLocalizedString("my.profile", value: "My Profile", comment: "")

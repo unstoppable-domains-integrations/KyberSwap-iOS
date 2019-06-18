@@ -43,9 +43,7 @@ class KNSignUpViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var orTextLabel: UILabel!
-  @IBOutlet weak var topPaddingSocialIcon: NSLayoutConstraint!
-
-  @IBOutlet var separatorViews: [UIView]!
+  @IBOutlet weak var socialContainerView: UIView!
 
   @IBOutlet weak var confirmEmailTextLabel: UILabel!
   @IBOutlet weak var emailAddressTextField: UITextField!
@@ -81,14 +79,10 @@ class KNSignUpViewController: KNBaseViewController {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("sign.up", value: "Sign Up", comment: "")
-    self.separatorViews.forEach({
-      $0.backgroundColor = .clear
-      $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    })
 
-    self.topPaddingSocialIcon.constant = (UIDevice.isIphone5 || UIDevice.isIphone6) ? 24.0 : 40.0
+    self.socialContainerView.rounded(radius: self.socialContainerView.frame.height / 2.0)
 
-    self.orTextLabel.text = "or".toBeLocalised()
+    self.orTextLabel.text = "Or sign up with".toBeLocalised()
     self.confirmEmailTextLabel.text = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.".toBeLocalised()
     self.confirmEmailTextLabel.isHidden = true
     self.emailAddressTextField.placeholder = "Email Address".toBeLocalised()
@@ -134,10 +128,6 @@ class KNSignUpViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-
-    self.separatorViews.forEach({
-      $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    })
 
     self.signUpButton.removeSublayer(at: 0)
     self.signUpButton.applyGradient()
