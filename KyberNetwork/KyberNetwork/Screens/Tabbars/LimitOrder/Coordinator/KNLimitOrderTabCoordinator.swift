@@ -430,7 +430,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           .filter({ return $0.sender.lowercased() == order.sender.description.lowercased() })
           .filter({ return $0.sourceToken.lowercased() == order.from.symbol.lowercased() })
         orders.forEach({ actualAmount += BigInt($0.sourceAmount * pow(10.0, Double(order.from.decimals))) })
-        if remain >= actualAmount {
+        if remain >= BigInt(10).power(28) && remain >= actualAmount {
           completion(.success(true))
         } else {
           if let time = self.approveTx[order.from.contract] {
