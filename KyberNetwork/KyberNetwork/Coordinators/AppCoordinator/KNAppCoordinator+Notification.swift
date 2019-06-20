@@ -231,9 +231,25 @@ extension KNAppCoordinator {
         time: 3.0
       )
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
+      let transactions = self.session.transactionStorage.kyberPendingTransactions
+      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
       return
     }
-    guard let trans = transaction else { return }
+    guard let trans = transaction else {
+      if let info = sender.userInfo as? JSONDictionary, let isLost = info["is_lost"] as? Bool, isLost {
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("failed", value: "Failed", comment: ""),
+          message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
+          time: 3.0
+        )
+        KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
+      }
+      let transactions = self.session.transactionStorage.kyberPendingTransactions
+      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+      return
+    }
     let details = trans.getDetails()
     if trans.state == .pending {
       // just sent

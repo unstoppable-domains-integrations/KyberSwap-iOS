@@ -409,8 +409,8 @@ extension KNTransactionCoordinator {
               self.transactionStorage.delete([trans])
             case .resultObjectParseError:
               // transaction seems to be removed
-              if transaction.date.addingTimeInterval(600) < Date() {
-                self.updateTransactionStateIfNeeded(transaction, state: .failed)
+              if transaction.date.addingTimeInterval(60) < Date() {
+                self.removeTransactionHasBeenLost(transaction)
               }
             default: break
             }
@@ -445,16 +445,14 @@ extension KNTransactionCoordinator {
     }
   }
 
-  fileprivate func updateTransactionStateIfNeeded(_ transaction: KNTransaction, state: TransactionState) {
-    if let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state != .pending { return }
-    let tx = self.transactionStorage.update(state: state, for: transaction)
-    if tx.state == .error || tx.state == .failed {
-      self.transactionStorage.add([tx.toTransaction()])
-    }
+  fileprivate func removeTransactionHasBeenLost(_ transaction: KNTransaction) {
+    guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state == .pending else { return }
+    let id = trans.id
+    self.transactionStorage.delete([trans])
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
-      object: transaction.id,
-      userInfo: nil
+      object: id,
+      userInfo: ["is_lost": true]
     )
   }
 
