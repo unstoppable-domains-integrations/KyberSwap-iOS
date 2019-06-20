@@ -369,9 +369,16 @@ extension KNTransactionCoordinator {
 
   @objc func shouldUpdatePendingTransaction(_ sender: Any?) {
     let objects = self.transactionStorage.kyberPendingTransactions
-    objects.forEach {
-      if self.isLoadingEnabled { self.updatePendingTransaction($0) }
-    }
+    if objects.isEmpty { return }
+    var oldestTx: KNTransaction = objects[0]
+    objects.forEach({
+      if let oldNonce = Int(oldestTx.nonce), let newNonce = Int($0.nonce) {
+        if newNonce < oldNonce { oldestTx = $0 }
+      } else if $0.date < oldestTx.date {
+        oldestTx = $0
+      }
+    })
+    if self.isLoadingEnabled { self.updatePendingTransaction(oldestTx) }
   }
 
   func updatePendingTransaction(_ transaction: KNTransaction) {
@@ -402,7 +409,7 @@ extension KNTransactionCoordinator {
               self.transactionStorage.delete([trans])
             case .resultObjectParseError:
               // transaction seems to be removed
-              if transaction.date.addingTimeInterval(300) < Date() {
+              if transaction.date.addingTimeInterval(600) < Date() {
                 self.updateTransactionStateIfNeeded(transaction, state: .failed)
               }
             default: break
