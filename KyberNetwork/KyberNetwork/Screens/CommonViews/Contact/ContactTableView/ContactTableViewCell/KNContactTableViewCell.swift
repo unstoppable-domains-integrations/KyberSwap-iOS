@@ -29,7 +29,8 @@ struct KNContactTableViewCellModel {
   }
 
   var displayedAddress: String {
-    return "\(self.contact.address.prefix(20))...\(self.contact.address.suffix(6))"
+    let address = self.contact.address.lowercased()
+    return "\(address.prefix(20))...\(address.suffix(6))"
   }
 
   var backgroundColor: UIColor {

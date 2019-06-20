@@ -60,7 +60,10 @@ class KSwapViewModel {
 
   var headerBackgroundColor: UIColor { return KNAppStyleType.current.swapFlowHeaderColor }
   // MARK: Wallet name
-  var walletNameString: String { return "| \(self.walletObject.name)" }
+  var walletNameString: String {
+    let address = self.walletObject.address.lowercased()
+    return "| \(self.walletObject.name) - \(address.prefix(6))...\(address.suffix(4))"
+  }
 
   // MARK: From Token
   var allFromTokenBalanceString: String {

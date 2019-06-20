@@ -16,7 +16,7 @@ class KNListWalletsTableViewCell: UITableViewCell {
 
   func updateCell(with wallet: KNWalletObject, id: Int) {
     self.walletNameLabel.text = wallet.name
-    self.walletAddressLabel.text = wallet.address
+    self.walletAddressLabel.text = wallet.address.lowercased()
     self.backgroundColor = id % 2 == 0 ? UIColor.clear : UIColor.white
     self.layoutIfNeeded()
   }

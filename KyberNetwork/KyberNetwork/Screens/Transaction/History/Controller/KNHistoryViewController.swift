@@ -295,7 +295,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.segmentedControl.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), forSegmentAt: 1)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
     self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
-    self.currentAddressLabel.text = self.viewModel.currentWallet.address
+    self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
   }
 
   fileprivate func setupCollectionView() {

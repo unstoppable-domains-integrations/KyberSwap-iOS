@@ -10,10 +10,10 @@ struct KNWalletQRCodeViewModel {
   }
 
   var displayedAddress: String {
-    return self.address
+    return self.address.lowercased()
   }
 
-  var address: String { return self.wallet.address }
+  var address: String { return self.wallet.address.lowercased() }
 
   var shareText: String {
     return "\(self.displayedAddress)"

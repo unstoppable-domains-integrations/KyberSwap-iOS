@@ -360,7 +360,7 @@ extension KNBalanceTabHamburgerMenuViewController: UITableViewDataSource {
         NSAttributedStringKey.kern: 0.0,
         ]
       attributedString.append(NSAttributedString(string: "    \(wallet.name)", attributes: nameAttributes))
-      let address: String = "         \(wallet.address.prefix(8))...\(wallet.address.suffix(6))"
+      let address: String = "         \(wallet.address.lowercased().prefix(8))...\(wallet.address.lowercased().suffix(6))"
       attributedString.append(NSAttributedString(string: "\n\(address)", attributes: addressAttributes))
       return attributedString
     }()

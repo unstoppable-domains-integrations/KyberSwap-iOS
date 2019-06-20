@@ -160,7 +160,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   fileprivate func updateWalletInfoUI() {
     self.walletNameLabel.text = {
       let name = self.viewModel.wallet.name
-      let address = "\(self.viewModel.wallet.address.prefix(6))...\(self.viewModel.wallet.address.suffix(4))"
+      let address = "\(self.viewModel.wallet.address.lowercased().prefix(6))...\(self.viewModel.wallet.address.lowercased().suffix(4))"
       return "\(name) - \(address)"
     }()
     self.walletNameLabel.addLetterSpacing()
