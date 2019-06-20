@@ -245,6 +245,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
+      self.viewModel.updateFocusTextField(2)
     }
     // Update hamburger menu
     self.hasPendingTxView.rounded(radius: self.hasPendingTxView.frame.height / 2.0)
@@ -844,7 +845,7 @@ extension KNCreateLimitOrderViewController {
     // support for promo wallet
     let isUpdatedTo: Bool = !isSource
     self.updateTokensView(updatedFrom: isSource, updatedTo: isUpdatedTo)
-    if (self.viewModel.from == self.viewModel.to || (self.viewModel.from.isWETH && self.viewModel.to.isETH))  && isWarningShown {
+    if (self.viewModel.from == self.viewModel.to || (self.viewModel.from.isWETH && self.viewModel.to.isETH)) && isWarningShown {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
         message: "Can not create an order with same token".toBeLocalised(),
@@ -856,6 +857,7 @@ extension KNCreateLimitOrderViewController {
       let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
+      self.viewModel.updateFocusTextField(2)
     }
     self.updateViewAmountDidChange()
 
