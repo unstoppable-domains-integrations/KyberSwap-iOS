@@ -10,6 +10,7 @@ enum KWalletBalanceViewEvent {
   case buy(token: TokenObject)
   case sell(token: TokenObject)
   case send(token: TokenObject)
+  case alert(token: TokenObject)
   case receiveToken
 }
 
@@ -423,6 +424,22 @@ extension KWalletBalanceViewController: UITableViewDataSource {
     }
     buyAction.backgroundColor = UIColor.Kyber.shamrock
     return tokenObject.isSupported ? [sendAction, sellAction, buyAction] : [sendAction]
+  }
+
+  @available(iOS 11.0, *)
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
+    if !tokenObject.isSupported { return nil }
+    let alertAction = UIContextualAction(
+      style: .normal,
+      title: ""
+    ) { (_, _, _) in
+      tableView.reloadData()
+      self.delegate?.kWalletBalanceViewController(self, run: .alert(token: tokenObject))
+    }
+    alertAction.image = UIImage(named: "add_alert_icon")
+    alertAction.backgroundColor = UIColor(hex: "5A5E67")
+    return UISwipeActionsConfiguration(actions: [alertAction])
   }
 }
 

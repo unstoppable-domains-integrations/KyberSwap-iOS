@@ -33,6 +33,8 @@ class KNBalanceTabCoordinator: Coordinator {
 
   fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
+  fileprivate var newAlertController: KNNewAlertViewController?
+
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
     guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
@@ -210,6 +212,9 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .receiveToken:
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "open_qrcode"])
       self.qrcodeCoordinator?.start()
+    case .alert(let token):
+      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "add_alert_\(token.symbol)"])
+      self.openAddNewAlert(token)
     }
   }
 
@@ -280,6 +285,32 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     self.historyCoordinator?.delegate = self
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.historyCoordinator?.start()
+  }
+
+  func openAddNewAlert(_ token: TokenObject) {
+    if KNAlertStorage.shared.isMaximumAlertsReached {
+      let alertController = UIAlertController(
+        title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
+        message: NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: ""),
+        preferredStyle: .alert
+      )
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
+      self.navigationController.present(alertController, animated: true, completion: nil)
+      return
+    }
+    if IEOUserStorage.shared.user == nil {
+      self.navigationController.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
+        time: 1.5
+      )
+      return
+    }
+    self.newAlertController = KNNewAlertViewController()
+    self.newAlertController?.loadViewIfNeeded()
+    self.navigationController.pushViewController(self.newAlertController!, animated: true) {
+      self.newAlertController?.updatePair(token: token, currencyType: KNAppTracker.getCurrencyType())
+    }
   }
 }
 
