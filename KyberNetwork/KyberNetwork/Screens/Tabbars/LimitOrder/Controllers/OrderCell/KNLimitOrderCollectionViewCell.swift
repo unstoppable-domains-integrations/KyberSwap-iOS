@@ -83,19 +83,24 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     switch order.state {
     case .open:
       self.orderStatusLabel.setTitle("Open".toBeLocalised(), for: .normal)
-      self.orderStatusLabel.backgroundColor = UIColor.Kyber.shamrock
+      self.orderStatusLabel.backgroundColor = UIColor(red: 234, green: 230, blue: 255)
+      self.orderStatusLabel.setTitleColor(UIColor(red: 64, green: 50, blue: 148), for: .normal)
     case .inProgress:
       self.orderStatusLabel.setTitle("In progress".toBeLocalised(), for: .normal)
-      self.orderStatusLabel.backgroundColor = UIColor(red: 248, green: 159, blue: 80)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 222, green: 235, blue: 255)
+      self.orderStatusLabel.setTitleColor(UIColor(red: 0, green: 73, blue: 176), for: .normal)
     case .filled:
       self.orderStatusLabel.setTitle("Filled".toBeLocalised(), for: .normal)
-      self.orderStatusLabel.backgroundColor = UIColor.Kyber.blueGreen
+      self.orderStatusLabel.backgroundColor = UIColor(red: 215, green: 242, blue: 226)
+      self.orderStatusLabel.setTitleColor(UIColor(red: 0, green: 102, blue: 68), for: .normal)
     case .cancelled:
       self.orderStatusLabel.setTitle("Cancelled".toBeLocalised(), for: .normal)
-      self.orderStatusLabel.backgroundColor = UIColor(red: 190, green: 190, blue: 190)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 255, green: 235, blue: 229)
+      self.orderStatusLabel.setTitleColor(UIColor(red: 191, green: 38, blue: 0), for: .normal)
     case .invalidated:
       self.orderStatusLabel.setTitle("Invalidated".toBeLocalised(), for: .normal)
-      self.orderStatusLabel.backgroundColor = UIColor(red: 70, green: 73, blue: 80)
+      self.orderStatusLabel.backgroundColor = UIColor(red: 247, green: 232, blue: 173)
+      self.orderStatusLabel.setTitleColor(UIColor(red: 23, green: 43, blue: 77), for: .normal)
     default:
       self.orderStatusLabel.isHidden = true
     }
