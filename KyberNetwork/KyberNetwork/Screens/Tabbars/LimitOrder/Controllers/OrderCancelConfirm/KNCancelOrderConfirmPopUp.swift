@@ -42,7 +42,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
     self.containerView.rounded(radius: 8.0)
     self.headerContainerView.rounded(radius: 2.5)
-    self.statusValueLabel.rounded(radius: 2.5)
+    self.statusValueLabel.rounded(radius: self.statusValueLabel.frame.height / 2.0)
 
     self.titleTextLabel.text = "You are cancelling this order".toBeLocalised()
     self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
@@ -74,19 +74,24 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     switch order.state {
     case .open:
       self.statusValueLabel.setTitle("Open".toBeLocalised(), for: .normal)
-      self.statusValueLabel.backgroundColor = UIColor.Kyber.shamrock
+      self.statusValueLabel.backgroundColor = UIColor(red: 234, green: 230, blue: 255)
+      self.statusValueLabel.setTitleColor(UIColor(red: 64, green: 50, blue: 148), for: .normal)
     case .inProgress:
       self.statusValueLabel.setTitle("In progress".toBeLocalised(), for: .normal)
-      self.statusValueLabel.backgroundColor = UIColor(red: 248, green: 159, blue: 80)
+      self.statusValueLabel.backgroundColor = UIColor(red: 222, green: 235, blue: 255)
+      self.statusValueLabel.setTitleColor(UIColor(red: 0, green: 73, blue: 176), for: .normal)
     case .filled:
       self.statusValueLabel.setTitle("Filled".toBeLocalised(), for: .normal)
-      self.statusValueLabel.backgroundColor = UIColor.Kyber.blueGreen
+      self.statusValueLabel.backgroundColor = UIColor(red: 215, green: 242, blue: 226)
+      self.statusValueLabel.setTitleColor(UIColor(red: 0, green: 102, blue: 68), for: .normal)
     case .cancelled:
       self.statusValueLabel.setTitle("Cancelled".toBeLocalised(), for: .normal)
-      self.statusValueLabel.backgroundColor = UIColor(red: 190, green: 190, blue: 190)
+      self.statusValueLabel.backgroundColor = UIColor(red: 255, green: 235, blue: 229)
+      self.statusValueLabel.setTitleColor(UIColor(red: 191, green: 38, blue: 0), for: .normal)
     case .invalidated:
       self.statusValueLabel.setTitle("Invalidated".toBeLocalised(), for: .normal)
-      self.statusValueLabel.backgroundColor = UIColor(red: 70, green: 73, blue: 80)
+      self.statusValueLabel.backgroundColor = UIColor(red: 247, green: 232, blue: 173)
+      self.statusValueLabel.setTitleColor(UIColor(red: 23, green: 43, blue: 77), for: .normal)
     default:
       self.statusValueLabel.isHidden = true
     }
