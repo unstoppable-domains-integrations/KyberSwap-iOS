@@ -29,7 +29,7 @@ class KNCreateLimitOrderViewModel {
   fileprivate(set) var cachedProdRate: BigInt?
 
   fileprivate(set) var prevFocusTextFieldTag: Int = 2
-  fileprivate(set) var focusTextFieldTag: Int = 0
+  fileprivate(set) var focusTextFieldTag: Int = 2
 
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
   fileprivate(set) var cancelSuggestOrders: [KNOrderObject] = []
@@ -369,7 +369,10 @@ class KNCreateLimitOrderViewModel {
 
   func updateFocusTextField(_ tag: Int) {
     if self.focusTextFieldTag == tag { return }
-    self.prevFocusTextFieldTag = self.focusTextFieldTag
+    self.prevFocusTextFieldTag = {
+      if tag != 2 { return 2 } // rate is the highest priority
+      return self.focusTextFieldTag
+    }()
     self.focusTextFieldTag = tag
   }
 
