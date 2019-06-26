@@ -30,7 +30,7 @@ class KNSendTokenViewModel: NSObject {
   var allTokenBalanceString: String {
     if self.from.isETH {
       let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
-      let fee = self.gasPrice * self.gasLimit
+      let fee = self.gasPrice * max(self.gasLimit, KNGasConfiguration.transferETHGasLimitDefault)
       let availableValue = max(BigInt(0), balance - fee)
       let string = availableValue.string(
         decimals: self.from.decimals,

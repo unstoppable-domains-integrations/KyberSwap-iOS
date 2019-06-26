@@ -72,7 +72,11 @@ class KSwapViewModel {
     if self.from.isETH {
       let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
       if balance <= self.feeBigInt { return "0" }
-      let availableToSwap = max(BigInt(0), balance - self.feeBigInt)
+      let fee: BigInt = {
+        let gasLimit = KNGasConfiguration.calculateDefaultGasLimit(from: self.from, to: self.to) + BigInt(10_000)
+        return self.gasPrice * gasLimit
+      }()
+      let availableToSwap = max(BigInt(0), balance - fee)
       let string = availableToSwap.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
