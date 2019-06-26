@@ -27,11 +27,15 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var addressString: String = ""
   var isSendAllBalanace: Bool = false
 
+  var allETHBalanceFee: BigInt {
+    let gasLimit = max(self.gasLimit, KNGasConfiguration.transferETHGasLimitDefault)
+    return self.gasPrice * gasLimit
+  }
+
   var allTokenBalanceString: String {
     if self.from.isETH {
       let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
-      let fee = self.gasPrice * max(self.gasLimit, KNGasConfiguration.transferETHGasLimitDefault)
-      let availableValue = max(BigInt(0), balance - fee)
+      let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
@@ -154,7 +158,15 @@ class KNSendTokenViewModel: NSObject {
       }
       return TransferType.token(self.from)
     }()
-    let amount = self.isSendAllBalanace ? (self.balance?.value ?? BigInt(0)) : self.amountBigInt
+    let amount: BigInt = {
+      if self.from.isETH {
+        // eth needs to minus some fee
+        if !self.isSendAllBalanace { return self.amountBigInt } // not send all balance
+        let balance = self.balance?.value ?? BigInt(0)
+        return max(BigInt(0), balance - self.allETHBalanceFee)
+      }
+      return self.isSendAllBalanace ? (self.balance?.value ?? BigInt(0)) : self.amountBigInt
+    }()
     return UnconfirmedTransaction(
       transferType: transferType,
       value: amount,

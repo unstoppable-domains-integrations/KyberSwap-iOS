@@ -438,7 +438,10 @@ class KSwapViewController: KNBaseViewController {
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount {
         if self.viewModel.isSwapAllBalance {
-          return self.viewModel.balance?.value ?? BigInt(0)
+          let balance = self.viewModel.balance?.value ?? BigInt(0)
+          if !self.viewModel.from.isETH { return balance } // token, no need minus fee
+          let fee = self.viewModel.allETHBalanceFee
+          return max(BigInt(0), balance - fee)
         }
         return self.viewModel.amountFromBigInt
       }
