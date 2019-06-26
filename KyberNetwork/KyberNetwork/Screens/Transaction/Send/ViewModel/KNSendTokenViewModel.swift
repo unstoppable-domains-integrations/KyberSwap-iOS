@@ -25,6 +25,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
   fileprivate(set) var addressString: String = ""
+  var isSendAllBalanace: Bool = false
 
   var allTokenBalanceString: String {
     if self.from.isETH {
@@ -68,6 +69,7 @@ class KNSendTokenViewModel: NSObject {
     self.from = from
     self.balances = balances
     self.balance = balances[from.contract]
+    self.isSendAllBalanace = false
   }
 
   var navTitle: String {
@@ -152,9 +154,10 @@ class KNSendTokenViewModel: NSObject {
       }
       return TransferType.token(self.from)
     }()
+    let amount = self.isSendAllBalanace ? (self.balance?.value ?? BigInt(0)) : self.amountBigInt
     return UnconfirmedTransaction(
       transferType: transferType,
-      value: self.amountBigInt,
+      value: amount,
       to: self.address,
       data: nil,
       gasLimit: self.gasLimit,
@@ -168,6 +171,7 @@ class KNSendTokenViewModel: NSObject {
     self.from = token
     self.balance = balance
     self.amount = ""
+    self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: self.from)
   }
 
@@ -176,16 +180,16 @@ class KNSendTokenViewModel: NSObject {
       self.balances[key] = value
     }
     if let bal = balances[self.from.contract] {
+      if let oldBal = self.balance, oldBal.value != bal.value {
+        self.isSendAllBalanace = false
+      }
       self.balance = bal
     }
   }
 
-  func updateBalance(_ balance: Balance?) {
-    self.balance = balance
-  }
-
   func updateAmount(_ amount: String) {
     self.amount = amount
+    self.isSendAllBalanace = false
   }
 
   func updateGasPrice(_ gasPrice: BigInt) {

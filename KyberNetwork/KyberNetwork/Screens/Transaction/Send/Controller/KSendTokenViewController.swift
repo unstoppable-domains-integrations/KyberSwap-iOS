@@ -320,6 +320,7 @@ class KSendTokenViewController: KNBaseViewController {
         time: 1.5
       )
     }
+    self.viewModel.isSendAllBalanace = true
     self.view.layoutIfNeeded()
   }
 
@@ -506,6 +507,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.updateUIAddressQRCode()
     }
     self.shouldUpdateEstimatedGasLimit(nil)
+    self.viewModel.isSendAllBalanace = false
     return false
   }
 
@@ -527,6 +529,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.viewModel.isSendAllBalanace = false
     self.amountTextField.textColor = UIColor.Kyber.enygold
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.addressString

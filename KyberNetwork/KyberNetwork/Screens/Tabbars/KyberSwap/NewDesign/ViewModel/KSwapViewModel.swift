@@ -28,6 +28,8 @@ class KSwapViewModel {
   fileprivate(set) var slippageRate: BigInt?
   fileprivate(set) var minRatePercent: Double = 3.0
 
+  var isSwapAllBalance: Bool = false
+
   var isSwapSuggestionShown: Bool {
     if let suggestions = self.swapSuggestion, !suggestions.isEmpty { return true }
     return false
@@ -365,6 +367,7 @@ class KSwapViewModel {
     self.amountFrom = ""
     self.amountTo = ""
     self.isFocusingFromAmount = true
+    self.isSwapAllBalance = false
 
     self.balances = [:]
     self.balance = nil
@@ -390,6 +393,7 @@ class KSwapViewModel {
     self.amountFrom = ""
     self.amountTo = ""
     self.isFocusingFromAmount = true
+    self.isSwapAllBalance = false
 
     self.estRate = nil
     self.slippageRate = nil
@@ -407,6 +411,7 @@ class KSwapViewModel {
     if self.isFocusingFromAmount && isSource {
       // focusing on from amount, and from token is changed, reset amount
       self.amountFrom = ""
+      self.isSwapAllBalance = false
     } else if !self.isFocusingFromAmount && !isSource {
       // focusing on to amount, and to token is changed, reset to amount
       self.amountTo = ""
@@ -431,6 +436,7 @@ class KSwapViewModel {
   func updateAmount(_ amount: String, isSource: Bool) {
     if isSource {
       self.amountFrom = amount
+      self.isSwapAllBalance = false
     } else {
       self.amountTo = amount
     }
@@ -441,6 +447,7 @@ class KSwapViewModel {
       self.balances[key] = value
     }
     if let bal = balances[self.from.contract] {
+      if let oldBalance = self.balance, oldBalance.value != bal.value { self.isSwapAllBalance = false }
       self.balance = bal
     }
   }

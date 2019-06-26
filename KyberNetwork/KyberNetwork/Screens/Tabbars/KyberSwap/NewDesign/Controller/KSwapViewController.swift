@@ -436,7 +436,12 @@ class KSwapViewController: KNBaseViewController {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
-      if self.viewModel.isFocusingFromAmount { return self.viewModel.amountFromBigInt }
+      if self.viewModel.isFocusingFromAmount {
+        if self.viewModel.isSwapAllBalance {
+          return self.viewModel.balance?.value ?? BigInt(0)
+        }
+        return self.viewModel.amountFromBigInt
+      }
       let expectedExchange: BigInt = {
         if rate.isZero { return rate }
         let amount = self.viewModel.amountToBigInt
@@ -522,6 +527,7 @@ class KSwapViewController: KNBaseViewController {
         time: 1.5
       )
     }
+    self.viewModel.isSwapAllBalance = true
     self.view.layoutIfNeeded()
   }
 
@@ -1022,6 +1028,7 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = ""
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
+    self.viewModel.isSwapAllBalance = false
     self.updateViewAmountDidChange()
     self.updateEstimatedRate(showError: true, showLoading: true)
     return false
@@ -1058,6 +1065,7 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.viewModel.isSwapAllBalance = false
     let isFocusingSource = self.viewModel.isFocusingFromAmount
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     if self.viewModel.isFocusingFromAmount {
