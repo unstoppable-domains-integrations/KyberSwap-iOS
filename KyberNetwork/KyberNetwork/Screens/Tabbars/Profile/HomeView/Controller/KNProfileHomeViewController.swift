@@ -163,7 +163,7 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.forgotPassButton.setTitle("Forgot Password?".toBeLocalised(), for: .normal)
     self.dontHaveAnAccountButton.setAttributedTitle(self.signInViewModel.dontHaveAccountAttributedText, for: .normal)
     self.passwordTextField.isSecureTextEntry = self.signInViewModel.isSecureText
-    let image = self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
+    let image = !self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
     self.signInButton.rounded(
       radius: self.appStyle.buttonRadius(for: self.signInButton.frame.height)
@@ -368,7 +368,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBAction func secureTextButtonPressed(_ sender: Any) {
     self.signInViewModel.isSecureText = !self.signInViewModel.isSecureText
     self.passwordTextField.isSecureTextEntry = self.signInViewModel.isSecureText
-    let image = self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
+    let image = !self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
   }
 

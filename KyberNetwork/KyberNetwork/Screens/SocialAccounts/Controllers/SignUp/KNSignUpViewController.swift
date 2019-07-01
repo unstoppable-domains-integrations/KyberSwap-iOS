@@ -89,7 +89,7 @@ class KNSignUpViewController: KNBaseViewController {
     self.displayNameTextField.placeholder = "Display Name".toBeLocalised()
     self.passwordTextField.placeholder = "Password".toBeLocalised()
     self.passwordTextField.isSecureTextEntry = self.viewModel.isSecureText
-    let image = self.viewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
+    let image = !self.viewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
     self.passwordGuideTextLabel.text = "At least 8 characters including upper case, lower case and digit.".toBeLocalised()
 
@@ -158,7 +158,7 @@ class KNSignUpViewController: KNBaseViewController {
   @IBAction func secureTextButtonPressed(_ sender: Any) {
     self.viewModel.isSecureText = !self.viewModel.isSecureText
     self.passwordTextField.isSecureTextEntry = self.viewModel.isSecureText
-    let image = self.viewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
+    let image = !self.viewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
   }
 
