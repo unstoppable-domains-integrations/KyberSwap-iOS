@@ -45,7 +45,7 @@ class KNImportJSONViewController: KNBaseViewController {
     self.nameWalletTextField.text = ""
     self.enterPasswordTextField.text = ""
     self.enterPasswordTextField.isSecureTextEntry = true
-    self.secureTextButton.setImage(UIImage(named: self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
 
     self.updateNextButton()
   }
@@ -73,6 +73,7 @@ class KNImportJSONViewController: KNBaseViewController {
     self.enterPasswordTextField.addPlaceholderSpacing()
     self.nameWalletTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.nameWalletTextField.addPlaceholderSpacing()
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
 
     self.resetUIs()
   }
@@ -92,7 +93,7 @@ class KNImportJSONViewController: KNBaseViewController {
 
   @IBAction func secureTextButtonPressed(_ sender: Any) {
     self.enterPasswordTextField.isSecureTextEntry = !self.enterPasswordTextField.isSecureTextEntry
-    self.secureTextButton.setImage(UIImage(named: self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {

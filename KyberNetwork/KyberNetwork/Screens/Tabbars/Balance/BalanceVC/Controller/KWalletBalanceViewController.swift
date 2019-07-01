@@ -122,7 +122,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.walletDataView.addGestureRecognizer(tapGesture)
 
     self.balanceDisplayControlButton.setImage(
-      UIImage(named: self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
+      UIImage(named: !self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
       for: .normal
     )
     self.updateWalletBalanceUI()
@@ -276,7 +276,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBAction func balanceDisplayControlButtonPressed(_ sender: Any) {
     self.viewModel.updateIsBalanceShown(!self.viewModel.isBalanceShown)
     self.balanceDisplayControlButton.setImage(
-      UIImage(named: self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
+      UIImage(named: !self.viewModel.isBalanceShown ? "show_balance_icon" : "hide_balance_icon"),
       for: .normal
     )
     self.updateWalletBalanceUI()
