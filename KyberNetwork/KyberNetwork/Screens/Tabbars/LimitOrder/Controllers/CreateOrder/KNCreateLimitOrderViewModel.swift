@@ -285,6 +285,15 @@ class KNCreateLimitOrderViewModel {
     return Double(rate) / pow(10.0, Double(self.to.decimals))
   }
 
+  var isRateTooSmall: Bool {
+    return self.targetRateBigInt.isZero
+  }
+
+  var isRateTooBig: Bool {
+    let curRate = self.rateFromNode ?? self.cachedProdRate ?? BigInt(0)
+    return self.targetRateBigInt > curRate * BigInt(10)
+  }
+
   var percentageRateDiff: Double {
     guard let rate = self.targetRate.fullBigInt(decimals: self.to.decimals) else { return 0.0 }
     let marketRate = self.estimatedRateDouble
@@ -438,7 +447,7 @@ class KNCreateLimitOrderViewModel {
       return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
     }()
     if from == self.from, to == self.to, !isAmountChanged {
-      self.rateFromNode = rate
+      self.rateFromNode = rate.isZero ? nil : rate
       return true
     }
     return false

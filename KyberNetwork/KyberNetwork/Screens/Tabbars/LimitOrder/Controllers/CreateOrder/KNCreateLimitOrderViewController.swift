@@ -650,6 +650,22 @@ extension KNCreateLimitOrderViewController {
       )
       return false
     }
+    guard !self.viewModel.isRateTooSmall else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: "Your target rate should be greater than 0".toBeLocalised(),
+        time: 1.5
+      )
+      return false
+    }
+    guard !self.viewModel.isRateTooBig else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        message: "Your target rate is too high, should be at most 10 times of current rate".toBeLocalised(),
+        time: 1.5
+      )
+      return false
+    }
     if isConfirming {
       if self.viewModel.amountFrom.isEmpty {
         self.showWarningTopBannerMessage(
