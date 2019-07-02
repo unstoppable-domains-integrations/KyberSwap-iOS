@@ -201,7 +201,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
     self.separatorView.backgroundColor = .clear
     self.submitOrderButton.rounded(radius: self.submitOrderButton.frame.height / 2.0)
+    self.submitOrderButton.setTitle("Submit Order".toBeLocalised(), for: .normal)
 
+    self.rateOfTextLabel.text = "Rate of".toBeLocalised()
     self.tokenDateContainerView.rounded(radius: 4.0)
     self.fromAmountTextField.text = ""
     self.fromAmountTextField.adjustsFontSizeToFitWidth = true
@@ -225,8 +227,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.percentageButtons.forEach({ $0.rounded(radius: 2.5) })
 
     self.relatedOrderTextLabel.text = "Related Orders".toBeLocalised().uppercased()
-    self.relatedManageOrderButton.setTitle("Manage Orders".toBeLocalised(), for: .normal)
-    self.manageOrdersButton.setTitle("Manage Orders".toBeLocalised(), for: .normal)
+    self.relatedManageOrderButton.setTitle("Manage Your Orders".toBeLocalised(), for: .normal)
+    self.manageOrdersButton.setTitle("Manage Your Orders".toBeLocalised(), for: .normal)
 
     self.updateTokensView(updatedFrom: true, updatedTo: true)
 
@@ -255,8 +257,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.currentRateLabel.addGestureRecognizer(tapCurrentRate)
     self.currentRateLabel.isUserInteractionEnabled = true
 
-    self.warningMessageLabel.text = "This new order has a lower rate than some orders you have created. Below orders will be canceled when you submited this order".toBeLocalised()
-    self.confirmCancelButton.setTitle("Yes, please".toBeLocalised(), for: .normal)
+    self.warningMessageLabel.text = "This new intended order has a worse rate than some orders you have created earlier. All orders below this intended order will be cancelled when it is submitted".toBeLocalised()
+    self.confirmCancelButton.setTitle("OK".toBeLocalised(), for: .normal)
     self.confirmCancelButton.rounded(
       radius: self.confirmCancelButton.frame.height / 2.0
     )
@@ -281,7 +283,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "from_token_info_pressed"])
     self.showTopBannerView(
       with: "",
-      message: "Ether that is compatible to ERC20 standard. 1 WETH = 1 ETH. Limit Order works with WETH only (not ETH)".toBeLocalised(),
+      message: "ETH* is the combination of ETH and WETH".toBeLocalised(),
       icon: UIImage(named: "info_blue_icon"),
       time: 3.0
     )
@@ -297,7 +299,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     if self.viewModel.to.isETH && self.viewModel.weth == nil {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
+        message: "WETH (instead of ETH) is required to set a Limit Order to buy a token".toBeLocalised(),
         time: 2.0
       )
       return
@@ -305,7 +307,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     if self.viewModel.from.isWETH && (self.viewModel.to.isETH || self.viewModel.to.isWETH) {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "Can not create an order with same token".toBeLocalised(),
+        message: "Source token must be different from dest token".toBeLocalised(),
         time: 1.5
       )
       return
@@ -514,13 +516,15 @@ extension KNCreateLimitOrderViewController {
 
   // Update current martket rate with rate from node or cached
   fileprivate func updateCurrentMarketRateUI() {
-    self.currentRateLabel.text = String(format: "Current Rate: %@".toBeLocalised(), self.viewModel.exchangeRateText)
+    self.currentRateLabel.text = "\("Current Rate".toBeLocalised()): \(self.viewModel.exchangeRateText)"
     self.compareMarketRateLabel.attributedText = self.viewModel.displayRateCompareAttributedString
   }
 
   // Update fee when source amount changed
   fileprivate func updateFeeNotesUI() {
     self.feeNoteLabel.text = self.viewModel.displayFeeString
+    self.suggestBuyTokenButton.titleLabel?.numberOfLines = 2
+    self.suggestBuyTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
     self.suggestBuyTokenButton.setTitle(self.viewModel.suggestBuyText, for: .normal)
   }
 
@@ -622,7 +626,7 @@ extension KNCreateLimitOrderViewController {
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "Can not create an order with same token".toBeLocalised(),
+        message: "Source token must be different from dest token".toBeLocalised(),
         time: 1.5
       )
       return false
@@ -630,14 +634,14 @@ extension KNCreateLimitOrderViewController {
     guard self.viewModel.isBalanceEnough else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: "Your balance is not enough to create the order".toBeLocalised()
+        message: "Your balance is insufficent for the order. Please check your balance and your pending order".toBeLocalised()
       )
       return false
     }
     guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: "Amount too big, your amount should be between 0.5 ETH to 10 ETH in equivalent".toBeLocalised(),
+        message: "Amount is too big. Limit order only support max 10 ETH equivalent order".toBeLocalised(),
         time: 1.5
       )
       return false
@@ -645,7 +649,7 @@ extension KNCreateLimitOrderViewController {
     guard !(self.viewModel.isAmountTooSmall && !self.viewModel.amountFrom.isEmpty && !self.viewModel.amountTo.isEmpty) else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: "Amount too small, your amount should be between 0.5 ETH to 10 ETH in equivalent".toBeLocalised(),
+        message: "Amount is too small. Limit order only support min 0.5 ETH equivalent order".toBeLocalised(),
         time: 1.5
       )
       return false
@@ -724,7 +728,7 @@ extension KNCreateLimitOrderViewController {
       // it is a promo code wallet
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", comment: ""),
-        message: "This wallet is not supported to make an order".toBeLocalised(),
+        message: "You cannot submit order with promo code. Please use other wallets.".toBeLocalised(),
         time: 2.0
       )
       return true
@@ -741,7 +745,7 @@ extension KNCreateLimitOrderViewController {
         // not eligible
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
-          message: "This wallet has been used to submit an order with another account, please change your wallet to continue".toBeLocalised(),
+          message: "This address has been used by another account. Please place order with other address.".toBeLocalised(),
           time: 2.0
         )
       }
@@ -830,7 +834,7 @@ extension KNCreateLimitOrderViewController {
     if self.viewModel.from.isWETH, !isSource, token.isETH || token.isWETH {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "Can not create an order with same token".toBeLocalised(),
+        message: "Source token must be different from dest token".toBeLocalised(),
         time: 1.5
       )
       return
@@ -841,7 +845,7 @@ extension KNCreateLimitOrderViewController {
       } else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-          message: "We don't support limit order with ETH as source token, but you can use WETH instead".toBeLocalised(),
+          message: "WETH (instead of ETH) is required to set a Limit Order to buy a token".toBeLocalised(),
           time: 2.0
         )
         return
@@ -864,7 +868,7 @@ extension KNCreateLimitOrderViewController {
     if (self.viewModel.from == self.viewModel.to || (self.viewModel.from.isWETH && self.viewModel.to.isETH)) && isWarningShown {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: "Can not create an order with same token".toBeLocalised(),
+        message: "Source token must be different from dest token".toBeLocalised(),
         time: 1.5
       )
     }
@@ -928,7 +932,7 @@ extension KNCreateLimitOrderViewController {
   func coordinatorDoneSubmittingOrder(_ order: KNOrderObject) {
     self.showSuccessTopBannerMessage(
       with: NSLocalizedString("success", value: "Success", comment: ""),
-      message: "Your order has been submitted successfully".toBeLocalised(),
+      message: "Your order have been submitted sucessfully to server. You can check the order in your order list.".toBeLocalised(),
       time: 1.5
     )
     self.listOrdersDidUpdate(nil)
