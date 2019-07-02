@@ -325,13 +325,13 @@ class KNCreateLimitOrderViewModel {
       NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.strawberry,
     ]
-    attributedString.append(NSAttributedString(string: "Your target price is ".toBeLocalised(), attributes: normalAttributes))
+    attributedString.append(NSAttributedString(string: "Your target price is".toBeLocalised(), attributes: normalAttributes))
     if rateChange > 0 {
-      attributedString.append(NSAttributedString(string: rate, attributes: higherAttributes))
-      attributedString.append(NSAttributedString(string: " higher than current Market rate".toBeLocalised(), attributes: normalAttributes))
+      attributedString.append(NSAttributedString(string: " \(rate) ", attributes: higherAttributes))
+      attributedString.append(NSAttributedString(string: "higher than current Market rate".toBeLocalised(), attributes: normalAttributes))
     } else {
-      attributedString.append(NSAttributedString(string: rate, attributes: lowerAttributes))
-      attributedString.append(NSAttributedString(string: " lower than current Market rate".toBeLocalised(), attributes: normalAttributes))
+      attributedString.append(NSAttributedString(string: " \(rate) ", attributes: lowerAttributes))
+      attributedString.append(NSAttributedString(string: "lower than current Market rate".toBeLocalised(), attributes: normalAttributes))
     }
     return attributedString
   }
@@ -345,11 +345,12 @@ class KNCreateLimitOrderViewModel {
     let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
     let fromSymbol = self.fromSymbol
     let fee = NumberFormatterUtil.shared.displayPercentage(from: feePercentage * 100.0)
-    return "Fee: \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
+    let feeText = NSLocalizedString("fee", value: "Fee", comment: "")
+    return "\(feeText): \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
   }
 
   var suggestBuyText: String {
-    return "Hold KNC to get discount up to 50%".toBeLocalised()
+    return "Hold from 2000 KNC to get discount for your orders.".toBeLocalised()
   }
 
   // MARK: Update data
@@ -455,7 +456,16 @@ class KNCreateLimitOrderViewModel {
 
   // Update order with same sender, src and dest address
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
-    self.relatedOrders = orders.filter({ return $0.state == .open || $0.state == .inProgress }).sorted(by: { return $0.createdDate > $1.createdDate })
+    let fromTime: TimeInterval = {
+      if let date = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
+        return date.timeIntervalSince1970
+      }
+      return Date().timeIntervalSince1970 - 3.0 * 30.0 * 24.0 * 60.0 * 60.0
+    }()
+    self.relatedOrders = orders
+      .filter({ return $0.state == .open || $0.state == .inProgress })
+      .filter({ return $0.dateToDisplay.timeIntervalSince1970 >= fromTime })
+      .sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
   }
 }
