@@ -200,6 +200,9 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         ethBalance: ethBalance,
         amount: amount
       )
+    case .suggestBuyToken:
+      //TODO: Open FAQ view
+      print("Suggest buy token pressed")
     default: break
     }
   }
@@ -267,7 +270,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     group.enter()
     self.checkWalletEligible { isEligible in
       if !isEligible {
-        errorMessage = "This wallet has been used to submit an order with another account, please change your wallet to continue".toBeLocalised()
+        errorMessage = "This address has been used by another account. Please place order with other address.".toBeLocalised()
       }
       group.leave()
     }

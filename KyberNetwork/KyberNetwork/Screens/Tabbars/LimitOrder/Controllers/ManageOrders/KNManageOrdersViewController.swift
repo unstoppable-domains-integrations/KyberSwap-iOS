@@ -21,7 +21,7 @@ class KNManageOrdersViewModel {
     if let date = Calendar.current.date(byAdding: .month, value: months, to: Date()) {
       return date.timeIntervalSince1970
     }
-    return Date().timeIntervalSince1970 - Double(months) * 30.0 * 24.0 * 60.0 * 60.0
+    return Date().timeIntervalSince1970 - Double(months * -1) * 30.0 * 24.0 * 60.0 * 60.0
   }
 
   var selectedPairs: [String]? {

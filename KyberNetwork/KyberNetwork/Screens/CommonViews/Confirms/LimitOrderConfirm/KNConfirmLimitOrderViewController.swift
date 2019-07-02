@@ -54,7 +54,9 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
 
     self.navTitleLabel.text = "Confirm Order".toBeLocalised()
 
-    self.broadcastConditonTextLabel.text = "Your transaction will be broadcasted when rate of \(self.order.from.symbol)/\(self.order.to.symbol) >= \(self.order.targetRate.displayRate(decimals: self.order.to.decimals))".toBeLocalised()
+    let text = "Your transaction will be broadcasted when rate of %@".toBeLocalised()
+    let condition = "\(self.order.from.symbol)/\(self.order.to.symbol) >= \(self.order.targetRate.displayRate(decimals: self.order.to.decimals))"
+    self.broadcastConditonTextLabel.text = String(format: text, condition)
 
     self.srcDataLabel.text = "\(self.order.srcAmount.displayRate(decimals: self.order.from.decimals)) \(self.order.from.symbol)"
 
@@ -73,7 +75,7 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
 
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 
-    self.feeTextLabel.text = "Fee".toBeLocalised()
+    self.feeTextLabel.text = NSLocalizedString("fee", value: "Fee", comment: "")
     self.feeValueButton.semanticContentAttribute = .forceRightToLeft
     self.feeValueButton.setTitle("\(feeAmountString) \(from.symbol)", for: .normal)
 
@@ -108,7 +110,7 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "confirm_limit_order", customAttributes: ["action": "fee"])
     self.showTopBannerView(
       with: "",
-      message: "Don't worry, you won't be charged now. You pay fee only when transaction is executed successfully.".toBeLocalised(),
+      message: "Don’t worry. You will not be charged now. \nYou pay fees only when transaction is executed (broadcasted & mined).".toBeLocalised(),
       icon: UIImage(named: "info_blue_icon"),
       time: 2.0
     )

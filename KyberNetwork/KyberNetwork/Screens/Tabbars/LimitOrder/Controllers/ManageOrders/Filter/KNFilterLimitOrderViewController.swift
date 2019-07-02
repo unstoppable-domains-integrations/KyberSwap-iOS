@@ -94,10 +94,10 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     super.viewDidLoad()
 
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.dateTextLabel.text = "Date".toBeLocalised()
-    self.filterTextLabel.text = "Filter".toBeLocalised()
-    self.pairTextLabel.text = "Pair".toBeLocalised()
-    self.statusTextLabel.text = "Status".toBeLocalised()
+    self.dateTextLabel.text = NSLocalizedString("Date", value: "Date", comment: "")
+    self.filterTextLabel.text = NSLocalizedString("Filter", value: "Filter", comment: "")
+    self.pairTextLabel.text = NSLocalizedString("Filter", value: "Filter", comment: "")
+    self.statusTextLabel.text = NSLocalizedString("Status", value: "Status", comment: "")
 
     self.latestTextButton.setTitle("Latest".toBeLocalised(), for: .normal)
     self.oldestTextButton.setTitle("Oldest".toBeLocalised(), for: .normal)
@@ -132,7 +132,7 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
     self.addressTableView.rowHeight = kFilterLimitOrderSelectPairTableViewCellHeight
     self.addressTableView.dataSource = self
 
-    self.dontHaveAnyOrdersLabel.text = "You don't have any orders yet".toBeLocalised()
+    self.dontHaveAnyOrdersLabel.text = "No order found".toBeLocalised()
     self.dontHaveAnyOrdersLabel.isHidden = true
 
     self.dateContainerView.rounded(radius: 4.0)
