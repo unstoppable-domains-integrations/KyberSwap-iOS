@@ -238,7 +238,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.updateRelatedOrdersView()
 
     if let rate = self.viewModel.rateFromNode ?? self.viewModel.cachedProdRate, !rate.isZero {
-      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
       self.viewModel.updateFocusTextField(2)
@@ -313,7 +313,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.updateTokensView()
 
     if let rate = self.viewModel.cachedProdRate, !rate.isZero {
-      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
     }
@@ -786,7 +786,7 @@ extension KNCreateLimitOrderViewController {
     self.hamburgerMenu.hideMenu(animated: false)
     // auto fill current rate
     if let rate = self.viewModel.rateFromNode ?? self.viewModel.cachedProdRate, !rate.isZero {
-      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
     }
@@ -887,7 +887,7 @@ extension KNCreateLimitOrderViewController {
     }
     // auto fill current rate
     if let rate = self.viewModel.rateFromNode ?? self.viewModel.cachedProdRate, !rate.isZero {
-      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals)
+      let rateString = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
       self.viewModel.updateFocusTextField(2)
