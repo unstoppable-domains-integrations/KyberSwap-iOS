@@ -277,6 +277,8 @@ enum LimitOrderService {
   case getNonce(accessToken: String)
   case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case checkEligibleAddress(accessToken: String, address: String)
+  case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
+  case pendingBalance(accessToken: String, address: String)
 }
 
 extension LimitOrderService: MoyaCacheable {
@@ -300,6 +302,10 @@ extension LimitOrderService: TargetType {
       return URL(string: "\(baseString)/api/orders/fee")!
     case .checkEligibleAddress(_, let address):
       return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
+    case .getRelatedOrders:
+      return URL(string: "\(baseString)/api/orders/related_orders")!
+    case .pendingBalance(_, let address):
+      return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
     }
   }
 
@@ -307,7 +313,7 @@ extension LimitOrderService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getOrders, .getFee, .getNonce, .checkEligibleAddress: return .get
+    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance: return .get
     case .cancelOrder: return .put
     case .createOrder: return .post
     }
@@ -315,7 +321,7 @@ extension LimitOrderService: TargetType {
 
   var task: Task {
     switch self {
-    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress:
+    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance:
       return .requestPlain
     case .createOrder(_, let order, let signedData):
       let json: JSONDictionary = [
@@ -341,6 +347,15 @@ extension LimitOrderService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
+    case .getRelatedOrders(_, let address, let src, let dest, let rate):
+      let json: JSONDictionary = [
+        "user_addr": address,
+        "src": src,
+        "dst": dest,
+        "min_rate": rate,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
     }
   }
 
@@ -361,6 +376,10 @@ extension LimitOrderService: TargetType {
     case .getNonce(let accessToken):
       json["Authorization"] = accessToken
     case .checkEligibleAddress(let accessToken, _):
+      json["Authorization"] = accessToken
+    case .getRelatedOrders(let accessToken, _, _, _, _):
+      json["Authorization"] = accessToken
+    case .pendingBalance(let accessToken, _):
       json["Authorization"] = accessToken
     default: break
     }

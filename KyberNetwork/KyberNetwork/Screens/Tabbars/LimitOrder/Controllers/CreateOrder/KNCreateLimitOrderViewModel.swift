@@ -20,6 +20,7 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var balances: [String: Balance] = [:]
   fileprivate(set) var balance: Balance?
+  fileprivate(set) var pendingBalances: JSONDictionary = [:]
 
   fileprivate(set) var amountFrom: String = ""
   fileprivate(set) var amountTo: String = ""
@@ -49,6 +50,8 @@ class KNCreateLimitOrderViewModel {
     self.feePercentage = 0
     self.nonce = nil
     self.supportedTokens = supportedTokens
+    self.pendingBalances = [:]
+    self.relatedOrders = []
     self.updateProdCachedRate()
   }
 
@@ -155,14 +158,9 @@ class KNCreateLimitOrderViewModel {
       return self.balance?.value ?? BigInt(0)
     }()
     var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
-    let allOrders = KNLimitOrderStorage.shared.orders
-    allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress)
-        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
-        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
-        availableAmount -= $0.sourceAmount
-      }
-    })
+    if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
+      availableAmount -= pendingAmount
+    }
     availableAmount = max(availableAmount, 0.0)
     return BigInt(availableAmount * pow(10.0, Double(self.from.decimals)))
   }
@@ -207,14 +205,9 @@ class KNCreateLimitOrderViewModel {
     let balance = self.balance?.value ?? BigInt(0)
 
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
-    let allOrders = KNLimitOrderStorage.shared.orders
-    allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress)
-        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
-        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
-        availableAmount -= $0.sourceAmount
-      }
-    })
+    if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
+      availableAmount -= pendingAmount
+    }
     availableAmount = max(availableAmount, 0.0)
 
     return BigInt(availableAmount * pow(10.0, 18.0)) < self.amountFromBigInt
@@ -225,14 +218,9 @@ class KNCreateLimitOrderViewModel {
     let balance = self.balance?.value ?? BigInt(0)
 
     var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
-    let allOrders = KNLimitOrderStorage.shared.orders
-    allOrders.forEach({
-      if ($0.state == .open || $0.state == .inProgress)
-        && $0.sourceToken.lowercased() == self.from.symbol.lowercased()
-        && $0.sender.lowercased() == self.walletObject.address.lowercased() {
-        availableAmount -= $0.sourceAmount
-      }
-    })
+    if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
+      availableAmount -= pendingAmount
+    }
     availableAmount = max(availableAmount, 0.0)
 
     let availableBal = BigInt(availableAmount * pow(10.0, 18.0))
@@ -370,6 +358,10 @@ class KNCreateLimitOrderViewModel {
     self.balance = nil
 
     self.rateFromNode = nil
+
+    self.pendingBalances = [:]
+    self.relatedOrders = []
+
     self.updateProdCachedRate()
   }
 
@@ -467,5 +459,11 @@ class KNCreateLimitOrderViewModel {
       .filter({ return $0.dateToDisplay.timeIntervalSince1970 >= fromTime })
       .sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
+  }
+
+  func updatePendingBalances(_ balances: JSONDictionary, address: String) {
+    if address.lowercased() == self.walletObject.address.lowercased() {
+      self.pendingBalances = balances
+    }
   }
 }
