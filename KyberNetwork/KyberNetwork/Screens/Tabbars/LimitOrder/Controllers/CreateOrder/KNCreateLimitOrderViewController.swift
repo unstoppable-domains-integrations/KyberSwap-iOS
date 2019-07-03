@@ -13,6 +13,8 @@ enum KNCreateLimitOrderViewEvent {
   case estimateFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case getExpectedNonce(address: String, src: String, dest: String)
   case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt)
+  case getRelatedOrders(address: String, src: String, dest: String, minRate: Double)
+  case getPendingBalances(address: String)
 }
 
 protocol KNCreateLimitOrderViewControllerDelegate: class {
@@ -136,22 +138,20 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.isErrorMessageEnabled = true
     self.updateEstimateRateFromNetwork(showWarning: false)
 
+    self.listOrdersDidUpdate(nil)
+    self.updateRelatedOrdersFromServer()
+    self.updatePendingBalancesFromServer()
     self.updateEstimateFeeFromServer(isShowingIndicator: true)
+
     self.updateFeeTimer?.invalidate()
     self.updateFeeTimer = Timer.scheduledTimer(
       withTimeInterval: 15.0,
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimateFeeFromServer()
+        self?.updateRelatedOrdersFromServer()
+        self?.updatePendingBalancesFromServer()
       }
-    )
-
-    self.listOrdersDidUpdate(nil)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.listOrdersDidUpdate(_:)),
-      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
-      object: nil
     )
 
     self.checkAddressEligible(nil)
@@ -187,12 +187,6 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.updateFeeTimer?.invalidate()
     self.updateFeeTimer = nil
-
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
-      object: nil
-    )
   }
 
   fileprivate func setupUI() {
@@ -554,6 +548,23 @@ extension KNCreateLimitOrderViewController {
     }
   }
 
+  fileprivate func updateRelatedOrdersFromServer() {
+    let event = KNCreateLimitOrderViewEvent.getRelatedOrders(
+      address: self.viewModel.walletObject.address.lowercased(),
+      src: self.viewModel.from.contract.lowercased(),
+      dest: self.viewModel.to.contract.lowercased(),
+      minRate: 0.0
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
+  }
+
+  fileprivate func updatePendingBalancesFromServer() {
+    let event = KNCreateLimitOrderViewEvent.getPendingBalances(
+      address: self.viewModel.walletObject.address.lowercased()
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
+  }
+
   fileprivate func updateExpectedNonceFromServer() {
     let event = KNCreateLimitOrderViewEvent.getExpectedNonce(
       address: self.viewModel.walletObject.address,
@@ -783,6 +794,8 @@ extension KNCreateLimitOrderViewController {
     self.noCancelButtonPressed(nil)
 
     self.listOrdersDidUpdate(nil)
+    self.updateRelatedOrdersFromServer()
+    self.updatePendingBalancesFromServer()
 
     self.checkAddressEligible(nil)
     self.view.layoutIfNeeded()
@@ -888,6 +901,7 @@ extension KNCreateLimitOrderViewController {
     }
 
     self.listOrdersDidUpdate(nil)
+    self.updateRelatedOrdersFromServer()
 
     self.view.layoutIfNeeded()
   }
@@ -943,6 +957,31 @@ extension KNCreateLimitOrderViewController {
     self.updateFeeNotesUI()
     self.loadingFeeIndicator.stopAnimating()
     self.loadingFeeIndicator.isHidden = true
+  }
+
+  func coordinatorUpdateListRelatedOrders(address: String, src: String, dest: String, minRate: Double, orders: [KNOrderObject]) {
+    if address.lowercased() == self.viewModel.walletObject.address.lowercased()
+      && src.lowercased() == self.viewModel.from.contract.lowercased()
+      && dest.lowercased() == self.viewModel.to.contract.lowercased() {
+      self.viewModel.updateRelatedOrders(orders)
+      if !self.cancelRelatedOrdersView.isHidden {
+        if self.viewModel.cancelSuggestOrders.isEmpty {
+          self.cancelRelatedOrdersView.isHidden = true
+          self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
+          self.rateContainerView.rounded(radius: 4.0)
+        } else {
+          self.cancelOrdersCollectionView.reloadData()
+        }
+      }
+      self.updateRelatedOrdersView()
+      self.view.layoutIfNeeded()
+    }
+  }
+
+  func coordinatorUpdatePendingBalances(address: String, balances: JSONDictionary) {
+    self.viewModel.updatePendingBalances(balances, address: address)
+    self.sourceBalanceValueLabel.text = self.viewModel.balanceText
+    self.view.layoutIfNeeded()
   }
 }
 

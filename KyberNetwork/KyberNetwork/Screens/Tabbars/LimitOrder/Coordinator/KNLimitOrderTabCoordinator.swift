@@ -203,6 +203,10 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .suggestBuyToken:
       //TODO: Open FAQ view
       print("Suggest buy token pressed")
+    case .getRelatedOrders(let address, let src, let dest, let minRate):
+      self.getListRelatedOrders(address: address, src: src, dest: dest, minRate: minRate)
+    case .getPendingBalances(let address):
+      self.getPendingBalances(address: address)
     default: break
     }
   }
@@ -338,6 +342,32 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         case .failure(let error):
           completion(nil, error.prettyError)
         }
+    }
+  }
+
+  fileprivate func getListRelatedOrders(address: String, src: String, dest: String, minRate: Double) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    KNLimitOrderServerCoordinator.shared.getRelatedOrders(accessToken: accessToken, address: address, src: src, dest: dest, minRate: minRate) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let orders):
+        self.rootViewController.coordinatorUpdateListRelatedOrders(address: address, src: src, dest: dest, minRate: minRate, orders: orders)
+      case .failure(let error):
+        print("--Get Related Order-- Error: \(error.prettyError)")
+      }
+    }
+  }
+
+  fileprivate func getPendingBalances(address: String) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    KNLimitOrderServerCoordinator.shared.getPendingBalances(accessToken: accessToken, address: address) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let balances):
+        self.rootViewController.coordinatorUpdatePendingBalances(address: address, balances: balances)
+      case .failure(let error):
+        print("--Get Pending Balances-- Error: \(error.prettyError)")
+      }
     }
   }
 

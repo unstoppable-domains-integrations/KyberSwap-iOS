@@ -190,4 +190,47 @@ class KNLimitOrderServerCoordinator {
       }
     }
   }
+
+  func getRelatedOrders(accessToken: String, address: String, src: String, dest: String, minRate: Double, completion: @escaping ((Result<[KNOrderObject], AnyError>) -> Void)) {
+    let service = LimitOrderService.getRelatedOrders(accessToken: accessToken, address: address, src: src, dest: dest, rate: minRate)
+    self.provider.request(service) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let data):
+        do {
+          let _ = try data.filterSuccessfulStatusCodes()
+          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
+            let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
+            KNLimitOrderStorage.shared.updateOrdersFromServer(objects)
+            completion(.success(objects))
+          } else {
+            completion(.success([]))
+          }
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func getPendingBalances(accessToken: String, address: String, completion: @escaping ((Result<JSONDictionary, AnyError>) -> Void)) {
+    self.provider.request(.pendingBalance(accessToken: accessToken, address: address)) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let data):
+        do {
+          let _ = try data.filterSuccessfulStatusCodes()
+          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+          completion(.success(json["data"] as? JSONDictionary ?? [:]))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }
