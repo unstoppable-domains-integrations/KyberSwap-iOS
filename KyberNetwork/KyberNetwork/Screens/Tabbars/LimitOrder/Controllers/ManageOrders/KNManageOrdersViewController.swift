@@ -3,6 +3,8 @@
 import UIKit
 
 class KNManageOrdersViewModel {
+  let kPageSize: Int = 400
+  fileprivate(set) var numberPages: Int = 1
   fileprivate(set) var orders: [KNOrderObject] = []
   fileprivate(set) var displayedOrders: [KNOrderObject] = []
   var cancelOrder: KNOrderObject?
@@ -67,6 +69,10 @@ class KNManageOrdersViewModel {
   func updateOrders(_ orders: [KNOrderObject]) {
     self.orders = orders
     self.updateDisplayOrders()
+    if orders.count == self.numberPages * kPageSize {
+      self.numberPages += 1
+      // increase number pages needed to be loaded
+    }
   }
 }
 
@@ -88,6 +94,8 @@ class KNManageOrdersViewController: KNBaseViewController {
   @IBOutlet weak var emptyStateLabel: UILabel!
   @IBOutlet weak var bottomPaddingOrderCollectionViewConstraint: NSLayoutConstraint!
 
+  fileprivate var loadingTimer: Timer?
+
   fileprivate(set) var viewModel: KNManageOrdersViewModel
   weak var delegate: KNManageOrdersViewControllerDelegate?
   fileprivate(set) var filterVC: KNFilterLimitOrderViewController?
@@ -108,13 +116,20 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    self.loadListOrders()
 
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.listOrdersDidUpdate(_:)),
       name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
       object: nil
+    )
+
+    self.loadListOrders(isDisplayLoading: true)
+    self.loadingTimer?.invalidate()
+    self.loadingTimer = Timer.scheduledTimer(
+      withTimeInterval: 30.0, repeats: true, block: { [weak self] _ in
+        self?.loadListOrders()
+      }
     )
   }
 
@@ -125,6 +140,8 @@ class KNManageOrdersViewController: KNBaseViewController {
       name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
       object: nil
     )
+    self.loadingTimer?.invalidate()
+    self.loadingTimer = nil
   }
 
   override func viewDidLayoutSubviews() {
@@ -239,29 +256,52 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.openFilterView()
   }
 
-  fileprivate func loadListOrders() {
+  fileprivate func loadListOrders(isDisplayLoading: Bool = false) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
       self.navigationController?.popViewController(animated: true)
       return
     }
-    self.displayLoading()
-    KNLimitOrderServerCoordinator.shared.getListOrders(accessToken: accessToken) { [weak self] result in
-      guard let `self` = self else { return }
-      self.hideLoading()
-      switch result {
-      case .success(let resp):
-        self.updateListOrders(resp)
-      case .failure:
-        let alertController = UIAlertController(
+    if isDisplayLoading { self.displayLoading() }
+
+    var orders: [KNOrderObject] = []
+    var errorMessage: String?
+
+    let group = DispatchGroup()
+    for id in 0..<self.viewModel.numberPages {
+      group.enter()
+      KNLimitOrderServerCoordinator.shared.getListOrders(accessToken: accessToken, pageIndex: id + 1, pageSize: self.viewModel.kPageSize) { [weak self] result in
+        guard let _ = self else {
+          group.leave()
+          return
+        }
+        switch result {
+        case .success(let ords):
+          ords.forEach({ or in
+            if orders.first(where: { o -> Bool in return o.id == or.id }) == nil {
+              orders.append(or)
+            }
+          })
+        case .failure:
+          errorMessage = "Can not load your orders right now".toBeLocalised()
+        }
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      if isDisplayLoading { self.hideLoading() }
+      if errorMessage == nil {
+        KNLimitOrderStorage.shared.updateOrdersFromServer(orders)
+        self.updateListOrders(orders)
+      } else if let error = errorMessage, isDisplayLoading {
+        let alert = UIAlertController(
           title: NSLocalizedString("error", value: "Error", comment: ""),
-          message: "Can not load your orders right now".toBeLocalised(),
+          message: error,
           preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
-          self.loadListOrders()
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("try.again", value: "Try Again", comment: ""), style: .default, handler: { _ in
+          self.loadListOrders(isDisplayLoading: true)
         }))
-        self.present(alertController, animated: true, completion: nil)
       }
     }
   }

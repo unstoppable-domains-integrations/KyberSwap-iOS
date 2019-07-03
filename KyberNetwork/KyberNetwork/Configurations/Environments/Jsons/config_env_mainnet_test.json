@@ -142,7 +142,7 @@
   "enjinx": "https://kyber.enjinx.io/",
   "bank": "0x0",
   "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
-  "limit_order": "0x072bfe95e2b8050221de8ab324ab11cc7d66d75b",
+  "limit_order": "0x4d54793dec1b0f2b5daf2b8e30c0742b9cac80cb",
   "network": "0x964f35fae36d75b1e72770e244f6595b68508cf5",
   "authorize_contract": "0x10584d6910579eA485856B429561c0f03F8205D2",
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",

@@ -271,7 +271,7 @@ extension UserInfoService: TargetType {
 }
 
 enum LimitOrderService {
-  case getOrders(accessToken: String)
+  case getOrders(accessToken: String, pageIndex: Int, pageSize: Int)
   case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
   case cancelOrder(accessToken: String, id: String)
   case getNonce(accessToken: String)
@@ -290,8 +290,8 @@ extension LimitOrderService: TargetType {
   var baseURL: URL {
     let baseString = KNAppTracker.getKyberProfileBaseString()
     switch self {
-    case .getOrders:
-      return URL(string: "\(baseString)/api/orders")!
+    case .getOrders(_, let pageIndex, let pageSize):
+      return URL(string: "\(baseString)/api/orders?page_index=\(pageIndex)&page_size=\(pageSize)&sort=desc")!
     case .createOrder:
       return URL(string: "\(baseString)/api/orders")!
     case .cancelOrder(_, let id):
@@ -367,7 +367,7 @@ extension LimitOrderService: TargetType {
       "client-build": Bundle.main.buildNumber ?? "",
     ]
     switch self {
-    case .getOrders(let accessToken):
+    case .getOrders(let accessToken, _, _):
       json["Authorization"] = accessToken
     case .createOrder(let accessToken, _, _):
       json["Authorization"] = accessToken

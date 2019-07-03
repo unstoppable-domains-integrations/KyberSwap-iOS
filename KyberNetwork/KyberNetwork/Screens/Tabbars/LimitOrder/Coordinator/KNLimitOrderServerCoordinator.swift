@@ -13,25 +13,6 @@ class KNLimitOrderServerCoordinator {
     return MoyaProvider<LimitOrderService>(plugins: [MoyaCacheablePlugin()])
   }()
 
-  fileprivate var loadingTimer: Timer?
-
-  func resume() {
-    self.loadingTimer?.invalidate()
-    self.startLoadingListOrders(nil)
-    self.loadingTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.limitOrderLoadingInterval,
-      repeats: true,
-      block: { [weak self] _ in
-        self?.startLoadingListOrders(nil)
-      }
-    )
-  }
-
-  func pause() {
-    self.loadingTimer?.invalidate()
-    self.loadingTimer = nil
-  }
-
   func startLoadingListOrders(_ sender: Any?) {
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.getListOrders(accessToken: accessToken) { [weak self] result in
@@ -76,8 +57,8 @@ class KNLimitOrderServerCoordinator {
     }
   }
 
-  func getListOrders(accessToken: String, completion: @escaping (Result<[KNOrderObject], AnyError>) -> Void) {
-    self.provider.request(.getOrders(accessToken: accessToken)) { [weak self] result in
+  func getListOrders(accessToken: String, pageIndex: Int = 0, pageSize: Int = 400, completion: @escaping (Result<[KNOrderObject], AnyError>) -> Void) {
+    self.provider.request(.getOrders(accessToken: accessToken, pageIndex: pageIndex, pageSize: pageSize)) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let data):
@@ -86,7 +67,6 @@ class KNLimitOrderServerCoordinator {
           let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
           if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
             let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
-            KNLimitOrderStorage.shared.updateOrdersFromServer(objects)
             completion(.success(objects))
           } else {
             completion(.success([]))
