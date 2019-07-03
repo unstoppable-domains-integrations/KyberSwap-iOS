@@ -68,13 +68,9 @@ class KNLimitOrderTabCoordinator: Coordinator {
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
-    if IEOUserStorage.shared.user != nil {
-      KNLimitOrderServerCoordinator.shared.resume()
-    }
   }
 
   func stop() {
-    KNLimitOrderServerCoordinator.shared.pause()
     self.navigationController.popToRootViewController(animated: false)
     self.historyCoordinator = nil
     self.searchTokensViewController = nil
