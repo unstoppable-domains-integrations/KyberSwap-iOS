@@ -3,6 +3,10 @@
 import UIKit
 import BigInt
 
+protocol KNCancelOrderConfirmPopUpDelegate: class {
+  func cancelOrderConfirmPopup(_ controller: KNCancelOrderConfirmPopUp, didConfirmCancel order: KNOrderObject)
+}
+
 class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
@@ -25,6 +29,8 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var confirmButton: UIButton!
+
+  weak var delegate: KNCancelOrderConfirmPopUpDelegate?
 
   let order: KNOrderObject
 
@@ -127,7 +133,9 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
         self.hideLoading()
         switch result {
         case .success(let message):
-          self.dismiss(animated: true, completion: nil)
+          self.dismiss(animated: true, completion: {
+            self.delegate?.cancelOrderConfirmPopup(self, didConfirmCancel: self.order)
+          })
           self.showSuccessTopBannerMessage(with: "", message: message, time: 1.5)
         case .failure(let error):
           self.displayError(error: error)

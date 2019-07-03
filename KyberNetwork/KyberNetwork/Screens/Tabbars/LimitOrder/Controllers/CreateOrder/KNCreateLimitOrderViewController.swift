@@ -1181,6 +1181,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     cancelOrderVC.loadViewIfNeeded()
     cancelOrderVC.modalTransitionStyle = .crossDissolve
     cancelOrderVC.modalPresentationStyle = .overFullScreen
+    cancelOrderVC.delegate = self
     self.present(cancelOrderVC, animated: true) {
       self.viewModel.cancelOrder = nil
       let indexPath = IndexPath(row: id, section: 0)
@@ -1195,5 +1196,13 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
       icon: UIImage(named: "warning_icon"),
       time: 1.5
     )
+  }
+}
+
+extension KNCreateLimitOrderViewController: KNCancelOrderConfirmPopUpDelegate {
+  func cancelOrderConfirmPopup(_ controller: KNCancelOrderConfirmPopUp, didConfirmCancel order: KNOrderObject) {
+    self.listOrdersDidUpdate(nil)
+    self.updateRelatedOrdersFromServer()
+    self.updatePendingBalancesFromServer()
   }
 }
