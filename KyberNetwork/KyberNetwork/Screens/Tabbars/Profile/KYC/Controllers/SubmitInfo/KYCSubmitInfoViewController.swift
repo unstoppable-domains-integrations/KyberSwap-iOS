@@ -332,7 +332,7 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     let base64Prefix = "data:image/jpeg;base64,"
     let docFrontImage: UIImage? = {
       if details.documentPhotoFront.starts(with: base64Prefix),
-        let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
+        let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
         let image = UIImage(data: data) {
         return image
       }
@@ -340,20 +340,20 @@ class KYCSubmitInfoViewController: KNBaseViewController {
     }()
     let docBackImage: UIImage? = {
       if details.documentPhotoBack.starts(with: base64Prefix),
-        let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
+        let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
         let image = UIImage(data: data) {
         return image
       }
       return nil
     }()
     let docHoldingImage: UIImage? = {
-      if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+      if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters), let image = UIImage(data: data) {
         return image
       }
       return nil
     }()
     let proofAddress: UIImage? = {
-      if details.photoProofAddress.starts(with: base64Prefix), let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+      if details.photoProofAddress.starts(with: base64Prefix), let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters), let image = UIImage(data: data) {
         return image
       }
       return nil

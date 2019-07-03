@@ -635,7 +635,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
 
     let base64Prefix = "data:image/jpeg;base64,"
     if details.photoProofAddress.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.updateProofAddressDocumentType(with: image, animate: false)
     }
