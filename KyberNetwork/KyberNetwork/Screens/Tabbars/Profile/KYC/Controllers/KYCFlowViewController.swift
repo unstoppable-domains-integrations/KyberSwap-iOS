@@ -107,21 +107,21 @@ class KYCFlowViewModel {
     self.docNumber = details.documentNumber
     let base64Prefix = "data:image/jpeg;base64,"
     if details.photoProofAddress.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.photoProofAddress.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.proofAddressImage = image
     }
     if details.documentPhotoFront.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.docFrontImage = image
     }
     if details.documentPhotoBack.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.docBackImage = image
     }
-    if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+    if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters), let image = UIImage(data: data) {
       self.docHoldingImage = image
     }
   }

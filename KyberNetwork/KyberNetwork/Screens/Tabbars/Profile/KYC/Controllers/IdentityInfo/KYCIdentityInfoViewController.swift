@@ -510,16 +510,16 @@ class KYCIdentityInfoViewController: KNBaseViewController {
 
     let base64Prefix = "data:image/jpeg;base64,"
     if details.documentPhotoFront.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.documentPhotoFront.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.updateDocumentPhotoFront(with: image, animate: false)
     }
     if details.documentPhotoBack.starts(with: base64Prefix),
-      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count)),
+      let data = Data(base64Encoded: details.documentPhotoBack.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters),
       let image = UIImage(data: data) {
       self.updateDocumentPhotoBack(with: image, animate: false)
     }
-    if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count)), let image = UIImage(data: data) {
+    if details.documentSelfiePhoto.starts(with: base64Prefix), let data = Data(base64Encoded: details.documentSelfiePhoto.substring(from: base64Prefix.count), options: .ignoreUnknownCharacters), let image = UIImage(data: data) {
       self.updateHoldingDocumentPhoto(with: image, animate: false)
     }
     self.view.layoutIfNeeded()
