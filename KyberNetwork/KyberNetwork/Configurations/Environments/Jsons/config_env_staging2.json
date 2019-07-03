@@ -259,7 +259,7 @@
       "icon": "dgx",
       "usd_id":"dgx",
       "gasLimit": "750000",
-      "sp_limit_order": true
+      "sp_limit_order": false
     },
     "ABT": {
       "name": "ArcBlock",
