@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }()
 
   static var `default`: KNEnvironment {
-    return KNAppTracker.externalEnvironment()
+    return .staging//KNAppTracker.externalEnvironment()
   }
 
   var isMainnet: Bool {
@@ -76,7 +76,7 @@ enum KNEnvironment: Int {
     switch self {
     case .mainnetTest: return "config_env_mainnet_test"
     case .production: return "config_env_production"
-    case .staging: return "config_env_staging"
+    case .staging: return "config_env_staging2"
     case .ropsten: return "config_env_ropsten"
     case .kovan: return "config_env_kovan"
     case .rinkeby: return "config_env_rinkeby"
@@ -97,8 +97,7 @@ enum KNEnvironment: Int {
   var supportedTokenEndpoint: String {
     let baseString: String = {
       switch self {
-      case .mainnetTest, .production: return "https://api.kyber.network"
-      case .staging: return KNSecret.supportedTokenStagingEndpoint
+      case .mainnetTest, .production, .staging: return "https://api.kyber.network"
       case .ropsten: return "https://ropsten-api.kyber.network"
       case .rinkeby: return "https://rinkeby-api.kyber.network"
       default:
@@ -142,9 +141,8 @@ enum KNEnvironment: Int {
 
   var kyberAPIEnpoint: String {
     switch KNEnvironment.default {
-    case .mainnetTest, .production: return KNSecret.trackerURL
+    case .mainnetTest, .production, .staging: return KNSecret.trackerURL
     case .ropsten, .rinkeby, .kovan: return KNSecret.debugTrackerURL
-    case .staging: return KNSecret.stagingTrackerURL
     }
   }
 

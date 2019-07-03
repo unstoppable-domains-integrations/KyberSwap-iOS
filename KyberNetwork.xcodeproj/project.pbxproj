@@ -396,6 +396,7 @@
 		25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F96F7F21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib */; };
 		25F9C7672213D0D20001064D /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9C7662213D0D20001064D /* UIColor.swift */; };
 		25F9C7692213D0D80001064D /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9C7682213D0D80001064D /* Double.swift */; };
+		25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */ = {isa = PBXBuildFile; fileRef = 25FB472322CC939F00374CE8 /* config_env_staging2.json */; };
 		25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */; };
 		25FF9181225CE4A600946414 /* KNConfirmSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FF917F225CE4A600946414 /* KNConfirmSignUpViewController.swift */; };
 		25FF9182225CE4A600946414 /* KNConfirmSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FF9180225CE4A600946414 /* KNConfirmSignUpViewController.xib */; };
@@ -992,6 +993,7 @@
 		25F96F7F21537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNHoldingDocumentInfoPopUp.xib; sourceTree = "<group>"; };
 		25F9C7662213D0D20001064D /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		25F9C7682213D0D80001064D /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		25FB472322CC939F00374CE8 /* config_env_staging2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config_env_staging2.json; sourceTree = "<group>"; };
 		25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGeneralProvider.swift; sourceTree = "<group>"; };
 		25FF917F225CE4A600946414 /* KNConfirmSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmSignUpViewController.swift; sourceTree = "<group>"; };
 		25FF9180225CE4A600946414 /* KNConfirmSignUpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmSignUpViewController.xib; sourceTree = "<group>"; };
@@ -1370,6 +1372,7 @@
 				251ABCB020578F6D0069687F /* config_env_staging.json */,
 				2549B285219EA3DA00B7564E /* config_env_rinkeby.json */,
 				25F1BAD821BBA7D200A36900 /* config_env_ropsten2.json */,
+				25FB472322CC939F00374CE8 /* config_env_staging2.json */,
 			);
 			path = Jsons;
 			sourceTree = "<group>";
@@ -4094,6 +4097,7 @@
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
 				25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */,
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
+				25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */,
 				25A91D6F226ECAE2001F2ABA /* KNEnterTwoFactorAuthenViewController.xib in Resources */,
 				254EBED2225F5BA500042FA2 /* KNEligibleTokensViewController.xib in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
