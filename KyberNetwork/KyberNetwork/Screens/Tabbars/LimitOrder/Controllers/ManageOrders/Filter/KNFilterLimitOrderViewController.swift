@@ -10,7 +10,7 @@ class KNFilterLimitOrderViewModel {
   var isDateDesc: Bool = true
   var pairs: [String]?
   var addresses: [String]?
-  var status: [Int] = [0]
+  var status: [Int] = [0, 1, 2]
   let isSortAsc: Bool = true
 
   var allPairs: [String] = []
