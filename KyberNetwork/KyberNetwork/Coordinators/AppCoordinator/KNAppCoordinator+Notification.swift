@@ -219,7 +219,6 @@ extension KNAppCoordinator {
       }
       return nil
     }()
-    let etherScanURL: String? = transaction?.id == nil ? nil : "\(KNEnvironment.default.etherScanIOURLString)/tx/\(transaction?.id ?? "")"
     if let error = sender.object as? AnyError {
       self.navigationController.showErrorTopBannerMessage(
         with: NSLocalizedString("failed", value: "Failed", comment: ""),
