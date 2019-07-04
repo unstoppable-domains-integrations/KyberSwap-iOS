@@ -194,7 +194,7 @@ class TokenExtraData: NSObject {
     self.gasLimit = dict["gasLimit"] as? String ?? ""
     self.gasApprove = dict["gasApprove"] as? Double ?? 0.0
     self.listingTime = dict["listing_time"] as? TimeInterval ?? 0.0
-    self.limitOrderEnabled = dict["sp_limit_order"] as? Bool ?? true // TODO: Update here
+    self.limitOrderEnabled = dict["sp_limit_order"] as? Bool ?? false // TODO: Update here
   }
 
   var json: JSONDictionary {
