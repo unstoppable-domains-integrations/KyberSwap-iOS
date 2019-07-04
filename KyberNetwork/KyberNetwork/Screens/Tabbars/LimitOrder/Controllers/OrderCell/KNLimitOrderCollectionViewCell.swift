@@ -112,7 +112,7 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
     let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
-    self.destValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+    self.destValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
     if hasAction {
       if order.state != .open {
         self.updateCancelButtonUI(isShowing: false, callFromSuper: true)
