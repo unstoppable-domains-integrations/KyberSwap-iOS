@@ -106,6 +106,7 @@ extension KNLimitOrderTabCoordinator {
     self.convertVC?.updateAddress(session.wallet.address.description)
     self.convertVC?.updateETHBalance(BigInt(0))
     self.convertVC?.updateWETHBalance(self.balances)
+    self.convertVC?.updatePendingWETHBalance(0)
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -190,11 +191,12 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         srcAmount: srcAmount,
         destAmount: destAmount
       )
-    case .openConvertWETH(let address, let ethBalance, let amount):
+    case .openConvertWETH(let address, let ethBalance, let amount, let pendingWETH):
       self.openConvertWETHView(
         address: address,
         ethBalance: ethBalance,
-        amount: amount
+        amount: amount,
+        pendingWETH: pendingWETH
       )
     case .suggestBuyToken:
       //TODO: Open FAQ view
@@ -222,7 +224,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     }
   }
 
-  fileprivate func openConvertWETHView(address: String, ethBalance: BigInt, amount: BigInt) {
+  fileprivate func openConvertWETHView(address: String, ethBalance: BigInt, amount: BigInt, pendingWETH: Double) {
     self.convertVC = KNConvertSuggestionViewController()
     self.convertVC?.loadViewIfNeeded()
     self.convertVC?.delegate = self
@@ -231,6 +233,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.convertVC?.updateETHBalance(ethBalance)
       self.convertVC?.updateWETHBalance(self.balances)
       self.convertVC?.updateAmountToConvert(amount)
+      self.convertVC?.updatePendingWETHBalance(pendingWETH)
     })
   }
 

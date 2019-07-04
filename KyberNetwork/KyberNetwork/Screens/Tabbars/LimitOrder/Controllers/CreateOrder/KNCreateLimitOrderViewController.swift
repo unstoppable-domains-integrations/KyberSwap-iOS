@@ -12,7 +12,7 @@ enum KNCreateLimitOrderViewEvent {
   case manageOrders
   case estimateFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case getExpectedNonce(address: String, src: String, dest: String)
-  case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt)
+  case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt, pendingWETH: Double)
   case getRelatedOrders(address: String, src: String, dest: String, minRate: Double)
   case getPendingBalances(address: String)
 }
@@ -374,13 +374,17 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   fileprivate func submitOrderDidVerifyData() {
+    let amount: BigInt = {
+      if !self.viewModel.from.isWETH && self.viewModel.isUseAllBalance { return self.viewModel.availableBalance }
+      return self.viewModel.amountFromBigInt
+    }()
     if case .real(let account) = self.viewModel.wallet.type {
       let order = KNLimitOrder(
         from: self.viewModel.from,
         to: self.viewModel.to,
         account: account,
         sender: self.viewModel.wallet.address,
-        srcAmount: self.viewModel.amountFromBigInt,
+        srcAmount: amount,
         targetRate: self.viewModel.targetRateBigInt,
         fee: Int(floor(self.viewModel.feePercentage * 10000)),
         nonce: self.viewModel.nonce ?? ""
@@ -426,6 +430,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateViewAmountDidChange()
     _ = self.validateDataIfNeeded()
+    self.viewModel.isUseAllBalance = true
     self.view.layoutIfNeeded()
   }
 
@@ -729,7 +734,8 @@ extension KNCreateLimitOrderViewController {
     let event = KNCreateLimitOrderViewEvent.openConvertWETH(
       address: self.viewModel.walletObject.address,
       ethBalance: self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0),
-      amount: self.viewModel.minAmountToConvert
+      amount: self.viewModel.minAmountToConvert,
+      pendingWETH: self.viewModel.pendingBalances["WETH"] as? Double ?? 0.0
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
     return true
@@ -998,6 +1004,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     }
     self.updateViewAmountDidChange()
     self.updateEstimateRateFromNetwork(showWarning: true)
+    self.viewModel.isUseAllBalance = false
     return false
   }
 
@@ -1038,6 +1045,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.viewModel.isUseAllBalance = false
     self.viewModel.updateFocusTextField(textField.tag)
     self.updateViewAmountDidChange()
     if !self.cancelRelatedOrdersView.isHidden {

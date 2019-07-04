@@ -35,19 +35,10 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   fileprivate(set) var address: String = ""
   fileprivate(set) var ethBalance: BigInt = BigInt(0)
   fileprivate(set) var wethBalance: BigInt = BigInt(0)
+  fileprivate(set) var pendingWETHBalance: Double = 0.0
 
   var availableWETHBalance: BigInt {
-    var balanceInOrder: BigInt = BigInt(0)
-    let orders = KNLimitOrderStorage.shared.orders
-      .filter({
-        return ($0.state == .open || $0.state == .inProgress)
-        && $0.srcTokenSymbol == "WETH"
-        && $0.sender.lowercased() == self.address.lowercased()
-      }).map({ return $0.clone() })
-    orders.forEach({
-      balanceInOrder += BigInt($0.sourceAmount * pow(10.0, 18.0))
-    })
-    return max(BigInt(0), self.wethBalance - balanceInOrder)
+    return max(BigInt(0), self.wethBalance - BigInt(self.pendingWETHBalance * pow(10.0, 18.0)))
   }
 
   fileprivate(set) var amountToConvert: BigInt = BigInt(0)
@@ -130,6 +121,13 @@ class KNConvertSuggestionViewController: KNBaseViewController {
   func updateWETHBalance(_ balances: [String: Balance]) {
     guard let weth = self.weth else { return }
     self.wethBalance = balances[weth.contract]?.value ?? BigInt(0)
+    let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ETH"
+    let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) WETH"
+    self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
+  }
+
+  func updatePendingWETHBalance(_ balance: Double) {
+    self.pendingWETHBalance = balance
     let ethBalanceDisplay = "\(self.ethBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ETH"
     let wethBalanceDisplay = "\(self.availableWETHBalance.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) WETH"
     self.balanceValueLabel.text = "\(ethBalanceDisplay)\n\(wethBalanceDisplay)"
