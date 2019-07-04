@@ -219,16 +219,12 @@ extension KNAppCoordinator {
       }
       return nil
     }()
+    let etherScanURL: String? = transaction?.id == nil ? nil : "\(KNEnvironment.default.etherScanIOURLString)/tx/\(transaction?.id ?? "")"
     if let error = sender.object as? AnyError {
-      KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("failed", value: "Failed", comment: ""),
-        body: error.prettyError,
-        userInfo: ["transaction_hash": ""]
-      )
       self.navigationController.showErrorTopBannerMessage(
         with: NSLocalizedString("failed", value: "Failed", comment: ""),
         message: error.prettyError,
-        time: 3.0
+        time: -1
       )
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
       let transactions = self.session.transactionStorage.kyberPendingTransactions
@@ -241,7 +237,7 @@ extension KNAppCoordinator {
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("failed", value: "Failed", comment: ""),
           message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
-          time: 3.0
+          time: -1
         )
         KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
       }
@@ -262,28 +258,18 @@ extension KNAppCoordinator {
       self.navigationController.showSuccessTopBannerMessage(
         with: NSLocalizedString("success", value: "Success", comment: ""),
         message: details,
-        time: 3.0
+        time: -1
       )
       if self.session != nil {
         self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
         self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
       }
-      KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("success", value: "Success", comment: ""),
-        body: details,
-        userInfo: ["transaction_hash": trans.id]
-      )
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "success"])
     } else if trans.state == .failed || trans.state == .error {
       self.navigationController.showSuccessTopBannerMessage(
         with: NSLocalizedString("failed", value: "Failed", comment: ""),
         message: details,
-        time: 3.0
-      )
-      KNNotificationUtil.localPushNotification(
-        title: NSLocalizedString("failed", value: "Failed", comment: ""),
-        body: details,
-        userInfo: ["transaction_hash": trans.id]
+        time: -1
       )
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
     }
