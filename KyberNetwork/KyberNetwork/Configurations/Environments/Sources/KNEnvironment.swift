@@ -97,7 +97,8 @@ enum KNEnvironment: Int {
   var supportedTokenEndpoint: String {
     let baseString: String = {
       switch self {
-      case .mainnetTest, .production, .staging: return "https://api.kyber.network"
+      case .mainnetTest, .production: return "https://api.kyber.network"
+      case .staging: return KNSecret.supportedTokenStagingEndpoint
       case .ropsten: return "https://ropsten-api.kyber.network"
       case .rinkeby: return "https://rinkeby-api.kyber.network"
       default:
