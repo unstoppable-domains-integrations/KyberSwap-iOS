@@ -1010,7 +1010,9 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     }
     self.updateViewAmountDidChange()
     self.updateEstimateRateFromNetwork(showWarning: true)
-    self.viewModel.isUseAllBalance = false
+    if textField == self.fromAmountTextField {
+      self.viewModel.isUseAllBalance = false
+    }
     return false
   }
 
@@ -1051,7 +1053,9 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    self.viewModel.isUseAllBalance = false
+    if textField == self.fromAmountTextField {
+      self.viewModel.isUseAllBalance = false
+    }
     self.viewModel.updateFocusTextField(textField.tag)
     self.updateViewAmountDidChange()
     if !self.cancelRelatedOrdersView.isHidden {
