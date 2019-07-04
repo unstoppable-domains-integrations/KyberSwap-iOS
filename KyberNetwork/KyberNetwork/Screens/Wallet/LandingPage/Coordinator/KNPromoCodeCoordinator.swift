@@ -139,14 +139,10 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
       formatter.dateFormat = "dd MMM yyyy, HH:mm"
       return formatter.string(from: Date(timeIntervalSince1970: expiredDate))
     }()
-    KNNotificationUtil.localPushNotification(
-      title: NSLocalizedString("congratulations", value: "Congratulations!!!", comment: ""),
-      body: String(format: NSLocalizedString("you.have.successfully.imported.your.kybercode", value: "You have successfully imported your wallet. Please move all assets to your wallet by %@", comment: ""), expiredString)
-    )
     self.navigationController.showSuccessTopBannerMessage(
       with: NSLocalizedString("congratulations", value: "Congratulations!!!", comment: ""),
       message: String(format: NSLocalizedString("you.have.successfully.unlocked.your.promo.code", value: "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@", comment: ""), expiredString),
-      time: 2.5
+      time: 3
     )
     self.delegate?.promoCodeCoordinatorDidCreate(
       wallet,
