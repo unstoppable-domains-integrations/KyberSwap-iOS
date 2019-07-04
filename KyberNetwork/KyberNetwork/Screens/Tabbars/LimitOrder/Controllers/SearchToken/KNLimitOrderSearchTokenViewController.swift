@@ -21,6 +21,7 @@ class KNLimitOrderSearchTokenViewModel {
 
   var supportedTokens: [TokenObject] = []
   var balances: [String: Balance] = [:]
+  var pendingBalances: JSONDictionary = [:]
   var searchedText: String = "" {
     didSet {
       self.updateDisplayedTokens()
@@ -35,13 +36,14 @@ class KNLimitOrderSearchTokenViewModel {
     }).map({ return $0.clone() })
   }
 
-  init(isSource: Bool, supportedTokens: [TokenObject], address: String) {
+  init(isSource: Bool, supportedTokens: [TokenObject], address: String, pendingBalances: JSONDictionary) {
     self.supportedTokens = supportedTokens
       .filter({ return !$0.isWETH && $0.extraData?.limitOrderEnabled == true })
       .sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
     self.address = address
+    self.pendingBalances = pendingBalances
   }
 
   var isNoMatchingTokenHidden: Bool { return !self.displayedTokens.isEmpty }
@@ -79,6 +81,10 @@ class KNLimitOrderSearchTokenViewModel {
     }
   }
 
+  func updatePendingBalances(_ balances: JSONDictionary) {
+    self.pendingBalances = balances
+  }
+
   func getBalance(for token: TokenObject) -> BigInt? {
     var balance: BigInt = {
       if token.isETH {
@@ -90,10 +96,8 @@ class KNLimitOrderSearchTokenViewModel {
     }()
 
     let symbol = token.isETH ? "WETH" : token.symbol
-    let orders = self.relatedOrders.filter({ return $0.srcTokenSymbol == symbol })
-    orders.forEach({
-      balance -= BigInt($0.sourceAmount * pow(10.0, Double(token.decimals)))
-    })
+    let pendingBal = self.pendingBalances[symbol] as? Double ?? 0.0
+    balance -= BigInt(pendingBal * pow(10.0, Double(token.decimals)))
     return max(balance, BigInt(0))
   }
 }
@@ -220,6 +224,11 @@ class KNLimitOrderSearchTokenViewController: KNBaseViewController {
 
   func updateBalances(_ balances: [String: Balance]) {
     self.viewModel.updateBalances(balances)
+    self.updateUIDisplayedDataDidChange()
+  }
+
+  func updatePendingBalances(_ balances: JSONDictionary) {
+    self.viewModel.updatePendingBalances(balances)
     self.updateUIDisplayedDataDidChange()
   }
 
