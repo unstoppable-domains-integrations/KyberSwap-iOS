@@ -308,7 +308,7 @@ class KNFilterLimitOrderViewController: KNBaseViewController {
 
   @IBAction func resetButtonPressed(_ sender: Any) {
     self.viewModel.pairs = nil
-    self.viewModel.status = [0, 1]
+    self.viewModel.status = [0, 1, 2]
     self.viewModel.addresses = nil
 
     self.updateSortPairView()

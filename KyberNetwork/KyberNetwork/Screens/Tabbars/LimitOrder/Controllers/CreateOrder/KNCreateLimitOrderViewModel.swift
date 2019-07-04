@@ -35,6 +35,8 @@ class KNCreateLimitOrderViewModel {
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
   fileprivate(set) var cancelSuggestOrders: [KNOrderObject] = []
 
+  var isUseAllBalance: Bool = false
+
   var cancelOrder: KNOrderObject?
 
   init(wallet: Wallet,
@@ -350,6 +352,7 @@ class KNCreateLimitOrderViewModel {
     self.amountFrom = ""
     self.amountTo = ""
     self.targetRate = ""
+    self.isUseAllBalance = false
 
     self.feePercentage = 0
     self.nonce = nil
@@ -385,6 +388,7 @@ class KNCreateLimitOrderViewModel {
     self.amountFrom = ""
     self.amountTo = ""
     self.targetRate = ""
+    self.isUseAllBalance = false
     self.balance = self.balances[self.from.contract]
     self.feePercentage = 0
     self.nonce = nil
@@ -396,6 +400,7 @@ class KNCreateLimitOrderViewModel {
   func updateAmount(_ amount: String, isSource: Bool) {
     if isSource {
       self.amountFrom = amount
+      self.isUseAllBalance = false
     } else {
       self.amountTo = amount
     }
@@ -410,6 +415,7 @@ class KNCreateLimitOrderViewModel {
     if isSource {
       self.from = token
       self.feePercentage = 0
+      self.isUseAllBalance = false
     } else {
       self.to = token
     }
@@ -424,6 +430,9 @@ class KNCreateLimitOrderViewModel {
       self.balances[key] = value
     }
     if let bal = balances[self.from.contract] {
+      if let oldBal = self.balance, oldBal.value != bal.value {
+        self.isUseAllBalance = false
+      }
       self.balance = bal
     }
   }
