@@ -32,7 +32,8 @@
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimals": 18,
       "usd_id": "ethereum",
-      "gasLimit": "0"
+      "gasLimit": "0",
+      "sp_limit_order": true
     },
     "WETH": {
       "name": "Wrapped Ether",
@@ -40,7 +41,8 @@
       "symbol" : "WETH",
       "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "icon": "weth",
-      "exclude": true
+      "exclude": true,
+      "sp_limit_order": true
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -48,7 +50,8 @@
       "icon": "knc",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimals": 18,
-      "usd_id": "kyber-network"
+      "usd_id": "kyber-network",
+      "sp_limit_order": true
     },
     "DAI": {
       "name" : "DAI",
@@ -56,7 +59,8 @@
       "icon": "dai",
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
       "decimals": 18,
-      "usd_id":"dai"
+      "usd_id":"dai",
+      "sp_limit_order": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -64,7 +68,8 @@
       "icon": "omg",
       "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
       "decimals": 18,
-      "usd_id": "omisego"
+      "usd_id": "omisego",
+      "sp_limit_order": true
     },
     "SNT": {
       "name": "Status",
@@ -72,7 +77,8 @@
       "symbol": "SNT",
       "icon": "snt",
       "decimals": 18,
-      "usd_id": "status"
+      "usd_id": "status",
+      "sp_limit_order": true
     },
     "ELF": {
       "name": "Aelf",
@@ -80,7 +86,8 @@
       "symbol": "ELF",
       "icon": "aelf",
       "decimals": 18,
-      "usd_id": "aelf"
+      "usd_id": "aelf",
+      "sp_limit_order": true
     },
     "POWR": {
       "name": "Power Ledger",
@@ -88,7 +95,8 @@
       "symbol": "POWR",
       "icon": "pwr",
       "decimals": 6,
-      "usd_id": "power-ledger"
+      "usd_id": "power-ledger",
+      "sp_limit_order": true
     },
     "MANA": {
       "name": "Decentraland",
@@ -96,7 +104,8 @@
       "symbol": "MANA",
       "icon": "mana",
       "decimals": 18,
-      "usd_id": "decentraland"
+      "usd_id": "decentraland",
+      "sp_limit_order": true
     },
     "BAT": {
       "name": "Basic Attention Token",
@@ -104,7 +113,8 @@
       "symbol": "BAT",
       "icon": "bat",
       "decimals": 18,
-      "usd_id": "basic-attention-token"
+      "usd_id": "basic-attention-token",
+      "sp_limit_order": true
     },
     "REQ": {
       "name": "Request",
@@ -112,7 +122,8 @@
       "symbol": "REQ",
       "icon": "req",
       "decimals": 18,
-      "usd_id": "request-network"
+      "usd_id": "request-network",
+      "sp_limit_order": true
     },
     "GTO": {
       "name": "Gifto",
@@ -120,7 +131,8 @@
       "symbol": "GTO",
       "icon": "gifto",
       "decimals": 5,
-      "usd_id": "gifto"
+      "usd_id": "gifto",
+      "sp_limit_order": true
     },
     "RDN": {
       "name": "Raiden",
@@ -128,7 +140,8 @@
       "symbol": "RDN",
       "icon": "rdn",
       "decimals": 18,
-      "usd_id": "raiden-network-token"
+      "usd_id": "raiden-network-token",
+      "sp_limit_order": true
     },
     "APPC": {
       "name": "AppCoins",
@@ -136,7 +149,8 @@
       "symbol": "APPC",
       "icon": "appc",
       "decimals": 18,
-      "usd_id": "appcoins"
+      "usd_id": "appcoins",
+      "sp_limit_order": true
     },
     "ENG": {
       "name": "Enigma",
@@ -144,7 +158,8 @@
       "symbol": "ENG",
       "icon": "eng",
       "decimals": 8,
-      "usd_id": "enigma-project"
+      "usd_id": "enigma-project",
+      "sp_limit_order": true
     },
     "SALT": {
       "name": "Salt",
@@ -152,7 +167,8 @@
       "symbol": "SALT",
       "icon": "salt",
       "decimals": 8,
-      "usd_id": "salt"
+      "usd_id": "salt",
+      "sp_limit_order": true
     },
     "BQX": {
       "name": "Ethos",
@@ -160,7 +176,8 @@
       "symbol": "BQX",
       "decimals": 8,
       "icon": "bqx",
-      "usd_id": "ethos"
+      "usd_id": "ethos",
+      "sp_limit_order": true
     },
     "ADX": {
       "name": "AdEx",
@@ -168,7 +185,8 @@
       "symbol": "ADX",
       "decimals": 4,
       "icon": "adx",
-      "usd_id": "adx-net"
+      "usd_id": "adx-net",
+      "sp_limit_order": true
     },
     "AST": {
       "name": "AirSwap",
@@ -176,7 +194,8 @@
       "symbol": "AST",
       "decimals": 4,
       "icon": "ast",
-      "usd_id": "airswap"
+      "usd_id": "airswap",
+      "sp_limit_order": true
     },
     "RCN": {
       "name": "Ripio Credit Network",
@@ -184,7 +203,8 @@
       "symbol": "RCN",
       "decimals": 18,
       "icon": "rcn",
-      "usd_id": "ripio-credit-network"
+      "usd_id": "ripio-credit-network",
+      "sp_limit_order": true
     },
     "ZIL": {
       "name": "Zilliqa",
@@ -192,7 +212,8 @@
       "symbol": "ZIL",
       "decimals": 12,
       "icon": "zil",
-      "usd_id":"zilliqa"
+      "usd_id":"zilliqa",
+      "sp_limit_order": true
     },
     "LINK": {
       "name": "Chain Link",
@@ -200,7 +221,8 @@
       "symbol": "LINK",
       "decimals": 18,
       "icon": "link",
-      "usd_id":"chainlink"
+      "usd_id":"chainlink",
+      "sp_limit_order": true
     },
     "STORM": {
       "name": "Storm",
@@ -208,7 +230,8 @@
       "symbol": "STORM",
       "decimals": 18,
       "icon": "storm",
-      "usd_id":"storm"
+      "usd_id":"storm",
+      "sp_limit_order": true
     },
     "IOST": {
       "name": "IOStoken",
@@ -216,7 +239,8 @@
       "symbol": "IOST",
       "decimals": 18,
       "icon": "iost",
-      "usd_id":"iostoken"
+      "usd_id":"iostoken",
+      "sp_limit_order": true
     },
     "MOT": {
       "name": "Olympus Labs",
@@ -224,7 +248,8 @@
       "symbol": "MOT",
       "decimals": 18,
       "icon": "mot",
-      "usd_id":"olympus-labs"
+      "usd_id":"olympus-labs",
+      "sp_limit_order": true
     },
     "DGX": {
       "name" : "Digix Gold",
@@ -233,7 +258,8 @@
       "decimals": 9,
       "icon": "dgx",
       "usd_id":"dgx",
-      "gasLimit": "750000"
+      "gasLimit": "750000",
+      "sp_limit_order": true
     },
     "ABT": {
       "name": "ArcBlock",
@@ -241,7 +267,8 @@
       "decimals": 18,
       "symbol":"ABT",
       "icon": "abt",
-      "usd_id":"arcblock"
+      "usd_id":"arcblock",
+      "sp_limit_order": true
     },
     "ENJ": {
       "name": "Enjin Coin",
@@ -249,35 +276,40 @@
       "decimals": 18,
       "symbol":"ENJ",
       "icon": "enj",
-      "usd_id":"enjin-coin"
+      "usd_id":"enjin-coin",
+      "sp_limit_order": true
     },
     "AE": {
       "name": "Aeternity",
       "decimals": 18,
       "symbol":"AE",
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
-      "icon": "ae"
+      "icon": "ae",
+      "sp_limit_order": true
     },
     "BLZ": {
       "name": "Bluezelle",
       "decimals": 18,
       "symbol":"BLZ",
       "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
-      "icon": "blz"
+      "icon": "blz",
+      "sp_limit_order": true
     },
     "PAL": {
       "name": "PAL Network",
       "decimals": 18,
       "symbol":"PAL",
       "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
-      "icon": "pal.png"
+      "icon": "pal.png",
+      "sp_limit_order": true
     },
     "ELEC": {
       "name": "ElectrifyAsia",
       "decimals": 18,
       "address": "0xd49ff13661451313ca1553fd6954bd1d9b6e02b9",
       "symbol":"ELEC",
-      "icon": "elec"
+      "icon": "elec",
+      "sp_limit_order": true
     },
     "BBO": {
       "name": "Bigbom",
@@ -361,7 +393,8 @@
       "decimals": 18,
       "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
       "symbol":"TUSD",
-      "icon": "tusd"
+      "icon": "tusd",
+      "sp_limit_order": true
     },
     "MDS": {
       "name": "MediShares",
