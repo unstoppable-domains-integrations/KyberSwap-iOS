@@ -455,7 +455,7 @@ class KNCreateLimitOrderViewModel {
       return Date().timeIntervalSince1970 - 3.0 * 30.0 * 24.0 * 60.0 * 60.0
     }()
     self.relatedOrders = orders
-      .filter({ return $0.state == .open || $0.state == .inProgress })
+      .filter({ return $0.state == .open })
       .filter({ return $0.dateToDisplay.timeIntervalSince1970 >= fromTime })
       .sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })

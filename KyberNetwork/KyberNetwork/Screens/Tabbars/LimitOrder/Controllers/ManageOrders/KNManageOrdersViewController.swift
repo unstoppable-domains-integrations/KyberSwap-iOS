@@ -29,7 +29,7 @@ class KNManageOrdersViewModel {
   var selectedPairs: [String]? {
     didSet { self.updateDisplayOrders() }
   }
-  var selectedStates: [Int] = [0, 1] { // default only open
+  var selectedStates: [Int] = [0, 1, 2] { // default open, in progress, filled
     didSet { self.updateDisplayOrders() }
   }
   var selectedAddresses: [String]? {
