@@ -377,6 +377,7 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
     cancelOrderVC.loadViewIfNeeded()
     cancelOrderVC.modalTransitionStyle = .crossDissolve
     cancelOrderVC.modalPresentationStyle = .overFullScreen
+    cancelOrderVC.delegate = self
     self.present(cancelOrderVC, animated: true) {
       self.viewModel.cancelOrder = nil
       let indexPath = IndexPath(row: id, section: 0)
@@ -401,5 +402,11 @@ extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate
     self.viewModel.selectedStates = status
     self.viewModel.selectedAddresses = addresses
     self.updateCollectionView()
+  }
+}
+
+extension KNManageOrdersViewController: KNCancelOrderConfirmPopUpDelegate {
+  func cancelOrderConfirmPopup(_ controller: KNCancelOrderConfirmPopUp, didConfirmCancel order: KNOrderObject) {
+    self.loadListOrders(isDisplayLoading: true)
   }
 }
