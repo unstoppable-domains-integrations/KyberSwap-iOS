@@ -37,7 +37,7 @@ class KNLimitOrderSearchTokenViewModel {
 
   init(isSource: Bool, supportedTokens: [TokenObject], address: String) {
     self.supportedTokens = supportedTokens
-      .filter({ return !$0.isWETH })
+      .filter({ return !$0.isWETH && $0.extraData?.limitOrderEnabled == true })
       .sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
