@@ -530,10 +530,16 @@ extension KNCreateLimitOrderViewController {
 
   // Call update estimate rate from node
   fileprivate func updateEstimateRateFromNetwork(showWarning: Bool = false) {
+    let amount: BigInt = {
+      if self.viewModel.amountFromBigInt.isZero {
+        return BigInt(0.001 * pow(10.0, Double(self.viewModel.from.decimals)))
+      }
+      return self.viewModel.amountFromBigInt
+    }()
     let event = KNCreateLimitOrderViewEvent.estimateRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountFromBigInt,
+      amount: amount,
       showWarning: showWarning
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
