@@ -165,8 +165,8 @@ extension KNLimitOrderTabCoordinator {
 extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   func kCreateLimitOrderViewController(_ controller: KNCreateLimitOrderViewController, run event: KNCreateLimitOrderViewEvent) {
     switch event {
-    case .searchToken(let from, let to, let isSource):
-      self.openSearchToken(from: from, to: to, isSource: isSource)
+    case .searchToken(let from, let to, let isSource, let pendingBalances):
+      self.openSearchToken(from: from, to: to, isSource: isSource, pendingBalances: pendingBalances)
     case .estimateRate(let from, let to, let amount, let showWarning):
       self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showWarning, completion: nil)
     case .submitOrder(let order):
@@ -363,6 +363,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       guard let `self` = self else { return }
       switch result {
       case .success(let balances):
+        self.convertVC?.updatePendingWETHBalance(balances["WETH"] as? Double ?? 0.0)
+        self.searchTokensViewController?.updatePendingBalances(balances)
         self.rootViewController.coordinatorUpdatePendingBalances(address: address, balances: balances)
       case .failure(let error):
         print("--Get Pending Balances-- Error: \(error.prettyError)")
@@ -538,14 +540,15 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.historyCoordinator?.start()
   }
 
-  fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
+  fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool, pendingBalances: JSONDictionary) {
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
       let viewModel = KNLimitOrderSearchTokenViewModel(
         isSource: isSource,
         supportedTokens: self.tokens,
-        address: self.session.wallet.address.description
+        address: self.session.wallet.address.description,
+        pendingBalances: pendingBalances
       )
       let controller = KNLimitOrderSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
@@ -554,6 +557,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     }()
     self.navigationController.pushViewController(self.searchTokensViewController!, animated: true)
     self.searchTokensViewController?.updateBalances(self.balances)
+    self.searchTokensViewController?.updatePendingBalances(pendingBalances)
   }
 
   fileprivate func openSendTokenView() {

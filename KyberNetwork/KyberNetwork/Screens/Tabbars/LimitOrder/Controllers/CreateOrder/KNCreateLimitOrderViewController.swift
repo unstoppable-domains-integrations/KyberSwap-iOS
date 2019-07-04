@@ -5,7 +5,7 @@ import UIKit
 import BigInt
 
 enum KNCreateLimitOrderViewEvent {
-  case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
+  case searchToken(from: TokenObject, to: TokenObject, isSource: Bool, pendingBalances: JSONDictionary)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showWarning: Bool)
   case suggestBuyToken
   case submitOrder(order: KNLimitOrder)
@@ -270,7 +270,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "from_token_pressed"])
-    self.delegate?.kCreateLimitOrderViewController(self, run: .searchToken(from: self.viewModel.from, to: self.viewModel.to, isSource: true))
+    let event = KNCreateLimitOrderViewEvent.searchToken(
+      from: self.viewModel.from,
+      to: self.viewModel.to,
+      isSource: true,
+      pendingBalances: self.viewModel.pendingBalances
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
   }
 
   @IBAction func fromTokenInfoButtonPressed(_ sender: Any) {
@@ -285,7 +291,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBAction func toTokenButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "to_token_pressed"])
-    self.delegate?.kCreateLimitOrderViewController(self, run: .searchToken(from: self.viewModel.from, to: self.viewModel.to, isSource: false))
+    let event = KNCreateLimitOrderViewEvent.searchToken(
+      from: self.viewModel.from,
+      to: self.viewModel.to,
+      isSource: false,
+      pendingBalances: self.viewModel.pendingBalances
+    )
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
   }
 
   @IBAction func swapTokensButtonPressed(_ sender: Any) {
