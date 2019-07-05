@@ -319,7 +319,7 @@ class KNCreateLimitOrderViewModel {
       NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.strawberry,
     ]
-    attributedString.append(NSAttributedString(string: "Your target price is".toBeLocalised(), attributes: normalAttributes))
+    attributedString.append(NSAttributedString(string: "Your target rate is".toBeLocalised(), attributes: normalAttributes))
     if rateChange > 0 {
       attributedString.append(NSAttributedString(string: " \(rate) ", attributes: higherAttributes))
       attributedString.append(NSAttributedString(string: "higher than current Market rate".toBeLocalised(), attributes: normalAttributes))

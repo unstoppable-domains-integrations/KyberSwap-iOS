@@ -607,7 +607,7 @@
 "Your target rate is too high, should be at most 10 times of current rate" = "Tỉ giá quá cao, vui lòng đặt tỉ giá không vượt quá 10 lần giá hiện tại";
 "Please enter your target rate to continue" = "Vui lòng điền tỉ giá để tiếp tục";
 "Rate of" = "Tỉ giá";
-"Your target price is" = "Tỉ giá bạn đặt";
+"Your target rate is" = "Tỉ giá bạn đặt";
 "higher than current Market rate" = "cao hơn tỉ giá hiện tại";
 "lower than current Market rate" = "thấp hơn tỉ giá hiện tại";
 "Sign in required" = "Phải đăng nhập";
