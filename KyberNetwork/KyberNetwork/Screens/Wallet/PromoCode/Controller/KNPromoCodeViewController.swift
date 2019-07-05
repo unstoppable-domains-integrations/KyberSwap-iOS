@@ -73,7 +73,7 @@ class KNPromoCodeViewController: KNBaseViewController {
     }
     let name: String = {
       let name = self.walletNameTextField.text ?? ""
-      return name.isEmpty ? "Untitled" : name
+      return name.isEmpty ? "PromoCode" : name
     }()
     self.delegate?.promoCodeViewController(self, promoCode: promoCode, name: name)
   }

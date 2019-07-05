@@ -77,8 +77,8 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           time: 1
         )
         let walletName: String = {
-          if name == nil || name?.isEmpty == true { return "Untitled" }
-          return name ?? "Untitled"
+          if name == nil || name?.isEmpty == true { return "Imported" }
+          return name ?? "Imported"
         }()
         self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
       case .failure(let error):

@@ -106,7 +106,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.address.description,
-      name: self.name ?? "Untitled",
+      name: self.name ?? "New Wallet",
       isBackedUp: true
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
@@ -117,7 +117,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.address.description,
-      name: self.name ?? "Untitled",
+      name: self.name ?? "New Wallet",
       isBackedUp: false
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
