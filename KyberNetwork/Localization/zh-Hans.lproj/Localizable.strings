@@ -605,7 +605,7 @@
 "Your target rate is too high, should be at most 10 times of current rate" = "Your target rate is too high, should be at most 10 times of current rate";
 "Please enter your target rate to continue" = "Please enter your target rate to continue";
 "Rate of" = "Rate of";
-"Your target price is" = "Your target price is";
+"Your target rate is" = "Your target rate is";
 "higher than current Market rate" = "higher than current Market rate";
 "lower than current Market rate" = "lower than current Market rate";
 "Sign in required" = "Sign in required";
