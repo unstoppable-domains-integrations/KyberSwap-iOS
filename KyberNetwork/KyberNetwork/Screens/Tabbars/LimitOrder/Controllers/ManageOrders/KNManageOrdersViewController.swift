@@ -127,7 +127,7 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.loadListOrders(isDisplayLoading: true)
     self.loadingTimer?.invalidate()
     self.loadingTimer = Timer.scheduledTimer(
-      withTimeInterval: 30.0, repeats: true, block: { [weak self] _ in
+      withTimeInterval: 15.0, repeats: true, block: { [weak self] _ in
         self?.loadListOrders()
       }
     )
