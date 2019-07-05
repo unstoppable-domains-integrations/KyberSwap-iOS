@@ -24,6 +24,9 @@ class KNLimitOrderTabCoordinator: Coordinator {
   var isSelectingSourceToken: Bool = true
   var coordinators: [Coordinator] = []
 
+  var confirmedOrder: KNLimitOrder?
+  var signedData: Data?
+
   weak var delegate: KNLimitOrderTabCoordinatorDelegate?
 
   fileprivate var balances: [String: Balance] = [:]
@@ -299,10 +302,16 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func openConfirmOrder(_ order: KNLimitOrder) {
+    self.signedData = nil
+
     self.confirmVC = KNConfirmLimitOrderViewController(order: order)
     self.confirmVC?.delegate = self
     self.confirmVC?.loadViewIfNeeded()
     self.navigationController.pushViewController(self.confirmVC!, animated: true)
+
+    self.confirmedOrder = order
+    let result = self.session.keystore.signLimitOrder(order)
+    if case .success(let data) = result { self.signedData = data }
   }
 
   fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, String?) -> Void)? = nil) {
@@ -407,50 +416,60 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         }
         self.approveTx[order.from.contract] = Date().timeIntervalSince1970
         self.navigationController.displayLoading(text: "Submitting order".toBeLocalised(), animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.16, execute: {
-          let result = self.session.keystore.signLimitOrder(order)
-          self.navigationController.hideLoading()
-          switch result {
-          case .success(let data):
-            KNLimitOrderServerCoordinator.shared.createNewOrder(accessToken: accessToken, order: order, signature: data, completion: { [weak self] result in
-              guard let `self` = self else { return }
-              switch result {
-              case .success(let resp):
-                if let objc = resp.0 {
-                  self.rootViewController.coordinatorDoneSubmittingOrder(objc)
-                  completion?(true)
-                } else {
-                  self.navigationController.showErrorTopBannerMessage(
-                    with: NSLocalizedString("error", comment: ""),
-                    message: resp.1 ?? "Something went wrong, please try again later".toBeLocalised(),
-                    time: 1.5
-                  )
-                  completion?(false)
-                }
-              case .failure(let error):
+        let result = self.getSignedData(for: order)
+        switch result {
+        case .success(let data):
+          KNLimitOrderServerCoordinator.shared.createNewOrder(accessToken: accessToken, order: order, signature: data, completion: { [weak self] result in
+            guard let `self` = self else { return }
+            self.navigationController.hideLoading()
+            switch result {
+            case .success(let resp):
+              if let _ = resp.0, self.confirmVC != nil {
+                self.rootViewController.coordinatorDoneSubmittingOrder()
+                completion?(true)
+              } else {
                 self.navigationController.showErrorTopBannerMessage(
                   with: NSLocalizedString("error", comment: ""),
-                  message: "Can not submit your order, error: \(error.prettyError)".toBeLocalised(),
+                  message: resp.1 ?? "Something went wrong, please try again later".toBeLocalised(),
                   time: 1.5
                 )
                 completion?(false)
               }
-            })
-          case .failure(let error):
-            self.navigationController.showErrorTopBannerMessage(
-              with: NSLocalizedString("error", comment: ""),
-              message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
-              time: 1.5
-            )
-            completion?(false)
-          }
-        })
+            case .failure(let error):
+              self.navigationController.showErrorTopBannerMessage(
+                with: NSLocalizedString("error", comment: ""),
+                message: "Can not submit your order, error: \(error.prettyError)".toBeLocalised(),
+                time: 1.5
+              )
+              completion?(false)
+            }
+          })
+        case .failure(let error):
+          self.navigationController.hideLoading()
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", comment: ""),
+            message: "Can not sign your order, error: \(error.prettyError)".toBeLocalised(),
+            time: 1.5
+          )
+          completion?(false)
+        }
       case .failure(let error):
         self.navigationController.hideLoading()
         self.navigationController.displayError(error: error)
         completion?(false)
       }
     }
+  }
+
+  fileprivate func getSignedData(for order: KNLimitOrder) -> Result<Data, KeystoreError> {
+    if let signedData = self.signedData, let confirmedOrder = self.confirmedOrder,
+      confirmedOrder.account == order.account, confirmedOrder.nonce == order.nonce,
+      confirmedOrder.fee == order.fee, confirmedOrder.sender == order.sender,
+      confirmedOrder.from == order.from, confirmedOrder.to == order.to,
+      confirmedOrder.targetRate == order.targetRate, confirmedOrder.srcAmount == order.srcAmount {
+      return .success(signedData)
+    }
+    return self.session.keystore.signLimitOrder(order)
   }
 
   fileprivate func sendApprovedIfNeeded(order: KNLimitOrder, completion: @escaping (Result<Bool, AnyError>) -> Void) {
@@ -680,7 +699,7 @@ extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate 
   func confirmLimitOrderViewController(_ controller: KNConfirmLimitOrderViewController, order: KNLimitOrder) {
     self.signAndSendOrder(order) { [weak self] isSuccess in
       guard let `self` = self else { return }
-      if isSuccess && self.confirmVC != nil {
+      if isSuccess, self.confirmVC != nil {
         self.navigationController.popViewController(animated: true, completion: {
           self.confirmVC = nil
         })

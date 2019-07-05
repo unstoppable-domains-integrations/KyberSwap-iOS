@@ -58,158 +58,186 @@ class KNLimitOrderServerCoordinator {
   }
 
   func getListOrders(accessToken: String, pageIndex: Int = 0, pageSize: Int = 400, completion: @escaping (Result<[KNOrderObject], AnyError>) -> Void) {
-    self.provider.request(.getOrders(accessToken: accessToken, pageIndex: pageIndex, pageSize: pageSize)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
-            let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
-            completion(.success(objects))
-          } else {
-            completion(.success([]))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getOrders(accessToken: accessToken, pageIndex: pageIndex, pageSize: pageSize)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
+                let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
+                completion(.success(objects))
+              } else {
+                completion(.success([]))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func getNonce(accessToken: String, completion: @escaping (Result<(String, String), AnyError>) -> Void) {
-    self.provider.request(.getNonce(accessToken: accessToken)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          if let nonce = json["nonce"] as? String {
-            completion(.success((nonce, "")))
-          } else {
-            let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
-            completion(.success(("", message)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getNonce(accessToken: accessToken)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let nonce = json["nonce"] as? String {
+                completion(.success((nonce, "")))
+              } else {
+                let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
+                completion(.success(("", message)))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: @escaping (Result<(Double, String?), AnyError>) -> Void) {
-    self.provider.request(.getFee(address: address, src: src, dest: dest, srcAmount: srcAmount, destAmount: destAmount)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let fee = json["fee"] as? Double ?? 0.0
-          let success = json["success"] as? Bool ?? false
-          if success {
-            completion(.success((fee, nil)))
-          } else {
-            let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
-            completion(.success((0, message)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.getFee(address: address, src: src, dest: dest, srcAmount: srcAmount, destAmount: destAmount)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let fee = json["fee"] as? Double ?? 0.0
+              let success = json["success"] as? Bool ?? false
+              if success {
+                completion(.success((fee, nil)))
+              } else {
+                let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
+                completion(.success((0, message)))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func cancelOrder(accessToken: String, orderID: Int, completion: @escaping (Result<String, AnyError>) -> Void) {
-    self.provider.request(.cancelOrder(accessToken: accessToken, id: "\(orderID)")) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          let isCancelled = json["cancelled"] as? Bool ?? false
-          if isCancelled {
-            completion(.success("Your order has been cancelled".toBeLocalised()))
-            KNLimitOrderStorage.shared.updateOrderState(orderID, state: .cancelled)
-            self?.startLoadingListOrders(nil)
-          } else {
-            completion(.success(json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.cancelOrder(accessToken: accessToken, id: "\(orderID)")) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              let isCancelled = json["cancelled"] as? Bool ?? false
+              if isCancelled {
+                completion(.success("Your order has been cancelled".toBeLocalised()))
+                KNLimitOrderStorage.shared.updateOrderState(orderID, state: .cancelled)
+                self?.startLoadingListOrders(nil)
+              } else {
+                completion(.success(json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func checkEligibleAddress(accessToken: String, address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    self.provider.request(.checkEligibleAddress(accessToken: accessToken, address: address)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          completion(.success(json["eligible_address"] as? Bool ?? true))
-        } catch let error {
-          completion(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.checkEligibleAddress(accessToken: accessToken, address: address)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              completion(.success(json["eligible_address"] as? Bool ?? true))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func getRelatedOrders(accessToken: String, address: String, src: String, dest: String, minRate: Double, completion: @escaping ((Result<[KNOrderObject], AnyError>) -> Void)) {
     let service = LimitOrderService.getRelatedOrders(accessToken: accessToken, address: address, src: src, dest: dest, rate: minRate)
-    self.provider.request(service) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
-            let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
-            KNLimitOrderStorage.shared.updateOrdersFromServer(objects)
-            completion(.success(objects))
-          } else {
-            completion(.success([]))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(service) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let jsonArr = json["orders"] as? [[Any]], let fields = json["fields"] as? [String] {
+                let objects = jsonArr.map({ return KNOrderObject(fields: fields, data: $0) })
+                KNLimitOrderStorage.shared.updateOrdersFromServer(objects)
+                completion(.success(objects))
+              } else {
+                completion(.success([]))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }
 
   func getPendingBalances(accessToken: String, address: String, completion: @escaping ((Result<JSONDictionary, AnyError>) -> Void)) {
-    self.provider.request(.pendingBalance(accessToken: accessToken, address: address)) { [weak self] result in
-      guard let _ = self else { return }
-      switch result {
-      case .success(let data):
-        do {
-          let _ = try data.filterSuccessfulStatusCodes()
-          let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-          completion(.success(json["data"] as? JSONDictionary ?? [:]))
-        } catch let error {
-          completion(.failure(AnyError(error)))
+    DispatchQueue.global(qos: .background).async {
+      self.provider.request(.pendingBalance(accessToken: accessToken, address: address)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            do {
+              let _ = try data.filterSuccessfulStatusCodes()
+              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              completion(.success(json["data"] as? JSONDictionary ?? [:]))
+            } catch let error {
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
         }
-      case .failure(let error):
-        completion(.failure(AnyError(error)))
       }
     }
   }

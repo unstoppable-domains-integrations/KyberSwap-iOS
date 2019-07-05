@@ -145,7 +145,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
     self.updateFeeTimer?.invalidate()
     self.updateFeeTimer = Timer.scheduledTimer(
-      withTimeInterval: 15.0,
+      withTimeInterval: 10.0,
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimateFeeFromServer()
@@ -968,7 +968,7 @@ extension KNCreateLimitOrderViewController {
     self.view.layoutIfNeeded()
   }
 
-  func coordinatorDoneSubmittingOrder(_ order: KNOrderObject) {
+  func coordinatorDoneSubmittingOrder() {
     self.showSuccessTopBannerMessage(
       with: NSLocalizedString("success", value: "Success", comment: ""),
       message: "Your order have been submitted sucessfully to server. You can check the order in your order list.".toBeLocalised(),
