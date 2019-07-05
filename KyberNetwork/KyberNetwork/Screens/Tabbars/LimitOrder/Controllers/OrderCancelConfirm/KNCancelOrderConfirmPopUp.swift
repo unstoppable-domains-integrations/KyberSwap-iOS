@@ -55,7 +55,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
     self.toTextLabel.text = NSLocalizedString("To", value: "To", comment: "").uppercased()
     self.cancelButton.setTitle(
-      NSLocalizedString("cancel", value: "Cancel", comment: "").uppercased(),
+      NSLocalizedString("no", value: "No", comment: "").uppercased(),
       for: .normal
     )
     self.cancelButton.rounded(
@@ -64,7 +64,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
       radius: self.cancelButton.frame.height / 2.0
     )
     self.confirmButton.setTitle(
-      NSLocalizedString("confirm", value: "Confirm", comment: "").uppercased(),
+      NSLocalizedString("yes", value: "Yes", comment: "").uppercased(),
       for: .normal
     )
     self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
