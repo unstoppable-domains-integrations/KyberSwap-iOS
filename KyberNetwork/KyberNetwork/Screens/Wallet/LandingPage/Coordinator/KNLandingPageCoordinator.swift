@@ -106,15 +106,17 @@ class KNLandingPageCoordinator: Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?) {
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true) {
     // add new wallet into database in case user exits app
     let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled")
     KNWalletStorage.shared.add(wallets: [walletObject])
-    let contact = KNContact(
-      address: wallet.address.description,
-      name: name ?? "Untitled"
-    )
-    KNContactStorage.shared.update(contacts: [contact])
+    if addToContact {
+      let contact = KNContact(
+        address: wallet.address.description,
+        name: name ?? "Untitled"
+      )
+      KNContactStorage.shared.update(contacts: [contact])
+    }
     self.newWallet = wallet
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
@@ -197,6 +199,6 @@ extension KNLandingPageCoordinator: KNPromoCodeCoordinatorDelegate {
       destAddress: destAddress,
       expiredTime: expiredDate
     )
-    self.addNewWallet(wallet, isCreate: false, name: name)
+    self.addNewWallet(wallet, isCreate: false, name: name, addToContact: false)
   }
 }
