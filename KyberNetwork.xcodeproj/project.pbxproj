@@ -141,6 +141,7 @@
 		255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */; };
 		25577AE920F72A9700A54607 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E14FDA1F7F4F3D00185568 /* Transaction.swift */; };
 		25577AEB20F8619D00A54607 /* UIButton+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25577AEA20F8619D00A54607 /* UIButton+Kyber.swift */; };
+		2559A02E22CF3D8700D29735 /* KNTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2559A02D22CF3D8700D29735 /* KNTooltipView.swift */; };
 		255A68E720AADB2000F39749 /* Double+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255A68E620AADB2000F39749 /* Double+Kyber.swift */; };
 		255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255A70E8214F9ECE005D7A6A /* KNSettingsTabViewController.swift */; };
 		255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255A70E9214F9ECE005D7A6A /* KNSettingsTabViewController.xib */; };
@@ -735,6 +736,7 @@
 		255709BD20DCB50800B5BC9E /* KNNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNewContactViewController.swift; sourceTree = "<group>"; };
 		255709BE20DCB50800B5BC9E /* KNNewContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNewContactViewController.xib; sourceTree = "<group>"; };
 		25577AEA20F8619D00A54607 /* UIButton+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Kyber.swift"; sourceTree = "<group>"; };
+		2559A02D22CF3D8700D29735 /* KNTooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTooltipView.swift; sourceTree = "<group>"; };
 		255A68E620AADB2000F39749 /* Double+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Kyber.swift"; sourceTree = "<group>"; };
 		255A70E8214F9ECE005D7A6A /* KNSettingsTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSettingsTabViewController.swift; sourceTree = "<group>"; };
 		255A70E9214F9ECE005D7A6A /* KNSettingsTabViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSettingsTabViewController.xib; sourceTree = "<group>"; };
@@ -1921,6 +1923,14 @@
 			path = NewContact;
 			sourceTree = "<group>";
 		};
+		2559A02C22CF3D6F00D29735 /* Tooltip */ = {
+			isa = PBXGroup;
+			children = (
+				2559A02D22CF3D8700D29735 /* KNTooltipView.swift */,
+			);
+			path = Tooltip;
+			sourceTree = "<group>";
+		};
 		255A70EC214FB8F3005D7A6A /* EditWallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -2287,6 +2297,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				2559A02C22CF3D6F00D29735 /* Tooltip */,
 				25BA0D95225B323500B0EF2D /* SocialAccounts */,
 				25E9E1F3208F036F00A9090D /* Passcode */,
 				25682B6D20EE0365009738C4 /* Tabbars */,
@@ -4709,6 +4720,7 @@
 				29F1C863200375D2003780D8 /* Wallet.swift in Sources */,
 				25455101228C310300D5E55D /* KNLimitOrderCollectionViewCell.swift in Sources */,
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
+				2559A02E22CF3D8700D29735 /* KNTooltipView.swift in Sources */,
 				2545C8EA2223EEAF00CA99C5 /* KNAlertObject.swift in Sources */,
 				254BB358211D9F1400B8E75D /* KConfirmSendViewController.swift in Sources */,
 				254A70192296ADC700890B8F /* KNConvertSuggestionViewController.swift in Sources */,
