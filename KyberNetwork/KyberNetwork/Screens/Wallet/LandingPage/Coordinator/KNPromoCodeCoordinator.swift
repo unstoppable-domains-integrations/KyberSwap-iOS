@@ -129,11 +129,6 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
       name: name
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
-    let contact = KNContact(
-      address: wallet.address.description,
-      name: name
-    )
-    KNContactStorage.shared.update(contacts: [contact])
     let expiredString: String = {
       let formatter = DateFormatter()
       formatter.dateFormat = "dd MMM yyyy, HH:mm"

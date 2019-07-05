@@ -63,6 +63,6 @@ class KNCreateWalletViewController: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "create_wallet", customAttributes: ["type": "confirm_button"])
-    self.delegate?.createWalletViewController(self, run: .next(name: "Untitled"))
+    self.delegate?.createWalletViewController(self, run: .next(name: "New Wallet"))
   }
 }
