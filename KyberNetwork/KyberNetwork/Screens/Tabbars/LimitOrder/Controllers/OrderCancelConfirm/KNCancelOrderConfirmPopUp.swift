@@ -55,7 +55,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
     self.toTextLabel.text = NSLocalizedString("To", value: "To", comment: "").uppercased()
     self.cancelButton.setTitle(
-      NSLocalizedString("no", value: "No", comment: "").uppercased(),
+      NSLocalizedString("no", value: "No", comment: ""),
       for: .normal
     )
     self.cancelButton.rounded(
@@ -64,7 +64,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
       radius: self.cancelButton.frame.height / 2.0
     )
     self.confirmButton.setTitle(
-      NSLocalizedString("yes", value: "Yes", comment: "").uppercased(),
+      NSLocalizedString("yes", value: "Yes", comment: ""),
       for: .normal
     )
     self.confirmButton.rounded(radius: self.confirmButton.frame.height / 2.0)
@@ -111,6 +111,10 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
     self.destValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
+    self.view.addGestureRecognizer(tapGesture)
+    self.view.isUserInteractionEnabled = true
   }
 
   override func viewDidLayoutSubviews() {
@@ -121,6 +125,16 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
+  }
+
+  @objc func tapOutSideToDismiss(_ tapGesture: UITapGestureRecognizer) {
+    let loc = tapGesture.location(in: self.view)
+    if loc.x < self.containerView.frame.minX
+      || loc.x > self.containerView.frame.maxX
+      || loc.y < self.containerView.frame.minY
+      || loc.y > self.containerView.frame.maxY {
+      self.dismiss(animated: true, completion: nil)
+    }
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
