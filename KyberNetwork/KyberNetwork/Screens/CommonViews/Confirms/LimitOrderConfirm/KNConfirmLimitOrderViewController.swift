@@ -55,23 +55,35 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
     self.navTitleLabel.text = "Confirm Order".toBeLocalised()
 
     let text = "Your transaction will be broadcasted when rate of %@".toBeLocalised()
-    let condition = "\(self.order.from.symbol)/\(self.order.to.symbol) >= \(self.order.targetRate.displayRate(decimals: self.order.to.decimals))"
+    let condition = "\(from.symbol)/\(to.symbol) >= \(targetRate.displayRate(decimals: to.decimals))"
     self.broadcastConditonTextLabel.text = String(format: text, condition)
 
-    self.srcDataLabel.text = "\(self.order.srcAmount.displayRate(decimals: self.order.from.decimals)) \(self.order.from.symbol)"
+    let srcAmountString = srcAmount.string(
+      decimals: from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(from.decimals, 6)
+    ).prefix(12)
 
+    self.srcDataLabel.text = "\(srcAmountString) \(from.symbol)"
     self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")
 
-    let srcAmountString = srcAmount.displayRate(decimals: from.decimals)
-    let feeAmountString = fee.displayRate(decimals: from.decimals)
+    let feeAmountString = fee.string(
+      decimals: from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(from.decimals, 6)
+    ).prefix(12)
     let rateString = targetRate.displayRate(decimals: to.decimals)
     let receivedAmount: BigInt = {
       let srcAfterFee = max(BigInt(0), srcAmount - fee)
       return srcAfterFee * targetRate / BigInt(10).power(from.decimals)
     }()
-
-    self.destDataLabel.text = "\(receivedAmount.displayRate(decimals: to.decimals)) \(to.symbol)"
-    self.explainDestAmountLabel.text = "(\(srcAmountString) - \(feeAmountString)) \(from.symbol) * \(rateString) = \(receivedAmount.displayRate(decimals: to.decimals)) \(to.symbol)"
+    let receiveAmountStr = receivedAmount.string(
+      decimals: to.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(to.decimals, 6)
+    ).prefix(12)
+    self.destDataLabel.text = "\(receiveAmountStr) \(to.symbol)"
+    self.explainDestAmountLabel.text = "(\(srcAmountString) - \(feeAmountString)) \(from.symbol) * \(rateString) = \(receiveAmountStr) \(to.symbol)"
 
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
 

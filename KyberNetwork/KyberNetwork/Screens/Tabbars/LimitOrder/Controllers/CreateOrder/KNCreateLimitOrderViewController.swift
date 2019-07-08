@@ -347,7 +347,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func firstPercentageButtonPressed(_ sender: Any) {
-    let amountDisplay = self.viewModel.amountFromWithPercentage(25).displayRate(decimals: self.viewModel.from.decimals).removeGroupSeparator()
+    let amountDisplay = self.viewModel.amountFromWithPercentage(25).string(
+      decimals: self.viewModel.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(self.viewModel.from.decimals, 6)
+    ).removeGroupSeparator()
     self.viewModel.updateAmount(amountDisplay, isSource: true)
     self.fromAmountTextField.text = amountDisplay
     self.viewModel.updateFocusTextField(0)
@@ -356,7 +360,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func secondPercentageButtonPressed(_ sender: Any) {
-    let amountDisplay = self.viewModel.amountFromWithPercentage(50).displayRate(decimals: self.viewModel.from.decimals).removeGroupSeparator()
+    let amountDisplay = self.viewModel.amountFromWithPercentage(50).string(
+      decimals: self.viewModel.from.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(self.viewModel.from.decimals, 6)
+    ).removeGroupSeparator()
     self.viewModel.updateAmount(amountDisplay, isSource: true)
     self.fromAmountTextField.text = amountDisplay
     self.viewModel.updateFocusTextField(0)
@@ -365,12 +373,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func thirdPercentageButtonPressed(_ sender: Any) {
-    let amountDisplay = self.viewModel.amountFromWithPercentage(100).displayRate(decimals: self.viewModel.from.decimals).removeGroupSeparator()
-    self.viewModel.updateAmount(amountDisplay, isSource: true)
-    self.fromAmountTextField.text = amountDisplay
-    self.viewModel.updateFocusTextField(0)
-    self.updateViewAmountDidChange()
-    _ = self.validateDataIfNeeded()
+    self.keyboardSwapAllButtonPressed(sender)
   }
 
   @IBAction func suggestBuyTokenButtonPressed(_ sender: Any) {
@@ -1089,7 +1092,11 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     if self.viewModel.shouldAmountToChange {
       // Focusing from and target text field
       let amountTo = self.viewModel.estimateAmountToBigInt
-      let amountToString = amountTo.isZero ? "" : amountTo.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
+      let amountToString = amountTo.isZero ? "" : amountTo.string(
+        decimals: self.viewModel.to.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(self.viewModel.to.decimals, 6)
+      ).removeGroupSeparator()
       self.toAmountTextField.text = amountToString
       self.viewModel.updateAmount(amountToString, isSource: false)
     } else if self.viewModel.shouldTargetRateChange {
@@ -1101,7 +1108,11 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     } else {
       // Focusing to and target text field
       let amountFrom = self.viewModel.estimateAmountFromBigInt
-      let amountFromString = amountFrom.isZero ? "" : amountFrom.displayRate(decimals: self.viewModel.from.decimals).removeGroupSeparator()
+      let amountFromString = amountFrom.isZero ? "" : amountFrom.string(
+        decimals: self.viewModel.from.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(self.viewModel.from.decimals, 6)
+      ).removeGroupSeparator()
       self.fromAmountTextField.text = amountFromString
       self.viewModel.updateAmount(amountFromString, isSource: true)
     }
