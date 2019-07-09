@@ -78,6 +78,11 @@ class KNImportJSONViewController: KNBaseViewController {
     self.resetUIs()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.updateNextButton()
+  }
+
   fileprivate func updateNextButton() {
     let enabled: Bool = {
       guard let password = self.enterPasswordTextField.text else { return false }

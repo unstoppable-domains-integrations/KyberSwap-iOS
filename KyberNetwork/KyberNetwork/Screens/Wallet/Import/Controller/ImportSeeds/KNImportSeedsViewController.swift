@@ -60,6 +60,11 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.updateNextButton()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.updateNextButton()
+  }
+
   fileprivate func updateNextButton() {
     let enabled: Bool = {
       guard let seeds = self.seedsTextField.text?.trimmed else { return false }
