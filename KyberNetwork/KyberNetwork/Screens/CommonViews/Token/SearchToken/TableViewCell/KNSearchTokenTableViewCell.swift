@@ -14,8 +14,6 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     super.awakeFromNib()
     self.tokenNameLabel.text = ""
     self.tokenSymbolLabel.text = ""
-    self.textLabel?.textColor = UIColor.Kyber.gray
-    self.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
   }
 
   func updateCell(with token: TokenObject, balance: Balance?) {

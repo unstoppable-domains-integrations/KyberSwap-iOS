@@ -63,6 +63,11 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.updateNextButton()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.updateNextButton()
+  }
+
   fileprivate func updateSecureTextEntry() {
     let secureTextImage = UIImage(named: !self.isSecureText ? "hide_secure_text" : "show_secure_text")
     self.secureTextButton.setImage(secureTextImage, for: .normal)

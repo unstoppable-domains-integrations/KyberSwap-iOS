@@ -21,7 +21,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
   internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-
+  internal var limitOrderCoordinator: KNLimitOrderTabCoordinator?
   internal var profileCoordinator: KNProfileHomeCoordinator?
 
   internal var tabbarController: KNTabBarController!
@@ -121,6 +121,15 @@ extension KNAppCoordinator {
       }
       KNAppTracker.updateHasLoggedUserOutWithNativeSignIn()
     }
+
+    UITabBarItem.appearance().setTitleTextAttributes(
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarNormal],
+      for: .normal
+    )
+    UITabBarItem.appearance().setTitleTextAttributes(
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarActive],
+      for: .selected
+    )
   }
 
   func appDidBecomeActive() {
@@ -159,6 +168,12 @@ extension KNAppCoordinator {
       let data = noti.payload.additionalData,
       let type = data["type"] as? String, type == "alert_price", self.tabbarController != nil {
       self.handlePriceAlertPushNotification(noti)
+      return
+    }
+    if let noti = result?.notification,
+      let data = noti.payload.additionalData,
+      let type = data["type"] as? String, type == "limit_order", self.tabbarController != nil {
+      self.handleLimitOrderNotification(noti)
       return
     }
     if let noti = result?.notification,
@@ -235,6 +250,71 @@ extension KNAppCoordinator {
       actionButtonTitle: action,
       descriptionText: desc
     )
+    controller.loadViewIfNeeded()
+    controller.modalPresentationStyle = .overCurrentContext
+    controller.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func handleLimitOrderNotification(_ notification: OSNotification) {
+    guard let data = notification.payload.additionalData else { return }
+    let orderID = data["order_id"] as? Int ?? -1
+    let srcToken = data["src_token"] as? String ?? ""
+    let destToken = data["dst_token"] as? String ?? ""
+    let rate: Double = {
+      if let value = data["min_rate"] as? Double { return value }
+      if let valueStr = data["min_rate"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let amount: Double = {
+      if let value = data["src_amount"] as? Double { return value }
+      if let valueStr = data["src_amount"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let fee: Double = {
+      if let value = data["fee"] as? Double { return value }
+      if let valueStr = data["fee"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let sender = data["sender"] as? String ?? ""
+    let createdDate: Double = {
+      if let value = data["created_at"] as? Double { return value }
+      if let valueStr = data["created_at"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return Date().timeIntervalSince1970
+    }()
+    let updatedDate: Double = {
+      if let value = data["updated_at"] as? Double { return value }
+      if let valueStr = data["updated_at"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return Date().timeIntervalSince1970
+    }()
+    let txHash = data["tx_hash"] as? String ?? ""
+
+    let order = KNOrderObject(
+      id: orderID,
+      from: srcToken,
+      to: destToken,
+      amount: amount,
+      price: rate,
+      fee: fee,
+      nonce: "",
+      sender: sender,
+      createdDate: createdDate,
+      filledDate: updatedDate,
+      messages: "",
+      txHash: txHash,
+      stateValue: KNOrderState.filled.rawValue
+    )
+    let controller = KNLimitOrderDetailsPopUp(order: order)
     controller.loadViewIfNeeded()
     controller.modalPresentationStyle = .overCurrentContext
     controller.modalTransitionStyle = .crossDissolve

@@ -15,6 +15,7 @@ class KNExternalProvider {
   let web3Swift: Web3Swift
   let knCustomRPC: KNCustomRPC!
   let networkAddress: Address!
+  let limitOrderAddress: Address!
 
   var minTxCount: Int {
     didSet {
@@ -30,6 +31,7 @@ class KNExternalProvider {
     self.knCustomRPC = customRPC
     self.networkAddress = Address(string: customRPC.networkAddress)
     self.minTxCount = 0
+    self.limitOrderAddress = Address(string: customRPC.limitOrderAddress)
   }
 
   func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {
@@ -168,13 +170,20 @@ class KNExternalProvider {
     }
   }
 
-  // If the value returned > 0 consider as allowed
-  // should check with the current send amount, however the limit is likely set as very big
   func getAllowance(token: TokenObject, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: token,
       address: self.account.address,
       networkAddress: self.networkAddress,
+      completion: completion
+    )
+  }
+
+  func getAllowanceLimitOrder(token: TokenObject, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getAllowance(
+      for: token,
+      address: self.account.address,
+      networkAddress: self.limitOrderAddress,
       completion: completion
     )
   }
@@ -207,6 +216,27 @@ class KNExternalProvider {
         case .failure(let error):
           completion(.failure(error))
         }
+    }
+  }
+
+  func sendApproveERCTokenLimitOrder(for token: TokenObject, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    KNGeneralProvider.shared.approve(
+      token: token,
+      value: value,
+      account: self.account,
+      keystore: self.keystore,
+      currentNonce: self.minTxCount,
+      networkAddress: self.limitOrderAddress,
+      gasPrice: gasPrice
+    ) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let txCount):
+        self.minTxCount = txCount
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
+      }
     }
   }
 

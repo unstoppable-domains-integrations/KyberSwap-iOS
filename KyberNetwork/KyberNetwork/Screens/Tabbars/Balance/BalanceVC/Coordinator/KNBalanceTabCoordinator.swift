@@ -92,6 +92,7 @@ extension KNBalanceTabCoordinator {
       _ = viewModel.updateTokenObjects(tokenObjects)
       return viewModel
     }()
+    self.balances = [:]
     self.newRootViewController.coordinatorUpdateSessionWithNewViewModel(viewModel)
     let pendingObjects = self.session.transactionStorage.kyberPendingTransactions
     self.newRootViewController.coordinatorUpdatePendingTransactions(pendingObjects)

@@ -4,6 +4,7 @@ import UIKit
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
+  //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
     self.keystore.recentlyUsedWallet = wallet
     self.currentWallet = wallet
@@ -38,6 +39,16 @@ extension KNAppCoordinator {
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
 
+    self.limitOrderCoordinator = {
+      let coordinator = KNLimitOrderTabCoordinator(
+        session: self.session
+      )
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.addCoordinator(self.limitOrderCoordinator!)
+    self.limitOrderCoordinator?.start()
+
     // KyberGO Tab
     self.profileCoordinator = {
       return KNProfileHomeCoordinator(session: self.session)
@@ -59,37 +70,49 @@ extension KNAppCoordinator {
     self.tabbarController.viewControllers = [
       self.balanceTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
+      self.limitOrderCoordinator!.navigationController,
       self.profileCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,
     ]
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     self.balanceTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("balance", value: "Balance", comment: ""),
-      image: UIImage(named: "tabbar_balance_icon"),
-      selectedImage: UIImage(named: "tabbar_balance_icon")
+      image: UIImage(named: "tabbar_balance_icon_normal"),
+      selectedImage: UIImage(named: "tabbar_balance_icon_active")
     )
     self.balanceTabCoordinator?.navigationController.tabBarItem.tag = 0
+
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("kyberswap", value: "KyberSwap", comment: ""),
-      image: UIImage(named: "tabbar_kyberswap_icon"),
-      selectedImage: UIImage(named: "tabbar_kyberswap_icon")
+      image: UIImage(named: "tabbar_kyberswap_icon_normal"),
+      selectedImage: UIImage(named: "tabbar_kyberswap_icon_active")
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
+
+    self.limitOrderCoordinator?.navigationController.tabBarItem.tag = 2
+    self.limitOrderCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: NSLocalizedString("Limit Order", value: "Limit Order", comment: ""),
+      image: UIImage(named: "tabbar_limit_order_icon_normal"),
+      selectedImage: UIImage(named: "tabbar_limit_order_icon_active")
+    )
+
     self.profileCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("profile", value: "Profile", comment: ""),
-      image: UIImage(named: "tabbar_profile_icon"),
-      selectedImage: UIImage(named: "tabbar_profile_icon")
+      image: UIImage(named: "tabbar_profile_icon_normal"),
+      selectedImage: UIImage(named: "tabbar_profile_icon_active")
     )
-    self.profileCoordinator?.navigationController.tabBarItem.tag = 2
+    self.profileCoordinator?.navigationController.tabBarItem.tag = 3
+
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("settings", value: "Settings", comment: ""),
-      image: UIImage(named: "tabbar_settings_icon"),
-      selectedImage: UIImage(named: "tabbar_settings_icon")
+      image: UIImage(named: "tabbar_settings_icon_normal"),
+      selectedImage: UIImage(named: "tabbar_settings_icon_active")
     )
-    self.settingsCoordinator?.navigationController.tabBarItem.tag = 3
+    self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
+
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
-      self.tabbarController.selectedIndex = 1
-      self.tabbarController.tabBar.tintColor = UIColor.Kyber.enygold
+      self.tabbarController.selectedIndex = 2
+      self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     }
 
     self.addObserveNotificationFromSession()
@@ -100,6 +123,7 @@ extension KNAppCoordinator {
 
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
@@ -128,6 +152,8 @@ extension KNAppCoordinator {
     self.exchangeCoordinator = nil
     self.balanceTabCoordinator?.stop()
     self.balanceTabCoordinator = nil
+    self.limitOrderCoordinator?.stop()
+    self.limitOrderCoordinator = nil
     self.profileCoordinator?.stop()
     self.profileCoordinator = nil
     self.settingsCoordinator?.stop()
@@ -147,6 +173,7 @@ extension KNAppCoordinator {
     self.navigationController.displayLoading()
     self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.profileCoordinator?.updateSession(self.session)
     self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.addObserveNotificationFromSession()
@@ -156,6 +183,7 @@ extension KNAppCoordinator {
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       self.navigationController.hideLoading()
     }
@@ -195,6 +223,10 @@ extension KNAppCoordinator {
           resetRoot: isRemovingCurrentWallet
         )
         self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+        self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
           self.session,
           resetRoot: isRemovingCurrentWallet
         )

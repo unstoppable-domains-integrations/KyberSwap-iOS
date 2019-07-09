@@ -1,7 +1,9 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
+//swiftlint:disable file_length
 import Moya
 import CryptoSwift
+import BigInt
 
 protocol MoyaCacheable {
   typealias MoyaCacheablePolicy = URLRequest.CachePolicy
@@ -263,6 +265,123 @@ extension UserInfoService: TargetType {
       json["Authorization"] = accessToken
     case .sendTxHash(let accessToken, _):
       json["Authorization"] = accessToken
+    }
+    return json
+  }
+}
+
+enum LimitOrderService {
+  case getOrders(accessToken: String, pageIndex: Int, pageSize: Int)
+  case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
+  case cancelOrder(accessToken: String, id: String)
+  case getNonce(accessToken: String)
+  case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case checkEligibleAddress(accessToken: String, address: String)
+  case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
+  case pendingBalance(accessToken: String, address: String)
+}
+
+extension LimitOrderService: MoyaCacheable {
+  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+  var httpShouldHandleCookies: Bool { return false }
+}
+
+extension LimitOrderService: TargetType {
+  var baseURL: URL {
+    let baseString = KNAppTracker.getKyberProfileBaseString()
+    switch self {
+    case .getOrders(_, let pageIndex, let pageSize):
+      return URL(string: "\(baseString)/api/orders?page_index=\(pageIndex)&page_size=\(pageSize)&sort=desc")!
+    case .createOrder:
+      return URL(string: "\(baseString)/api/orders")!
+    case .cancelOrder(_, let id):
+      return URL(string: "\(baseString)/api/orders/\(id)/cancel")!
+    case .getNonce:
+      return URL(string: "\(baseString)/api/orders/nonce")!
+    case .getFee:
+      return URL(string: "\(baseString)/api/orders/fee")!
+    case .checkEligibleAddress(_, let address):
+      return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
+    case .getRelatedOrders:
+      return URL(string: "\(baseString)/api/orders/related_orders")!
+    case .pendingBalance(_, let address):
+      return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
+    }
+  }
+
+  var path: String { return "" }
+
+  var method: Moya.Method {
+    switch self {
+    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance: return .get
+    case .cancelOrder: return .put
+    case .createOrder: return .post
+    }
+  }
+
+  var task: Task {
+    switch self {
+    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance:
+      return .requestPlain
+    case .createOrder(_, let order, let signedData):
+      let json: JSONDictionary = [
+        "user_address": order.sender.description.lowercased(),
+        "nonce": order.nonce,
+        "src_token": order.from.contract.lowercased(),
+        "dest_token": order.to.contract.lowercased(),
+        "dest_address": order.sender.description.lowercased(),
+        "src_amount": order.srcAmount.hexEncoded,
+        "min_rate": (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded,
+        "fee": BigInt(order.fee).hexEncoded,
+        "signature": signedData.hexEncoded,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .getFee(let address, let src, let dest, let srcAmount, let destAmount):
+      let json: JSONDictionary = [
+        "user_addr": address,
+        "src": src,
+        "dst": dest,
+        "src_amount": srcAmount,
+        "dst_amount": destAmount,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .getRelatedOrders(_, let address, let src, let dest, let rate):
+      let json: JSONDictionary = [
+        "user_addr": address,
+        "src": src,
+        "dst": dest,
+        "min_rate": rate,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    }
+  }
+
+  var sampleData: Data { return Data() }
+  var headers: [String: String]? {
+    var json: [String: String] = [
+      "content-type": "application/json",
+      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
+    switch self {
+    case .getOrders(let accessToken, _, _):
+      json["Authorization"] = accessToken
+    case .createOrder(let accessToken, _, _):
+      json["Authorization"] = accessToken
+    case .cancelOrder(let accessToken, _):
+      json["Authorization"] = accessToken
+    case .getNonce(let accessToken):
+      json["Authorization"] = accessToken
+    case .checkEligibleAddress(let accessToken, _):
+      json["Authorization"] = accessToken
+    case .getRelatedOrders(let accessToken, _, _, _, _):
+      json["Authorization"] = accessToken
+    case .pendingBalance(let accessToken, _):
+      json["Authorization"] = accessToken
+    default: break
     }
     return json
   }

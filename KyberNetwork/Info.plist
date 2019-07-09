@@ -120,7 +120,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>69</string>
+	<string>78</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -136,9 +136,9 @@
 		</array>
 	</dict>
 	<key>FacebookAppID</key>
-	<string>407390806708717</string>
+	<string>1044466192425495</string>
 	<key>FacebookDisplayName</key>
-	<string>DevelopmentKyberSwap</string>
+	<string>StagingKyberUserDashboard</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>

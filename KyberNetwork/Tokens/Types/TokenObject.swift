@@ -73,7 +73,8 @@ class TokenObject: Object {
 
     var isPromoToken: Bool {
       let promoTokenSymbol: String = {
-        if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest || KNEnvironment.default == .staging { return "PT" }
+//        if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest || KNEnvironment.default == .staging { return "PT" }
+        if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest { return "PT" }
         return "OMG" // set OMG as PT token for other networks
       }()
       return promoTokenSymbol == self.symbol
@@ -179,12 +180,14 @@ class TokenExtraData: NSObject {
   let gasLimit: String
   let gasApprove: Double
   let listingTime: TimeInterval
+  let limitOrderEnabled: Bool
 
-  init(address: String, gasLimit: String, gasApprove: Double, listingTime: TimeInterval) {
+  init(address: String, gasLimit: String, gasApprove: Double, listingTime: TimeInterval, limitOrderEnabled: Bool) {
     self.address = address
     self.gasLimit = gasLimit
     self.gasApprove = gasApprove
     self.listingTime = listingTime
+    self.limitOrderEnabled = limitOrderEnabled
   }
 
   init(dict: JSONDictionary) {
@@ -192,6 +195,7 @@ class TokenExtraData: NSObject {
     self.gasLimit = dict["gasLimit"] as? String ?? ""
     self.gasApprove = dict["gasApprove"] as? Double ?? 0.0
     self.listingTime = dict["listing_time"] as? TimeInterval ?? 0.0
+    self.limitOrderEnabled = dict["sp_limit_order"] as? Bool ?? false // TODO: Update here
   }
 
   var json: JSONDictionary {
@@ -200,6 +204,7 @@ class TokenExtraData: NSObject {
       "gasLimit": gasLimit,
       "gasApprove": gasApprove,
       "listing_time": listingTime,
+      "sp_limit_order": self.limitOrderEnabled, // TODO: Update here
     ]
   }
 

@@ -33,7 +33,8 @@
       "icon": "knc",
       "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
       "decimals": 18,
-      "usd_id":"kyber-network"
+      "usd_id":"kyber-network",
+      "sp_limit_order": true
     },
     "MTC": {
       "name": "MiThaCoin",
@@ -41,13 +42,23 @@
       "icon": "mtc",
       "address": "0xb91985a805453a08b7f7be883f2532cfd0f300f3",
       "decimals": 18,
-      "usd_id":"mithacoin"
+      "usd_id":"mithacoin",
+      "sp_limit_order": true
+    },
+    "WETH": {
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
+      "decimals": 18,
+      "id": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
+      "sp_limit_order": true
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",
   "enjinx": "https://kyber.enjinx.io/",
   "reserve": "0xf13ca246ed7f26dfaf5443ea8debccfa899f947c",
   "network": "0x431366a34b97b9aadb38f32e19b627868294f083",
+  "limit_order": "0x88e7e3b54147f57da5c8aa80b362ef72fff35d5a",
   "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
   "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
