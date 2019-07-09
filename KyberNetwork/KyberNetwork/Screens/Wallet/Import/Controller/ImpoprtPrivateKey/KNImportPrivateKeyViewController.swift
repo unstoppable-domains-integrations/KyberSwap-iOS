@@ -55,11 +55,16 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   func resetUI() {
-    self.enterPrivateKeyTextField.text = "f4e72838eb3b07d2508289042e49c7996d06c3c4907922485fd6565646bc3f1e"
+    self.enterPrivateKeyTextField.text = ""
     self.walletNameTextField.text = ""
     self.isSecureText = true
     self.updateSecureTextEntry()
 
+    self.updateNextButton()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
     self.updateNextButton()
   }
 
