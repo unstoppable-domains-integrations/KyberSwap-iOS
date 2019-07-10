@@ -281,8 +281,15 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     group.notify(queue: .main) {
       self.navigationController.hideLoading()
       if let error = errorMessage {
+        KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["submit_error": error])
         self.navigationController.showWarningTopBannerMessage(with: "", message: error, time: 2.0)
       } else {
+        let attributes = [
+          "action": "submit",
+          "pair": "\(order.from.symbol)_\(order.to.symbol)",
+          "amount": "\(order.srcAmount.displayRate(decimals: order.from.decimals)) \(order.from.symbol)",
+        ]
+        KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: attributes)
         let newOrder = KNLimitOrder(
           from: order.from,
           to: order.to,
@@ -697,9 +704,12 @@ extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate 
     self.signAndSendOrder(order) { [weak self] isSuccess in
       guard let `self` = self else { return }
       if isSuccess, self.confirmVC != nil {
+        KNCrashlyticsUtil.logCustomEvent(withName: "new_order_created", customAttributes: ["pair": "\(order.from.symbol)_\(order.to.symbol)"])
         self.navigationController.popViewController(animated: true, completion: {
           self.confirmVC = nil
         })
+      } else {
+        KNCrashlyticsUtil.logCustomEvent(withName: "create_order_failed", customAttributes: ["pair": "\(order.from.symbol)_\(order.to.symbol)"])
       }
     }
   }
