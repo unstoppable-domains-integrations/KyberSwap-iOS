@@ -7,7 +7,6 @@ import BigInt
 enum KNCreateLimitOrderViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool, pendingBalances: JSONDictionary)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showWarning: Bool)
-  case suggestBuyToken
   case submitOrder(order: KNLimitOrder)
   case manageOrders
   case estimateFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
@@ -71,6 +70,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   @IBOutlet weak var cancelRelatedOrdersView: UIView!
   @IBOutlet weak var warningMessageLabel: UILabel!
+  @IBOutlet weak var whyButton: UIButton!
+  @IBOutlet weak var selectUnderstandButton: UIButton!
+  @IBOutlet weak var iunderstandButton: UIButton!
   @IBOutlet weak var cancelOrdersCollectionView: UICollectionView!
   @IBOutlet weak var confirmCancelButton: UIButton!
   @IBOutlet weak var noCancelButton: UIButton!
@@ -78,6 +80,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
+  fileprivate var isUnderStand: Bool = false
   fileprivate var viewModel: KNCreateLimitOrderViewModel
   weak var delegate: KNCreateLimitOrderViewControllerDelegate?
   fileprivate var updateFeeTimer: Timer?
@@ -251,7 +254,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.currentRateLabel.addGestureRecognizer(tapCurrentRate)
     self.currentRateLabel.isUserInteractionEnabled = true
 
-    self.warningMessageLabel.text = "This new intended order has a worse rate than some orders you have created earlier. All orders below this intended order will be cancelled when it is submitted".toBeLocalised()
+    self.warningMessageLabel.text = "By submitting this order, you also CANCEL the following orders:".toBeLocalised()
+    self.whyButton.setTitle("Why?".toBeLocalised(), for: .normal)
+    self.iunderstandButton.setTitle("I understand".toBeLocalised(), for: .normal)
     self.confirmCancelButton.setTitle("OK".toBeLocalised(), for: .normal)
     self.confirmCancelButton.rounded(
       radius: self.confirmCancelButton.frame.height / 2.0
@@ -377,7 +382,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func suggestBuyTokenButtonPressed(_ sender: Any) {
-    self.delegate?.kCreateLimitOrderViewController(self, run: .suggestBuyToken)
+    let url = "https://staging-kyberswap.knstats.com/faq#I-have-KNC-in-my-wallet-Do-I-get-any-discount-on-trading-fees"
+    self.navigationController?.openSafari(with: url)
   }
 
   @IBAction func submitOrderButtonPressed(_ sender: Any) {
@@ -491,6 +497,26 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       }
       self.view.layoutIfNeeded()
     }
+  }
+
+  @IBAction func reasonCancellingOrderButtonPressed(_ sender: Any) {
+    let url = "https://staging-kyberswap.knstats.com/faq#can-I-submit-multiple-limit-orders-for-same-token-pair"
+    self.navigationController?.openSafari(with: url)
+  }
+
+  @IBAction func underStandButtonPressed(_ sender: Any) {
+    self.isUnderStand = !self.isUnderStand
+    self.selectUnderstandButton.rounded(
+      color: self.isUnderStand ? UIColor.clear : UIColor.Kyber.border,
+      width: self.isUnderStand ? 0.0 : 1.0,
+      radius: 2.5
+    )
+    self.selectUnderstandButton.setImage(
+      self.isUnderStand ? UIImage(named: "check_box_icon") : nil,
+      for: .normal
+    )
+    self.confirmCancelButton.isEnabled = self.isUnderStand
+    self.confirmCancelButton.alpha = self.isUnderStand ? 1.0 : 0.5
   }
 }
 
@@ -743,6 +769,19 @@ extension KNCreateLimitOrderViewController {
     let orderHeight = KNLimitOrderCollectionViewCell.height + 12.0
     let numberOrders = self.viewModel.cancelSuggestOrders.count
     self.cancelOrdersCollectionViewHeightConstraint.constant = orderHeight * CGFloat(numberOrders)
+
+    self.isUnderStand = false
+    self.selectUnderstandButton.rounded(
+      color: UIColor.Kyber.border,
+      width: 1.0,
+      radius: 2.5
+    )
+    self.selectUnderstandButton.setImage(
+      nil,
+      for: .normal
+    )
+    self.confirmCancelButton.isEnabled = false
+    self.confirmCancelButton.alpha = 0.5
 
     self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     self.updateRelatedOrdersView()

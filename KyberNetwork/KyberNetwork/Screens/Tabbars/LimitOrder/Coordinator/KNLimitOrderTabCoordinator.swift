@@ -201,9 +201,6 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         amount: amount,
         pendingWETH: pendingWETH
       )
-    case .suggestBuyToken:
-      //TODO: Open FAQ view
-      print("Suggest buy token pressed")
     case .getRelatedOrders(let address, let src, let dest, let minRate):
       self.getListRelatedOrders(address: address, src: src, dest: dest, minRate: minRate)
     case .getPendingBalances(let address):

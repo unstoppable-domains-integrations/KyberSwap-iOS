@@ -94,6 +94,7 @@ class KNManageOrdersViewController: KNBaseViewController {
   @IBOutlet weak var emptyStateLabel: UILabel!
   @IBOutlet weak var bottomPaddingOrderCollectionViewConstraint: NSLayoutConstraint!
 
+  @IBOutlet weak var faqButton: UIButton!
   fileprivate var loadingTimer: Timer?
 
   fileprivate(set) var viewModel: KNManageOrdersViewModel
@@ -165,6 +166,11 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.orderCollectionView.dataSource = self
 
     self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea() + 12.0
+
+    self.faqButton.setTitle("Wonder why your order are not filled?".toBeLocalised(), for: .normal)
+    self.faqButton.titleLabel?.numberOfLines = 2
+    self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
+    self.faqButton.rounded(radius: 4.0)
 
     self.updateDisplayTimeInterval(0)
   }
@@ -254,6 +260,11 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   @IBAction func filterButtonPressed(_ sender: Any) {
     self.openFilterView()
+  }
+
+  @IBAction func openFAQButtonPressed(_ sender: Any) {
+    let url = "https://staging-kyberswap.knstats.com/faq#I-submitted-the-limit-order-but-it-was-not-triggered-even-though-my-desired-price-was-hit"
+    self.navigationController?.openSafari(with: url)
   }
 
   fileprivate func loadListOrders(isDisplayLoading: Bool = false) {
