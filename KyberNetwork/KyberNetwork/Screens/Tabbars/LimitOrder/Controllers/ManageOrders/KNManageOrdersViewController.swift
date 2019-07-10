@@ -243,26 +243,32 @@ class KNManageOrdersViewController: KNBaseViewController {
   }
 
   @IBAction func oneDayButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_day"])
     self.updateDisplayTimeInterval(0)
   }
 
   @IBAction func oneWeekButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_week"])
     self.updateDisplayTimeInterval(1)
   }
 
   @IBAction func oneMonthButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_month"])
     self.updateDisplayTimeInterval(2)
   }
 
   @IBAction func threeMonthButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "three_months"])
     self.updateDisplayTimeInterval(3)
   }
 
   @IBAction func filterButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "filter"])
     self.openFilterView()
   }
 
   @IBAction func openFAQButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "faq"])
     let url = "https://staging-kyberswap.knstats.com/faq#I-submitted-the-limit-order-but-it-was-not-triggered-even-though-my-desired-price-was-hit"
     self.navigationController?.openSafari(with: url)
   }
@@ -293,6 +299,7 @@ class KNManageOrdersViewController: KNBaseViewController {
             }
           })
         case .failure:
+          KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["load_list_orders": "failed"])
           errorMessage = "Can not load your orders right now".toBeLocalised()
         }
         group.leave()
@@ -408,6 +415,7 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
 
 extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate {
   func filterLimitOrderViewController(_ controller: KNFilterLimitOrderViewController, isDateDesc: Bool, pairs: [String]?, status: [Int], addresses: [String]?) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["filter": "applied_pairs_\(pairs?.joined(separator: ",") ?? "all")"])
     self.viewModel.isDateDesc = isDateDesc
     self.viewModel.selectedPairs = pairs
     self.viewModel.selectedStates = status
@@ -418,6 +426,7 @@ extension KNManageOrdersViewController: KNFilterLimitOrderViewControllerDelegate
 
 extension KNManageOrdersViewController: KNCancelOrderConfirmPopUpDelegate {
   func cancelOrderConfirmPopup(_ controller: KNCancelOrderConfirmPopUp, didConfirmCancel order: KNOrderObject) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["cancel": "confirmed"])
     self.loadListOrders(isDisplayLoading: true)
   }
 }

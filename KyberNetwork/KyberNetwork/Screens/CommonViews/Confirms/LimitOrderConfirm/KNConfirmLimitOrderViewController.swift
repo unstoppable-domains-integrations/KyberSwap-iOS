@@ -129,7 +129,12 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "confirm_limit_order", customAttributes: ["action": "confirm"])
+    let attributes = [
+      "action": "confirm",
+      "pair": "\(self.order.from.symbol)_\(self.order.to.symbol)",
+      "amount": "\(self.order.srcAmount.displayRate(decimals: self.order.from.decimals)) \(self.order.from.symbol)",
+    ]
+    KNCrashlyticsUtil.logCustomEvent(withName: "confirm_limit_order", customAttributes: attributes)
     self.delegate?.confirmLimitOrderViewController(self, order: self.order)
   }
 

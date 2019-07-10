@@ -352,6 +352,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func firstPercentageButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "25_percent"])
     let amountDisplay = self.viewModel.amountFromWithPercentage(25).string(
       decimals: self.viewModel.from.decimals,
       minFractionDigits: 0,
@@ -365,6 +366,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func secondPercentageButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "50_percent"])
     let amountDisplay = self.viewModel.amountFromWithPercentage(50).string(
       decimals: self.viewModel.from.decimals,
       minFractionDigits: 0,
@@ -378,15 +380,18 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func thirdPercentageButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "100_percent"])
     self.keyboardSwapAllButtonPressed(sender)
   }
 
   @IBAction func suggestBuyTokenButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "suggest_buy"])
     let url = "https://staging-kyberswap.knstats.com/faq#I-have-KNC-in-my-wallet-Do-I-get-any-discount-on-trading-fees"
     self.navigationController?.openSafari(with: url)
   }
 
   @IBAction func submitOrderButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "submit_order"])
     if !self.validateUserHasSignedIn() { return }
     if !self.validateDataIfNeeded(isConfirming: true) { return }
     if self.showShouldCancelOtherOrdersIfNeeded() { return }
@@ -395,6 +400,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   fileprivate func submitOrderDidVerifyData() {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "submit_order_verified"])
     let amount: BigInt = {
       if !self.viewModel.from.isWETH && self.viewModel.isUseAllBalance { return self.viewModel.availableBalance }
       return self.viewModel.amountFromBigInt
@@ -415,6 +421,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func manageOrderButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "manage_order"])
     if !self.validateUserHasSignedIn() { return }
     self.delegate?.kCreateLimitOrderViewController(self, run: .manageOrders)
   }
@@ -461,10 +468,12 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @objc func balanceLabelTapped(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "balance_value"])
     self.keyboardSwapAllButtonPressed(sender)
   }
 
   @objc func currentRateDidTapped(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "current_rate"])
     guard let rate = self.viewModel.rateFromNode else { return }
     let rateDisplay = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
     self.targetRateTextField.text = rateDisplay
@@ -474,6 +483,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func confirmCancelButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "continue_cancelling"])
     UIView.animate(withDuration: 0.16) {
       self.cancelRelatedOrdersView.isHidden = true
       self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
@@ -486,6 +496,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func noCancelButtonPressed(_ sender: Any?) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "change_rate"])
     UIView.animate(withDuration: 0.16) {
       self.cancelRelatedOrdersView.isHidden = true
       self.cancelOrdersCollectionViewHeightConstraint.constant = 0.0
@@ -500,11 +511,13 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @IBAction func reasonCancellingOrderButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "cancelling_why"])
     let url = "https://staging-kyberswap.knstats.com/faq#can-I-submit-multiple-limit-orders-for-same-token-pair"
     self.navigationController?.openSafari(with: url)
   }
 
   @IBAction func underStandButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "undertand_pressed"])
     self.isUnderStand = !self.isUnderStand
     self.selectUnderstandButton.rounded(
       color: self.isUnderStand ? UIColor.clear : UIColor.Kyber.border,
@@ -786,6 +799,7 @@ extension KNCreateLimitOrderViewController {
     self.scrollContainerView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     self.updateRelatedOrdersView()
 
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "suggest_cancel_orders"])
     return true
   }
 
@@ -798,6 +812,7 @@ extension KNCreateLimitOrderViewController {
       pendingWETH: self.viewModel.pendingBalances["WETH"] as? Double ?? 0.0
     )
     self.delegate?.kCreateLimitOrderViewController(self, run: event)
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "convert_eth_weth"])
     return true
   }
 
@@ -969,6 +984,8 @@ extension KNCreateLimitOrderViewController {
 
     self.listOrdersDidUpdate(nil)
     self.updateRelatedOrdersFromServer()
+
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "select_token_\(token.symbol)"])
 
     self.view.layoutIfNeeded()
   }
@@ -1258,6 +1275,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     guard let id = self.viewModel.relatedOrders.firstIndex(where: { $0.id == order.id }) else {
       return
     }
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "open_cancel_order"])
     let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
     cancelOrderVC.loadViewIfNeeded()
     cancelOrderVC.modalTransitionStyle = .crossDissolve
@@ -1282,6 +1300,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
 
 extension KNCreateLimitOrderViewController: KNCancelOrderConfirmPopUpDelegate {
   func cancelOrderConfirmPopup(_ controller: KNCancelOrderConfirmPopUp, didConfirmCancel order: KNOrderObject) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "confirm_cancel"])
     self.listOrdersDidUpdate(nil)
     self.updateRelatedOrdersFromServer()
     self.updatePendingBalancesFromServer()
