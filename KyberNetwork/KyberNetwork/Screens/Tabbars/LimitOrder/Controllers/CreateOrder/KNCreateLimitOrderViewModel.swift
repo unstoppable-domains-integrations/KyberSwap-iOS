@@ -347,8 +347,24 @@ class KNCreateLimitOrderViewModel {
     return "\(feeText): \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
   }
 
-  var suggestBuyText: String {
-    return "Hold from 2000 KNC to get discount for your orders.".toBeLocalised()
+  var suggestBuyText: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let normalAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
+      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+    ]
+    let learnMoreAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
+      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+      NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+    ]
+    attributedString.append(NSAttributedString(
+      string: "Hold from 2000 KNC to get discount for your orders. ".toBeLocalised(),
+      attributes: normalAttributes
+      )
+    )
+    attributedString.append(NSAttributedString(string: "Learn more".toBeLocalised(), attributes: learnMoreAttributes))
+    return attributedString
   }
 
   // MARK: Update data

@@ -566,7 +566,7 @@ extension KNCreateLimitOrderViewController {
     self.feeNoteLabel.text = self.viewModel.displayFeeString
     self.suggestBuyTokenButton.titleLabel?.numberOfLines = 2
     self.suggestBuyTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
-    self.suggestBuyTokenButton.setTitle(self.viewModel.suggestBuyText, for: .normal)
+    self.suggestBuyTokenButton.setAttributedTitle(self.viewModel.suggestBuyText, for: .normal)
   }
 
   // Call update estimate rate from node
