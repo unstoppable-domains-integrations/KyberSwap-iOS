@@ -512,7 +512,7 @@
   "ethScanUrl": "https://etherscan.io/",
   "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
   "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
-  "limit_order": "0x0f01b5ea43719683c546868bfadeaccde14ab79e",
+  "limit_order": "0xfdb8bfda2783563b1c24373270d3f2fe6bc18be5",
   "enjinx": "https://kyber.enjinx.io/",
   "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
