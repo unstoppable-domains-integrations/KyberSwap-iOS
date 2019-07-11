@@ -157,7 +157,9 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       }
     )
 
-    self.checkAddressEligible(nil)
+    if self.tabBarController?.selectedIndex == 2 {
+      self.checkAddressEligible(nil)
+    }
   }
 
   override func viewDidLayoutSubviews() {
@@ -830,6 +832,7 @@ extension KNCreateLimitOrderViewController {
   }
 
   @objc func checkAddressEligible(_ sender: Any?) {
+    if self.tabBarController?.selectedIndex != 2 { return }
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     let address = self.viewModel.walletObject.address
     KNLimitOrderServerCoordinator.shared.checkEligibleAddress(accessToken: accessToken, address: address) { [weak self] result in
@@ -879,7 +882,9 @@ extension KNCreateLimitOrderViewController {
     self.updateRelatedOrdersFromServer()
     self.updatePendingBalancesFromServer()
 
-    self.checkAddressEligible(nil)
+    if self.tabBarController?.selectedIndex == 2 {
+      self.checkAddressEligible(nil)
+    }
     self.view.layoutIfNeeded()
   }
 
