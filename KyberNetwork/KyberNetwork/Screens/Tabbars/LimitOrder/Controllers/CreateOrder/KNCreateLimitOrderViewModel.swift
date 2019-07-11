@@ -331,7 +331,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Fee
-  var feePercentage: Double = 0 // 10000 as in SC
+  var feePercentage: Double = 0
 
   var displayFeeString: String {
     let feeBigInt = BigInt(Double(self.amountFromBigInt) * self.feePercentage)

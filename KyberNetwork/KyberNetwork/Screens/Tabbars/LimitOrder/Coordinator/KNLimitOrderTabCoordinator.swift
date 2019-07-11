@@ -258,7 +258,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       dest: order.to.contract,
       srcAmount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
       destAmount: destAmount) { (fee, error) in
-        if let err = error { errorMessage = err } else { feeValue = Int(round((fee ?? 0.0) * 10000.0)) }
+        if let err = error { errorMessage = err } else { feeValue = Int(round((fee ?? 0.0) * 1000000.0)) }
         group.leave()
     }
 

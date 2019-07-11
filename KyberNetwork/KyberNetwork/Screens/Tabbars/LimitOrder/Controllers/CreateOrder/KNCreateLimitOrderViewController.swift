@@ -415,7 +415,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         sender: self.viewModel.wallet.address,
         srcAmount: amount,
         targetRate: self.viewModel.targetRateBigInt,
-        fee: Int(round(self.viewModel.feePercentage * 10000)),
+        fee: Int(round(self.viewModel.feePercentage * 1000000)), // fee send to server is multiple with 10^6
         nonce: self.viewModel.nonce ?? ""
       )
       self.delegate?.kCreateLimitOrderViewController(self, run: .submitOrder(order: order))
