@@ -528,6 +528,8 @@
 "welcome.second.screen.description" = "在任意代币对之间切换。无需充币。";
 "welcome.third.screen.title" = "资料";
 "welcome.third.screen.description" = "轻松管理您的个人资料并解锁其他功能。直接从应用程序。";
+"welcome.limit.order.title" = "Limit Order";
+"welcome.limit.order.description" = "以您的目标价格兑换，时刻掌控您的资金，低费用，便捷的用户体验";
 
 "Your Wallet" = "您的钱包";
 "Switch Wallet" = "切换钱包";
@@ -615,4 +617,4 @@
 "Why?" = "为什么?";
 "I understand" = "我明白了";
 "Learn more" = "學到更多";
-"Wonder why your orders are not filled?" = "Wonder why your orders are not filled?";
+"Wonder why your orders are not filled?" = "想知道为什么您的订单没有成交吗？";
