@@ -338,7 +338,7 @@ class KNCreateLimitOrderViewModel {
     let feeDisplay = feeBigInt.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 8)
+      maxFractionDigits: min(self.from.decimals, 6)
     )
     let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
     let fromSymbol = self.fromSymbol
