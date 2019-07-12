@@ -167,7 +167,7 @@ class KNManageOrdersViewController: KNBaseViewController {
 
     self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea() + 12.0
 
-    self.faqButton.setTitle("Wonder why your order are not filled?".toBeLocalised(), for: .normal)
+    self.faqButton.setTitle("Wonder why your orders are not filled?".toBeLocalised(), for: .normal)
     self.faqButton.titleLabel?.numberOfLines = 2
     self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.faqButton.rounded(radius: 4.0)
