@@ -40,10 +40,10 @@ class KNSendTokenViewModel: NSObject {
         decimals: self.from.decimals,
         minFractionDigits: 0,
         maxFractionDigits: min(self.from.decimals, 6)
-      )
+      ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
-    return self.displayBalance
+    return self.displayBalance.removeGroupSeparator()
   }
 
   var amountBigInt: BigInt {
@@ -104,6 +104,7 @@ class KNSendTokenViewModel: NSObject {
       minFractionDigits: 0,
       maxFractionDigits: min(self.from.decimals, 6)
     )
+    if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(12))"
   }
 

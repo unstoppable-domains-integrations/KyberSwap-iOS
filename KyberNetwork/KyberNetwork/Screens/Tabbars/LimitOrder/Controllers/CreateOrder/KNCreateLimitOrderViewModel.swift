@@ -73,7 +73,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var allFromTokenBalanceString: String {
-    if !(self.from.isETH || self.from.isWETH) { return self.balanceText }
+    if !(self.from.isETH || self.from.isWETH) { return self.balanceText.removeGroupSeparator() }
     let fee: BigInt = {
       if let bal = self.balances[self.eth.contract]?.value, !bal.isZero {
         return KNGasCoordinator.shared.fastKNGas * BigInt(600_000) // approve + convet if needed
@@ -85,7 +85,8 @@ class KNCreateLimitOrderViewModel {
       decimals: self.from.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(self.from.decimals, 6)
-    )
+    ).removeGroupSeparator()
+    if let value = Double(string), value == 0 { return "0" }
     return "\(string.prefix(12))"
   }
 
@@ -173,7 +174,8 @@ class KNCreateLimitOrderViewModel {
       decimals: self.from.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(self.from.decimals, 6)
-    ).removeGroupSeparator()
+    )
+    if let double = Double(string), double == 0 { return "0" }
     return "\(string.prefix(12))"
   }
 

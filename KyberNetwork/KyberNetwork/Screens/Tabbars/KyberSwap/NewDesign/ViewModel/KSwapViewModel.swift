@@ -84,10 +84,10 @@ class KSwapViewModel {
         decimals: self.from.decimals,
         minFractionDigits: 0,
         maxFractionDigits: min(self.from.decimals, 6)
-      )
+      ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
-    return self.balanceText
+    return self.balanceText.removeGroupSeparator()
   }
 
   var amountFromBigInt: BigInt {
@@ -246,6 +246,7 @@ class KSwapViewModel {
       minFractionDigits: 0,
       maxFractionDigits: min(self.from.decimals, 6)
     )
+    if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(12))"
   }
 

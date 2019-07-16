@@ -33,11 +33,15 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
     self.tokenNameLabel.textColor = isETHStar ? UIColor(red: 20, green: 25, blue: 39) : UIColor(red: 158, green: 161, blue: 170)
     self.tokenNameLabel.font = UIFont.Kyber.medium(with: 12, italic: isETHStar)
     self.tokenNameLabel.addLetterSpacing()
-    let balText: String = balance?.string(
-      decimals: token.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(token.decimals, 6)
-      ) ?? ""
+    let balText: String = {
+      let value = balance?.value.string(
+        decimals: token.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(token.decimals, 6)
+      )
+      if let val = value, let double = Double(val), double == 0 { return "0" }
+      return value ?? ""
+    }()
     self.tokenBalanceLabel.text = "\(balText.prefix(12))"
     self.tokenBalanceLabel.addLetterSpacing()
     self.layoutIfNeeded()
