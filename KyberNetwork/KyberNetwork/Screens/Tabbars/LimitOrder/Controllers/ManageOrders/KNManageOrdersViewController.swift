@@ -20,8 +20,6 @@ class KNManageOrdersViewModel {
   }
 
   var isDateDesc: Bool = true {
-    didSet { self.updateDisplayOrders() }
-  }
 
   var fromTime: TimeInterval {
     let months = -3
