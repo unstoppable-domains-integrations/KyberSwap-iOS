@@ -292,7 +292,6 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.filterVC = KNFilterLimitOrderViewController(viewModel: viewModel)
     self.filterVC?.delegate = self
     self.filterVC?.loadViewIfNeeded()
-
     self.navigationController?.pushViewController(self.filterVC!, animated: true)
   }
 
