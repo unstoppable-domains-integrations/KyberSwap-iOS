@@ -34,7 +34,7 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
     self.tokenNameLabel.font = UIFont.Kyber.medium(with: 12, italic: isETHStar)
     self.tokenNameLabel.addLetterSpacing()
     let balText: String = {
-      let value = balance?.value.string(
+      let value = balance?.string(
         decimals: token.decimals,
         minFractionDigits: 0,
         maxFractionDigits: min(token.decimals, 6)
