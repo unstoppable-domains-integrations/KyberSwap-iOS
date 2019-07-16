@@ -172,7 +172,7 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.faqButton.rounded(radius: 4.0)
 
-    self.updateDisplayTimeInterval(0)
+    self.updateDisplayTimeInterval(3)
   }
 
   fileprivate func updateDisplayTimeInterval(_ type: Int) {
@@ -203,6 +203,7 @@ class KNManageOrdersViewController: KNBaseViewController {
   fileprivate func updateCollectionView() {
     self.emptyStateLabel.isHidden = !self.viewModel.displayedOrders.isEmpty
     self.orderCollectionView.isHidden = self.viewModel.displayedOrders.isEmpty
+    self.faqButton.isHidden = self.viewModel.displayedOrders.isEmpty
     self.orderCollectionView.reloadData()
   }
 
