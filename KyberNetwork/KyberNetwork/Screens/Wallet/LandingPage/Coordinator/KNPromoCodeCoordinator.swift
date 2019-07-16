@@ -137,7 +137,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
     self.navigationController.showSuccessTopBannerMessage(
       with: NSLocalizedString("congratulations", value: "Congratulations!!!", comment: ""),
       message: String(format: NSLocalizedString("you.have.successfully.unlocked.your.promo.code", value: "You have successfully unlocked your Promo code. Please move all assets to your wallet by %@", comment: ""), expiredString),
-      time: 3
+      time: 5
     )
     self.delegate?.promoCodeCoordinatorDidCreate(
       wallet,

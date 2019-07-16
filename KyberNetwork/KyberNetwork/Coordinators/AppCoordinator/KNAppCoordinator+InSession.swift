@@ -110,8 +110,13 @@ extension KNAppCoordinator {
     )
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
 
+    let isPromoWallet: Bool = {
+      let address = self.session.wallet.address.description
+      return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
+    }()
+
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
-      self.tabbarController.selectedIndex = 2
+      self.tabbarController.selectedIndex = isPromoWallet ? 1 : 2
       self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     }
 
@@ -170,8 +175,13 @@ extension KNAppCoordinator {
     self.session.switchSession(wallet)
     self.loadBalanceCoordinator?.restartNewSession(self.session)
 
+    let isPromoWallet: Bool = {
+      let address = self.session.wallet.address.description
+      return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
+    }()
+
     self.navigationController.displayLoading()
-    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session, resetRoot: isPromoWallet)
     self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.profileCoordinator?.updateSession(self.session)
@@ -186,6 +196,7 @@ extension KNAppCoordinator {
     self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       self.navigationController.hideLoading()
+      if isPromoWallet { self.tabbarController.selectedIndex = 1 }
     }
   }
 
