@@ -9,17 +9,16 @@ class KNManageOrdersViewModel {
   fileprivate(set) var displayedOrders: [KNOrderObject] = []
   var cancelOrder: KNOrderObject?
 
-  var isDateDesc: Bool = true {
+  var isSelectingOpenOrders: Bool = true {
     didSet { self.updateDisplayOrders() }
   }
-  var timeIntervalType: Int = 0 { // 1 day/1 week/1 month/3 months
+
+  var isDateDesc: Bool = true {
     didSet { self.updateDisplayOrders() }
   }
 
   var fromTime: TimeInterval {
-    if self.timeIntervalType == 0 { return Date().timeIntervalSince1970 - 24.0 * 60.0 * 60.0 }
-    if self.timeIntervalType == 1 { return Date().timeIntervalSince1970 - 7.0 * 24.0 * 60.0 * 60.0 }
-    let months = self.timeIntervalType == 2 ? -1 : -3
+    let months = -3
     if let date = Calendar.current.date(byAdding: .month, value: months, to: Date()) {
       return date.timeIntervalSince1970
     }
@@ -29,9 +28,11 @@ class KNManageOrdersViewModel {
   var selectedPairs: [String]? {
     didSet { self.updateDisplayOrders() }
   }
-  var selectedStates: [Int] = [0, 1, 2] { // default open, in progress, filled
+
+  var selectedStates: [Int] = [0, 1, 2, 3, 4] {
     didSet { self.updateDisplayOrders() }
   }
+
   var selectedAddresses: [String]? {
     didSet { self.updateDisplayOrders() }
   }
@@ -45,6 +46,9 @@ class KNManageOrdersViewModel {
   fileprivate func updateDisplayOrders() {
     let fromTime = self.fromTime
     self.displayedOrders = self.orders.filter({
+      if self.isSelectingOpenOrders { return $0.state == .open || $0.state == .inProgress }
+      return $0.state == .cancelled || $0.state == .filled || $0.state == .invalidated
+    }).filter({
       // filter pairs
       let pair = "\($0.srcTokenSymbol) ➞ \($0.destTokenSymbol)"
       return self.selectedPairs == nil || self.selectedPairs?.contains(pair) == true
@@ -85,10 +89,14 @@ class KNManageOrdersViewController: KNBaseViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
 
   @IBOutlet weak var filterButton: UIButton!
-  @IBOutlet weak var oneDayButton: UIButton!
-  @IBOutlet weak var oneWeekButton: UIButton!
-  @IBOutlet weak var oneMonthButton: UIButton!
-  @IBOutlet weak var threeMonthButton: UIButton!
+  @IBOutlet weak var openOrderButton: UIButton!
+  @IBOutlet weak var orderHistoryButton: UIButton!
+
+  @IBOutlet weak var tutorialContainerView: UIView!
+  @IBOutlet weak var swipeLeftToCancelLabel: UILabel!
+  
+  @IBOutlet var topPaddingFAQButtonForOrderCollectionView: NSLayoutConstraint!
+  @IBOutlet var topPaddingCancelTutForOrderCollectionView: NSLayoutConstraint!
 
   @IBOutlet weak var orderCollectionView: UICollectionView!
   @IBOutlet weak var emptyStateLabel: UILabel!
@@ -153,13 +161,10 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.filterButton.setTitle("Filter".toBeLocalised(), for: .normal)
-    self.oneDayButton.setTitle("1 Day".toBeLocalised(), for: .normal)
-    self.oneWeekButton.setTitle("1 Week".toBeLocalised(), for: .normal)
-    self.oneMonthButton.setTitle("1 Month".toBeLocalised(), for: .normal)
-    self.threeMonthButton.setTitle("3 Months".toBeLocalised(), for: .normal)
 
     self.emptyStateLabel.text = "No order found".toBeLocalised()
+    self.openOrderButton.setTitle("Open Orders".toBeLocalised(), for: .normal)
+    self.orderHistoryButton.setTitle("Order History".toBeLocalised(), for: .normal)
     let nib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
     self.orderCollectionView.register(nib, forCellWithReuseIdentifier: KNLimitOrderCollectionViewCell.cellID)
     self.orderCollectionView.delegate = self
@@ -172,32 +177,30 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.faqButton.rounded(radius: 4.0)
 
-    self.updateDisplayTimeInterval(3)
+    self.tutorialContainerView.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
+    self.swipeLeftToCancelLabel.text = "Swipe left to cancel open order".toBeLocalised()
+    let hideTut = !KNAppTracker.needShowCancelOpenOrderTutorial()
+    self.updateCancelOrderTutorial(isHidden: hideTut)
+
+    self.updateSelectOrdersType(isOpen: true)
   }
 
-  fileprivate func updateDisplayTimeInterval(_ type: Int) {
-    self.viewModel.timeIntervalType = type
-
-    let normalColor = UIColor(red: 90, green: 94, blue: 103)
-    let highLightedColor = UIColor(red: 255, green: 144, blue: 8)
-
-    self.oneDayButton.setTitleColor(
-      type == 0 ? highLightedColor : normalColor,
-      for: .normal
-    )
-    self.oneWeekButton.setTitleColor(
-      type == 1 ? highLightedColor : normalColor,
-      for: .normal
-    )
-    self.oneMonthButton.setTitleColor(
-      type == 2 ? highLightedColor : normalColor,
-      for: .normal
-    )
-    self.threeMonthButton.setTitleColor(
-      type == 3 ? highLightedColor : normalColor,
-      for: .normal
-    )
+  fileprivate func updateSelectOrdersType(isOpen: Bool) {
+    self.viewModel.isSelectingOpenOrders = isOpen
+    self.openOrderButton.setTitleColor(isOpen ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.openOrderButton.setTitleColor(!isOpen ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
     self.updateCollectionView()
+  }
+
+  fileprivate func updateCancelOrderTutorial(isHidden: Bool) {
+    self.tutorialContainerView.isHidden = isHidden
+    self.topPaddingCancelTutForOrderCollectionView.isActive = !isHidden
+    self.topPaddingFAQButtonForOrderCollectionView.isActive = isHidden
+    self.topPaddingFAQButtonForOrderCollectionView.constant = isHidden ? 0 : 12.0
+    if isHidden {
+      KNAppTracker.updateCancelOpenOrderTutorial()
+    }
+    self.view.updateConstraints()
   }
 
   fileprivate func updateCollectionView() {
@@ -243,24 +246,16 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true)
   }
 
-  @IBAction func oneDayButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_day"])
-    self.updateDisplayTimeInterval(0)
+  @IBAction func openOrdersButtonPressed(_ sender: Any) {
+    self.updateSelectOrdersType(isOpen: true)
   }
 
-  @IBAction func oneWeekButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_week"])
-    self.updateDisplayTimeInterval(1)
+  @IBAction func orderHistoryButtonPressed(_ sender: Any) {
+    self.updateSelectOrdersType(isOpen: false)
   }
 
-  @IBAction func oneMonthButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "one_month"])
-    self.updateDisplayTimeInterval(2)
-  }
-
-  @IBAction func threeMonthButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "three_months"])
-    self.updateDisplayTimeInterval(3)
+  @IBAction func turnOffTutorialButtonPressed(_ sender: Any) {
+    self.updateCancelOrderTutorial(isHidden: true)
   }
 
   @IBAction func filterButtonPressed(_ sender: Any) {

@@ -41,6 +41,8 @@ class KNAppTracker {
 
   static let kFavouriteTokensKey: String = "kFavouriteTokensKey"
 
+  static let kTutorialCancelOpenOrderKey: String = "kTutorialCancelOpenOrderKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
@@ -301,5 +303,16 @@ class KNAppTracker {
     }
     userDefaults.set(addresses, forKey: key)
     userDefaults.synchronize()
+  }
+
+  static func updateCancelOpenOrderTutorial() {
+    let key = "\(KNEnvironment.default.displayName)-\(kTutorialCancelOpenOrderKey)"
+    userDefaults.set(true, forKey: key)
+    userDefaults.synchronize()
+  }
+
+  static func needShowCancelOpenOrderTutorial() -> Bool {
+    let key = "\(KNEnvironment.default.displayName)-\(kTutorialCancelOpenOrderKey)"
+    return userDefaults.value(forKey: key) == nil
   }
 }
