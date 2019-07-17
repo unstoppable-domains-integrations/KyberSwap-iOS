@@ -130,6 +130,11 @@ extension KNAppCoordinator {
       [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarActive],
       for: .selected
     )
+
+    if isDebug {
+      KNAppTracker.updateWonderWhyOrdersNotFilled(isRemove: true)
+      KNAppTracker.updateCancelOpenOrderTutorial(isRemove: true)
+    }
   }
 
   func appDidBecomeActive() {

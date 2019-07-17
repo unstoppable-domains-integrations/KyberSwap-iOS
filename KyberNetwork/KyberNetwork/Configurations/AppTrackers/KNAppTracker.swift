@@ -42,6 +42,7 @@ class KNAppTracker {
   static let kFavouriteTokensKey: String = "kFavouriteTokensKey"
 
   static let kTutorialCancelOpenOrderKey: String = "kTutorialCancelOpenOrderKey"
+  static let kWonderWhyOrdersAreNotFilled: String = "kWonderWhyOrdersAreNotFilled"
 
   static let userDefaults: UserDefaults = UserDefaults.standard
 
@@ -305,14 +306,25 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  static func updateCancelOpenOrderTutorial() {
+  static func updateCancelOpenOrderTutorial(isRemove: Bool = false) {
     let key = "\(KNEnvironment.default.displayName)-\(kTutorialCancelOpenOrderKey)"
-    userDefaults.set(true, forKey: key)
+    userDefaults.set(isRemove ? nil : true, forKey: key)
     userDefaults.synchronize()
   }
 
   static func needShowCancelOpenOrderTutorial() -> Bool {
     let key = "\(KNEnvironment.default.displayName)-\(kTutorialCancelOpenOrderKey)"
+    return userDefaults.value(forKey: key) == nil
+  }
+
+  static func updateWonderWhyOrdersNotFilled(isRemove: Bool = false) {
+    let key = "\(KNEnvironment.default.displayName)-\(kWonderWhyOrdersAreNotFilled)"
+    userDefaults.set(isRemove ? nil : true, forKey: key)
+    userDefaults.synchronize()
+  }
+
+  static func needShowWonderWhyOrdersNotFilled() -> Bool {
+    let key = "\(KNEnvironment.default.displayName)-\(kWonderWhyOrdersAreNotFilled)"
     return userDefaults.value(forKey: key) == nil
   }
 }

@@ -235,6 +235,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var transactionsTextLabel: UILabel!
 
   @IBOutlet weak var currentAddressLabel: UILabel!
+  @IBOutlet weak var currentAddressContainerView: UIView!
   @IBOutlet weak var emptyStateContainerView: UIView!
   @IBOutlet weak var emptyStateDescLabel: UILabel!
 
@@ -243,7 +244,8 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var ratesMightChangeDescTextLabel: UILabel!
   @IBOutlet weak var bottomPaddingConstraintForRateMightChange: NSLayoutConstraint!
 
-  @IBOutlet weak var segmentedControl: UISegmentedControl!
+  @IBOutlet weak var pendingButton: UIButton!
+  @IBOutlet weak var completedButton: UIButton!
 
   @IBOutlet weak var transactionCollectionView: UICollectionView!
   @IBOutlet weak var transactionCollectionViewBottomConstraint: NSLayoutConstraint!
@@ -286,16 +288,10 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
     self.view.backgroundColor = style.mainBackgroundColor
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.segmentedControl.rounded(
-      color: .white,
-      width: 1,
-      radius: style.buttonRadius(for: self.segmentedControl.frame.height)
-    )
-    self.segmentedControl.setTitle(NSLocalizedString("pending", value: "Pending", comment: ""), forSegmentAt: 0)
-    self.segmentedControl.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), forSegmentAt: 1)
-    self.segmentedControl.setTitleTextAttributes(self.viewModel.normalAttributes, for: .normal)
-    self.segmentedControl.setTitleTextAttributes(self.viewModel.selectedAttributes, for: .selected)
+    self.pendingButton.setTitle(NSLocalizedString("pending", value: "Pending", comment: ""), for: .normal)
+    self.completedButton.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), for: .normal)
     self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
+    self.updateDisplayTxsType(self.viewModel.isShowingPending)
   }
 
   fileprivate func setupCollectionView() {
@@ -315,10 +311,17 @@ class KNHistoryViewController: KNBaseViewController {
   fileprivate func updateUIWhenDataDidChange() {
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
+
+    let isShowingPending = self.viewModel.isShowingPending
+    self.pendingButton.setTitleColor(isShowingPending ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.completedButton.setTitleColor(!isShowingPending ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
+
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
-    self.currentAddressLabel.isHidden = self.viewModel.isTransactionCollectionViewHidden
+    let isAddressHidden = self.viewModel.isTransactionCollectionViewHidden
+    self.currentAddressLabel.isHidden = isAddressHidden
+    self.currentAddressContainerView.isHidden = isAddressHidden
     self.currentAddressLabel.text = self.viewModel.currentWallet.address
     self.transactionCollectionView.reloadData()
     self.view.setNeedsUpdateConstraints()
@@ -330,8 +333,8 @@ class KNHistoryViewController: KNBaseViewController {
     self.delegate?.historyViewController(self, run: .dismiss)
   }
 
-  @IBAction func segmentedControlValueDidChange(_ sender: UISegmentedControl) {
-    self.viewModel.updateIsShowingPending(sender.selectedSegmentIndex == 0)
+  fileprivate func updateDisplayTxsType(_ isShowPending: Bool) {
+    self.viewModel.updateIsShowingPending(isShowPending)
     self.updateUIWhenDataDidChange()
     KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": self.viewModel.isShowingPending ? "pending_tx" : "mined_tx"])
   }
@@ -358,6 +361,18 @@ class KNHistoryViewController: KNBaseViewController {
     filterVC.loadViewIfNeeded()
     filterVC.delegate = self
     self.navigationController?.pushViewController(filterVC, animated: true)
+  }
+
+  @IBAction func pendingButtonPressed(_ sender: Any) {
+    self.viewModel.updateIsShowingPending(true)
+    self.updateUIWhenDataDidChange()
+    KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": self.viewModel.isShowingPending ? "pending_tx" : "mined_tx"])
+  }
+
+  @IBAction func completedButtonPressed(_ sender: Any) {
+    self.viewModel.updateIsShowingPending(false)
+    self.updateUIWhenDataDidChange()
+    KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": self.viewModel.isShowingPending ? "pending_tx" : "mined_tx"])
   }
 }
 
@@ -396,7 +411,7 @@ extension KNHistoryViewController {
 extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     KNCrashlyticsUtil.logCustomEvent(withName: "history", customAttributes: ["type": "selected_tx"])
-    if self.segmentedControl.selectedSegmentIndex == 0 {
+    if self.viewModel.isShowingPending {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
       self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
     } else {

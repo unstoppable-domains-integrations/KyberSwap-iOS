@@ -10,14 +10,13 @@ protocol KNLimitOrderCollectionViewCellDelegate: class {
 
 class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
-  static let height: CGFloat = 115.0
+  static let height: CGFloat = 96.0
   static let cellID: String = "kLimitOrderCollectionViewCell"
 
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var headerContainerView: UIView!
 
   @IBOutlet weak var pairValueLabel: UILabel!
-  @IBOutlet weak var dateValueLabel: UILabel!
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var orderWarningIcon: UIButton!
   @IBOutlet weak var orderStatusLabel: UIButton!
@@ -44,8 +43,6 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
-    self.containerView.rounded(radius: 5.0)
-    self.headerContainerView.rounded(radius: 2.5)
     self.orderStatusLabel.rounded(radius: self.orderStatusLabel.frame.height / 2.0)
     self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
     self.fromTextLabel.text = NSLocalizedString("From", value: "From", comment: "").uppercased()
@@ -64,7 +61,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.addGestureRecognizer(swipeRightGesture)
   }
 
-  func updateCell(with order: KNOrderObject, isReset: Bool, hasAction: Bool = true) {
+  func updateCell(with order: KNOrderObject, isReset: Bool, hasAction: Bool = true, bgColor: UIColor) {
+    self.containerView.backgroundColor = bgColor
     self.order = order
     self.hasAction = hasAction
 
@@ -76,7 +74,6 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     self.pairValueLabel.text = "\(srcTokenSymbol)  ➞  \(destTokenSymbol) >= \(rate)"
 
     self.orderWarningIcon.isHidden = order.messages.isEmpty
-    self.dateValueLabel.text = DateFormatterUtil.shared.limitOrderFormatter.string(from: order.dateToDisplay)
     self.addressLabel.text = "\(order.sender.prefix(8))..\(order.sender.suffix(4))"
 
     self.orderStatusLabel.isHidden = false
@@ -134,8 +131,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     if isShowing {
       UIView.animate(withDuration: 0.25, animations: {
           self.cancelButton.isHidden = false
-          self.leadingSpaceToContainerViewConstraint.constant = -96
-          self.trailingSpaceToContainerViewConstraint.constant = 120
+          self.leadingSpaceToContainerViewConstraint.constant = -108
+          self.trailingSpaceToContainerViewConstraint.constant = 108.0
           self.layoutIfNeeded()
       }, completion: { _ in
         if self.order != nil {
@@ -147,8 +144,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
       self.layoutIfNeeded()
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
         UIView.animate(withDuration: 0.16) {
-          self.trailingSpaceToContainerViewConstraint.constant = 12
-          self.leadingSpaceToContainerViewConstraint.constant = 12
+          self.trailingSpaceToContainerViewConstraint.constant = 0
+          self.leadingSpaceToContainerViewConstraint.constant = 0
           self.layoutIfNeeded()
         }
       }

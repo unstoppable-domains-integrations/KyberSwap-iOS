@@ -5,6 +5,12 @@ import BigInt
 
 class KNCreateLimitOrderViewModel {
 
+  fileprivate lazy var dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy MMM dd"
+    return formatter
+  }()
+
   let defaultTokenIconImg = UIImage(named: "default_token")
   let eth = KNSupportedTokenStorage.shared.ethToken
   let knc = KNSupportedTokenStorage.shared.kncToken
@@ -34,6 +40,10 @@ class KNCreateLimitOrderViewModel {
 
   fileprivate(set) var relatedOrders: [KNOrderObject] = []
   fileprivate(set) var cancelSuggestOrders: [KNOrderObject] = []
+  fileprivate(set) var relatedHeaders: [String] = []
+  fileprivate(set) var relatedSections: [String: [KNOrderObject]] = [:]
+  fileprivate(set) var cancelSuggestHeaders: [String] = []
+  fileprivate(set) var cancelSuggestSections: [String: [KNOrderObject]] = [:]
 
   var isUseAllBalance: Bool = false
 
@@ -54,6 +64,8 @@ class KNCreateLimitOrderViewModel {
     self.supportedTokens = supportedTokens
     self.pendingBalances = [:]
     self.relatedOrders = []
+    self.relatedHeaders = []
+    self.relatedSections = [:]
     self.updateProdCachedRate()
   }
 
@@ -390,6 +402,8 @@ class KNCreateLimitOrderViewModel {
 
     self.pendingBalances = [:]
     self.relatedOrders = []
+    self.relatedHeaders = []
+    self.relatedSections = [:]
 
     self.updateProdCachedRate()
   }
@@ -435,6 +449,7 @@ class KNCreateLimitOrderViewModel {
   func updateTargetRate(_ rate: String) {
     self.targetRate = rate
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
+    self.updateRelatedAndCancelSuggestionData()
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -494,11 +509,50 @@ class KNCreateLimitOrderViewModel {
       .filter({ return $0.dateToDisplay.timeIntervalSince1970 >= fromTime })
       .sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
+    self.updateRelatedAndCancelSuggestionData()
+  }
+
+  fileprivate func updateRelatedAndCancelSuggestionData() {
+    self.relatedHeaders = []
+    self.relatedSections = [:]
+    self.relatedOrders.forEach({
+      let date = self.displayDate(for: $0)
+      if !self.relatedHeaders.contains(date) {
+        self.relatedHeaders.append(date)
+      }
+    })
+    self.relatedOrders.forEach { order in
+      let date = self.displayDate(for: order)
+      var orders: [KNOrderObject] = self.relatedSections[date] ?? []
+      orders.append(order)
+      orders = orders.sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
+      self.relatedSections[date] = orders
+    }
+
+    self.cancelSuggestHeaders = []
+    self.cancelSuggestSections = [:]
+    self.cancelSuggestOrders.forEach({
+      let date = self.displayDate(for: $0)
+      if !self.cancelSuggestHeaders.contains(date) {
+        self.cancelSuggestHeaders.append(date)
+      }
+    })
+    self.cancelSuggestOrders.forEach { order in
+      let date = self.displayDate(for: order)
+      var orders: [KNOrderObject] = self.cancelSuggestSections[date] ?? []
+      orders.append(order)
+      orders = orders.sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
+      self.cancelSuggestSections[date] = orders
+    }
   }
 
   func updatePendingBalances(_ balances: JSONDictionary, address: String) {
     if address.lowercased() == self.walletObject.address.lowercased() {
       self.pendingBalances = balances
     }
+  }
+
+  func displayDate(for order: KNOrderObject) -> String {
+    return dateFormatter.string(from: order.dateToDisplay)
   }
 }

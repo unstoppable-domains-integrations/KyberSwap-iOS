@@ -3,10 +3,18 @@
 import UIKit
 
 class KNManageOrdersViewModel {
+  fileprivate lazy var dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy MMM dd"
+    return formatter
+  }()
+
   let kPageSize: Int = 400
   fileprivate(set) var numberPages: Int = 1
   fileprivate(set) var orders: [KNOrderObject] = []
   fileprivate(set) var displayedOrders: [KNOrderObject] = []
+  fileprivate(set) var displayHeaders: [String] = []
+  fileprivate(set) var displaySections: [String: [KNOrderObject]] = [:]
   var cancelOrder: KNOrderObject?
 
   var isSelectingOpenOrders: Bool = true {
@@ -68,6 +76,21 @@ class KNManageOrdersViewModel {
       if self.isDateDesc { return $0.dateToDisplay > $1.dateToDisplay }
       return $0.dateToDisplay < $1.dateToDisplay
     })
+    self.displayHeaders = []
+    self.displaySections = [:]
+    self.displayedOrders.forEach({
+      let date = self.displayDate(for: $0)
+      if !self.displayHeaders.contains(date) {
+        self.displayHeaders.append(date)
+      }
+    })
+    self.displayedOrders.forEach { order in
+      let date = self.displayDate(for: order)
+      var orders: [KNOrderObject] = self.displaySections[date] ?? []
+      orders.append(order)
+      orders = orders.sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
+      self.displaySections[date] = orders
+    }
   }
 
   func updateOrders(_ orders: [KNOrderObject]) {
@@ -77,6 +100,10 @@ class KNManageOrdersViewModel {
       self.numberPages += 1
       // increase number pages needed to be loaded
     }
+  }
+
+  func displayDate(for order: KNOrderObject) -> String {
+    return dateFormatter.string(from: order.dateToDisplay)
   }
 }
 
@@ -94,15 +121,16 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   @IBOutlet weak var tutorialContainerView: UIView!
   @IBOutlet weak var swipeLeftToCancelLabel: UILabel!
-  
-  @IBOutlet var topPaddingFAQButtonForOrderCollectionView: NSLayoutConstraint!
-  @IBOutlet var topPaddingCancelTutForOrderCollectionView: NSLayoutConstraint!
+
+  @IBOutlet weak var topPaddingCollectionView: NSLayoutConstraint!
+  @IBOutlet weak var topPaddingSwipeToCancelButton: NSLayoutConstraint!
 
   @IBOutlet weak var orderCollectionView: UICollectionView!
   @IBOutlet weak var emptyStateLabel: UILabel!
   @IBOutlet weak var bottomPaddingOrderCollectionViewConstraint: NSLayoutConstraint!
 
   @IBOutlet weak var faqButton: UIButton!
+  @IBOutlet weak var closeFAQButton: UIButton!
   fileprivate var loadingTimer: Timer?
 
   fileprivate(set) var viewModel: KNManageOrdersViewModel
@@ -167,20 +195,28 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.orderHistoryButton.setTitle("Order History".toBeLocalised(), for: .normal)
     let nib = UINib(nibName: KNLimitOrderCollectionViewCell.className, bundle: nil)
     self.orderCollectionView.register(nib, forCellWithReuseIdentifier: KNLimitOrderCollectionViewCell.cellID)
+    let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
+    self.orderCollectionView.register(
+      headerNib,
+      forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+      withReuseIdentifier: KNTransactionCollectionReusableView.kOrderViewID
+    )
     self.orderCollectionView.delegate = self
     self.orderCollectionView.dataSource = self
 
     self.bottomPaddingOrderCollectionViewConstraint.constant = self.bottomPaddingSafeArea() + 12.0
 
-    self.faqButton.setTitle("Wonder why your orders are not filled?".toBeLocalised(), for: .normal)
+    self.faqButton.setTitle("Orders are not filled? Click to see why".toBeLocalised(), for: .normal)
     self.faqButton.titleLabel?.numberOfLines = 2
     self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.faqButton.rounded(radius: 4.0)
 
-    self.tutorialContainerView.rounded(color: UIColor.Kyber.border, width: 1.0, radius: 2.5)
+    self.tutorialContainerView.rounded(radius: 4.0)
     self.swipeLeftToCancelLabel.text = "Swipe left to cancel open order".toBeLocalised()
     let hideTut = !KNAppTracker.needShowCancelOpenOrderTutorial()
     self.updateCancelOrderTutorial(isHidden: hideTut)
+    let hideFAQ = !KNAppTracker.needShowWonderWhyOrdersNotFilled()
+    self.updateFAQButtonHidden(isHidden: hideFAQ)
 
     self.updateSelectOrdersType(isOpen: true)
   }
@@ -194,11 +230,35 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   fileprivate func updateCancelOrderTutorial(isHidden: Bool) {
     self.tutorialContainerView.isHidden = isHidden
-    self.topPaddingCancelTutForOrderCollectionView.isActive = !isHidden
-    self.topPaddingFAQButtonForOrderCollectionView.isActive = isHidden
-    self.topPaddingFAQButtonForOrderCollectionView.constant = isHidden ? 0 : 12.0
+    self.topPaddingSwipeToCancelButton.constant = {
+      return self.faqButton.isHidden ? 12.0 : 60.0
+    }()
+    self.topPaddingCollectionView.constant = {
+      if self.tutorialContainerView.isHidden && self.faqButton.isHidden { return 12.0 }
+      if self.tutorialContainerView.isHidden { return 60.0 }
+      if self.faqButton.isHidden { return 60.0 }
+      return 108.0
+    }()
     if isHidden {
       KNAppTracker.updateCancelOpenOrderTutorial()
+    }
+    self.view.updateConstraints()
+  }
+
+  fileprivate func updateFAQButtonHidden(isHidden: Bool) {
+    self.faqButton.isHidden = isHidden
+    self.closeFAQButton.isHidden = isHidden
+    self.topPaddingSwipeToCancelButton.constant = {
+      return self.faqButton.isHidden ? 12.0 : 60.0
+    }()
+    self.topPaddingCollectionView.constant = {
+      if self.tutorialContainerView.isHidden && self.faqButton.isHidden { return 12.0 }
+      if self.tutorialContainerView.isHidden { return 60.0 }
+      if self.faqButton.isHidden { return 60.0 }
+      return 108.0
+    }()
+    if isHidden {
+      KNAppTracker.updateWonderWhyOrdersNotFilled()
     }
     self.view.updateConstraints()
   }
@@ -206,7 +266,9 @@ class KNManageOrdersViewController: KNBaseViewController {
   fileprivate func updateCollectionView() {
     self.emptyStateLabel.isHidden = !self.viewModel.displayedOrders.isEmpty
     self.orderCollectionView.isHidden = self.viewModel.displayedOrders.isEmpty
-    self.faqButton.isHidden = self.viewModel.displayedOrders.isEmpty
+
+    let faqHide = !KNAppTracker.needShowWonderWhyOrdersNotFilled()
+    self.faqButton.isHidden = self.viewModel.displayedOrders.isEmpty || faqHide
     self.orderCollectionView.reloadData()
   }
 
@@ -256,6 +318,10 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   @IBAction func turnOffTutorialButtonPressed(_ sender: Any) {
     self.updateCancelOrderTutorial(isHidden: true)
+  }
+
+  @IBAction func turnOffFAQButtonPressed(_ sender: Any) {
+    self.updateFAQButtonHidden(isHidden: true)
   }
 
   @IBAction func filterButtonPressed(_ sender: Any) {
@@ -324,7 +390,7 @@ class KNManageOrdersViewController: KNBaseViewController {
 // MARK: Related orders
 extension KNManageOrdersViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 12.0
+    return 0.0
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -335,6 +401,13 @@ extension KNManageOrdersViewController: UICollectionViewDelegateFlowLayout {
     return CGSize(
       width: collectionView.frame.width,
       height: KNLimitOrderCollectionViewCell.height
+    )
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    return CGSize(
+      width: collectionView.frame.width,
+      height: 44
     )
   }
 }
@@ -351,17 +424,20 @@ extension KNManageOrdersViewController: UICollectionViewDelegate {
       let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint,
       let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
       self.openSafari(with: url)
+    } else if order.state == .open {
+      self.openCancelOrder(order, completion: nil)
     }
   }
 }
 
 extension KNManageOrdersViewController: UICollectionViewDataSource {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
+    return self.viewModel.displayHeaders.count
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.viewModel.displayedOrders.count
+    let date = self.viewModel.displayHeaders[section]
+    return self.viewModel.displaySections[date]?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -376,25 +452,38 @@ extension KNManageOrdersViewController: UICollectionViewDataSource {
       }
       return true
     }()
-    cell.updateCell(with: order, isReset: isReset)
+    let color: UIColor = {
+      return indexPath.row % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250)
+    }()
+    cell.updateCell(with: order, isReset: isReset, bgColor: color)
     cell.delegate = self
     return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    switch kind {
+    case UICollectionElementKindSectionHeader:
+      let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: KNTransactionCollectionReusableView.kOrderViewID, for: indexPath) as! KNTransactionCollectionReusableView
+      let headerText = self.viewModel.displayHeaders[indexPath.section]
+      headerView.updateView(with: headerText)
+      return headerView
+    default:
+      assertionFailure("Unhandling")
+      return UICollectionReusableView()
+    }
   }
 }
 
 extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject) {
-    guard let id = self.viewModel.displayedOrders.firstIndex(where: { $0.id == order.id }) else {
-      return
+    let date = self.viewModel.displayDate(for: order)
+    guard let section = self.viewModel.displayHeaders.firstIndex(where: { $0 == date }),
+      let row = self.viewModel.displaySections[date]?.firstIndex(where: { $0.id == order.id }) else {
+        return // order not exist
     }
-    let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
-    cancelOrderVC.loadViewIfNeeded()
-    cancelOrderVC.modalTransitionStyle = .crossDissolve
-    cancelOrderVC.modalPresentationStyle = .overFullScreen
-    cancelOrderVC.delegate = self
-    self.present(cancelOrderVC, animated: true) {
+    self.openCancelOrder(order) {
       self.viewModel.cancelOrder = nil
-      let indexPath = IndexPath(row: id, section: 0)
+      let indexPath = IndexPath(row: row, section: section)
       self.orderCollectionView.reloadItems(at: [indexPath])
     }
   }
@@ -406,6 +495,15 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
       icon: UIImage(named: "warning_icon"),
       time: 1.5
     )
+  }
+
+  fileprivate func openCancelOrder(_ order: KNOrderObject, completion: (() -> Void)?) {
+    let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
+    cancelOrderVC.loadViewIfNeeded()
+    cancelOrderVC.modalTransitionStyle = .crossDissolve
+    cancelOrderVC.modalPresentationStyle = .overFullScreen
+    cancelOrderVC.delegate = self
+    self.present(cancelOrderVC, animated: true, completion: completion)
   }
 }
 

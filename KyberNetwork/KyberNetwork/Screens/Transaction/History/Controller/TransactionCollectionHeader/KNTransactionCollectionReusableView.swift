@@ -5,6 +5,7 @@ import UIKit
 class KNTransactionCollectionReusableView: UICollectionReusableView {
 
   static let viewID: String = "kTransactionCollectionReusableView"
+  static let kOrderViewID: String = "kOrderCollectionReusableViewID"
 
   @IBOutlet weak var dateLabel: UILabel!
 
