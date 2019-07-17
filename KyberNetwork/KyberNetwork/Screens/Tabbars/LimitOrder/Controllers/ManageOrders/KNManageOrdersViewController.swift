@@ -269,6 +269,10 @@ class KNManageOrdersViewController: KNBaseViewController {
 
     let faqHide = !KNAppTracker.needShowWonderWhyOrdersNotFilled()
     self.faqButton.isHidden = self.viewModel.displayedOrders.isEmpty || faqHide
+    self.closeFAQButton.isHidden = self.faqButton.isHidden
+
+    let swipeToCancelHide = !KNAppTracker.needShowCancelOpenOrderTutorial()
+    self.tutorialContainerView.isHidden = self.viewModel.displayedOrders.isEmpty || swipeToCancelHide
     self.orderCollectionView.reloadData()
   }
 
