@@ -371,7 +371,7 @@ class KNManageOrdersViewController: KNBaseViewController {
       if isDisplayLoading { self.hideLoading() }
       if errorMessage == nil {
         KNLimitOrderStorage.shared.updateOrdersFromServer(orders)
-        self.updateListOrders(orders)
+        self.updateListOrders(orders.map({ return $0.clone() }))
       } else if let error = errorMessage, isDisplayLoading {
         let alert = UIAlertController(
           title: NSLocalizedString("error", value: "Error", comment: ""),
