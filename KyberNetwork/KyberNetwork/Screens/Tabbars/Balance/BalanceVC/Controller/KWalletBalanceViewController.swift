@@ -169,6 +169,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   fileprivate func updateWalletBalanceUI() {
+    self.viewModel.updateDisplayDataSessonDidSwitch()
     self.balanceValueLabel.attributedText = self.viewModel.balanceDisplayAttributedString
     self.tokensBalanceTableView.isHidden = self.viewModel.displayedTokens.isEmpty
     self.emptyStateView.isHidden = !self.viewModel.displayedTokens.isEmpty
