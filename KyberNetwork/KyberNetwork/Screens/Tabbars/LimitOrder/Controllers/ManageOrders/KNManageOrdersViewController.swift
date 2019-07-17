@@ -224,7 +224,7 @@ class KNManageOrdersViewController: KNBaseViewController {
   fileprivate func updateSelectOrdersType(isOpen: Bool) {
     self.viewModel.isSelectingOpenOrders = isOpen
     self.openOrderButton.setTitleColor(isOpen ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
-    self.openOrderButton.setTitleColor(!isOpen ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
+    self.orderHistoryButton.setTitleColor(!isOpen ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
     self.updateCollectionView()
   }
 
