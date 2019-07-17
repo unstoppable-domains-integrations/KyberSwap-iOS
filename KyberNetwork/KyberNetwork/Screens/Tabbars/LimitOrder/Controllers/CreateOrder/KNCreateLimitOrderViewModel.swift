@@ -6,9 +6,7 @@ import BigInt
 class KNCreateLimitOrderViewModel {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy MMM dd"
-    return formatter
+    return DateFormatterUtil.shared.limitOrderFormatter
   }()
 
   let defaultTokenIconImg = UIImage(named: "default_token")

@@ -11,7 +11,7 @@ enum KNCreateLimitOrderViewEvent {
   case manageOrders
   case estimateFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case getExpectedNonce(address: String, src: String, dest: String)
-  case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt, pendingWETH: Double)
+  case openConvertWETH(address: String, ethBalance: BigInt, amount: BigInt, pendingWETH: Double, order: KNLimitOrder)
   case getRelatedOrders(address: String, src: String, dest: String, minRate: Double)
   case getPendingBalances(address: String)
 }
@@ -742,7 +742,7 @@ extension KNCreateLimitOrderViewController {
     guard !(self.viewModel.isAmountTooSmall && !self.viewModel.amountFrom.isEmpty && !self.viewModel.amountTo.isEmpty) else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: "Amount is too small. Limit order only support min 0.5 ETH equivalent order".toBeLocalised(),
+        message: "Amount is too small. Limit order only support min 0.1 ETH equivalent order".toBeLocalised(),
         time: 1.5
       )
       return false
@@ -823,15 +823,33 @@ extension KNCreateLimitOrderViewController {
 
   fileprivate func showConvertETHToWETHIfNeeded() -> Bool {
     if !self.viewModel.isConvertingETHToWETHNeeded { return false }
-    let event = KNCreateLimitOrderViewEvent.openConvertWETH(
-      address: self.viewModel.walletObject.address,
-      ethBalance: self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0),
-      amount: self.viewModel.minAmountToConvert,
-      pendingWETH: self.viewModel.pendingBalances["WETH"] as? Double ?? 0.0
-    )
-    self.delegate?.kCreateLimitOrderViewController(self, run: event)
-    KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "convert_eth_weth"])
-    return true
+    let amount: BigInt = {
+      if !self.viewModel.from.isWETH && self.viewModel.isUseAllBalance { return self.viewModel.availableBalance }
+      return self.viewModel.amountFromBigInt
+    }()
+    if case .real(let account) = self.viewModel.wallet.type {
+      let order = KNLimitOrder(
+        from: self.viewModel.from,
+        to: self.viewModel.to,
+        account: account,
+        sender: self.viewModel.wallet.address,
+        srcAmount: amount,
+        targetRate: self.viewModel.targetRateBigInt,
+        fee: Int(round(self.viewModel.feePercentage * 1000000)), // fee send to server is multiple with 10^6
+        nonce: self.viewModel.nonce ?? ""
+      )
+      let event = KNCreateLimitOrderViewEvent.openConvertWETH(
+        address: self.viewModel.walletObject.address,
+        ethBalance: self.viewModel.balances[self.viewModel.eth.contract]?.value ?? BigInt(0),
+        amount: self.viewModel.minAmountToConvert,
+        pendingWETH: self.viewModel.pendingBalances["WETH"] as? Double ?? 0.0,
+        order: order
+      )
+      self.delegate?.kCreateLimitOrderViewController(self, run: event)
+      KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "convert_eth_weth"])
+      return true
+    }
+    return false
   }
 
   fileprivate func showWarningWalletIsNotSupportedIfNeeded() -> Bool {

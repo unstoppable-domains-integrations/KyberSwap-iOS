@@ -24,6 +24,7 @@ class KNLimitOrderTabCoordinator: Coordinator {
   var isSelectingSourceToken: Bool = true
   var coordinators: [Coordinator] = []
 
+  var curOrder: KNLimitOrder?
   var confirmedOrder: KNLimitOrder?
   var signedData: Data?
 
@@ -194,7 +195,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
         srcAmount: srcAmount,
         destAmount: destAmount
       )
-    case .openConvertWETH(let address, let ethBalance, let amount, let pendingWETH):
+    case .openConvertWETH(let address, let ethBalance, let amount, let pendingWETH, let order):
+      self.curOrder = order
       self.openConvertWETHView(
         address: address,
         ethBalance: ethBalance,
@@ -816,6 +818,9 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
         if self.convertVC != nil {
           self.navigationController.popViewController(animated: true, completion: {
             self.convertVC = nil
+            if let order = self.curOrder {
+              self.checkDataBeforeConfirmOrder(order)
+            }
           })
         }
       case .failure(let error):

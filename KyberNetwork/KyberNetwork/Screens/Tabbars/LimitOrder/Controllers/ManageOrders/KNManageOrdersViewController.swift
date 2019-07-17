@@ -4,9 +4,7 @@ import UIKit
 
 class KNManageOrdersViewModel {
   fileprivate lazy var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy MMM dd"
-    return formatter
+    return DateFormatterUtil.shared.limitOrderFormatter
   }()
 
   let kPageSize: Int = 400

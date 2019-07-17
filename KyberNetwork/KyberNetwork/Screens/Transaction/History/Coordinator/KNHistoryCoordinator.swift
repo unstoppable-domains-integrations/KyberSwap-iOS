@@ -10,9 +10,7 @@ protocol KNHistoryCoordinatorDelegate: class {
 class KNHistoryCoordinator: Coordinator {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy MMM dd"
-    return formatter
+    return DateFormatterUtil.shared.limitOrderFormatter
   }()
   let navigationController: UINavigationController
   private(set) var session: KNSession
