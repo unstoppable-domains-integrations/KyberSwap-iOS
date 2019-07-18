@@ -32,7 +32,8 @@
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimals": 18,
       "usd_id": "ethereum",
-      "gasLimit": "0"
+      "gasLimit": "0",
+      "is_quote": true
     },
     "WETH": {
       "name": "Wrapped Ether",
@@ -41,7 +42,8 @@
       "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "icon": "weth",
       "exclude": true,
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -59,7 +61,8 @@
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
       "decimals": 18,
       "usd_id":"dai",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -403,7 +406,8 @@
       "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
       "symbol":"TUSD",
       "icon": "tusd",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "MDS": {
       "name": "MediShares",
@@ -531,14 +535,6 @@
       "address": "0xffa93aacf49297d51e211817452839052fdfb961",
       "icon": "dcc",
       "isNew": true,
-      "sp_limit_order": true
-    },
-    "WETH": {
-      "symbol": "WETH",
-      "name": "Wrapped Ether",
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "decimals": 18,
-      "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "sp_limit_order": true
     }
   },

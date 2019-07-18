@@ -259,7 +259,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       src: order.from.contract,
       dest: order.to.contract,
       srcAmount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-      destAmount: destAmount) { (fee, error) in
+      destAmount: destAmount) { (fee, _, _, error) in
         if let err = error { errorMessage = err } else { feeValue = Int(round((fee ?? 0.0) * 1000000.0)) }
         group.leave()
     }
@@ -320,7 +320,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     if case .success(let data) = result { self.signedData = data }
   }
 
-  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, String?) -> Void)? = nil) {
+  // Return (fee, discount, feeBeforeDiscount, Error)
+  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, Double?, Double?, String?) -> Void)? = nil) {
     KNLimitOrderServerCoordinator.shared.getFee(
       address: address,
       src: src,
@@ -329,14 +330,18 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       destAmount: destAmount) { [weak self] result in
         switch result {
         case .success(let data):
-          if data.1 == nil {
-            self?.rootViewController.coordinatorUpdateEstimateFee(data.0)
-            completion?(data.0, nil)
+          if data.3 == nil {
+            self?.rootViewController.coordinatorUpdateEstimateFee(
+              data.0,
+              discount: data.1,
+              feeBeforeDiscount: data.2
+            )
+            completion?(data.0, data.1, data.2, nil)
           } else {
-            completion?(nil, data.1)
+            completion?(nil, nil, nil, data.3)
           }
         case .failure(let error):
-          completion?(nil, error.prettyError)
+          completion?(nil, nil, nil, error.prettyError)
         }
     }
   }

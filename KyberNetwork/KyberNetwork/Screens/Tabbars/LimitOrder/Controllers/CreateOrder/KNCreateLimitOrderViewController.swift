@@ -50,12 +50,16 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var pairTokensLabel: UILabel!
   @IBOutlet weak var targetRateTextField: UITextField!
 
+  @IBOutlet weak var currentRateTextLabel: UILabel!
   @IBOutlet weak var currentRateLabel: UILabel!
   @IBOutlet weak var compareMarketRateLabel: UILabel!
 
   @IBOutlet weak var separatorView: UIView!
 
+  @IBOutlet weak var feeTextLabel: UILabel!
   @IBOutlet weak var feeNoteLabel: UILabel!
+  @IBOutlet weak var suggestBuyTopPaddingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var discountPercentLabel: UILabel!
   @IBOutlet weak var suggestBuyTokenButton: UIButton!
   @IBOutlet weak var loadingFeeIndicator: UIActivityIndicatorView!
 
@@ -225,6 +229,10 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.targetRateTextField.delegate = self
 
     self.percentageButtons.forEach({ $0.rounded(radius: 2.5) })
+
+    self.currentRateTextLabel.text = "\("Current Rate".toBeLocalised()):"
+    self.feeTextLabel.text = "\(NSLocalizedString("fee", value: "Fee", comment: "")):"
+    self.discountPercentLabel.rounded(radius: self.discountPercentLabel.frame.height / 2.0)
 
     self.relatedOrderTextLabel.text = "Related Orders".toBeLocalised().uppercased()
     self.relatedManageOrderButton.setTitle("Manage Your Orders".toBeLocalised(), for: .normal)
@@ -586,13 +594,16 @@ extension KNCreateLimitOrderViewController {
 
   // Update current martket rate with rate from node or cached
   fileprivate func updateCurrentMarketRateUI() {
-    self.currentRateLabel.text = "\("Current Rate".toBeLocalised()): \(self.viewModel.exchangeRateText)"
+    self.currentRateLabel.text = "\(self.viewModel.displayCurrentExchangeRate)"
     self.compareMarketRateLabel.attributedText = self.viewModel.displayRateCompareAttributedString
   }
 
   // Update fee when source amount changed
   fileprivate func updateFeeNotesUI() {
-    self.feeNoteLabel.text = self.viewModel.displayFeeString
+    self.feeNoteLabel.attributedText = self.viewModel.feeNoteAttributedString
+    self.discountPercentLabel.isHidden = !self.viewModel.isShowingDiscount
+    self.discountPercentLabel.text = self.viewModel.displayDiscountPercentageString
+    self.suggestBuyTopPaddingConstraint.constant = self.viewModel.suggestBuyTopPadding
     self.suggestBuyTokenButton.titleLabel?.numberOfLines = 2
     self.suggestBuyTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
     self.suggestBuyTokenButton.setAttributedTitle(self.viewModel.suggestBuyText, for: .normal)
@@ -913,6 +924,7 @@ extension KNCreateLimitOrderViewController {
     self.noCancelButtonPressed(nil)
 
     self.listOrdersDidUpdate(nil)
+    self.updateEstimateFeeFromServer(isShowingIndicator: true)
     self.updateRelatedOrdersFromServer()
     self.updatePendingBalancesFromServer()
 
@@ -1075,8 +1087,10 @@ extension KNCreateLimitOrderViewController {
     self.listOrdersDidUpdate(nil)
   }
 
-  func coordinatorUpdateEstimateFee(_ fee: Double) {
+  func coordinatorUpdateEstimateFee(_ fee: Double, discount: Double, feeBeforeDiscount: Double) {
     self.viewModel.feePercentage = fee
+    self.viewModel.discountPercentage = discount
+    self.viewModel.feeBeforeDiscount = feeBeforeDiscount
     self.updateFeeNotesUI()
     self.loadingFeeIndicator.stopAnimating()
     self.loadingFeeIndicator.isHidden = true

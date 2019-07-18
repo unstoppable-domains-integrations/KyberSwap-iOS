@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 
+// swiftlint:disable file_length
 class KNCreateLimitOrderViewModel {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
@@ -58,6 +59,7 @@ class KNCreateLimitOrderViewModel {
     self.from = from
     self.to = to
     self.feePercentage = 0
+    self.discountPercentage = 0
     self.nonce = nil
     self.supportedTokens = supportedTokens
     self.pendingBalances = [:]
@@ -286,6 +288,26 @@ class KNCreateLimitOrderViewModel {
     return "---"
   }
 
+  var isShowingRevertRate: Bool {
+    return self.from.extraData?.isQuote == true
+  }
+
+  var revertCurrentExchangeRateString: String? {
+    guard let rate = self.rateFromNode ?? self.cachedProdRate, !rate.isZero else {
+      return nil
+    }
+    let revertRate = BigInt(10).power(self.from.decimals) / (rate * BigInt(10).power(self.to.decimals))
+    let rateText = revertRate.displayRate(decimals: self.from.decimals)
+    return "1 \(self.toSymbol) = \(rateText) \(self.fromSymbol)"
+  }
+
+  var displayCurrentExchangeRate: String {
+    if self.isShowingRevertRate, let revertRateString = self.revertCurrentExchangeRateString {
+      return "\(self.exchangeRateText)\n\(revertRateString)"
+    }
+    return self.exchangeRateText
+  }
+
   var estimatedRateDouble: Double {
     guard let rate = self.rateFromNode else { return 0.0 }
     return Double(rate) / pow(10.0, Double(self.to.decimals))
@@ -343,40 +365,98 @@ class KNCreateLimitOrderViewModel {
   }
 
   // MARK: Fee
-  var feePercentage: Double = 0
+  var feePercentage: Double = 0 // example: 0.005 -> 0.5%
+  var discountPercentage: Double = 0 // example: 40 -> 40%
+  var feeBeforeDiscount: Double = 0 // same as fee percentage
+
+  lazy var feeNoteNormalAttributes: [NSAttributedStringKey: Any] = {
+    return [
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
+      NSAttributedStringKey.strikethroughStyle: NSUnderlineStyle.styleSingle.rawValue,
+    ]
+  }()
+
+  lazy var feeNoteHighlightedAttributes: [NSAttributedStringKey: Any] = {
+    return [
+      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
+    ]
+  }()
+
+  var isShowingDiscount: Bool {
+    let discountVal = Double(self.amountFromBigInt) * self.feeBeforeDiscount * (self.discountPercentage / 100.0) / pow(10.0, Double(self.from.decimals))
+    return discountVal >= 0.000001
+  }
+
+  var feeNoteAttributedString: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+
+    if !isShowingDiscount {
+      return NSAttributedString(
+        string: self.displayFeeString,
+        attributes: self.feeNoteHighlightedAttributes
+      )
+    }
+
+    attributedString.append(NSAttributedString(string: "\(self.displayFeeString)\n", attributes: self.feeNoteHighlightedAttributes))
+    attributedString.append(NSAttributedString(string: self.displayFeeBeforeDiscountString, attributes: self.feeNoteNormalAttributes))
+
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 2
+    attributedString.addAttribute(
+      NSAttributedString.Key.paragraphStyle,
+      value: paragraphStyle,
+      range: NSRange(location: 0, length: attributedString.length)
+    )
+
+    return attributedString
+  }
 
   var displayFeeString: String {
-    let feeBigInt = BigInt(Double(self.amountFromBigInt) * self.feePercentage)
-    let feeDisplay = feeBigInt.string(
-      decimals: self.from.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
-    )
-    let amountString = self.amountFromBigInt.isZero ? "0" : self.amountFrom
+    let feeDouble = Double(self.amountFromBigInt) * self.feePercentage / pow(10.0, Double(self.from.decimals))
+    let feeDisplay = NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     let fromSymbol = self.fromSymbol
-    let fee = NumberFormatterUtil.shared.displayPercentage(from: feePercentage * 100.0)
-    let feeText = NSLocalizedString("fee", value: "Fee", comment: "")
-    return "\(feeText): \(feeDisplay) \(fromSymbol) (\(fee)% of \(amountString.prefix(12)) \(fromSymbol))"
+    return "\(feeDisplay.prefix(12)) \(fromSymbol)"
+  }
+
+  var displayDiscountPercentageString: String {
+    let discount = NumberFormatterUtil.shared.displayPercentage(from: self.discountPercentage)
+    return "\(discount)% off"
+  }
+
+  var displayFeeBeforeDiscountString: String {
+    let feeDouble = Double(self.amountFromBigInt) * self.feeBeforeDiscount / pow(10.0, Double(self.from.decimals))
+    let feeDisplay = NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
+    let fromSymbol = self.fromSymbol
+    return "\(feeDisplay.prefix(12)) \(fromSymbol)"
   }
 
   var suggestBuyText: NSAttributedString {
     let attributedString = NSMutableAttributedString()
-    let normalAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
-      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
-    ]
     let learnMoreAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
       NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
       NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
     ]
-    attributedString.append(NSAttributedString(
-      string: "Hold from 2000 KNC to get discount for your orders. ".toBeLocalised(),
-      attributes: normalAttributes
+    if !isShowingDiscount {
+      // only show if there is no discount
+      let normalAttributes: [NSAttributedStringKey: Any] = [
+        NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
+        NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+      ]
+      attributedString.append(NSAttributedString(
+        string: "Hold from 2000 KNC to get discount for your orders. ".toBeLocalised(),
+        attributes: normalAttributes
+        )
       )
-    )
+    }
     attributedString.append(NSAttributedString(string: "Learn more".toBeLocalised(), attributes: learnMoreAttributes))
     return attributedString
+  }
+
+  var suggestBuyTopPadding: CGFloat {
+    return !isShowingDiscount ? 10.0 : 4.0
   }
 
   // MARK: Update data
@@ -391,6 +471,7 @@ class KNCreateLimitOrderViewModel {
     self.isUseAllBalance = false
 
     self.feePercentage = 0
+    self.discountPercentage = 0
     self.nonce = nil
 
     self.balances = [:]
@@ -429,6 +510,7 @@ class KNCreateLimitOrderViewModel {
     self.isUseAllBalance = false
     self.balance = self.balances[self.from.contract]
     self.feePercentage = 0
+    self.discountPercentage = 0
     self.nonce = nil
 
     self.rateFromNode = nil
@@ -454,6 +536,7 @@ class KNCreateLimitOrderViewModel {
     if isSource {
       self.from = token
       self.feePercentage = 0
+      self.discountPercentage = 0
       self.isUseAllBalance = false
     } else {
       self.to = token

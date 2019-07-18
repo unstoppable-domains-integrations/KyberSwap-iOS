@@ -25,7 +25,8 @@
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimals": 18,
       "usd_id":"ethereum",
-      "gasLimit": "0"
+      "gasLimit": "0",
+      "is_quote": true
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -51,7 +52,8 @@
       "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
       "decimals": 18,
       "id": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",

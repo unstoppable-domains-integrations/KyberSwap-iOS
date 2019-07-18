@@ -37,7 +37,8 @@
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimals": 18,
       "usd_id":"ethereum",
-      "gasLimit": "0"
+      "gasLimit": "0",
+      "is_quote": true
     },
     "WETH": {
       "name": "Wrapped Ether",
@@ -45,7 +46,8 @@
       "symbol" : "WETH",
       "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "icon": "weth",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -64,7 +66,8 @@
       "decimals": 18,
       "usd_id":"dai",
       "gasLimit": "450000",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -359,7 +362,8 @@
       "symbol":"TUSD",
       "gasLimit": "500000",
       "icon": "tusd",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_quote": true
     },
     "LEND": {
       "name": "EthLend",
