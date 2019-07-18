@@ -296,7 +296,7 @@ class KNCreateLimitOrderViewModel {
     guard let rate = self.rateFromNode ?? self.cachedProdRate, !rate.isZero else {
       return nil
     }
-    let revertRate = BigInt(10).power(self.from.decimals) / (rate * BigInt(10).power(self.to.decimals))
+    let revertRate = BigInt(10).power(self.from.decimals) * BigInt(10).power(self.to.decimals) / rate
     let rateText = revertRate.displayRate(decimals: self.from.decimals)
     return "1 \(self.toSymbol) = \(rateText) \(self.fromSymbol)"
   }
