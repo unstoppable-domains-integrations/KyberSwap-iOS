@@ -193,13 +193,13 @@
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="+1000 ETH" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78P-qm-FQ2">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="+1000 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="78P-qm-FQ2">
                     <rect key="frame" x="79.5" y="149" width="96" height="22"/>
                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                     <color key="textColor" red="0.28235294119999998" green="0.29411764709999999" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="+1000 ETH" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0o-dl-wg9">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="+1000 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="C0o-dl-wg9">
                     <rect key="frame" x="199.5" y="149" width="96" height="22"/>
                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                     <color key="textColor" red="0.28235294119999998" green="0.29411764709999999" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -221,8 +221,10 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Sip-Uk-XhA" secondAttribute="trailing" id="AnC-QU-DRp"/>
                 <constraint firstItem="BsH-72-Dhr" firstAttribute="centerY" secondItem="FJO-UT-cZi" secondAttribute="centerY" id="CU6-Gr-p4N"/>
                 <constraint firstItem="BsH-72-Dhr" firstAttribute="top" secondItem="QOc-Ne-3sf" secondAttribute="bottom" constant="20" id="GhP-tN-Lma"/>
+                <constraint firstItem="78P-qm-FQ2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="Gjc-hF-h1a"/>
                 <constraint firstItem="jC3-hH-B0e" firstAttribute="trailing" secondItem="c62-xa-XFQ" secondAttribute="trailing" id="Gnw-Xf-qQ1"/>
                 <constraint firstItem="8Lb-nd-CTG" firstAttribute="trailing" secondItem="c62-xa-XFQ" secondAttribute="trailing" id="IGA-9Q-Qau"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="C0o-dl-wg9" secondAttribute="trailing" constant="12" id="IZ1-ec-SVD"/>
                 <constraint firstItem="8Lb-nd-CTG" firstAttribute="top" secondItem="jC3-hH-B0e" secondAttribute="bottom" constant="20" id="JOk-pu-xCf"/>
                 <constraint firstItem="4zG-ff-J0x" firstAttribute="top" secondItem="DCW-kY-sof" secondAttribute="bottom" constant="8" id="Lbe-Jo-Tpn"/>
                 <constraint firstItem="4zG-ff-J0x" firstAttribute="leading" secondItem="DCW-kY-sof" secondAttribute="leading" id="LwW-cU-GcH"/>

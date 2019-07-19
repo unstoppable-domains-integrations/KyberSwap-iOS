@@ -156,7 +156,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
 
   @IBAction func convertButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "convert_ETH_WETH", customAttributes: ["action": "convert", "amount": self.amountTextField.text ?? ""])
-    guard let text = self.amountTextField.text, let amount = text.removeGroupSeparator().fullBigInt(decimals: 18), !amount.isZero else {
+    guard let text = self.amountTextField.text, let amount = EtherNumberFormatter.full.number(from: text.removeGroupSeparator(), decimals: 18), !amount.isZero else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid Amount", comment: ""),
         message: "Please enter a valid amount to convert".toBeLocalised(),

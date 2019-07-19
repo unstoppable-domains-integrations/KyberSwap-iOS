@@ -103,7 +103,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var amountFromBigInt: BigInt {
-    return self.amountFrom.removeGroupSeparator().fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+    return EtherNumberFormatter.full.number(from: self.amountFrom.removeGroupSeparator(), decimals: self.from.decimals) ?? BigInt(0)
   }
 
   func amountFromWithPercentage(_ percentage: Int) -> BigInt {
