@@ -114,7 +114,7 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
 
   @IBAction func backButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "confirm_limit_order", customAttributes: ["action": "back"])
-    self.navigationController?.popViewController(animated: true, completion: {
+    self.navigationController?.popToRootViewController(animated: true, completion: {
       self.delegate?.confirmLimitOrderViewControllerDidBack()
     })
   }
@@ -141,7 +141,7 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "confirm_limit_order", customAttributes: ["action": "cancel"])
-    self.navigationController?.popViewController(animated: true, completion: {
+    self.navigationController?.popToRootViewController(animated: true, completion: {
       self.delegate?.confirmLimitOrderViewControllerDidBack()
     })
   }

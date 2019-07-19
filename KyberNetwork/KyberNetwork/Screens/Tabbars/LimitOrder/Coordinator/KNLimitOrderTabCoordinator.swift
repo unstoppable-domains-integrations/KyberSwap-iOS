@@ -284,7 +284,13 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.navigationController.hideLoading()
       if let error = errorMessage {
         KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["submit_error": error])
-        self.navigationController.showWarningTopBannerMessage(with: "", message: error, time: 2.0)
+        if self.navigationController.viewControllers.count > 1 {
+          self.navigationController.popToRootViewController(animated: true, completion: {
+            self.navigationController.showWarningTopBannerMessage(with: "", message: error, time: 2.0)
+          })
+        } else {
+          self.navigationController.showWarningTopBannerMessage(with: "", message: error, time: 2.0)
+        }
       } else {
         let attributes = [
           "action": "submit",
@@ -705,6 +711,7 @@ extension KNLimitOrderTabCoordinator: KNManageOrdersViewControllerDelegate {
 extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate {
   func confirmLimitOrderViewControllerDidBack() {
     self.confirmVC = nil
+    self.convertVC = nil
   }
 
   func confirmLimitOrderViewController(_ controller: KNConfirmLimitOrderViewController, order: KNLimitOrder) {
@@ -712,8 +719,9 @@ extension KNLimitOrderTabCoordinator: KNConfirmLimitOrderViewControllerDelegate 
       guard let `self` = self else { return }
       if isSuccess, self.confirmVC != nil {
         KNCrashlyticsUtil.logCustomEvent(withName: "new_order_created", customAttributes: ["pair": "\(order.from.symbol)_\(order.to.symbol)"])
-        self.navigationController.popViewController(animated: true, completion: {
+        self.navigationController.popToRootViewController(animated: true, completion: {
           self.confirmVC = nil
+          self.convertVC = nil
         })
       } else {
         KNCrashlyticsUtil.logCustomEvent(withName: "create_order_failed", customAttributes: ["pair": "\(order.from.symbol)_\(order.to.symbol)"])
@@ -821,12 +829,13 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
         )
         self.session.addNewPendingTransaction(transaction)
         if self.convertVC != nil {
-          self.navigationController.popViewController(animated: true, completion: {
-            self.convertVC = nil
-            if let order = self.curOrder {
-              self.checkDataBeforeConfirmOrder(order)
-            }
-          })
+          if let order = self.curOrder {
+            self.checkDataBeforeConfirmOrder(order)
+          } else {
+            self.navigationController.popViewController(animated: true, completion: {
+              self.convertVC = nil
+            })
+          }
         }
       case .failure(let error):
         KNNotificationUtil.postNotification(
