@@ -418,9 +418,9 @@ class KNCreateLimitOrderViewModel {
     let feeDisplay = NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     let fromSymbol = self.fromSymbol
     let string = "\(feeDisplay.prefix(12)) \(fromSymbol)"
-    if self.isShowingDiscount { return string }
+    if self.isShowingDiscount || self.amountFromBigInt.isZero { return string }
     let percentage = NumberFormatterUtil.shared.displayPercentage(from: self.feePercentage * 100.0)
-    return "\(string) (\(percentage))"
+    return "\(string) (\(percentage)%)"
   }
 
   var displayDiscountPercentageString: String {
