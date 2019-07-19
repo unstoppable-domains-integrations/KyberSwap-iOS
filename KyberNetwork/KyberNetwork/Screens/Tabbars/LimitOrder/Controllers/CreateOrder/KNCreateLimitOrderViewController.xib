@@ -336,10 +336,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99.99% off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kvc-Vh-tPz">
-                            <rect key="frame" x="112" y="260" width="76" height="28"/>
+                            <rect key="frame" x="112" y="260" width="80" height="28"/>
                             <color key="backgroundColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="76" id="0Ha-ek-Wwq"/>
+                                <constraint firstAttribute="width" constant="80" id="0Ha-ek-Wwq"/>
                                 <constraint firstAttribute="height" constant="28" id="6AZ-kt-ZxB"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>

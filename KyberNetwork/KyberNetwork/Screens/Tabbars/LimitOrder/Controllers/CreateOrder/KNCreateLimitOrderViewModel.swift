@@ -425,7 +425,7 @@ class KNCreateLimitOrderViewModel {
 
   var displayDiscountPercentageString: String {
     let discount = NumberFormatterUtil.shared.displayPercentage(from: self.discountPercentage)
-    return "\(discount)% off"
+    return "\(discount)% OFF"
   }
 
   var displayFeeBeforeDiscountString: String {

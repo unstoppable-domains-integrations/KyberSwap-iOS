@@ -1227,6 +1227,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     }
     self.updateFeeNotesUI()
     self.updateEstimateRateFromNetwork(showWarning: false)
+    self.updateEstimateFeeFromServer(isShowingIndicator: true)
     self.view.layoutIfNeeded()
   }
 }
