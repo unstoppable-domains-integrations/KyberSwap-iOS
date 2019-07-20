@@ -1145,18 +1145,18 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
 
     // from amount text field
-    if textField == self.fromAmountTextField && text.fullBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
 
     // to amount text field
-    if (textField == self.toAmountTextField || textField == self.targetRateTextField ) && text.fullBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
+    if (textField == self.toAmountTextField || textField == self.targetRateTextField ) && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
 
     // validate if amount is less than 1B
     let double: Double = {
       if textField == self.fromAmountTextField {
-        let bigInt = Double(text.fullBigInt(decimals: self.viewModel.from.decimals) ?? BigInt(0))
+        let bigInt = Double(text.amountBigInt(decimals: self.viewModel.from.decimals) ?? BigInt(0))
         return Double(bigInt) / pow(10.0, Double(self.viewModel.from.decimals))
       }
-      let bigInt = Double(text.fullBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0))
+      let bigInt = Double(text.amountBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0))
       return Double(bigInt) / pow(10.0, Double(self.viewModel.to.decimals))
     }()
     if double > 1e9 && (textField.text?.count ?? 0) < text.count { return false } // more than 1B tokens

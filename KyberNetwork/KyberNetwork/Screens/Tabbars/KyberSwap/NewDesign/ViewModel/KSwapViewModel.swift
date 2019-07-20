@@ -91,7 +91,7 @@ class KSwapViewModel {
   }
 
   var amountFromBigInt: BigInt {
-    return self.amountFrom.removeGroupSeparator().fullBigInt(decimals: self.from.decimals) ?? BigInt(0)
+    return self.amountFrom.removeGroupSeparator().amountBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
   var amountToEstimate: BigInt {
@@ -175,7 +175,7 @@ class KSwapViewModel {
 
   // MARK: To Token
   var amountToBigInt: BigInt {
-    return self.amountTo.removeGroupSeparator().fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+    return self.amountTo.removeGroupSeparator().amountBigInt(decimals: self.to.decimals) ?? BigInt(0)
   }
 
   var isToTokenBtnEnabled: Bool {

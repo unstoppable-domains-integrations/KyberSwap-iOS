@@ -22,6 +22,9 @@ extension String {
   }
 
   func shortBigInt(decimals: Int) -> BigInt? {
+    if let double = Double(self) {
+      return BigInt(double * pow(10.0, Double(decimals)))
+    }
     return EtherNumberFormatter.short.number(
       from: self.removeGroupSeparator(),
       decimals: decimals
@@ -29,6 +32,9 @@ extension String {
   }
 
   func shortBigInt(units: EthereumUnit) -> BigInt? {
+    if let double = Double(self) {
+      return BigInt(double * Double(units.rawValue))
+    }
     return EtherNumberFormatter.short.number(
       from: self.removeGroupSeparator(),
       units: units
@@ -36,6 +42,9 @@ extension String {
   }
 
   func fullBigInt(decimals: Int) -> BigInt? {
+    if let double = Double(self) {
+      return BigInt(double * pow(10.0, Double(decimals)))
+    }
     return EtherNumberFormatter.full.number(
       from: self.removeGroupSeparator(),
       decimals: decimals
@@ -43,6 +52,23 @@ extension String {
   }
 
   func fullBigInt(units: EthereumUnit) -> BigInt? {
+    if let double = Double(self) {
+      return BigInt(double * Double(units.rawValue))
+    }
+    return EtherNumberFormatter.full.number(
+      from: self.removeGroupSeparator(),
+      units: units
+    )
+  }
+
+  func amountBigInt(decimals: Int) -> BigInt? {
+    return EtherNumberFormatter.full.number(
+      from: self.removeGroupSeparator(),
+      decimals: decimals
+    )
+  }
+
+  func amountBigInt(units: EthereumUnit) -> BigInt? {
     return EtherNumberFormatter.full.number(
       from: self.removeGroupSeparator(),
       units: units

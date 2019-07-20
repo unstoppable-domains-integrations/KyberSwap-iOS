@@ -144,7 +144,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
 
   fileprivate func loadDataFromNode() {
     guard let weth = self.weth else { return }
-    let amount = self.amountTextField.text?.removeGroupSeparator().fullBigInt(decimals: 18) ?? BigInt(0)
+    let amount = self.amountTextField.text?.removeGroupSeparator().amountBigInt(decimals: 18) ?? BigInt(0)
     let event = KNConvertSuggestionViewEvent.estimateGasLimit(from: eth, to: weth, amount: amount)
     self.delegate?.convertSuggestionViewController(self, run: event)
   }

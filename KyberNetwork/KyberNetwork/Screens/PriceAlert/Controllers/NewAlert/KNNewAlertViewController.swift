@@ -305,7 +305,7 @@ class KNNewAlertViewController: KNBaseViewController {
       return
     }
     let targetPrice = self.alertPriceTextField.text ?? ""
-    guard let price = targetPrice.fullBigInt(decimals: 18), !targetPrice.isEmpty else {
+    guard let price = targetPrice.amountBigInt(decimals: 18), !targetPrice.isEmpty else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
         message: NSLocalizedString("Please enter your target price to be alerted", value: "Please enter your target price to be alerted", comment: ""),
@@ -438,7 +438,7 @@ extension KNNewAlertViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    guard let priceBigInt = text.fullBigInt(decimals: 18) else {
+    guard let priceBigInt = text.amountBigInt(decimals: 18) else {
       return false
     }
     let targetPrice = Double(priceBigInt) / pow(10.0, 18.0)

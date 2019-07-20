@@ -119,7 +119,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var amountToBigInt: BigInt {
-    return self.amountTo.removeGroupSeparator().fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+    return self.amountTo.removeGroupSeparator().amountBigInt(decimals: self.to.decimals) ?? BigInt(0)
   }
 
   var estimateAmountFromBigInt: BigInt {
@@ -262,7 +262,7 @@ class KNCreateLimitOrderViewModel {
 
   // MARK: Rate
   var targetRateBigInt: BigInt {
-    return self.targetRate.removeGroupSeparator().fullBigInt(decimals: self.to.decimals) ?? BigInt(0)
+    return self.targetRate.removeGroupSeparator().amountBigInt(decimals: self.to.decimals) ?? BigInt(0)
   }
 
   var targetRateDouble: Double {
@@ -323,7 +323,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var percentageRateDiff: Double {
-    guard let rate = self.targetRate.fullBigInt(decimals: self.to.decimals) else { return 0.0 }
+    guard let rate = self.targetRate.amountBigInt(decimals: self.to.decimals) else { return 0.0 }
     let marketRate = self.estimatedRateDouble
     if marketRate == 0.0 { return 0.0 }
     let targetRateDouble = Double(rate) / pow(10.0, Double(self.to.decimals))

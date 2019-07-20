@@ -47,7 +47,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var amountBigInt: BigInt {
-    return amount.shortBigInt(decimals: self.from.decimals) ?? BigInt(0)
+    return amount.amountBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
 
   var equivalentUSDAmount: BigInt? {
