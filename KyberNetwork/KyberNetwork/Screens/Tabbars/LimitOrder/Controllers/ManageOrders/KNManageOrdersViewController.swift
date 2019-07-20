@@ -447,7 +447,10 @@ extension KNManageOrdersViewController: UICollectionViewDataSource {
       withReuseIdentifier: KNLimitOrderCollectionViewCell.cellID,
       for: indexPath
       ) as! KNLimitOrderCollectionViewCell
-    let order = self.viewModel.displayedOrders[indexPath.row]
+    let order: KNOrderObject = {
+      let orders = self.viewModel.displaySections[self.viewModel.displayHeaders[indexPath.section]] ?? []
+      return orders[indexPath.row]
+    }()
     let isReset: Bool = {
       if let cancelBtnOrder = self.viewModel.cancelOrder {
         return cancelBtnOrder.id != order.id
