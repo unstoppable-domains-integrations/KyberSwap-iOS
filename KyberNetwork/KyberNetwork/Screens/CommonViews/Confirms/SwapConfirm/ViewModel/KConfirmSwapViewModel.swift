@@ -6,9 +6,11 @@ import BigInt
 struct KConfirmSwapViewModel {
 
   let transaction: KNDraftExchangeTransaction
+  let ethBalance: BigInt
 
-  init(transaction: KNDraftExchangeTransaction) {
+  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt) {
     self.transaction = transaction
+    self.ethBalance = ethBalance
   }
 
   var titleString: String {
@@ -93,5 +95,11 @@ struct KConfirmSwapViewModel {
     let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
     let valueString: String = value.displayRate(decimals: 18)
     return "~ \(valueString) USD"
+  }
+
+  var warningETHBalanceShown: Bool {
+    if !self.transaction.from.isETH { return false }
+    let totalAmount = self.transactionFee + self.transaction.amount
+    return self.ethBalance - totalAmount <= BigInt(0.01 * pow(10.0, 18.0))
   }
 }

@@ -507,7 +507,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.navigationController.pushViewController(self.promoConfirmSwapVC!, animated: true)
     } else {
       self.confirmSwapVC = {
-        let viewModel = KConfirmSwapViewModel(transaction: data)
+        let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
+        let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal)
         let controller = KConfirmSwapViewController(viewModel: viewModel)
         controller.loadViewIfNeeded()
         controller.delegate = self

@@ -30,6 +30,9 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var transactionFeeETHLabel: UILabel!
   @IBOutlet weak var transactionFeeUSDLabel: UILabel!
 
+  @IBOutlet weak var warningETHBalImageView: UIImageView!
+  @IBOutlet weak var warningETHBalanceLabel: UILabel!
+
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
 
@@ -116,6 +119,11 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
     self.transactionFeeTextLabel.addLetterSpacing()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+
+    let warningBalShown = self.viewModel.warningETHBalanceShown
+    self.warningETHBalanceLabel.isHidden = !warningBalShown
+    self.warningETHBalImageView.isHidden = !warningBalShown
+    self.warningETHBalanceLabel.text = "After this swap you will not have enough ETH for further transactions.".toBeLocalised()
 
     self.view.layoutIfNeeded()
   }
