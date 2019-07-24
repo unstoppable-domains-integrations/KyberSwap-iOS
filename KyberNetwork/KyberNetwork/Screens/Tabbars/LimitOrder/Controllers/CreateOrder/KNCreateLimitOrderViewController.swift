@@ -1404,6 +1404,10 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
     )
   }
 
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showExtraExplain order: KNOrderObject) {
+    // This case won't happend as it is only for filled order with extra amount
+  }
+
   fileprivate func openCancelOrder(_ order: KNOrderObject, completion: (() -> Void)?) {
     let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
     cancelOrderVC.loadViewIfNeeded()

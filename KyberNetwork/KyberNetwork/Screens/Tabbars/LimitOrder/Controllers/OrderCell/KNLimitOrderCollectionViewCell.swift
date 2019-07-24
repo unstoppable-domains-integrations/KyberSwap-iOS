@@ -6,6 +6,7 @@ import BigInt
 protocol KNLimitOrderCollectionViewCellDelegate: class {
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, cancelPressed order: KNOrderObject)
   func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showWarning order: KNOrderObject)
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showExtraExplain order: KNOrderObject)
 }
 
 class KNLimitOrderCollectionViewCell: UICollectionViewCell {
@@ -60,6 +61,10 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.onSwipe(_:)))
     swipeRightGesture.direction = .right
     self.addGestureRecognizer(swipeRightGesture)
+
+    let tapDestAmountGesture = UITapGestureRecognizer(target: self, action: #selector(self.showExtraTokensReceivedPressed(_:)))
+    self.destValueLabel.addGestureRecognizer(tapDestAmountGesture)
+    self.destValueLabel.isUserInteractionEnabled = true
   }
 
   func updateCell(with order: KNOrderObject, isReset: Bool, hasAction: Bool = true, bgColor: UIColor) {
@@ -108,8 +113,8 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    let actualSrcAmount = order.sourceAmount
-    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
+    let actualSrcAmount = order.sourceAmount * (1.0 - order.fee)
+    self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
 
     let destAmount: String = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
     let extraAmount: String = "+ \(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.extraAmount)) \(destTokenSymbol)"
@@ -173,6 +178,11 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
         }
       }
     }
+  }
+
+  @objc func showExtraTokensReceivedPressed(_ sender: Any) {
+    guard let order = self.order, order.state == .filled, order.extraAmount > 0 else { return }
+    self.delegate?.limitOrderCollectionViewCell(self, showExtraExplain: order)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

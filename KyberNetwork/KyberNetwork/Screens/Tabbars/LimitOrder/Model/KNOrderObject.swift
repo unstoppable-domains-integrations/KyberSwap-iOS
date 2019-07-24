@@ -59,6 +59,7 @@ class KNOrderObject: NSObject {
     self.messages = messages
     self.txHash = txHash
     self.stateValue = stateValue
+    self.actualDestAmount = actualDestAmount
   }
 
   convenience init(json: JSONDictionary) {
@@ -163,7 +164,8 @@ class KNOrderObject: NSObject {
   }
 
   var extraAmount: Double {
-    return max(0.0, self.actualDestAmount - self.sourceAmount * self.targetPrice)
+    let actualSrc = self.sourceAmount * (1.0 - self.fee)
+    return max(0.0, self.actualDestAmount - actualSrc * self.targetPrice)
   }
 
   func clone() -> KNOrderObject {

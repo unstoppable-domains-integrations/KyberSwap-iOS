@@ -494,6 +494,14 @@ extension KNManageOrdersViewController: KNLimitOrderCollectionViewCellDelegate {
     )
   }
 
+  func limitOrderCollectionViewCell(_ cell: KNLimitOrderCollectionViewCell, showExtraExplain order: KNOrderObject) {
+    let extraPopUp = KNLimitOrderExtraTokenReceivedPopupViewController(order: order)
+    extraPopUp.modalPresentationStyle = .overFullScreen
+    extraPopUp.modalTransitionStyle = .crossDissolve
+    extraPopUp.loadViewIfNeeded()
+    self.present(extraPopUp, animated: true, completion: nil)
+  }
+
   fileprivate func openCancelOrder(_ order: KNOrderObject, completion: (() -> Void)?) {
     let cancelOrderVC = KNCancelOrderConfirmPopUp(order: order)
     cancelOrderVC.loadViewIfNeeded()
