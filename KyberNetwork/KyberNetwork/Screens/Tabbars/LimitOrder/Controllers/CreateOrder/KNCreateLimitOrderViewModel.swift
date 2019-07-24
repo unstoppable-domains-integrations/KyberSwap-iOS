@@ -342,15 +342,15 @@ class KNCreateLimitOrderViewModel {
     if fabs(rateChange) < 0.1 { return attributedString }
     guard let rate = self.differentRatePercentageDisplay else { return attributedString }
     let normalAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor(red: 98, green: 107, blue: 134),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
     ]
     let higherAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 12),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.shamrock,
     ]
     let lowerAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 14),
+      NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 12),
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.strawberry,
     ]
     attributedString.append(NSAttributedString(string: "Your target rate is".toBeLocalised(), attributes: normalAttributes))
@@ -359,7 +359,7 @@ class KNCreateLimitOrderViewModel {
       attributedString.append(NSAttributedString(string: "higher than current Market rate".toBeLocalised(), attributes: normalAttributes))
     } else {
       attributedString.append(NSAttributedString(string: " \(rate) ", attributes: lowerAttributes))
-      attributedString.append(NSAttributedString(string: "lower than current Market rate".toBeLocalised(), attributes: normalAttributes))
+      attributedString.append(NSAttributedString(string: "lower than current rate".toBeLocalised(), attributes: normalAttributes))
     }
     return attributedString
   }

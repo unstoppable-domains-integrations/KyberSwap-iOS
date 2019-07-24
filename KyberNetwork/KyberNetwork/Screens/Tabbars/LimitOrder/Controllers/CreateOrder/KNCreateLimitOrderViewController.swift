@@ -53,6 +53,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var currentRateTextLabel: UILabel!
   @IBOutlet weak var currentRateLabel: UILabel!
   @IBOutlet weak var compareMarketRateLabel: UILabel!
+  @IBOutlet weak var marketRateButton: UIButton!
 
   @IBOutlet weak var separatorView: UIView!
 
@@ -176,6 +177,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.submitOrderButton.applyGradient()
     self.confirmCancelButton.removeSublayer(at: 0)
     self.confirmCancelButton.applyGradient()
+    self.percentageButtons.forEach { $0.addShadow() }
+    self.marketRateButton.addShadow()
 
     self.tokenDateContainerView.addShadow(
       color: UIColor.black.withAlphaComponent(0.6),
@@ -231,6 +234,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.percentageButtons.forEach({ $0.rounded(radius: 2.5) })
 
     self.currentRateTextLabel.text = "\("Current Rate".toBeLocalised()):"
+    self.marketRateButton.setTitle("Market Rate".toBeLocalised(), for: .normal)
+    self.marketRateButton.titleLabel?.numberOfLines = 2
+    self.marketRateButton.titleLabel?.textAlignment = .center
+    self.marketRateButton.rounded(radius: 2.5)
+    self.marketRateButton.addShadow()
     self.feeTextLabel.text = "\(NSLocalizedString("fee", value: "Fee", comment: "")):"
     self.discountPercentLabel.rounded(radius: self.discountPercentLabel.frame.height / 2.0)
 
@@ -492,6 +500,10 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @objc func balanceLabelTapped(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["button": "balance_value"])
     self.keyboardSwapAllButtonPressed(sender)
+  }
+
+  @IBAction func marketRateButtonPressed(_ sender: Any) {
+    self.currentRateDidTapped(sender)
   }
 
   @objc func currentRateDidTapped(_ sender: Any) {

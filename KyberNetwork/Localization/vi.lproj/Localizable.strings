@@ -611,7 +611,7 @@
 "Rate of" = "Tỉ giá";
 "Your target rate is" = "Tỉ giá bạn đặt";
 "higher than current Market rate" = "cao hơn tỉ giá hiện tại";
-"lower than current Market rate" = "thấp hơn tỉ giá hiện tại";
+"lower than current rate" = "thấp hơn tỉ giá hiện tại";
 "Sign in required" = "Phải đăng nhập";
 "Latest" = "Mới nhất";
 "Oldest" = "Cũ nhất";

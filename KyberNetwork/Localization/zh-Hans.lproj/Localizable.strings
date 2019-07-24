@@ -609,7 +609,7 @@
 "Rate of" = "Rate of";
 "Your target rate is" = "Your target rate is";
 "higher than current Market rate" = "higher than current Market rate";
-"lower than current Market rate" = "lower than current Market rate";
+"lower than current rate" = "lower than current rate";
 "Sign in required" = "需要登录";
 "Latest" = "最新";
 "Oldest" = "最老的";

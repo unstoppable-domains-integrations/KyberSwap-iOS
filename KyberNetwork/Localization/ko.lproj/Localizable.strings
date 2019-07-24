@@ -610,7 +610,7 @@
 "Rate of" = "Rate of";
 "Your target rate is" = "Your target rate is";
 "higher than current Market rate" = "higher than current Market rate";
-"lower than current Market rate" = "lower than current Market rate";
+"lower than current rate" = "lower than current rate";
 "Sign in required" = "로그인이 필요합니다.";
 "Latest" = "최근";
 "Oldest" = "오래 된";
