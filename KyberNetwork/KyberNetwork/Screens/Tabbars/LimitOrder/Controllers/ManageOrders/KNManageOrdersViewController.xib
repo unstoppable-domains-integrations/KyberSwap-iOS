@@ -43,13 +43,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="84"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YeJ-y4-262">
-                            <rect key="frame" x="144.5" y="47" width="125" height="21"/>
+                            <rect key="frame" x="136.5" y="46" width="141.5" height="22"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmf-a1-5Jw">
-                            <rect key="frame" x="16" y="39.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="39" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="eGH-Io-ca0"/>
                                 <constraint firstAttribute="width" constant="46" id="ek0-pb-uRh"/>
@@ -60,13 +60,12 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dg8-Cd-W0o">
-                            <rect key="frame" x="366" y="41.5" width="32" height="32"/>
+                            <rect key="frame" x="366" y="41" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="AFH-sn-FnC"/>
                                 <constraint firstAttribute="width" constant="32" id="v7Z-dF-LDb"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" image="filter_icon">
                                 <color key="titleColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
@@ -98,7 +97,7 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No order found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vk3-ns-uic">
-                    <rect key="frame" x="153" y="539.5" width="108.5" height="19"/>
+                    <rect key="frame" x="145" y="539" width="124" height="20"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -118,7 +117,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vnP-13-JTb">
-                    <rect key="frame" x="12" y="96" width="93" height="32"/>
+                    <rect key="frame" x="12" y="96" width="105" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="1Ee-RU-R80"/>
                     </constraints>
@@ -131,7 +130,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJz-rR-a9O">
-                    <rect key="frame" x="121" y="96" width="96" height="32"/>
+                    <rect key="frame" x="133" y="96" width="110" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="0d5-qz-O3M"/>
                     </constraints>
@@ -147,7 +146,7 @@
                     <rect key="frame" x="12" y="188" width="390" height="36"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe left to cancel open order" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZv-w8-or9">
-                            <rect key="frame" x="12" y="11" width="366" height="14"/>
+                            <rect key="frame" x="12" y="10.5" width="366" height="15"/>
                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                             <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>

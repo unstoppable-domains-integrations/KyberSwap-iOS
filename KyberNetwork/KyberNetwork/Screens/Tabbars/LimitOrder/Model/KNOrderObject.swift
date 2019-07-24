@@ -87,7 +87,7 @@ class KNOrderObject: NSObject {
       let msgs = json["messages"] as? [String] ?? []
       return msgs.joined(separator: ". ")
     }()
-    self.actualDestAmount = json["actual_dst_amount"] as? Double ?? 0.0
+    self.actualDestAmount = json["receive"] as? Double ?? 0.0
   }
 
   convenience init(fields: [String], data: [Any]) {
@@ -142,7 +142,7 @@ class KNOrderObject: NSObject {
     if let idx = fields.index(of: "updated_at") {
       self.filledDate = data[idx] as? Double ?? 0.0
     }
-    if let idx = fields.index(of: "actual_dst_amount") {
+    if let idx = fields.index(of: "receive") {
       self.actualDestAmount = data[idx] as? Double ?? 0.0
     }
   }
