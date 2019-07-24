@@ -384,7 +384,13 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func getPendingBalances(address: String) {
-    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
+      // reset pending balance
+      self.searchTokensViewController?.updatePendingBalances([:])
+      self.convertVC?.updatePendingWETHBalance(0.0)
+      self.rootViewController.coordinatorUpdatePendingBalances(address: address, balances: [:])
+      return
+    }
     KNLimitOrderServerCoordinator.shared.getPendingBalances(accessToken: accessToken, address: address) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
