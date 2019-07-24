@@ -108,7 +108,7 @@ class KNCancelOrderConfirmPopUp: KNBaseViewController {
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
+    let actualSrcAmount = order.sourceAmount
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
     self.destValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
 

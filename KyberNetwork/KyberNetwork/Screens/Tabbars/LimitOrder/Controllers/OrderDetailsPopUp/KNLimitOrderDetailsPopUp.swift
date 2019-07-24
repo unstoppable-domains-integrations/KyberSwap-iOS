@@ -83,7 +83,7 @@ class KNLimitOrderDetailsPopUp: KNBaseViewController {
     }()
     self.feeValueLabel.text = "\(feeDisplay) \(srcTokenSymbol)"
 
-    let actualSrcAmount = order.sourceAmount * max(0.0, 1.0 - order.fee)
+    let actualSrcAmount = order.sourceAmount
     self.fromValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
     self.toValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
 
