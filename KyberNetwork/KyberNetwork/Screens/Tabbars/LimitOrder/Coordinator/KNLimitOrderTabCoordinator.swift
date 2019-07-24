@@ -176,17 +176,14 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .submitOrder(let order):
       self.checkDataBeforeConfirmOrder(order)
     case .manageOrders:
-      let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
       if self.manageOrdersVC == nil {
         self.manageOrdersVC = KNManageOrdersViewController(
-          viewModel: KNManageOrdersViewModel(orders: orders)
+          viewModel: KNManageOrdersViewModel(orders: [])
         )
         self.manageOrdersVC?.loadViewIfNeeded()
         self.manageOrdersVC?.delegate = self
       }
-      self.navigationController.pushViewController(self.manageOrdersVC!, animated: true) {
-        self.manageOrdersVC?.updateListOrders(orders)
-      }
+      self.navigationController.pushViewController(self.manageOrdersVC!, animated: true, completion: nil)
     case .estimateFee(let address, let src, let dest, let srcAmount, let destAmount):
       self.getExpectedFee(
         address: address,
@@ -500,13 +497,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       guard let `self` = self else { return }
       switch result {
       case .success(let remain):
-        var actualAmount = order.srcAmount
-        let orders = KNLimitOrderStorage.shared.orders
-          .filter({ return $0.state == .open || $0.state == .inProgress })
-          .filter({ return $0.sender.lowercased() == order.sender.description.lowercased() })
-          .filter({ return $0.sourceToken.lowercased() == order.from.symbol.lowercased() })
-        orders.forEach({ actualAmount += BigInt($0.sourceAmount * pow(10.0, Double(order.from.decimals))) })
-        if remain >= BigInt(10).power(28) && remain >= actualAmount {
+        if remain >= BigInt(10).power(28) {
           completion(.success(true))
         } else {
           if let time = self.approveTx[order.from.contract] {

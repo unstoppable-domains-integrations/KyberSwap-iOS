@@ -29,13 +29,6 @@ class KNLimitOrderSearchTokenViewModel {
   }
   var displayedTokens: [TokenObject] = []
 
-  var relatedOrders: [KNOrderObject] {
-    return KNLimitOrderStorage.shared.orders.filter({
-      return $0.sender.lowercased() == self.address.lowercased()
-        && ($0.state == .open || $0.state == .inProgress)
-    }).map({ return $0.clone() })
-  }
-
   init(isSource: Bool, supportedTokens: [TokenObject], address: String, pendingBalances: JSONDictionary) {
     self.supportedTokens = supportedTokens
       .filter({ return !$0.isWETH && $0.extraData?.limitOrderEnabled == true })

@@ -457,7 +457,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   }
 
   @objc func listOrdersDidUpdate(_ sender: Any?) {
-    let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
+    let orders = self.viewModel.relatedOrders.map({ return $0.clone() })
     let relatedOrders = orders.filter({
       return $0.sender.lowercased() == self.viewModel.walletObject.address.lowercased()
       && $0.srcTokenSymbol.lowercased() == self.viewModel.from.symbol.lowercased()
@@ -485,6 +485,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+    self.viewModel.updateFocusTextField(0)
     self.updateTokensView()
     self.updateViewAmountDidChange()
     _ = self.validateDataIfNeeded()
@@ -587,7 +588,7 @@ extension KNCreateLimitOrderViewController {
       self.submitButtonBottomPaddingToContainerViewConstraint.isActive = false
       self.submitButtonBottomPaddingToRelatedOrderViewConstraint.isActive = true
       self.submitButtonBottomPaddingToRelatedOrderViewConstraint.constant = 32.0
-      let orderCellHeight = KNLimitOrderCollectionViewCell.height // height + bottom padding
+      let orderCellHeight = KNLimitOrderCollectionViewCell.kLimitOrderNormalHeight // height + bottom padding
       let headerCellHeight = CGFloat(44.0)
       let numberHeaders = self.viewModel.relatedHeaders.count
       self.relatedOrderContainerViewHeightConstraint.constant = 32.0 + CGFloat(numberOrders) * orderCellHeight + CGFloat(numberHeaders) * headerCellHeight // top padding + collection view height
@@ -819,7 +820,7 @@ extension KNCreateLimitOrderViewController {
     self.cancelRelatedOrdersView.isHidden = false
     self.cancelOrdersCollectionView.reloadData()
 
-    let orderHeight = KNLimitOrderCollectionViewCell.height
+    let orderHeight = KNLimitOrderCollectionViewCell.kLimitOrderNormalHeight
     let headerHeight = CGFloat(44.0)
     let numberHeaders = self.viewModel.cancelSuggestHeaders.count
     let numberOrders = self.viewModel.cancelSuggestOrders.count
@@ -1276,7 +1277,7 @@ extension KNCreateLimitOrderViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(
       width: collectionView.frame.width,
-      height: KNLimitOrderCollectionViewCell.height
+      height: KNLimitOrderCollectionViewCell.kLimitOrderNormalHeight
     )
   }
 

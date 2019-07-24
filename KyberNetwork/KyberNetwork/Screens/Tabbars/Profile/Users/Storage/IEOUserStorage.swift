@@ -67,7 +67,6 @@ class IEOUserStorage {
     if self.realm == nil { return }
     self.delete(objects: self.objects)
     KNAlertStorage.shared.deleteAll()
-    KNLimitOrderStorage.shared.deleteAll()
   }
 
   func signedIn() {

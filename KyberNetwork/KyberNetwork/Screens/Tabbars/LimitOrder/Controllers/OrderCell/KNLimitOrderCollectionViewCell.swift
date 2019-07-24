@@ -10,7 +10,8 @@ protocol KNLimitOrderCollectionViewCellDelegate: class {
 
 class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
-  static let height: CGFloat = 96.0
+  static let kLimitOrderNormalHeight: CGFloat = 96.0
+  static let kLimitOrderCellFilledHeight: CGFloat = 108.0
   static let cellID: String = "kLimitOrderCollectionViewCell"
 
   @IBOutlet weak var containerView: UIView!
@@ -109,7 +110,29 @@ class KNLimitOrderCollectionViewCell: UICollectionViewCell {
 
     let actualSrcAmount = order.sourceAmount
     self.sourceValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount)) \(srcTokenSymbol)"
-    self.destValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+
+    let destAmount: String = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+    let extraAmount: String = "+ \(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.extraAmount)) \(destTokenSymbol)"
+    if order.state == .filled && order.extraAmount > 0 {
+      self.destValueLabel.text = nil
+      self.destValueLabel.attributedText = {
+        let attributedString = NSMutableAttributedString()
+        let normalAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+          NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 11),
+        ]
+        let extraAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.foregroundColor: UIColor(red: 49, green: 203, blue: 158),
+          NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 10),
+        ]
+        attributedString.append(NSAttributedString(string: destAmount, attributes: normalAttributes))
+        attributedString.append(NSAttributedString(string: "\n\(extraAmount)", attributes: extraAttributes))
+        return attributedString
+      }()
+    } else {
+      self.destValueLabel.attributedText = nil
+      self.destValueLabel.text = ">= \(destAmount)"
+    }
     if hasAction {
       if order.state != .open {
         self.updateCancelButtonUI(isShowing: false, callFromSuper: true)

@@ -152,13 +152,6 @@ class KNManageOrdersViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.listOrdersDidUpdate(_:)),
-      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
-      object: nil
-    )
-
     self.loadListOrders(isDisplayLoading: true)
     self.loadingTimer?.invalidate()
     self.loadingTimer = Timer.scheduledTimer(
@@ -170,11 +163,6 @@ class KNManageOrdersViewController: KNBaseViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name(rawValue: kUpdateListOrdersNotificationKey),
-      object: nil
-    )
     self.loadingTimer?.invalidate()
     self.loadingTimer = nil
   }
@@ -296,11 +284,6 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.navigationController?.pushViewController(self.filterVC!, animated: true)
   }
 
-  @objc func listOrdersDidUpdate(_ sender: Any) {
-    let orders = KNLimitOrderStorage.shared.orders.map({ return $0.clone() })
-    self.updateListOrders(orders)
-  }
-
   func updateListOrders(_ orders: [KNOrderObject]) {
     self.viewModel.updateOrders(orders)
     self.updateCollectionView()
@@ -372,7 +355,6 @@ class KNManageOrdersViewController: KNBaseViewController {
     group.notify(queue: .main) {
       if isDisplayLoading { self.hideLoading() }
       if errorMessage == nil {
-        KNLimitOrderStorage.shared.updateOrdersFromServer(orders)
         self.updateListOrders(orders.map({ return $0.clone() }))
       } else if let error = errorMessage, isDisplayLoading {
         let alert = UIAlertController(
@@ -400,9 +382,19 @@ extension KNManageOrdersViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let order: KNOrderObject = {
+      let orders = self.viewModel.displaySections[self.viewModel.displayHeaders[indexPath.section]] ?? []
+      return orders[indexPath.row]
+    }()
+    let height: CGFloat = {
+      if order.state == .filled && order.extraAmount > 0 {
+        return KNLimitOrderCollectionViewCell.kLimitOrderCellFilledHeight
+      }
+      return KNLimitOrderCollectionViewCell.kLimitOrderNormalHeight
+    }()
     return CGSize(
       width: collectionView.frame.width,
-      height: KNLimitOrderCollectionViewCell.height
+      height: height
     )
   }
 

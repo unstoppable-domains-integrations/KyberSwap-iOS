@@ -12,21 +12,22 @@ enum KNOrderState: Int {
   case unknown
 }
 
-class KNOrderObject: Object {
+class KNOrderObject: NSObject {
 
-  @objc dynamic var id: Int = -1
-  @objc dynamic var sourceToken: String = ""
-  @objc dynamic var destToken: String = ""
-  @objc dynamic var targetPrice: Double = 0.0
-  @objc dynamic var sourceAmount: Double = 0.0
-  @objc dynamic var fee: Double = 0.0
-  @objc dynamic var nonce: String = ""
-  @objc dynamic var sender: String = ""
-  @objc dynamic var createdDate: TimeInterval = 0.0
-  @objc dynamic var filledDate: TimeInterval = 0.0
-  @objc dynamic var messages: String = ""
-  @objc dynamic var txHash: String?
-  @objc dynamic var stateValue: Int = KNOrderState.open.rawValue
+  var id: Int = -1
+  var sourceToken: String = ""
+  var destToken: String = ""
+  var targetPrice: Double = 0.0
+  var sourceAmount: Double = 0.0
+  var fee: Double = 0.0
+  var nonce: String = ""
+  var sender: String = ""
+  var createdDate: TimeInterval = 0.0
+  var filledDate: TimeInterval = 0.0
+  var messages: String = ""
+  var txHash: String?
+  var actualDestAmount: Double = 0.0
+  var stateValue: Int = KNOrderState.open.rawValue
 
   convenience init(
     id: Int = -1,
@@ -41,7 +42,8 @@ class KNOrderObject: Object {
     filledDate: TimeInterval = 0.0,
     messages: String,
     txHash: String?,
-    stateValue: Int = KNOrderState.open.rawValue
+    stateValue: Int = KNOrderState.open.rawValue,
+    actualDestAmount: Double = 0.0
     ) {
     self.init()
     self.id = id
@@ -85,6 +87,7 @@ class KNOrderObject: Object {
       let msgs = json["messages"] as? [String] ?? []
       return msgs.joined(separator: ". ")
     }()
+    self.actualDestAmount = json["actual_dst_amount"] as? Double ?? 0.0
   }
 
   convenience init(fields: [String], data: [Any]) {
@@ -139,6 +142,9 @@ class KNOrderObject: Object {
     if let idx = fields.index(of: "updated_at") {
       self.filledDate = data[idx] as? Double ?? 0.0
     }
+    if let idx = fields.index(of: "actual_dst_amount") {
+      self.actualDestAmount = data[idx] as? Double ?? 0.0
+    }
   }
 
   var state: KNOrderState { return KNOrderState(rawValue: self.stateValue) ?? .open }
@@ -156,8 +162,8 @@ class KNOrderObject: Object {
     return self.destToken
   }
 
-  override class func primaryKey() -> String? {
-    return "id"
+  var extraAmount: Double {
+    return max(0.0, self.actualDestAmount - self.sourceAmount * self.targetPrice)
   }
 
   func clone() -> KNOrderObject {
@@ -174,7 +180,8 @@ class KNOrderObject: Object {
       filledDate: self.filledDate,
       messages: self.messages,
       txHash: self.txHash,
-      stateValue: self.stateValue
+      stateValue: self.stateValue,
+      actualDestAmount: self.actualDestAmount
     )
   }
 }
