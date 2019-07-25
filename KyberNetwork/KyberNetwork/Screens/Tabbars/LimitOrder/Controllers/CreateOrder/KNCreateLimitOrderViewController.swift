@@ -50,7 +50,6 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var pairTokensLabel: UILabel!
   @IBOutlet weak var targetRateTextField: UITextField!
 
-  @IBOutlet weak var currentRateTextLabel: UILabel!
   @IBOutlet weak var currentRateLabel: UILabel!
   @IBOutlet weak var compareMarketRateLabel: UILabel!
   @IBOutlet weak var marketRateButton: UIButton!
@@ -233,7 +232,6 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
     self.percentageButtons.forEach({ $0.rounded(radius: 2.5) })
 
-    self.currentRateTextLabel.text = "\("Current Rate".toBeLocalised()):"
     self.marketRateButton.setTitle("Market Rate".toBeLocalised(), for: .normal)
     self.marketRateButton.titleLabel?.numberOfLines = 2
     self.marketRateButton.titleLabel?.textAlignment = .center
