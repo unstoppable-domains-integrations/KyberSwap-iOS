@@ -70,7 +70,7 @@ class KNSendTokenViewModel: NSObject {
   var address: Address? { return Address(string: self.addressString) }
 
   init(from: TokenObject, balances: [String: Balance]) {
-    self.from = from
+    self.from = from.clone()
     self.balances = balances
     self.balance = balances[from.contract]
     self.isSendAllBalanace = false
@@ -181,7 +181,7 @@ class KNSendTokenViewModel: NSObject {
 
   // MARK: Update
   func updateSendToken(from token: TokenObject, balance: Balance?) {
-    self.from = token
+    self.from = token.clone()
     self.balance = balance
     self.amount = ""
     self.isSendAllBalanace = false

@@ -6,8 +6,8 @@ import BigInt
 class KSwapViewModel {
 
   let defaultTokenIconImg = UIImage(named: "default_token")
-  let eth = KNSupportedTokenStorage.shared.ethToken.clone()
-  let knc = KNSupportedTokenStorage.shared.kncToken.clone()
+  let eth = KNSupportedTokenStorage.shared.ethToken
+  let knc = KNSupportedTokenStorage.shared.kncToken
 
   fileprivate(set) var wallet: Wallet
   fileprivate(set) var walletObject: KNWalletObject

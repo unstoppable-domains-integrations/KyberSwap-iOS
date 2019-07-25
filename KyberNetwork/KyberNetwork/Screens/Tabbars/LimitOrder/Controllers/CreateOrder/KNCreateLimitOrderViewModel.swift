@@ -537,12 +537,12 @@ class KNCreateLimitOrderViewModel {
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
     if isSource {
-      self.from = token
+      self.from = token.clone()
       self.feePercentage = 0
       self.discountPercentage = 0
       self.isUseAllBalance = false
     } else {
-      self.to = token
+      self.to = token.clone()
     }
     self.nonce = nil
     self.balance = self.balances[self.from.contract]

@@ -26,6 +26,7 @@ class KNSupportedTokenStorage {
     if self.realm.objects(TokenObject.self).isInvalidated { return [] }
     return self.realm.objects(TokenObject.self)
       .filter { return !$0.contract.isEmpty }
+      .map { return $0.clone() }
   }
 
   var ethToken: TokenObject {
