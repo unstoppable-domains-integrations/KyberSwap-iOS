@@ -597,9 +597,16 @@ class KSwapViewController: KNBaseViewController {
       )
       return true
     }
+    if self.viewModel.isPairUnderMaintenance {
+      self.showWarningTopBannerMessage(
+        with: "",
+        message: NSLocalizedString("This token pair is temporarily under maintenance", value: "This token pair is temporarily under maintenance", comment: "")
+      )
+      return true
+    }
     if self.viewModel.estRate?.isZero == true {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
+        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
         message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: "")
       )
       return true

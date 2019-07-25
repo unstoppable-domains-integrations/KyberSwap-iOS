@@ -469,6 +469,8 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "您设置的最低可接受汇率高于KyberNetwork的建议汇率。您的兑换很可能失败。";
 
+"This token pair is temporarily under maintenance" = "此对正在暂时维修中";
+
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
 "please.send.your.request.to.support" = "请将您的请求发送至support@kyber.network";

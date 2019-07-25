@@ -482,6 +482,8 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
 
+"This token pair is temporarily under maintenance" = "This token pair is temporarily under maintenance";
+
 "Filter" = "Filter";
 "Time" = "Time";
 "Transaction Type" = "Transaction Type";

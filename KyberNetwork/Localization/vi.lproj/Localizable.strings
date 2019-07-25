@@ -446,6 +446,7 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
 
+"This token pair is temporarily under maintenance" = "Cặp token này tạm thời đang được bảo trì";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";

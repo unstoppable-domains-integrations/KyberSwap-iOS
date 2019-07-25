@@ -346,6 +346,12 @@ class KSwapViewModel {
     return true
   }
 
+  var isPairUnderMaintenance: Bool {
+    let cachedRate = KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
+    let estRate = self.estRate ?? BigInt(0)
+    return estRate.isZero && cachedRate.isZero
+  }
+
   var feeBigInt: BigInt {
     return self.gasPrice * self.estimateGasLimit
   }
