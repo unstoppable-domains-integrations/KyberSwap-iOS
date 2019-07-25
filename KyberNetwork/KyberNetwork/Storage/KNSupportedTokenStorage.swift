@@ -26,23 +26,22 @@ class KNSupportedTokenStorage {
     if self.realm.objects(TokenObject.self).isInvalidated { return [] }
     return self.realm.objects(TokenObject.self)
       .filter { return !$0.contract.isEmpty }
-      .map { return $0.clone() }
   }
 
   var ethToken: TokenObject {
-    return self.supportedTokens.first(where: { return $0.isETH })!
+    return self.supportedTokens.first(where: { return $0.isETH })!.clone()
   }
 
   var wethToken: TokenObject? {
-    return self.supportedTokens.first(where: { return $0.isWETH })
+    return self.supportedTokens.first(where: { return $0.isWETH })?.clone()
   }
 
   var kncToken: TokenObject {
-    return self.supportedTokens.first(where: { $0.isKNC })!
+    return self.supportedTokens.first(where: { $0.isKNC })!.clone()
   }
 
   var ptToken: TokenObject? {
-    return self.supportedTokens.first(where: { $0.isPromoToken })
+    return self.supportedTokens.first(where: { $0.isPromoToken })?.clone()
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {

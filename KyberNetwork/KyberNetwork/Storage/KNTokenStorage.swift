@@ -38,15 +38,14 @@ class KNTokenStorage {
     if self.realm.objects(TokenObject.self).isInvalidated { return [] }
     return self.realm.objects(TokenObject.self)
       .filter { return !$0.contract.isEmpty }
-      .map({ return $0.clone() })
   }
 
   var ethToken: TokenObject {
-   return self.tokens.first(where: { $0.isETH }) ?? KNSupportedTokenStorage.shared.ethToken
+   return self.tokens.first(where: { $0.isETH })?.clone() ?? KNSupportedTokenStorage.shared.ethToken
   }
 
   var kncToken: TokenObject {
-    return self.tokens.first(where: { $0.isKNC }) ?? KNSupportedTokenStorage.shared.kncToken
+    return self.tokens.first(where: { $0.isKNC })?.clone() ?? KNSupportedTokenStorage.shared.kncToken
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {
