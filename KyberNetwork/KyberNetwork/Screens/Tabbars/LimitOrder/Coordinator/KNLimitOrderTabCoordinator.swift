@@ -350,7 +350,10 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func getCurrentNonce(completion: @escaping (String?, String?) -> Void) {
-    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
+      completion(nil, nil)
+      return
+    }
     KNLimitOrderServerCoordinator.shared.getNonce(
       accessToken: accessToken) { [weak self] result in
         guard let _ = self else { return }
@@ -368,7 +371,10 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func getListRelatedOrders(address: String, src: String, dest: String, minRate: Double) {
-    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
+      self.rootViewController.coordinatorUpdateListRelatedOrders(address: address, src: src, dest: dest, minRate: minRate, orders: [])
+      return
+    }
     KNLimitOrderServerCoordinator.shared.getRelatedOrders(accessToken: accessToken, address: address, src: src, dest: dest, minRate: minRate) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
@@ -402,7 +408,10 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func checkWalletEligible(completion: ((Bool) -> Void)?) {
-    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else {
+      completion?(true)
+      return
+    }
     KNLimitOrderServerCoordinator.shared.checkEligibleAddress(
       accessToken: accessToken,
       address: self.session.wallet.address.description) { [weak self] result in
