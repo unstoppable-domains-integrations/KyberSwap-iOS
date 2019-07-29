@@ -417,7 +417,12 @@ extension KNManageOrdersViewController: UICollectionViewDelegate {
       let hash = order.txHash,
       let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint,
       let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
-      self.openSafari(with: url)
+      let controller = KNLimitOrderDetailsPopUp(order: order)
+      controller.loadViewIfNeeded()
+      controller.modalPresentationStyle = .overCurrentContext
+      controller.modalTransitionStyle = .crossDissolve
+      self.present(controller, animated: true, completion: nil)
+//      self.openSafari(with: url)
     } else if order.state == .open {
       self.openCancelOrder(order, completion: nil)
     }

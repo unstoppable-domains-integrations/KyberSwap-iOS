@@ -228,7 +228,13 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .selectPromoCode:
       self.hamburgerMenuSelectPromoCode()
     case .selectSendToken:
-      self.openSendTokenView(with: self.session.tokenStorage.ethToken)
+      let from: TokenObject = {
+        guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {
+          return self.session.tokenStorage.ethToken
+        }
+        return token
+      }()
+      self.openSendTokenView(with: from)
     case .selectAllTransactions:
       self.openHistoryTransactionView()
     }

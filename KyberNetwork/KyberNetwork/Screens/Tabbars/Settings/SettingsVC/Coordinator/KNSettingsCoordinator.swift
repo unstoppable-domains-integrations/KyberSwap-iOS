@@ -400,11 +400,17 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
 
   fileprivate func openSendToken(address: String) {
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
+      let from: TokenObject = {
+        guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {
+          return self.session.tokenStorage.ethToken
+        }
+        return token
+      }()
       self.sendTokenCoordinator = KNSendTokenViewCoordinator(
         navigationController: self.navigationController,
         session: self.session,
         balances: self.balances,
-        from: self.session.tokenStorage.ethToken
+        from: from
       )
       self.sendTokenCoordinator?.start()
       self.sendTokenCoordinator?.coordinatorOpenSendView(to: address)

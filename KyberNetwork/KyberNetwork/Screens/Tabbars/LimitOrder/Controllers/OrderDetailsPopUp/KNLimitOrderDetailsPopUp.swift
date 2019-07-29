@@ -85,7 +85,29 @@ class KNLimitOrderDetailsPopUp: KNBaseViewController {
 
     let actualSrcAmount = order.sourceAmount * (1.0 - order.fee)
     self.fromValueLabel.text = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.sourceAmount)) \(srcTokenSymbol)"
-    self.toValueLabel.text = ">= \(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+
+    let destAmount: String = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrcAmount * order.targetPrice)) \(destTokenSymbol)"
+    let extraAmount: String = "+ \(NumberFormatterUtil.shared.displayLimitOrderValue(from: order.extraAmount)) \(destTokenSymbol)"
+    if order.state == .filled && order.extraAmount > 0 {
+      self.toValueLabel.text = nil
+      self.toValueLabel.attributedText = {
+        let attributedString = NSMutableAttributedString()
+        let normalAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+          NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 11),
+        ]
+        let extraAttributes: [NSAttributedStringKey: Any] = [
+          NSAttributedStringKey.foregroundColor: UIColor(red: 49, green: 203, blue: 158),
+          NSAttributedStringKey.font: UIFont.Kyber.semiBold(with: 10),
+        ]
+        attributedString.append(NSAttributedString(string: destAmount, attributes: normalAttributes))
+        attributedString.append(NSAttributedString(string: "\n\(extraAmount)", attributes: extraAttributes))
+        return attributedString
+      }()
+    } else {
+      self.toValueLabel.attributedText = nil
+      self.toValueLabel.text = ">= \(destAmount)"
+    }
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
     self.view.addGestureRecognizer(tapGesture)

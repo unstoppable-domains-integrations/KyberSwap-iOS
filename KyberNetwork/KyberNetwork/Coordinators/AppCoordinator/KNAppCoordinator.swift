@@ -302,6 +302,7 @@ extension KNAppCoordinator {
       }
       return Date().timeIntervalSince1970
     }()
+    let receive = data["receive"] as? Double ?? 0.0
     let txHash = data["tx_hash"] as? String ?? ""
 
     let order = KNOrderObject(
@@ -317,7 +318,8 @@ extension KNAppCoordinator {
       filledDate: updatedDate,
       messages: "",
       txHash: txHash,
-      stateValue: KNOrderState.filled.rawValue
+      stateValue: KNOrderState.filled.rawValue,
+      actualDestAmount: receive
     )
     let controller = KNLimitOrderDetailsPopUp(order: order)
     controller.loadViewIfNeeded()

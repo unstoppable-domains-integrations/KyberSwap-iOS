@@ -45,7 +45,7 @@ class KNLimitOrderExtraTokenReceivedPopupViewController: KNBaseViewController {
     attributedString.append(NSAttributedString(string: "\(extraAmount)", attributes: extraAttributes))
 
     let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineSpacing = 2
+    paragraphStyle.lineSpacing = 5
 
     let range = NSRange(location: 0, length: attributedString.length)
     attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: range)
