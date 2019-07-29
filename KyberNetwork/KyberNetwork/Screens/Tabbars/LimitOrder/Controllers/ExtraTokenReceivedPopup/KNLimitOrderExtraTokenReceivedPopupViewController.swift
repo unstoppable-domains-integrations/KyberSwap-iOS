@@ -8,6 +8,7 @@ class KNLimitOrderExtraTokenReceivedPopupViewController: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var explainTextLabel: UILabel!
+  @IBOutlet weak var whyButton: UIButton!
 
   init(order: KNOrderObject) {
     self.order = order
@@ -25,6 +26,7 @@ class KNLimitOrderExtraTokenReceivedPopupViewController: KNBaseViewController {
     super.viewDidLoad()
     let symbol = self.order.destTokenSymbol
 
+    self.whyButton.setTitle("Why?".toBeLocalised(), for: .normal)
     let actualReceivedAmount: String = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: self.order.actualDestAmount)) \(symbol)"
     let actualSrc = self.order.sourceAmount * (1.0 - self.order.fee)
     let estimatedAmount: String = "\(NumberFormatterUtil.shared.displayLimitOrderValue(from: actualSrc * self.order.targetPrice)) \(symbol)"
@@ -60,5 +62,10 @@ class KNLimitOrderExtraTokenReceivedPopupViewController: KNBaseViewController {
     if loc.y < self.containerView.frame.minY {
       self.dismiss(animated: true, completion: nil)
     }
+  }
+
+  @IBAction func whyButtonPressed(_ sender: Any) {
+    let url = "\(KNEnvironment.default.profileURL)/faq#Why-received-amount-is-higher-than-estimated-amount"
+    self.openSafari(with: url)
   }
 }
