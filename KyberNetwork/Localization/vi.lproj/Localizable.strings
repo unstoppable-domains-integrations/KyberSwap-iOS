@@ -568,7 +568,7 @@
 "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters." = "Mật khẩu phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường và chữ số.";
 
 // Limit Order
-"ETH* is the combination of ETH and WETH" = "ETH* được tính bằng cả ETH và WETH";
+"ETH* represents the sum of ETH & WETH for easy reference" = "ETH* represents the sum of ETH & WETH for easy reference";
 "You are canceling this order" = "Bạn đang hủy lệnh này";
 "Cancel Order" = "Hủy lệnh";
 "Order Confirm" = "Xác nhận lệnh";

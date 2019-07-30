@@ -55,15 +55,15 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
 
     self.navTitleLabel.text = "Confirm Order".toBeLocalised()
 
-    let text = "Your transaction will be broadcasted when rate of %@".toBeLocalised()
-    let condition = "\(from.symbol)/\(to.symbol) >= \(targetRate.displayRate(decimals: to.decimals))"
-    self.broadcastConditonTextLabel.text = String(format: text, condition)
-
     let srcAmountString = srcAmount.string(
       decimals: from.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(from.decimals, 6)
     ).prefix(12)
+
+    let text = "Your transaction will be broadcasted when rate of %@".toBeLocalised()
+    let condition = "\(from.symbol)/\(to.symbol) (for \(srcAmountString) \(from.symbol)) >= \(targetRate.displayRate(decimals: to.decimals))"
+    self.broadcastConditonTextLabel.text = String(format: text, condition)
 
     self.srcDataLabel.text = "\(srcAmountString) \(from.symbol)"
     self.toTextLabel.text = NSLocalizedString("to", value: "To", comment: "")

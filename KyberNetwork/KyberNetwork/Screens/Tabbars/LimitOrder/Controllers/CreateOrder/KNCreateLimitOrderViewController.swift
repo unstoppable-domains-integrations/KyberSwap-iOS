@@ -320,7 +320,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "limit_order", customAttributes: ["type": "from_token_info_pressed"])
     self.showTopBannerView(
       with: "",
-      message: "ETH* is the combination of ETH and WETH".toBeLocalised(),
+      message: "ETH* represents the sum of ETH & WETH for easy reference".toBeLocalised(),
       icon: UIImage(named: "info_blue_icon"),
       time: 3.0
     )

@@ -29,7 +29,7 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
     self.tokenSymbolLabel.text = isETHStar ? "ETH*" : "\(token.symbol.prefix(8))"
     self.tokenSymbolLabel.font = isETHStar ? UIFont.Kyber.semiBold(with: 14) : UIFont.Kyber.medium(with: 14)
     self.tokenSymbolLabel.addLetterSpacing()
-    self.tokenNameLabel.text = isETHStar ? NSLocalizedString("ETH* is the combination of ETH and WETH", value: "ETH* is the combination of ETH and WETH", comment: "") : token.name
+    self.tokenNameLabel.text = isETHStar ? NSLocalizedString("ETH* represents the sum of ETH & WETH for easy reference", value: "ETH* represents the sum of ETH & WETH for easy reference", comment: "") : token.name
     self.tokenNameLabel.textColor = isETHStar ? UIColor(red: 20, green: 25, blue: 39) : UIColor(red: 158, green: 161, blue: 170)
     self.tokenNameLabel.font = UIFont.Kyber.medium(with: 12, italic: isETHStar)
     self.tokenNameLabel.addLetterSpacing()

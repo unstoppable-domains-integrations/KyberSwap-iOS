@@ -568,7 +568,7 @@
 "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters." = "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters.";
 
 // Limit Order
-"ETH* is the combination of ETH and WETH" = "*ETH는 ETH와 WETH 잔액의 합입니다";
+"ETH* represents the sum of ETH & WETH for easy reference" = "ETH* represents the sum of ETH & WETH for easy reference";
 "You are canceling this order" = "이 주문를 취소합니다.";
 "Cancel Order" = "주문 취소";
 "Order Confirm" = "주문 확인";
