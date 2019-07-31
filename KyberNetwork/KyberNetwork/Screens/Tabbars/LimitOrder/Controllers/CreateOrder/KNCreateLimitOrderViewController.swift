@@ -267,7 +267,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       let rateString = rate.string(
         decimals: self.viewModel.to.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(6, self.viewModel.to.decimals)
+        maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
@@ -365,7 +365,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       let rateString = rate.string(
         decimals: self.viewModel.to.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(6, self.viewModel.to.decimals)
+        maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
@@ -939,7 +939,7 @@ extension KNCreateLimitOrderViewController {
       let rateString = rate.string(
         decimals: self.viewModel.to.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(6, self.viewModel.to.decimals)
+        maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
@@ -1047,7 +1047,7 @@ extension KNCreateLimitOrderViewController {
       let rateString = rate.string(
         decimals: self.viewModel.to.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(6, self.viewModel.to.decimals)
+        maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
       self.viewModel.updateTargetRate(rateString)
