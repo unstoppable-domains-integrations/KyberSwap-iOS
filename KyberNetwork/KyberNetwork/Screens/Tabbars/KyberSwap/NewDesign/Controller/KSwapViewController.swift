@@ -768,7 +768,9 @@ extension KSwapViewController {
   }
 
   fileprivate func updateExchangeRateField() {
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+//    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.exchangeRateLabel.attributedText = self.viewModel.exchangeRateAttributedString
+    self.exchangeRateLabel.numberOfLines = 2
     let warningRate: String? = self.viewModel.differentRatePercentageDisplay
     self.warningRateContainerView.isHidden = warningRate == nil
     self.warningRatePercent.setTitle(warningRate, for: .normal)

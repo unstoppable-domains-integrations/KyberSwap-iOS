@@ -264,6 +264,46 @@ class KSwapViewModel {
     return rate?.displayRate(decimals: self.to.decimals) ?? "---"
   }
 
+  lazy var exchangeRateAttributes: [NSAttributedStringKey: Any] = {
+    return [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
+    ]
+  }()
+
+  lazy var revertRateAttributes: [NSAttributedStringKey: Any] = {
+    return [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 168, blue: 179),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 10),
+    ]
+  }()
+
+  var exchangeRateAttributedString: NSAttributedString? {
+    let rate: BigInt? = {
+      if let rate = self.estRate, !rate.isZero { return rate }
+      return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
+    }()
+    let attributedString = NSMutableAttributedString()
+    guard let r = rate else { return NSAttributedString(string: "0", attributes: exchangeRateAttributes) }
+    let rateDisplay = r.displayRate(decimals: self.to.decimals)
+    attributedString.append(NSAttributedString(string: rateDisplay, attributes: exchangeRateAttributes))
+    if self.from.extraData?.isQuote == true {
+      let revertedDisplay: String? = {
+        if r.isZero { return nil }
+        let revertRate = BigInt(10).power(self.from.decimals + self.to.decimals) / r
+        if let usdRate = KNRateCoordinator.shared.usdRate(for: self.from) {
+          let usdValue = revertRate * usdRate.minRate / BigInt(10).power(self.from.decimals)
+          return "1 \(self.to.symbol) = \(revertRate.displayRate(decimals: self.from.decimals)) \(self.from.symbol) = \(usdValue.displayRate(decimals: 18)) USD"
+        }
+        return "1 \(self.to.symbol) = \(revertRate.displayRate(decimals: self.from.decimals)) \(self.from.symbol)"
+      }()
+      if let display = revertedDisplay {
+        attributedString.append(NSAttributedString(string: "\n\(display)", attributes: revertRateAttributes))
+      }
+    }
+    return attributedString
+  }
+
   var minRate: BigInt? {
     guard let estRate = self.estRate else { return nil }
     return estRate * BigInt(100.0 - self.minRatePercent) / BigInt(100.0)
