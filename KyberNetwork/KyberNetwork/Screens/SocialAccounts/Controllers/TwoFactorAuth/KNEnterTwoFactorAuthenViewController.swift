@@ -72,7 +72,7 @@ class KNEnterTwoFactorAuthenViewController: KNBaseViewController {
     guard token.count == 6 else {
       self.showErrorTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Please enter a valid token (8 digits) to continue".toBeLocalised(),
+        message: "Please enter a valid token (6 digits) to continue".toBeLocalised(),
         time: 1.0
       )
       return
