@@ -185,6 +185,7 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
     self.isFav = viewModel.isFav
     let favImg = self.isFav ? UIImage(named: "selected_fav_icon") : UIImage(named: "unselected_fav_icon")
     self.favIcon.setImage(favImg, for: .normal)
+    self.layoutIfNeeded()
   }
 
   @IBAction func favIconButtonPressed(_ sender: Any) {
