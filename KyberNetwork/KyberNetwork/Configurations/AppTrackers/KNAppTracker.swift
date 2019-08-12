@@ -269,7 +269,7 @@ class KNAppTracker {
       isSend: true,
       isReceive: true,
       isSwap: true,
-      tokens: KNSupportedTokenStorage.shared.supportedTokens.map({ return $0.symbol })
+      tokens: KNSupportedTokenStorage.shared.supportedTokens.map({ return $0.symbol.uppercased() })
     )
   }
 

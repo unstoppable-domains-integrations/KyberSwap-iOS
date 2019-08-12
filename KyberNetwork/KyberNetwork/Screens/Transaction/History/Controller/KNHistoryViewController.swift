@@ -188,13 +188,13 @@ struct KNHistoryViewModel {
     var isTokenIncluded: Bool = false
     if type == "exchange" {
       if !self.filters.isSwap { return false } // not swap
-      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol ?? "") || self.filters.tokens.contains(tx.localizedOperations.first?.name ?? "")
+      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol?.uppercased() ?? "") || self.filters.tokens.contains(tx.localizedOperations.first?.name?.uppercased() ?? "")
     } else {
       // not include send, but it is a send tx
       if !self.filters.isSend && tx.from.lowercased() == self.currentWallet.address.lowercased() { return false }
       // not include receive, but it is a receive tx
       if !self.filters.isReceive && tx.to.lowercased() == self.currentWallet.address.lowercased() { return false }
-      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol ?? "")
+      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol?.uppercased() ?? "")
     }
     return isTokenIncluded
   }
