@@ -543,7 +543,9 @@
     "Correspondences from Bank",
     "Polling vote",
     "Tax return",
-    "Correspondence from a government agency"
+    "Correspondence from a government agency",
+    "Telephone Bill",
+    "Utility"
   ],
   "source_funds": [
     "Salary",

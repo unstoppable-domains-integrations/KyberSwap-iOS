@@ -513,6 +513,9 @@
 "Singapore National Registration Identity Card (NRIC)" = "싱가포르 국민 등록 신분증 (NRIC)";
 "Correspondence from a government agency" = "정부 기관의 서신";
 "National Identity Card with residential address" = "주거지 주소가있는 주민등록증";
+"Telephone Bill" = "전화 요금";
+"Utility" = "공과금";
+
 
 // Source of Funds
 "Salary" = "급여";
