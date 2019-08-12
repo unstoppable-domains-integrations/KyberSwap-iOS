@@ -217,6 +217,10 @@ extension KNProfileHomeCoordinator {
         let success = userInfo["success"] as? Bool ?? true
         let message = userInfo["message"] as? String ?? ""
         guard success else {
+          if message == "Not Authenticated" {
+            // not authenticated -> session expired
+            self?.signUserOut()
+          }
           if showError {
             self?.navigationController.showWarningTopBannerMessage(
               with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -244,7 +248,6 @@ extension KNProfileHomeCoordinator {
         completion(true)
       // Already have user
       case .failure:
-        KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
         if showError {
           self?.navigationController.showWarningTopBannerMessage(
             with: NSLocalizedString("error", value: "Error", comment: ""),
