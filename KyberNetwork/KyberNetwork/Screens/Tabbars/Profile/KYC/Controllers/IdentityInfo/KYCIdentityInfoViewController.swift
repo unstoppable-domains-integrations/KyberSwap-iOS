@@ -479,6 +479,9 @@ class KYCIdentityInfoViewController: KNBaseViewController {
   }
 
   fileprivate func openImagePickerCamera() {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     self.imagePicker = UIImagePickerController()
     self.imagePicker.mediaTypes = [kUTTypeImage as String]
     self.imagePicker.sourceType = .camera

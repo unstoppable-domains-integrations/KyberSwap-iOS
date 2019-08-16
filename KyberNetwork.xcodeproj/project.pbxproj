@@ -235,6 +235,7 @@
 		258711EA2227DA9900B5906C /* KNNotificationAlertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */; };
 		258711EB2227DA9900B5906C /* KNNotificationAlertPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */; };
 		2588513C2297E2F100DD66F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2588513B2297E2F100DD66F9 /* GoogleService-Info.plist */; };
+		258BF6A723068A4800988EDD /* KNOpenSettingsAllowCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BF6A623068A4800988EDD /* KNOpenSettingsAllowCamera.swift */; };
 		258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EB2081F22C00BD4068 /* KNReachability.swift */; };
 		258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */; };
 		25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25929C3420DA5C640045CFA3 /* SF-Pro-Text-BoldItalic.otf */; };
@@ -836,6 +837,7 @@
 		258711E82227DA9900B5906C /* KNNotificationAlertPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationAlertPopupViewController.swift; sourceTree = "<group>"; };
 		258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationAlertPopupViewController.xib; sourceTree = "<group>"; };
 		2588513B2297E2F100DD66F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		258BF6A623068A4800988EDD /* KNOpenSettingsAllowCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNOpenSettingsAllowCamera.swift; sourceTree = "<group>"; };
 		258C47EB2081F22C00BD4068 /* KNReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNReachability.swift; sourceTree = "<group>"; };
 		258C47EE2081F29D00BD4068 /* NSObject+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Kyber.swift"; sourceTree = "<group>"; };
 		25929C3420DA5C640045CFA3 /* SF-Pro-Text-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-BoldItalic.otf"; sourceTree = "<group>"; };
@@ -2211,6 +2213,7 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				258BF6A5230689EF00988EDD /* AllowCamera */,
 				254CD0E7214925BF0079EA7A /* KYCStepView */,
 				2542604B21218EBC0015ECC7 /* Popups */,
 				25968737211EA4000080A33F /* AdvancedSettings */,
@@ -2548,6 +2551,14 @@
 				258711E92227DA9900B5906C /* KNNotificationAlertPopupViewController.xib */,
 			);
 			path = AlertPopup;
+			sourceTree = "<group>";
+		};
+		258BF6A5230689EF00988EDD /* AllowCamera */ = {
+			isa = PBXGroup;
+			children = (
+				258BF6A623068A4800988EDD /* KNOpenSettingsAllowCamera.swift */,
+			);
+			path = AllowCamera;
 			sourceTree = "<group>";
 		};
 		258C47EA2081F20600BD4068 /* Reachability */ = {
@@ -4673,6 +4684,7 @@
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
 				25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */,
+				258BF6A723068A4800988EDD /* KNOpenSettingsAllowCamera.swift in Sources */,
 				298542E81FBAD0B200CB5081 /* OperationType.swift in Sources */,
 				2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */,
 				25FF9181225CE4A600946414 /* KNConfirmSignUpViewController.swift in Sources */,

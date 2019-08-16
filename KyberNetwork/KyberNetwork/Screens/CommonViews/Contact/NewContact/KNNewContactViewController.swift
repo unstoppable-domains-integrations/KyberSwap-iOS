@@ -177,6 +177,9 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     let qrcodeVC = QRCodeReaderViewController()
     qrcodeVC.delegate = self
     self.present(qrcodeVC, animated: true, completion: nil)

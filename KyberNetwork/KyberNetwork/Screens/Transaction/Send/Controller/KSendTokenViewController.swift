@@ -281,6 +281,9 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "scan_qr_code"])
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     let qrcodeReaderVC: QRCodeReaderViewController = {
       let controller = QRCodeReaderViewController()
       controller.delegate = self

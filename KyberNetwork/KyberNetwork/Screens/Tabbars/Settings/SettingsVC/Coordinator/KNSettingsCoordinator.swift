@@ -243,47 +243,51 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   func settingsViewControllerBackUpButtonPressed(wallet: KNWalletObject) {
     guard let wallet = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
-    let alertController = UIAlertController(
-      title: NSLocalizedString("export.at.your.own.risk", value: "Export at your own risk!", comment: ""),
-      message: nil,
-      preferredStyle: .actionSheet
-    )
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-      style: .default,
-      handler: { _ in
-      self.backupKeystore(wallet: wallet)
-      }
-    ))
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
-      style: .default,
-      handler: { _ in
-      self.backupPrivateKey(wallet: wallet)
-      }
-    ))
-    if case .real(let account) = wallet.type, case .success = self.session.keystore.exportMnemonics(account: account) {
+    self.navigationController.displayLoading()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+      let alertController = UIAlertController(
+        title: NSLocalizedString("export.at.your.own.risk", value: "Export at your own risk!", comment: ""),
+        message: nil,
+        preferredStyle: .actionSheet
+      )
       alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
+        title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
         style: .default,
         handler: { _ in
-          self.backupMnemonic(wallet: wallet)
+          self.backupKeystore(wallet: wallet)
         }
       ))
-    }
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("copy.address", value: "Copy Address", comment: ""),
-      style: .default,
-      handler: { _ in
-      self.copyAddress(wallet: wallet)
+      alertController.addAction(UIAlertAction(
+        title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+        style: .default,
+        handler: { _ in
+          self.backupPrivateKey(wallet: wallet)
+        }
+      ))
+      if case .real(let account) = wallet.type, case .success = self.session.keystore.exportMnemonics(account: account) {
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
+          style: .default,
+          handler: { _ in
+            self.backupMnemonic(wallet: wallet)
+          }
+        ))
       }
-    ))
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
-      style: .cancel,
-      handler: nil)
-    )
-    self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
+      alertController.addAction(UIAlertAction(
+        title: NSLocalizedString("copy.address", value: "Copy Address", comment: ""),
+        style: .default,
+        handler: { _ in
+          self.copyAddress(wallet: wallet)
+        }
+      ))
+      alertController.addAction(UIAlertAction(
+        title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
+        style: .cancel,
+        handler: nil)
+      )
+      self.navigationController.hideLoading()
+      self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
+    }
   }
 
   fileprivate func backupKeystore(wallet: Wallet) {

@@ -77,6 +77,9 @@ class KNImportSeedsViewController: KNBaseViewController {
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     let reader = QRCodeReaderViewController()
     reader.delegate = self
     self.parent?.present(reader, animated: true, completion: nil)

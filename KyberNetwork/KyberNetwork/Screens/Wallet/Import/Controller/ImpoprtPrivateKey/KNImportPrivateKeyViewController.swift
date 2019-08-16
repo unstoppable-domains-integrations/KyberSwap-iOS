@@ -90,6 +90,9 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     let qrcodeReader = QRCodeReaderViewController()
     qrcodeReader.delegate = self
     self.parent?.present(qrcodeReader, animated: true, completion: nil)
