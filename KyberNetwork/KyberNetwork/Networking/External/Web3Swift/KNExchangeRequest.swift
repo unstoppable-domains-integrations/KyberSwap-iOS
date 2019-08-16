@@ -20,7 +20,7 @@ struct KNExchangeRequestEncode: Web3Request {
       guard let minRate = exchange.minRate else { return BigInt(0) }
       return minRate * BigInt(10).power(18 - exchange.to.decimals)
     }()
-    let walletID: String = "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da"
+    let walletID: String = "0x80B603bCE2D8Cc3acb43B6692514b463a16FB425"
     let hint = "PERM".hexEncoded
     let destAddress: String = {
       if let destAddr = KNWalletPromoInfoStorage.shared.getDestWallet(from: address.description), let wallet = Address(string: destAddr) { return wallet.description }
