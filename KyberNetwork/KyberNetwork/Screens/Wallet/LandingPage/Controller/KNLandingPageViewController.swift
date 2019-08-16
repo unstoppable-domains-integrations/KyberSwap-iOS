@@ -75,7 +75,6 @@ class KNLandingPageViewController: KNBaseViewController {
         .paragraphStyle: paragraphStyle,
       ]
     )
-
     if let range = attributeString.string.range(of: "terms.and.conditions".toBeLocalised()) {
       let r = NSRange(range, in: attributeString.string)
       attributeString.addAttribute(.font, value: UIFont.Kyber.bold(with: 15), range: r)
