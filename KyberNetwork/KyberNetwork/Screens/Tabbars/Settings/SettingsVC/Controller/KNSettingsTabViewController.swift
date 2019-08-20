@@ -103,7 +103,7 @@ class KNSettingsTabViewController: KNBaseViewController {
     var version = Bundle.main.versionNumber ?? ""
     version += " - \(Bundle.main.buildNumber ?? "")"
     version += " - \(KNEnvironment.default.displayName)"
-    self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
+    self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version) - wallet id"
   }
 
   override func viewDidLayoutSubviews() {
