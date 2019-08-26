@@ -237,6 +237,12 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
+  static func removeHistoryFilterData() {
+    let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
+    userDefaults.set(nil, forKey: key)
+    userDefaults.synchronize()
+  }
+
   static func getLastHistoryFilterData() -> KNTransactionFilter {
     let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
     if let json = userDefaults.object(forKey: key) as? JSONDictionary {

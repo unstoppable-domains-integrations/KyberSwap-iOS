@@ -135,6 +135,9 @@ extension KNAppCoordinator {
       KNAppTracker.updateWonderWhyOrdersNotFilled(isRemove: true)
       KNAppTracker.updateCancelOpenOrderTutorial(isRemove: true)
     }
+
+    // reset history filter every time open app
+    KNAppTracker.removeHistoryFilterData()
   }
 
   func appDidBecomeActive() {
