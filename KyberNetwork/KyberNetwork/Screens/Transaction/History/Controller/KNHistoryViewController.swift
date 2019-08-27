@@ -35,7 +35,7 @@ struct KNHistoryViewModel {
 
   fileprivate(set) var isShowingPending: Bool = true
 
-  fileprivate(set) var filters = KNAppTracker.getLastHistoryFilterData()
+  fileprivate(set) var filters: KNTransactionFilter!
 
   init(
     tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens,
@@ -52,6 +52,18 @@ struct KNHistoryViewModel {
     self.pendingTxHeaders = pendingTxHeaders
     self.currentWallet = currentWallet
     self.isShowingPending = true
+    if let filter = KNAppTracker.getLastHistoryFilterData() {
+      self.filters = filter
+    } else {
+      self.filters = KNTransactionFilter(
+        from: nil,
+        to: nil,
+        isSend: true,
+        isReceive: true,
+        isSwap: true,
+        tokens: tokens.map({ return $0.symbol.uppercased() })
+      )
+    }
     self.updateDisplayingData()
   }
 
@@ -61,6 +73,18 @@ struct KNHistoryViewModel {
 
   mutating func update(tokens: [TokenObject]) {
     self.tokens = tokens
+    if let filter = KNAppTracker.getLastHistoryFilterData() {
+      self.filters = filter
+    } else {
+      self.filters = KNTransactionFilter(
+        from: nil,
+        to: nil,
+        isSend: true,
+        isReceive: true,
+        isSwap: true,
+        tokens: tokens.map({ return $0.symbol.uppercased() })
+      )
+    }
     self.updateDisplayingData()
   }
 

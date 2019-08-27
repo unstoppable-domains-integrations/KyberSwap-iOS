@@ -243,7 +243,7 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  static func getLastHistoryFilterData() -> KNTransactionFilter {
+  static func getLastHistoryFilterData() -> KNTransactionFilter? {
     let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
     if let json = userDefaults.object(forKey: key) as? JSONDictionary {
       let from = json["from"] as? TimeInterval
@@ -269,14 +269,7 @@ class KNAppTracker {
         tokens: tokens
       )
     }
-    return KNTransactionFilter(
-      from: nil,
-      to: nil,
-      isSend: true,
-      isReceive: true,
-      isSwap: true,
-      tokens: KNSupportedTokenStorage.shared.supportedTokens.map({ return $0.symbol.uppercased() })
-    )
+    return nil
   }
 
   static func saveLastTimeAuthenticate() {
