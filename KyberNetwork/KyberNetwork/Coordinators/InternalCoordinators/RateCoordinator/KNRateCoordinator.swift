@@ -27,6 +27,8 @@ class KNRateCoordinator {
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
 
+  fileprivate var lastRefreshTime: Date = Date()
+
   func getRate(from: TokenObject, to: TokenObject) -> KNRate? {
     if from.isETH {
       if let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: to) {
@@ -117,6 +119,14 @@ class KNRateCoordinator {
     self.exchangeTokenRatesTimer?.invalidate()
     self.exchangeTokenRatesTimer = nil
     self.isLoadingExchangeTokenRates = false
+  }
+
+  func refreshData() {
+    if Date().timeIntervalSince(self.lastRefreshTime) < 10.0 {
+      self.lastRefreshTime = Date()
+      self.fetchCacheRate(nil)
+      self.fetchExchangeTokenRate(nil)
+    }
   }
 
   @objc func fetchExchangeTokenRate(_ sender: Any?) {

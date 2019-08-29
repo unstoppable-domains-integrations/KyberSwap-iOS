@@ -12,6 +12,7 @@ enum KWalletBalanceViewEvent {
   case send(token: TokenObject)
   case alert(token: TokenObject)
   case receiveToken
+  case refreshData
 }
 
 protocol KWalletBalanceViewControllerDelegate: class {
@@ -52,6 +53,12 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var tokensBalanceTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
   @IBOutlet weak var balanceDisplayControlButton: UIButton!
+
+  lazy var refreshControl: UIRefreshControl = {
+    let refresh = UIRefreshControl()
+    refresh.tintColor = UIColor.Kyber.enygold
+    return refresh
+  }()
 
   fileprivate var viewModel: KWalletBalanceViewModel
   weak var delegate: KWalletBalanceViewControllerDelegate?
@@ -155,6 +162,9 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.tokensBalanceTableView.reloadData()
 
     self.emptyBalanceTextLabel.text = self.viewModel.textNoMatchingTokens
+
+    self.tokensBalanceTableView.refreshControl = self.refreshControl
+    self.refreshControl.addTarget(self, action: #selector(self.userDidRefreshBalanceView(_:)), for: .valueChanged)
   }
 
   // MARK: Update UIs
@@ -282,6 +292,14 @@ class KWalletBalanceViewController: KNBaseViewController {
     )
     self.updateWalletBalanceUI()
     self.view.layoutIfNeeded()
+  }
+
+  @objc func userDidRefreshBalanceView(_ sender: Any?) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      // reload data
+      self.delegate?.kWalletBalanceViewController(self, run: .refreshData)
+      self.refreshControl.endRefreshing()
+    }
   }
 }
 

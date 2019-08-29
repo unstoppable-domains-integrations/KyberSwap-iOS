@@ -216,6 +216,10 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .alert(let token):
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "add_alert_\(token.symbol)"])
       self.openAddNewAlert(token)
+    case .refreshData:
+      // refresh rates
+      KNRateCoordinator.shared.refreshData()
+      KNNotificationUtil.postNotification(for: kRefreshBalanceNotificationKey)
     }
   }
 

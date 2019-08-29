@@ -37,6 +37,8 @@ let kUpdateListAlertsNotificationKey = "kUpdateListAlertsNotificationKey"
 
 let kUpdateListOrdersNotificationKey = "kUpdateListOrdersNotificationKey"
 
+let kRefreshBalanceNotificationKey = "kRefreshBalanceNotificationKey"
+
 // IEO
 let kIEOUserDidUpdateNotificationKey = "kIEOUserDidUpdateNotificationKey"
 let kIEOTxListUpdateNotificationKey = "kIEOTxListUpdateNotificationKey"

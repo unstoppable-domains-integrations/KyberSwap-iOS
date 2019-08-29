@@ -24,6 +24,8 @@ class KNLoadBalanceCoordinator {
   fileprivate var fetchNonSupportedBalanceTimer: Timer?
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
+  fileprivate var lastRefreshTime: Date = Date()
+
   var totalBalanceInUSD: BigInt {
     let balanceValue: BigInt = {
       var value = BigInt(0)
@@ -60,12 +62,21 @@ class KNLoadBalanceCoordinator {
 
   deinit {
     self.exit()
+    let name = Notification.Name(kRefreshBalanceNotificationKey)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
   }
 
   init(session: KNSession) {
     self.session = session
     self.ethToken = session.tokenStorage.ethToken
     self.updateBalancesFromLocalData()
+    let name = Notification.Name(kRefreshBalanceNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.shouldRefreshBalance(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   func restartNewSession(_ session: KNSession) {
@@ -88,12 +99,20 @@ class KNLoadBalanceCoordinator {
     }
   }
 
+  @objc func shouldRefreshBalance(_ sender: Any?) {
+    if Date().timeIntervalSince(self.lastRefreshTime) < 15.0 {
+      self.lastRefreshTime = Date()
+      self.fetchETHBalance(nil)
+      self.fetchOtherTokensBalance(nil)
+    }
+  }
+
   func forceUpdateBalanceTransactionsCompleted() {
-    self.fetchETHBalance(nil)
-    self.fetchOtherTokensBalance(nil)
+    self.shouldRefreshBalance(nil)
   }
 
   func resume() {
+    self.lastRefreshTime = Date()
     fetchETHBalanceTimer?.invalidate()
     isFetchingETHBalance = false
     fetchETHBalance(nil)

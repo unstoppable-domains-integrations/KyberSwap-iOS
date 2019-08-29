@@ -26,6 +26,12 @@ class KNManageAlertsViewController: KNBaseViewController {
   @IBOutlet weak var emptyAlertDescLabel: UILabel!
   @IBOutlet weak var addAlertButton: UIButton!
 
+  lazy var refreshControl: UIRefreshControl = {
+    let refresh = UIRefreshControl()
+    refresh.tintColor = UIColor.Kyber.enygold
+    return refresh
+  }()
+
   weak var delegate: KNManageAlertsViewControllerDelegate?
 
   override func viewDidLoad() {
@@ -51,6 +57,9 @@ class KNManageAlertsViewController: KNBaseViewController {
       NSLocalizedString("Add Alert", comment: ""),
       for: .normal
     )
+
+    self.alertTableView.alertTableView.refreshControl = self.refreshControl
+    self.refreshControl.addTarget(self, action: #selector(self.userDidRefreshBalanceView(_:)), for: .valueChanged)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -75,6 +84,16 @@ class KNManageAlertsViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.addAlertButton.removeSublayer(at: 0)
     self.addAlertButton.applyGradient()
+  }
+
+  @objc func userDidRefreshBalanceView(_ sender: Any?) {
+    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
+    KNPriceAlertCoordinator.shared.loadListPriceAlerts(accessToken) { [weak self] (_, error) in
+      self?.refreshControl.endRefreshing()
+      if let err = error {
+        self?.showWarningTopBannerMessage(with: NSLocalizedString("error", comment: ""), message: err)
+      }
+    }
   }
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

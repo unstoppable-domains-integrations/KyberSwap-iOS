@@ -131,6 +131,12 @@ class KNManageOrdersViewController: KNBaseViewController {
   @IBOutlet weak var closeFAQButton: UIButton!
   fileprivate var loadingTimer: Timer?
 
+  lazy var refreshControl: UIRefreshControl = {
+    let refresh = UIRefreshControl()
+    refresh.tintColor = UIColor.Kyber.enygold
+    return refresh
+  }()
+
   fileprivate(set) var viewModel: KNManageOrdersViewModel
   weak var delegate: KNManageOrdersViewControllerDelegate?
   fileprivate(set) var filterVC: KNFilterLimitOrderViewController?
@@ -205,6 +211,9 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.updateFAQButtonHidden(isHidden: hideFAQ)
 
     self.updateSelectOrdersType(isOpen: true)
+
+    self.orderCollectionView.refreshControl = self.refreshControl
+    self.refreshControl.addTarget(self, action: #selector(self.userDidRefreshBalanceView(_:)), for: .valueChanged)
   }
 
   fileprivate func updateSelectOrdersType(isOpen: Bool) {
@@ -318,6 +327,14 @@ class KNManageOrdersViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_order", customAttributes: ["button": "faq"])
     let url = "\(KNEnvironment.default.profileURL)/faq#I-submitted-the-limit-order-but-it-was-not-triggered-even-though-my-desired-price-was-hit"
     self.navigationController?.openSafari(with: url)
+  }
+
+  @objc func userDidRefreshBalanceView(_ sender: Any?) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      // reload data
+      self.refreshControl.endRefreshing()
+      self.loadListOrders(isDisplayLoading: false)
+    }
   }
 
   fileprivate func loadListOrders(isDisplayLoading: Bool = false) {
