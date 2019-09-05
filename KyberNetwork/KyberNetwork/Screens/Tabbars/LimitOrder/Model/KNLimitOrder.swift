@@ -13,5 +13,6 @@ struct KNLimitOrder {
   let srcAmount: BigInt
   let targetRate: BigInt
   let fee: Int
+  let transferFee: Int
   let nonce: String
 }

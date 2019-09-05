@@ -240,6 +240,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
 
     self.navigationController.displayLoading(text: "Checking...".toBeLocalised(), animated: true)
     var feeValue: Int?
+    var transferFeeValue: Int?
     var nonceValue: String?
     var errorMessage: String?
 
@@ -256,8 +257,11 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       src: order.from.contract,
       dest: order.to.contract,
       srcAmount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-      destAmount: destAmount) { (fee, _, _, _, error) in
-        if let err = error { errorMessage = err } else { feeValue = Int(round((fee ?? 0.0) * 1000000.0)) }
+      destAmount: destAmount) { (fee, _, _, transferFee, error) in
+        if let err = error { errorMessage = err } else {
+          feeValue = Int(round((fee ?? 0.0) * 1000000.0))
+          transferFeeValue = Int(round((transferFee ?? 0.0) * 1000000.0))
+        }
         group.leave()
     }
 
@@ -303,6 +307,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
           srcAmount: order.srcAmount,
           targetRate: order.targetRate,
           fee: feeValue ?? order.fee,
+          transferFee: transferFeeValue ?? order.transferFee,
           nonce: nonceValue ?? order.nonce
         )
         self.openConfirmOrder(newOrder)

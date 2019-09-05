@@ -70,6 +70,7 @@ class KNOrderObject: NSObject {
     self.sourceAmount = json["src_amount"] as? Double ?? 0.0
     self.targetPrice = json["min_rate"] as? Double ?? 0.0
     self.fee = json["fee"] as? Double ?? 0.0
+    self.fee += (json["transfer_fee"] as? Double ?? 0.0)
     self.sender = json["addr"] as? String ?? ""
     self.nonce = json["nonce"] as? String ?? ""
     self.stateValue = {
@@ -116,6 +117,9 @@ class KNOrderObject: NSObject {
     }
     if let idx = fields.index(of: "fee") {
       self.fee = data[idx] as? Double ?? 0.0
+    }
+    if let idx = fields.index(of: "transfer_fee") {
+      self.fee += data[idx] as? Double ?? 0.0 // adding transfer fee
     }
     if let idx = fields.index(of: "status") {
       self.stateValue = {

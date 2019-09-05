@@ -290,6 +290,13 @@ extension KNAppCoordinator {
       }
       return 0.0
     }()
+    let transferFee: Double = {
+      if let value = data["transfer_fee"] as? Double { return value }
+      if let valueStr = data["transfer_fee"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
     let sender = data["sender"] as? String ?? ""
     let createdDate: Double = {
       if let value = data["created_at"] as? Double { return value }
@@ -314,7 +321,7 @@ extension KNAppCoordinator {
       to: destToken,
       amount: amount,
       price: rate,
-      fee: fee,
+      fee: fee + transferFee,
       nonce: "",
       sender: sender,
       createdDate: createdDate,

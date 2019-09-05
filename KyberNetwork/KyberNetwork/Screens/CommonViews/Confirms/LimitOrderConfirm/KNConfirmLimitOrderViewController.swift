@@ -48,7 +48,7 @@ class KNConfirmLimitOrderViewController: KNBaseViewController {
     let to = self.order.to
     let srcAmount = self.order.srcAmount
     // fee send to server is multiple with 10^6
-    let fee = BigInt(self.order.fee) * srcAmount / BigInt(1000000)
+    let fee = BigInt(self.order.fee + self.order.transferFee) * srcAmount / BigInt(1000000)
     let targetRate = self.order.targetRate
 
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
