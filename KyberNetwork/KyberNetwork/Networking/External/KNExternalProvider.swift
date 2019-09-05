@@ -267,6 +267,7 @@ class KNExternalProvider {
           value: self.valueToSend(transferTransaction),
           data: data,
           defaultGasLimit: defaultGasLimit,
+          isSwap: false,
           completion: completion
         )
       case .failure(let error):
@@ -293,6 +294,7 @@ class KNExternalProvider {
           value: value,
           data: data,
           defaultGasLimit: defaultGasLimit,
+          isSwap: true,
           completion: completion
         )
       case .failure(let error):
@@ -301,7 +303,7 @@ class KNExternalProvider {
     }
   }
 
-  static func estimateGasLimit(from: String, to: String?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  static func estimateGasLimit(from: String, to: String?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, isSwap: Bool, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let request = KNEstimateGasLimitRequest(
       from: from,
       to: to,
@@ -317,9 +319,8 @@ class KNExternalProvider {
           var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
           // Used  120% of estimated gas for safer
           limit += (limit * 20 / 100)
-          let minimalGas = min(limit, defaultGasLimit)
-          // using at least 90% of default gas for safer
-          return max(minimalGas, defaultGasLimit * 90 / 100)
+          if isSwap { limit += 100000 } // add 100k if it is a swap
+          return min(limit, defaultGasLimit)
         }()
         NSLog("------ Estimate gas used: \(gasLimit.fullString(units: .wei)) ------")
         completion(.success(gasLimit))

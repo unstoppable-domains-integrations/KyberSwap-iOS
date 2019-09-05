@@ -256,7 +256,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       src: order.from.contract,
       dest: order.to.contract,
       srcAmount: Double(order.srcAmount) / pow(10.0, Double(order.from.decimals)),
-      destAmount: destAmount) { (fee, _, _, error) in
+      destAmount: destAmount) { (fee, _, _, _, error) in
         if let err = error { errorMessage = err } else { feeValue = Int(round((fee ?? 0.0) * 1000000.0)) }
         group.leave()
     }
@@ -324,7 +324,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   // Return (fee, discount, feeBeforeDiscount, Error)
-  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, Double?, Double?, String?) -> Void)? = nil) {
+  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, Double?, Double?, Double?, String?) -> Void)? = nil) {
     KNLimitOrderServerCoordinator.shared.getFee(
       address: address,
       src: src,
@@ -333,18 +333,19 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       destAmount: destAmount) { [weak self] result in
         switch result {
         case .success(let data):
-          if data.3 == nil {
+          if data.4 == nil {
             self?.rootViewController.coordinatorUpdateEstimateFee(
               data.0,
               discount: data.1,
-              feeBeforeDiscount: data.2
+              feeBeforeDiscount: data.2,
+              transferFee: data.3
             )
-            completion?(data.0, data.1, data.2, nil)
+            completion?(data.0, data.1, data.2, data.3, nil)
           } else {
-            completion?(nil, nil, nil, data.3)
+            completion?(nil, nil, nil, nil, data.4)
           }
         case .failure(let error):
-          completion?(nil, nil, nil, error.prettyError)
+          completion?(nil, nil, nil, nil, error.prettyError)
         }
     }
   }

@@ -60,6 +60,7 @@ class KNCreateLimitOrderViewModel {
     self.to = to
     self.feePercentage = 0
     self.discountPercentage = 0
+    self.transferFeePercent = 0
     self.nonce = nil
     self.supportedTokens = supportedTokens
     self.pendingBalances = [:]
@@ -368,6 +369,7 @@ class KNCreateLimitOrderViewModel {
   var feePercentage: Double = 0 // example: 0.005 -> 0.5%
   var discountPercentage: Double = 0 // example: 40 -> 40%
   var feeBeforeDiscount: Double = 0 // same as fee percentage
+  var transferFeePercent: Double = 0
 
   lazy var feeNoteNormalAttributes: [NSAttributedStringKey: Any] = {
     return [
@@ -414,12 +416,12 @@ class KNCreateLimitOrderViewModel {
   }
 
   var displayFeeString: String {
-    let feeDouble = Double(self.amountFromBigInt) * self.feePercentage / pow(10.0, Double(self.from.decimals))
+    let feeDouble = Double(self.amountFromBigInt) * (self.feePercentage + transferFeePercent) / pow(10.0, Double(self.from.decimals))
     let feeDisplay = NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     let fromSymbol = self.fromSymbol
     let string = "\(feeDisplay.prefix(12)) \(fromSymbol)"
     if self.isShowingDiscount || self.amountFromBigInt.isZero { return string }
-    let percentage = NumberFormatterUtil.shared.displayPercentage(from: self.feePercentage * 100.0)
+    let percentage = NumberFormatterUtil.shared.displayPercentage(from: (self.feePercentage + self.transferFeePercent) * 100.0)
     return "\(string) (\(percentage)%)"
   }
 
@@ -429,7 +431,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var displayFeeBeforeDiscountString: String {
-    let feeDouble = Double(self.amountFromBigInt) * self.feeBeforeDiscount / pow(10.0, Double(self.from.decimals))
+    let feeDouble = Double(self.amountFromBigInt) * (self.feeBeforeDiscount + self.transferFeePercent) / pow(10.0, Double(self.from.decimals))
     let feeDisplay = NumberFormatterUtil.shared.displayLimitOrderValue(from: feeDouble)
     let fromSymbol = self.fromSymbol
     return "\(feeDisplay.prefix(12)) \(fromSymbol)"
@@ -474,6 +476,7 @@ class KNCreateLimitOrderViewModel {
     self.isUseAllBalance = false
 
     self.feePercentage = 0
+    self.transferFeePercent = 0
     self.discountPercentage = 0
     self.nonce = nil
 
@@ -513,6 +516,7 @@ class KNCreateLimitOrderViewModel {
     self.isUseAllBalance = false
     self.balance = self.balances[self.from.contract]
     self.feePercentage = 0
+    self.transferFeePercent = 0
     self.discountPercentage = 0
     self.nonce = nil
 
@@ -539,6 +543,7 @@ class KNCreateLimitOrderViewModel {
     if isSource {
       self.from = token.clone()
       self.feePercentage = 0
+      self.transferFeePercent = 0
       self.discountPercentage = 0
       self.isUseAllBalance = false
     } else {

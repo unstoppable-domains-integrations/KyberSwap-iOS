@@ -1115,10 +1115,11 @@ extension KNCreateLimitOrderViewController {
     self.listOrdersDidUpdate(nil)
   }
 
-  func coordinatorUpdateEstimateFee(_ fee: Double, discount: Double, feeBeforeDiscount: Double) {
+  func coordinatorUpdateEstimateFee(_ fee: Double, discount: Double, feeBeforeDiscount: Double, transferFee: Double) {
     self.viewModel.feePercentage = fee
     self.viewModel.discountPercentage = discount
     self.viewModel.feeBeforeDiscount = feeBeforeDiscount
+    self.viewModel.transferFeePercent = transferFee
     self.updateFeeNotesUI()
     self.loadingFeeIndicator.stopAnimating()
     self.loadingFeeIndicator.isHidden = true

@@ -110,7 +110,8 @@ class KNLimitOrderServerCoordinator {
   }
 
   // Return (fee, discount, feeBeforeDiscount, Error)
-  func getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: @escaping (Result<(Double, Double, Double, String?), AnyError>) -> Void) {
+  // swiftlint:disable large_tuple
+  func getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: @escaping (Result<(Double, Double, Double, Double, String?), AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.getFee(address: address, src: src, dest: dest, srcAmount: srcAmount, destAmount: destAmount)) { [weak self] result in
         guard let _ = self else { return }
@@ -123,12 +124,13 @@ class KNLimitOrderServerCoordinator {
               let fee = json["fee"] as? Double ?? 0.0
               let discount = json["discount_percent"] as? Double ?? 0.0
               let feeBeforeDiscount = json["non_discounted_fee"] as? Double ?? 0.0
+              let transferFee = json["transfer_fee"] as? Double ?? 0.0
               let success = json["success"] as? Bool ?? false
               if success {
-                completion(.success((fee, discount, feeBeforeDiscount, nil)))
+                completion(.success((fee, discount, feeBeforeDiscount, transferFee, nil)))
               } else {
                 let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
-                completion(.success((0, 0, 0, message)))
+                completion(.success((0, 0, 0, 0, message)))
               }
             } catch let error {
               completion(.failure(AnyError(error)))
