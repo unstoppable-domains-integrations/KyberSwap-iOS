@@ -317,7 +317,9 @@ class KNExternalProvider {
           var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
           // Used  120% of estimated gas for safer
           limit += (limit * 20 / 100)
-          return min(limit, defaultGasLimit)
+          let minimalGas = min(limit, defaultGasLimit)
+          // using at least 90% of default gas for safer
+          return max(minimalGas, defaultGasLimit * 90 / 100)
         }()
         NSLog("------ Estimate gas used: \(gasLimit.fullString(units: .wei)) ------")
         completion(.success(gasLimit))
