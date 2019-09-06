@@ -128,7 +128,8 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAmountTooSmall: Bool {
-    return self.amountBigInt < BigInt(0)
+    if self.from.isETH { return false }
+    return self.amountBigInt == BigInt(0)
   }
 
   var isAmountTooBig: Bool {
