@@ -300,26 +300,38 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func backupPrivateKey(wallet: Wallet) {
     KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_private_key"])
-    if case .real(let account) = wallet.type {
-      let result = self.session.keystore.exportPrivateKey(account: account)
-      switch result {
-      case .success(let data):
-        self.openShowBackUpView(data: data.hexString)
-      case .failure(let error):
-        self.navigationController.topViewController?.displayError(error: error)
+    self.navigationController.displayLoading()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+      if case .real(let account) = wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        self.navigationController.hideLoading()
+        switch result {
+        case .success(let data):
+          self.openShowBackUpView(data: data.hexString)
+        case .failure(let error):
+          self.navigationController.topViewController?.displayError(error: error)
+        }
+      } else {
+        self.navigationController.hideLoading()
       }
     }
   }
 
   fileprivate func backupMnemonic(wallet: Wallet) {
     KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_mnemonic"])
-    if case .real(let account) = wallet.type {
-      let result = self.session.keystore.exportMnemonics(account: account)
-      switch result {
-      case .success(let data):
-        self.openShowBackUpView(data: data)
-      case .failure(let error):
-        self.navigationController.topViewController?.displayError(error: error)
+    self.navigationController.displayLoading()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+      if case .real(let account) = wallet.type {
+        let result = self.session.keystore.exportMnemonics(account: account)
+        self.navigationController.hideLoading()
+        switch result {
+        case .success(let data):
+          self.openShowBackUpView(data: data)
+        case .failure(let error):
+          self.navigationController.topViewController?.displayError(error: error)
+        }
+      } else {
+        self.navigationController.hideLoading()
       }
     }
   }
@@ -361,6 +373,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
 extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
   func createPasswordUserDidFinish(_ password: String) {
+    self.navigationController.displayLoading()
     if case .real(let account) = self.session.wallet.type {
       if let currentPassword = self.session.keystore.getPassword(for: account) {
         self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
