@@ -169,32 +169,40 @@ extension KNAppCoordinator {
 
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet) {
-    self.removeObserveNotificationFromSession()
-
-    self.loadBalanceCoordinator?.exit()
-    self.session.switchSession(wallet)
-    self.loadBalanceCoordinator?.restartNewSession(self.session)
-
-    let isPromoWallet: Bool = {
-      let address = self.session.wallet.address.description
-      return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
-    }()
-
     self.navigationController.displayLoading()
-    self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(self.session, resetRoot: isPromoWallet)
-    self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.profileCoordinator?.updateSession(self.session)
-    self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.addObserveNotificationFromSession()
-    self.updateLocalData()
-    KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
-    KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-    let transactions = self.session.transactionStorage.kyberPendingTransactions
-    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      self.removeObserveNotificationFromSession()
+
+      self.loadBalanceCoordinator?.exit()
+      self.session.switchSession(wallet)
+      self.loadBalanceCoordinator?.restartNewSession(self.session)
+
+      let isPromoWallet: Bool = {
+        let address = self.session.wallet.address.description
+        return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
+      }()
+      self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: isPromoWallet
+      )
+      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.profileCoordinator?.updateSession(self.session)
+      self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.addObserveNotificationFromSession()
+      self.updateLocalData()
+      KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      let transactions = self.session.transactionStorage.kyberPendingTransactions
+      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
+        transactions: transactions
+      )
+      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
+        transactions: transactions
+      )
+      self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
+        transactions: transactions
+      )
       self.navigationController.hideLoading()
       if isPromoWallet { self.tabbarController.selectedIndex = 1 }
     }
