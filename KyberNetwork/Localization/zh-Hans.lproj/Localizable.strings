@@ -593,7 +593,7 @@
 "Your order can not be submited because your WETH is not enough, please convert ETH to WETH." = "由于您的WETH不足，您的订单不能提交，请先将ETH兑换为WETH";
 "Your order have been submitted sucessfully to server. You can check the order in your order list." = "您的订单已被成功提交至服务器。您可以在订单列表里查看订单。";
 "WETH (instead of ETH) is required to set a Limit Order to buy a token" = "限价订单仅支持Kyber上支持的代币。不支持ETH，请使用WETH。";
-"Convert ETH to WETH" = "提交订单";
+"Convert ETH to WETH" = "将ETH转换为WETH";
 "Limit Order" = "限价订单";
 "Current Rate" = "当前汇率";
 "Source token must be different from dest token" = "起始代币必须不同于目标代币";

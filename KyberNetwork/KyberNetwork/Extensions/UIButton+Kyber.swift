@@ -22,6 +22,7 @@ extension UIButton {
       if error == nil, let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
           self.setImage(image.resizeImage(to: size), for: .normal)
+          self.layoutIfNeeded()
         }
       }
     }.resume()
@@ -51,6 +52,7 @@ extension UIButton {
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
     if let image = UIImage(named: icon.lowercased()) {
       self.setImage(image.resizeImage(to: size), for: .normal)
+      self.layoutIfNeeded()
     } else {
       let placeHolderImg = UIImage(named: "default_token")
       self.setImage(
