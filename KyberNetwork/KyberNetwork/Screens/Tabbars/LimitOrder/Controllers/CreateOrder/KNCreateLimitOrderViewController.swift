@@ -907,7 +907,7 @@ extension KNCreateLimitOrderViewController {
       if case .success(let eligile) = result, !eligile {
         // not eligible
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("error", comment: ""),
+          with: "",
           message: "This address has been used by another account. Please place order with other address.".toBeLocalised(),
           time: 2.0
         )

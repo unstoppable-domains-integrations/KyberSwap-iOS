@@ -200,6 +200,7 @@ class KNManageOrdersViewController: KNBaseViewController {
 
     self.faqButton.setTitle("Orders are not filled? Click to see why".toBeLocalised(), for: .normal)
     self.faqButton.titleLabel?.numberOfLines = 2
+    self.faqButton.titleLabel?.textAlignment = .center
     self.faqButton.titleLabel?.lineBreakMode = .byWordWrapping
     self.faqButton.rounded(radius: 4.0)
 
