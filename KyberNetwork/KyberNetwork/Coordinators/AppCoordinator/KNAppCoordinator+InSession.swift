@@ -202,7 +202,7 @@ extension KNAppCoordinator {
 
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
-    self.navigationController.displayLoading()
+    self.navigationController.displayLoading(text: NSLocalizedString("removing", value: "Removing", comment: ""), animated: true)
     if self.keystore.wallets.count == 1 {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
         self.stopAllSessions()
@@ -222,7 +222,9 @@ extension KNAppCoordinator {
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
       guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
-      self.restartNewSession(newWallet)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+        self.restartNewSession(newWallet)
+      }
       delayTime = 0.25
     }
     self.loadBalanceCoordinator?.exit()
