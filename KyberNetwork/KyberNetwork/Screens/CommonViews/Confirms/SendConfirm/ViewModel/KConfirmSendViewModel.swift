@@ -76,6 +76,12 @@ struct KConfirmSendViewModel {
       let fee = feeBigInt * trackerRate.rateUSDBigInt / BigInt(EthereumUnit.ether.rawValue)
       return fee.displayRate(decimals: 18)
     }()
-    return "~ \(feeUSD) USD"
+    return "~ \(feeUSD) USD\n\(displayFeeDetails)"
+  }
+
+  var displayFeeDetails: String {
+    let gasPrice = self.transaction.gasPrice?.string(units: .gwei, minFractionDigits: 0, maxFractionDigits: 2) ?? ""
+    let gasLimit = self.transaction.gasLimit?.string(units: .wei, minFractionDigits: 0, maxFractionDigits: 0) ?? ""
+    return "\(gasPrice) (Gas Price) * \(gasLimit) (Gas Limit)"
   }
 }

@@ -99,6 +99,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.transactionFeeETHLabel.text = self.viewModel.feeETHString
     self.transactionFeeETHLabel.addLetterSpacing()
     self.transactionFeeUSDLabel.text = self.viewModel.feeUSDString
+    self.transactionFeeUSDLabel.numberOfLines = 2
     self.transactionFeeUSDLabel.addLetterSpacing()
 
     self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)

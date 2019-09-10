@@ -94,12 +94,18 @@ struct KConfirmSwapViewModel {
     let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
     let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
     let valueString: String = value.displayRate(decimals: 18)
-    return "~ \(valueString) USD"
+    return "~ \(valueString) USD\n\(displayFeeDetails)"
   }
 
   var warningETHBalanceShown: Bool {
     if !self.transaction.from.isETH { return false }
     let totalAmount = self.transactionFee + self.transaction.amount
     return self.ethBalance - totalAmount <= BigInt(0.01 * pow(10.0, 18.0))
+  }
+
+  var displayFeeDetails: String {
+    let gasPrice = self.transaction.gasPrice?.string(units: .gwei, minFractionDigits: 0, maxFractionDigits: 2) ?? ""
+    let gasLimit = self.transaction.gasLimit?.string(units: .wei, minFractionDigits: 0, maxFractionDigits: 0) ?? ""
+    return "\(gasPrice) (Gas Price) * \(gasLimit) (Gas Limit)"
   }
 }

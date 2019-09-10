@@ -78,7 +78,11 @@ class KNExternalProvider {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
-      case .success:
+      case .success(let cnt):
+        if transaction.value.isZero && transaction.transferType.isETHTransfer() && transaction.to?.description.lowercased() == self.account.address.description.lowercased() {
+          // self tx, consider as replacing tx
+          self.minTxCount = cnt
+        }
         self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
           guard let `self` = self else { return }
           switch dataResult {

@@ -87,6 +87,7 @@ class KConfirmSendViewController: KNBaseViewController {
     self.feeETHLabel.text = self.viewModel.transactionFeeETHString
     self.feeETHLabel.addLetterSpacing()
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
+    self.feeUSDLabel.numberOfLines = 2
     self.feeUSDLabel.addLetterSpacing()
 
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
