@@ -373,7 +373,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
 extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
   func createPasswordUserDidFinish(_ password: String) {
-    self.navigationController.displayLoading()
     if case .real(let account) = self.session.wallet.type {
       if let currentPassword = self.session.keystore.getPassword(for: account) {
         self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
