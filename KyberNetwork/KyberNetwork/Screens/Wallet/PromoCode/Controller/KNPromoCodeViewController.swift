@@ -68,7 +68,7 @@ class KNPromoCodeViewController: KNBaseViewController {
       )
       return
     }
-    let name: String = "KyberCode"
+    let name: String = "PromoCode Wallet"
     self.delegate?.promoCodeViewController(self, promoCode: promoCode, name: name)
   }
 }
