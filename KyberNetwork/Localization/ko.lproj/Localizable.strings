@@ -501,6 +501,10 @@
 "Successfully added to your favorites" = "즐겨 찾기에 추가되었습니다.";
 "Removed from your favorites" = "즐겨 찾기에서 삭제되었습니다.";
 
+"Favourite" = "즐겨찾기";
+"Market Rate" = "시장 비율";
+"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+
 
 // Promo code error messages
 "Promo code is invalid!" = "프로모션 코드가 잘못되었습니다.";

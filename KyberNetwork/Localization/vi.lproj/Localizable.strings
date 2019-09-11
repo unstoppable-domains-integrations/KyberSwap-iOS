@@ -471,7 +471,7 @@
 "Do you want to delete this alert?" = "Bạn có muốn xóa thông báo này không?";
 "Add Alert" = "Thêm Thông Báo";
 "Alert deleted!" = "Thông báo đã xoá!";
-"You must sign in to use Price Alert feature" = "Bạn phải đăng nhập để sử dụng tính năng Thông Báo Giá";
+"You must sign in to use Price Alert feature" = "Vui lòng đăng nhập để sử dụng tính năng Price Alert";
 "Manage Alert" = "Quảng Lý Thông Báo";
 "Alert Method" = "Phương Thức Thông Báo";
 "Push Notification" = "Gửi Thông Báo";
@@ -501,6 +501,10 @@
 
 "Successfully added to your favorites" = "Đã thêm vào mục yêu thích của bạn";
 "Removed from your favorites" = "Đã xoá khỏi mục yêu thích của bạn";
+
+"Favourite" = "Yêu thích";
+"Market Rate" = "Giá hiện tại";
+"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";

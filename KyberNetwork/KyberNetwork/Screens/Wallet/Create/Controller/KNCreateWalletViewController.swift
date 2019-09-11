@@ -30,7 +30,7 @@ class KNCreateWalletViewController: KNBaseViewController {
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     self.containerView.rounded(radius: 5.0)
     self.confirmLabel.text = NSLocalizedString("confirm", value: "Confirm", comment: "")
-    self.descLabel.text = NSLocalizedString("create.new.wallet.desc", value: "This will create a new wallet. It can not be undone, but you could abandon it", comment: "")
+    self.descLabel.text = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.".toBeLocalised()
     let style = KNAppStyleType.current
     self.confirmButton.rounded(radius: style.buttonRadius(for: self.confirmButton.frame.height))
     self.confirmButton.applyGradient()

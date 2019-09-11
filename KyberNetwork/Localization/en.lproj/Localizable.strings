@@ -422,7 +422,7 @@
 "Do you want to delete this alert?" = "Do you want to delete this alert?";
 "Add Alert" = "Add Alert";
 "Alert deleted!" = "Alert deleted!";
-"You must sign in to use Price Alert feature" = "You must sign in to use Price Alert feature";
+"You must sign in to use Price Alert feature" = "Please sign in to use Price Alert feature";
 "Manage Alert" = "Manage Alert";
 "Alert Method" = "Alert Method";
 "Push Notification" = "Push Notification";
@@ -567,6 +567,10 @@
 "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account." = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.";
 "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters." = "Password must be at least eight characters including one uppercase letter, one lower case letter and alphanumeric characters.";
 
+"Favourite" = "Favourite";
+"Market Rate" = "Market Rate";
+"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+
 // Limit Order
 "ETH* represents the sum of ETH & WETH for easy reference" = "ETH* represents the sum of ETH & WETH for easy reference";
 "You are canceling this order" = "You are canceling this order";
@@ -605,7 +609,7 @@
 "Please enter an amount to continue" = "Please enter an amount to continue";
 "You cannot submit order with promo code. Please use other wallets." = "You cannot submit order with promo code. Please use other wallets.";
 "All Balance" = "All Balance";
-"You must sign in to use Limit Order feature" = "You must sign in to use Limit Order feature";
+"You must sign in to use Limit Order feature" = "Please sign in to use Limit Order feature";
 "Your target rate should be greater than 0" = "Your target rate should be greater than 0";
 "Your target rate is too high, should be at most 10 times of current rate" = "Your target rate is too high, should be at most 10 times of current rate";
 "Please enter your target rate to continue" = "Please enter your target rate to continue";

@@ -501,6 +501,10 @@
 "Successfully added to your favorites" = "已成功添加到您的收藏夹";
 "Removed from your favorites" = "已删除您的收藏夹";
 
+"Favourite" = "收藏";
+"Market Rate" = "市场价格";
+"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
 "Promo code has expired." = "促销代码已过期。";
