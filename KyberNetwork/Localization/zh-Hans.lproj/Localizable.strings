@@ -51,6 +51,7 @@
 "please.select.your.date.of.birth.to.continue" = "请选择您的出生日期";
 "invalid.nationality" = "无效国籍";
 "please.enter.select.a.valid.nationality.to.continue" = "请输入/选择有效的国籍";
+"Sorry! We’re not currently able to accept applications from %@" = "抱歉!我们目前无法接受来自%@的申请";
 "invalid.country" = "无效的国家";
 "please.enter.select.a.valid.country.to.continue" = "请输入/选择有效的国家/地区";
 "remove" = "移除";

@@ -51,6 +51,7 @@
 "please.select.your.date.of.birth.to.continue" = "계속하려면 생년월일을 선택하십시오.";
 "invalid.nationality" = "잘못된 국적";
 "please.enter.select.a.valid.nationality.to.continue" = "계속하려면 유효한 국적을 입력 / 선택하십시오.";
+"Sorry! We’re not currently able to accept applications from %@" = "죄송합니다. 현재 %@ 의 신청서는 받을 수 없습니다.";
 "invalid.country" = "잘못된 국가";
 "please.enter.select.a.valid.country.to.continue" = "계속하려면 유효한 국가를 입력 / 선택하십시오.";
 "remove" = "제거";

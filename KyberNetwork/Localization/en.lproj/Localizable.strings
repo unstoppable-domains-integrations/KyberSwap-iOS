@@ -51,6 +51,7 @@
 "please.select.your.date.of.birth.to.continue" = "Please select your date of birth to continue";
 "invalid.nationality" = "Invalid nationality";
 "please.enter.select.a.valid.nationality.to.continue" = "Please enter/select a valid nationality to continue";
+"Sorry! We’re not currently able to accept applications from %@" = "Sorry! We’re not currently able to accept applications from %@";
 "invalid.country" = "Invalid country";
 "please.enter.select.a.valid.country.to.continue" = "Please enter/select a valid country to continue";
 "remove" = "Remove";

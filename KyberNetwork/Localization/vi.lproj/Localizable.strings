@@ -51,6 +51,7 @@
 "please.select.your.date.of.birth.to.continue" = "Vui lòng chọn ngày sinh của bạn để tiếp tục";
 "invalid.nationality" = "Quốc tịch không hợp lệ";
 "please.enter.select.a.valid.nationality.to.continue" = "Vui lòng nhập / chọn quốc gia hợp lệ để tiếp tục";
+"Sorry! We’re not currently able to accept applications from %@" = "Xin lỗi! Hiện tại chúng tôi không thể nhận thông tin từ %@";
 "invalid.country" = "Quốc gia không hợp lệ";
 "please.enter.select.a.valid.country.to.continue" = "Vui lòng nhập / chọn quốc gia hợp lệ để tiếp tục";
 "remove" = "Loại bỏ";

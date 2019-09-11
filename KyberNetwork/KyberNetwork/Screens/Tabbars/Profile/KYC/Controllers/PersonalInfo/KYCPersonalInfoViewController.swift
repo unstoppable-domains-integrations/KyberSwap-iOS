@@ -437,9 +437,10 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     // Check nationality
     let nationality = self.nationalityTextField.text ?? ""
     guard self.viewModel.nationalities.contains(nationality) else {
+      let localised = "Sorry! We’re not currently able to accept applications from %@".toBeLocalised()
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.nationality", value: "Invalid nationality", comment: ""),
-        message: NSLocalizedString("please.enter.select.a.valid.nationality.to.continue", value: "Please enter/select a valid nationality to continue", comment: ""),
+        message: String(format: localised, nationality),
         time: 1.5
       )
       return
@@ -448,9 +449,10 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     let residenceAddr: String = self.residentialAddressTextField.text ?? ""
     let countryOfResidence = self.countryOfResidenceTextField.text ?? ""
     guard self.viewModel.countries.contains(countryOfResidence) else {
+      let localised = "Sorry! We’re not currently able to accept applications from %@".toBeLocalised()
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.country", value: "Invalid country", comment: ""),
-        message: NSLocalizedString("please.enter.select.a.valid.country.to.continue", value: "Please enter/select a valid country to continue", comment: ""),
+        message: String(format: localised, residenceAddr),
         time: 1.5
       )
       return
@@ -522,9 +524,10 @@ class KYCPersonalInfoViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "industry_code_\(industryCode.isEmpty ? "empty" : "nonempty")"])
     let taxCountry = self.optionalDataView.getTaxCountry()
     if !taxCountry.isEmpty && !self.viewModel.countries.contains(taxCountry) {
+      let localised = "Sorry! We’re not currently able to accept applications from %@".toBeLocalised()
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.input", value: "Invalid Input", comment: ""),
-        message: NSLocalizedString("please.check.your.tax.residency.country", value: "Please check your Tax Residency country", comment: ""),
+        message: String(format: localised, taxCountry),
         time: 1.5
       )
       return
