@@ -164,8 +164,8 @@ extension KNAppCoordinator {
   }
 
   // Switching account, restart a new session
-  func restartNewSession(_ wallet: Wallet) {
-    self.navigationController.displayLoading()
+  func restartNewSession(_ wallet: Wallet, isLoading: Bool = true) {
+    if isLoading { self.navigationController.displayLoading() }
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       self.removeObserveNotificationFromSession()
 
@@ -199,7 +199,7 @@ extension KNAppCoordinator {
       self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
         transactions: transactions
       )
-      self.navigationController.hideLoading()
+      if isLoading { self.navigationController.hideLoading() }
     }
   }
 
@@ -226,7 +226,7 @@ extension KNAppCoordinator {
     if isRemovingCurrentWallet {
       guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-        self.restartNewSession(newWallet)
+        self.restartNewSession(newWallet, isLoading: false)
       }
       delayTime = 0.25
     }
