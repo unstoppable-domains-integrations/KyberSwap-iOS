@@ -14,7 +14,6 @@ class KNPromoCodeViewController: KNBaseViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var yourPromoCodeTextLabel: UILabel!
   @IBOutlet weak var enterPromoCodeTextField: UITextField!
-  @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var applyButton: UIButton!
 
   weak var delegate: KNPromoCodeViewControllerDelegate?
@@ -26,7 +25,6 @@ class KNPromoCodeViewController: KNBaseViewController {
 
     self.yourPromoCodeTextLabel.text = NSLocalizedString("your.kybercode", value: "Your KyberCode", comment: "")
     self.enterPromoCodeTextField.placeholder = NSLocalizedString("enter.your.kybercode", value: "Enter your KyberCode", comment: "")
-    self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
 
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
     self.applyButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.applyButton.frame.height))
@@ -53,7 +51,6 @@ class KNPromoCodeViewController: KNBaseViewController {
 
   func resetUI() {
     self.enterPromoCodeTextField.text = ""
-    self.walletNameTextField.text = ""
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -71,10 +68,7 @@ class KNPromoCodeViewController: KNBaseViewController {
       )
       return
     }
-    let name: String = {
-      let name = self.walletNameTextField.text ?? ""
-      return name.isEmpty ? "PromoCode" : name
-    }()
+    let name: String = "KyberCode"
     self.delegate?.promoCodeViewController(self, promoCode: promoCode, name: name)
   }
 }
