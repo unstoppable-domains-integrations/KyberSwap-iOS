@@ -110,13 +110,9 @@ extension KNAppCoordinator {
     )
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
 
-    let isPromoWallet: Bool = {
-      let address = self.session.wallet.address.description
-      return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
-    }()
-
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
-      self.tabbarController.selectedIndex = isPromoWallet ? 1 : 2
+      // default balance tab
+      self.tabbarController.selectedIndex = 0
       self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     }
 
@@ -204,7 +200,6 @@ extension KNAppCoordinator {
         transactions: transactions
       )
       self.navigationController.hideLoading()
-      if isPromoWallet { self.tabbarController.selectedIndex = 1 }
     }
   }
 

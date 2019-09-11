@@ -504,7 +504,7 @@
 
 "Favourite" = "Yêu thích";
 "Market Rate" = "Giá hiện tại";
-"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "Quy trình này sẽ tạo một địa chỉ ví mới. Vui lòng xác nhận nếu bạn muốn tiếp tục.";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";

@@ -418,7 +418,7 @@
 "Do you want to delete this alert?" = "是否要删除此警报？";
 "Add Alert" = "添加警报";
 "Alert deleted!" = "警报已删除！";
-"You must sign in to use Price Alert feature" = "您必须登录才能使用价格提醒功能";
+"You must sign in to use Price Alert feature" = "请登录您的个人资料以使用价格警報";
 "Manage Alert" = "管理警报";
 "Alert Method" = "警报方法";
 "Push Notification" = "推送通知";
@@ -503,7 +503,7 @@
 
 "Favourite" = "收藏";
 "Market Rate" = "市场价格";
-"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+"This process will create a new wallet for you. Please confirm so that we know did not accidently pressed the button." = "此过程将为您创建一个新钱包。 请确认，以便我们知道您没有意外按下按钮。";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
@@ -611,7 +611,7 @@
 "Please enter an amount to continue" = "请输入要继续的金额";
 "You cannot submit order with promo code. Please use other wallets." = "您不能使用兑奖码下单。请使用其他钱包。";
 "All Balance" = "全部平衡";
-"You must sign in to use Limit Order feature" = "您必须登录才能使用限价订单功能";
+"You must sign in to use Limit Order feature" = "请登录您的个人资料以使用限价订单功能";
 "Your target rate should be greater than 0" = "您的目标汇率应大于0";
 "Your target rate is too high, should be at most 10 times of current rate" = "您的目标汇率太高，应至多为当前汇率的10倍";
 "Please enter your target rate to continue" = "Please enter your target rate to continue";
