@@ -23,7 +23,7 @@ struct KNWelcomeScreenViewModel {
   init() {
     if let json: JSONDictionary = KNJSONLoaderUtil.jsonDataFromFile(with: "welcome_screen_data") {
       let data = json["data"] as? [JSONDictionary] ?? []
-      self.dataList = data.map({ return KNWelcomeData(dict: $0) })
+      self.dataList = data.map({ return KNWelcomeData(dict: $0) }).sorted(by: { return $0.position < $1.position })
     } else {
       self.dataList = []
     }
