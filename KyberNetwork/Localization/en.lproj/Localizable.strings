@@ -569,7 +569,7 @@
 
 "Favourite" = "Favourite";
 "Market Rate" = "Market Rate";
-"This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button." = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+"This creates a new Ethereum wallet for you to receive and send tokens" = "This creates a new Ethereum wallet for you to receive and send tokens";
 
 // Limit Order
 "ETH* represents the sum of ETH & WETH for easy reference" = "ETH* represents the sum of ETH & WETH for easy reference";

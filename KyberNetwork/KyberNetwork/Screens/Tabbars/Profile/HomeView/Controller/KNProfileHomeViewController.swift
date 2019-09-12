@@ -88,6 +88,7 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var listPriceAlertsContainerView: UIView!
   @IBOutlet weak var priceAlertTableView: KNAlertTableView!
   @IBOutlet weak var moreAlertsButton: UIButton!
+  @IBOutlet weak var pdpaUpdateButton: UIButton!
   @IBOutlet weak var priceAlertContainerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var listPriceAlertsContainerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var priceAlertTableViewHeightConstraint: NSLayoutConstraint!
@@ -205,6 +206,15 @@ class KNProfileHomeViewController: KNBaseViewController {
     )
     self.userKYCStatusLabel.rounded(radius: 2.0)
 
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.underlineStyle: 1,
+    ]
+    let attributedString = NSAttributedString(string: "About PDPA update".toBeLocalised(), attributes: attributes)
+    self.pdpaUpdateButton.setAttributedTitle(attributedString, for: .normal)
+
+    self.pdpaUpdateButton.isHidden = true
     self.setupPriceAlertsView()
     self.updateUIUserDidSignedIn()
     self.view.layoutSubviews()
@@ -306,6 +316,14 @@ class KNProfileHomeViewController: KNBaseViewController {
     } else {
       self.userKYCStatusLabel.backgroundColor = UIColor(red: 154, green: 171, blue: 180)
     }
+    let isSingapore: Bool = {
+      if user.kycDetails?.nationality.lowercased() ?? "" == "singaporean" { return true }
+      if user.kycDetails?.country.lowercased() ?? "" == "singapore" { return true }
+      if user.kycDetails?.taxResidencyCountry.lowercased() ?? "" == "singapore" { return true }
+      return false
+    }()
+    // only show if kyc details has country or nationality is singapore
+    self.pdpaUpdateButton.isHidden = !isSingapore
     self.userKYCStatusLabel.addLetterSpacing()
     let descText: String = {
       if status == "Approved" || status == "Pending" { return "" }
@@ -328,11 +346,11 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.updateKYCStatusDescLabel(with: descText)
 
     if status == "Approved" || status == "Pending" {
-      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = 0.0 })
+      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = isSingapore ? 12.0 : 0.0 })
       self.userKYCActionHeightConstraint.constant = 0.0
       self.userKYCStatusContainerView.isHidden = true
     } else {
-      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = 24.0 })
+      self.userKYCStatusPaddingConstraints.forEach({ $0.constant = isSingapore ? 32.0 : 24.0 })
       self.userKYCActionHeightConstraint.constant = self.userKYCActionButton.isHidden ? 0.0 : 44.0
       self.userKYCStatusContainerView.isHidden = false
     }
@@ -370,6 +388,14 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.passwordTextField.isSecureTextEntry = self.signInViewModel.isSecureText
     let image = !self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
+  }
+
+  @IBAction func pdpaUpdateButtonPressed(_ sender: Any) {
+    let popup = KNPDPAUpdateInfoPopUp()
+    popup.loadViewIfNeeded()
+    popup.modalPresentationStyle = .overFullScreen
+    popup.modalTransitionStyle = .crossDissolve
+    self.present(popup, animated: true, completion: nil)
   }
 
   @IBAction func signInButtonPressed(_ sender: Any) {

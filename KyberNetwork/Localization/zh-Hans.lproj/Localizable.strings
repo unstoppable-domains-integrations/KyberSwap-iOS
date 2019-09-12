@@ -503,7 +503,7 @@
 
 "Favourite" = "收藏";
 "Market Rate" = "市场价格";
-"This process will create a new wallet for you. Please confirm so that we know did not accidently pressed the button." = "此过程将为您创建一个新钱包。 请确认，以便我们知道您没有意外按下按钮。";
+"This creates a new Ethereum wallet for you to receive and send tokens" = "This creates a new Ethereum wallet for you to receive and send tokens";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";

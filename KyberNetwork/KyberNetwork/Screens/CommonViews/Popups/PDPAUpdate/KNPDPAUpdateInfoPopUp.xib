@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPDPAUpdateInfoPopUp" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="containerView" destination="SdP-3f-IAv" id="K7j-HH-Jka"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SdP-3f-IAv">
+                    <rect key="frame" x="15" y="214" width="384" height="478"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBn-Bs-Y0D">
+                            <rect key="frame" x="340" y="8" width="36" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="2F2-A4-R5f"/>
+                                <constraint firstAttribute="width" constant="36" id="deW-vU-HSB"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="close_button_black"/>
+                            <connections>
+                                <action selector="closeButtonPressed:" destination="-1" eventType="touchUpInside" id="bYc-s8-xGy"/>
+                            </connections>
+                        </button>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVw-jv-Gzq">
+                            <rect key="frame" x="0.0" y="52" width="384" height="410"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvg-EU-eXe">
+                                    <rect key="frame" x="12" y="0.0" width="360" height="410"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <mutableString key="text">We are aware of the revised Advisory Guidelines on the PDPA for NRIC and other National Identification Numbers that Personal Data Protection Commission (PDPA) issued on 31 August 2018.
+
+We seek your understanding
+that we are continuing with the collection and use of NRIC Numbers / Foreign Identification Numbers / Birth Certificate Numbers / Work Permit Numbers / Passport Numbers to ensure that KyberSwap does not deal with assets or funds that are proceeds of drug dealing, criminal conduct or property relating to money laundering or terrorism financing offence.  
+
+We assure you that we will undertake proper safeguarding measures to protect your personal data (including NRIC Numbers / FIN / Birth Certificate Numbers / Work Permit Numbers / Passport Numbers) under our care.
+
+Contact us at support@kyber.network should you have any queries or concerns.</mutableString>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                    <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="Mvg-EU-eXe" firstAttribute="leading" secondItem="pVw-jv-Gzq" secondAttribute="leading" constant="12" id="Dn3-az-EKB"/>
+                                <constraint firstItem="Mvg-EU-eXe" firstAttribute="top" secondItem="pVw-jv-Gzq" secondAttribute="top" id="H3r-DO-Yxm"/>
+                                <constraint firstAttribute="trailing" secondItem="Mvg-EU-eXe" secondAttribute="trailing" constant="12" id="Yhn-gT-dFm"/>
+                                <constraint firstItem="Mvg-EU-eXe" firstAttribute="centerX" secondItem="pVw-jv-Gzq" secondAttribute="centerX" id="dzd-Bv-iGz"/>
+                                <constraint firstItem="Mvg-EU-eXe" firstAttribute="centerY" secondItem="pVw-jv-Gzq" secondAttribute="centerY" id="eZu-CA-FZ6"/>
+                                <constraint firstAttribute="bottom" secondItem="Mvg-EU-eXe" secondAttribute="bottom" id="lPx-8j-8CX"/>
+                            </constraints>
+                        </scrollView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="VBn-Bs-Y0D" firstAttribute="top" secondItem="SdP-3f-IAv" secondAttribute="top" constant="8" id="5i6-UQ-cZN"/>
+                        <constraint firstAttribute="bottom" secondItem="pVw-jv-Gzq" secondAttribute="bottom" constant="16" id="KGV-ob-o3P"/>
+                        <constraint firstItem="pVw-jv-Gzq" firstAttribute="leading" secondItem="SdP-3f-IAv" secondAttribute="leading" id="RBe-9T-6MN"/>
+                        <constraint firstItem="pVw-jv-Gzq" firstAttribute="centerX" secondItem="SdP-3f-IAv" secondAttribute="centerX" id="ZQn-5T-gZq"/>
+                        <constraint firstItem="pVw-jv-Gzq" firstAttribute="top" secondItem="VBn-Bs-Y0D" secondAttribute="bottom" constant="8" id="dH8-7R-iFP"/>
+                        <constraint firstAttribute="trailing" secondItem="VBn-Bs-Y0D" secondAttribute="trailing" constant="8" id="fF4-ZE-La7"/>
+                        <constraint firstAttribute="trailing" secondItem="pVw-jv-Gzq" secondAttribute="trailing" id="z56-ax-Nlf"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="SdP-3f-IAv" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="9gQ-vO-YHq"/>
+                <constraint firstItem="SdP-3f-IAv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="Lf4-9T-Eym"/>
+                <constraint firstItem="SdP-3f-IAv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="24" id="ds0-s8-Nl9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="SdP-3f-IAv" secondAttribute="trailing" constant="15" id="fez-k2-jl6"/>
+                <constraint firstItem="SdP-3f-IAv" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="vrd-qE-iKd"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close_button_black" width="24" height="24"/>
+    </resources>
+</document>
