@@ -225,9 +225,7 @@ extension KNAppCoordinator {
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
       guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-        self.restartNewSession(newWallet, isLoading: false)
-      }
+      self.restartNewSession(newWallet, isLoading: false)
       delayTime = 0.25
     }
     self.loadBalanceCoordinator?.exit()
