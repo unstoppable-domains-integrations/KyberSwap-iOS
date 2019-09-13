@@ -201,7 +201,6 @@ extension Transaction {
 
   func displayedAmountString(curWallet: String) -> String {
     guard let localObject = self.localizedOperations.first else { return "" }
-    if self.state == .error || self.state == .failed { return "" }
     let isSwap = self.localizedOperations.first?.type == "exchange"
     if isSwap {
       let amountFrom: String = {
@@ -234,7 +233,6 @@ extension Transaction {
 
   func displayedAmountStringDetailsView(curWallet: String) -> String {
     guard let localObject = self.localizedOperations.first else { return "" }
-    if self.state == .error || self.state == .failed { return "" }
     let isSwap = self.localizedOperations.first?.type == "exchange"
     if isSwap {
       let amountFrom: String = {
