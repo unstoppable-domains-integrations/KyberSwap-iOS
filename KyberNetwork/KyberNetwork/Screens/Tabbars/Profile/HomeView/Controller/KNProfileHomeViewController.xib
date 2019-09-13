@@ -401,29 +401,27 @@ Increase KyberSwap's trade limits</string>
                                                 <action selector="userKYCActionButtonPressed:" destination="-1" eventType="touchUpInside" id="WNk-Fx-nsa"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLb-aA-FSx">
-                                            <rect key="frame" x="26" y="127.5" width="123" height="27"/>
-                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
-                                            <state key="normal" title="About PGPA update">
-                                                <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="pdpaUpdateButtonPressed:" destination="-1" eventType="touchUpInside" id="3S7-sP-REh"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="JdJ-Un-hJO" firstAttribute="centerX" secondItem="irh-yy-yJC" secondAttribute="centerX" id="DLe-I5-UF7"/>
-                                        <constraint firstAttribute="bottom" secondItem="PLb-aA-FSx" secondAttribute="bottom" constant="4" id="Ewy-vv-Scq"/>
                                         <constraint firstItem="abv-p2-ZKS" firstAttribute="top" secondItem="irh-yy-yJC" secondAttribute="top" constant="24" id="QyD-1u-XO2"/>
                                         <constraint firstAttribute="trailing" secondItem="abv-p2-ZKS" secondAttribute="trailing" constant="22" id="gIj-mt-KLo"/>
-                                        <constraint firstItem="PLb-aA-FSx" firstAttribute="leading" secondItem="irh-yy-yJC" secondAttribute="leading" constant="26" id="rJ4-RD-5i8"/>
                                         <constraint firstAttribute="bottom" secondItem="JdJ-Un-hJO" secondAttribute="bottom" constant="32" id="wIv-hx-WHN"/>
                                         <constraint firstItem="JdJ-Un-hJO" firstAttribute="top" secondItem="abv-p2-ZKS" secondAttribute="bottom" constant="24" id="ygb-9r-uVC"/>
                                         <constraint firstItem="abv-p2-ZKS" firstAttribute="leading" secondItem="irh-yy-yJC" secondAttribute="leading" constant="22" id="ysJ-2c-tZo"/>
                                     </constraints>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLb-aA-FSx">
+                                    <rect key="frame" x="26" y="278" width="123" height="27"/>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                    <state key="normal" title="About PGPA update">
+                                        <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="pdpaUpdateButtonPressed:" destination="-1" eventType="touchUpInside" id="3S7-sP-REh"/>
+                                    </connections>
+                                </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sd9-ld-opX">
                                     <rect key="frame" x="0.0" y="311.5" width="375" height="228"/>
                                     <subviews>
@@ -540,6 +538,8 @@ Increase KyberSwap's trade limits</string>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="9vH-0R-pjN" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="99y-2k-Syg"/>
+                                <constraint firstItem="K55-bp-vNB" firstAttribute="top" secondItem="PLb-aA-FSx" secondAttribute="bottom" constant="6.5" id="9ln-lg-Bbx"/>
+                                <constraint firstItem="PLb-aA-FSx" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" constant="26" id="ADD-KX-ZeI"/>
                                 <constraint firstAttribute="trailing" secondItem="vCa-T9-DFD" secondAttribute="trailing" id="IIV-Ic-AOM"/>
                                 <constraint firstItem="irh-yy-yJC" firstAttribute="top" secondItem="9vH-0R-pjN" secondAttribute="bottom" id="P6D-P6-ODH"/>
                                 <constraint firstItem="irh-yy-yJC" firstAttribute="leading" secondItem="bg6-Uo-kRt" secondAttribute="leading" id="Rc4-fN-W9v"/>
