@@ -503,7 +503,7 @@
 
 "Favourite" = "즐겨찾기";
 "Market Rate" = "시장 비율";
-"This creates a new Ethereum wallet for you to receive and send tokens" = "This process will create a new wallet for you. Please confirm so that we know you did not accidently pressed the button.";
+"This creates a new Ethereum wallet for you to receive and send tokens" = "토큰을 받고 전송하기 위한 새로운 이더리움 지갑이 생성됩니다.";
 
 
 // Promo code error messages
