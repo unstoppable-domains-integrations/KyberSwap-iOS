@@ -83,6 +83,7 @@
 "success" = "성공";
 "your.wallet.has.been.added.successfully" = "지갑이 성공적으로 추가되었습니다!";
 "send" = "보내기";
+"transfer" = "보내기";
 "buy" = "구매";
 "sell" = "판매";
 "updating.data" = "데이터 업데이트 중";

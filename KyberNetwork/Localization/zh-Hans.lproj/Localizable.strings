@@ -83,6 +83,7 @@
 "success" = "成功";
 "your.wallet.has.been.added.successfully" = "您的钱包已成功添加！";
 "send" = "发送";
+"transfer" = "发送";
 "buy" = "购买";
 "sell" = "卖";
 "updating.data" = "更新数据";
@@ -265,7 +266,7 @@
 "transaction.to.text" = "至";
 "search" = "搜索";
 "no.tokens.found" = "没有找到代币";
-"send.token" = "发送代币";
+"send.token" = "转移代币";
 "no.matchings.token" = "没有匹配代币";
 "amount.to.send.greater.than.zero" = "发送金额应大于零";
 "invalid.address" = "无效地址";

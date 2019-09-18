@@ -57,7 +57,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
-      leftBtnTitle: NSLocalizedString("send.all", value: "Send All", comment: ""),
+      leftBtnTitle: NSLocalizedString("send.all", value: "Transfer All", comment: ""),
       rightBtnTitle: NSLocalizedString("done", value: "Done", comment: ""),
       delegate: self
     )

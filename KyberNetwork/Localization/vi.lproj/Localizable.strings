@@ -83,6 +83,7 @@
 "success" = "Thành công";
 "your.wallet.has.been.added.successfully" = "Bạn đã nhập thành công ví";
 "send" = "Chuyển";
+"transfer" = "Chuyển";
 "buy" = "Mua";
 "sell" = "Bán";
 "updating.data" = "Cập nhật dữ liệu";

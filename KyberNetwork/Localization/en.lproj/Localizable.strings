@@ -83,6 +83,7 @@
 "success" = "Success";
 "your.wallet.has.been.added.successfully" = "Your wallet has been added successfully!";
 "send" = "Send";
+"transfer" = "Transfer";
 "buy" = "Buy";
 "sell" = "Sell";
 "updating.data" = "Updating data";
@@ -160,7 +161,7 @@
 "recipient.address" = "Recipient address";
 "edit.contact" = "Edit Contact";
 "add.contact" = "Add Contact";
-"send.all" = "Send All";
+"send.all" = "Transfer All";
 "done" = "Done";
 "balance.is.not.enough.to.perform.transaction" = "Balance is not enough to perform the transaction";
 "please.enter.a.valid.address.to.send" = "Please enter a valid address to send";
@@ -265,7 +266,7 @@
 "transaction.to.text" = "To";
 "search" = "Search";
 "no.tokens.found" = "No tokens found";
-"send.token" = "Send token";
+"send.token" = "Transfer token";
 "no.matchings.token" = "No matchings token";
 "amount.to.send.greater.than.zero" = "Amount to send should be greater than zero";
 "invalid.address" = "Invalid Address";
