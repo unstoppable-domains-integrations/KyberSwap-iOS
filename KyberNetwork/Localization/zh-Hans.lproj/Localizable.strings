@@ -506,7 +506,7 @@
 "This creates a new Ethereum wallet for you to receive and send tokens" = "这会创建一个新的以太坊钱包，讓您接收和发送代幣。";
 "Swap Now" = "现在兑换";
 "Transfer Now" = "现在转账";
-"Click Advanced to lower GAS fee or deposit more ETH" = "Click Advanced to lower GAS fee or deposit more ETH";
+"Deposit more ETH or click Advanced to lower GAS fee" = "Deposit more ETH or click Advanced to lower GAS fee";
 "Insufficient ETH for transaction" = "Insufficient ETH for transaction";
 
 // Promo code error messages

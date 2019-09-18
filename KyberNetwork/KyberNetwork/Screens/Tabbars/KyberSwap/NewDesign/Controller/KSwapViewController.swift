@@ -647,7 +647,7 @@ class KSwapViewController: KNBaseViewController {
       guard self.viewModel.isHavingEnoughETHForFee else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: NSLocalizedString("Click Advanced to lower GAS fee or deposit more ETH", value: "Click Advanced to lower GAS fee or deposit more ETH", comment: "")
+          message: NSLocalizedString("Deposit more ETH or click Advanced to lower GAS fee", value: "Deposit more ETH or click Advanced to lower GAS fee", comment: "")
         )
         return true
       }
