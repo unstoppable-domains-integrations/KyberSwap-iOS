@@ -239,7 +239,7 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func setupSendButton() {
     self.sendButton.rounded(radius: self.style.buttonRadius(for: self.sendButton.frame.height))
     self.sendButton.setTitle(
-      NSLocalizedString("send", value: "Send", comment: ""),
+      NSLocalizedString("Transfer Now", value: "Transfer Now", comment: ""),
       for: .normal
     )
   }

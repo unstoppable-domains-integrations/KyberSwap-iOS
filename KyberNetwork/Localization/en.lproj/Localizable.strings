@@ -498,6 +498,8 @@
 
 "Successfully added to your favorites" = "Successfully added to your favorites";
 "Removed from your favorites" = "Removed from your favorites";
+"Swap Now" = "Swap Now";
+"Transfer Now" = "Transfer Now";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";

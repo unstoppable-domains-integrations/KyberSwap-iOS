@@ -273,7 +273,7 @@ class KSwapViewController: KNBaseViewController {
     let radius = style.buttonRadius(for: self.continueButton.frame.height)
     self.continueButton.rounded(radius: radius)
     self.continueButton.setTitle(
-      NSLocalizedString("continue", value: "Continue", comment: ""),
+      NSLocalizedString("Swap Now", value: "Swap Now", comment: ""),
       for: .normal
     )
   }

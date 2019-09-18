@@ -505,6 +505,8 @@
 "Favourite" = "Yêu thích";
 "Market Rate" = "Giá hiện tại";
 "This creates a new Ethereum wallet for you to receive and send tokens" = "Một ví Ethereum mới sẽ được tạo ra để bạn có thể nhận và chuyển tokens";
+"Swap Now" = "Trao đổi";
+"Transfer Now" = "Chuyển";
 
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
