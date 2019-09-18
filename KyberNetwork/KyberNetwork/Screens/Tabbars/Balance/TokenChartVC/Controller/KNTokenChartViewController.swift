@@ -407,7 +407,7 @@ class KNTokenChartViewController: KNBaseViewController {
     )
     self.sendButton.backgroundColor = .clear//UIColor.Kyber.merigold
     self.sendButton.setTitle(
-      NSLocalizedString("send", value: "Send", comment: ""),
+      NSLocalizedString("transfer", value: "Transfer", comment: ""),
       for: .normal
     )
     self.sendButton.setTitleColor(UIColor(red: 90, green: 94, blue: 103), for: .normal)
@@ -456,7 +456,7 @@ class KNTokenChartViewController: KNBaseViewController {
       self.noDataLabel.text = NSLocalizedString("this.token.is.not.supported", value: "This token is not supported by Kyber Network", comment: "")
       self.buyButton.isHidden = true
       self.sellButton.setTitle(
-        NSLocalizedString("send", value: "Send", comment: ""),
+        NSLocalizedString("transfer", value: "Transfer", comment: ""),
         for: .normal
       )
       self.sellButton.backgroundColor = .clear//UIColor.Kyber.merigold

@@ -20,7 +20,7 @@ struct KConfirmSendViewModel {
   }
 
   var titleString: String {
-    return "\(NSLocalizedString("send", value: "Send", comment: "")) \(self.token.symbol)" }
+    return "\(NSLocalizedString("transfer", value: "Transfer", comment: "")) \(self.token.symbol)" }
 
   var contactName: String {
     let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")

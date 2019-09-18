@@ -51,7 +51,7 @@ struct KNHistoryTransactionCollectionViewModel {
   var transactionTypeString: String {
     let typeString: String = {
       if self.isSwap { return NSLocalizedString("swap", value: "Swap", comment: "") }
-      return self.isSent ? NSLocalizedString("send", value: "Send", comment: "") : NSLocalizedString("receive", value: "Receive", comment: "")
+      return self.isSent ? NSLocalizedString("transfer", value: "Transfer", comment: "") : NSLocalizedString("receive", value: "Receive", comment: "")
     }()
     return typeString
   }

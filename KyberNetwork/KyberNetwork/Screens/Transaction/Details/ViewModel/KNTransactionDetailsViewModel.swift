@@ -36,7 +36,7 @@ struct KNTransactionDetailsViewModel {
       return NSLocalizedString("swap", value: "Swap", comment: "").uppercased()
     }
     if self.isSent {
-      return NSLocalizedString("send", value: "Send", comment: "").uppercased()
+      return NSLocalizedString("transfer", value: "Transfer", comment: "").uppercased()
     }
     return NSLocalizedString("receive", value: "Receive", comment: "").uppercased()
   }

@@ -128,7 +128,7 @@ extension KNContactTableView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    let send = UITableViewRowAction(style: .normal, title: NSLocalizedString("send", value: "Send", comment: "")) { (_, _) in
+    let send = UITableViewRowAction(style: .normal, title: NSLocalizedString("transfer", value: "Transfer", comment: "")) { (_, _) in
       self.delegate?.contactTableView(
         tableView,
         run: .send(address: self.contacts[indexPath.row].address)

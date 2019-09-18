@@ -427,7 +427,7 @@ extension KWalletBalanceViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
-    let sendText = NSLocalizedString("send", value: "Send", comment: "")
+    let sendText = NSLocalizedString("transfer", value: "Transfer", comment: "")
     let sendAction = UITableViewRowAction(style: .default, title: sendText) { _, _ in
       self.delegate?.kWalletBalanceViewController(self, run: .send(token: tokenObject))
     }

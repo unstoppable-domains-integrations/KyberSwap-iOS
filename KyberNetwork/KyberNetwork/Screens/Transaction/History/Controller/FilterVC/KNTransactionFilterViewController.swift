@@ -186,7 +186,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.separatorViews.forEach({ $0.backgroundColor = .clear })
     self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
     self.transactionTypeTextLabel.text = "Transaction Type".toBeLocalised()
-    self.sendButton.setTitle(NSLocalizedString("send", value: "Send", comment: ""), for: .normal)
+    self.sendButton.setTitle(NSLocalizedString("transfer", value: "Transfer", comment: ""), for: .normal)
     self.receiveButton.setTitle(NSLocalizedString("receive", value: "Receive", comment: ""), for: .normal)
     self.swapButton.setTitle(NSLocalizedString("swap", value: "Swap", comment: ""), for: .normal)
     self.tokenTextLabel.text = "Token".toBeLocalised()
