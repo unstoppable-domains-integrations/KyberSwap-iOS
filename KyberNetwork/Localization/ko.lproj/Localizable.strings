@@ -506,6 +506,8 @@
 "This creates a new Ethereum wallet for you to receive and send tokens" = "토큰을 받고 전송하기 위한 새로운 이더리움 지갑이 생성됩니다.";
 "Swap Now" = "지금 환전하기";
 "Transfer Now" = "지금 환전하기";
+"Click Advanced to lower GAS fee or deposit more ETH" = "Click Advanced to lower GAS fee or deposit more ETH";
+"Insufficient ETH for transaction" = "Insufficient ETH for transaction";
 
 
 // Promo code error messages

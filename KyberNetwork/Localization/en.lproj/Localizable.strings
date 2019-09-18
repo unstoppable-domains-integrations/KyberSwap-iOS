@@ -500,6 +500,8 @@
 "Removed from your favorites" = "Removed from your favorites";
 "Swap Now" = "Swap Now";
 "Transfer Now" = "Transfer Now";
+"Click Advanced to lower GAS fee or deposit more ETH" = "Click Advanced to lower GAS fee or deposit more ETH";
+"Insufficient ETH for transaction" = "Insufficient ETH for transaction";
 
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
