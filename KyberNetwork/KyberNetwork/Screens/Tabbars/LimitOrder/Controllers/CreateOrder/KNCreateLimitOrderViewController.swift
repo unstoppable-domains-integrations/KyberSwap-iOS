@@ -735,6 +735,7 @@ extension KNCreateLimitOrderViewController {
     if IEOUserStorage.shared.user == nil {
       // user not sign in
       self.tabBarController?.selectedIndex = 3
+      KNAppTracker.updateShouldOpenLimitOrderAfterSignedIn(true)
       self.showWarningTopBannerMessage(
         with: "Sign in required".toBeLocalised(),
         message: "You must sign in to use Limit Order feature".toBeLocalised(),

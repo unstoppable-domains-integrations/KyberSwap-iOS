@@ -44,6 +44,8 @@ class KNAppTracker {
   static let kTutorialCancelOpenOrderKey: String = "kTutorialCancelOpenOrderKey"
   static let kWonderWhyOrdersAreNotFilled: String = "kWonderWhyOrdersAreNotFilled"
 
+  static let kShouldOpenLimitOrderAfterSignedInKey: String = "kShouldOpenLimitOrderAfterSignedInKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
@@ -325,5 +327,14 @@ class KNAppTracker {
   static func needShowWonderWhyOrdersNotFilled() -> Bool {
     let key = "\(KNEnvironment.default.displayName)-\(kWonderWhyOrdersAreNotFilled)"
     return userDefaults.value(forKey: key) == nil
+  }
+
+  static func shouldOpenLimitOrderAfterSignedIn() -> Bool {
+    return userDefaults.value(forKey: kShouldOpenLimitOrderAfterSignedInKey) as? Bool == true
+  }
+
+  static func updateShouldOpenLimitOrderAfterSignedIn(_ isOpen: Bool) {
+    userDefaults.set(isOpen, forKey: kShouldOpenLimitOrderAfterSignedInKey)
+    userDefaults.synchronize()
   }
 }
