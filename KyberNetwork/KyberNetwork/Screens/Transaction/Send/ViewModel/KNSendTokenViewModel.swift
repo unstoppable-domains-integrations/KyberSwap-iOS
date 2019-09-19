@@ -77,7 +77,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var navTitle: String {
-    return "\(NSLocalizedString("transfer", value: "Transfer", comment: "")) \(self.from.symbol.prefix(8))" // "Send Token"
+    return "\(NSLocalizedString("transfer", value: "Transfer", comment: ""))"
   }
 
   var tokenButtonAttributedText: NSAttributedString {
