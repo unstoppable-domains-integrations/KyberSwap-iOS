@@ -460,6 +460,7 @@
 
 "successfully.received" = "Bạn đã nhận được %@ từ %@";
 "received.token" = "Đã nhận %@";
+"Get Started" = "Get Started";
 
 // MARK: Price alert feature
 "Cap reached" = "Đạt mức cho phép";

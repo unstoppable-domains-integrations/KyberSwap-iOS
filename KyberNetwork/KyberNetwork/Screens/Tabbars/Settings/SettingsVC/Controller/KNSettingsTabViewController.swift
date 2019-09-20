@@ -78,7 +78,7 @@ class KNSettingsTabViewController: KNBaseViewController {
     )
     self.changePINButton.addTextSpacing()
     self.aboutButton.setTitle(
-      NSLocalizedString("about", value: "About", comment: ""),
+      NSLocalizedString("Get Started", value: "Get Started", comment: ""),
       for: .normal
     )
     self.aboutButton.addTextSpacing()

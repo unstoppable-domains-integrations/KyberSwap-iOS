@@ -361,7 +361,7 @@ class KSendTokenViewController: KNBaseViewController {
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: NSLocalizedString("amount.to.send.greater.than.zero", value: "Amount to send should be greater than zero", comment: "")
+        message: NSLocalizedString("amount.to.send.greater.than.zero", value: "Amount to transfer should be greater than zero", comment: "")
       )
       return true
     }
@@ -384,7 +384,7 @@ class KSendTokenViewController: KNBaseViewController {
     guard self.viewModel.isAddressValid else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address.to.send", value: "Please enter a valid address to send", comment: "")
+        message: NSLocalizedString("please.enter.a.valid.address.to.send", value: "Please enter a valid address to transfer", comment: "")
       )
       return true
     }

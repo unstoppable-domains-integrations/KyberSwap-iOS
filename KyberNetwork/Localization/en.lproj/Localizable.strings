@@ -164,7 +164,7 @@
 "send.all" = "Transfer All";
 "done" = "Done";
 "balance.is.not.enough.to.perform.transaction" = "Balance is not enough to perform the transaction";
-"please.enter.a.valid.address.to.send" = "Please enter a valid address to send";
+"please.enter.a.valid.address.to.send" = "Please enter a valid address to transfer";
 "do.you.want.to.delete.this.contact" = "Do you want to delete this contact?";
 "submit" = "Submit";
 "profile.verification.status" = "Profile Verification Status";
@@ -236,7 +236,7 @@
 "transactions" = "Transactions";
 "recent.contact" = "Recent Contact";
 "more" = "More";
-"amount.to.send" = "Amount to send";
+"amount.to.send" = "Amount to transfer";
 "completed" = "Completed";
 "contact" = "Contact";
 "support" = "Support";
@@ -268,7 +268,7 @@
 "no.tokens.found" = "No tokens found";
 "send.token" = "Transfer token";
 "no.matchings.token" = "No matchings token";
-"amount.to.send.greater.than.zero" = "Amount to send should be greater than zero";
+"amount.to.send.greater.than.zero" = "Amount to transfer should be greater than zero";
 "invalid.address" = "Invalid Address";
 "sent" = "sent";
 "your.PIN.and.confirm.PIN.do.not.match" = "Your PIN and confirm PIN do not match";
@@ -411,6 +411,7 @@
 "new" = "New";
 "can.not.update.exchange.rate" = "Can not update exchange rate";
 "Please wait for other transactions to be mined before making a transfer" = "Please wait for other transactions to be mined before making a transfer";
+"Get Started" = "Get Started";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";

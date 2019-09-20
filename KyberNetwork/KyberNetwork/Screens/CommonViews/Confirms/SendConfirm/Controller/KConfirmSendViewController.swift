@@ -103,7 +103,7 @@ class KConfirmSendViewController: KNBaseViewController {
     self.firstSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
     self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
 
-    self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Send", comment: "").uppercased()
+    self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Transfer", comment: "").uppercased()
     self.amountToSendTextLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
     self.transactionFeeTextLabel.addLetterSpacing()

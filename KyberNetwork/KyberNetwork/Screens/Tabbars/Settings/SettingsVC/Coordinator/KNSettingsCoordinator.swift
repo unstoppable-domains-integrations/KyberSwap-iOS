@@ -139,7 +139,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openMailSupport()
     case .about:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "about"])
-      self.openCommunityURL("https://kyber.network/about/company")
+      self.openCommunityURL("https://medium.com/kyberswap/get-started-on-kyberswap-ios-app-942ee1dffdc4")
     case .changePIN:
       KNCrashlyticsUtil.logCustomEvent(withName: "settings", customAttributes: ["value": "change_pin"])
       self.passcodeCoordinator = KNPasscodeCoordinator(
