@@ -173,12 +173,13 @@ class KNCreateLimitOrderViewModel {
       }
       return self.balance?.value ?? BigInt(0)
     }()
-    var availableAmount: Double = Double(balance) / pow(10.0, Double(self.from.decimals))
+    var availableAmount = balance
     if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
-      availableAmount -= pendingAmount
+      availableAmount -= BigInt(pendingAmount * pow(10.0, Double(self.from.decimals)))
     }
-    availableAmount = max(availableAmount, 0.0)
-    return BigInt(availableAmount * pow(10.0, Double(self.from.decimals)))
+    availableAmount = max(availableAmount, BigInt(0))
+
+    return availableAmount
   }
 
   var balanceText: String {
@@ -221,28 +222,26 @@ class KNCreateLimitOrderViewModel {
     if !self.from.isWETH { return false }
     let balance = self.balance?.value ?? BigInt(0)
 
-    var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
+    var availableAmount = balance
     if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
-      availableAmount -= pendingAmount
+      availableAmount -= BigInt(pendingAmount * pow(10.0, Double(self.from.decimals)))
     }
-    availableAmount = max(availableAmount, 0.0)
+    availableAmount = max(availableAmount, BigInt(0))
 
-    return BigInt(availableAmount * pow(10.0, 18.0)) < self.amountFromBigInt
+    return availableAmount < self.amountFromBigInt
   }
 
   var minAmountToConvert: BigInt {
     if !self.from.isWETH { return BigInt(0) }
     let balance = self.balance?.value ?? BigInt(0)
 
-    var availableAmount: Double = Double(balance) / pow(10.0, 18.0)
+    var availableAmount = balance
     if let pendingAmount = self.pendingBalances[self.from.symbol] as? Double {
-      availableAmount -= pendingAmount
+      availableAmount -= BigInt(pendingAmount * pow(10.0, Double(self.from.decimals)))
     }
-    availableAmount = max(availableAmount, 0.0)
+    availableAmount = max(availableAmount, BigInt(0))
 
-    let availableBal = BigInt(availableAmount * pow(10.0, 18.0))
-
-    if availableBal < self.amountFromBigInt { return self.amountFromBigInt - availableBal }
+    if availableAmount < self.amountFromBigInt { return self.amountFromBigInt - availableAmount }
     return BigInt(0)
   }
 
