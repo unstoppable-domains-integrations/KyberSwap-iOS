@@ -173,16 +173,18 @@ extension KNAppCoordinator {
       self.session.switchSession(wallet)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
 
-      let isPromoWallet: Bool = {
-        let address = self.session.wallet.address.description
-        return KNWalletPromoInfoStorage.shared.getDestinationToken(from: address) != nil
-      }()
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
-        resetRoot: isPromoWallet
+        resetRoot: true
       )
-      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-      self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: true
+      )
+      self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: true
+      )
       self.profileCoordinator?.updateSession(self.session)
       self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
       self.addObserveNotificationFromSession()
