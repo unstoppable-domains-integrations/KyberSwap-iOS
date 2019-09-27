@@ -49,6 +49,11 @@ extension UIButton {
     size: CGSize? = nil,
     state: UIControlState = .normal
     ) {
+    if !token.isSupported {
+      self.setImage(UIImage(named: "default_token"), for: .normal)
+      self.layoutIfNeeded()
+      return
+    }
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
     if let image = UIImage(named: icon.lowercased()) {
       self.setImage(image.resizeImage(to: size), for: .normal)

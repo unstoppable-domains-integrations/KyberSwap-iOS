@@ -18,7 +18,10 @@ class KNLimitOrderTokenTableViewCell: UITableViewCell {
   }
 
   func updateCell(with token: TokenObject, balance: BigInt?) {
-    if let image = UIImage(named: token.icon.lowercased()) {
+    if !token.isSupported {
+      // always use default icon for un supported tokens for less confusing
+      self.tokenIconImageView.image = UIImage(named: "default_token")
+    } else if let image = UIImage(named: token.icon.lowercased()) {
       self.tokenIconImageView.image = image
     } else {
       self.tokenIconImageView.setImage(

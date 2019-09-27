@@ -28,6 +28,11 @@ extension UIImageView {
     token: TokenObject,
     size: CGSize? = nil
     ) {
+    if !token.isSupported {
+      self.image = UIImage(named: "default_token")
+      self.layoutIfNeeded()
+      return
+    }
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
     if let image = UIImage(named: icon.lowercased()) {
       self.image = image.resizeImage(to: size)
