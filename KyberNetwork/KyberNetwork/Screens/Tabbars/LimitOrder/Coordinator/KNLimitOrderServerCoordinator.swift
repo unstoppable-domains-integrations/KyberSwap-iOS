@@ -113,9 +113,9 @@ class KNLimitOrderServerCoordinator {
 
   // Return (fee, discount, feeBeforeDiscount, Error)
   // swiftlint:disable large_tuple
-  func getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: @escaping (Result<(Double, Double, Double, Double, String?), AnyError>) -> Void) {
+  func getFee(accessToken: String?, address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: @escaping (Result<(Double, Double, Double, Double, String?), AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getFee(address: address, src: src, dest: dest, srcAmount: srcAmount, destAmount: destAmount)) { [weak self] result in
+      self.provider.request(.getFee(accessToken: accessToken, address: address, src: src, dest: dest, srcAmount: srcAmount, destAmount: destAmount)) { [weak self] result in
         guard let _ = self else { return }
         DispatchQueue.main.async {
           switch result {

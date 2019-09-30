@@ -275,7 +275,7 @@ enum LimitOrderService {
   case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
   case cancelOrder(accessToken: String, id: String)
   case getNonce(accessToken: String)
-  case getFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
+  case getFee(accessToken: String?, address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
   case checkEligibleAddress(accessToken: String, address: String)
   case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
   case pendingBalance(accessToken: String, address: String)
@@ -337,7 +337,7 @@ extension LimitOrderService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getFee(let address, let src, let dest, let srcAmount, let destAmount):
+    case .getFee(_, let address, let src, let dest, let srcAmount, let destAmount):
       let json: JSONDictionary = [
         "user_addr": address,
         "src": src,
@@ -381,7 +381,8 @@ extension LimitOrderService: TargetType {
       json["Authorization"] = accessToken
     case .pendingBalance(let accessToken, _):
       json["Authorization"] = accessToken
-    default: break
+    case .getFee(let accessToken, _, _, _, _, _):
+      if let accessToken = accessToken { json["Authorization"] = accessToken }
     }
     return json
   }

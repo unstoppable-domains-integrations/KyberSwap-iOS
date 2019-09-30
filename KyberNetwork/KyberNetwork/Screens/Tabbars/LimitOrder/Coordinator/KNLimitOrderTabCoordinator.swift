@@ -186,6 +186,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       self.navigationController.pushViewController(self.manageOrdersVC!, animated: true, completion: nil)
     case .estimateFee(let address, let src, let dest, let srcAmount, let destAmount):
       self.getExpectedFee(
+        accessToken: IEOUserStorage.shared.user?.accessToken,
         address: address,
         src: src,
         dest: dest,
@@ -253,6 +254,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       return Double(amount) / pow(10.0, Double(order.to.decimals))
     }()
     self.getExpectedFee(
+      accessToken: IEOUserStorage.shared.user?.accessToken,
       address: order.sender.description,
       src: order.from.contract,
       dest: order.to.contract,
@@ -329,8 +331,9 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   // Return (fee, discount, feeBeforeDiscount, Error)
-  fileprivate func getExpectedFee(address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, Double?, Double?, Double?, String?) -> Void)? = nil) {
+  fileprivate func getExpectedFee(accessToken: String?, address: String, src: String, dest: String, srcAmount: Double, destAmount: Double, completion: ((Double?, Double?, Double?, Double?, String?) -> Void)? = nil) {
     KNLimitOrderServerCoordinator.shared.getFee(
+      accessToken: accessToken,
       address: address,
       src: src,
       dest: dest,
