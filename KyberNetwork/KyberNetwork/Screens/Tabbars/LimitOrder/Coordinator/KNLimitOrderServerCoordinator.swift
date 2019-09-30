@@ -46,8 +46,9 @@ class KNLimitOrderServerCoordinator {
           } else {
             completion(.success((nil, message)))
           }
-        } catch let error {
-          completion(.failure(AnyError(error)))
+        } catch {
+          let message = "Something went wrong, please try again later".toBeLocalised()
+          completion(.success((nil, message)))
         }
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -98,8 +99,9 @@ class KNLimitOrderServerCoordinator {
                 let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
                 completion(.success(("", message)))
               }
-            } catch let error {
-              completion(.failure(AnyError(error)))
+            } catch {
+              let message = "Can not get nonce data to sign your order".toBeLocalised()
+              completion(.success(("", message)))
             }
           case .failure(let error):
             completion(.failure(AnyError(error)))
@@ -132,8 +134,8 @@ class KNLimitOrderServerCoordinator {
                 let message = json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()
                 completion(.success((0, 0, 0, 0, message)))
               }
-            } catch let error {
-              completion(.failure(AnyError(error)))
+            } catch {
+              completion(.success((0, 0, 0, 0, "Can not get fee, please try again later".toBeLocalised())))
             }
           case .failure(let error):
             completion(.failure(AnyError(error)))
@@ -159,8 +161,8 @@ class KNLimitOrderServerCoordinator {
               } else {
                 completion(.success(json["message"] as? String ?? "Something went wrong, please try again later".toBeLocalised()))
               }
-            } catch let error {
-              completion(.failure(AnyError(error)))
+            } catch {
+              completion(.success("Can not cancel the order, please try again later".toBeLocalised()))
             }
           case .failure(let error):
             completion(.failure(AnyError(error)))
