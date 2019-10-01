@@ -1418,7 +1418,7 @@ extension KNCreateLimitOrderViewController: KNLimitOrderCollectionViewCellDelega
       with: "",
       message: order.messages,
       icon: UIImage(named: "warning_icon"),
-      time: 1.5
+      time: 2.5
     )
   }
 

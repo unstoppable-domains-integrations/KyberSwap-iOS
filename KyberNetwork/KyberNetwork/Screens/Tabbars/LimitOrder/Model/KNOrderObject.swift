@@ -133,10 +133,7 @@ class KNOrderObject: NSObject {
       }()
     }
     if let idx = fields.index(of: "msg") {
-      self.messages = {
-        let msgs = data[idx] as? [String] ?? []
-        return msgs.joined(separator: ". ")
-      }()
+      self.messages = data[idx] as? String ?? ""
     }
     if let idx = fields.index(of: "tx_hash") {
       self.txHash = data[idx] as? String
