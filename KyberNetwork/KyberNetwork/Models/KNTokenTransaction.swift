@@ -29,7 +29,7 @@ class KNTokenTransaction: Object {
   @objc dynamic var confirmations: String = ""
   @objc dynamic var compoundKey: String = ""
 
-  convenience init(dictionary: JSONDictionary) {
+  convenience init(dictionary: JSONDictionary, addressToSymbol: [String: String]) {
     self.init()
     self.id = dictionary["hash"] as? String ?? ""
     let blockNumberString: String = dictionary["blockNumber"] as? String ?? ""
@@ -43,7 +43,7 @@ class KNTokenTransaction: Object {
     self.to = dictionary["to"] as? String ?? ""
     self.value = dictionary["value"] as? String ?? ""
     self.tokenName = dictionary["tokenName"] as? String ?? ""
-    self.tokenSymbol = dictionary["tokenSymbol"] as? String ?? ""
+    self.tokenSymbol = addressToSymbol[self.contractAddress.lowercased()] ?? dictionary["tokenSymbol"] as? String ?? ""
     self.tokenDecimal = dictionary["tokenDecimal"] as? String ?? ""
     self.transactionIndex = dictionary["transactionIndex"] as? String ?? ""
     self.gas = dictionary["gas"] as? String ?? ""

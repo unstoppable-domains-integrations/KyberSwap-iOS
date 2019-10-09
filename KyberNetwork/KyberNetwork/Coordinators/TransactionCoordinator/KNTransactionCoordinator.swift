@@ -17,6 +17,14 @@ class KNTransactionCoordinator {
   let tokenStorage: KNTokenStorage
   let externalProvider: KNExternalProvider
   let wallet: Wallet
+
+  lazy var addressToSymbol: [String: String] = {
+    var maps: [String: String] = [:]
+    KNSupportedTokenStorage.shared.supportedTokens.forEach({
+      maps[$0.contract.lowercased()] = $0.symbol
+    })
+    return maps
+  }()
   fileprivate var isLoadingEnabled: Bool = false
 
   fileprivate var pendingTxTimer: Timer?
@@ -149,7 +157,7 @@ extension KNTransactionCoordinator {
               _ = try response.filterSuccessfulStatusCodes()
               let json: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
               let data: [JSONDictionary] = json["result"] as? [JSONDictionary] ?? []
-              let transactions = data.map({ return KNTokenTransaction(dictionary: $0).toTransaction() }).filter({ return self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
+              let transactions = data.map({ return KNTokenTransaction(dictionary: $0, addressToSymbol: self.addressToSymbol).toTransaction() }).filter({ return self.transactionStorage.get(forPrimaryKey: $0.id) == nil })
               self.updateListTokenTransactions(transactions)
               if isDebug { print("---- ERC20 Token Transactions: Loaded \(transactions.count) transactions ----") }
               completion?(.success(transactions))

@@ -96,6 +96,22 @@ class KNHistoryCoordinator: Coordinator {
           break
         }
         if transactions[id].id == transactions[id + 1].id {
+          // count number of txs with same id
+          var cnt = 2
+          var tempId = id + 2
+          while tempId < transactions.count && transactions[tempId].id == transactions[id].id {
+            tempId += 1
+            cnt += 1
+          }
+          if cnt > 2 {
+            // more than 2 txs shared same hash
+            tempId = id
+            while id < transactions.count && transactions[id].id == transactions[tempId].id {
+              processedTxs.append(transactions[id])
+              id += 1
+            }
+            continue
+          }
           // merge 2 transactions
           if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: address) {
             processedTxs.append(swap)
