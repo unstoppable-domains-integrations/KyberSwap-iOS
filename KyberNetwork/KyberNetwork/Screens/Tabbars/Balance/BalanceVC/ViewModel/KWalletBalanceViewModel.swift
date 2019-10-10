@@ -412,9 +412,13 @@ class KWalletBalanceViewModel: NSObject {
       if self.trackerRateData[left.identifier()] == nil { return false }
       if self.trackerRateData[right.identifier()] == nil { return true }
     }
+    let isLeftFav = KNAppTracker.isTokenFavourite(left.contract.lowercased())
+    let isRightFav = KNAppTracker.isTokenFavourite(right.contract.lowercased())
     if self.tokensDisplayType == .default {
       if left.extraData?.shouldShowAsNew == true { return true }
       if right.extraData?.shouldShowAsNew == true { return false }
+      if isLeftFav { return true }
+      if isRightFav { return false }
     }
     // sort by name
     if self.tokensDisplayType == .nameDesc { return left.symbol < right.symbol }
@@ -424,6 +428,7 @@ class KWalletBalanceViewModel: NSObject {
       guard let balance1 = self.balance(for: right) else { return true }
       let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
       let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
+      if value0 == value1 { return isLeftFav }
       return value0 > value1
     }
 

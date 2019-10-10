@@ -49,6 +49,10 @@ class KNLimitOrderSearchTokenViewModel {
       return self.supportedTokens.filter({ return ($0.symbol + "* " + $0.name).lowercased().contains(self.searchedText.lowercased()) })
     }()
     self.displayedTokens.sort { (token0, token1) -> Bool in
+      let isFav0 = KNAppTracker.isTokenFavourite(token0.contract.lowercased())
+      let isFav1 = KNAppTracker.isTokenFavourite(token1.contract.lowercased())
+      if isFav0 && !isFav1 { return true }
+      if !isFav0 && isFav1 { return false }
       if token0.isSupported && !token1.isSupported { return true }
       if token1.isSupported && !token0.isSupported { return false }
       let isContain0 = token0.symbol.lowercased().contains(self.searchedText.lowercased())
