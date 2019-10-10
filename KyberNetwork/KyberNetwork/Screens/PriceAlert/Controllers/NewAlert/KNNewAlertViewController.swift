@@ -191,7 +191,7 @@ class KNNewAlertViewController: KNBaseViewController {
       let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(self.viewModel.token.lowercased()).png"
       if let image = UIImage(named: self.viewModel.token.lowercased()) {
         self.tokenButton.setImage(
-          image.resizeImage(to: CGSize(width: 36.0, height: 36.0)),
+          image,
           for: .normal
         )
       } else {
