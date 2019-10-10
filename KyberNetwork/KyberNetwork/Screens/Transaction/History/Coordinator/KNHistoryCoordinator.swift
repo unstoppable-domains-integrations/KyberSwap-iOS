@@ -55,7 +55,7 @@ class KNHistoryCoordinator: Coordinator {
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-      self.appCoordinatorTokensTransactionsDidUpdate()
+      self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
       self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
       self.session.transacionCoordinator?.forceFetchTokenTransactions()
@@ -74,7 +74,6 @@ class KNHistoryCoordinator: Coordinator {
     self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.appCoordinatorTokensTransactionsDidUpdate()
     self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
-    self.appCoordinatorTokensTransactionsDidUpdate()
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
     self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
   }
@@ -83,7 +82,7 @@ class KNHistoryCoordinator: Coordinator {
     self.rootViewController.coordinatorUpdateWalletObjects()
   }
 
-  func appCoordinatorTokensTransactionsDidUpdate() {
+  func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {
     var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(1000)).map({ return $0.clone() })
     let addressToSymbol: [String: String] = {
       var maps: [String: String] = [:]
@@ -93,6 +92,7 @@ class KNHistoryCoordinator: Coordinator {
       return maps
     }()
     let address = self.currentWallet.address
+    if showLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
       transactions.sort(by: { return $0.id < $1.id })
       var processedTxs: [Transaction] = []
@@ -150,13 +150,14 @@ class KNHistoryCoordinator: Coordinator {
         }
         return data
       }()
-      DispatchQueue.main.async {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+        if showLoading { self.navigationController.hideLoading() }
         self.rootViewController.coordinatorUpdateCompletedTransactions(
           data: sectionData,
           dates: dates,
           currentWallet: self.currentWallet
         )
-      }
+      })
     }
   }
 
