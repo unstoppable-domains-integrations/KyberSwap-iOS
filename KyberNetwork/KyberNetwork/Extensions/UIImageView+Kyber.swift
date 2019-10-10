@@ -35,7 +35,7 @@ extension UIImageView {
     }
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
     if let image = UIImage(named: icon.lowercased()) {
-      self.image = image.resizeImage(to: size)
+      self.image = image
       self.layoutIfNeeded()
     } else {
       let placeHolderImg = UIImage(named: "default_token")

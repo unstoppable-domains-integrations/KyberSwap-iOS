@@ -56,7 +56,7 @@ extension UIButton {
     }
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
     if let image = UIImage(named: icon.lowercased()) {
-      self.setImage(image.resizeImage(to: size), for: .normal)
+      self.setImage(image, for: .normal)
       self.layoutIfNeeded()
     } else {
       let placeHolderImg = UIImage(named: "default_token")

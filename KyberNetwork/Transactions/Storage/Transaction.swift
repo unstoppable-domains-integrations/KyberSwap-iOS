@@ -159,11 +159,11 @@ extension Transaction {
 }
 
 extension Transaction {
-  static func swapTransation(sendTx: Transaction, receiveTx: Transaction, curWallet: String) -> Transaction? {
+  static func swapTransation(sendTx: Transaction, receiveTx: Transaction, curWallet: String, addressToSymbol: [String: String]) -> Transaction? {
     if sendTx.id != receiveTx.id { return nil }
     if sendTx.from.lowercased() != curWallet.lowercased() && receiveTx.from.lowercased() != curWallet.lowercased() { return nil }
     if sendTx.from.lowercased() != curWallet.lowercased() {
-      return Transaction.swapTransation(sendTx: receiveTx, receiveTx: sendTx, curWallet: curWallet)
+      return Transaction.swapTransation(sendTx: receiveTx, receiveTx: sendTx, curWallet: curWallet, addressToSymbol: addressToSymbol)
     }
     if sendTx.from.lowercased() != curWallet.lowercased() || receiveTx.to.lowercased() != curWallet.lowercased() { return nil }
     // must be one send, one receive
@@ -179,8 +179,8 @@ extension Transaction {
       contract: nil,
       type: "exchange",
       value: destAmount,
-      symbol: srcToken.symbol,
-      name: destToken.symbol,
+      symbol: addressToSymbol[srcToken.contract.lowercased()] ?? srcToken.symbol,
+      name: addressToSymbol[destToken.contract.lowercased()] ?? destToken.symbol,
       decimals: destToken.decimals
     )
     return Transaction(

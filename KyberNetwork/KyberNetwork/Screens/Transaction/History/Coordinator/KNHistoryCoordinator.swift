@@ -85,6 +85,13 @@ class KNHistoryCoordinator: Coordinator {
 
   func appCoordinatorTokensTransactionsDidUpdate() {
     var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(1000)).map({ return $0.clone() })
+    let addressToSymbol: [String: String] = {
+      var maps: [String: String] = [:]
+      KNSupportedTokenStorage.shared.supportedTokens.forEach({
+        maps[$0.contract.lowercased()] = $0.symbol
+      })
+      return maps
+    }()
     let address = self.currentWallet.address
     DispatchQueue.global(qos: .background).async {
       transactions.sort(by: { return $0.id < $1.id })
@@ -113,7 +120,7 @@ class KNHistoryCoordinator: Coordinator {
             continue
           }
           // merge 2 transactions
-          if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: address) {
+          if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: address, addressToSymbol: addressToSymbol) {
             processedTxs.append(swap)
             id += 2
             continue
