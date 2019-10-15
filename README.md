@@ -2,7 +2,12 @@
 
 
 ### Download app on AppStore 
-[<img src="https://raw.githubusercontent.com/KyberNetwork/KyberSwap-iOS/master/resources/app-store-badge.png">](https://itunes.apple.com/us/app/kyberswap/id1453691309)
+[<img src="https://kyberswap.com/app/images/apple_store.svg">](https://itunes.apple.com/us/app/kyberswap/id1453691309)
+
+### Download app on Google Play store 
+[<img src="https://kyberswap.com/app/images/google_play_store.svg">](https://play.google.com/store/apps/details?id=com.kyberswap.android) 
+
+
 
 We’re the only DEX that provides:
 * Fully on-chain swaps

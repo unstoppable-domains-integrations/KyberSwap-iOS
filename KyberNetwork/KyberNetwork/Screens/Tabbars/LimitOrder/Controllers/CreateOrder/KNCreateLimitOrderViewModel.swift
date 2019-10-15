@@ -246,9 +246,7 @@ class KNCreateLimitOrderViewModel {
   }
 
   var isAmountTooBig: Bool {
-    if !self.isBalanceEnough { return true }
-    let maxValueInETH = BigInt(10.0 * Double(EthereumUnit.ether.rawValue))
-    return maxValueInETH < self.equivalentETHAmount
+    return !self.isBalanceEnough
   }
 
   var isAmountTooSmall: Bool {
