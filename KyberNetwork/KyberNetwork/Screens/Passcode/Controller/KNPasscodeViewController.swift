@@ -165,7 +165,9 @@ class KNPasscodeViewController: KNBaseViewController {
   }
 
   @IBAction func digitButtonPressed(_ sender: UIButton) {
-    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 { return }
+    if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
+      if case .authenticate = self.viewType { return }
+    }
     self.currentPasscode = "\(self.currentPasscode)\(sender.tag)"
     if self.currentPasscode.count == 6 {
       self.userDidEnterPasscode()
