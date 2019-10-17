@@ -30,7 +30,7 @@ class KNWalletStorage {
   func add(wallets: [KNWalletObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(wallets, update: true)
+    self.realm.add(wallets, update: .modified)
     try! self.realm.commitWrite()
   }
 

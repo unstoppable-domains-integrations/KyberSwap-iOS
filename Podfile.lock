@@ -114,11 +114,11 @@ PODS:
   - nanopb/encode (0.3.901)
   - OneSignal (2.9.5)
   - QRCodeReaderViewController (4.0.2)
-  - Realm (3.14.1):
-    - Realm/Headers (= 3.14.1)
-  - Realm/Headers (3.14.1)
-  - RealmSwift (3.14.1):
-    - Realm (= 3.14.1)
+  - Realm (3.19.0):
+    - Realm/Headers (= 3.19.0)
+  - Realm/Headers (3.19.0)
+  - RealmSwift (3.19.0):
+    - Realm (= 3.19.0)
   - Result (3.2.4)
   - SAMKeychain (1.5.3)
   - SeedStackViewController (0.4.0)
@@ -168,7 +168,7 @@ DEPENDENCIES:
   - MSCircularSlider (~> 1.2.2)
   - OneSignal (~> 2.9.5)
   - QRCodeReaderViewController (~> 4.0.2)
-  - RealmSwift (~> 3.14.1)
+  - RealmSwift (~> 3.19.0)
   - SAMKeychain (~> 1.5.3)
   - SeedStackViewController
   - StatefulViewController (~> 3.0)
@@ -270,8 +270,8 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   OneSignal: ccdeb961882f8668305e5b694e2cb7cb325fc907
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
-  Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
-  RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
+  Realm: 995d585bcf699aaff226715886c849a29dd3d07f
+  RealmSwift: 35f284a537989f2187b413e5917091948cb87a3f
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   SeedStackViewController: 45e88ca1493a610e74d661d3feced7098f72dbd3
@@ -286,6 +286,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: f2e4d13da76a54a3579ed3637e8f6bd7c711ab51
+PODFILE CHECKSUM: 63dfa8a32534a1e79bdaf62bd20447b7cd42a16d
 
 COCOAPODS: 1.5.3

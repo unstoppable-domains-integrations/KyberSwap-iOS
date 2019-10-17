@@ -15,7 +15,7 @@ target 'KyberNetwork' do
   pod 'KeychainSwift', '~> 13.0.0'
   pod 'SwiftLint', '~> 0.29.4'
   pod 'SeedStackViewController'
-  pod 'RealmSwift', '~> 3.14.1'
+  pod 'RealmSwift', '~> 3.19.0'
   pod 'Lokalise', '~> 0.8.1'
   pod 'Moya', '~> 10.0.1'
   pod 'JavaScriptKit', '~> 1.0.0'

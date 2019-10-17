@@ -13,7 +13,7 @@ extension TransactionsStorage {
 
   func add(transactions: [KNTokenTransaction]) {
     self.realm.beginWrite()
-    self.realm.add(transactions, update: true)
+    self.realm.add(transactions, update: .modified)
     try! self.realm.commitWrite()
   }
 

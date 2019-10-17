@@ -29,7 +29,7 @@ class KNContactStorage {
   fileprivate func add(contacts: [KNContact]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(contacts, update: true)
+    self.realm.add(contacts, update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }

@@ -43,7 +43,7 @@ class TransactionsStorage {
     @discardableResult
     func add(_ items: [Transaction]) -> [Transaction] {
         realm.beginWrite()
-        realm.add(items, update: true)
+        realm.add(items, update: .modified)
         try! realm.commitWrite()
         return items
     }

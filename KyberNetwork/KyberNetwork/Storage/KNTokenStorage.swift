@@ -68,7 +68,7 @@ class KNTokenStorage {
 
   func add(tokens: [TokenObject]) {
     self.realm.beginWrite()
-    self.realm.add(tokens, update: true)
+    self.realm.add(tokens, update: .modified)
     try! self.realm.commitWrite()
   }
 

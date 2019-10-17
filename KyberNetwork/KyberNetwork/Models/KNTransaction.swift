@@ -224,7 +224,7 @@ extension TransactionsStorage {
   @discardableResult
   func addKyberTransactions(_ items: [KNTransaction]) -> [KNTransaction] {
     realm.beginWrite()
-    realm.add(items, update: true)
+    realm.add(items, update: .modified)
     try! realm.commitWrite()
     return items
   }

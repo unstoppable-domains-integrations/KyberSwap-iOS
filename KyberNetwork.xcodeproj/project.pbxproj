@@ -4068,7 +4068,7 @@
 					Resources,
 				);
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1110;
 				TargetAttributes = {
 					2912CCF41F6A830700C6CBE3 = {
 						CreatedOnToolsVersion = 9.0;
