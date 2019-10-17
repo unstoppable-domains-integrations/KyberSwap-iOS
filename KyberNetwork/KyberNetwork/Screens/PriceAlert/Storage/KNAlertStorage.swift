@@ -27,7 +27,7 @@ class KNAlertStorage {
   func addNewAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(alerts, update: false)
+    self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }

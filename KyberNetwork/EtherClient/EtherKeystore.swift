@@ -294,11 +294,11 @@ open class EtherKeystore: Keystore {
         switch wallet.type {
         case .real(let acc):
             guard let account = getAccount(for: acc.address) else {
-                return .failure(.accountNotFound)
+                return .failure(.failedMissingAccountOrPassword)
             }
 
             guard let password = getPassword(for: account) else {
-                return .failure(.failedToDeleteAccount)
+                return .failure(.failedMissingAccountOrPassword)
             }
 
             do {
@@ -362,10 +362,10 @@ open class EtherKeystore: Keystore {
 
     func signTransaction(_ transaction: SignTransaction) -> Result<Data, KeystoreError> {
         guard let account = keyStore.account(for: transaction.account.address) else {
-            return .failure(.failedToSignTransaction)
+            return .failure(.failedMissingAccountOrPassword)
         }
         guard let password = getPassword(for: account) else {
-            return .failure(.failedToSignTransaction)
+            return .failure(.failedMissingAccountOrPassword)
         }
 
         let signer: Signer
@@ -396,10 +396,10 @@ open class EtherKeystore: Keystore {
 
     func signLimitOrder(_ order: KNLimitOrder) -> Result<Data, KeystoreError> {
       guard let account = keyStore.account(for: order.account.address) else {
-        return .failure(.failedToSignTransaction)
+        return .failure(.failedMissingAccountOrPassword)
       }
       guard let _ = getPassword(for: account) else {
-        return .failure(.failedToSignTransaction)
+        return .failure(.failedMissingAccountOrPassword)
       }
 
       let sha3 = SHA3(variant: .keccak256)

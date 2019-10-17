@@ -16,6 +16,7 @@ enum KeystoreError: LocalizedError {
     case failedToSignMessage
     case failedToExportPrivateKey
     case failedToExportMnemonics
+    case failedMissingAccountOrPassword
 
     var errorDescription: String? {
         switch self {
@@ -47,6 +48,8 @@ enum KeystoreError: LocalizedError {
             return NSLocalizedString("failed.to.export.private.key", value: "Failed to export private key", comment: "")
         case .failedToExportMnemonics:
             return NSLocalizedString("failed.to.export.mnemonics", value: "Failed to export mnemonics", comment: "")
+        case .failedMissingAccountOrPassword:
+          return "Please try to remove your wallet and re-import again".toBeLocalised()
         }
     }
 }
