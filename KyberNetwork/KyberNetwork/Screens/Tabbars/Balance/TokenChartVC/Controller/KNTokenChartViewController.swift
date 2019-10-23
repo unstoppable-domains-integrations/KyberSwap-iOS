@@ -135,16 +135,35 @@ class KNTokenChartViewModel {
   var totalValueString: String {
     guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
     let value: BigInt = {
-      return trackerRate.rateETHBigInt * self.balance.value / BigInt(10).power(self.token.decimals)
+      let balance: BigInt = {
+        let balanceString: String = self.balance.value.string(
+          decimals: self.token.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(self.token.decimals, 6)
+        )
+        if balanceString.fullBigInt(decimals: self.token.decimals)?.isZero == true { return BigInt(0) }
+        return self.balance.value
+      }()
+      return trackerRate.rateETHBigInt * balance / BigInt(10).power(self.token.decimals)
     }()
     if value.isZero { return "0 ETH" }
-    let valueString: String = value.displayRate(decimals: 18)
+    let valueString: String = "\(value.displayRate(decimals: 18).prefix(12))"
+    if valueString.fullBigInt(decimals: 18)?.isZero == true { return "0 ETH" }
     return self.token.isETH ? "\(valueString) ETH" : "~\(valueString) ETH"
   }
 
   var totalUSDAmount: BigInt? {
     if let usdRate = KNRateCoordinator.shared.usdRate(for: self.token) {
-      return usdRate.rate * self.balance.value / BigInt(10).power(self.token.decimals)
+      let balance: BigInt = {
+        let balanceString: String = self.balance.value.string(
+          decimals: self.token.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(self.token.decimals, 6)
+        )
+        if balanceString.fullBigInt(decimals: self.token.decimals)?.isZero == true { return BigInt(0) }
+        return self.balance.value
+      }()
+      return usdRate.rate * balance / BigInt(10).power(self.token.decimals)
     }
     return nil
   }
@@ -152,7 +171,8 @@ class KNTokenChartViewModel {
   var displayTotalUSDAmount: String? {
     guard let amount = self.totalUSDAmount else { return nil }
     if amount.isZero { return "$0 USD" }
-    let value = amount.displayRate(decimals: 18)
+    let value = "\(amount.displayRate(decimals: 18).prefix(12))"
+    if value.fullBigInt(decimals: 18)?.isZero == true { return "$0 USD" }
     return "~ $\(value) USD"
   }
 
