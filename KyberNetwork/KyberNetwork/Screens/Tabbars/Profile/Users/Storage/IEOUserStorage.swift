@@ -25,7 +25,7 @@ class IEOUserStorage {
   func add(objects: [IEOUser]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(objects, update: true)
+    self.realm.add(objects, update: .modified)
     try! self.realm.commitWrite()
   }
 
@@ -74,7 +74,7 @@ class IEOUserStorage {
     guard let user = self.objects.first else { return }
     self.realm.beginWrite()
     user.isSignedIn = true
-    self.realm.add(user, update: true)
+    self.realm.add(user, update: .modified)
     try! self.realm.commitWrite()
     // Remove all other users
     let removedUsers = self.objects.filter({ return !$0.isSignedIn })
@@ -107,7 +107,7 @@ extension IEOUserStorage {
   func updateKYCDetails(object: UserKYCDetailsInfo) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(object, update: true)
+    self.realm.add(object, update: .modified)
     try! self.realm.commitWrite()
   }
 }

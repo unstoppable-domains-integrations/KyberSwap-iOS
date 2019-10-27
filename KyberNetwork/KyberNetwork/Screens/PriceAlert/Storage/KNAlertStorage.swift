@@ -27,7 +27,7 @@ class KNAlertStorage {
   func addNewAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(alerts, update: false)
+    self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }
@@ -39,7 +39,7 @@ class KNAlertStorage {
   func updateAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(alerts, update: true)
+    self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }
@@ -52,7 +52,7 @@ class KNAlertStorage {
     let removedAlerts = self.alerts.filter({ return !alertIDs.contains($0.id) })
     removedAlerts.forEach({ $0.removeRewardData() })
     self.realm.delete(removedAlerts)
-    self.realm.add(alerts, update: true)
+    self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListAlertsNotificationKey)
   }

@@ -547,7 +547,7 @@ extension TransactionsStorage {
 
   func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
     self.realm.beginWrite()
-    self.realm.add(transactions, update: true)
+    self.realm.add(transactions, update: .modified)
     try! realm.commitWrite()
   }
 

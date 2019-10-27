@@ -108,28 +108,32 @@ class KNSession {
     }
     // delete all storage for each wallet
     let deleteResult = self.keystore.delete(wallet: wallet)
-    if case .success() = deleteResult {
-      KNAppTracker.resetAppTrackerData(for: wallet.address)
-      for env in KNEnvironment.allEnvironments() {
-        // Remove token and transaction storage
-        let config = RealmConfiguration.configuration(for: wallet, chainID: env.chainID)
-        let realm = try! Realm(configuration: config)
-        let transactionStorage = TransactionsStorage(realm: realm)
-        transactionStorage.deleteAll()
-        let tokenStorage = KNTokenStorage(realm: realm)
-        tokenStorage.deleteAll()
-
-        // Remove wallet storage
-        let globalConfig = RealmConfiguration.globalConfiguration(for: env.chainID)
-        let globalRealm = try! Realm(configuration: globalConfig)
-        if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
-          KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
-          try! globalRealm.write { globalRealm.delete(walletObject) }
-        }
+    switch deleteResult {
+    case .failure(let err):
+      if case .failedToDeleteAccount = err {
+        return false
       }
-      return true
+    default: break
     }
-    return false
+    KNAppTracker.resetAppTrackerData(for: wallet.address)
+    for env in KNEnvironment.allEnvironments() {
+      // Remove token and transaction storage
+      let config = RealmConfiguration.configuration(for: wallet, chainID: env.chainID)
+      let realm = try! Realm(configuration: config)
+      let transactionStorage = TransactionsStorage(realm: realm)
+      transactionStorage.deleteAll()
+      let tokenStorage = KNTokenStorage(realm: realm)
+      tokenStorage.deleteAll()
+
+      // Remove wallet storage
+      let globalConfig = RealmConfiguration.globalConfiguration(for: env.chainID)
+      let globalRealm = try! Realm(configuration: globalConfig)
+      if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
+        KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
+        try! globalRealm.write { globalRealm.delete(walletObject) }
+      }
+    }
+    return true
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {

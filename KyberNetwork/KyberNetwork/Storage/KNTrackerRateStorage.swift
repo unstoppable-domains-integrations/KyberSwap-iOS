@@ -29,7 +29,7 @@ class KNTrackerRateStorage {
   func add(rates: [KNTrackerRate]) {
     if self.realm == nil { return }
     self.realm.beginWrite()
-    self.realm.add(rates, update: true)
+    self.realm.add(rates, update: .modified)
     try!self.realm.commitWrite()
   }
 

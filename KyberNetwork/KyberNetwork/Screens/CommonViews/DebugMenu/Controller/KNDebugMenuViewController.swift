@@ -85,7 +85,7 @@ class KNDebugMenuViewController: KNBaseViewController {
     let newWallets = KNWalletStorage.shared.wallets.map({ return $0.copy(withNewName: $0.name) })
     newRealm.beginWrite()
     newRealm.delete(newRealm.objects(KNWalletObject.self))
-    newRealm.add(newWallets, update: true)
+    newRealm.add(newWallets, update: .modified)
     try! newRealm.commitWrite()
   }
 }
