@@ -1,9 +1,10 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import TrustKeystore
 
 protocol KNCreatePasswordViewControllerDelegate: class {
-  func createPasswordUserDidFinish(_ password: String)
+  func createPasswordUserDidFinish(_ password: String, wallet: Wallet)
   func createPasswordDidCancel(sender: KNCreatePasswordViewController)
 }
 
@@ -18,9 +19,11 @@ class KNCreatePasswordViewController: KNBaseViewController {
   @IBOutlet weak var doneButton: UIButton!
 
   fileprivate weak var delegate: KNCreatePasswordViewControllerDelegate?
+  fileprivate let wallet: Wallet
 
-  init(delegate: KNCreatePasswordViewControllerDelegate) {
+  init(wallet: Wallet, delegate: KNCreatePasswordViewControllerDelegate) {
     self.delegate = delegate
+    self.wallet = wallet
     super.init(nibName: "KNCreatePasswordViewController", bundle: nil)
   }
 
@@ -84,7 +87,7 @@ class KNCreatePasswordViewController: KNBaseViewController {
       return
     }
     self.dismiss(animated: true) {
-      self.delegate?.createPasswordUserDidFinish(password)
+      self.delegate?.createPasswordUserDidFinish(password, wallet: self.wallet)
     }
   }
 }

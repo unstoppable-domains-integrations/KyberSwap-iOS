@@ -292,7 +292,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func backupKeystore(wallet: Wallet) {
     KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up_keystore"])
-    let createPassword = KNCreatePasswordViewController(delegate: self)
+    let createPassword = KNCreatePasswordViewController(wallet: wallet, delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
     createPassword.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
@@ -307,7 +307,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
         self.navigationController.hideLoading()
         switch result {
         case .success(let data):
-          self.openShowBackUpView(data: data.hexString)
+          self.openShowBackUpView(data: data.hexString, wallet: wallet)
         case .failure(let error):
           self.navigationController.topViewController?.displayError(error: error)
         }
@@ -326,7 +326,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
         self.navigationController.hideLoading()
         switch result {
         case .success(let data):
-          self.openShowBackUpView(data: data)
+          self.openShowBackUpView(data: data, wallet: wallet)
         case .failure(let error):
           self.navigationController.topViewController?.displayError(error: error)
         }
@@ -336,7 +336,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     }
   }
 
-  fileprivate func openShowBackUpView(data: String) {
+  fileprivate func openShowBackUpView(data: String, wallet: Wallet) {
     let showBackUpVC = KNShowBackUpDataViewController(
       wallet: self.session.wallet.address.description,
       backupData: data
@@ -350,8 +350,8 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     UIPasteboard.general.string = wallet.address.description
   }
 
-  fileprivate func exportDataString(_ value: String) {
-    let fileName = "kyberswap_backup_\(self.session.wallet.address.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
+  fileprivate func exportDataString(_ value: String, wallet: Wallet) {
+    let fileName = "kyberswap_backup_\(wallet.address.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
@@ -372,15 +372,15 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
-  func createPasswordUserDidFinish(_ password: String) {
-    if case .real(let account) = self.session.wallet.type {
+  func createPasswordUserDidFinish(_ password: String, wallet: Wallet) {
+    if case .real(let account) = wallet.type {
       if let currentPassword = self.session.keystore.getPassword(for: account) {
         self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
         self.session.keystore.export(account: account, password: currentPassword, newPassword: password, completion: { [weak self] result in
           self?.navigationController.topViewController?.hideLoading()
           switch result {
           case .success(let value):
-            self?.exportDataString(value)
+            self?.exportDataString(value, wallet: wallet)
           case .failure(let error):
             self?.navigationController.topViewController?.displayError(error: error)
           }
