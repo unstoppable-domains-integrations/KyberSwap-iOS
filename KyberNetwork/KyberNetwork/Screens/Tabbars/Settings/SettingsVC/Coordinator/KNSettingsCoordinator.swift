@@ -338,7 +338,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func openShowBackUpView(data: String, wallet: Wallet) {
     let showBackUpVC = KNShowBackUpDataViewController(
-      wallet: self.session.wallet.address.description,
+      wallet: wallet.address.description,
       backupData: data
     )
     showBackUpVC.loadViewIfNeeded()
