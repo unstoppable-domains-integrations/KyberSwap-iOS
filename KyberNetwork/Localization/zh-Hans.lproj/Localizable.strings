@@ -510,6 +510,7 @@
 "Deposit more ETH or click Advanced to lower GAS fee" = "存入更多ETH或点击高级选项以降低GAS费用";
 "Insufficient ETH for transaction" = "没有足够的ETH交易";
 "Get Started" = "Get Started";
+"This password is needed to unlock your JSON file. Please remember it carefully." = "This password is needed to unlock your JSON file. Please remember it carefully.";
 
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";

@@ -17,6 +17,10 @@ class KNCreatePasswordViewController: KNBaseViewController {
   @IBOutlet weak var errorPasswordLabel: UILabel!
   @IBOutlet weak var errorConfirmPasswordLabel: UILabel!
   @IBOutlet weak var doneButton: UIButton!
+  @IBOutlet weak var passwordTextLabel: UILabel!
+  @IBOutlet weak var confirmPasswordTextLabel: UILabel!
+
+  @IBOutlet weak var warningMessageLabel: UILabel!
 
   fileprivate weak var delegate: KNCreatePasswordViewControllerDelegate?
   fileprivate let wallet: Wallet
@@ -60,6 +64,15 @@ class KNCreatePasswordViewController: KNBaseViewController {
     self.errorPasswordLabel.isHidden = true
     self.errorConfirmPasswordLabel.text = NSLocalizedString("passwords.mismatch", value: "Passwords mismatch", comment: "")
     self.errorConfirmPasswordLabel.isHidden = true
+
+    self.warningMessageLabel.text = "This password is needed to unlock your JSON file. Please remember it carefully.".toBeLocalised()
+
+    self.passwordTextLabel.text = "Password".toBeLocalised()
+    self.passwordTextField.placeholder = "Enter password".toBeLocalised()
+    self.confirmPasswordTextLabel.text = "Confirm Password".toBeLocalised()
+    self.confirmPasswordTextField.placeholder = "Re-enter password".toBeLocalised()
+
+    self.doneButton.setTitle("Done".toBeLocalised(), for: .normal)
 
     self.doneButton.rounded(color: .clear, width: 0, radius: KNAppStyleType.current.buttonRadius(for: self.doneButton.frame.height))
     self.doneButton.applyGradient(with: UIColor.Kyber.buttonColors)
