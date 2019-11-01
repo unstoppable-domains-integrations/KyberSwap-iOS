@@ -85,6 +85,7 @@ enum KNTrackerService {
   case getRates
   case getUserCap(address: String)
   case swapSuggestion(address: String, tokens: JSONDictionary)
+  case getGasLimit(src: String, dest: String, amount: Double)
 }
 
 extension KNTrackerService: TargetType {
@@ -100,6 +101,8 @@ extension KNTrackerService: TargetType {
       return URL(string: baseURLString + KNSecret.getChange)!
     case .swapSuggestion:
       return URL(string: KNSecret.swapSuggestionURL)!
+    case .getGasLimit(let src, let dest, let amount):
+      return URL(string: "\(KNEnvironment.default.gasLimitEnpoint)/gas_limit?source=\(src)&dest=\(dest)&amount=\(amount)")!
     }
   }
 

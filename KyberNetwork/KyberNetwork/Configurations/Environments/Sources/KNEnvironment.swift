@@ -203,4 +203,12 @@ enum KNEnvironment: Int {
     default: return KNSecret.ropstenCacheCapURL
     }
   }
+
+  var gasLimitEnpoint: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production: return KNSecret.trackerURL
+    case .staging: return KNSecret.stagingTrackerURL
+    default: return KNSecret.debugTrackerURL
+    }
+  }
 }

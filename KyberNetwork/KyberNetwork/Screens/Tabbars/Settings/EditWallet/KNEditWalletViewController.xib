@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -123,7 +121,7 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="7aY-6e-4Tj" firstAttribute="top" secondItem="eV5-M1-8S1" secondAttribute="bottom" constant="24" id="5FQ-Rv-ys0"/>
-                <constraint firstAttribute="trailing" secondItem="eV5-M1-8S1" secondAttribute="trailing" id="8OB-3Y-6VI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eV5-M1-8S1" secondAttribute="trailing" id="8OB-3Y-6VI"/>
                 <constraint firstItem="cyD-4H-2LB" firstAttribute="top" secondItem="7aY-6e-4Tj" secondAttribute="bottom" constant="16" id="BbU-Sz-br4"/>
                 <constraint firstItem="69G-Je-nPq" firstAttribute="bottom" secondItem="cyD-4H-2LB" secondAttribute="bottom" constant="-8" id="C0z-Gz-OJe"/>
                 <constraint firstItem="GHh-yr-vlk" firstAttribute="leading" secondItem="DaD-mS-84w" secondAttribute="leading" id="DCW-LJ-YzZ"/>

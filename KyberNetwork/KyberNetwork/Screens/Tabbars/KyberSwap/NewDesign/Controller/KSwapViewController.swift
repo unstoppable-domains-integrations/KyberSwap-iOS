@@ -907,6 +907,18 @@ extension KSwapViewController {
   }
 
   /*
+   Update estimate gas limit from API (currently for DAI), check if the from, to, amount are all the same as current value in the model    Update UIs according to new values
+   */
+  func coordinatorDidUpdateEstimateGasFromAPI(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
+    self.viewModel.updateEstimateGasLimit(
+      for: from,
+      to: to,
+      amount: amount,
+      gasLimit: gasLimit
+    )
+  }
+
+  /*
    Update user cap in wei
    */
 

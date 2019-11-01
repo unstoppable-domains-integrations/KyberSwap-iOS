@@ -371,7 +371,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .estimateComparedRate(let from, let to):
       self.updateComparedEstimateRate(from: from, to: to)
     case .estimateGas(let from, let to, let amount, let gasPrice):
-      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+      self.updateEstimatedGasLimitFromAPIIfNeeded(from: from, to: to, amount: amount, gasPrice: gasPrice)
     case .getUserCapInWei:
       self.updateUserCapInWei()
     case .showQRCode:
@@ -630,6 +630,38 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           amount: amount,
           gasLimit: estimate
         )
+      }
+    }
+  }
+
+  func updateEstimatedGasLimitFromAPIIfNeeded(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt) {
+    let src = from.contract.lowercased()
+    let dest = to.contract.lowercased()
+    let amt = Double(amount) / Double(BigInt(10).power(from.decimals))
+    if !from.isDAI && !to.isDAI {
+      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+      return
+    }
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KNTrackerService>(plugins: [MoyaCacheablePlugin()])
+      provider.request(.getGasLimit(src: src, dest: dest, amount: amt)) { [weak self] result in
+        guard let `self` = self else { return }
+        if case .success(let resp) = result,
+          let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+          let data = json["data"] as? Int {
+          DispatchQueue.main.async {
+            self.rootViewController.coordinatorDidUpdateEstimateGasUsed(
+              from: from,
+              to: to,
+              amount: amount,
+              gasLimit: BigInt(data)
+            )
+          }
+        } else {
+          DispatchQueue.main.async {
+            self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
+          }
+        }
       }
     }
   }
