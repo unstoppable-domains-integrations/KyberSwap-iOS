@@ -61,17 +61,33 @@
       "icon": "salt",
       "decimal": 8,
       "usd_id":"salt"
+    },
+    "DAI": {
+      "name":"Dai",
+      "address": "0x1D7e3a1A65a367db1D1D3F51A54aC01a2c4C92ff",
+      "symbol": "DAI",
+      "icon": "dai",
+      "decimal": 18,
+      "usd_id":"dai"
+    },
+    "SAI": {
+      "name":"Sai",
+      "address": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
+      "symbol": "SAI",
+      "icon": "sai",
+      "decimal": 18,
+      "usd_id":"sai"
     }
   },
   "ethScanUrl": "https://kovan.etherscan.io/",
   "enjinx": "https://kyber.enjinx.io/",
   "bank": "0x2eb59a43644451b279a2c1a44a9bfecb055527d0",
   "reserve": "0x2d1ceabd5a1cd16581ad199031601615a434a2cd",
-  "network": "0x643211b405c9a14139142e1104250bbcd94bd0ef",
+  "network": "0x692f391bCc85cefCe8C237C01e1f636BbD70EA4D",
   "limit_order": "0x88e7e3b54147f57da5c8aa80b362ef72fff35d5a",
   "token_ieo": "0x8bbd103627985663477de0d72e23aa1e28e594ac",
   "authorize_contract": "0xd07896e99e88261f88091b39d5a438527ec70ff4",
-  "wrapper": "0xa54f27b5a72fc1ddc5c4bc6ed50391f457e4a46a",
+  "wrapper": "0x7efa0d99f7c8eafeec72604b4a5e0d7155dafa9e",
   "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
   "endpoint": "https://kovan.infura.io/DtzEYY0Km2BA3YwyJcBG",
   "averageBlockTime": 6000,
