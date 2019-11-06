@@ -81,7 +81,7 @@ class TokenObject: Object {
     }
 
     var isDGX: Bool { return self.symbol == "DGX" }
-    var isDAI: Bool { return self.symbol == "DAI" }
+    var isDAI: Bool { return self.symbol == "DAI" || self.symbol == "SAI" }
     var isMKR: Bool { return self.symbol == "MKR" }
     var isPRO: Bool { return self.symbol == "PRO" }
     var isPT: Bool { return self.symbol == "PT" }

@@ -337,4 +337,6 @@ class KNAppTracker {
     userDefaults.set(isOpen, forKey: kShouldOpenLimitOrderAfterSignedInKey)
     userDefaults.synchronize()
   }
+
+  static func isNightMode() -> Bool { return true }
 }
