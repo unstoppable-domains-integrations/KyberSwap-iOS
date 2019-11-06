@@ -8,6 +8,7 @@ class KNForgotPasswordViewController: KNBaseViewController {
 
   @IBOutlet weak var resetPasswordTextLabel: UILabel!
   @IBOutlet weak var emailTextField: UITextField!
+  @IBOutlet weak var subtitleTextLabel: UILabel!
 
   @IBOutlet weak var sendButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
@@ -16,6 +17,7 @@ class KNForgotPasswordViewController: KNBaseViewController {
     super.viewDidLoad()
     self.containerView.rounded(radius: 5.0)
     self.resetPasswordTextLabel.text = "Reset Password".toBeLocalised()
+    self.subtitleTextLabel.text = "Enter your email address below and we'll get you on track".toBeLocalised()
     self.emailTextField.placeholder = "Email Address".toBeLocalised()
     self.sendButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.sendButton.frame.height))
     self.sendButton.setTitle(NSLocalizedString("continue", value: "Continue", comment: ""), for: .normal)

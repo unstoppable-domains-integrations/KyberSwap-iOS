@@ -301,12 +301,12 @@ extension LimitOrderService: TargetType {
       return URL(string: "\(baseString)/api/orders/\(id)/cancel")!
     case .getNonce:
       return URL(string: "\(baseString)/api/orders/nonce")!
-    case .getFee:
-      return URL(string: "\(baseString)/api/orders/fee")!
+    case .getFee(_, let address, let src, let dest, let srcAmount, let destAmount):
+      return URL(string: "\(baseString)/api/orders/fee?user_addr=\(address)&src=\(src)&dst=\(dest)&src_amount=\(srcAmount)&dst_amount=\(destAmount)")!
     case .checkEligibleAddress(_, let address):
       return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
-    case .getRelatedOrders:
-      return URL(string: "\(baseString)/api/orders/related_orders")!
+    case .getRelatedOrders(_, let address, let src, let dest, let rate):
+      return URL(string: "\(baseString)/api/orders/related_orders?user_addr=\(address)&src=\(src)&dst=\(dest)&min_rate=\(rate)")!
     case .pendingBalance(_, let address):
       return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
     }
@@ -324,7 +324,7 @@ extension LimitOrderService: TargetType {
 
   var task: Task {
     switch self {
-    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance:
+    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance, .getFee, .getRelatedOrders:
       return .requestPlain
     case .createOrder(_, let order, let signedData):
       let json: JSONDictionary = [
@@ -337,25 +337,6 @@ extension LimitOrderService: TargetType {
         "min_rate": (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded,
         "fee": BigInt(order.fee).hexEncoded,
         "signature": signedData.hexEncoded,
-      ]
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
-    case .getFee(_, let address, let src, let dest, let srcAmount, let destAmount):
-      let json: JSONDictionary = [
-        "user_addr": address,
-        "src": src,
-        "dst": dest,
-        "src_amount": srcAmount,
-        "dst_amount": destAmount,
-      ]
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
-    case .getRelatedOrders(_, let address, let src, let dest, let rate):
-      let json: JSONDictionary = [
-        "user_addr": address,
-        "src": src,
-        "dst": dest,
-        "min_rate": rate,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
@@ -569,7 +550,8 @@ enum ProfileKYCService {
     case .identityInfo: return KNSecret.identityInfoEndpoint
     case .submitKYC: return KNSecret.submitKYCEndpoint
     case .resubmitKYC: return KNSecret.resubmitKYC
-    case .promoCode: return KNSecret.promoCode
+    case .promoCode(let promoCode, let nonce):
+      return "\(KNSecret.promoCode)?code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
     }
   }
 }
@@ -655,15 +637,8 @@ extension ProfileKYCService: TargetType {
       }
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .resubmitKYC, .submitKYC:
+    case .resubmitKYC, .submitKYC, .promoCode:
       return .requestPlain
-    case .promoCode(let promoCode, let nonce):
-      let params: JSONDictionary = [
-        "code": promoCode,
-        "isInternalApp": "True",
-        "nonce": nonce,
-      ]
-      return .requestCompositeData(bodyData: Data(), urlParameters: params)
     }
   }
 

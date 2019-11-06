@@ -416,6 +416,7 @@
 "Please wait for other transactions to be mined before making a transfer" = "전송 전 다른 거래가 채굴될 때 까지 기다려주세요";
 "Get Started" = "Get Started";
 "This password is needed to unlock your JSON file. Please remember it carefully." = "This password is needed to unlock your JSON file. Please remember it carefully.";
+"Enter your email address below and we'll get you on track" = "아래에 이메일 주소를 입력해주세요.";
 
 // MARK: Price alert feature
 "Cap reached" = "Cap reached";
