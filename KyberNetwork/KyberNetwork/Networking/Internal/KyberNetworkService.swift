@@ -550,8 +550,7 @@ enum ProfileKYCService {
     case .identityInfo: return KNSecret.identityInfoEndpoint
     case .submitKYC: return KNSecret.submitKYCEndpoint
     case .resubmitKYC: return KNSecret.resubmitKYC
-    case .promoCode(let promoCode, let nonce):
-      return "\(KNSecret.promoCode)?code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
+    case .promoCode: return ""
     }
   }
 }
@@ -564,6 +563,10 @@ extension ProfileKYCService: MoyaCacheable {
 extension ProfileKYCService: TargetType {
   var baseURL: URL {
     let baseString = KNAppTracker.getKyberProfileBaseString()
+    if case .promoCode(let promoCode, let nonce) = self {
+      let path = "\(KNSecret.promoCode)?code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
+      return URL(string: "\(baseString)/api\(path)")!
+    }
     return URL(string: "\(baseString)/api")!
   }
 
