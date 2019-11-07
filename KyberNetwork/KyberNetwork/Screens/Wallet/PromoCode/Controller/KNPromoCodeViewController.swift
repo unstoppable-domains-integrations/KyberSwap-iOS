@@ -24,7 +24,7 @@ class KNPromoCodeViewController: KNBaseViewController {
     self.navTitleLabel.text = NSLocalizedString("kybercode", value: "KyberCode", comment: "")
 
     self.yourPromoCodeTextLabel.text = NSLocalizedString("your.kybercode", value: "Your KyberCode", comment: "")
-    self.enterPromoCodeTextField.placeholder = "Enter Kyber Code. Both capital or small letters work fine".toBeLocalised()
+    self.enterPromoCodeTextField.placeholder = "Both capital or small letters work fine".toBeLocalised()
 
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
     self.applyButton.rounded(radius: KNAppStyleType.current.buttonRadius(for: self.applyButton.frame.height))
