@@ -137,7 +137,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.numberPendingTxLabel.isHidden = true
 
     self.sendTokenButton.setTitle(
-      NSLocalizedString("send.token", value: "Transfer token", comment: ""),
+      NSLocalizedString("send.token", value: "Transfer token", comment: "").uppercased(),
       for: .normal
     )
     self.sendTokenButton.setTitleColor(
