@@ -198,7 +198,8 @@
       "decimals": 18,
       "usd_id":"dai",
       "sp_limit_order": true,
-      "is_quote": true
+      "is_quote": true,
+      "is_gas_fixed": true
     },
     "LINK": {
       "name": "Chain Link",

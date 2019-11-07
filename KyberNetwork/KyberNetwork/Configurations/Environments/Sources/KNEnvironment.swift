@@ -98,11 +98,10 @@ enum KNEnvironment: Int {
     let baseString: String = {
       switch self {
       case .mainnetTest, .production: return "https://api.kyber.network"
-      case .staging: return "https://staging-limit-order-api.knstats.com"
+      case .staging: return "https://staging-api.knstats.com"
       case .ropsten: return "https://ropsten-api.kyber.network"
       case .rinkeby: return "https://rinkeby-api.kyber.network"
-      default:
-        return ""
+      case .kovan: return "https://dev-kovan-api.knstats.com"
       }
     }()
     return baseString + KNSecret.currencies

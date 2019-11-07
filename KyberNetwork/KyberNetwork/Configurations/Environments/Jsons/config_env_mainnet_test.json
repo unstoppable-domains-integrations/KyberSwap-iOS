@@ -44,7 +44,8 @@
       "decimals": 18,
       "usd_id":"dai",
       "gasLimit": "450000",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_gas_fixed": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -339,7 +340,8 @@
       "symbol":"TUSD",
       "gasLimit": "500000",
       "icon": "tusd",
-      "sp_limit_order": true
+      "sp_limit_order": true,
+      "is_gas_fixed": true
     },
     "LEND": {
       "name": "EthLend",

@@ -28,11 +28,6 @@ class KNSupportedTokenCoordinator {
 
   fileprivate func fetchSupportedTokens() {
     // Token address is different for other envs
-    if KNEnvironment.default == .kovan {
-      let tokens = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-      KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokens)
-      return
-    }
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
     if isDebug { print("---- Supported Tokens: Start fetching data ----") }
     DispatchQueue.global(qos: .background).async {

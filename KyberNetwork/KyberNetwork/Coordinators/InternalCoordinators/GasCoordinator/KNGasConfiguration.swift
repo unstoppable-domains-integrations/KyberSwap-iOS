@@ -25,7 +25,7 @@ public struct KNGasConfiguration {
   static let extraGasPromoWallet: BigInt = EtherNumberFormatter.full.number(from: "2", units: UnitConfiguration.gasPriceUnit)!
 
   static func specialGasLimitDefault(from: TokenObject, to: TokenObject) -> BigInt? {
-    if from.isDAI || from.isTUSD || to.isDAI || to.isTUSD {
+    if from.extraData?.isGasFixed == true || to.extraData?.isGasFixed == true {
       return self.calculateDefaultGasLimit(from: from, to: to)
     }
     return nil

@@ -63,7 +63,8 @@
       "decimals": 18,
       "usd_id":"dai",
       "sp_limit_order": true,
-      "is_quote": true
+      "is_quote": true,
+      "is_gas_fixed": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -398,7 +399,8 @@
       "symbol":"TUSD",
       "icon": "tusd",
       "sp_limit_order": true,
-      "is_quote": true
+      "is_quote": true,
+      "is_gas_fixed": true
     },
     "MDS": {
       "name": "MediShares",

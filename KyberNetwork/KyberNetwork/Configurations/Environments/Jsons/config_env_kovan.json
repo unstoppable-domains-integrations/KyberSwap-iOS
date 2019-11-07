@@ -19,7 +19,7 @@
       "symbol": "ETH",
       "icon": "eth",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "decimal": 18,
+      "decimals": 18,
       "usd_id":"ethereum"
     },
     "KNC": {
@@ -27,7 +27,7 @@
       "symbol": "KNC",
       "icon": "knc",
       "address": "0x8dc114d77e857558aefbe8e1a50b460ff9578f1a",
-      "decimal": 18,
+      "decimals": 18,
       "usd_id":"kyber-network"
     },
     "OMG": {
@@ -35,7 +35,7 @@
       "symbol": "OMG",
       "icon": "omg",
       "address": "0x7606bd550f467546212649a9c25623dfca88dcd7",
-      "decimal": 18,
+      "decimals": 18,
       "usd_id":"omisego"
     },
     "EOS": {
@@ -43,7 +43,7 @@
       "symbol": "EOS",
       "icon": "eos",
       "address": "0x15fb2a9d7dadbb88f260f78dcbb574b3b76a8e06",
-      "decimal": 18,
+      "decimals": 18,
       "usd_id":"eos"
     },
     "SNT": {
@@ -51,7 +51,7 @@
       "address": "0x676f650000f420485b99ef0377a2e1c96eb3e821",
       "symbol": "SNT",
       "icon": "snt",
-      "decimal": 18,
+      "decimals": 18,
       "usd_id":"status"
     },
     "SALT": {
@@ -59,24 +59,17 @@
       "address": "0xcc112cd38362bf3c07d226768fd5869e65296083",
       "symbol": "SALT",
       "icon": "salt",
-      "decimal": 8,
+      "decimals": 8,
       "usd_id":"salt"
     },
     "DAI": {
       "name":"Dai",
-      "address": "0x1D7e3a1A65a367db1D1D3F51A54aC01a2c4C92ff",
+      "address": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
       "symbol": "DAI",
       "icon": "dai",
-      "decimal": 18,
-      "usd_id":"dai"
-    },
-    "SAI": {
-      "name":"Sai",
-      "address": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
-      "symbol": "SAI",
-      "icon": "sai",
-      "decimal": 18,
-      "usd_id":"sai"
+      "decimals": 18,
+      "usd_id":"dai",
+      "is_gas_fixed": true
     }
   },
   "ethScanUrl": "https://kovan.etherscan.io/",

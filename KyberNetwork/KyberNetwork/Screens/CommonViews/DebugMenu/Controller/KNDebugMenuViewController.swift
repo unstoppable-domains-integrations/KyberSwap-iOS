@@ -31,7 +31,7 @@ class KNDebugMenuViewController: KNBaseViewController {
       if self.environment == .production { return 0 }
       if self.environment == .ropsten { return 1 }
       if self.environment == .kovan { return 2 }
-      return 3
+      return 3 // staging
     }()
     self.updateEnvironmentData()
   }
