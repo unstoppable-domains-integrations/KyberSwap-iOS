@@ -142,7 +142,8 @@ enum KNEnvironment: Int {
   var kyberAPIEnpoint: String {
     switch KNEnvironment.default {
     case .mainnetTest, .production, .staging: return KNSecret.trackerURL
-    case .ropsten, .rinkeby, .kovan: return KNSecret.debugTrackerURL
+    case .ropsten, .rinkeby: return KNSecret.debugTrackerURL
+    case .kovan: return "https://dev-kovan-api.knstats.com"
     }
   }
 
@@ -207,6 +208,7 @@ enum KNEnvironment: Int {
     switch KNEnvironment.default {
     case .mainnetTest, .production: return KNSecret.trackerURL
     case .staging: return KNSecret.stagingTrackerURL
+    case .kovan: return "https://dev-kovan-api.knstats.com"
     default: return KNSecret.debugTrackerURL
     }
   }
