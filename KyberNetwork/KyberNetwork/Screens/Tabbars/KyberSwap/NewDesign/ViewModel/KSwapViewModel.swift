@@ -65,7 +65,7 @@ class KSwapViewModel {
   // MARK: Wallet name
   var walletNameString: String {
     let address = self.walletObject.address.lowercased()
-    return "| \(self.walletObject.name) - \(address.prefix(6))...\(address.suffix(4))"
+    return "|  \(address.prefix(10))...\(address.suffix(8))"
   }
 
   // MARK: From Token
