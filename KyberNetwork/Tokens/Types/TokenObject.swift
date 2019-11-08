@@ -212,7 +212,7 @@ class TokenExtraData: NSObject {
       "listing_time": listingTime,
       "sp_limit_order": self.limitOrderEnabled,
       "is_quote": self.isQuote,
-      "is_gas_fixed": self.isGasFixed
+      "is_gas_fixed": self.isGasFixed,
     ]
   }
 
