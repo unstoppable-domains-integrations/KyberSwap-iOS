@@ -173,6 +173,12 @@ extension KNAppCoordinator {
       self.session.switchSession(wallet)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
 
+      let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: wallet.address.description) != nil
+      if isPromo {
+        // default select swap for PT wallet
+        self.tabbarController.selectedIndex = 1
+      }
+
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
