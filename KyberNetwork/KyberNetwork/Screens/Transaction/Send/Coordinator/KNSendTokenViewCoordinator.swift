@@ -287,6 +287,8 @@ extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
 extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
     self.transactionStatusVC = nil
-    KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
+    if action == .swap {
+      KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
+    }
   }
 }
