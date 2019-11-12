@@ -265,6 +265,11 @@ extension KNAppCoordinator {
           message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
           time: -1
         )
+        let txHash = sender.object as? String ?? ""
+        _ = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
+        _ = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
+        _ = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
+        _ = self.settingsCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
         KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
       }
       let transactions = self.session.transactionStorage.kyberPendingTransactions
@@ -272,10 +277,10 @@ extension KNAppCoordinator {
       self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
       return
     }
-    let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
-    let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
-    let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
-    let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
+    let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
+    let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
+    let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
+    let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
 
     if trans.state == .pending {
       // just sent

@@ -102,8 +102,8 @@ extension KNSendTokenViewCoordinator {
     self.rootViewController.coordinatorUpdateTrackerRate()
   }
 
-  func coordinatorDidUpdateTransaction(_ tx: KNTransaction) -> Bool {
-    if let txHash = self.transactionStatusVC?.transaction.id, txHash == tx.id {
+  func coordinatorDidUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    if let txHash = self.transactionStatusVC?.transaction.id, txHash == txID {
       self.transactionStatusVC?.updateView(with: tx)
       return true
     }

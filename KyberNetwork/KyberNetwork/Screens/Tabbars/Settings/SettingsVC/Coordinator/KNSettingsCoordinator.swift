@@ -99,8 +99,8 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
-    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
   }
 }
 

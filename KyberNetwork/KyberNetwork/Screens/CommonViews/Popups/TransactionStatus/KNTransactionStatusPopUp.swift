@@ -139,8 +139,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     }
   }
 
-  func updateView(with transaction: KNTransaction) {
-    self.transaction = transaction
+  func updateView(with transaction: KNTransaction?) {
+    if let trans = transaction {
+      self.transaction = trans
+    } else {
+      self.transaction.internalState = TransactionState.error.rawValue
+    }
     self.updateViewTransactionDidChange()
   }
 

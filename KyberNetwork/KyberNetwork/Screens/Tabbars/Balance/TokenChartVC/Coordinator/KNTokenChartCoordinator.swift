@@ -73,8 +73,8 @@ class KNTokenChartCoordinator: Coordinator {
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
 
-  func coordinatorDidUpdateTransaction(_ tx: KNTransaction) -> Bool {
-    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  func coordinatorDidUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
   }
 }
 

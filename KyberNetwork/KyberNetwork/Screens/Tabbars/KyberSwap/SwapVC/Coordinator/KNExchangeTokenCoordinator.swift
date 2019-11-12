@@ -195,12 +195,12 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorUpdateSelectedToken(to, isSource: false)
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
-    if let trans = self.transactionStatusVC?.transaction, trans.id == tx.id {
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    if let trans = self.transactionStatusVC?.transaction, trans.id == txID {
       self.transactionStatusVC?.updateView(with: tx)
       return true
     }
-    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
   }
 }
 

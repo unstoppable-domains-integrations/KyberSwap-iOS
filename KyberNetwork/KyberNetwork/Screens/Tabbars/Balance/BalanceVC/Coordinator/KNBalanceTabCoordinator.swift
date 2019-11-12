@@ -193,9 +193,9 @@ extension KNBalanceTabCoordinator {
     self.newRootViewController.coordinatorSortedChange24h(with: currencyType)
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
-    if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
-    return self.tokenChartCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) == true { return true }
+    return self.tokenChartCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
   }
 }
 
