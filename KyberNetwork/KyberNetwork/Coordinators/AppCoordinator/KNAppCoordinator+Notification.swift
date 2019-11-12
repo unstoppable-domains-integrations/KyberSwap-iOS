@@ -260,16 +260,18 @@ extension KNAppCoordinator {
     }
     guard let trans = transaction else {
       if let info = sender.userInfo as? JSONDictionary, let isLost = info["is_lost"] as? Bool, isLost {
-        self.navigationController.showErrorTopBannerMessage(
-          with: NSLocalizedString("failed", value: "Failed", comment: ""),
-          message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
-          time: -1
-        )
         let txHash = sender.object as? String ?? ""
-        _ = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
-        _ = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
-        _ = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
-        _ = self.settingsCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash)
+        let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
+        let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
+        let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
+        let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
+        if !(updateBalance || updateExchange || updateLO || updateSettings) {
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("failed", value: "Failed", comment: ""),
+            message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
+            time: -1
+          )
+        }
         KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
       }
       let transactions = self.session.transactionStorage.kyberPendingTransactions

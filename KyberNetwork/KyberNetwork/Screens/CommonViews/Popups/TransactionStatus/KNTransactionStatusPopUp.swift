@@ -119,10 +119,14 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.actionButtonHeightConstraints.forEach({ $0.constant = 45.0 })
       self.bottomPaddingBroadcastConstraint.constant = 104
       self.view.layoutSubviews()
-    } else if self.transaction.state == .failed || self.transaction.state == .error {
+    } else if self.transaction.state == .error || self.transaction.state == .failed {
       self.titleIconImageView.image = UIImage(named: "tx_failed_icon")
       self.titleLabel.text = "Failed!".toBeLocalised()
-      self.subTitleLabel.text = "Transaction error".toBeLocalised()
+      if self.transaction.state == .error {
+        self.subTitleLabel.text = "Your transaction might be lost, please check Etherscan for more information".toBeLocalised()
+      } else {
+        self.subTitleLabel.text = "Transaction error".toBeLocalised()
+      }
       self.detailsButton.semanticContentAttribute = .forceRightToLeft
 
       self.loadingImageView.stopRotating()
