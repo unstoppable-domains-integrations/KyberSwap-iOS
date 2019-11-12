@@ -640,3 +640,13 @@
 "Open Orders" = "有效订单";
 "Order History" = "订单历史";
 "Swipe left to cancel open order" = "向左滑取消订单";
+
+// MARK: New transactions status view
+"Broadcasted!" = "已广播!";
+"Your transaction has been broadcasted!" = "您的交易已被广播!";
+"Waiting for the transaction to be mined" = "您的交易正在等待被挖掘";
+"Done!" = "完成!";
+"Transferred successfully" = "Transferred successfully";
+"Swapped successfully" = "Swapped successfully";
+"Failed!" = "已失败!";
+"Transaction error" = "Transaction error";

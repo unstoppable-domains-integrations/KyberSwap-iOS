@@ -642,3 +642,13 @@
 "Open Orders" = "Các lệnh mở";
 "Order History" = "Lịch sử";
 "Swipe left to cancel open order" = "Vuốt sang trái để hủy lệnh đang mở";
+
+// MARK: New transactions status view
+"Broadcasted!" = "Đã gửi!";
+"Your transaction has been broadcasted!" = "Giao dịch của bạn đã được gửi đi!";
+"Waiting for the transaction to be mined" = "Chờ giao dịch của bạn được thực hiện";
+"Done!" = "Xong!";
+"Transferred successfully" = "Chuyển thành công";
+"Swapped successfully" = "Trao đổi thành công";
+"Failed!" = "Thất bại!";
+"Transaction error" = "Giao dịch thất bại";

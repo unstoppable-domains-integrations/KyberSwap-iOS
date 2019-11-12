@@ -638,3 +638,13 @@
 "Open Orders" = "Open Orders";
 "Order History" = "Order History";
 "Swipe left to cancel open order" = "Swipe left to cancel open order";
+
+// MARK: New transactions status view
+"Broadcasted!" = "Broadcasted!";
+"Your transaction has been broadcasted!" = "Your transaction has been broadcasted!";
+"Waiting for the transaction to be mined" = "Waiting for the transaction to be mined";
+"Done!" = "Done!";
+"Transferred successfully" = "Transferred successfully";
+"Swapped successfully" = "Swapped successfully";
+"Failed!" = "Failed!";
+"Transaction error" = "Transaction error";

@@ -569,6 +569,8 @@
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
 		C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65D31E721D4CF27005D0B04 /* UILabel+Kyber.swift */; };
 		C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65D31E921D4DCD1005D0B04 /* UITextField+Kyber.swift */; };
+		C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA274237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift */; };
+		C68AA277237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68AA275237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib */; };
 		CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA4FE351FD4282400749AE4 /* DeviceChecker.swift */; };
 		CCA4FE381FD428B300749AE4 /* JailbreakChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA4FE371FD428B300749AE4 /* JailbreakChecker.swift */; };
 		CCA4FE3A1FD42B4100749AE4 /* FakeJailbreakChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA4FE391FD42B4100749AE4 /* FakeJailbreakChecker.swift */; };
@@ -1190,6 +1192,8 @@
 		BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceStatusTests.swift; sourceTree = "<group>"; };
 		C65D31E721D4CF27005D0B04 /* UILabel+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Kyber.swift"; sourceTree = "<group>"; };
 		C65D31E921D4DCD1005D0B04 /* UITextField+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Kyber.swift"; sourceTree = "<group>"; };
+		C68AA274237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionStatusPopUp.swift; sourceTree = "<group>"; };
+		C68AA275237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionStatusPopUp.xib; sourceTree = "<group>"; };
 		CCA4FE351FD4282400749AE4 /* DeviceChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceChecker.swift; sourceTree = "<group>"; };
 		CCA4FE371FD428B300749AE4 /* JailbreakChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JailbreakChecker.swift; sourceTree = "<group>"; };
 		CCA4FE391FD42B4100749AE4 /* FakeJailbreakChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeJailbreakChecker.swift; sourceTree = "<group>"; };
@@ -1624,6 +1628,7 @@
 		2542604B21218EBC0015ECC7 /* Popups */ = {
 			isa = PBXGroup;
 			children = (
+				C68AA273237A6BC100B9EC35 /* TransactionStatus */,
 				25607EB2232A59B100F4376E /* PDPAUpdate */,
 				25682ABB229FC38A004AB452 /* ApproveToken */,
 				25F96F7D21537B4A00D7F927 /* HoldingDocumentPhoto */,
@@ -3969,6 +3974,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C68AA273237A6BC100B9EC35 /* TransactionStatus */ = {
+			isa = PBXGroup;
+			children = (
+				C68AA274237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift */,
+				C68AA275237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib */,
+			);
+			path = TransactionStatus;
+			sourceTree = "<group>";
+		};
 		CCA4FE341FD427CA00749AE4 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -4239,6 +4253,7 @@
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
 				25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
+				C68AA277237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
 				25929C9420DA5CC10045CFA3 /* SFCompactText-MediumItalic.otf in Resources */,
 				25073D1F211AF20D00833C92 /* Montserrat-Black.ttf in Resources */,
@@ -4805,6 +4820,7 @@
 				25E3D3A020D7D3E9005D506B /* IEOUser.swift in Sources */,
 				25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
+				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,
 				2923D9B51FDA4E07000CF3F8 /* PasswordGenerator.swift in Sources */,
 				25C45AE620AEB4A700CDA1FF /* KNEnterWalletNameViewController.swift in Sources */,

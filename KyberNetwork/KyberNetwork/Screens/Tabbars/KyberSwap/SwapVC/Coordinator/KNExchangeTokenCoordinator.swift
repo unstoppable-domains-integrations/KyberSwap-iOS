@@ -32,6 +32,7 @@ class KNExchangeTokenCoordinator: Coordinator {
   fileprivate var setGasPriceVC: KNSetGasPriceViewController?
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
   fileprivate var promoConfirmSwapVC: KNPromoSwapConfirmViewController?
+  fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
 
   lazy var rootViewController: KSwapViewController = {
     let (from, to): (TokenObject, TokenObject) = {
@@ -193,6 +194,14 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorUpdateSelectedToken(from, isSource: true, isWarningShown: false)
     self.rootViewController.coordinatorUpdateSelectedToken(to, isSource: false)
   }
+
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    if let trans = self.transactionStatusVC?.transaction, trans.id == tx.id {
+      self.transactionStatusVC?.updateView(with: tx)
+      return true
+    }
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  }
 }
 
 // MARK: Network requests
@@ -238,6 +247,7 @@ extension KNExchangeTokenCoordinator {
           if self.confirmSwapVC != nil {
             self.navigationController.popViewController(animated: true, completion: {
               self.confirmSwapVC = nil
+              self.openTransactionStatusPopUp(transaction: transaction)
             })
           }
         } else {
@@ -245,6 +255,7 @@ extension KNExchangeTokenCoordinator {
           if self.promoConfirmSwapVC != nil {
             self.navigationController.popViewController(animated: true, completion: {
               self.promoConfirmSwapVC = nil
+              self.openTransactionStatusPopUp(transaction: transaction)
             })
           }
         }
@@ -257,6 +268,15 @@ extension KNExchangeTokenCoordinator {
         )
       }
     }
+  }
+
+  fileprivate func openTransactionStatusPopUp(transaction: Transaction) {
+    let trans = KNTransaction.from(transaction: transaction)
+    self.transactionStatusVC = KNTransactionStatusPopUp(transaction: trans)
+    self.transactionStatusVC?.modalPresentationStyle = .overFullScreen
+    self.transactionStatusVC?.modalTransitionStyle = .crossDissolve
+    self.transactionStatusVC?.delegate = self
+    self.navigationController.present(self.transactionStatusVC!, animated: true, completion: nil)
   }
 
   fileprivate func sendUserTxHashIfNeeded(_ txHash: String) {
@@ -797,5 +817,14 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
 //    self.historyCoordinator = nil
+  }
+}
+
+extension KNExchangeTokenCoordinator: KNTransactionStatusPopUpDelegate {
+  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
+    self.transactionStatusVC = nil
+    if action == .transfer {
+      self.openSendTokenView()
+    }
   }
 }

@@ -192,6 +192,11 @@ extension KNBalanceTabCoordinator {
     self.navigationController.popToRootViewController(animated: false)
     self.newRootViewController.coordinatorSortedChange24h(with: currencyType)
   }
+
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    return self.tokenChartCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  }
 }
 
 // MARK: New Design K Wallet Balance delegation

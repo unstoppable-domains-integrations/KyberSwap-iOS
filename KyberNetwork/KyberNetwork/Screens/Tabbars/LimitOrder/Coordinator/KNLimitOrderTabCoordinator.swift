@@ -164,6 +164,10 @@ extension KNLimitOrderTabCoordinator {
   func appCoordinatorTokensTransactionsDidUpdate() {
     self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
+
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  }
 }
 
 extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {

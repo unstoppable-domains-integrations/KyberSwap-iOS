@@ -43,6 +43,13 @@ extension KNAppCoordinator {
       name: tokenObjectListName,
       object: nil
     )
+    let openExchangeName = Notification.Name(kOpenExchangeTokenViewKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.openExchangeTokenView(_:)),
+      name: openExchangeName,
+      object: nil
+    )
   }
 
   func addInternalObserveNotification() {
@@ -105,6 +112,11 @@ extension KNAppCoordinator {
     NotificationCenter.default.removeObserver(
       self,
       name: Notification.Name(kTokenObjectListDidUpdateNotificationKey),
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kOpenExchangeTokenViewKey),
       object: nil
     )
   }
@@ -260,31 +272,34 @@ extension KNAppCoordinator {
       self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
       return
     }
-    let details = trans.getDetails()
+    let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
+    let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
+    let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
+    let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(trans) ?? false
+
     if trans.state == .pending {
       // just sent
-      self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("broadcasted", value: "Broadcasted", comment: ""),
-        message: details,
-        time: 3.0
-      )
     } else if trans.state == .completed {
-      self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("success", value: "Success", comment: ""),
-        message: details,
-        time: -1
-      )
+      if !(updateBalance || updateExchange || updateLO || updateSettings) {
+        self.navigationController.showSuccessTopBannerMessage(
+          with: NSLocalizedString("success", value: "Success", comment: ""),
+          message: trans.getDetails(),
+          time: -1
+        )
+      }
       if self.session != nil {
         self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
         self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
       }
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "success"])
     } else if trans.state == .failed || trans.state == .error {
-      self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("failed", value: "Failed", comment: ""),
-        message: details,
-        time: -1
-      )
+      if !(updateBalance || updateExchange || updateLO || updateSettings) {
+        self.navigationController.showSuccessTopBannerMessage(
+          with: NSLocalizedString("failed", value: "Failed", comment: ""),
+          message: trans.getDetails(),
+          time: -1
+        )
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
     }
     let transactions = self.session.transactionStorage.kyberPendingTransactions
@@ -316,5 +331,11 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
     self.limitOrderCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
     self.balanceTabCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
+  }
+
+  @objc func openExchangeTokenView(_ sender: Any?) {
+    if self.session == nil { return }
+    self.tabbarController.selectedIndex = 1
+    self.exchangeCoordinator?.navigationController.popToRootViewController(animated: true)
   }
 }

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTransactionStatusPopUp" customModule="KyberNetwork" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomPaddingBroadcastConstraint" destination="jUn-K6-mqZ" id="tf6-ao-LyU"/>
+                <outlet property="containerView" destination="WgU-CE-o96" id="y2C-0P-woz"/>
+                <outlet property="detailsButton" destination="dgd-iX-dTY" id="7Je-zB-Obw"/>
+                <outlet property="loadingImageView" destination="0no-61-ohs" id="Zop-Sg-MRJ"/>
+                <outlet property="subTitleLabel" destination="6Tb-Kr-IcV" id="f0K-tI-JYC"/>
+                <outlet property="swapButton" destination="eBj-Og-9ca" id="94r-GS-dJ9"/>
+                <outlet property="titleIconImageView" destination="ybz-6O-2ai" id="XrQ-Ol-N6y"/>
+                <outlet property="titleLabel" destination="PiI-jh-1Zg" id="5Yl-ML-Y2e"/>
+                <outlet property="transferButton" destination="Opx-BH-d67" id="n9h-sN-jBD"/>
+                <outlet property="transferCenterXConstraint" destination="pno-bf-5ZD" id="5IF-Hu-sCW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="actionButtonHeightConstraints" destination="89c-Ly-9vv" collectionClass="NSMutableArray" id="Ydh-Xw-zbf"/>
+                <outletCollection property="actionButtonHeightConstraints" destination="Y3g-k7-Moa" collectionClass="NSMutableArray" id="ebb-3G-yfQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WgU-CE-o96">
+                    <rect key="frame" x="12" y="68" width="390" height="247.5"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tx_broadcasted_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ybz-6O-2ai">
+                            <rect key="frame" x="110.5" y="20" width="41" height="40"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Broadcasted!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiI-jh-1Zg">
+                            <rect key="frame" x="163.5" y="31.5" width="95.5" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your transaction has been broadcasted!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Tb-Kr-IcV">
+                            <rect key="frame" x="16" y="92" width="358" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                            <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tx_loading_icon" translatesAutoresizingMaskIntoConstraints="NO" id="0no-61-ohs">
+                            <rect key="frame" x="41" y="126.5" width="16" height="16"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgd-iX-dTY">
+                            <rect key="frame" x="65" y="125.5" width="260" height="18"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Waiting for the transaction to be mined" image="tx_open_link_icon">
+                                <color key="titleColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="openTransactionDetailsPressed:" destination="-1" eventType="touchUpInside" id="w1d-8p-Xhd"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Opx-BH-d67">
+                            <rect key="frame" x="69" y="173.5" width="120" height="45"/>
+                            <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="89c-Ly-9vv"/>
+                                <constraint firstAttribute="width" constant="120" id="LsS-xY-EdF"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="Transfer">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="transferButtonPressed:" destination="-1" eventType="touchUpInside" id="FUw-n5-w8R"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBj-Og-9ca">
+                            <rect key="frame" x="201" y="173.5" width="120" height="45"/>
+                            <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="Y3g-k7-Moa"/>
+                                <constraint firstAttribute="width" constant="120" id="v4y-t4-bJ1"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="Swap">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="swapButtonPressed:" destination="-1" eventType="touchUpInside" id="Dn6-py-PsL"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="Opx-BH-d67" firstAttribute="top" secondItem="dgd-iX-dTY" secondAttribute="bottom" constant="30" id="5at-vS-GS7"/>
+                        <constraint firstItem="6Tb-Kr-IcV" firstAttribute="centerX" secondItem="WgU-CE-o96" secondAttribute="centerX" id="GTR-ef-WGc"/>
+                        <constraint firstItem="eBj-Og-9ca" firstAttribute="centerY" secondItem="Opx-BH-d67" secondAttribute="centerY" id="NrS-5e-9ZZ"/>
+                        <constraint firstItem="PiI-jh-1Zg" firstAttribute="centerY" secondItem="ybz-6O-2ai" secondAttribute="centerY" id="P7d-Ob-vZF"/>
+                        <constraint firstItem="dgd-iX-dTY" firstAttribute="leading" secondItem="0no-61-ohs" secondAttribute="trailing" constant="8" id="T0S-UQ-mMK"/>
+                        <constraint firstItem="dgd-iX-dTY" firstAttribute="centerX" secondItem="WgU-CE-o96" secondAttribute="centerX" id="bl8-eS-zPI"/>
+                        <constraint firstItem="dgd-iX-dTY" firstAttribute="top" secondItem="6Tb-Kr-IcV" secondAttribute="bottom" constant="16" id="d2S-qZ-tzp"/>
+                        <constraint firstItem="eBj-Og-9ca" firstAttribute="leading" secondItem="Opx-BH-d67" secondAttribute="trailing" constant="12" id="evc-qm-80A"/>
+                        <constraint firstItem="PiI-jh-1Zg" firstAttribute="leading" secondItem="ybz-6O-2ai" secondAttribute="trailing" constant="12" id="j7v-JE-hTq"/>
+                        <constraint firstAttribute="bottom" secondItem="dgd-iX-dTY" secondAttribute="bottom" constant="104" id="jUn-K6-mqZ"/>
+                        <constraint firstItem="6Tb-Kr-IcV" firstAttribute="top" secondItem="ybz-6O-2ai" secondAttribute="bottom" constant="32" id="mk4-nO-wZ8"/>
+                        <constraint firstItem="dgd-iX-dTY" firstAttribute="centerY" secondItem="0no-61-ohs" secondAttribute="centerY" id="n4E-1x-O1i"/>
+                        <constraint firstAttribute="trailing" secondItem="6Tb-Kr-IcV" secondAttribute="trailing" constant="16" id="paZ-aN-qLk"/>
+                        <constraint firstItem="Opx-BH-d67" firstAttribute="centerX" secondItem="WgU-CE-o96" secondAttribute="centerX" constant="-66" id="pno-bf-5ZD"/>
+                        <constraint firstItem="ybz-6O-2ai" firstAttribute="top" secondItem="WgU-CE-o96" secondAttribute="top" constant="20" id="sAr-mh-EMd"/>
+                        <constraint firstItem="6Tb-Kr-IcV" firstAttribute="leading" secondItem="WgU-CE-o96" secondAttribute="leading" constant="16" id="x9r-Fr-96f"/>
+                        <constraint firstItem="PiI-jh-1Zg" firstAttribute="centerX" secondItem="WgU-CE-o96" secondAttribute="centerX" constant="16" id="zvB-qD-WwY"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.36377640845070425" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="WgU-CE-o96" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="24" id="3Nh-Hv-RFA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WgU-CE-o96" secondAttribute="trailing" constant="12" id="NN7-RM-MGN"/>
+                <constraint firstItem="WgU-CE-o96" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="q0u-gK-mT4"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="137.68115942028987" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="tx_broadcasted_icon" width="41" height="40"/>
+        <image name="tx_loading_icon" width="16" height="16"/>
+        <image name="tx_open_link_icon" width="18" height="18"/>
+    </resources>
+</document>

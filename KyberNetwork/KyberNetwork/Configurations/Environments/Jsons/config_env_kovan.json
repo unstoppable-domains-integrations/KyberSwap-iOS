@@ -26,7 +26,7 @@
       "name": "KyberNetwork",
       "symbol": "KNC",
       "icon": "knc",
-      "address": "0x8dc114d77e857558aefbe8e1a50b460ff9578f1a",
+      "address": "0xad67cB4d63C9da94AcA37fDF2761AaDF780ff4a2",
       "decimals": 18,
       "usd_id":"kyber-network"
     },

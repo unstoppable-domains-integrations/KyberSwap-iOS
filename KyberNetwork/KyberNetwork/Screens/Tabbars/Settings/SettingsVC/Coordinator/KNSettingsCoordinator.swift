@@ -98,6 +98,10 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
   }
+
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  }
 }
 
 extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {

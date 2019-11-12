@@ -72,6 +72,10 @@ class KNTokenChartCoordinator: Coordinator {
   func coordinatorGasPriceCachedDidUpdate() {
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
+
+  func coordinatorDidUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+  }
 }
 
 extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {

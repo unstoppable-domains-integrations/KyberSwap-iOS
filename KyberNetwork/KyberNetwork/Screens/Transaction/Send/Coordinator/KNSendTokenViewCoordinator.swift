@@ -25,6 +25,7 @@ class KNSendTokenViewCoordinator: Coordinator {
 
   fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
   fileprivate(set) var confirmVC: KConfirmSendViewController?
+  fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -99,6 +100,14 @@ extension KNSendTokenViewCoordinator {
 
   func coordinatorDidUpdateTrackerRate() {
     self.rootViewController.coordinatorUpdateTrackerRate()
+  }
+
+  func coordinatorDidUpdateTransaction(_ tx: KNTransaction) -> Bool {
+    if let txHash = self.transactionStatusVC?.transaction.id, txHash == tx.id {
+      self.transactionStatusVC?.updateView(with: tx)
+      return true
+    }
+    return false
   }
 }
 
@@ -229,6 +238,7 @@ extension KNSendTokenViewCoordinator {
         if self.confirmVC != nil {
           self.navigationController.popViewController(animated: true, completion: {
             self.confirmVC = nil
+            self.openTransactionStatusPopUp(transaction: tx)
           })
         }
       case .failure(let error):
@@ -240,6 +250,15 @@ extension KNSendTokenViewCoordinator {
         )
       }
     })
+  }
+
+  fileprivate func openTransactionStatusPopUp(transaction: Transaction) {
+    let trans = KNTransaction.from(transaction: transaction)
+    self.transactionStatusVC = KNTransactionStatusPopUp(transaction: trans)
+    self.transactionStatusVC?.modalPresentationStyle = .overFullScreen
+    self.transactionStatusVC?.modalTransitionStyle = .crossDissolve
+    self.transactionStatusVC?.delegate = self
+    self.navigationController.present(self.transactionStatusVC!, animated: true, completion: nil)
   }
 }
 
@@ -262,5 +281,12 @@ extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
         self.rootViewController.coordinatorSend(to: address)
       }
     }
+  }
+}
+
+extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
+  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
+    self.transactionStatusVC = nil
+    KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
   }
 }
