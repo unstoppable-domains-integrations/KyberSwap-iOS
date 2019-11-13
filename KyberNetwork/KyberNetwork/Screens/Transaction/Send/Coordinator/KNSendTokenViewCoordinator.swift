@@ -232,7 +232,7 @@ extension KNSendTokenViewCoordinator {
         let tx: Transaction = transaction.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount
+          nounce: self.session.externalProvider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(tx)
         if self.confirmVC != nil {

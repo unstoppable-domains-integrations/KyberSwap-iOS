@@ -240,7 +240,7 @@ extension KNExchangeTokenCoordinator {
           hash: txHash,
           fromAddr: self.session.wallet.address,
           toAddr: self.session.externalProvider.networkAddress,
-          nounce: self.session.externalProvider.minTxCount
+          nounce: self.session.externalProvider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(transaction)
         if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) == nil {
