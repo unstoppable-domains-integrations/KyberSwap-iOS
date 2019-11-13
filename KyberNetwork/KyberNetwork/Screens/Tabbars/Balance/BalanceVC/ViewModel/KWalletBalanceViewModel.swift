@@ -408,9 +408,11 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
+    let tracker0Data = self.trackerRateData[left.identifier()]
+    let tracker1Data = self.trackerRateData[right.identifier()]
     if self.tabOption != .others { // not other tab
-      if self.trackerRateData[left.identifier()] == nil { return false }
-      if self.trackerRateData[right.identifier()] == nil { return true }
+      if tracker0Data == nil || tracker0Data?.rateETHNow == 0.0 { return false }
+      if tracker1Data == nil || tracker1Data?.rateUSDNow == 0.0 { return true }
     }
     let isLeftFav = KNAppTracker.isTokenFavourite(left.contract.lowercased())
     let isRightFav = KNAppTracker.isTokenFavourite(right.contract.lowercased())
@@ -432,8 +434,8 @@ class KWalletBalanceViewModel: NSObject {
       return value0 > value1
     }
 
-    guard let tracker0 = self.trackerRateData[left.identifier()] else { return false }
-    guard let tracker1 = self.trackerRateData[right.identifier()] else { return true }
+    guard let tracker0 = tracker0Data else { return false }
+    guard let tracker1 = tracker1Data else { return true }
 
     // sort by price or change
     let change0: Double = {

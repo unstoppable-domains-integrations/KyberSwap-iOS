@@ -15,6 +15,7 @@ struct KNBalanceTokenTableViewCellModel {
   let index: Int
   let isBalanceShown: Bool
   let isFav: Bool
+  let rate: BigInt?
 
   init(
     token: TokenObject,
@@ -31,11 +32,32 @@ struct KNBalanceTokenTableViewCellModel {
     self.index = index
     self.isBalanceShown = isBalanceShown
     self.isFav = KNAppTracker.isTokenFavourite(token.contract.lowercased())
+
+    let _rate: BigInt? = {
+      if currencyType == .usd {
+        if let rate = trackerRate {
+          return KNRate.rateUSD(from: rate).rate
+        }
+        return nil
+      }
+      if let rate = trackerRate {
+        return KNRate.rateETH(from: rate).rate
+      }
+      return nil
+    }()
+    self.rate = _rate
   }
 
-  var isNewTokenHidden: Bool {
+  var isTokenLabelHidden: Bool {
     if let isNew = token.extraData?.shouldShowAsNew, isNew { return false }
     return true
+  }
+
+  var tokenLabelString: String {
+    if let isNew = token.extraData?.shouldShowAsNew, isNew {
+      return NSLocalizedString("new", value: "New", comment: "").uppercased()
+    }
+    return ""
   }
 
   var backgroundColor: UIColor {
@@ -54,19 +76,24 @@ struct KNBalanceTokenTableViewCellModel {
   }
 
   var displayRateString: String {
-    let rate: BigInt? = {
-      if self.currencyType == .usd {
-        if let trackerRate = self.trackerRate {
-          return KNRate.rateUSD(from: trackerRate).rate
-        }
-        return nil
-      }
-      if let trackerRate = self.trackerRate {
-        return KNRate.rateETH(from: trackerRate).rate
-      }
-      return nil
-    }()
-    return rate?.displayRate(decimals: 18) ?? "---"
+    if (self.rate == nil || self.rate?.isZero == true) && token.isSupported {
+      return "Maintenance"
+    }
+    return self.rate?.displayRate(decimals: 18) ?? "----"
+  }
+
+  var displayRateColor: UIColor {
+    if (self.rate == nil || self.rate?.isZero == true) && token.isSupported {
+      return UIColor(red: 90, green: 94, blue: 103)
+    }
+    return UIColor(red: 29, green: 48, blue: 58)
+  }
+
+  var displayRateFont: UIFont {
+    if (self.rate == nil || self.rate?.isZero == true) && token.isSupported {
+      return UIFont.Kyber.semiBold(with: 12)
+    }
+    return UIFont.Kyber.medium(with: 16)
   }
 
   var displayAmountHoldingsText: String {
@@ -161,13 +188,16 @@ class KNBalanceTokenTableViewCell: UITableViewCell {
 
   func updateCellView(with viewModel: KNBalanceTokenTableViewCellModel) {
     self.viewModel = viewModel
-    self.newTextLabel.isHidden = viewModel.isNewTokenHidden
+    self.newTextLabel.isHidden = viewModel.isTokenLabelHidden
+    self.newTextLabel.text = viewModel.tokenLabelString
     self.iconImageView.setTokenImage(
       token: viewModel.token,
       size: self.iconImageView.frame.size
     )
     self.symbolLabel.attributedText = viewModel.displaySymbolAndNameAttributedString
     self.rateLabel.text = viewModel.displayRateString
+    self.rateLabel.textColor = viewModel.displayRateColor
+    self.rateLabel.font = viewModel.displayRateFont
     self.rateLabel.addLetterSpacing()
     self.amountHoldingsLabel.text = viewModel.displayAmountHoldingsText
     self.amountHoldingsLabel.addLetterSpacing()
