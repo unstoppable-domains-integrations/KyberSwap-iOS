@@ -391,8 +391,7 @@ class KWalletBalanceViewModel: NSObject {
       if self.tabOption == .others && !$0.isSupported { return true }
       if self.tabOption == .favourite && favouriteTokens.contains($0.contract.lowercased()) { return true }
       return false
-    })
-      .filter({
+    }).filter({
       if $0.extraData?.isListed == false { return false }
       return true
     })
@@ -410,18 +409,17 @@ class KWalletBalanceViewModel: NSObject {
   fileprivate func displayedTokenComparator(left: TokenObject, right: TokenObject) -> Bool {
     let tracker0Data = self.trackerRateData[left.identifier()]
     let tracker1Data = self.trackerRateData[right.identifier()]
-    if self.tabOption != .others { // not other tab
-      if tracker0Data == nil || tracker0Data?.rateETHNow == 0.0 { return false }
-      if tracker1Data == nil || tracker1Data?.rateUSDNow == 0.0 { return true }
-    }
+
     let isLeftFav = KNAppTracker.isTokenFavourite(left.contract.lowercased())
     let isRightFav = KNAppTracker.isTokenFavourite(right.contract.lowercased())
+
     if self.tokensDisplayType == .default {
       if left.extraData?.shouldShowAsNew == true { return true }
       if right.extraData?.shouldShowAsNew == true { return false }
       if isLeftFav { return true }
       if isRightFav { return false }
     }
+
     // sort by name
     if self.tokensDisplayType == .nameDesc { return left.symbol < right.symbol }
     if self.tokensDisplayType == .balanceDesc || self.tokensDisplayType == .default {
@@ -430,7 +428,11 @@ class KWalletBalanceViewModel: NSObject {
       guard let balance1 = self.balance(for: right) else { return true }
       let value0 = balance0.value * BigInt(10).power(18 - left.decimals)
       let value1 = balance1.value * BigInt(10).power(18 - right.decimals)
-      if value0 == value1 { return isLeftFav }
+      if value0 == value1 {
+        if isLeftFav { return true }
+        if isRightFav { return false }
+        return (tracker0Data?.rateETHNow ?? 0.0) > (tracker1Data?.rateETHNow ?? 0.0)
+      }
       return value0 > value1
     }
 
@@ -438,6 +440,9 @@ class KWalletBalanceViewModel: NSObject {
     guard let tracker1 = tracker1Data else { return true }
 
     // sort by price or change
+    if tracker1.rateUSDNow == 0.0 { return true }
+    if tracker0.rateUSDNow == 0.0 { return false }
+
     let change0: Double = {
       return self.currencyType == .eth ? tracker0.changeETH24h : tracker0.changeUSD24h
     }()
