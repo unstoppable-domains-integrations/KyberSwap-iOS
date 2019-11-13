@@ -268,7 +268,7 @@ extension KNAppCoordinator {
         if !(updateBalance || updateExchange || updateLO || updateSettings) {
           self.navigationController.showErrorTopBannerMessage(
             with: NSLocalizedString("failed", value: "Failed", comment: ""),
-            message: "Your transaction might be lost, please check Etherscan for more information".toBeLocalised(),
+            message: "Your transaction might be lost, dropped or replaced. Please check Etherscan for more information".toBeLocalised(),
             time: -1
           )
         }

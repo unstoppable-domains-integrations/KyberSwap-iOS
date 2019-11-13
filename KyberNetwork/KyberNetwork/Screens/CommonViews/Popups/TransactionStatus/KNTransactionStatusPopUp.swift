@@ -123,7 +123,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.titleIconImageView.image = UIImage(named: "tx_failed_icon")
       self.titleLabel.text = "Failed!".toBeLocalised()
       if self.transaction.state == .error {
-        self.subTitleLabel.text = "Your transaction might be lost, please check Etherscan for more information".toBeLocalised()
+        self.subTitleLabel.text = "Your transaction might be lost, dropped or replaced. Please check Etherscan for more information".toBeLocalised()
       } else {
         self.subTitleLabel.text = "Transaction error".toBeLocalised()
       }
