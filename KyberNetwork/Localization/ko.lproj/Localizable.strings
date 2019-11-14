@@ -648,7 +648,8 @@
 "Your transaction has been broadcasted!" = "거래가 방송되었습니다!";
 "Waiting for the transaction to be mined" = "거래 대기 중에 있습니다";
 "Done!" = "완료!";
-"Transferred successfully" = "Transferred successfully";
-"Swapped successfully" = "Swapped successfully";
+"Transferred successfully" = "성공적으로 양도";
+"Swapped successfully" = "성공적으로 스왑";
 "Failed!" = "실패!";
 "Transaction error" = "Transaction error";
+"Maintenance" = "정비";

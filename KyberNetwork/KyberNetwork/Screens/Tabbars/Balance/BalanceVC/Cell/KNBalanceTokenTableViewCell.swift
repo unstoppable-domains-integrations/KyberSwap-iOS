@@ -77,7 +77,7 @@ struct KNBalanceTokenTableViewCellModel {
 
   var displayRateString: String {
     if (self.rate == nil || self.rate?.isZero == true) && token.isSupported {
-      return "Maintenance"
+      return "Maintenance".toBeLocalised()
     }
     return self.rate?.displayRate(decimals: 18) ?? "----"
   }

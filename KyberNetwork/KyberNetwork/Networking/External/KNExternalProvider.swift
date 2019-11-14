@@ -35,7 +35,14 @@ class KNExternalProvider {
   }
 
   func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {
-    self.minTxCount = max(self.minTxCount, nonce)
+    KNGeneralProvider.shared.getTransactionCount(
+      for: self.account.address.description,
+      state: "pending") { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let txCount) = result {
+        self.minTxCount = max(self.minTxCount, min(txCount, nonce + 1))
+      }
+    }
   }
 
   func updateNewAccount(_ account: Account) {
