@@ -1,0 +1,63 @@
+// Copyright SIX DAY LLC. All rights reserved.
+
+import Firebase
+
+class KNVersionControlManager: NSObject {
+
+  static let kLaunchAppCountForUpdateAppKey = "kLaunchAppCountForUpdateAppKey"
+
+  // (bool, bool): isShow, isForce update
+  static func shouldShowUpdateApp(completion: @escaping (Bool, Bool) -> Void) {
+    let remoteConfig = RemoteConfig.remoteConfig()
+    let settings = RemoteConfigSettings()
+    remoteConfig.configSettings = settings
+
+    let expirationDuration: TimeInterval = KNEnvironment.default.isMainnet ? 3600 : 60
+
+    guard let currentVersion = Bundle.main.versionNumber else {
+      fatalError("Expected to find a bundle version in the info dictionary")
+    }
+
+    print("Current version: " + currentVersion)
+
+    remoteConfig.fetch(withExpirationDuration: TimeInterval(expirationDuration)) { (status, error) -> Void in
+      if status == .success {
+        remoteConfig.activateFetched()
+        let data = remoteConfig.configValue(forKey: "version_control").dataValue
+        do {
+          let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary ?? [:]
+          if let version = json["current_version"] as? String,
+            let isForceUpdate = json["is_force_update"] as? Bool {
+            let launchAppCount = json["launch_app_times"] as? Int ?? 0
+            if String.isCurrentVersionHigher(currentVersion: currentVersion, compareVersion: version) {
+              completion(false, false)
+              return
+            }
+            // there is new version
+            if isForceUpdate {
+              completion(true, true)
+              UserDefaults.standard.set(0, forKey: kLaunchAppCountForUpdateAppKey)
+              return
+            }
+            var launchedCounts = UserDefaults.standard.integer(forKey: kLaunchAppCountForUpdateAppKey)
+            launchedCounts += 1
+            UserDefaults.standard.set(launchedCounts, forKey: kLaunchAppCountForUpdateAppKey)
+            if launchedCounts >= launchAppCount {
+              completion(true, false)
+              // reset launch count
+              UserDefaults.standard.set(0, forKey: kLaunchAppCountForUpdateAppKey)
+            } else {
+              completion(false, false)
+            }
+          }
+        } catch let error {
+          print("Error: \(error.localizedDescription)")
+        }
+      } else {
+        print("Config not fetched")
+        print("Error: \(error?.localizedDescription ?? "No error available.")")
+      }
+    }
+  }
+
+}

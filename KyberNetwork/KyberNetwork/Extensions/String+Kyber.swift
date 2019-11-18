@@ -100,4 +100,15 @@ extension String {
     let hexa = Array(self)
     return stride(from: 0, to: count, by: 2).compactMap { UInt8(String(hexa[$0...$0.advanced(by: 1)]), radix: 16) }
   }
+
+  static func isCurrentVersionHigher(currentVersion: String, compareVersion: String) -> Bool {
+    let comps1 = currentVersion.components(separatedBy: ".")
+    let comps2 = compareVersion.components(separatedBy: ".")
+    if comps1.count != 3 || comps2.count != 3 { return true }
+    guard let val11 = Int(comps1[0]), let val12 = Int(comps1[1]), let val13 = Int(comps1[2]) else { return true }
+    let value1 = val11 * 1000000 + val12 * 1000 + val13
+    guard let val21 = Int(comps2[0]), let val22 = Int(comps2[1]), let val23 = Int(comps2[2]) else { return true }
+    let value2 = val21 * 1000000 + val22 * 1000 + val23
+    return value1 >= value2
+  }
 }

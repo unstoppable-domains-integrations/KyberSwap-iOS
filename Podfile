@@ -42,6 +42,7 @@ target 'KyberNetwork' do
   pod 'TwitterKit', '~> 3.4.2'
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
+  pod 'Firebase/RemoteConfig'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

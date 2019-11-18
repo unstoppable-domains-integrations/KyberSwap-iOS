@@ -144,6 +144,22 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.loadBalanceCoordinator?.resume()
+
+    KNVersionControlManager.shouldShowUpdateApp { (shouldShow, isForced) in
+      if !shouldShow { return }
+      let alert = UIAlertController(
+        title: "Update available!".toBeLocalised(),
+        message: "New version is available for updating. Click to update now!",
+        preferredStyle: .alert
+      )
+      alert.addAction(UIAlertAction(title: "Update".toBeLocalised(), style: .default, handler: { _ in
+        self.navigationController.openSafari(with: "https://apps.apple.com/us/app/kyberswap-crypto-exchange/id1453691309")
+      }))
+      if !isForced {
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+      }
+      self.navigationController.present(alert, animated: true, completion: nil)
+    }
   }
 
   func appWillEnterForeground() {
