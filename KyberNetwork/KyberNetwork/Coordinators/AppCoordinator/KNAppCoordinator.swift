@@ -144,12 +144,11 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.loadBalanceCoordinator?.resume()
-
-    KNVersionControlManager.shouldShowUpdateApp { (shouldShow, isForced) in
+    KNVersionControlManager.shouldShowUpdateApp { (shouldShow, isForced, title, subtitle) in
       if !shouldShow { return }
       let alert = UIAlertController(
-        title: "Update available!".toBeLocalised(),
-        message: "New version is available for updating. Click to update now!",
+        title: (title ?? "Update available!").toBeLocalised(),
+        message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
         preferredStyle: .alert
       )
       alert.addAction(UIAlertAction(title: "Update".toBeLocalised(), style: .default, handler: { _ in

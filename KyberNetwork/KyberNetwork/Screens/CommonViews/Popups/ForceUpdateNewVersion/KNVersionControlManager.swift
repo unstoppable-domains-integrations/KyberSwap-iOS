@@ -7,7 +7,7 @@ class KNVersionControlManager: NSObject {
   static let kLaunchAppCountForUpdateAppKey = "kLaunchAppCountForUpdateAppKey"
 
   // (bool, bool): isShow, isForce update
-  static func shouldShowUpdateApp(completion: @escaping (Bool, Bool) -> Void) {
+  static func shouldShowUpdateApp(completion: @escaping (Bool, Bool, String?, String?) -> Void) {
     let remoteConfig = RemoteConfig.remoteConfig()
     let settings = RemoteConfigSettings()
     remoteConfig.configSettings = settings
@@ -23,19 +23,21 @@ class KNVersionControlManager: NSObject {
     remoteConfig.fetch(withExpirationDuration: TimeInterval(expirationDuration)) { (status, error) -> Void in
       if status == .success {
         remoteConfig.activateFetched()
-        let data = remoteConfig.configValue(forKey: "version_control").dataValue
+        let data = remoteConfig.configValue(forKey: "version_update").dataValue
         do {
           let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary ?? [:]
           if let version = json["current_version"] as? String,
             let isForceUpdate = json["is_force_update"] as? Bool {
             let launchAppCount = json["launch_app_times"] as? Int ?? 0
+            let title = json["title"] as? String
+            let subtitle = json["subtitle"] as? String
             if String.isCurrentVersionHigher(currentVersion: currentVersion, compareVersion: version) {
-              completion(false, false)
+              completion(false, false, title, subtitle)
               return
             }
             // there is new version
             if isForceUpdate {
-              completion(true, true)
+              completion(true, true, title, subtitle)
               UserDefaults.standard.set(0, forKey: kLaunchAppCountForUpdateAppKey)
               return
             }
@@ -43,11 +45,11 @@ class KNVersionControlManager: NSObject {
             launchedCounts += 1
             UserDefaults.standard.set(launchedCounts, forKey: kLaunchAppCountForUpdateAppKey)
             if launchedCounts >= launchAppCount {
-              completion(true, false)
+              completion(true, false, title, subtitle)
               // reset launch count
               UserDefaults.standard.set(0, forKey: kLaunchAppCountForUpdateAppKey)
             } else {
-              completion(false, false)
+              completion(false, false, title, subtitle)
             }
           }
         } catch let error {
