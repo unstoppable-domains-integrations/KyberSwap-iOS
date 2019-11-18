@@ -1116,6 +1116,9 @@ extension KNCreateLimitOrderViewController {
       time: 1.5
     )
     self.listOrdersDidUpdate(nil)
+    if #available(iOS 10.3, *) {
+      KNAppstoreRatingManager.requestReviewIfAppropriate()
+    }
   }
 
   func coordinatorUpdateEstimateFee(_ fee: Double, discount: Double, feeBeforeDiscount: Double, transferFee: Double) {

@@ -348,6 +348,9 @@ class KNNewAlertViewController: KNBaseViewController {
           time: 1.0
         )
         self.navigationController?.popViewController(animated: true)
+        if #available(iOS 10.3, *) {
+          KNAppstoreRatingManager.requestReviewIfAppropriate()
+        }
       }
     }
   }

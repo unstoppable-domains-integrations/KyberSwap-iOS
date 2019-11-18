@@ -826,5 +826,10 @@ extension KNExchangeTokenCoordinator: KNTransactionStatusPopUpDelegate {
     if action == .transfer {
       self.openSendTokenView()
     }
+    if action == .dismiss {
+      if #available(iOS 10.3, *) {
+        KNAppstoreRatingManager.requestReviewIfAppropriate()
+      }
+    }
   }
 }

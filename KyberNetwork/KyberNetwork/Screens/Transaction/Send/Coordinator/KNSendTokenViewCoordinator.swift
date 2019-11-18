@@ -290,5 +290,10 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
     if action == .swap {
       KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
     }
+    if action == .dismiss {
+      if #available(iOS 10.3, *) {
+        KNAppstoreRatingManager.requestReviewIfAppropriate()
+      }
+    }
   }
 }
