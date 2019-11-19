@@ -9,7 +9,7 @@ enum KNAppstoreRatingManager {
   @available(iOS 10.3, *)
   static func requestReviewIfAppropriate() {
     let lastTimePrompted: Double = UserDefaults.standard.object(forKey: kLastTimePromptedRatingKey) as? Double ?? 0.0
-    let interval = KNEnvironment.default.isMainnet ? 4.0 * 30.0 * 24.0 * 60.0 * 60.0 : 60.0 // every 4 months
+    let interval = isDebug ? 60.0 : 4.0 * 30.0 * 24.0 * 60.0 * 60.0 // every 4 months
     if Date().timeIntervalSince1970 < lastTimePrompted + interval { return } // not show again for 2 days
 
     let infoDictionaryKey = kCFBundleVersionKey as String

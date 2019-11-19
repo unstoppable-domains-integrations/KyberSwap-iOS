@@ -12,7 +12,7 @@ class KNVersionControlManager: NSObject {
     let settings = RemoteConfigSettings()
     remoteConfig.configSettings = settings
 
-    let expirationDuration: TimeInterval = KNEnvironment.default.isMainnet ? 3600 : 60
+    let expirationDuration: TimeInterval = isDebug ? 60.0 : 3600
 
     guard let currentVersion = Bundle.main.versionNumber else {
       fatalError("Expected to find a bundle version in the info dictionary")
