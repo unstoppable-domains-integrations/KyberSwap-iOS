@@ -12,7 +12,7 @@ class KNVersionControlManager: NSObject {
     let settings = RemoteConfigSettings()
     remoteConfig.configSettings = settings
 
-    let expirationDuration: TimeInterval = isDebug ? 60.0 : 3600
+    let expirationDuration: TimeInterval = isDebug ? 60.0 : 3600.0
 
     guard let currentVersion = Bundle.main.versionNumber else {
       fatalError("Expected to find a bundle version in the info dictionary")
@@ -23,7 +23,12 @@ class KNVersionControlManager: NSObject {
     remoteConfig.fetch(withExpirationDuration: TimeInterval(expirationDuration)) { (status, error) -> Void in
       if status == .success {
         remoteConfig.activateFetched()
-        let data = remoteConfig.configValue(forKey: "version_update").dataValue
+        let key: String = {
+          if KNEnvironment.default == .production { return "version_update" }
+          if KNEnvironment.default == .staging { return "version_update_staging" }
+          return "version_update_dev"
+        }()
+        let data = remoteConfig.configValue(forKey: key).dataValue
         do {
           let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary ?? [:]
           if let version = json["current_version"] as? String,
