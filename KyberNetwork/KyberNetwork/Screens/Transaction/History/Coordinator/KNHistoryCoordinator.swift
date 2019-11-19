@@ -114,7 +114,10 @@ class KNHistoryCoordinator: Coordinator {
             // more than 2 txs shared same hash
             tempId = id
             while id < transactions.count && transactions[id].id == transactions[tempId].id {
-              processedTxs.append(transactions[id])
+              let tx = transactions[id]
+              let contract = tx.localizedOperations.first?.contract?.lowercased() ?? ""
+              tx.localizedOperations.first?.symbol = addressToSymbol[contract] ?? tx.localizedOperations.first?.symbol
+              processedTxs.append(tx)
               id += 1
             }
             continue
@@ -126,7 +129,10 @@ class KNHistoryCoordinator: Coordinator {
             continue
           }
         }
-        processedTxs.append(transactions[id])
+        let tx = transactions[id]
+        let contract = tx.localizedOperations.first?.contract?.lowercased() ?? ""
+        tx.localizedOperations.first?.symbol = addressToSymbol[contract] ?? tx.localizedOperations.first?.symbol
+        processedTxs.append(tx)
         id += 1
       }
 
