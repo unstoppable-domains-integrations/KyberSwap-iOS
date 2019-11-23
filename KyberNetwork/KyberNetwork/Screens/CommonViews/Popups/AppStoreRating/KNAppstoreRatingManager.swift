@@ -23,6 +23,7 @@ enum KNAppstoreRatingManager {
     // only check version for mainnet
     if currentVersion != lastVersionPromptedForReview || !KNEnvironment.default.isMainnet {
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        KNCrashlyticsUtil.logCustomEvent(withName: "show_rating_request", customAttributes: nil)
         SKStoreReviewController.requestReview()
         UserDefaults.standard.set(currentVersion, forKey: kLastVersionPromptedForReviewKey)
         UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: kLastTimePromptedRatingKey)

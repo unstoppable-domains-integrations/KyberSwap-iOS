@@ -152,10 +152,24 @@ extension KNAppCoordinator {
         preferredStyle: .alert
       )
       alert.addAction(UIAlertAction(title: "Update".toBeLocalised(), style: .default, handler: { _ in
+        KNCrashlyticsUtil.logCustomEvent(
+          withName: "new_update_available",
+          customAttributes: ["button": "update"]
+        )
         self.navigationController.openSafari(with: "https://apps.apple.com/us/app/kyberswap-crypto-exchange/id1453691309")
       }))
       if !isForced {
-        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in
+          KNCrashlyticsUtil.logCustomEvent(
+            withName: "new_update_available",
+            customAttributes: ["button": "cancel"]
+          )
+        }))
+      } else {
+        KNCrashlyticsUtil.logCustomEvent(
+          withName: "force_update",
+          customAttributes: ["cur_version": Bundle.main.versionNumber ?? ""]
+        )
       }
       self.navigationController.present(alert, animated: true, completion: nil)
     }
