@@ -231,6 +231,7 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
+    KNAppTracker.logFirstSwapIfNeeded()
     self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
       guard let `self` = self else { return }
       switch result {

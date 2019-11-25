@@ -468,6 +468,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
             case .success(let resp):
               if let _ = resp.0, self.confirmVC != nil {
                 self.rootViewController.coordinatorDoneSubmittingOrder()
+                KNAppTracker.logFirstTimeLimitOrderIfNeeded()
                 completion?(true)
               } else {
                 self.navigationController.showErrorTopBannerMessage(

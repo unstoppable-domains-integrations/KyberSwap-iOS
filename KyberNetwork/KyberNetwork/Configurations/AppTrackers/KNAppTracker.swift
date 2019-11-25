@@ -46,6 +46,11 @@ class KNAppTracker {
 
   static let kShouldOpenLimitOrderAfterSignedInKey: String = "kShouldOpenLimitOrderAfterSignedInKey"
 
+  static let kFirstInstallTimeKey: String = "kFirstInstallTimeKey"
+  static let kFirstTimeSwapKey: String = "kFirstTimeSwapKey"
+  static let kFirstTimeLimitOrderKey: String = "kFirstTimeLimitOrderKey"
+  static let kFirstTimePriceAlertKey: String = "kFirstTimePriceAlertKey"
+
   static let userDefaults: UserDefaults = UserDefaults.standard
 
   static let minimumPriceAlertPercent: Double = -99.0
@@ -335,6 +340,82 @@ class KNAppTracker {
 
   static func updateShouldOpenLimitOrderAfterSignedIn(_ isOpen: Bool) {
     userDefaults.set(isOpen, forKey: kShouldOpenLimitOrderAfterSignedInKey)
+    userDefaults.synchronize()
+  }
+
+  static func saveFirstInstallTimeIfNeeded() {
+    if userDefaults.value(forKey: kFirstInstallTimeKey) == nil {
+      userDefaults.set(Date().timeIntervalSince1970, forKey: kFirstInstallTimeKey)
+      userDefaults.synchronize()
+    }
+  }
+
+  static func getFirstInstallTime() -> TimeInterval {
+    if let time = userDefaults.value(forKey: kFirstInstallTimeKey) as? Double {
+      return time
+    }
+    return Date().timeIntervalSince1970
+  }
+
+  static func logFirstSwapIfNeeded() {
+    if userDefaults.value(forKey: kFirstTimeSwapKey) != nil { return }
+    let time = Date().timeIntervalSince1970
+    let installTime = KNAppTracker.getFirstInstallTime()
+    if time <= installTime + 24.0 * 60.0 * 60.0 { // one day
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_swap", customAttributes: ["value": "day_\(installTime)"])
+    } else if time <= installTime + 7.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_swap", customAttributes: ["value": "week_\(installTime)"])
+    } else if time <= installTime + 30.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_swap", customAttributes: ["value": "month_\(installTime)"])
+    } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_swap", customAttributes: ["value": "\(installTime)_\(time)"])
+    }
+    KNAppTracker.saveFirstTimeSwap()
+  }
+
+  static func saveFirstTimeSwap() {
+    userDefaults.set(Date().timeIntervalSince1970, forKey: kFirstTimeSwapKey)
+    userDefaults.synchronize()
+  }
+
+  static func logFirstTimeLimitOrderIfNeeded() {
+    if userDefaults.value(forKey: kFirstTimeLimitOrderKey) != nil { return }
+    let time = Date().timeIntervalSince1970
+    let installTime = KNAppTracker.getFirstInstallTime()
+    if time <= installTime + 24.0 * 60.0 * 60.0 { // one day
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_limit_order", customAttributes: ["value": "day_\(installTime)"])
+    } else if time <= installTime + 7.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_limit_order", customAttributes: ["value": "week_\(installTime)"])
+    } else if time <= installTime + 30.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_limit_order", customAttributes: ["value": "month_\(installTime)"])
+    } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_limit_order", customAttributes: ["value": "\(installTime)_\(time)"])
+    }
+    KNAppTracker.saveFirstTimeLimitOrder()
+  }
+
+  static func saveFirstTimeLimitOrder() {
+    userDefaults.set(Date().timeIntervalSince1970, forKey: kFirstTimeLimitOrderKey)
+    userDefaults.synchronize()
+  }
+
+  static func logFirstTimePriceAlertIfNeeded() {
+    if userDefaults.value(forKey: kFirstTimePriceAlertKey) != nil { return }
+    let time = Date().timeIntervalSince1970
+    let installTime = KNAppTracker.getFirstInstallTime()
+    if time <= installTime + 24.0 * 60.0 * 60.0 { // one day
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_price_alert", customAttributes: ["value": "day_\(installTime)"])
+    } else if time <= installTime + 7.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_price_alert", customAttributes: ["value": "week_\(installTime)"])
+    } else if time <= installTime + 30.0 * 24.0 * 60.0 * 60.0 { // one week
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_price_alert", customAttributes: ["value": "month_\(installTime)"])
+    } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "first_price_alert", customAttributes: ["value": "\(installTime)_\(time)"])
+    }
+    KNAppTracker.saveFirstTimePriceAlert()
+  }
+  static func saveFirstTimePriceAlert() {
+    userDefaults.set(Date().timeIntervalSince1970, forKey: kFirstTimePriceAlertKey)
     userDefaults.synchronize()
   }
 
