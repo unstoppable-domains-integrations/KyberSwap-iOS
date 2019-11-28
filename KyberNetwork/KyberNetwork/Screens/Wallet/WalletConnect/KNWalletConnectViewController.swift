@@ -108,6 +108,7 @@ class KNWalletConnectViewController: KNBaseViewController {
 
     interactor.onDisconnect = { [weak self] (error) in
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "disconnect"])
+      self?.interactor?.killSession().cauterize()
       self?.connectionStatusUpdated(false)
     }
 
@@ -429,19 +430,10 @@ extension KNWalletConnectViewController {
 
   func applicationDidEnterBackground() {
     if self.interactor?.state != .connected { return }
-    self.shouldRecover = true
-    self.interactor?.pause()
+    self.interactor?.killSession().cauterize()
   }
 
   func applicationWillEnterForeground() {
-    if !self.shouldRecover { return }
-    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-      self.shouldRecover = false
-      self.interactor?.connect().done { [weak self] connected in
-        self?.connectionStatusUpdated(connected)
-      }.catch { _ in
-      }
-    }
   }
 }
 
