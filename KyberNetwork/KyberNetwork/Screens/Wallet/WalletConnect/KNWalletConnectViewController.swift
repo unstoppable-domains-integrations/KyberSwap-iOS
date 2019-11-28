@@ -15,6 +15,7 @@ class KNWalletConnectViewController: KNBaseViewController {
   fileprivate var wcSession: WCSession
   let knSession: KNSession
   fileprivate var interactor: WCInteractor?
+  fileprivate var shouldRecover: Bool = false
 
   private var backgroundTaskId: UIBackgroundTaskIdentifier?
   private weak var backgroundTimer: Timer?
@@ -96,6 +97,7 @@ class KNWalletConnectViewController: KNBaseViewController {
       alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
         KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "reject_\(peer.url)"])
         self?.interactor?.rejectSession().cauterize()
+        self?.interactor?.killSession().cauterize()
       }))
       alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
         KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "approved_\(peer.url)"])
@@ -106,7 +108,6 @@ class KNWalletConnectViewController: KNBaseViewController {
 
     interactor.onDisconnect = { [weak self] (error) in
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "disconnect"])
-      self?.interactor?.killSession().cauterize()
       self?.connectionStatusUpdated(false)
     }
 
@@ -411,6 +412,14 @@ class KNWalletConnectViewController: KNBaseViewController {
       self.knSession.addNewPendingTransaction(tx)
     }
   }
+
+  @objc func reconnectIfNeeded(_ sender: Any?) {
+    if self.interactor?.state == .connected { return }
+    self.interactor?.connect().done { [weak self] connected in
+      self?.connectionStatusUpdated(connected)
+    }.catch { _ in
+    }
+  }
 }
 
 extension KNWalletConnectViewController {
@@ -420,12 +429,18 @@ extension KNWalletConnectViewController {
 
   func applicationDidEnterBackground() {
     if self.interactor?.state != .connected { return }
+    self.shouldRecover = true
     self.interactor?.pause()
   }
 
   func applicationWillEnterForeground() {
+    if !self.shouldRecover { return }
     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-      self.interactor?.resume()
+      self.shouldRecover = false
+      self.interactor?.connect().done { [weak self] connected in
+        self?.connectionStatusUpdated(connected)
+      }.catch { _ in
+      }
     }
   }
 }

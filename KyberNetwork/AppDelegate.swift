@@ -13,9 +13,10 @@ import FacebookCore
 import FacebookLogin
 import GoogleSignIn
 import Firebase
+import AppsFlyerLib
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate, AppsFlyerTrackerDelegate {
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
 
@@ -66,6 +67,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.inFocusDisplayType = .notification
     SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     FirebaseApp.configure()
+
+    AppsFlyerTracker.shared().appsFlyerDevKey = KNSecret.appsflyerKey
+    AppsFlyerTracker.shared().appleAppID = "id1453691309"
+
+    AppsFlyerTracker.shared().delegate = self
+
+    /* Set isDebug to true to see AppsFlyer debug logs */
+    AppsFlyerTracker.shared().isDebug = isDebug
     return true
   }
 
@@ -81,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
+    AppsFlyerTracker.shared().trackAppLaunch()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
@@ -114,6 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     Branch.getInstance().application(app, open: url, options: options)
     TWTRTwitter.sharedInstance().application(app, open: url, options: options)
     SDKApplicationDelegate.shared.application(app, open: url, options: options)
+    AppsFlyerTracker.shared().handleOpen(url, options: options)
     return true
   }
 
@@ -126,13 +137,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       annotation: annotation
     )
     GIDSignIn.sharedInstance()?.handle(url, sourceApplication: sourceApplication, annotation: annotation)
+    AppsFlyerTracker.shared().handleOpen(url, sourceApplication: sourceApplication, withAnnotation: annotation)
     return true
   }
 
   // Respond to Universal Links
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    AppsFlyerTracker.shared().continue(userActivity, restorationHandler: nil)
     Branch.getInstance().continue(userActivity)
     return true
+  }
+
+  func onConversionDataReceived(_ installData: [AnyHashable: Any]!) {
+    guard let first_launch_flag = installData["is_first_launch"] as? Int, first_launch_flag == 1 else {
+      return
+    }
+
+    guard let status = installData["af_status"] as? String else {
+      return
+    }
+
+    if first_launch_flag == 1 {
+      if status.lowercased() == "non-organic" {
+        if let media_source = installData["media_source"] as? String, let campaign = installData["campaign"] as? String {
+          KNCrashlyticsUtil.logCustomEvent(
+            withName: "non-organic-install",
+            customAttributes: ["source": "\(media_source)-\(campaign)"])
+        }
+      } else {
+        KNCrashlyticsUtil.logCustomEvent(
+        withName: "organic-install",
+        customAttributes: nil)
+      }
+    }
+  }
+
+  func onConversionDataRequestFailure(_ error: Error!) {
+    KNCrashlyticsUtil.logCustomEvent(
+      withName: "conversion_data_failure",
+      customAttributes: nil
+    )
+  }
+
+  func onAppOpenAttribution(_ attributionData: [AnyHashable: Any]!) {
+  }
+
+  func onAppOpenAttributionFailure(_ error: Error!) {
+    KNCrashlyticsUtil.logCustomEvent(
+      withName: "app_open_attribution_failure",
+      customAttributes: nil
+    )
   }
 }
 

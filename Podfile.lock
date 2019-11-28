@@ -2,6 +2,7 @@ PODS:
   - Alamofire (4.8.2)
   - APIKit (3.2.1):
     - Result (~> 3.0)
+  - AppsFlyerFramework (4.10.4)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - Bolts (1.9.0):
@@ -173,6 +174,7 @@ PODS:
 
 DEPENDENCIES:
   - APIKit (~> 3.2.1)
+  - AppsFlyerFramework
   - BigInt (~> 3.1.0)
   - Branch (~> 0.25.11)
   - Crashlytics (~> 3.12.0)
@@ -214,6 +216,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - APIKit
+    - AppsFlyerFramework
     - BigInt
     - Bolts
     - Branch
@@ -282,6 +285,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
+  AppsFlyerFramework: aeb793095c1b33170ae30bef66652c0645f409be
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Branch: 3cc6dcfd726db42ced22c418c0fb09aa5e90a847
@@ -338,6 +342,6 @@ SPEC CHECKSUMS:
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   WalletConnect: 20ca9cb4372f9b15cc67a416b751d0fe8ab2fe89
 
-PODFILE CHECKSUM: e67535624fd0c9d7b2b38a87c77ae4b5a64e4592
+PODFILE CHECKSUM: cfcfd3d801d87a171046237ef34ef1cbe99edafe
 
 COCOAPODS: 1.5.3

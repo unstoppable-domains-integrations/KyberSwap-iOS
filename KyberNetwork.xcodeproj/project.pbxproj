@@ -567,6 +567,8 @@
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
+		C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C626BEDB238D870E00C96410 /* AdSupport.framework */; };
+		C626BEDE238D871700C96410 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C626BEDD238D871700C96410 /* iAd.framework */; };
 		C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65D31E721D4CF27005D0B04 /* UILabel+Kyber.swift */; };
 		C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65D31E921D4DCD1005D0B04 /* UITextField+Kyber.swift */; };
 		C680C11D2382755900A621CB /* KNAppstoreRatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C680C11C2382755900A621CB /* KNAppstoreRatingManager.swift */; };
@@ -1194,6 +1196,8 @@
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B13A87D3BA5167741E5D0801 /* Pods-Trust.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trust.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trust/Pods-Trust.release.xcconfig"; sourceTree = "<group>"; };
 		BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceStatusTests.swift; sourceTree = "<group>"; };
+		C626BEDB238D870E00C96410 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		C626BEDD238D871700C96410 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		C65D31E721D4CF27005D0B04 /* UILabel+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Kyber.swift"; sourceTree = "<group>"; };
 		C65D31E921D4DCD1005D0B04 /* UITextField+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Kyber.swift"; sourceTree = "<group>"; };
 		C680C11C2382755900A621CB /* KNAppstoreRatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNAppstoreRatingManager.swift; sourceTree = "<group>"; };
@@ -1216,7 +1220,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
 				8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */,
+				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4031,6 +4037,8 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C626BEDD238D871700C96410 /* iAd.framework */,
+				C626BEDB238D870E00C96410 /* AdSupport.framework */,
 				250CA1EC225B3FC900DF28A4 /* FacebookCore.framework */,
 				250CA1EE225B3FC900DF28A4 /* FacebookLogin.framework */,
 				646C8C822C986358D7388602 /* Pods_Trust.framework */,
