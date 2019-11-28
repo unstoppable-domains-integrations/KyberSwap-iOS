@@ -413,7 +413,7 @@ extension KNProfileHomeCoordinator {
     self.rootViewController.coordinatorUserDidSignInSuccessfully(isFirstTime: true)
     self.lastUpdatedUserInfo = Date()
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.updateUserSignedInPushTokenWithRetry() }
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "signed_in_successfully"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["type": "signed_in_successfully"])
     let name = IEOUserStorage.shared.user?.name ?? ""
     let text = NSLocalizedString("welcome.back.user", value: "Welcome back, %@", comment: "")
     let message = String(format: text, name)

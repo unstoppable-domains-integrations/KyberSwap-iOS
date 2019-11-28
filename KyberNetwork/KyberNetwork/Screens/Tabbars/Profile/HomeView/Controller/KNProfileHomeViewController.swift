@@ -427,27 +427,27 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   @IBAction func logOutButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "sign_out_button_pressed"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "sign_out_button_pressed"])
     self.delegate?.profileHomeViewController(self, run: .logOut)
   }
 
   @IBAction func userKYCActionButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "verify_pressed_\(self.userKYCActionButton.titleLabel?.text ?? "")"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "verify_pressed_\(self.userKYCActionButton.titleLabel?.text ?? "")"])
     self.delegate?.profileHomeViewController(self, run: .openVerification)
   }
 
   @IBAction func addPriceAlertButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_alert"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "add_alert"])
     self.delegate?.profileHomeViewController(self, run: .addPriceAlert)
   }
 
   @IBAction func moreAlertsButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "more_alerts"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "more_alerts"])
     self.delegate?.profileHomeViewController(self, run: .managePriceAlerts)
   }
 
   @IBAction func leaderBoardButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "leader_board"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "leader_board"])
     self.delegate?.profileHomeViewController(self, run: .leaderBoard)
   }
 }
@@ -492,14 +492,14 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
   }
 
   fileprivate func deleteAnAlert(_ alert: KNAlertObject) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "delete_alert"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "delete_alert"])
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.displayLoading()
     KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alertID: alert.id) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.hideLoading()
       if let error = error {
-        KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "delete_alert_failed", "error": error])
+        KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "delete_alert_failed", "error": error])
         self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: error,

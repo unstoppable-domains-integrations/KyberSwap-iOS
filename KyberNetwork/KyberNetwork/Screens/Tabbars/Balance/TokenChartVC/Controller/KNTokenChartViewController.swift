@@ -512,7 +512,7 @@ class KNTokenChartViewController: KNBaseViewController {
   }
 
   @objc func openTokenOnEtherscanPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "open_token_on_etherscan_\(self.viewModel.token.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "open_token_on_etherscan_\(self.viewModel.token.symbol)"])
     self.delegate?.tokenChartViewController(self, run: .openEtherscan(token: self.viewModel.token))
   }
 
@@ -522,25 +522,25 @@ class KNTokenChartViewController: KNBaseViewController {
 
   @IBAction func actionButtonDidPress(_ sender: UIButton) {
     if !self.viewModel.isTokenSupported {
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "send_\(self.viewModel.token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "send_\(self.viewModel.token.symbol)"])
       self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
       return
     }
     if sender.tag == 0 {
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "buy_\(self.viewModel.token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "buy_\(self.viewModel.token.symbol)"])
       self.delegate?.tokenChartViewController(self, run: .buy(token: self.viewModel.token))
     } else if sender.tag == 1 {
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "sell_\(self.viewModel.token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "sell_\(self.viewModel.token.symbol)"])
       self.delegate?.tokenChartViewController(self, run: .sell(token: self.viewModel.token))
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "send_\(self.viewModel.token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "send_\(self.viewModel.token.symbol)"])
       self.delegate?.tokenChartViewController(self, run: .send(token: self.viewModel.token))
     }
   }
 
   @IBAction func dataTypeDidChange(_ sender: UIButton) {
     let type = KNTokenChartType(rawValue: sender.tag) ?? .day
-    KNCrashlyticsUtil.logCustomEvent(withName: "token_chart", customAttributes: ["type": "data_type_changed_\(type.rawValue)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "scree_token_chart", customAttributes: ["action": "data_type_changed_\(type.rawValue)"])
     self.updateDisplayDataType(type)
   }
 

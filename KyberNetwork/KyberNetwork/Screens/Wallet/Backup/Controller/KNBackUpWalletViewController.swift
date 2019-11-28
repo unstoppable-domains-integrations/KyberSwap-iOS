@@ -150,13 +150,13 @@ class KNBackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "back_up_wallet", customAttributes: ["type": "next_button"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "next_button"])
     self.viewModel.updateNextBackUpWords()
     self.updateUI()
   }
 
   @IBAction func completeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "back_up_wallet", customAttributes: ["type": "complete_button"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "complete_button"])
     guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
       return
     }
@@ -192,7 +192,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func skipButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "back_up_wallet", customAttributes: ["type": "skip_button"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "skip_button"])
     let alert = UIAlertController(
       title: "\(NSLocalizedString("skip", value: "Skip", comment: ""))?",
       message: NSLocalizedString("you.can.backup.your.wallet.later", value: "You can backup your wallet later", comment: ""),
@@ -200,7 +200,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
     )
     alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
     alert.addAction(UIAlertAction(title: NSLocalizedString("continue", value: "Continue", comment: ""), style: .default, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "back_up_wallet", customAttributes: ["type": "skip_button_continue"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "skip_button_continue"])
       self.delegate?.backupWalletViewControllerDidConfirmSkipWallet()
     }))
     self.present(alert, animated: true, completion: nil)

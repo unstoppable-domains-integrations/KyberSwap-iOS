@@ -366,13 +366,13 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func hamburgerMenuPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "hamburger_menu"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "hamburger_menu"])
     self.view.endEditing(true)
     self.hamburgerMenu.openMenu(animated: true)
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "from_token_pressed"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "from_token_pressed"])
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -382,7 +382,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func toTokenButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "to_token_pressed"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "to_token_pressed"])
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -392,7 +392,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func swapButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "swap_2_tokens"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "swap_2_tokens"])
     if !self.viewModel.isFromTokenBtnEnabled { return }
     self.viewModel.swapTokens()
     self.fromAmountTextField.text = ""
@@ -429,7 +429,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "continue_\(self.viewModel.from.symbol)_\(self.viewModel.to.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "continue_\(self.viewModel.from.symbol)_\(self.viewModel.to.symbol)"])
     self.validateDataBeforeContinuing(hasCallValidateRate: false)
   }
 
@@ -517,7 +517,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["type": "swap_all"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["action": "swap_all"])
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()

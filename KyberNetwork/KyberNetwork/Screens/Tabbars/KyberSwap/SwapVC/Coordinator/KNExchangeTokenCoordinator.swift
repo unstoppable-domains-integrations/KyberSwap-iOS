@@ -210,6 +210,18 @@ extension KNExchangeTokenCoordinator {
       topVC.applicationWillTerminate()
     }
   }
+
+  func appCoordinatorWillEnterForeground() {
+    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
+      topVC.applicationWillEnterForeground()
+    }
+  }
+
+  func appCoordinatorDidEnterBackground() {
+    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
+      topVC.applicationDidEnterBackground()
+    }
+  }
 }
 
 // MARK: Network requests
@@ -300,15 +312,15 @@ extension KNExchangeTokenCoordinator {
           let success = json["success"] as? Bool ?? false
           let message = json["message"] as? String ?? "Unknown"
           if success {
-            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": true])
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap_coordinator", customAttributes: ["tx_hash_sent": true])
           } else {
-            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": message])
+            KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap_coordinator", customAttributes: ["tx_hash_sent": message])
           }
         } catch {
-          KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
+          KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap_coordinator", customAttributes: ["tx_hash_sent": "failed_to_send"])
         }
       case .failure:
-        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap", customAttributes: ["tx_hash_sent": "failed_to_send"])
+        KNCrashlyticsUtil.logCustomEvent(withName: "kyberswap_coordinator", customAttributes: ["tx_hash_sent": "failed_to_send"])
       }
     }
   }

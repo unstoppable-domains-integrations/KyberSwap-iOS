@@ -24,7 +24,7 @@ class KNImportWalletCoordinator: Coordinator {
   }
 
   func start() {
-    KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: nil)
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: nil)
     let importVC: KNImportWalletViewController = {
       let controller = KNImportWalletViewController()
       controller.delegate = self
@@ -48,13 +48,13 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .back:
       self.stop()
     case .importJSON(let json, let password, let name):
-      KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: ["type": "JSON"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "import_JSON"])
       self.importWallet(with: .keystore(string: json, password: password), name: name)
     case .importPrivateKey(let privateKey, let name):
-      KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: ["type": "PrivateKey"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "import_PrivateKey"])
       self.importWallet(with: .privateKey(privateKey: privateKey), name: name)
     case .importSeeds(let seeds, let name):
-      KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: ["type": "Seeds"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "import_Seeds"])
       self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name)
     }
   }
@@ -62,9 +62,9 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   fileprivate func importWallet(with type: ImportType, name: String?) {
     self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     if name == nil || name?.isEmpty == true {
-      KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: ["type": "name_empty"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "import_wallet", customAttributes: ["type": "name_not_empty"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_not_empty"])
     }
     self.keystore.importWallet(type: type) { [weak self] result in
       guard let `self` = self else { return }

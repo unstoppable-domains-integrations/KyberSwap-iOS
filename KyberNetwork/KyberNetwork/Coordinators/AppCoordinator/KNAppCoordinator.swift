@@ -179,12 +179,18 @@ extension KNAppCoordinator {
     if KNAppTracker.shouldShowAuthenticate() {
       self.authenticationCoordinator.start()
     }
+    self.balanceTabCoordinator?.appCoordinatorWillEnterForeground()
+    self.exchangeCoordinator?.appCoordinatorWillEnterForeground()
+    self.limitOrderCoordinator?.appCoordinatorWillEnterForeground()
   }
 
   func appDidEnterBackground() {
     self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
     self.loadBalanceCoordinator?.pause()
+    self.balanceTabCoordinator?.appCoordinatorDidEnterBackground()
+    self.exchangeCoordinator?.appCoordinatorDidEnterBackground()
+    self.limitOrderCoordinator?.appCoordinatorDidEnterBackground()
   }
 
   func appWillTerminate() {

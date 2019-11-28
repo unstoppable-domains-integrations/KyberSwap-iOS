@@ -93,7 +93,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   }
 
   fileprivate func deleteAnAlert(_ alert: KNAlertObject) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "delete_alert"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert_coordinator", customAttributes: ["action": "delete_alert"])
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading()
     KNPriceAlertCoordinator.shared.removeAnAlert(accessToken: accessToken, alertID: alert.id) { [weak self] (_, error) in
@@ -101,8 +101,8 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
       self.navigationController.hideLoading()
       if let error = error {
         KNCrashlyticsUtil.logCustomEvent(
-          withName: "manage_alert",
-          customAttributes: ["type": "delete_alert_failed", "error": error]
+          withName: "manage_alert_coordinator",
+          customAttributes: ["info": "delete_alert_failed_\(error)"]
         )
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -120,7 +120,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   }
 
   fileprivate func openEditAlert(_ alert: KNAlertObject) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert", customAttributes: ["type": "open_edit_alert"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert_coordinator", customAttributes: ["action": "open_edit_alert"])
     self.newAlertController = KNNewAlertViewController()
     self.newAlertController?.loadViewIfNeeded()
     self.navigationController.pushViewController(self.newAlertController!, animated: true) {

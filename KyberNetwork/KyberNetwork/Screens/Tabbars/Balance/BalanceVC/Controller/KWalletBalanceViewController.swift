@@ -223,19 +223,19 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   @IBAction func menuButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "hamburger_menu"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "hamburger_menu"])
     self.hamburgerMenu.openMenu(animated: true)
   }
 
   @IBAction func kyberListButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "kyber_listed_tokens"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "kyber_listed_tokens"])
     if self.viewModel.updateDisplayTabOption(.kyberListed) {
       self.updateDisplayedDataType()
     }
   }
 
   @IBAction func otherButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "other_tokens"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "other_tokens"])
     let newOption: KTokenListType = {
       if self.viewModel.tabOption == .kyberListed { return self.viewModel.preExtraTabOption }
       return self.viewModel.tabOption == .favourite ? .others : .favourite
@@ -246,19 +246,19 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   @IBAction func searchButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "search_token"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "search_token"])
     if !self.searchTextField.isFirstResponder { self.searchTextField.becomeFirstResponder() }
   }
 
   @IBAction func sortNameButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_name"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "sorted_name"])
     self.viewModel.updateTokenDisplayType(positionClicked: 1)
     self.tokensBalanceTableView.reloadData()
     self.updateDisplayedDataType()
   }
 
   @IBAction func changeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sorted_change_24h"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "sorted_change_24h"])
     self.viewModel.updateTokenDisplayType(positionClicked: 3)
     self.tokensBalanceTableView.reloadData()
     self.updateDisplayedDataType()
@@ -270,7 +270,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func currencyETHButtonPressed(_ sender: Any) {
     let newType: KWalletCurrencyType = .eth
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "currency_changed_\(newType.rawValue)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "currency_changed_\(newType.rawValue)"])
     let isSwitched = self.viewModel.updateCurrencyType(newType)
     self.viewModel.updateTokenDisplayType(positionClicked: 2, isSwitched: isSwitched)
     self.updateDisplayedDataType()
@@ -278,7 +278,7 @@ class KWalletBalanceViewController: KNBaseViewController {
 
   @IBAction func currencyUSDButtonPressed(_ sender: Any) {
     let newType: KWalletCurrencyType = .usd
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "currency_changed_\(newType.rawValue)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "currency_changed_\(newType.rawValue)"])
     let isSwitched = self.viewModel.updateCurrencyType(newType)
     self.viewModel.updateTokenDisplayType(positionClicked: 2, isSwitched: isSwitched)
     self.updateDisplayedDataType()
@@ -383,7 +383,7 @@ extension KWalletBalanceViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: false)
     let tokenObject = self.viewModel.tokenObject(for: indexPath.row)
     self.delegate?.kWalletBalanceViewController(self, run: .selectToken(token: tokenObject))
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "selected_\(tokenObject.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "selected_\(tokenObject.symbol)"])
   }
 }
 

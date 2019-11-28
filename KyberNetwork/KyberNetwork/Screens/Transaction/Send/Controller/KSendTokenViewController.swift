@@ -263,24 +263,24 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "search_token"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "search_token"])
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_\(self.viewModel.from.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_\(self.viewModel.from.symbol)"])
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (self.viewModel.address?.description.lowercased() ?? "") }) != nil {
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_to_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_to_contact"])
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_not_in_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_not_in_contact"])
     }
     self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "scan_qr_code"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "scan_qr_code"])
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
       return
     }
@@ -299,17 +299,17 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "recent_contact_more"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "recent_contact_more"])
     self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
   }
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "new_contact_button"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "new_contact_button"])
     self.delegate?.kSendTokenViewController(self, run: .addContact(address: self.viewModel.addressString))
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_all"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_all"])
     self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.amountTextField.text ?? "")
     self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
@@ -572,16 +572,16 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     case .update(let height):
       self.updateContactTableView(height: height)
     case .select(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "selected_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "selected_contact"])
       self.contactTableView(select: contact)
     case .edit(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "edit/add_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "edit/add_contact"])
       self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address))
     case .delete(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "delete_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "delete_contact"])
       self.contactTableView(delete: contact)
     case .send(let address):
-      KNCrashlyticsUtil.logCustomEvent(withName: "send_token", customAttributes: ["type": "send_contact"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_contact"])
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {

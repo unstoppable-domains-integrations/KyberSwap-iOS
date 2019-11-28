@@ -252,7 +252,7 @@ extension KNAppCoordinator {
         message: error.prettyError,
         time: -1
       )
-      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update_failed", customAttributes: ["info": "no_details"])
       let transactions = self.session.transactionStorage.kyberPendingTransactions
       self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
       self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
@@ -272,7 +272,7 @@ extension KNAppCoordinator {
             time: -1
           )
         }
-        KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
+        KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update_failed", customAttributes: ["info": "lost_dropped_replaced"])
       }
       let transactions = self.session.transactionStorage.kyberPendingTransactions
       self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
@@ -298,7 +298,7 @@ extension KNAppCoordinator {
         self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
         self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "success"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update_success", customAttributes: ["info": trans.shortDesc])
     } else if trans.state == .failed || trans.state == .error {
       if !(updateBalance || updateExchange || updateLO || updateSettings) {
         self.navigationController.showSuccessTopBannerMessage(
@@ -307,7 +307,7 @@ extension KNAppCoordinator {
           time: -1
         )
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update", customAttributes: ["type": "failed"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update_failed", customAttributes: ["info": trans.shortDesc])
     }
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)

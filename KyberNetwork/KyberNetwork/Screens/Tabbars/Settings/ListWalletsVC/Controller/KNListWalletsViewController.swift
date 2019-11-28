@@ -122,7 +122,7 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   @IBAction func addButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "add_wallet"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "add_wallet"])
     self.delegate?.listWalletsViewController(self, run: .addWallet)
   }
 }
@@ -138,16 +138,16 @@ extension KNListWalletsViewController: UITableViewDelegate {
     )
     if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
       alertController.addAction(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "select_wallet"])
+        KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "select_wallet"])
         self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
       }))
     }
     alertController.addAction(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "edit_wallet"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "edit_wallet"])
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "delete_wallet"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "delete_wallet"])
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
@@ -175,16 +175,16 @@ extension KNListWalletsViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let wallet = self.viewModel.wallet(at: indexPath.row)
     let switchWallet = UITableViewRowAction(style: .normal, title: NSLocalizedString("Switch", value: "Switch", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "select_wallet"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "select_wallet"])
       self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
     }
     let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "edit_wallet"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "edit_wallet"])
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }
     edit.backgroundColor = UIColor.Kyber.shamrock
     let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallets", customAttributes: ["type": "delete_wallet"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_list_wallets", customAttributes: ["action": "delete_wallet"])
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }
     delete.backgroundColor = UIColor.Kyber.strawberry

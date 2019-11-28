@@ -486,7 +486,7 @@ extension KYCFlowViewController: KYCPersonalInfoViewControllerDelegate {
       )
       guard let user = IEOUserStorage.shared.user,
         let data = UIImageJPEGRepresentation(proofAddrImage, 0.0) else { return }
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["user": user.userID, "value": "submit_personal_info"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["user": user.userID, "value": "submit_personal_info"])
       let service = ProfileKYCService.personalInfo(
         accessToken: user.accessToken,
         firstName: firstName,
@@ -546,7 +546,7 @@ extension KYCFlowViewController: KYCIdentityInfoViewControllerDelegate {
         docHoldingImage: docHoldingImage
       )
       guard let user = IEOUserStorage.shared.user else { return }
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["user": user.userID, "value": "submit_identity_info"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["user": user.userID, "value": "submit_identity_info"])
       let docBackImageData: Data? = docBackImage == nil ? nil : UIImageJPEGRepresentation(docBackImage!, 0.0)
       guard let docFrontImageData = UIImageJPEGRepresentation(docFrontImage, 0.0),
         let docHoldingImageData = UIImageJPEGRepresentation(docHoldingImage, 0.0) else { return }
@@ -589,7 +589,7 @@ extension KYCFlowViewController: KYCSubmitInfoViewControllerDelegate {
     switch event {
     case .submit:
       guard let user = IEOUserStorage.shared.user else { return }
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["user": user.userID, "value": "submit_info"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["user": user.userID, "value": "submit_info"])
       let service = ProfileKYCService.submitKYC(accessToken: user.accessToken)
       self.displayLoading()
       self.sendProfileServiceRequest(service: service) { [weak self] result in

@@ -79,19 +79,19 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBAction func showBackUpPhraseButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "show_back_up"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_edit_wallet", customAttributes: ["action": "show_back_up"])
     self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet))
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "delete_wallet"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_edit_wallet", customAttributes: ["action": "delete_wallet"])
     self.delegate?.editWalletViewController(self, run: .delete(wallet: self.viewModel.wallet))
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet", customAttributes: ["type": "save_wallet"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_edit_wallet", customAttributes: ["action": "save_wallet"])
     let wallet = self.viewModel.wallet.copy(withNewName: self.walletNameTextField.text ?? "")
     self.delegate?.editWalletViewController(self, run: .update(newWallet: wallet))
   }

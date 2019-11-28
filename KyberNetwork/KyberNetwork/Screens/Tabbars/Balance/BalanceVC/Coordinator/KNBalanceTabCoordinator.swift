@@ -205,6 +205,18 @@ extension KNBalanceTabCoordinator {
       topVC.applicationWillTerminate()
     }
   }
+
+  func appCoordinatorWillEnterForeground() {
+    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
+      topVC.applicationWillEnterForeground()
+    }
+  }
+
+  func appCoordinatorDidEnterBackground() {
+    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
+      topVC.applicationDidEnterBackground()
+    }
+  }
 }
 
 // MARK: New Design K Wallet Balance delegation
@@ -218,16 +230,16 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .send(let token):
       self.openSendTokenView(with: token)
     case .sell(let token):
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "sell_\(token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "sell_\(token.symbol)"])
       self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: false)
     case .buy(let token):
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "buy_\(token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "buy_\(token.symbol)"])
       self.delegate?.balanceTabCoordinatorShouldOpenExchange(for: token, isReceived: true)
     case .receiveToken:
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "open_qrcode"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "open_qrcode"])
       self.qrcodeCoordinator?.start()
     case .alert(let token):
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "add_alert_\(token.symbol)"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "add_alert_\(token.symbol)"])
       self.openAddNewAlert(token)
     case .refreshData:
       // refresh rates
@@ -285,7 +297,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openSendTokenView(with token: TokenObject) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_balance", customAttributes: ["type": "send_\(token.symbol)"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "send_\(token.symbol)"])
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       self.sendTokenCoordinator = KNSendTokenViewCoordinator(
         navigationController: self.navigationController,

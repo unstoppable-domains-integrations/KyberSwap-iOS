@@ -511,7 +511,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "occupation_code_\(occupationCode.isEmpty ? "empty" : "nonempty")"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "occupation_code_\(occupationCode.isEmpty ? "empty" : "nonempty")"])
     let industryCode = self.optionalDataView.getIndustryCode()
     if !industryCode.isEmpty && self.viewModel.industryCodes[industryCode] == nil {
       self.showWarningTopBannerMessage(
@@ -521,7 +521,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "industry_code_\(industryCode.isEmpty ? "empty" : "nonempty")"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "industry_code_\(industryCode.isEmpty ? "empty" : "nonempty")"])
     let taxCountry = self.optionalDataView.getTaxCountry()
     if !taxCountry.isEmpty && !self.viewModel.countries.contains(taxCountry) {
       let localised = "Sorry! We’re not currently able to accept applications from %@".toBeLocalised()
@@ -532,7 +532,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
       )
       return
     }
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "tax_country_\(taxCountry.isEmpty ? "empty" : "nonempty")"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "tax_country_\(taxCountry.isEmpty ? "empty" : "nonempty")"])
     let taxIDNumber: String? = {
       if !self.optionalDataView.getHasTaxIDNumber() {
         return nil
@@ -590,7 +590,7 @@ class KYCPersonalInfoViewController: KNBaseViewController {
   }
 
   @IBAction func primarySourceOfFundButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "primary_source_fund_picker"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "primary_source_fund_picker"])
     self.dataPickerType = .sourceFund
     self.fakeTextField.inputView = self.pickerView
 
@@ -811,10 +811,10 @@ extension KYCPersonalInfoViewController: KYCPersonalOptionalDataViewDelegate {
   func kycPersonalOptionalDataViewActionPressed(isCollapsed: Bool) {
     if isCollapsed {
       self.optionalDataView.expand()
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "optional_view_expand"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "optional_view_expand"])
     } else {
       self.optionalDataView.collapse()
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "optional_view_collapse"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyc_personal_info", customAttributes: ["info": "optional_view_collapse"])
     }
     self.heightConstraintForOptionalData.constant = self.optionalDataView.height
     self.view.layoutSubviews()

@@ -152,12 +152,12 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   @objc func addressLabelTapped(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "copy_from_address"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transaction_details", customAttributes: ["action": "copy_from_address"])
     self.copy(text: self.viewModel.transaction?.from ?? "")
   }
 
   @objc func txHashTapped(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "copy_tx_hash"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transaction_details", customAttributes: ["action": "copy_tx_hash"])
     self.copy(text: self.viewModel.transaction?.id ?? "")
   }
 
@@ -186,12 +186,12 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   }
 
   @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "open_ether_scan"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transaction_details", customAttributes: ["action": "open_ether_scan"])
     self.delegate?.transactionDetailsViewController(self, run: .openEtherScan)
   }
 
   @IBAction func viewOnEnjinXButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transaction_details", customAttributes: ["type": "open_kyber_enjin_scan"])
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_transaction_details", customAttributes: ["action": "open_kyber_enjin_scan"])
     self.delegate?.transactionDetailsViewController(self, run: .openEnjinXScan)
   }
 }
