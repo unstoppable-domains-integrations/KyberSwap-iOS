@@ -45,6 +45,7 @@ class KNWalletConnectViewController: KNBaseViewController {
     let address = self.knSession.wallet.address.description
     self.addressLabel.text = "\(address.prefix(12))...\(address.suffix(10))"
     self.urlLabel.text = ""
+    self.connectionStatusLabel.text = ""
     self.connect(session: self.wcSession)
   }
 
@@ -61,7 +62,10 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   func connect(session: WCSession) {
     let interactor = WCInteractor(session: self.wcSession, meta: self.clientMeta, uuid: UIDevice.current.identifierForVendor ?? UUID())
-    if interactor.state == .connected { interactor.disconnect() }
+    if interactor.state == .connected {
+      self.interactor?.killSession().cauterize()
+      self.interactor?.disconnect()
+    }
     let accounts = [self.knSession.wallet.address.description]
     let chainId = KNEnvironment.default.chainID
 
@@ -101,14 +105,11 @@ class KNWalletConnectViewController: KNBaseViewController {
     }
 
     interactor.onDisconnect = { [weak self] (error) in
+      self?.interactor?.killSession().cauterize()
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect", customAttributes: ["error_type": "disconnect"])
       if error != nil {
-        let alert = UIAlertController(title: "Error", message: "Do you want to re-connect?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error", message: "Do you want to connect to another session?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
-          guard let session = self?.wcSession else { return }
-          self?.connect(session: session)
-        }))
         alert.addAction(UIAlertAction(title: "Scan QR Code", style: .default, handler: { action in
           self?.scanQRCodeButtonPressed(action)
         }))
@@ -171,7 +172,7 @@ class KNWalletConnectViewController: KNBaseViewController {
     let alert = UIAlertController(title: "Approve transaction", message: message, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect", customAttributes: ["sign_tx": "reject"])
-      self.interactor?.rejectRequest(id: id, message: "").cauterize()
+      self.interactor?.rejectRequest(id: id, message: "User cancelled").cauterize()
     }))
     alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect", customAttributes: ["sign_tx": "approve"])
@@ -264,6 +265,8 @@ class KNWalletConnectViewController: KNBaseViewController {
       let alert = UIAlertController(title: "Disconnect current session?", message: "Do you want to disconnect your current session and start a new one?", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
       alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+        self.interactor?.killSession().cauterize()
+        self.interactor?.disconnect()
         let qrCode = QRCodeReaderViewController()
         qrCode.delegate = self
         self.present(qrCode, animated: true, completion: nil)
