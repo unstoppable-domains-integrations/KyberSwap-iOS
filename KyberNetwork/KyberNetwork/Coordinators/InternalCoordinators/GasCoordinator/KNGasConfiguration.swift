@@ -59,7 +59,7 @@ public struct KNGasConfiguration {
       if to.isTUSD { return trueUSDTokenGasLimitDefault }
       return exchangeETHTokenGasLimitDefault
     }()
-    return gasSrcToETH + gasETHToDest
+    return (gasSrcToETH + gasETHToDest) * BigInt(150) / BigInt(100)
   }
 
   static func calculateDefaultGasLimitTransfer(token: TokenObject) -> BigInt {
@@ -74,6 +74,6 @@ public struct KNGasConfiguration {
       if token.isTUSD { return trueUSDTokenGasLimitDefault }
       return transferTokenGasLimitDefault
     }()
-    return gasDefault * BigInt(120) / BigInt(100)
+    return gasDefault * BigInt(150) / BigInt(100)
   }
 }
