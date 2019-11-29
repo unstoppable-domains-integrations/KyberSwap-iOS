@@ -4,20 +4,20 @@ import UIKit
 import BigInt
 
 public struct KNGasConfiguration {
-  static let digixGasLimitDefault = BigInt(750_000)
-  static let exchangeTokensGasLimitDefault = BigInt(760_000)
-  static let exchangeETHTokenGasLimitDefault = BigInt(380_000)
-  static let approveTokenGasLimitDefault = BigInt(120_000)
-  static let transferTokenGasLimitDefault = BigInt(125_000)
-  static let transferETHGasLimitDefault = BigInt(100_000)
-  static let transferGasLimitDefault = BigInt(100_000)
+  static let digixGasLimitDefault = BigInt(990_000)
+  static let exchangeTokensGasLimitDefault = BigInt(990_000)
+  static let exchangeETHTokenGasLimitDefault = BigInt(500_000)
+  static let approveTokenGasLimitDefault = BigInt(160_000)
+  static let transferTokenGasLimitDefault = BigInt(160_000)
+  static let transferETHGasLimitDefault = BigInt(130_000)
+  static let transferGasLimitDefault = BigInt(130_000)
   static let buytokenSaleByETHGasLimitDefault = BigInt(550_000)
   static let buyTokenSaleByTokenGasLimitDefault = BigInt(700_000)
-  static let daiGasLimitDefault = BigInt(500_000)
-  static let makerGasLimitDefault = BigInt(400_000)
-  static let propyGasLimitDefault = BigInt(500_000)
-  static let promotionTokenGasLimitDefault = BigInt(380_000)
-  static let trueUSDTokenGasLimitDefault = BigInt(550_000)
+  static let daiGasLimitDefault = BigInt(650_000)
+  static let makerGasLimitDefault = BigInt(550_000)
+  static let propyGasLimitDefault = BigInt(650_000)
+  static let promotionTokenGasLimitDefault = BigInt(500_00)
+  static let trueUSDTokenGasLimitDefault = BigInt(720_000)
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "5", units: UnitConfiguration.gasPriceUnit)!
@@ -59,7 +59,7 @@ public struct KNGasConfiguration {
       if to.isTUSD { return trueUSDTokenGasLimitDefault }
       return exchangeETHTokenGasLimitDefault
     }()
-    return (gasSrcToETH + gasETHToDest) * BigInt(150) / BigInt(100)
+    return gasSrcToETH + gasETHToDest
   }
 
   static func calculateDefaultGasLimitTransfer(token: TokenObject) -> BigInt {
@@ -74,6 +74,6 @@ public struct KNGasConfiguration {
       if token.isTUSD { return trueUSDTokenGasLimitDefault }
       return transferTokenGasLimitDefault
     }()
-    return gasDefault * BigInt(150) / BigInt(100)
+    return gasDefault * BigInt(120) / BigInt(100)
   }
 }
