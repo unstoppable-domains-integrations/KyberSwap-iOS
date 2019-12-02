@@ -147,8 +147,8 @@ class KSwapViewModel {
     }()
     return expectedExchange.string(
       decimals: self.from.decimals,
-      minFractionDigits: 6,
-      maxFractionDigits: 6
+      minFractionDigits: min(self.from.decimals, 6),
+      maxFractionDigits: min(self.from.decimals, 6)
     ).removeGroupSeparator()
   }
 

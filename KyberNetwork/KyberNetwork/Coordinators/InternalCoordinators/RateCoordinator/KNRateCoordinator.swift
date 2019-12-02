@@ -214,31 +214,32 @@ class KNRateCoordinator {
   }
 
   func getCachedSourceAmount(from: TokenObject, to: TokenObject, destAmount: Double, completion: @escaping (Result<BigInt?, AnyError>) -> Void) {
-    let baseURL: String = KNEnvironment.default.cachedSourceAmountRateURL
-    let urlString = String(format: baseURL, arguments: [from.symbol, to.symbol, "\(destAmount)"])
-    let task = URLSession.shared.dataTask(with: URL(string: urlString)!) { (data, _, error) in
-      DispatchQueue.main.async {
-        if let data = data, error == nil {
-          do {
-            let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? JSONDictionary ?? [:]
-            let success = json["success"] as? Bool ?? false
-            let value = json["value"] as? String ?? ""
-            if let srcAmount = value.fullBigInt(decimals: from.decimals), success {
-              completion(.success(srcAmount))
-            } else {
-              completion(.success(nil))
+    let fromAddr = from.contract
+    let toAddr = to.contract
+
+    DispatchQueue.global().async {
+      self.provider.request(.getSourceAmount(src: fromAddr, dest: toAddr, amount: destAmount)) { [weak self] result in
+        guard let _ = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let resp):
+            do {
+              let _ = try resp.filterSuccessfulStatusCodes()
+              let json = try resp.mapJSON() as? JSONDictionary ?? [:]
+              if let err = json["error"] as? Bool, !err, let value = json["data"] as? String, let amount = value.fullBigInt(decimals: from.decimals) {
+                completion(.success(amount))
+              } else {
+                completion(.success(nil))
+              }
+            } catch let error {
+              completion(.failure(AnyError(error)))
             }
-          } catch let err {
-            completion(.failure(AnyError(err)))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
           }
-        } else if let err = error {
-          completion(.failure(AnyError(err)))
-        } else {
-          completion(.success(nil))
         }
       }
     }
-    task.resume()
   }
 }
 

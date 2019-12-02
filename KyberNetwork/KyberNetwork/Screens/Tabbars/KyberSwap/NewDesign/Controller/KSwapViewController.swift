@@ -504,8 +504,8 @@ class KSwapViewController: KNBaseViewController {
     if amountFrom <= 0.0001 { return } // no need to update if amount is small to prevent showing warning
     let amountString = BigInt(amountFrom * pow(10.0, Double(fromToken.decimals))).string(
       decimals: fromToken.decimals,
-      minFractionDigits: 4,
-      maxFractionDigits: 4
+      minFractionDigits: min(fromToken.decimals, 4),
+      maxFractionDigits: min(fromToken.decimals, 4)
       ).removeGroupSeparator()
 
     // Update source amount data
