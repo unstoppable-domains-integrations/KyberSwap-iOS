@@ -4,6 +4,7 @@ import UIKit
 import WalletConnect
 import BigInt
 import QRCodeReaderViewController
+import Starscream
 
 class KNWalletConnectViewController: KNBaseViewController {
 
@@ -59,6 +60,7 @@ class KNWalletConnectViewController: KNBaseViewController {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.interactor?.killSession().cauterize()
+    self.shouldRecover = false
   }
 
   func connect(session: WCSession) {
@@ -98,6 +100,7 @@ class KNWalletConnectViewController: KNBaseViewController {
         KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "reject_\(peer.url)"])
         self?.interactor?.rejectSession().cauterize()
         self?.interactor?.killSession().cauterize()
+        self?.shouldRecover = false
       }))
       alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
         KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "approved_\(peer.url)"])
@@ -108,8 +111,18 @@ class KNWalletConnectViewController: KNBaseViewController {
 
     interactor.onDisconnect = { [weak self] (error) in
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "disconnect"])
-      self?.interactor?.killSession().cauterize()
       self?.connectionStatusUpdated(false)
+      guard let err = error as? WSError, err.code == 1000 else {
+        if self?.shouldRecover == true {
+          interactor.connect().done { [weak self] connected in
+            self?.connectionStatusUpdated(connected)
+          }.catch { _ in
+          }
+        }
+        return
+      }
+      self?.interactor?.killSession().cauterize()
+      self?.shouldRecover = false
     }
 
     interactor.eth.onSign = { [weak self] (id, payload) in
@@ -430,10 +443,19 @@ extension KNWalletConnectViewController {
 
   func applicationDidEnterBackground() {
     if self.interactor?.state != .connected { return }
-    self.interactor?.killSession().cauterize()
+    self.interactor?.pause()
+    self.shouldRecover = true
   }
 
   func applicationWillEnterForeground() {
+    if !self.shouldRecover { return }
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.shouldRecover = false
+      self.interactor?.connect().done { [weak self] connected in
+        self?.connectionStatusUpdated(connected)
+      }.catch { _ in
+      }
+    }
   }
 }
 
