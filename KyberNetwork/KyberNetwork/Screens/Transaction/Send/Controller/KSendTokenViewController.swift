@@ -571,11 +571,8 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   fileprivate func getEnsAddressFromName(_ name: String) {
-    if !name.contains(".") {
-      self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-      self.updateUIAddressQRCode()
-      return
-    }
+    if !name.contains(".") { return }
+    if Address(string: name) != nil { return }
     DispatchQueue.global().async {
       KNGeneralProvider.shared.getAddressByEnsName(name) { [weak self] result in
         guard let `self` = self else { return }
