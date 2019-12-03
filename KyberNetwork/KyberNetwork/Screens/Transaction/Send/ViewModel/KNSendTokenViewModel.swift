@@ -136,7 +136,8 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var newContactTitle: String {
-    if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == self.addressString.lowercased() }) != nil {
+    let addr = self.address?.description.lowercased() ?? ""
+    if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == addr }) != nil {
       return NSLocalizedString("edit.contact", comment: "")
     }
     return NSLocalizedString("add.contact", comment: "")
