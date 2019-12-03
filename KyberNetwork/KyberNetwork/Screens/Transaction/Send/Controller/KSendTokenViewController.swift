@@ -13,7 +13,7 @@ enum KSendTokenViewEvent {
   case searchToken(selectedToken: TokenObject)
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
-  case send(transaction: UnconfirmedTransaction)
+  case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String)
   case contactSelectMore
 }
@@ -46,6 +46,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var recentContactHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var recentContactTableViewHeightConstraint: NSLayoutConstraint!
 
+  @IBOutlet weak var ensAddressLabel: UILabel!
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
 
@@ -218,6 +219,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func setupAddressTextField() {
+    self.ensAddressLabel.isHidden = true
     self.recentContactLabel.text = NSLocalizedString("recent.contact", value: "Recent Contact", comment: "")
     self.addressTextField.placeholder = self.viewModel.placeHolderEnterAddress
     self.addressTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
@@ -234,6 +236,9 @@ class KSendTokenViewController: KNBaseViewController {
       UIColor.Kyber.enygold,
       for: .normal
     )
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.ensAddressDidTapped(_:)))
+    self.ensAddressLabel.addGestureRecognizer(tapGesture)
+    self.ensAddressLabel.isUserInteractionEnabled = true
   }
 
   fileprivate func setupSendButton() {
@@ -276,7 +281,11 @@ class KSendTokenViewController: KNBaseViewController {
     } else {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_not_in_contact"])
     }
-    self.delegate?.kSendTokenViewController(self, run: .send(transaction: self.viewModel.unconfirmTransaction))
+    let event = KSendTokenViewEvent.send(
+      transaction: self.viewModel.unconfirmTransaction,
+      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+    )
+    self.delegate?.kSendTokenViewController(self, run: event)
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
@@ -305,7 +314,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "new_contact_button"])
-    self.delegate?.kSendTokenViewController(self, run: .addContact(address: self.viewModel.addressString))
+    self.delegate?.kSendTokenViewController(self, run: .addContact(address: self.viewModel.address?.description ?? ""))
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -329,6 +338,13 @@ class KSendTokenViewController: KNBaseViewController {
 
   @objc func keyboardDoneButtonPressed(_ sender: Any) {
     self.amountTextField.resignFirstResponder()
+  }
+
+  @objc func ensAddressDidTapped(_ sender: Any?) {
+    if let addr = self.viewModel.address?.description,
+      let url = URL(string: "\(KNEnvironment.default.etherScanIOURLString)address/\(addr)") {
+      self.openSafari(with: url)
+    }
   }
 
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
@@ -418,6 +434,9 @@ extension KSendTokenViewController {
   func updateUIAddressQRCode() {
     self.addressTextField.text = self.viewModel.displayAddress
     self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
+    self.ensAddressLabel.isHidden = false
+    self.ensAddressLabel.text = self.viewModel.displayEnsMessage
+    self.ensAddressLabel.textColor = self.viewModel.displayEnsMessageColor
     self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
   }
@@ -508,6 +527,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     } else {
       self.viewModel.updateAddress("")
       self.updateUIAddressQRCode()
+      self.getEnsAddressFromName("")
     }
     self.shouldUpdateEstimatedGasLimit(nil)
     self.viewModel.isSendAllBalanace = false
@@ -525,6 +545,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     } else {
       textField.text = text
       self.viewModel.updateAddress(text)
+      self.getEnsAddressFromName(text)
     }
     self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
@@ -543,11 +564,33 @@ extension KSendTokenViewController: UITextFieldDelegate {
     self.amountTextField.textColor = self.viewModel.amountTextColor
     if textField == self.addressTextField {
       self.updateUIAddressQRCode()
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-        _ = self.showWarningInvalidAddressIfNeeded()
-      }
+      self.getEnsAddressFromName(self.viewModel.addressString)
     } else {
       _ = self.showWarningInvalidAmountDataIfNeeded()
+    }
+  }
+
+  fileprivate func getEnsAddressFromName(_ name: String) {
+    if !name.contains(".") {
+      self.viewModel.updateAddressFromENS(name, ensAddr: nil)
+      self.updateUIAddressQRCode()
+      return
+    }
+    DispatchQueue.global().async {
+      KNGeneralProvider.shared.getAddressByEnsName(name) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          if case .success(let addr) = result {
+            self.viewModel.updateAddressFromENS(name, ensAddr: addr)
+          } else {
+            self.viewModel.updateAddressFromENS(name, ensAddr: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+              self.getEnsAddressFromName(self.viewModel.addressString)
+            }
+          }
+          self.updateUIAddressQRCode()
+        }
+      }
     }
   }
 }
@@ -560,6 +603,7 @@ extension KSendTokenViewController: QRCodeReaderDelegate {
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       self.viewModel.updateAddress(result)
+      self.getEnsAddressFromName(result)
       self.updateUIAddressQRCode()
       _ = self.showWarningInvalidAddressIfNeeded()
     }

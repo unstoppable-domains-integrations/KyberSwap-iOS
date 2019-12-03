@@ -23,6 +23,7 @@
                 <outlet property="amountTextField" destination="W0L-lr-Mjz" id="30q-Tt-kpk"/>
                 <outlet property="balanceTextLabel" destination="djb-R5-aB5" id="Gs5-fi-f0X"/>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="XzY-uJ-78q" id="lOg-Gn-xMc"/>
+                <outlet property="ensAddressLabel" destination="S6I-Dj-gGB" id="LN9-Vn-Kh2"/>
                 <outlet property="equivalentUSDLabel" destination="a3N-zj-jPq" id="NT5-cU-B19"/>
                 <outlet property="headerContainerView" destination="2bX-gH-E8o" id="QYZ-MU-pAa"/>
                 <outlet property="heightConstraintAdvancedSettingsView" destination="jsQ-38-DP2" id="GhW-ZI-yvA"/>
@@ -149,7 +150,7 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibe-Tm-lI1">
                     <rect key="frame" x="0.0" y="230" width="375" height="437"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recipient address" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mKI-g6-kJR">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recipient address/ENS" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mKI-g6-kJR">
                             <rect key="frame" x="24" y="32" width="293" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="VkH-eI-ypb"/>
@@ -246,11 +247,19 @@
                                 <constraint firstItem="1UF-SO-I8j" firstAttribute="top" secondItem="14E-V1-lPT" secondAttribute="top" constant="6" id="x5Q-eG-yS7"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x4f2604aaC....24480B" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6I-Dj-gGB">
+                            <rect key="frame" x="24" y="87" width="139.5" height="15"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                            <color key="textColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="BwD-ua-ExG" secondAttribute="trailing" id="0Yu-o7-DUM"/>
                         <constraint firstItem="WEJ-Se-4NU" firstAttribute="trailing" secondItem="6MZ-HX-07p" secondAttribute="trailing" id="0i3-me-nBb"/>
                         <constraint firstAttribute="bottom" secondItem="14E-V1-lPT" secondAttribute="bottom" constant="32" id="5bK-0d-ZEb"/>
+                        <constraint firstItem="S6I-Dj-gGB" firstAttribute="leading" secondItem="mKI-g6-kJR" secondAttribute="leading" id="95U-0y-7QY"/>
+                        <constraint firstItem="S6I-Dj-gGB" firstAttribute="centerY" secondItem="ufh-Wh-g1B" secondAttribute="centerY" id="C39-o1-rqG"/>
                         <constraint firstItem="6MZ-HX-07p" firstAttribute="top" secondItem="mKI-g6-kJR" secondAttribute="bottom" id="GhL-zJ-jrg"/>
                         <constraint firstItem="WEJ-Se-4NU" firstAttribute="leading" secondItem="mKI-g6-kJR" secondAttribute="trailing" constant="10" id="Ldh-aN-uso"/>
                         <constraint firstAttribute="trailing" secondItem="DwD-Od-9c0" secondAttribute="trailing" constant="20" id="MDP-eX-tVe"/>

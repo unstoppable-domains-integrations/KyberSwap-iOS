@@ -484,5 +484,6 @@
   "averageBlockTime": 15000,
   "networkId": 1,
   "chainName": "Mainnet",
-  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json"
+  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
+  "ens_address": "0x314159265dd8dbb310642f98f50c066173c1259b"
   }

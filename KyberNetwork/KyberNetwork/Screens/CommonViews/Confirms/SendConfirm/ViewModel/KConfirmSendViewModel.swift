@@ -7,9 +7,11 @@ import JdenticonSwift
 struct KConfirmSendViewModel {
 
   let transaction: UnconfirmedTransaction
+  let ens: String?
 
-  init(transaction: UnconfirmedTransaction) {
+  init(transaction: UnconfirmedTransaction, ens: String?) {
     self.transaction = transaction
+    self.ens = ens
   }
 
   var token: TokenObject { return transaction.transferType.tokenObject() }
@@ -24,7 +26,12 @@ struct KConfirmSendViewModel {
 
   var contactName: String {
     let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
-    guard let contact = KNContactStorage.shared.contacts.first(where: { address.lowercased() == $0.address.lowercased() }) else { return NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "") }
+    guard let contact = KNContactStorage.shared.contacts.first(where: { address.lowercased() == $0.address.lowercased() }) else {
+      let text = NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
+      if let ens = self.ens { return "\(ens) - \(text)" }
+      return text
+    }
+    if let ens = self.ens { return "\(ens) - \(contact.name)" }
     return contact.name
   }
 

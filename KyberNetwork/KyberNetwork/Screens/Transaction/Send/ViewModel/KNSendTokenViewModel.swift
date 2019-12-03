@@ -25,6 +25,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
   fileprivate(set) var addressString: String = ""
+  fileprivate(set) var isUsingEns: Bool = false
   var isSendAllBalanace: Bool = false
 
   var allETHBalanceFee: BigInt {
@@ -67,7 +68,7 @@ class KNSendTokenViewModel: NSObject {
     return isAmountValid ? UIColor.Kyber.enygold : UIColor.red
   }
 
-  var address: Address? { return Address(string: self.addressString) }
+  var address: Address?
 
   init(from: TokenObject, balances: [String: Balance]) {
     self.from = from.clone()
@@ -109,7 +110,8 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var placeHolderEnterAddress: String {
-    return NSLocalizedString("recipient.address", value: "Recipient Address", comment: "")
+    //return NSLocalizedString("recipient.address", value: "Recipient Address", comment: "")
+    return "Recipient Address/ENS"
   }
 
   var displayAddress: String? {
@@ -118,6 +120,19 @@ class KNSendTokenViewModel: NSObject {
       return "\(contact.name) - \(self.addressString)"
     }
     return self.addressString
+  }
+
+  var displayEnsMessage: String? {
+    if self.addressString.isEmpty { return nil }
+    if self.address == nil { return "Invalid address or ens" }
+    if Address(string: self.addressString) != nil { return nil }
+    let address = self.address?.description ?? ""
+    return "\(address.prefix(12))...\(address.suffix(10))"
+  }
+
+  var displayEnsMessageColor: UIColor {
+    if self.address == nil { return UIColor.Kyber.strawberry }
+    return UIColor.Kyber.blueGreen
   }
 
   var newContactTitle: String {
@@ -227,5 +242,16 @@ class KNSendTokenViewModel: NSObject {
 
   func updateAddress(_ address: String) {
     self.addressString = address
+    self.address = Address(string: address)
+    if self.address != nil {
+      self.isUsingEns = false
+    }
+  }
+
+  func updateAddressFromENS(_ ens: String, ensAddr: Address?) {
+    if ens == self.addressString {
+      self.address = ensAddr
+      self.isUsingEns = ensAddr != nil
+    }
   }
 }

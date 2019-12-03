@@ -86,5 +86,6 @@
   "averageBlockTime": 6000,
   "networkId": 42,
   "chainName": "Kovan",
-  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json"
+  "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
+  "ens_address": "0x112234455c3a32fd11230c42e7bccd4a84e02010"
 }

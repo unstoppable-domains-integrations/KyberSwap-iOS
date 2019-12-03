@@ -122,8 +122,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.estimateGasLimit(for: transaction)
     case .searchToken(let selectedToken):
       self.openSearchToken(selectedToken: selectedToken)
-    case .send(let transaction):
-      self.send(transaction: transaction)
+    case .send(let transaction, let ens):
+      self.send(transaction: transaction, ens: ens)
     case .addContact(let address):
       self.openNewContact(address: address)
     case .contactSelectMore:
@@ -160,10 +160,13 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     self.searchTokensVC?.updateBalances(self.balances)
   }
 
-  fileprivate func send(transaction: UnconfirmedTransaction) {
+  fileprivate func send(transaction: UnconfirmedTransaction, ens: String?) {
+    if ens != nil {
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_using_ens"])
+    }
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       self.confirmVC = {
-        let viewModel = KConfirmSendViewModel(transaction: transaction)
+        let viewModel = KConfirmSendViewModel(transaction: transaction, ens: ens)
         let controller = KConfirmSendViewController(viewModel: viewModel)
         controller.delegate = self
         controller.loadViewIfNeeded()

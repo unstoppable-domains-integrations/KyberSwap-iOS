@@ -7,7 +7,9 @@ import Result
 import TrustKeystore
 import TrustCore
 import JavaScriptKit
+import CryptoSwift
 
+//swiftlint:disable file_length
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
@@ -165,6 +167,94 @@ class KNGeneralProvider {
         }
       case .failure(let error):
         completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  func getResolverAddress(_ ensName: String, completion: @escaping (Result<Address?, AnyError>) -> Void) {
+    self.getResolverEncode(name: ensName) { result in
+      switch result {
+      case .success(let resp):
+        let callRequest = CallRequest(
+          to: KNEnvironment.default.knCustomRPC?.ensAddress ?? "",
+          data: resp
+        )
+        let getResolverRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        DispatchQueue.global().async {
+          Session.send(getResolverRequest) { getResolverResult in
+            DispatchQueue.main.async {
+              switch getResolverResult {
+              case .success(let data):
+                if data == "0x" {
+                  completion(.success(nil))
+                  return
+                }
+                let idx = data.index(data.endIndex, offsetBy: -40)
+                let resolverAddress = String(data[idx...]).add0x
+                completion(.success(Address(string: resolverAddress)))
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func getAddressFromResolver(_ ensName: String, resolverAddress: Address, completion: @escaping (Result<Address?, AnyError>) -> Void) {
+    self.getAddressFromResolverEncode(name: ensName) { result in
+      switch result {
+      case .success(let resp):
+        let callRequest = CallRequest(
+          to: resolverAddress.description,
+          data: resp
+        )
+        let getResolverRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        DispatchQueue.global().async {
+          Session.send(getResolverRequest) { getResolverResult in
+            DispatchQueue.main.async {
+              switch getResolverResult {
+              case .success(let data):
+                if data == "0x" {
+                  completion(.success(nil))
+                  return
+                }
+                let idx = data.index(data.endIndex, offsetBy: -40)
+                let address = String(data[idx...]).add0x
+                completion(.success(Address(string: address)))
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  func getAddressByEnsName(_ name: String, completion: @escaping (Result<Address?, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getResolverAddress(name) { result in
+      switch result {
+      case .success(let resolverAddr):
+        guard let addr = resolverAddr else {
+          completion(.success(nil))
+          return
+        }
+        KNGeneralProvider.shared.getAddressFromResolver(name, resolverAddress: addr) { result2 in
+          switch result2 {
+          case .success(let finalAddr):
+            completion(.success(finalAddr))
+          case .failure(let error):
+            completion(.failure(error))
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
       }
     }
   }
@@ -456,6 +546,41 @@ extension KNGeneralProvider {
         completion(.failure(AnyError(error)))
       }
     }
+  }
+
+  fileprivate func getResolverEncode(name: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = KNGetResolverRequest(nameHash: self.nameHash(name: name))
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  fileprivate func getAddressFromResolverEncode(name: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+     let request = KNGetAddressFromResolverRequest(nameHash: self.nameHash(name: name))
+     self.web3Swift.request(request: request) { result in
+       switch result {
+       case .success(let data):
+         completion(.success(data))
+       case .failure(let error):
+         completion(.failure(AnyError(error)))
+       }
+     }
+   }
+
+  fileprivate func nameHash(name: String) -> String {
+    var node = Data.init(count: 32)
+    let labels = name.components(separatedBy: ".")
+    for label in labels.reversed() {
+      let data = Data(bytes: SHA3(variant: .keccak256).calculate(for: label.bytes))
+      node.append(data)
+      node = Data(bytes: SHA3(variant: .keccak256).calculate(for: node.bytes))
+    }
+    return node.hexEncoded
   }
 }
 
