@@ -583,11 +583,11 @@ extension KSendTokenViewController: UITextFieldDelegate {
       return
     }
     DispatchQueue.global().async {
-      KNGeneralProvider.shared.getAddressByEnsName(name) { [weak self] result in
+      KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
-          if case .success(let addr) = result {
-            self.viewModel.updateAddressFromENS(name, ensAddr: addr)
+          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
+            self.viewModel.updateAddressFromENS(name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
@@ -611,7 +611,6 @@ extension KSendTokenViewController: QRCodeReaderDelegate {
       self.viewModel.updateAddress(result)
       self.getEnsAddressFromName(result)
       self.updateUIAddressQRCode()
-      _ = self.showWarningInvalidAddressIfNeeded()
     }
   }
 }
