@@ -64,6 +64,7 @@ class KNWalletConnectViewController: KNBaseViewController {
     self.shouldRecover = false
   }
 
+  //swiftlint:disable function_body_length
   func connect(session: WCSession) {
     if !self.isShowLoading {
       self.displayLoading(text: "Connecting...", animated: true)
@@ -128,7 +129,7 @@ class KNWalletConnectViewController: KNBaseViewController {
         self?.hideLoading()
       }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "disconnect"])
-      self?.connectionStatusUpdated(false)
+      self?.connectionStatusUpdated(self?.interactor?.state == .connected)
       guard let err = error as? WSError, err.code == 1000 else {
         if self?.shouldRecover == true {
           self?.reconnectIfNeeded(nil)
@@ -458,24 +459,26 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   @objc func reconnectIfNeeded(_ sender: Any?) {
-    if self.interactor?.state == .connected { return }
-    if !self.isShowLoading {
-      self.isShowLoading = true
-      self.displayLoading(text: "Connecting...", animated: true)
-    }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.interactor?.connect().done { [weak self] connected in
-        if self?.isShowLoading == true {
-          self?.isShowLoading = false
-          self?.hideLoading()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+      if self.interactor?.state == .connected { return }
+      if !self.isShowLoading {
+        self.isShowLoading = true
+        self.displayLoading(text: "Connecting...", animated: true)
+      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        self.interactor?.connect().done { [weak self] connected in
+          if self?.isShowLoading == true {
+            self?.isShowLoading = false
+            self?.hideLoading()
+          }
+          self?.connectionStatusUpdated(connected)
+        }.catch { [weak self] _ in
+          if self?.isShowLoading == true {
+            self?.isShowLoading = false
+            self?.hideLoading()
+          }
+          self?.showAlertCannotReconnect()
         }
-        self?.connectionStatusUpdated(connected)
-      }.catch { [weak self] _ in
-        if self?.isShowLoading == true {
-          self?.isShowLoading = false
-          self?.hideLoading()
-        }
-        self?.showAlertCannotReconnect()
       }
     }
   }
