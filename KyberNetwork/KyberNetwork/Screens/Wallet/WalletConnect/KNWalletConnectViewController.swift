@@ -17,6 +17,7 @@ class KNWalletConnectViewController: KNBaseViewController {
   let knSession: KNSession
   fileprivate var interactor: WCInteractor?
   fileprivate var shouldRecover: Bool = false
+  fileprivate var isShowLoading: Bool = false
 
   private var backgroundTaskId: UIBackgroundTaskIdentifier?
   private weak var backgroundTimer: Timer?
@@ -64,6 +65,10 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   func connect(session: WCSession) {
+    if !self.isShowLoading {
+      self.displayLoading(text: "Connecting...", animated: true)
+      self.isShowLoading = true
+    }
     let interactor = WCInteractor(session: self.wcSession, meta: self.clientMeta, uuid: UIDevice.current.identifierForVendor ?? UUID())
     if interactor.state == .connected {
       self.interactor?.killSession().cauterize()
@@ -75,6 +80,10 @@ class KNWalletConnectViewController: KNBaseViewController {
     interactor.killSession().cauterize()
 
     interactor.onError = { [weak self] error in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "connection_error"])
       let alert = UIAlertController(title: "Error", message: "Do you want to re-connect?", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
@@ -89,6 +98,10 @@ class KNWalletConnectViewController: KNBaseViewController {
     }
 
     interactor.onSessionRequest = { [weak self] (id, peerParam) in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       let peer = peerParam.peerMeta
       let message = [peer.description, peer.url].joined(separator: "\n")
       self?.nameTextLabel.text = peer.name
@@ -110,14 +123,15 @@ class KNWalletConnectViewController: KNBaseViewController {
     }
 
     interactor.onDisconnect = { [weak self] (error) in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["info": "disconnect"])
       self?.connectionStatusUpdated(false)
       guard let err = error as? WSError, err.code == 1000 else {
         if self?.shouldRecover == true {
-          interactor.connect().done { [weak self] connected in
-            self?.connectionStatusUpdated(connected)
-          }.catch { _ in
-          }
+          self?.reconnectIfNeeded(nil)
         }
         return
       }
@@ -126,6 +140,10 @@ class KNWalletConnectViewController: KNBaseViewController {
     }
 
     interactor.eth.onSign = { [weak self] (id, payload) in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "sign_data"])
       let alert = UIAlertController(title: "Sign data".toBeLocalised(), message: payload.message, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
@@ -140,14 +158,26 @@ class KNWalletConnectViewController: KNBaseViewController {
     }
 
     interactor.eth.onTransaction = { [weak self] (id, event, transaction) in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_wallet_connect", customAttributes: ["action": "transaction"])
       let data = try! JSONEncoder().encode(transaction)
       self?.sendTransaction(id, data: data)
     }
 
     interactor.connect().done { [weak self] connected in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       self?.connectionStatusUpdated(connected)
     }.catch { [weak self] error in
+      if self?.isShowLoading == true {
+        self?.isShowLoading = false
+        self?.hideLoading()
+      }
       self?.displayError(error: error)
     }
 
@@ -429,10 +459,34 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   @objc func reconnectIfNeeded(_ sender: Any?) {
     if self.interactor?.state == .connected { return }
-    self.interactor?.connect().done { [weak self] connected in
-      self?.connectionStatusUpdated(connected)
-    }.catch { _ in
+    if !self.isShowLoading {
+      self.isShowLoading = true
+      self.displayLoading(text: "Connecting...", animated: true)
     }
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.interactor?.connect().done { [weak self] connected in
+        if self?.isShowLoading == true {
+          self?.isShowLoading = false
+          self?.hideLoading()
+        }
+        self?.connectionStatusUpdated(connected)
+      }.catch { [weak self] _ in
+        if self?.isShowLoading == true {
+          self?.isShowLoading = false
+          self?.hideLoading()
+        }
+        self?.showAlertCannotReconnect()
+      }
+    }
+  }
+
+  fileprivate func showAlertCannotReconnect() {
+    let alert = UIAlertController(title: "Reconnect failed", message: "Do you want to reconnect again", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
+      self.reconnectIfNeeded(nil)
+    }))
+    self.present(alert, animated: true, completion: nil)
   }
 }
 
@@ -450,11 +504,7 @@ extension KNWalletConnectViewController {
   func applicationWillEnterForeground() {
     if !self.shouldRecover { return }
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.shouldRecover = false
-      self.interactor?.connect().done { [weak self] connected in
-        self?.connectionStatusUpdated(connected)
-      }.catch { _ in
-      }
+      self.reconnectIfNeeded(nil)
     }
   }
 }

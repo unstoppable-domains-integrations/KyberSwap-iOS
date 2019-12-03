@@ -110,7 +110,6 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var placeHolderEnterAddress: String {
-    //return NSLocalizedString("recipient.address", value: "Recipient Address", comment: "")
     return "Recipient Address/ENS"
   }
 
@@ -124,7 +123,7 @@ class KNSendTokenViewModel: NSObject {
 
   var displayEnsMessage: String? {
     if self.addressString.isEmpty { return nil }
-    if self.address == nil { return "Invalid address or ens" }
+    if self.address == nil { return "Invalid address or your ens is not mapped yet" }
     if Address(string: self.addressString) != nil { return nil }
     let address = self.address?.description ?? ""
     return "\(address.prefix(12))...\(address.suffix(10))"

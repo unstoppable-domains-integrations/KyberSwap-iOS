@@ -399,8 +399,8 @@ class KSendTokenViewController: KNBaseViewController {
     if self.isViewDisappeared { return false }
     guard self.viewModel.isAddressValid else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address.to.send", value: "Please enter a valid address to transfer", comment: "")
+        with: "Invalid Address/ENS".toBeLocalised(),
+        message: "Please enter a valid address/ens to transfer".toBeLocalised()
       )
       return true
     }
@@ -434,11 +434,15 @@ extension KSendTokenViewController {
   func updateUIAddressQRCode() {
     self.addressTextField.text = self.viewModel.displayAddress
     self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
+    self.shouldUpdateEstimatedGasLimit(nil)
+    self.updateUIEnsMessage()
+    self.view.layoutIfNeeded()
+  }
+
+  func updateUIEnsMessage() {
     self.ensAddressLabel.isHidden = false
     self.ensAddressLabel.text = self.viewModel.displayEnsMessage
     self.ensAddressLabel.textColor = self.viewModel.displayEnsMessageColor
-    self.shouldUpdateEstimatedGasLimit(nil)
-    self.view.layoutIfNeeded()
   }
 }
 
@@ -545,6 +549,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     } else {
       textField.text = text
       self.viewModel.updateAddress(text)
+      self.updateUIEnsMessage()
       self.getEnsAddressFromName(text)
     }
     self.shouldUpdateEstimatedGasLimit(nil)
@@ -571,8 +576,12 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   fileprivate func getEnsAddressFromName(_ name: String) {
-    if !name.contains(".") { return }
     if Address(string: name) != nil { return }
+    if !name.contains(".") {
+      self.viewModel.updateAddressFromENS(name, ensAddr: nil)
+      self.updateUIAddressQRCode()
+      return
+    }
     DispatchQueue.global().async {
       KNGeneralProvider.shared.getAddressByEnsName(name) { [weak self] result in
         guard let `self` = self else { return }
