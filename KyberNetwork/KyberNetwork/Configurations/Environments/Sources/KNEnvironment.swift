@@ -190,8 +190,7 @@ enum KNEnvironment: Int {
 
   var cachedSourceAmountRateURL: String {
     switch KNEnvironment.default {
-    case .mainnetTest, .production: return KNSecret.trackerURL
-    case .staging: return KNSecret.stagingTrackerURL
+    case .mainnetTest, .production, .staging: return KNSecret.trackerURL
     case .ropsten: return KNSecret.ropstenApiURL
     default: return KNSecret.debugTrackerURL
     }
