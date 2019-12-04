@@ -1150,18 +1150,6 @@ extension KSwapViewController: UITextFieldDelegate {
       return fabs(percent) >= 1.0
     }()
     if !isChanged { return } // no need to call if change is small
-    let isAmountBig: Bool = {
-      let minAmount = BigInt(100) * BigInt(EthereumUnit.ether.rawValue) // should call api when amount is greater than 100
-      let destAmountInETH: BigInt = {
-        if self.viewModel.to.isETH { return destAmount }
-        if let cachedRate = KNRateCoordinator.shared.getCachedProdRate(from: self.viewModel.to, to: self.viewModel.eth) {
-          return cachedRate * destAmount / BigInt(10).power(self.viewModel.to.decimals)
-        }
-        return BigInt(0)
-      }()
-      return destAmountInETH > minAmount
-    }()
-    if !isAmountBig { return } // no need to call API
     KNRateCoordinator.shared.getCachedSourceAmount(
       from: self.viewModel.from,
       to: self.viewModel.to,
