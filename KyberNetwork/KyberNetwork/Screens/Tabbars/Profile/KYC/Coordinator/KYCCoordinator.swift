@@ -13,9 +13,13 @@ class KYCCoordinator: Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   let user: IEOUser
+  let isResubmit: Bool
 
   lazy var kycFlowVC: KYCFlowViewController = {
-    let viewModel = KYCFlowViewModel(user: self.user)
+    let viewModel = KYCFlowViewModel(
+      user: self.user,
+      stepState: self.isResubmit ? KNKYCStepViewState.personalInfo : nil
+    )
     let controller = KYCFlowViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
@@ -24,9 +28,11 @@ class KYCCoordinator: Coordinator {
 
   init(
     navigationController: UINavigationController,
-    user: IEOUser
+    user: IEOUser,
+    isResubmit: Bool = false
     ) {
     self.user = user
+    self.isResubmit = isResubmit
     self.navigationController = navigationController
   }
 

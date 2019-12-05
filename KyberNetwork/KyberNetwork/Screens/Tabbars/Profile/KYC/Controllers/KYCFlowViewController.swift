@@ -45,9 +45,10 @@ class KYCFlowViewModel {
   fileprivate(set) var docBackImage: UIImage?
   fileprivate(set) var docHoldingImage: UIImage!
 
-  init(user: IEOUser) {
+  init(user: IEOUser, stepState: KNKYCStepViewState? = nil) {
     self.user = user
     self.stepState = {
+      if let state = stepState { return state }
       let kycStatus = user.kycStatus.lowercased()
       if kycStatus == "blocked" { return .personalInfo }
       if kycStatus != "none" && kycStatus != "draft" && kycStatus != "rejected" { return .done }

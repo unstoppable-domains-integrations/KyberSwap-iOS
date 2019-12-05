@@ -226,7 +226,7 @@ extension KNProfileHomeCoordinator {
               with: NSLocalizedString("error", value: "Error", comment: ""),
               message: NSLocalizedString("can.not.get.user.info", value: "Can not get user info", comment: "") + ": \(message)"
             )
-            KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "get_user_info_failed"])
+            KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["type": "get_user_info_failed"])
           }
           completion(false)
           return
@@ -283,14 +283,14 @@ extension KNProfileHomeCoordinator {
             expireTime: expireTime
           )
           self?.timerAccessTokenExpired()
-          KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_reload_successfully"])
+          KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["type": "expiry_session_reload_successfully"])
           return
         }
       case .failure:
         break
       }
       // Error for some reason
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["type": "expiry_session_failed_reload"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["type": "expiry_session_failed_reload"])
       KNNotificationUtil.localPushNotification(
         title: NSLocalizedString("session.expired", value: "Session expired", comment: ""),
         body: NSLocalizedString("your.session.has.expired.sign.in.to.continue", value: "Your session has expired, please sign in again to continue", comment: "")
@@ -326,7 +326,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
       self.manageAlertCoordinator?.start()
     case .addPriceAlert:
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "add_new_alert"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["value": "add_new_alert"])
       if KNAlertStorage.shared.isMaximumAlertsReached {
         self.showAlertMaximumPriceAlertsReached()
       } else {
@@ -335,7 +335,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
         self.navigationController.pushViewController(self.newAlertController!, animated: true)
       }
     case .editAlert(let alert):
-      KNCrashlyticsUtil.logCustomEvent(withName: "profile_kyc", customAttributes: ["value": "edit_alert"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["value": "edit_alert"])
       self.newAlertController = KNNewAlertViewController()
       self.newAlertController?.loadViewIfNeeded()
       self.navigationController.pushViewController(self.newAlertController!, animated: true) {
@@ -362,6 +362,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
 
   fileprivate func openVerificationView() {
     guard let user = IEOUserStorage.shared.user else { return }
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "open_verification_view_\(user.kycStatus.lowercased())"])
     if user.kycStatus.lowercased() == "blocked" { return }
     if let date = self.lastUpdatedUserInfo, Date().timeIntervalSince(date) <= 2.0, user.kycStatus.lowercased() != "rejected" {
       if user.kycStatus.lowercased() == "approved" || user.kycStatus.lowercased() == "pending" { return }
@@ -413,7 +414,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
             let success = json["success"] as? Bool ?? false
             let reason = json["reason"] as? String ?? NSLocalizedString("unknown.reason", value: "Unknown reason", comment: "")
             if success {
-              self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user)
+              self.kycCoordinator = KYCCoordinator(navigationController: self.navigationController, user: user, isResubmit: true)
               self.kycCoordinator?.delegate = self
               self.kycCoordinator?.start()
             } else {
