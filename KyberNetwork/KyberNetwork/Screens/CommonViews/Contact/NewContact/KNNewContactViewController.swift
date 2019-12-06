@@ -210,7 +210,14 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      self.addressTextField.text = result
+      let address: String = {
+        if result.count < 42 { return result }
+        if result.starts(with: "0x") { return result }
+        let string = "\(result.suffix(42))"
+        if string.starts(with: "0x") { return string }
+        return result
+      }()
+      self.addressTextField.text = address
       self.addressTextFieldDidChange()
     }
   }
