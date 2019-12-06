@@ -46,11 +46,11 @@ struct KNBalanceTabHamburgerMenuViewModel {
   }
 
   var walletTableViewHeight: CGFloat {
-    return min(330, self.walletCellRowHeight * CGFloat(self.numberWalletRows))
+    return min(270.0, self.walletCellRowHeight * CGFloat(self.numberWalletRows))
   }
 
   var tableHeightScrollEnabled: Bool {
-    return self.walletCellRowHeight * CGFloat(self.numberWalletRows) > 330.0
+    return self.walletCellRowHeight * CGFloat(self.numberWalletRows) > 270.0
   }
 
   mutating func update(wallets: [KNWalletObject], currentWallet: KNWalletObject) {
