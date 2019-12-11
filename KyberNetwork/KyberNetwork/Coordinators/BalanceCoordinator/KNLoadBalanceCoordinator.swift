@@ -192,48 +192,59 @@ class KNLoadBalanceCoordinator {
   }
 
   func fetchTokenAddressAfterTx(token1: String, token2: String) {
-    let currentWallet = self.session.wallet
     let group = DispatchGroup()
     group.enter()
-    if let address = Address(string: token1) {
-      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
-        guard let `self` = self else {
-          group.leave()
-          return
-        }
-        if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
-        if case .success(let bigInt) = result {
-          let balance = Balance(value: bigInt)
-          self.otherTokensBalance[token1] = balance
-          self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
-        } else {
-          group.leave()
-        }
-      }
-    } else {
+    self.loadBalanceForToken(token1) {
       group.leave()
     }
-    group.enter()
-    if token1 != token2, let address = Address(string: token2) {
-      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
-        guard let `self` = self else {
-          group.leave()
-          return
-        }
-        if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
-        if case .success(let bigInt) = result {
-          let balance = Balance(value: bigInt)
-          self.otherTokensBalance[token1] = balance
-          self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
-        } else {
-          group.leave()
-        }
+    if token1 != token2 {
+      group.enter()
+      self.loadBalanceForToken(token2) {
+        group.leave()
       }
-    } else {
-      group.leave()
     }
     group.notify(queue: .main) {
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+    }
+  }
+
+  fileprivate func loadBalanceForToken(_ token: String, completion: @escaping () -> Void) {
+    let currentWallet = self.session.wallet
+    let address = self.ethToken.address
+    if token.lowercased() == self.ethToken.contract.lowercased() {
+      self.session.externalProvider.getETHBalance { [weak self] result in
+        guard let `self` = self else {
+          completion()
+          return
+        }
+        if self.session == nil || currentWallet != self.session.wallet {
+          completion()
+          return
+        }
+        if case .success(let balance) = result {
+          if self.ethBalance.value != balance.value {
+            self.ethBalance = balance
+            self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
+          }
+        }
+        completion()
+      }
+    } else if let address = Address(string: token) {
+      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
+        guard let `self` = self else {
+          completion()
+          return
+        }
+        if self.session == nil || currentWallet != self.session.wallet { completion(); return }
+        if case .success(let bigInt) = result {
+          let balance = Balance(value: bigInt)
+          self.otherTokensBalance[token] = balance
+          self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
+        }
+        completion()
+      }
+    } else {
+      completion()
     }
   }
 
