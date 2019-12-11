@@ -62,6 +62,13 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     self.updateView(with: self.transaction)
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if !self.loadingImageView.isHidden {
+      self.loadingImageView.stopAnimating()
+    }
+  }
+
   fileprivate func commontSetup() {
     self.containerView.rounded(radius: 5.0)
     self.transferButton.setTitle(NSLocalizedString("transfer", comment: ""), for: .normal)

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,6 +17,7 @@
             <connections>
                 <outlet property="addressTextField" destination="s16-ZQ-yPb" id="C46-iz-CEA"/>
                 <outlet property="deleteButton" destination="sgh-cw-bBf" id="RQE-hw-ZYa"/>
+                <outlet property="ensMessageLabel" destination="BIj-eA-ik6" id="V8p-MR-vfk"/>
                 <outlet property="headerContainerView" destination="BZJ-op-odJ" id="mD9-QW-0Lm"/>
                 <outlet property="nameTextField" destination="0ca-fd-JG1" id="3lL-Rk-yNb"/>
                 <outlet property="saveButton" destination="xoQ-1Q-KRG" id="uSP-df-hu3"/>
@@ -100,7 +99,7 @@
                     </constraints>
                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                    <textInputTraits key="textInputTraits" textContentType="name"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4SF-HT-RtA">
                     <rect key="frame" x="20" y="275" width="335" height="1"/>
@@ -146,6 +145,12 @@
                         <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="dlX-us-x8m"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid address or ens is not mapped yet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BIj-eA-ik6">
+                    <rect key="frame" x="20" y="282" width="335" height="17.5"/>
+                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -153,6 +158,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="20" id="1AV-OW-TCO"/>
                 <constraint firstItem="UgQ-zj-c6L" firstAttribute="leading" secondItem="sgh-cw-bBf" secondAttribute="leading" id="42D-4F-QYt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BZJ-op-odJ" secondAttribute="trailing" id="5o8-sW-WiB"/>
+                <constraint firstItem="BIj-eA-ik6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="6HV-VS-Gxr"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="top" secondItem="0ca-fd-JG1" secondAttribute="bottom" constant="5" id="BZD-Cv-j8r"/>
                 <constraint firstItem="BZJ-op-odJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D88-EM-4l3"/>
                 <constraint firstItem="GH5-LD-QK8" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" id="F6h-np-jp8"/>
@@ -161,9 +167,11 @@
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="top" secondItem="BZJ-op-odJ" secondAttribute="bottom" constant="60" id="Rfh-03-fTj"/>
                 <constraint firstItem="0ca-fd-JG1" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Rmf-BA-2Vl"/>
                 <constraint firstItem="vl5-9Y-Ubp" firstAttribute="centerY" secondItem="s16-ZQ-yPb" secondAttribute="centerY" id="UY4-4g-YpT"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BIj-eA-ik6" secondAttribute="trailing" constant="20" id="WW7-9Z-usA"/>
                 <constraint firstItem="s16-ZQ-yPb" firstAttribute="leading" secondItem="0ca-fd-JG1" secondAttribute="leading" id="X3n-OL-hvK"/>
                 <constraint firstItem="BZJ-op-odJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Yki-ah-Wjj"/>
                 <constraint firstItem="s16-ZQ-yPb" firstAttribute="top" secondItem="GH5-LD-QK8" secondAttribute="bottom" constant="32" id="dWt-kU-9kL"/>
+                <constraint firstItem="BIj-eA-ik6" firstAttribute="top" secondItem="4SF-HT-RtA" secondAttribute="bottom" constant="6" id="i10-If-Tlq"/>
                 <constraint firstItem="s16-ZQ-yPb" firstAttribute="trailing" secondItem="0ca-fd-JG1" secondAttribute="trailing" constant="-32" id="iO8-UA-pAj"/>
                 <constraint firstItem="4SF-HT-RtA" firstAttribute="leading" secondItem="s16-ZQ-yPb" secondAttribute="leading" id="lv7-1K-wY4"/>
                 <constraint firstItem="sgh-cw-bBf" firstAttribute="top" secondItem="UgQ-zj-c6L" secondAttribute="bottom" constant="8" id="prq-6p-g0c"/>
