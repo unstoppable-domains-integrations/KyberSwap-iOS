@@ -191,6 +191,52 @@ class KNLoadBalanceCoordinator {
     }
   }
 
+  func fetchTokenAddressAfterTx(token1: String, token2: String) {
+    let currentWallet = self.session.wallet
+    let group = DispatchGroup()
+    group.enter()
+    if let address = Address(string: token1) {
+      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
+        guard let `self` = self else {
+          group.leave()
+          return
+        }
+        if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+        if case .success(let bigInt) = result {
+          let balance = Balance(value: bigInt)
+          self.otherTokensBalance[token1] = balance
+          self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
+        } else {
+          group.leave()
+        }
+      }
+    } else {
+      group.leave()
+    }
+    group.enter()
+    if token1 != token2, let address = Address(string: token2) {
+      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
+        guard let `self` = self else {
+          group.leave()
+          return
+        }
+        if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+        if case .success(let bigInt) = result {
+          let balance = Balance(value: bigInt)
+          self.otherTokensBalance[token1] = balance
+          self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
+        } else {
+          group.leave()
+        }
+      }
+    } else {
+      group.leave()
+    }
+    group.notify(queue: .main) {
+      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+    }
+  }
+
   @objc func fetchOtherTokensBalance(_ sender: Timer?) {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
