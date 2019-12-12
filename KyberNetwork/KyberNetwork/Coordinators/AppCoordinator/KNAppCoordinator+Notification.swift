@@ -296,7 +296,7 @@ extension KNAppCoordinator {
       }
       if self.session != nil {
         self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
-        if trans.isTransfer, let tokenAddr = trans.getTokenObject()?.address.description {
+        if trans.isTransfer, let tokenAddr = trans.getTokenObject()?.contract {
           self.loadBalanceCoordinator?.fetchTokenAddressAfterTx(token1: tokenAddr, token2: tokenAddr)
         } else if let objc = trans.localizedOperations.first {
           self.loadBalanceCoordinator?.fetchTokenAddressAfterTx(token1: objc.from, token2: objc.to)
