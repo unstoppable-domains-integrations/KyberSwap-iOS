@@ -7,7 +7,7 @@ class KNManageOrdersViewModel {
     return DateFormatterUtil.shared.limitOrderFormatter
   }()
 
-  let kPageSize: Int = 400
+  let kPageSize: Int = 50
   fileprivate(set) var numberPages: Int = 1
   fileprivate(set) var orders: [KNOrderObject] = []
   fileprivate(set) var displayedOrders: [KNOrderObject] = []
@@ -68,6 +68,7 @@ class KNManageOrdersViewModel {
       return self.selectedAddresses == nil || self.selectedAddresses?.contains(addr) == true
     }).filter({
       // filter date
+      if $0.state == .open || $0.state == .inProgress || $0.state == .filled { return true }
       return $0.dateToDisplay.timeIntervalSince1970 >= fromTime
     }).sorted(by: {
       // sort
