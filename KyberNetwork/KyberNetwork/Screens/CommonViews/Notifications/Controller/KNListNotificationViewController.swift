@@ -75,7 +75,7 @@ class KNListNotificationViewController: KNBaseViewController {
   }
 
   @objc func listNotificationsDidUpdate(_ sender: Any?) {
-    self.viewModel.notifications = KNNotificationStorage.shared.notifications.map({ return $0.clone() })
+    self.viewModel.notifications = KNNotificationStorage.shared.notifications.map({ return $0.clone() }).sorted(by: { return $0.updatedDate > $1.updatedDate })
     self.emptyStateContainerView.isHidden = !self.viewModel.notifications.isEmpty
     self.listNotiTableView.isHidden = self.viewModel.notifications.isEmpty
   }

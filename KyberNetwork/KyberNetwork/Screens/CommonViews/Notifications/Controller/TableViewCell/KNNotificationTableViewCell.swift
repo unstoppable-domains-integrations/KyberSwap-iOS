@@ -14,6 +14,7 @@ class KNNotificationTableViewCell: UITableViewCell {
   }
 
   func updateCell(with noti: KNNotification, index: Int) {
+    self.iconImageView.image = UIImage(named: "noti_icon_\(noti.label)")
     self.backgroundColor = {
       if !noti.read { return UIColor(red: 232, green: 239, blue: 255) }
       if index == 0 { return UIColor(red: 255, green: 255, blue: 255) }
