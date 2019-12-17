@@ -160,6 +160,8 @@ enum UserInfoService {
   case getLatestCampaignResult(accessToken: String)
   case getUserTradeCap(authToken: String)
   case sendTxHash(authToken: String, txHash: String)
+  case getNotification(accessToken: String?)
+  case markAsRead(accessToken: String?, ids: [Int])
 }
 
 extension UserInfoService: MoyaCacheable {
@@ -192,6 +194,10 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)\(KNSecret.getUserTradeCapURL)")!
     case .sendTxHash:
       return URL(string: "\(baseString)\(KNSecret.sendTxHashURL)")!
+    case .getNotification:
+      return URL(string: "\(baseString)/api/notifications")!
+    case .markAsRead:
+      return URL(string: "\(baseString)/api/notifications/mark_as_read")!
     }
   }
 
@@ -199,9 +205,10 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getUserTradeCap: return .get
+    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getUserTradeCap, .getNotification: return .get
     case .removeAnAlert: return .delete
     case .addPushToken, .updateAlert: return .patch
+    case .markAsRead: return .put
     default: return .post
     }
   }
@@ -231,13 +238,19 @@ extension UserInfoService: TargetType {
       print(json)
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult:
+    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification:
       return .requestPlain
     case .getUserTradeCap:
       return .requestPlain
     case .sendTxHash(_, let txHash):
       let json: JSONDictionary = [
         "tx_hash": txHash,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .markAsRead(_, let ids):
+      let json: JSONDictionary = [
+        "ids": ids,
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
@@ -273,6 +286,10 @@ extension UserInfoService: TargetType {
       json["Authorization"] = accessToken
     case .sendTxHash(let accessToken, _):
       json["Authorization"] = accessToken
+    case .getNotification(let accessToken):
+      if let token = accessToken { json["Authorization"] = token }
+    case .markAsRead(let accessToken, _):
+      if let token = accessToken { json["Authorization"] = token }
     }
     return json
   }

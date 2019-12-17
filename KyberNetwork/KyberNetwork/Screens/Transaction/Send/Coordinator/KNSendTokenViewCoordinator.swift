@@ -124,8 +124,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.openSearchToken(selectedToken: selectedToken)
     case .send(let transaction, let ens):
       self.send(transaction: transaction, ens: ens)
-    case .addContact(let address):
-      self.openNewContact(address: address)
+    case .addContact(let address, let ens):
+      self.openNewContact(address: address, ens: ens)
     case .contactSelectMore:
       self.openListContactsView()
     }
@@ -183,8 +183,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     }
   }
 
-  fileprivate func openNewContact(address: String) {
-    let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address)
+  fileprivate func openNewContact(address: String, ens: String?) {
+    let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address, ens: ens)
     self.addContactVC.updateView(viewModel: viewModel)
     self.navigationController.pushViewController(self.addContactVC, animated: true)
   }

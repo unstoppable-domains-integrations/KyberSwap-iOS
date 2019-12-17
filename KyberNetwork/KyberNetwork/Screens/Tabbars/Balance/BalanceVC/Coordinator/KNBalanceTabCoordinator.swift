@@ -270,6 +270,10 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
       let qrcode = QRCodeReaderViewController()
       qrcode.delegate = self
       self.navigationController.present(qrcode, animated: true, completion: nil)
+    case .selectNotifications:
+      let viewController = KNListNotificationViewController()
+      viewController.loadViewIfNeeded()
+      self.navigationController.pushViewController(viewController, animated: true)
     }
   }
 

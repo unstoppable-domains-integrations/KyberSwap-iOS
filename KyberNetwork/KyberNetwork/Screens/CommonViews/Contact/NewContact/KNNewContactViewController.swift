@@ -23,17 +23,17 @@ class KNNewContactViewModel {
   fileprivate(set) var addressString: String
 
   init(
-    address: String
+    address: String, ens: String? = nil
   ) {
     if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
       self.contact = contact
       self.isEditing = true
     } else {
-      self.contact = KNContact(address: address.lowercased(), name: "")
+      self.contact = KNContact(address: address.lowercased(), name: ens ?? "")
       self.isEditing = false
     }
     self.address = Address(string: address)
-    self.addressString = address
+    self.addressString = ens ?? address
   }
 
   var title: String {
@@ -71,6 +71,11 @@ class KNNewContactViewModel {
     if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (ensAddr?.description.lowercased() ?? "") }) {
       self.contact = contact
       self.isEditing = true
+    } else if let addr = ensAddr {
+      self.contact = KNContact(
+        address: addr.description.lowercased(),
+        name: self.contact.name.isEmpty ? name : self.contact.name
+      )
     }
   }
 }
@@ -142,9 +147,6 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   fileprivate func addressTextFieldDidChange() {
-    let text = self.addressTextField.text ?? ""
-    self.viewModel.updateViewModel(address: text)
-
     if self.nameTextField.text == nil || self.nameTextField.text?.isEmpty == true {
       self.nameTextField.text = self.viewModel.contact.name
     }
@@ -233,6 +235,7 @@ extension KNNewContactViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
     if textField == self.addressTextField {
+      self.viewModel.updateViewModel(address: "")
       self.addressTextFieldDidChange()
       self.getEnsAddressFromName("")
     }
@@ -242,6 +245,7 @@ extension KNNewContactViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     if textField == self.addressTextField {
+      self.viewModel.updateViewModel(address: text)
       self.addressTextFieldDidChange()
       self.getEnsAddressFromName(text)
     }
@@ -263,9 +267,10 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
         if string.starts(with: "0x") { return string }
         return result
       }()
-      self.getEnsAddressFromName(address)
       self.addressTextField.text = address
+      self.viewModel.updateViewModel(address: address)
       self.addressTextFieldDidChange()
+      self.getEnsAddressFromName(address)
     }
   }
 

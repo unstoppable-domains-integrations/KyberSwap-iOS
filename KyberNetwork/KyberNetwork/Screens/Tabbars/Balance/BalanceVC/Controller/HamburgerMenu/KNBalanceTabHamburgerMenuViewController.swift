@@ -11,6 +11,7 @@ enum KNBalanceTabHamburgerMenuViewEvent {
   case selectSendToken
   case selectAllTransactions
   case selectPromoCode
+  case selectNotifications
   case selectWalletConnect
 }
 
@@ -96,6 +97,10 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var walletConnectLabel: UILabel!
   @IBOutlet weak var walletConnectView: UIView!
 
+  @IBOutlet weak var notificationsTextLabel: UILabel!
+  @IBOutlet weak var unreadNotiLabel: UILabel!
+  @IBOutlet weak var notificationContainerView: UIView!
+
   @IBOutlet weak var sendTokenButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
@@ -153,6 +158,16 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       NSLocalizedString("transactions", value: "Transactions", comment: "").uppercased(),
       for: .normal
     )
+
+    self.notificationsTextLabel.text = NSLocalizedString("notifications", value: "Notifications", comment: "").uppercased()
+    self.unreadNotiLabel.rounded(radius: self.unreadNotiLabel.frame.height / 2.0)
+    self.unreadNotiLabel.text = "0"
+    self.unreadNotiLabel.isHidden = true
+
+    let notiTappedGesture = UITapGestureRecognizer(target: self, action: #selector(self.notificationsTapped(_:)))
+    self.notificationContainerView.addGestureRecognizer(notiTappedGesture)
+    self.notificationContainerView.isUserInteractionEnabled = true
+
     self.promoCodeTextLabel.text = NSLocalizedString("kybercode", value: "KyberCode", comment: "").uppercased()
     let promoTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.promoCodeTapped(_:)))
     self.promoCodeContainerView.addGestureRecognizer(promoTapGesture)
@@ -186,6 +201,11 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.viewModel.update(transactions: transactions)
     self.numberPendingTxLabel.text = "\(transactions.count)"
     self.numberPendingTxLabel.isHidden = transactions.isEmpty
+  }
+
+  func update(notificationsCount: Int) {
+    self.unreadNotiLabel.text = "\(notificationsCount)"
+    self.unreadNotiLabel.isHidden = notificationsCount == 0
   }
 
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {
@@ -222,6 +242,13 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectPromoCode)
     }
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_hamburger_menu", customAttributes: ["action": "kybercode"])
+  }
+
+  @objc func notificationsTapped(_ sender: Any?) {
+    self.hideMenu(animated: true) {
+      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectNotifications)
+    }
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_hamburger_menu", customAttributes: ["action": "notifications"])
   }
 
   @objc func walletConnectTapped(_ sender: Any?) {

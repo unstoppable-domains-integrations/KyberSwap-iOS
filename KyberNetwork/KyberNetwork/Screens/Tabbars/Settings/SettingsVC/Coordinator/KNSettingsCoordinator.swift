@@ -406,12 +406,12 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
     case .send(let address):
       self.openSendToken(address: address)
     case .select(let contact):
-      self.openNewContact(address: contact.address)
+      self.openNewContact(address: contact.address, ens: nil)
     }
   }
 
-  fileprivate func openNewContact(address: String) {
-    let viewModel = KNNewContactViewModel(address: address)
+  fileprivate func openNewContact(address: String, ens: String?) {
+    let viewModel = KNNewContactViewModel(address: address, ens: ens)
     let controller = KNNewContactViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self

@@ -52,9 +52,21 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    let name = Notification.Name(rawValue: "viewDidBecomeActive")
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.commontSetup()
+    let name = Notification.Name(rawValue: "viewDidBecomeActive")
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.viewDidBecomeActive(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -166,6 +178,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.dismiss(animated: true) {
         self.delegate?.transactionStatusPopUp(self, action: .dismiss)
       }
+    }
+  }
+
+  @objc func viewDidBecomeActive(_ sender: Any?) {
+    if !self.loadingImageView.isHidden {
+      self.loadingImageView.startRotating()
     }
   }
 

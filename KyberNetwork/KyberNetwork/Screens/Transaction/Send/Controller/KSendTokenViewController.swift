@@ -14,7 +14,7 @@ enum KSendTokenViewEvent {
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case send(transaction: UnconfirmedTransaction, ens: String?)
-  case addContact(address: String)
+  case addContact(address: String, ens: String?)
   case contactSelectMore
 }
 
@@ -314,7 +314,11 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func newContactButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "new_contact_button"])
-    self.delegate?.kSendTokenViewController(self, run: .addContact(address: self.viewModel.address?.description ?? ""))
+    let event = KSendTokenViewEvent.addContact(
+      address: self.viewModel.address?.description ?? "",
+      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+    )
+    self.delegate?.kSendTokenViewController(self, run: event)
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -632,7 +636,7 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       self.contactTableView(select: contact)
     case .edit(let contact):
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "edit/add_contact"])
-      self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address))
+      self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address, ens: nil))
     case .delete(let contact):
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "delete_contact"])
       self.contactTableView(delete: contact)
