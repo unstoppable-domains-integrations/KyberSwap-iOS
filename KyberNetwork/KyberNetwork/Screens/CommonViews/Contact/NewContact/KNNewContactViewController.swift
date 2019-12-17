@@ -76,6 +76,7 @@ class KNNewContactViewModel {
         address: addr.description.lowercased(),
         name: self.contact.name.isEmpty ? name : self.contact.name
       )
+      self.isEditing = false
     }
   }
 }
@@ -285,6 +286,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
       KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
+          if name != self.viewModel.addressString { return }
           if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
             self.viewModel.updateAddressFromENS(name: name, ensAddr: address)
           } else {
