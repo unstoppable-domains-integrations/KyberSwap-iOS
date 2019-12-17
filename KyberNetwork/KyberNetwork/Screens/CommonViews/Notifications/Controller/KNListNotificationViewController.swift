@@ -29,7 +29,7 @@ class KNListNotificationViewController: KNBaseViewController {
     self.listNotiTableView.register(nib, forCellReuseIdentifier: kCellID)
     self.listNotiTableView.delegate = self
     self.listNotiTableView.dataSource = self
-    self.listNotiTableView.rowHeight = 60.0
+    self.listNotiTableView.rowHeight = 64.0
 
     let name = Notification.Name(kUpdateListNotificationsKey)
     NotificationCenter.default.addObserver(
@@ -78,6 +78,9 @@ class KNListNotificationViewController: KNBaseViewController {
     self.viewModel.notifications = KNNotificationStorage.shared.notifications.map({ return $0.clone() }).sorted(by: { return $0.updatedDate > $1.updatedDate })
     self.emptyStateContainerView.isHidden = !self.viewModel.notifications.isEmpty
     self.listNotiTableView.isHidden = self.viewModel.notifications.isEmpty
+    if !self.listNotiTableView.isHidden {
+      self.listNotiTableView.reloadData()
+    }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
