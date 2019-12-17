@@ -211,6 +211,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {
     self.view.isHidden = false
     self.hamburgerMenuViewTrailingConstraint.constant = 0
+    self.notificationDidUpdate(nil)
     let duration: TimeInterval = animated ? 0.3 : 0
     UIView.animate(withDuration: duration, animations: {
       self.view.alpha = 1
@@ -355,6 +356,11 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
         self.openMenu(animated: true)
       }
     }
+  }
+
+  @objc func notificationDidUpdate(_ sender: Any?) {
+    let numUnread = KNNotificationStorage.shared.notifications.map({ return $0.read }).count
+    self.update(notificationsCount: numUnread)
   }
 }
 
