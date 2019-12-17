@@ -69,6 +69,10 @@ class KNNotificationCoordinator: NSObject {
   }
 
   func markAsRead(ids: [Int], completion: @escaping (String?) -> Void) {
+    if ids.isEmpty {
+      completion(nil)
+      return
+    }
     let accessToken = IEOUserStorage.shared.user?.accessToken
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.markAsRead(accessToken: accessToken, ids: ids)) { [weak self] result in
