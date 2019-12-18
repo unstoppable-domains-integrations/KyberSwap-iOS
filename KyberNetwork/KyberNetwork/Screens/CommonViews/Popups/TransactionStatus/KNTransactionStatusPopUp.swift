@@ -22,6 +22,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
   @IBOutlet weak var detailsButton: UIButton!
 
+  @IBOutlet weak var rateValueLabel: UILabel!
+
   // Broadcast
   @IBOutlet weak var loadingImageView: UIImageView!
   // 32 if broadcasting, 104 if done/failed
@@ -97,10 +99,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   }
 
   fileprivate func updateViewTransactionDidChange() {
+    let (details, rate) = self.transaction.getNewTxDetails()
     self.detailsButton.setAttributedTitle(
-      NSAttributedString(string: self.transaction.getNewTxDetails(), attributes: self.detailsAttributes),
+      NSAttributedString(string: details, attributes: self.detailsAttributes),
       for: .normal
     )
+    self.rateValueLabel.text = rate
     if self.transaction.state == .pending {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
       self.titleLabel.text = "Broadcasted!".toBeLocalised()
@@ -112,6 +116,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
       self.transferButton.isHidden = true
       self.swapButton.isHidden = true
+      self.rateValueLabel.isHidden = true
 
       self.actionButtonHeightConstraints.forEach({ $0.constant = 0.0 })
       self.bottomPaddingBroadcastConstraint.constant = 32.0
@@ -135,8 +140,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.swapButton.isHidden = false
       self.transferCenterXConstraint.constant = -66
 
+      self.rateValueLabel.isHidden = rate == nil ? true : false
+
       self.actionButtonHeightConstraints.forEach({ $0.constant = 45.0 })
-      self.bottomPaddingBroadcastConstraint.constant = 104
+      self.bottomPaddingBroadcastConstraint.constant = 120
       self.view.layoutSubviews()
     } else if self.transaction.state == .error || self.transaction.state == .failed {
       self.titleIconImageView.image = UIImage(named: "tx_failed_icon")
@@ -156,8 +163,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.transferButton.setTitle(NSLocalizedString("try.again", comment: ""), for: .normal)
       self.transferCenterXConstraint.constant = 0
 
+      self.rateValueLabel.isHidden = true
+
       self.actionButtonHeightConstraints.forEach({ $0.constant = 45.0 })
-      self.bottomPaddingBroadcastConstraint.constant = 104
+      self.bottomPaddingBroadcastConstraint.constant = 120
       self.view.layoutSubviews()
     }
   }
