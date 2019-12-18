@@ -29,14 +29,14 @@
                             <constraint firstAttribute="width" constant="18" id="Vik-k7-ggt"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alert triggered" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZR-1M-6nq">
-                        <rect key="frame" x="50" y="10" width="92" height="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Alert triggerred" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZR-1M-6nq">
+                        <rect key="frame" x="50" y="10" width="97" height="15"/>
                         <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
                         <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpf-K8-YnI">
-                        <rect key="frame" x="150" y="11.5" width="47" height="12.5"/>
+                        <rect key="frame" x="155" y="11.5" width="47" height="12.5"/>
                         <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="10"/>
                         <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -57,6 +57,7 @@
                     <constraint firstItem="hRv-WT-1pn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="iCb-QE-vsa"/>
                     <constraint firstAttribute="trailing" secondItem="wQF-b5-AdW" secondAttribute="trailing" constant="16" id="j2d-w4-BAs"/>
                     <constraint firstItem="eZR-1M-6nq" firstAttribute="leading" secondItem="hRv-WT-1pn" secondAttribute="trailing" constant="16" id="nXt-XT-3dj"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rpf-K8-YnI" secondAttribute="trailing" constant="16" id="pH5-5J-1DH"/>
                     <constraint firstItem="hRv-WT-1pn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="vO6-9J-4uv"/>
                 </constraints>
             </tableViewCellContentView>
