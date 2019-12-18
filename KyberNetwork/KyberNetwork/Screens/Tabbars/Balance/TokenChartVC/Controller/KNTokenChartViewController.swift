@@ -75,6 +75,7 @@ class KNTokenChartViewModel {
   var type: KNTokenChartType = .day
   var data: [KNChartObject] = []
   var balance: Balance = Balance(value: BigInt())
+  var volume24h: String = "---"
 
   init(token: TokenObject) {
     self.token = token
@@ -110,9 +111,22 @@ class KNTokenChartViewModel {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
       NSAttributedStringKey.kern: 0.0,
     ]
+    let volume24hTextAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 139, green: 142, blue: 147),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.kern: 0.0,
+    ]
+    let volume24hValueAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
+      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedStringKey.kern: 0.0,
+    ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: "ETH \(rateString) ", attributes: rateAttributes))
-    attributedString.append(NSAttributedString(string: "\n\(change24hString)", attributes: changeAttributes))
+    attributedString.append(NSAttributedString(string: "\(change24hString)", attributes: changeAttributes))
+    attributedString.append(NSAttributedString(string: "\n24 Vol: ", attributes: volume24hTextAttributes))
+    attributedString.append(NSAttributedString(string: "\(self.volume24h)", attributes: volume24hValueAttributes))
+
     return attributedString
   }
 
@@ -237,6 +251,53 @@ class KNTokenChartViewModel {
       maxDouble = max(maxDouble, $0.close)
     })
     return [minDouble, maxDouble]
+  }
+
+  func fetch24hVolume(for token: TokenObject, completion: @escaping (Result<Double, AnyError>) -> Void) {
+    if !token.isSupported {
+      self.volume24h = "---"
+      completion(.success(0))
+      return
+    }
+    let provider = MoyaProvider<KNTrackerService>()
+    let symbol = token.symbol
+    DispatchQueue.global(qos: .background).async {
+      provider.request(.getTokenVolumne) { [weak self] result in
+        guard let `self` = self else {
+          completion(.success(0))
+          return
+        }
+        DispatchQueue.main.async {
+          if self.token.symbol != symbol {
+            completion(.success(0))
+            return
+          }
+          switch result {
+          case .success(let resp):
+            do {
+              let _ = try resp.filterSuccessfulStatusCodes()
+              let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let jsonArr = json["data"] as? [JSONDictionary],
+                let info = jsonArr.first(where: { return $0["base_symbol"] as? String ?? "" == symbol }),
+                let volume24h = info["eth_24h_volume"] as? Double {
+                self.volume24h = BigInt(volume24h * pow(10.0, 18.0)).string(
+                  decimals: 18,
+                  minFractionDigits: 6,
+                  maxFractionDigits: 6
+                )
+                completion(.success(volume24h))
+              }
+            } catch let error {
+              self.volume24h = "---"
+              completion(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            self.volume24h = "---"
+            completion(.failure(AnyError(error)))
+          }
+        }
+      }
+    }
   }
 
   func fetchNewData(for token: TokenObject, type: KNTokenChartType, completion: @escaping ((Result<Bool, AnyError>) -> Void)) {
@@ -569,6 +630,9 @@ class KNTokenChartViewController: KNBaseViewController {
         }
         self?.noDataLabel.addLetterSpacing()
     }
+    self.viewModel.fetch24hVolume(for: self.viewModel.token) { [weak self] _ in
+      self?.reloadViewDataDidUpdate()
+    }
   }
 
   fileprivate func startTimer() {
@@ -617,6 +681,7 @@ class KNTokenChartViewController: KNBaseViewController {
       self.priceChart.xLabels = []
       self.priceChart.setNeedsDisplay()
     }
+    self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateRate() {

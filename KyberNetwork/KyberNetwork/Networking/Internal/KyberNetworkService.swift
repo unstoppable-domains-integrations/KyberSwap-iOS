@@ -87,6 +87,7 @@ enum KNTrackerService {
   case swapSuggestion(address: String, tokens: JSONDictionary)
   case getGasLimit(src: String, dest: String, amount: Double)
   case getSourceAmount(src: String, dest: String, amount: Double)
+  case getTokenVolumne
 }
 
 extension KNTrackerService: TargetType {
@@ -108,6 +109,8 @@ extension KNTrackerService: TargetType {
       let base = KNEnvironment.default.cachedSourceAmountRateURL
       let url = "/quote_amount?base=\(dest)&quote=\(src)&base_amount=\(amount)&type=buy"
       return URL(string: base + url)!
+    case .getTokenVolumne:
+      return URL(string: "\(baseURLString)/market")!
     }
   }
 
