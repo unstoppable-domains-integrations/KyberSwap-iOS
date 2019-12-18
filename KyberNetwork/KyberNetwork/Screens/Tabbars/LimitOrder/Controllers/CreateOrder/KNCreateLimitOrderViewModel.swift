@@ -584,15 +584,8 @@ class KNCreateLimitOrderViewModel {
 
   // Update order with same sender, src and dest address
   func updateRelatedOrders(_ orders: [KNOrderObject]) {
-    let fromTime: TimeInterval = {
-      if let date = Calendar.current.date(byAdding: .month, value: -3, to: Date()) {
-        return date.timeIntervalSince1970
-      }
-      return Date().timeIntervalSince1970 - 3.0 * 30.0 * 24.0 * 60.0 * 60.0
-    }()
     self.relatedOrders = orders
       .filter({ return $0.state == .open })
-      .filter({ return $0.dateToDisplay.timeIntervalSince1970 >= fromTime })
       .sorted(by: { return $0.dateToDisplay > $1.dateToDisplay })
     self.cancelSuggestOrders = self.relatedOrders.filter({ return $0.targetPrice > self.targetRateDouble })
     self.updateRelatedAndCancelSuggestionData()
