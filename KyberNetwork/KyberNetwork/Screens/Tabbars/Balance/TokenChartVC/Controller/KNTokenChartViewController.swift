@@ -124,7 +124,7 @@ class KNTokenChartViewModel {
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: "ETH \(rateString) ", attributes: rateAttributes))
     attributedString.append(NSAttributedString(string: "\(change24hString)", attributes: changeAttributes))
-    attributedString.append(NSAttributedString(string: "\n24 Vol: ", attributes: volume24hTextAttributes))
+    attributedString.append(NSAttributedString(string: "\n24 ETH Vol: ", attributes: volume24hTextAttributes))
     attributedString.append(NSAttributedString(string: "\(self.volume24h)", attributes: volume24hValueAttributes))
 
     return attributedString
