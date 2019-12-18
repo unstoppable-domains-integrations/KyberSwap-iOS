@@ -292,6 +292,9 @@ class KSwapViewModel {
       let cacheRate = KNRateCoordinator.shared.ethRate(for: self.from)
       return cacheRate?.rate ?? BigInt(0)
     }()
+    if ethRate.isZero && self.estRate != nil && self.estRate?.isZero == false {
+      return false
+    }
     let valueInETH = ethRate * self.amountFromBigInt
     let valueMin = BigInt(0.001 * Double(EthereumUnit.ether.rawValue)) * BigInt(10).power(self.from.decimals)
     return valueInETH < valueMin
