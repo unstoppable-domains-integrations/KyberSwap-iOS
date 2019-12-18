@@ -173,10 +173,16 @@ class KNLoadBalanceCoordinator {
     isFetchingETHBalance = true
     let currentWallet = self.session.wallet
     let address = self.ethToken.address
-    if self.session == nil { return }
+    if self.session == nil {
+      self.isFetchingETHBalance = false
+      return
+    }
     self.session.externalProvider.getETHBalance { [weak self] result in
       guard let `self` = self else { return }
-      if self.session == nil || currentWallet != self.session.wallet { return }
+      if self.session == nil || currentWallet != self.session.wallet {
+        self.isFetchingETHBalance = false
+        return
+      }
       self.isFetchingETHBalance = false
       switch result {
       case .success(let balance):
@@ -225,6 +231,7 @@ class KNLoadBalanceCoordinator {
           if self.ethBalance.value != balance.value {
             self.ethBalance = balance
             self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
+            KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
           }
         }
         completion()
