@@ -98,7 +98,7 @@ extension KNTransaction {
       return nil
     }
     return TokenObject(
-      contract: localObject.contract ?? "",
+      contract: localObject.from,
       name: localObject.name ?? "",
       symbol: localObject.symbol ?? "",
       decimals: localObject.decimals,
