@@ -199,6 +199,8 @@ extension KNProfileHomeCoordinator {
     for cookie in (cookieJar.cookies ?? []) {
       cookieJar.deleteCookie(cookie)
     }
+
+    KNNotificationCoordinator.shared.loadListNotifications { _, _  in }
   }
 
   // Get current user's info data, to sync between mobile (iOS + Android) and web

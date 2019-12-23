@@ -119,9 +119,22 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.notificationDidUpdate(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   fileprivate func setupUI() {

@@ -65,10 +65,10 @@ class KNListNotificationViewController: KNBaseViewController {
       guard let `self` = self else { return }
       self.hideLoading()
       if let err = error {
-        self.showSuccessTopBannerMessage(
+        self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
           message: err,
-          time: 2.0
+          time: 1.5
         )
       }
     }
@@ -94,10 +94,10 @@ class KNListNotificationViewController: KNBaseViewController {
       guard let `self` = self else { return }
       self.hideLoading()
       if let err = error {
-        self.showSuccessTopBannerMessage(
+        self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
           message: err,
-          time: 2.0
+          time: 1.5
         )
       }
     }

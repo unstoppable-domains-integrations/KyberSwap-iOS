@@ -419,6 +419,7 @@ extension KNProfileHomeCoordinator {
     let message = String(format: text, name)
     self.navigationController.showSuccessTopBannerMessage(with: "", message: message)
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.resume() }
+    KNNotificationCoordinator.shared.loadListNotifications { _, _  in }
     if KNAppTracker.shouldOpenLimitOrderAfterSignedIn() {
       self.navigationController.tabBarController?.selectedIndex = 2
     }
