@@ -138,10 +138,6 @@ extension KNAppCoordinator {
 
     // reset history filter every time open app
     KNAppTracker.removeHistoryFilterData()
-
-    let alert = UIAlertController(title: "Warning", message: "This is the dev environment, only for Kyber's tester", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-    self.navigationController.present(alert, animated: true, completion: nil)
   }
 
   func appDidBecomeActive() {

@@ -745,7 +745,7 @@ extension KNLimitOrderTabCoordinator: KNHistoryCoordinatorDelegate {
 // MARK: Search token
 extension KNLimitOrderTabCoordinator: KNLimitOrderSearchTokenViewControllerDelegate {
   func limitOrderSearchTokenViewController(_ controller: KNLimitOrderSearchTokenViewController, run event: KNLimitOrderSearchTokenEvent) {
-    self.navigationController.popViewController(animated: true) {
+    self.navigationController.popToRootViewController(animated: true) {
       self.searchTokensViewController = nil
       if case .select(let token) = event {
         self.rootViewController.coordinatorUpdateSelectedToken(

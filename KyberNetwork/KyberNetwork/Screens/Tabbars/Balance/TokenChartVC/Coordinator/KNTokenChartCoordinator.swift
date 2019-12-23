@@ -49,7 +49,7 @@ class KNTokenChartCoordinator: Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popToRootViewController(animated: true)
   }
 
   func coordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {

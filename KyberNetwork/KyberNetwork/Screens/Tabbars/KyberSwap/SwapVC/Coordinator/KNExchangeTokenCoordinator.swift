@@ -808,7 +808,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 // MARK: Search token
 extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    self.navigationController.popViewController(animated: true) {
+    self.navigationController.popToRootViewController(animated: true) {
       self.searchTokensViewController = nil
       if case .select(let token) = event {
         self.rootViewController.coordinatorUpdateSelectedToken(
