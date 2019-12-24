@@ -2,6 +2,15 @@
 
 import UIKit
 
+enum KNListNotificationViewEvent {
+  case openSwap(from: String, to: String)
+  case openManageOrder
+}
+
+protocol KNListNotificationViewControllerDelegate: class {
+  func listNotificationViewController(_ controller: KNListNotificationViewController, run event: KNListNotificationViewEvent)
+}
+
 class KNListNotificationViewModel {
   var notifications: [KNNotification] = []
 }
@@ -20,6 +29,8 @@ class KNListNotificationViewController: KNBaseViewController {
   @IBOutlet weak var noNotificationsTextLabel: UILabel!
 
   fileprivate let viewModel = KNListNotificationViewModel()
+
+  weak var delegate: KNListNotificationViewControllerDelegate?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -65,6 +76,7 @@ class KNListNotificationViewController: KNBaseViewController {
       guard let `self` = self else { return }
       self.hideLoading()
       if let err = error {
+        KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["reload_error": err])
         self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
           message: err,
@@ -88,12 +100,14 @@ class KNListNotificationViewController: KNBaseViewController {
   }
 
   @IBAction func markAllButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["action": "mark_all_read"])
     let ids = KNNotificationStorage.shared.notifications.map({ return $0.id })
     self.displayLoading()
     KNNotificationCoordinator.shared.markAsRead(ids: ids) { [weak self] error in
       guard let `self` = self else { return }
       self.hideLoading()
       if let err = error {
+        KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["mark_read_error": err])
         self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
           message: err,
@@ -111,14 +125,116 @@ extension KNListNotificationViewController: UITableViewDelegate {
     if !noti.read {
       KNNotificationCoordinator.shared.markAsRead(ids: [noti.id]) { _ in }
     }
+
+    if noti.scope == "personal" && noti.label == "alert" {
+      // alert, open swap view
+      if let data = noti.extraData, let base = data["base"] as? String, let token = data["token"] as? String {
+        let from = base == "USD" ? "ETH" : token
+        let to = base == "USD" ? "KNC" : "ETH"
+        self.delegate?.listNotificationViewController(self, run: .openSwap(from: from, to: to))
+        return
+      }
+    }
+
+    if noti.scope == "personal" && noti.label == "limit_order" {
+      // open manage order if user has logged in, otherwise open limit order popup if has data
+      if IEOUserStorage.shared.user != nil {
+        self.delegate?.listNotificationViewController(self, run: .openManageOrder)
+        return
+      }
+      if let data = noti.extraData, self.openLimitOrderPopup(data: data) {
+        return
+      }
+    }
+
+    if noti.label == "new_listing" {
+      if let data = noti.extraData, let token = data["token"] as? String {
+        self.delegate?.listNotificationViewController(self, run: .openSwap(from: "ETH", to: token))
+        return
+      }
+    }
+    if !noti.link.isEmpty, let url = URL(string: noti.link), UIApplication.shared.canOpenURL(url) {
+      self.openSafari(with: url)
+      return
+    }
+
     let alert = UIAlertController(title: noti.title, message: noti.content, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-    if !noti.link.isEmpty, let url = URL(string: noti.link) {
-      alert.addAction(UIAlertAction(title: "Open", style: .default, handler: { _ in
-        self.openSafari(with: url)
-      }))
-    }
     self.present(alert, animated: true, completion: nil)
+  }
+
+  fileprivate func openLimitOrderPopup(data: JSONDictionary) -> Bool {
+    guard let orderID = data["order_id"] as? Int,
+      let srcToken = data["src_token"] as? String,
+      let destToken = data["dst_token"] as? String else { return false }
+    let rate: Double = {
+      if let value = data["min_rate"] as? Double { return value }
+      if let valueStr = data["min_rate"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let amount: Double = {
+      if let value = data["src_amount"] as? Double { return value }
+      if let valueStr = data["src_amount"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let fee: Double = {
+      if let value = data["fee"] as? Double { return value }
+      if let valueStr = data["fee"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let transferFee: Double = {
+      if let value = data["transfer_fee"] as? Double { return value }
+      if let valueStr = data["transfer_fee"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return 0.0
+    }()
+    let sender = data["sender"] as? String ?? ""
+    let createdDate: Double = {
+      if let value = data["created_at"] as? Double { return value }
+      if let valueStr = data["created_at"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return Date().timeIntervalSince1970
+    }()
+    let updatedDate: Double = {
+      if let value = data["updated_at"] as? Double { return value }
+      if let valueStr = data["updated_at"] as? String, let value = Double(valueStr) {
+        return value
+      }
+      return Date().timeIntervalSince1970
+    }()
+    let receive = data["receive"] as? Double ?? 0.0
+    let txHash = data["tx_hash"] as? String ?? ""
+
+    let order = KNOrderObject(
+      id: orderID,
+      from: srcToken,
+      to: destToken,
+      amount: amount,
+      price: rate,
+      fee: fee + transferFee,
+      nonce: "",
+      sender: sender,
+      createdDate: createdDate,
+      filledDate: updatedDate,
+      messages: "",
+      txHash: txHash,
+      stateValue: KNOrderState.filled.rawValue,
+      actualDestAmount: receive
+    )
+    let controller = KNLimitOrderDetailsPopUp(order: order)
+    controller.loadViewIfNeeded()
+    controller.modalPresentationStyle = .overCurrentContext
+    controller.modalTransitionStyle = .crossDissolve
+    self.present(controller, animated: true, completion: nil)
+    return true
   }
 }
 

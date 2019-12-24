@@ -16,6 +16,7 @@ protocol KNLimitOrderTabCoordinatorDelegate: class {
   func limitOrderTabCoordinatorRemoveWallet(_ wallet: Wallet)
   func limitOrderTabCoordinatorDidSelectAddWallet()
   func limitOrderTabCoordinatorDidSelectPromoCode()
+  func limitOrderTabCoordinatorOpenExchange(from: String, to: String)
 }
 
 class KNLimitOrderTabCoordinator: NSObject, Coordinator {
@@ -188,6 +189,21 @@ extension KNLimitOrderTabCoordinator {
       topVC.applicationDidEnterBackground()
     }
   }
+
+  func appCoordinatorOpenManageOrder() {
+    self.navigationController.popToRootViewController(animated: true) {
+      if self.manageOrdersVC == nil {
+        self.manageOrdersVC = KNManageOrdersViewController(
+          viewModel: KNManageOrdersViewModel(orders: [])
+        )
+        self.manageOrdersVC?.loadViewIfNeeded()
+        self.manageOrdersVC?.delegate = self
+      }
+      self.navigationController.pushViewController(self.manageOrdersVC!, animated: true, completion: {
+        self.manageOrdersVC?.openHistoryOrders()
+      })
+    }
+  }
 }
 
 extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
@@ -200,14 +216,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .submitOrder(let order):
       self.checkDataBeforeConfirmOrder(order)
     case .manageOrders:
-      if self.manageOrdersVC == nil {
-        self.manageOrdersVC = KNManageOrdersViewController(
-          viewModel: KNManageOrdersViewModel(orders: [])
-        )
-        self.manageOrdersVC?.loadViewIfNeeded()
-        self.manageOrdersVC?.delegate = self
-      }
-      self.navigationController.pushViewController(self.manageOrdersVC!, animated: true, completion: nil)
+      self.appCoordinatorOpenManageOrder()
     case .estimateFee(let address, let src, let dest, let srcAmount, let destAmount):
       self.getExpectedFee(
         accessToken: IEOUserStorage.shared.user?.accessToken,
@@ -252,6 +261,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     case .selectNotifications:
       let viewController = KNListNotificationViewController()
       viewController.loadViewIfNeeded()
+      viewController.delegate = self
       self.navigationController.pushViewController(viewController, animated: true)
     }
   }
@@ -925,11 +935,12 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
   }
 
   fileprivate func sendGetUserTradeCapRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
+    let address = self.session.wallet.address.description
     if let accessToken = IEOUserStorage.shared.user?.accessToken {
       // New user trade cap
       DispatchQueue.global(qos: .background).async {
         let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
-        provider.request(.getUserTradeCap(authToken: accessToken)) { result in
+        provider.request(.getUserTradeCap(authToken: accessToken, address: address)) { result in
           DispatchQueue.main.async {
             completion(result)
           }
@@ -937,7 +948,6 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
       }
     } else {
       // Fallback to normal get user cap
-      let address = self.session.wallet.address.description
       DispatchQueue.global(qos: .background).async {
         let provider = MoyaProvider<KNTrackerService>()
         provider.request(.getUserCap(address: address.lowercased())) { result in
@@ -970,6 +980,20 @@ extension KNLimitOrderTabCoordinator: QRCodeReaderDelegate {
         knSession: self.session
       )
       self.navigationController.present(controller, animated: true, completion: nil)
+    }
+  }
+}
+
+extension KNLimitOrderTabCoordinator: KNListNotificationViewControllerDelegate {
+  func listNotificationViewController(_ controller: KNListNotificationViewController, run event: KNListNotificationViewEvent) {
+    switch event {
+    case .openSwap(let from, let to):
+      self.delegate?.limitOrderTabCoordinatorOpenExchange(from: from, to: to)
+    case .openManageOrder:
+      if IEOUserStorage.shared.user == nil { return }
+      self.navigationController.popToRootViewController(animated: true) {
+        self.appCoordinatorOpenManageOrder()
+      }
     }
   }
 }

@@ -161,7 +161,7 @@ enum UserInfoService {
   case setAlertMethods(accessToken: String, email: [JSONDictionary], telegram: [JSONDictionary])
   case getLeaderBoardData(accessToken: String)
   case getLatestCampaignResult(accessToken: String)
-  case getUserTradeCap(authToken: String)
+  case getUserTradeCap(authToken: String, address: String)
   case sendTxHash(authToken: String, txHash: String)
   case getNotification(accessToken: String?)
   case markAsRead(accessToken: String?, ids: [Int])
@@ -193,8 +193,8 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/alerts/ranks")!
     case .getLatestCampaignResult:
       return URL(string: "\(baseString)/api/alerts/campaign_prizes")!
-    case .getUserTradeCap:
-      return URL(string: "\(baseString)\(KNSecret.getUserTradeCapURL)")!
+    case .getUserTradeCap(_, let address):
+      return URL(string: "\(baseString)\(KNSecret.getUserTradeCapURL)?address=\(address)")!
     case .sendTxHash:
       return URL(string: "\(baseString)\(KNSecret.sendTxHashURL)")!
     case .getNotification:
@@ -285,7 +285,7 @@ extension UserInfoService: TargetType {
       json["Authorization"] = accessToken
     case .getLatestCampaignResult(let accessToken):
       json["Authorization"] = accessToken
-    case .getUserTradeCap(let accessToken):
+    case .getUserTradeCap(let accessToken, _):
       json["Authorization"] = accessToken
     case .sendTxHash(let accessToken, _):
       json["Authorization"] = accessToken

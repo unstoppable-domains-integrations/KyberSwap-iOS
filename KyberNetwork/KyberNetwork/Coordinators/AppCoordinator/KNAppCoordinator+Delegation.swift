@@ -52,6 +52,11 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   func exchangeTokenCoordinatorDidSelectPromoCode() {
     self.addPromoCode()
   }
+
+  func exchangeTokenCoordinatorOpenManageOrder() {
+    self.tabbarController.selectedIndex = 2
+    self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
+  }
 }
 
 // MARK: Limit Order Coordinator Delegate
@@ -72,6 +77,11 @@ extension KNAppCoordinator: KNLimitOrderTabCoordinatorDelegate {
 
   func limitOrderTabCoordinatorDidSelectPromoCode() {
     self.addPromoCode()
+  }
+
+  func limitOrderTabCoordinatorOpenExchange(from: String, to: String) {
+    self.tabbarController.selectedIndex = 1
+    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
 }
 
@@ -120,6 +130,16 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
 
   func balanceTabCoordinatorDidSelectPromoCode() {
     self.addPromoCode()
+  }
+
+  func balanceTabCoordinatorOpenManageOrder() {
+    self.tabbarController.selectedIndex = 2
+    self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
+  }
+
+  func balanceTabCoordinatorOpenSwap(from: String, to: String) {
+    self.tabbarController.selectedIndex = 1
+    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
 }
 

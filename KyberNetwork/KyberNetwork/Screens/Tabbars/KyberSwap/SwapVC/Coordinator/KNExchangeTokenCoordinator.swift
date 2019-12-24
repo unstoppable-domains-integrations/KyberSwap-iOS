@@ -15,6 +15,7 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectAddWallet()
   func exchangeTokenCoordinatorDidSelectPromoCode()
+  func exchangeTokenCoordinatorOpenManageOrder()
 }
 
 //swiftlint:disable file_length
@@ -452,6 +453,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .selectNotifications:
       let viewController = KNListNotificationViewController()
       viewController.loadViewIfNeeded()
+      viewController.delegate = self
       self.navigationController.pushViewController(viewController, animated: true)
     }
   }
@@ -727,11 +729,12 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func sendGetUserTradeCapRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
+    let address = self.session.wallet.address.description
     if let accessToken = IEOUserStorage.shared.user?.accessToken {
       // New user trade cap
       DispatchQueue.global(qos: .background).async {
         let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
-        provider.request(.getUserTradeCap(authToken: accessToken)) { result in
+        provider.request(.getUserTradeCap(authToken: accessToken, address: address)) { result in
           DispatchQueue.main.async {
             completion(result)
           }
@@ -739,7 +742,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
     } else {
       // Fallback to normal get user cap
-      let address = self.session.wallet.address.description
       DispatchQueue.global(qos: .background).async {
         let provider = MoyaProvider<KNTrackerService>()
         provider.request(.getUserCap(address: address.lowercased())) { result in
@@ -883,6 +885,20 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
         knSession: self.session
       )
       self.navigationController.present(controller, animated: true, completion: nil)
+    }
+  }
+}
+
+extension KNExchangeTokenCoordinator: KNListNotificationViewControllerDelegate {
+  func listNotificationViewController(_ controller: KNListNotificationViewController, run event: KNListNotificationViewEvent) {
+    switch event {
+    case .openSwap(let from, let to):
+      self.navigationController.popViewController(animated: true) {
+        self.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
+      }
+    case .openManageOrder:
+      if IEOUserStorage.shared.user == nil { return }
+      self.delegate?.exchangeTokenCoordinatorOpenManageOrder()
     }
   }
 }

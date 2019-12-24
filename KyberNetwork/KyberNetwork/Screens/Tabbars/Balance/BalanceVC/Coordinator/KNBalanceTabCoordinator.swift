@@ -11,6 +11,8 @@ protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject)
   func balanceTabCoordinatorDidSelectAddWallet()
   func balanceTabCoordinatorDidSelectPromoCode()
+  func balanceTabCoordinatorOpenManageOrder()
+  func balanceTabCoordinatorOpenSwap(from: String, to: String)
 }
 
 class KNBalanceTabCoordinator: NSObject, Coordinator {
@@ -273,6 +275,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     case .selectNotifications:
       let viewController = KNListNotificationViewController()
       viewController.loadViewIfNeeded()
+      viewController.delegate = self
       self.navigationController.pushViewController(viewController, animated: true)
     }
   }
@@ -395,6 +398,18 @@ extension KNBalanceTabCoordinator: QRCodeReaderDelegate {
         knSession: self.session
       )
       self.navigationController.present(controller, animated: true, completion: nil)
+    }
+  }
+}
+
+extension KNBalanceTabCoordinator: KNListNotificationViewControllerDelegate {
+  func listNotificationViewController(_ controller: KNListNotificationViewController, run event: KNListNotificationViewEvent) {
+    switch event {
+    case .openSwap(let from, let to):
+      self.delegate?.balanceTabCoordinatorOpenSwap(from: from, to: to)
+    case .openManageOrder:
+      if IEOUserStorage.shared.user == nil { return }
+      self.delegate?.balanceTabCoordinatorOpenManageOrder()
     }
   }
 }

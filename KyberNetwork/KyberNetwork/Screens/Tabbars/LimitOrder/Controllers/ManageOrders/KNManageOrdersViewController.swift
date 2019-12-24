@@ -300,6 +300,10 @@ class KNManageOrdersViewController: KNBaseViewController {
     self.updateCollectionView()
   }
 
+  func openHistoryOrders() {
+    self.updateSelectOrdersType(isOpen: false)
+  }
+
   @IBAction func backButtonPressed(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
   }
