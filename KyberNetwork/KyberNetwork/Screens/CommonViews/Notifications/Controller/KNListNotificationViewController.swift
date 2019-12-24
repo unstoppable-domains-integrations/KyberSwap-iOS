@@ -126,6 +126,8 @@ extension KNListNotificationViewController: UITableViewDelegate {
       KNNotificationCoordinator.shared.markAsRead(ids: [noti.id]) { _ in }
     }
 
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["action": "click_\(noti.label)"])
+
     if noti.scope == "personal" && noti.label == "alert" {
       // alert, open swap view
       if let data = noti.extraData, let base = data["base"] as? String, let token = data["token"] as? String {
