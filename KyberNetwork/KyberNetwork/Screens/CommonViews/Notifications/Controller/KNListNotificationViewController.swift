@@ -31,6 +31,7 @@ class KNListNotificationViewController: KNBaseViewController {
   fileprivate let viewModel = KNListNotificationViewModel()
 
   weak var delegate: KNListNotificationViewControllerDelegate?
+  fileprivate var timer: Timer?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,27 +42,21 @@ class KNListNotificationViewController: KNBaseViewController {
     self.listNotiTableView.delegate = self
     self.listNotiTableView.dataSource = self
     self.listNotiTableView.rowHeight = 64.0
-
-    let name = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.listNotificationsDidUpdate(_:)),
-      name: name,
-      object: nil
-    )
-
-    self.listNotificationsDidUpdate(nil)
   }
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    let name = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+    self.timer?.invalidate()
+    self.timer = nil
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.reloadListNotifications()
+    self.timer?.invalidate()
+    self.timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true, block: { [weak self] _ in
+      self?.reloadListNotifications()
+    })
   }
 
   override func viewDidLayoutSubviews() {
@@ -70,18 +65,47 @@ class KNListNotificationViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
-  fileprivate func reloadListNotifications() {
-    self.displayLoading()
-    KNNotificationCoordinator.shared.loadListNotifications { [weak self] (_, error) in
-      guard let `self` = self else { return }
-      self.hideLoading()
-      if let err = error {
-        KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["reload_error": err])
+  fileprivate func reloadListNotifications(_ isLoading: Bool = true) {
+    if isLoading { self.displayLoading() }
+    var errorMessage: String?
+    var notifications: [KNNotification] = []
+    let pageCount: Int = {
+      if KNNotificationCoordinator.shared.pageCount > 0 { return KNNotificationCoordinator.shared.pageCount }
+      return 1
+    }()
+    let group = DispatchGroup()
+    for id in 0..<pageCount {
+      group.enter()
+      KNNotificationCoordinator.shared.loadListNotifications(pageIndex: id + 1) { [weak self] (notis, error) in
+        guard let _ = self else {
+          group.leave()
+          return
+        }
+        if let err = error {
+          KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["reload_error": err])
+          errorMessage = err
+        } else {
+          notifications.append(contentsOf: notis)
+          if (id + 1) % 2 == 0 {
+            KNNotificationStorage.shared.updateNotificationsFromServer(notifications)
+            self?.listNotificationsDidUpdate(nil)
+          }
+        }
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      if isLoading { self.hideLoading() }
+      if let error = errorMessage {
+        KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["error": error])
         self.showErrorTopBannerMessage(
           with: NSLocalizedString("error", comment: ""),
-          message: err,
+          message: error,
           time: 1.5
         )
+      } else {
+        KNNotificationStorage.shared.updateNotificationsFromServer(notifications)
+        self.listNotificationsDidUpdate(nil)
       }
     }
   }
@@ -113,6 +137,8 @@ class KNListNotificationViewController: KNBaseViewController {
           message: err,
           time: 1.5
         )
+      } else {
+        self.reloadListNotifications()
       }
     }
   }
@@ -123,7 +149,13 @@ extension KNListNotificationViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: false)
     let noti = self.viewModel.notifications[indexPath.row]
     if !noti.read {
-      KNNotificationCoordinator.shared.markAsRead(ids: [noti.id]) { _ in }
+      KNNotificationCoordinator.shared.markAsRead(ids: [noti.id]) { _ in
+        let newNoti = noti.clone()
+        newNoti.read = true
+        KNNotificationStorage.shared.updateNotification(newNoti)
+        self.listNotificationsDidUpdate(nil)
+        self.reloadListNotifications(false)
+      }
     }
 
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_notification", customAttributes: ["action": "click_\(noti.label)"])

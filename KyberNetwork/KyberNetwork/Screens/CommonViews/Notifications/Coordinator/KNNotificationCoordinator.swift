@@ -8,6 +8,9 @@ class KNNotificationCoordinator: NSObject {
 
   static let shared: KNNotificationCoordinator = KNNotificationCoordinator()
   let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
+  fileprivate(set) var numberUnread: Int = KNNotificationStorage.shared.notifications.filter({ return !$0.read }).count
+  fileprivate(set) var pageCount: Int = 0
+  fileprivate(set) var itemCount: Int = 0
 
   fileprivate var loadingTimer: Timer?
 
@@ -30,7 +33,7 @@ class KNNotificationCoordinator: NSObject {
 
   func startLoadingNotifications(_ sender: Any?) {
     if KNWalletStorage.shared.wallets.isEmpty { return }
-    self.loadListNotifications { [weak self] (notifications, error) in
+    self.loadListNotifications(pageIndex: 0) { [weak self] (notifications, error) in
       guard let _ = self else { return }
       if error == nil {
         KNNotificationStorage.shared.updateNotificationsFromServer(notifications)
@@ -38,20 +41,24 @@ class KNNotificationCoordinator: NSObject {
     }
   }
 
-  func loadListNotifications(completion: @escaping ([KNNotification], String?) -> Void) {
+  func loadListNotifications(pageIndex: Int, completion: @escaping ([KNNotification], String?) -> Void) {
     let accessToken = IEOUserStorage.shared.user?.accessToken
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getNotification(accessToken: accessToken)) { [weak self] result in
-        guard let _ = self else { return }
+      self.provider.request(.getNotification(accessToken: accessToken, pageIndex: pageIndex)) { [weak self] result in
+        guard let `self` = self else { return }
         DispatchQueue.main.async {
           switch result {
           case .success(let data):
             do {
               let _ = try data.filterSuccessfulStatusCodes()
               let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
+              if let pageInfo = json["paging_info"] as? JSONDictionary {
+                self.numberUnread = pageInfo["unread_count"] as? Int ?? 0
+                self.pageCount = pageInfo["page_count"] as? Int ?? 0
+                self.itemCount = pageInfo["item_count"] as? Int ?? 0
+              }
               if let jsonArr = json["data"] as? [JSONDictionary] {
                 let notifications = jsonArr.map({ return KNNotification(json: $0) })
-                KNNotificationStorage.shared.updateNotificationsFromServer(notifications)
                 completion(notifications, nil)
                 return
               }

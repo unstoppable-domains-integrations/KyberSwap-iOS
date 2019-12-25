@@ -163,7 +163,7 @@ enum UserInfoService {
   case getLatestCampaignResult(accessToken: String)
   case getUserTradeCap(authToken: String, address: String)
   case sendTxHash(authToken: String, txHash: String)
-  case getNotification(accessToken: String?)
+  case getNotification(accessToken: String?, pageIndex: Int)
   case markAsRead(accessToken: String?, ids: [Int])
 }
 
@@ -197,8 +197,8 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)\(KNSecret.getUserTradeCapURL)?address=\(address)")!
     case .sendTxHash:
       return URL(string: "\(baseString)\(KNSecret.sendTxHashURL)")!
-    case .getNotification:
-      return URL(string: "\(baseString)/api/notifications")!
+    case .getNotification(_, let pageIndex):
+      return URL(string: "\(baseString)/api/notifications?page_index=\(pageIndex)&page_size=10")!
     case .markAsRead:
       return URL(string: "\(baseString)/api/notifications/mark_as_read")!
     }
@@ -289,7 +289,7 @@ extension UserInfoService: TargetType {
       json["Authorization"] = accessToken
     case .sendTxHash(let accessToken, _):
       json["Authorization"] = accessToken
-    case .getNotification(let accessToken):
+    case .getNotification(let accessToken, _):
       if let token = accessToken { json["Authorization"] = token }
     case .markAsRead(let accessToken, _):
       if let token = accessToken { json["Authorization"] = token }

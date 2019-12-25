@@ -372,7 +372,7 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   }
 
   @objc func notificationDidUpdate(_ sender: Any?) {
-    let numUnread = KNNotificationStorage.shared.notifications.filter({ return !$0.read }).count
+    let numUnread = KNNotificationCoordinator.shared.numberUnread
     self.update(notificationsCount: numUnread)
   }
 }
