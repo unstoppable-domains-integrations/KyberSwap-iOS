@@ -76,7 +76,7 @@ class KNNotificationCoordinator: NSObject {
   }
 
   func markAsRead(ids: [Int], completion: @escaping (String?) -> Void) {
-    if ids.isEmpty {
+    if ids.isEmpty || IEOUserStorage.shared.user == nil {
       completion(nil)
       return
     }

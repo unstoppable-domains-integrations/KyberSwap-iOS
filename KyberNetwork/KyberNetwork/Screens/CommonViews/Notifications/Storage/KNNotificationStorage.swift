@@ -20,6 +20,7 @@ class KNNotificationStorage {
 
   func updateNotification(_ noti: KNNotification) {
     if self.realm == nil { return }
+    self.realm.beginWrite()
     self.realm.add([noti], update: .modified)
     try! self.realm.commitWrite()
     KNNotificationUtil.postNotification(for: kUpdateListNotificationsKey)
