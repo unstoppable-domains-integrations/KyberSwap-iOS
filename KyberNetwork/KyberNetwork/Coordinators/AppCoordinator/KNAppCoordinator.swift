@@ -215,6 +215,11 @@ extension KNAppCoordinator {
 
   func appDidReceiverOneSignalPushNotification(result: OSNotificationOpenedResult?) {
     if let noti = result?.notification,
+      let data = noti.payload.additionalData, let notiID = data["notification_id"] as? Int {
+      KNNotificationCoordinator.shared.markAsRead(ids: [notiID]) { _ in }
+    }
+
+    if let noti = result?.notification,
       let data = noti.payload.additionalData,
       let type = data["type"] as? String, type == "alert_price", self.tabbarController != nil {
       self.handlePriceAlertPushNotification(noti)
@@ -232,7 +237,16 @@ extension KNAppCoordinator {
       self.handleOpenKyberSwapPushNotification(noti, isPriceAlert: false)
       return
     }
-    if let data = result?.notification.payload.additionalData, let urlString = data["open_url"] as? String, let url = URL(string: urlString) {
+    if let noti = result?.notification,
+       let data = noti.payload.additionalData,
+      let type = data["type"] as? String, type == "new_listing",
+      self.tabbarController != nil, let token = data["token"] as? String {
+      self.tabbarController.selectedIndex = 1
+      self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: "ETH", to: token)
+      return
+    }
+    if let data = result?.notification.payload.additionalData,
+      let urlString = data["link"] as? String, let url = URL(string: urlString) {
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
       return
     }
