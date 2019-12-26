@@ -86,10 +86,6 @@ class KNListNotificationViewController: KNBaseViewController {
           errorMessage = err
         } else {
           notifications.append(contentsOf: notis)
-          if (id + 1) % 2 == 0 {
-            KNNotificationStorage.shared.updateNotificationsFromServer(notifications)
-            self?.listNotificationsDidUpdate(nil)
-          }
         }
         group.leave()
       }
