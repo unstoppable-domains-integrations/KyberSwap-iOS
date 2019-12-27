@@ -112,7 +112,6 @@ extension KNAppCoordinator {
 
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
       // default balance tab
-      self.tabbarController.selectedIndex = 0
       self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     }
 
