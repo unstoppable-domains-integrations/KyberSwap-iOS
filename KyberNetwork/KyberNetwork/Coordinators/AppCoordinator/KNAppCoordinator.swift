@@ -391,6 +391,7 @@ extension KNAppCoordinator {
     controller.loadViewIfNeeded()
     controller.modalPresentationStyle = .overCurrentContext
     controller.modalTransitionStyle = .crossDissolve
+    if self.tabbarController != nil { self.tabbarController.selectedIndex = 2 }
     self.navigationController.present(controller, animated: true, completion: nil)
   }
 }
