@@ -432,7 +432,10 @@ extension KNManageOrdersViewController: UICollectionViewDelegateFlowLayout {
 extension KNManageOrdersViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: true)
-    let order = self.viewModel.displayedOrders[indexPath.row]
+    let order: KNOrderObject = {
+      let orders = self.viewModel.displaySections[self.viewModel.displayHeaders[indexPath.section]] ?? []
+      return orders[indexPath.row]
+    }()
     if let cancelOrder = self.viewModel.cancelOrder, cancelOrder.id == order.id {
       self.viewModel.cancelOrder = nil
       collectionView.reloadItems(at: [indexPath])
