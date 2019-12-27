@@ -35,7 +35,7 @@ target 'KyberNetwork' do
   pod 'JdenticonSwift', '~> 0.0.1'
   pod 'MSCircularSlider', '~> 1.2.2'
   pod 'EasyTipView', '~> 2.0.1'
-  pod 'OneSignal', '~> 2.9.5'
+  pod 'OneSignal', '>= 2.11.2', '< 3.0'
 
   pod 'FacebookCore', '~> 0.3.0'
   pod 'FacebookLogin', '~> 0.3.0'

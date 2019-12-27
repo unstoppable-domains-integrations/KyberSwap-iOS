@@ -127,7 +127,7 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - OneSignal (2.9.5)
+  - OneSignal (2.12.3)
   - PromiseKit (6.11.0):
     - PromiseKit/CorePromise (= 6.11.0)
     - PromiseKit/Foundation (= 6.11.0)
@@ -198,7 +198,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - Moya (~> 10.0.1)
   - MSCircularSlider (~> 1.2.2)
-  - OneSignal (~> 2.9.5)
+  - OneSignal (< 3.0, >= 2.11.2)
   - QRCodeReaderViewController (~> 4.0.2)
   - RealmSwift (~> 3.19.0)
   - SAMKeychain (~> 1.5.3)
@@ -320,7 +320,7 @@ SPEC CHECKSUMS:
   Moya: 2b0531a9fef318e0bc484030c3db1e6f279ccb66
   MSCircularSlider: 70759318a899279d7923aa0f454f3ba0fe448642
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  OneSignal: ccdeb961882f8668305e5b694e2cb7cb325fc907
+  OneSignal: 30b6e03a1f14169c4313e301a7b7bdf467b5a575
   PromiseKit: e4863d06976e7dee5e41c04fc7371c16b3600292
   Protobuf: 67fb42ba613def994e61854de2b3164f13790cc4
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
@@ -342,6 +342,6 @@ SPEC CHECKSUMS:
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   WalletConnect: 20ca9cb4372f9b15cc67a416b751d0fe8ab2fe89
 
-PODFILE CHECKSUM: cfcfd3d801d87a171046237ef34ef1cbe99edafe
+PODFILE CHECKSUM: c257953d3d5bb62b3e1d4bb8cf98aeddd3c83850
 
 COCOAPODS: 1.5.3
