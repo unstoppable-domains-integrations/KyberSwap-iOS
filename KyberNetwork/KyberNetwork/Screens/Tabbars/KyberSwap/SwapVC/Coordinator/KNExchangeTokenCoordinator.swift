@@ -723,6 +723,9 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       if case .success(let resp) = result,
         let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
         let capData = json["cap"] as? Double {
+        if capData == 0 {
+          KNCrashlyticsUtil.logCustomEvent(withName: "screen_kyberswap", customAttributes: ["info": "cap_is_zero_\(self.session.wallet.address.description)"])
+        }
         self.rootViewController.coordinatorUpdateUserCapInWei(cap: BigInt(capData))
       }
     }
