@@ -100,7 +100,7 @@ class KNLoadBalanceCoordinator {
   }
 
   @objc func shouldRefreshBalance(_ sender: Any?) {
-    if Date().timeIntervalSince(self.lastRefreshTime) < 15.0 {
+    if Date().timeIntervalSince(self.lastRefreshTime) < 5.0 {
       self.lastRefreshTime = Date()
       self.fetchETHBalance(nil)
       self.fetchOtherTokensBalance(nil)
@@ -127,25 +127,25 @@ class KNLoadBalanceCoordinator {
 
     fetchOtherTokensBalanceTimer?.invalidate()
     isFetchingOtherTokensBalance = false
-    fetchOtherTokensBalance(nil)
+    fetchOtherTokenBalancesNew(nil)
 
     fetchOtherTokensBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.loadingBalance,
       repeats: true,
       block: { [weak self] timer in
-      self?.fetchOtherTokensBalance(timer)
+      self?.fetchOtherTokenBalancesNew(timer)
       }
     )
 
     fetchNonSupportedBalanceTimer?.invalidate()
     isFetchNonSupportedBalance = false
-    fetchNonSupportedTokensBalance(nil)
+    fetchNonSupportedTokensBalancesNew(nil)
 
     fetchNonSupportedBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.loadingCoinTickerInterval,
       repeats: true,
       block: { [weak self] timer in
-        self?.fetchNonSupportedTokensBalance(timer)
+        self?.fetchNonSupportedTokensBalancesNew(timer)
       }
     )
   }
@@ -255,15 +255,37 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  @objc func fetchOtherTokensBalance(_ sender: Timer?) {
+  @objc func fetchOtherTokenBalancesNew(_ sender: Timer?) {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
-    var isBalanceChanged: Bool = false
+
     let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).sorted { (token0, token1) -> Bool in
       if token0.value.isEmpty || token0.value == "0" { return false }
       if token1.value.isEmpty || token1.value == "0" { return true }
       return true
     }.map({ $0.contract })
+
+    let tokens = tokenContracts.map({ return Address(string: $0)! })
+
+    self.fetchTokenBalances(tokens: tokens) { [weak self] result in
+      guard let `self` = self else { return }
+      self.isFetchingOtherTokensBalance = false
+      switch result {
+      case .success(let isLoaded):
+        if !isLoaded {
+          self.fetchOtherTokensBalance(sender)
+        }
+      case .failure:
+        self.fetchOtherTokensBalance(sender)
+      }
+    }
+  }
+
+  @objc func fetchOtherTokensBalance(_ sender: Timer?) {
+    if isFetchingOtherTokensBalance { return }
+    isFetchingOtherTokensBalance = true
+    var isBalanceChanged: Bool = false
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).map({ $0.contract })
     let currentWallet = self.session.wallet
     let group = DispatchGroup()
     var counter = 0
@@ -303,8 +325,30 @@ class KNLoadBalanceCoordinator {
     }
   }
 
+  @objc func fetchNonSupportedTokensBalancesNew(_ sender: Any?) {
+    if self.isFetchNonSupportedBalance { return }
+    self.isFetchNonSupportedBalance = true
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && !$0.isSupported }).map({ $0.contract })
+
+    let tokens = tokenContracts.map({ return Address(string: $0)! })
+
+    self.fetchTokenBalances(tokens: tokens) { [weak self] result in
+      guard let `self` = self else { return }
+      self.isFetchingOtherTokensBalance = false
+      switch result {
+      case .success(let isLoaded):
+        if !isLoaded {
+          self.fetchNonSupportedTokensBalance(sender)
+        }
+      case .failure:
+        self.fetchNonSupportedTokensBalance(sender)
+      }
+    }
+  }
+
   @objc func fetchNonSupportedTokensBalance(_ sender: Any?) {
     if self.isFetchNonSupportedBalance { return }
+    self.isFetchNonSupportedBalance = true
     var isBalanceChanged: Bool = false
     let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && !$0.isSupported }).sorted { (token0, token1) -> Bool in
       if token0.value.isEmpty || token0.value == "0" { return false }
@@ -346,6 +390,42 @@ class KNLoadBalanceCoordinator {
       self.isFetchNonSupportedBalance = false
       if isBalanceChanged {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      }
+    }
+  }
+
+  fileprivate func fetchTokenBalances(tokens: [Address], completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if tokens.isEmpty {
+      completion(.success(true))
+      return
+    }
+    var isBalanceChanged = false
+    self.session.externalProvider.getMultipleERC20Balances(tokens) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let values):
+        if values.count == tokens.count {
+          for id in 0..<values.count {
+            let balance = Balance(value: values[id])
+            let addr = tokens.description.lowercased()
+            if self.otherTokensBalance[addr] == nil || self.otherTokensBalance[addr]!.value != values[id] {
+              isBalanceChanged = true
+            }
+            self.otherTokensBalance[addr] = balance
+            self.session.tokenStorage.updateBalance(for: tokens[id], balance: values[id])
+            if isDebug {
+              NSLog("---- Balance: Fetch token balance for contract \(addr) successfully: \(values[id].shortString(decimals: 0))")
+            }
+          }
+          if isBalanceChanged {
+            KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+          }
+          completion(.success(true))
+        } else {
+          completion(.success(false))
+        }
+      case .failure(let error):
+        completion(.failure(error))
       }
     }
   }

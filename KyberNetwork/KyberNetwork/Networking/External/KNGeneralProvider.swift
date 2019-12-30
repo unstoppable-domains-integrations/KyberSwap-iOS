@@ -46,6 +46,10 @@ class KNGeneralProvider {
     return Address(string: KNEnvironment.default.knCustomRPC?.limitOrderAddress ?? "")!
   }()
 
+  lazy var wrapperAddress: Address = {
+    return Address(string: KNEnvironment.default.knCustomRPC?.wrapperAddress ?? "")!
+  }()
+
   init() { DispatchQueue.main.async { self.web3Swift.start() } }
 
   // MARK: Balance
@@ -88,6 +92,31 @@ class KNGeneralProvider {
         }
       case .failure(let error):
         completion(.failure(error))
+      }
+    }
+  }
+
+  func getMutipleERC20Balances(for address: Address, tokens: [Address], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
+    let data = "0x6a385ae9"
+      + "000000000000000000000000\(address.description.lowercased().drop0x)"
+      + "0000000000000000000000000000000000000000000000000000000000000040"
+    var tokenCount = BigInt(tokens.count).hexEncoded.drop0x
+    tokenCount = [Character].init(repeating: "0", count: 64 - tokenCount.count) + tokenCount
+    let tokenAddresses = tokens.map({ return "000000000000000000000000\($0.description.lowercased().drop0x)" }).joined(separator: "")
+    let request = EtherServiceRequest(
+      batch: BatchFactory().create(CallRequest(to: self.wrapperAddress.description, data: "\(data)\(tokenCount)\(tokenAddresses)"))
+    )
+    DispatchQueue.global().async {
+      Session.send(request) { [weak self] result in
+        guard let `self` = self else { return }
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let data):
+            self.getMultipleERC20BalancesDecode(data: data, completion: completion)
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
       }
     }
   }
@@ -582,6 +611,18 @@ extension KNGeneralProvider {
     }
     return node.hexEncoded
   }
+
+  fileprivate func getMutipleERC20BalancesEncode(from address: Address, tokens: [Address], completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetMultipleERC20BalancesEncode(address: address, tokens: tokens)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }
 
 // MARK: Web3Swift Decoding
@@ -655,6 +696,22 @@ extension KNGeneralProvider {
       switch result {
       case .success(let res):
         completion(.success(BigInt(res) ?? BigInt(0)))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func getMultipleERC20BalancesDecode(data: String, completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
+    let request = GetMultipleERC20BalancesDecode(data: data)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        let res = data.map({ val -> BigInt in
+          if val == "0x" { return BigInt(0) }
+          return BigInt(val) ?? BigInt(0)
+        })
+        completion(.success(res))
       case .failure(let error):
         completion(.failure(error))
       }

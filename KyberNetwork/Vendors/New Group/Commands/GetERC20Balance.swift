@@ -27,3 +27,29 @@ struct GetERC20BalanceDecode: Web3Request {
         return .script(command: run)
     }
 }
+
+struct GetMultipleERC20BalancesEncode: Web3Request {
+  typealias Response = String
+
+  static let abi = "{\"constant\":true,\"inputs\":[{\"name\":\"reserve\",\"type\":\"address\"},{\"name\":\"tokens\",\"type\":\"address[]\"}],\"name\":\"getBalances\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}"
+
+  let address: Address
+  let tokens: [Address]
+
+  var type: Web3RequestType {
+    let tokenAddresses = tokens.map({ return $0.description }).description
+    let run = "web3.eth.abi.encodeFunctionCall(\(GetMultipleERC20BalancesEncode.abi), [\"\(address.description)\", \"\(tokenAddresses)\"])"
+     return .script(command: run)
+  }
+}
+
+struct GetMultipleERC20BalancesDecode: Web3Request {
+  typealias Response = [String]
+
+  let data: String
+
+  var type: Web3RequestType {
+      let run = "web3.eth.abi.decodeParameter('uint256[]', '\(data)')"
+      return .script(command: run)
+  }
+}

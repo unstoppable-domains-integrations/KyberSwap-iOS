@@ -415,6 +415,10 @@ class KNExternalProvider {
     }
   }
 
+  func getMultipleERC20Balances(_ tokens: [Address], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
+    KNGeneralProvider.shared.getMutipleERC20Balances(for: self.account.address, tokens: tokens, completion: completion)
+  }
+
   // MARK: Sign transaction
   private func signTransactionData(from transaction: UnconfirmedTransaction, nonce: Int, data: Data?, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let defaultGasLimit: BigInt = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: transaction.transferType.tokenObject())

@@ -9,6 +9,7 @@ struct KNCustomRPC {
   let authorizedAddress: String
   let tokenIEOAddress: String
   let reserveAddress: String
+  let wrapperAddress: String
   let limitOrderAddress: String
   let etherScanEndpoint: String
   let enjinScanEndpoint: String
@@ -47,6 +48,7 @@ struct KNCustomRPC {
     self.enjinScanEndpoint = dictionary["enjinx"] as? String ?? ""
     self.tradeTopic = dictionary["trade_topic"] as? String ?? ""
     self.ensAddress = dictionary["ens_address"] as? String ?? ""
+    self.wrapperAddress = dictionary["wrapper"] as? String ?? ""
     self.customRPC = CustomRPC(
       chainID: chainID,
       name: name,
