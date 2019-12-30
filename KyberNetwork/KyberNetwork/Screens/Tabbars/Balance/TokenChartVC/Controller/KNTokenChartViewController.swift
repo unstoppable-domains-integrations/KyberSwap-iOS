@@ -94,12 +94,29 @@ class KNTokenChartViewModel {
       return rate.displayRate(decimals: 18)
     }()
     let change24hString: String = {
-      let string = NumberFormatterUtil.shared.displayPercentage(from: fabs(trackerRate.changeETH24h))
-      return "\(string)%"
+      if self.type == .day {
+        let string = NumberFormatterUtil.shared.displayPercentage(from: fabs(trackerRate.changeETH24h))
+        return "\(string)%"
+      }
+      if let firstData = self.data.first, let lastData = self.data.last {
+        if firstData.close == 0 || lastData.close == 0 { return "" }
+        let change = (lastData.close - firstData.close) / firstData.close * 100.0
+        let string = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
+        return "\(string)%"
+      }
+      return ""
     }()
     let changeColor: UIColor = {
-      if trackerRate.changeETH24h == 0.0 { return UIColor.Kyber.grayChateau }
-      return trackerRate.changeETH24h > 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
+      if self.type == .day {
+        if trackerRate.changeETH24h == 0.0 { return UIColor.Kyber.grayChateau }
+        return trackerRate.changeETH24h > 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
+      }
+      if let firstData = self.data.first, let lastData = self.data.last, firstData.close != 0, lastData.close != 0 {
+        let change = (lastData.close - firstData.close) / firstData.close * 100.0
+        if change == 0 { return UIColor.Kyber.grayChateau }
+        return change > 0 ? UIColor.Kyber.shamrock : UIColor.Kyber.strawberry
+      }
+      return UIColor.Kyber.grayChateau
     }()
     let rateAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
