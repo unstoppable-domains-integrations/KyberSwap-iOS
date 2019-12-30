@@ -259,11 +259,7 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
 
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).sorted { (token0, token1) -> Bool in
-      if token0.value.isEmpty || token0.value == "0" { return false }
-      if token1.value.isEmpty || token1.value == "0" { return true }
-      return true
-    }.map({ $0.contract })
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).map({ $0.contract })
 
     let tokens = tokenContracts.map({ return Address(string: $0)! })
 
@@ -285,7 +281,11 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
     var isBalanceChanged: Bool = false
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).map({ $0.contract })
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).sorted { (token0, token1) -> Bool in
+      if token0.value.isEmpty || token0.value == "0" { return false }
+      if token1.value.isEmpty || token1.value == "0" { return true }
+      return true
+    }.map({ $0.contract })
     let currentWallet = self.session.wallet
     let group = DispatchGroup()
     var counter = 0
@@ -401,13 +401,16 @@ class KNLoadBalanceCoordinator {
     }
     var isBalanceChanged = false
     self.session.externalProvider.getMultipleERC20Balances(tokens) { [weak self] result in
-      guard let `self` = self else { return }
+      guard let `self` = self else {
+        completion(.success(false))
+        return
+      }
       switch result {
       case .success(let values):
         if values.count == tokens.count {
           for id in 0..<values.count {
             let balance = Balance(value: values[id])
-            let addr = tokens.description.lowercased()
+            let addr = tokens[id].description.lowercased()
             if self.otherTokensBalance[addr] == nil || self.otherTokensBalance[addr]!.value != values[id] {
               isBalanceChanged = true
             }

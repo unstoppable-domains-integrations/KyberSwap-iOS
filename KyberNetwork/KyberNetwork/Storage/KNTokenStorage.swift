@@ -80,7 +80,7 @@ class KNTokenStorage {
   }
 
   func updateBalance(for address: Address, balance: BigInt) {
-    if let token = self.tokens.first(where: { $0.contract == address.description.lowercased() }) {
+    if let token = self.tokens.first(where: { $0.contract.lowercased() == address.description.lowercased() }) {
       if token.isInvalidated { return }
       self.realm.beginWrite()
       token.value = balance.description
