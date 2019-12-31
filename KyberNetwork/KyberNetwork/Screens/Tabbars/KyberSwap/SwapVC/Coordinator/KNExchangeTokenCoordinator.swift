@@ -459,6 +459,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
+    if let topVC = self.navigationController.topViewController, topVC is KNSearchTokenViewController { return }
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
@@ -539,6 +540,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
     if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) != nil {
+      if let topVC = self.navigationController.topViewController, topVC is KNPromoSwapConfirmViewController { return }
       let address = self.session.wallet.address.description
       // promo code wallet
       let destWallet = KNWalletPromoInfoStorage.shared.getDestWallet(from: address) ?? address
@@ -557,6 +559,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.promoConfirmSwapVC?.delegate = self
       self.navigationController.pushViewController(self.promoConfirmSwapVC!, animated: true)
     } else {
+      if let topVC = self.navigationController.topViewController, topVC is KConfirmSwapViewController { return }
       self.confirmSwapVC = {
         let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
         let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal)
@@ -773,6 +776,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func openSendTokenView() {
+    if let topVC = self.navigationController.topViewController, topVC is KSendTokenViewController { return }
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       let from: TokenObject = {
         guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {

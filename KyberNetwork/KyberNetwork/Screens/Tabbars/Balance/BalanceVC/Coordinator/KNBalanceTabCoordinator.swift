@@ -281,6 +281,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   fileprivate func openTokenChartView(for tokenObject: TokenObject) {
+    if let topVC = self.navigationController.topViewController, topVC is KNTokenChartViewController { return }
     self.tokenChartCoordinator = KNTokenChartCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -304,6 +305,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openSendTokenView(with token: TokenObject) {
+    if let topVC = self.navigationController.topViewController, topVC is KSendTokenViewController { return }
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "send_\(token.symbol)"])
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       self.sendTokenCoordinator = KNSendTokenViewCoordinator(
@@ -324,6 +326,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openHistoryTransactionView() {
+    if let topVC = self.navigationController.topViewController, topVC is KNHistoryViewController { return }
     self.historyCoordinator = nil
     self.historyCoordinator = KNHistoryCoordinator(
       navigationController: self.navigationController,
@@ -335,6 +338,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   func openAddNewAlert(_ token: TokenObject) {
+    if let topVC = self.navigationController.topViewController, topVC is KNNewAlertViewController { return }
     if KNAlertStorage.shared.isMaximumAlertsReached {
       let alertController = UIAlertController(
         title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),

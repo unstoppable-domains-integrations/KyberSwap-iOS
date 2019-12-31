@@ -267,6 +267,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func openConvertWETHView(address: String, ethBalance: BigInt, amount: BigInt, pendingWETH: Double) {
+    if let topVC = self.navigationController.topViewController, topVC is KNConvertSuggestionViewController { return }
     self.convertVC = KNConvertSuggestionViewController()
     self.convertVC?.loadViewIfNeeded()
     self.convertVC?.delegate = self
@@ -358,6 +359,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func openConfirmOrder(_ order: KNLimitOrder) {
+    if let topVC = self.navigationController.topViewController, topVC is KNConfirmLimitOrderViewController { return }
     self.signedData = nil
 
     self.confirmVC = KNConfirmLimitOrderViewController(order: order)
@@ -633,6 +635,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool, pendingBalances: JSONDictionary) {
+    if let topVC = self.navigationController.topViewController, topVC is KNLimitOrderSearchTokenViewController { return }
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
@@ -653,6 +656,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func openSendTokenView() {
+    if let topVC = self.navigationController.topViewController, topVC is KSendTokenViewController { return }
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       let from: TokenObject = {
         guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {
