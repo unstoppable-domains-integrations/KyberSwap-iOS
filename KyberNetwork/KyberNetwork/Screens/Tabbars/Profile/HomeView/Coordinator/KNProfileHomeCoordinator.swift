@@ -325,6 +325,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
     case .openVerification:
       self.openVerificationView()
     case .managePriceAlerts:
+      if let topVC = self.navigationController.topViewController, topVC is KNManageAlertsViewController { return }
       self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
       self.manageAlertCoordinator?.start()
     case .addPriceAlert:
@@ -332,11 +333,13 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
       if KNAlertStorage.shared.isMaximumAlertsReached {
         self.showAlertMaximumPriceAlertsReached()
       } else {
+        if let topVC = self.navigationController.topViewController, topVC is KNNewAlertViewController { return }
         self.newAlertController = KNNewAlertViewController()
         self.newAlertController?.loadViewIfNeeded()
         self.navigationController.pushViewController(self.newAlertController!, animated: true)
       }
     case .editAlert(let alert):
+      if let topVC = self.navigationController.topViewController, topVC is KNNewAlertViewController { return }
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["value": "edit_alert"])
       self.newAlertController = KNNewAlertViewController()
       self.newAlertController?.loadViewIfNeeded()
@@ -344,6 +347,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
         self.newAlertController?.updateEditAlert(alert)
       }
     case .leaderBoard:
+      if let topVC = self.navigationController.topViewController, topVC is KNAlertLeaderBoardViewController { return }
       let leaderBoardVC = KNAlertLeaderBoardViewController(isShowingResult: false)
       leaderBoardVC.loadViewIfNeeded()
       leaderBoardVC.delegate = self
@@ -363,6 +367,7 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
   }
 
   fileprivate func openVerificationView() {
+    if let topVC = self.navigationController.topViewController, topVC is KYCFlowViewController { return }
     guard let user = IEOUserStorage.shared.user else { return }
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "open_verification_view_\(user.kycStatus.lowercased())"])
     if user.kycStatus.lowercased() == "blocked" { return }
