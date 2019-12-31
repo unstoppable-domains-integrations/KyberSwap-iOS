@@ -320,6 +320,8 @@ extension KWalletBalanceViewController {
       self.viewModel.tabOption == .kyberListed ? UIImage(named: "arrow_drop_down") : UIImage(named: "arrow_drop_down_selected"),
       for: .normal
     )
+    let searchedText = self.searchTextField.text ?? ""
+    self.viewModel.updateSearchText(searchedText)
     self.view.layoutIfNeeded()
   }
 
