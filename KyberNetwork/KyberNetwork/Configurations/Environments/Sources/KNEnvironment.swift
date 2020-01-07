@@ -97,14 +97,14 @@ enum KNEnvironment: Int {
   var supportedTokenEndpoint: String {
     let baseString: String = {
       switch self {
-      case .mainnetTest, .production: return "https://api.kyber.network"
-      case .staging: return "https://staging-api.knstats.com"
-      case .ropsten: return "https://ropsten-api.kyber.network"
-      case .rinkeby: return "https://rinkeby-api.kyber.network"
-      case .kovan: return "https://dev-kovan-api.knstats.com"
+      case .mainnetTest, .production: return "https://api.kyber.network" + KNSecret.currencies
+      case .staging: return "https://staging-api.knstats.com" + KNSecret.currencies
+      case .ropsten: return "https://dev-userdashboard.knstats.com/api/currencies"
+      case .rinkeby: return "https://rinkeby-api.kyber.network" + KNSecret.currencies
+      case .kovan: return "https://dev-kovan-api.knstats.com" + KNSecret.currencies
       }
     }()
-    return baseString + KNSecret.currencies
+    return baseString
   }
 
   var clientID: String {
