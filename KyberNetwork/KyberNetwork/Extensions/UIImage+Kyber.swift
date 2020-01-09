@@ -4,6 +4,9 @@ import UIKit
 import JdenticonSwift
 
 extension UIImage {
+
+  static let imageCache = NSCache<AnyObject, AnyObject>()
+
   static func generateQRCode(from string: String) -> UIImage? {
     let context = CIContext()
     let data = string.data(using: String.Encoding.ascii)

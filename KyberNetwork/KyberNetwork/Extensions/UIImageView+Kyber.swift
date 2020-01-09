@@ -4,10 +4,18 @@ import UIKit
 
 extension UIImageView {
   func setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false) {
+    if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
+      self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+      self.layoutIfNeeded()
+      return
+    }
     self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
-    URLSession.shared.dataTask(with: url) { (data, _, error) in
+    self.layoutIfNeeded()
+    URLSession.shared.dataTask(with: url) { [weak self] (data, _, error) in
+      guard let `self` = self else { return }
       if error == nil, let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
+          UIImage.imageCache.setObject(image, forKey: url as AnyObject)
           self.image = applyNoir ? image.resizeImage(to: size)?.noir : image.resizeImage(to: size)
           self.layoutIfNeeded()
         }

@@ -17,10 +17,18 @@ extension UIButton {
     size: CGSize? = nil,
     state: UIControlState = .normal
     ) {
+    if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
+      self.setImage(cachedImg.resizeImage(to: size), for: .normal)
+      self.layoutIfNeeded()
+      return
+    }
     self.setImage(placeHolder?.resizeImage(to: size), for: state)
-    URLSession.shared.dataTask(with: url) { (data, _, error) in
+    self.layoutIfNeeded()
+    URLSession.shared.dataTask(with: url) { [weak self] (data, _, error) in
+      guard let `self` = self else { return }
       if error == nil, let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
+          UIImage.imageCache.setObject(image, forKey: url as AnyObject)
           self.setImage(image.resizeImage(to: size), for: .normal)
           self.layoutIfNeeded()
         }
