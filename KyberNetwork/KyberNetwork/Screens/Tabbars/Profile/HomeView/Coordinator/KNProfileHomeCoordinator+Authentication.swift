@@ -611,12 +611,14 @@ extension KNProfileHomeCoordinator: KNTransferConsentViewControllerDelegate {
             self.showSuccessTopBannerMessage(
               with: "",
               message: "Thank you, your profile will be surely copied. No futher action needed from you.".toBeLocalised(),
-              time: 3.0
+              time: 2.5
             )
             if isForceLogout {
-              // if isForceLogout -> user has not been signed in yet
-              // since user's ans is yes, allow user to login
-              self.signUserInWithData(authInfoDict: authInfo, userInfo: newUserInfo ?? userInfo)
+              DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                // if isForceLogout -> user has not been signed in yet
+                // since user's ans is yes, allow user to login
+                self.signUserInWithData(authInfoDict: authInfo, userInfo: newUserInfo ?? userInfo)
+              }
             }
           }
         }

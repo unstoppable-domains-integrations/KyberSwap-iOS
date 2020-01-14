@@ -17,6 +17,7 @@ class KNTransferConsentViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
 
+  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var yesButton: UIButton!
   @IBOutlet weak var noButton: UIButton!
   @IBOutlet weak var descriptionTextLabel: UILabel!
@@ -42,6 +43,7 @@ class KNTransferConsentViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.navTitleLabel.text = "Transfer Consent".toBeLocalised()
     self.yesButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
@@ -52,8 +54,7 @@ class KNTransferConsentViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.backButton.isHidden = true
 
-    //swiftlint:disable line_length
-    self.descriptionTextLabel.text = "Please note that in view of business and strategic considerations, Kyber Network International Limited (“Kyber Network”) no longer operates kyberswap.com.\n\nKYRD International Limited (“KYRD International”) now operates kyberswap.com. We assure you that no other change is in place other than that KYRD International is now the entity operating kyberswap.com instead of Kyber Network.\n\nIf you wish, to continue using kyberswap.com without the need of providing your personal data again, Kyber Network can transfer your personal data to KYRD International upon your explicit consent.\n\nPlease do note that KYRD International is a company in British Virgin Islands (\"BVI\") and as such, the country is not subject to an adequacy decision by the EU Commission on the processing of personal data nor are there the appropriate safeguards for data protection purposes that are present in EU jurisdictions.\n\nKindly click:\n\"Yes\" if you wish that Kyber Network transfers your personal data to KYRD International; or\n\"No\" if you do not wish that Kyber Network transfers your personal data to KYRD International Do note that if you click “No”, your personal shall be erased in accordance with the retention periods specified in Kyber Network’s Privacy Policy."
+    self.descriptionTextLabel.text = NSLocalizedString("transfer_consent_description_labeL", comment: "")
     self.scrollView.delegate = self
   }
 
@@ -81,8 +82,8 @@ class KNTransferConsentViewController: KNBaseViewController {
       message: "\nYou would have to create a new profile to use some services like Limit Order, Price Alerts, Notifications, etc. \n\nDo you want to continue?".toBeLocalised(),
       preferredStyle: .alert
     )
-    alert.addAction(UIAlertAction(title: "Go back", style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: "Continue", style: .destructive, handler: { _ in
+    alert.addAction(UIAlertAction(title: "Go back".toBeLocalised(), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: NSLocalizedString("continue", value: "Continue", comment: ""), style: .destructive, handler: { _ in
       self.delegate?.transferConsentViewController(
         self,
         answer: false,

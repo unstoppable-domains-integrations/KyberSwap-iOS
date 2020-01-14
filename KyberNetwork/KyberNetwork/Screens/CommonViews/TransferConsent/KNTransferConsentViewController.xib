@@ -18,6 +18,7 @@
                 <outlet property="backButton" destination="CzQ-RW-z5Y" id="7vG-uh-PJb"/>
                 <outlet property="descriptionTextLabel" destination="r9q-h3-JpR" id="KEG-Y8-INq"/>
                 <outlet property="headerContainerView" destination="dKJ-t8-sAQ" id="XOs-4l-ZVx"/>
+                <outlet property="navTitleLabel" destination="WVd-c5-lJ3" id="BC6-FO-FDa"/>
                 <outlet property="noButton" destination="sAJ-hD-f1d" id="8gd-7Z-H3U"/>
                 <outlet property="scrollView" destination="SzK-df-cAb" id="ADR-c6-wac"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -67,13 +68,13 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9q-h3-JpR">
                                     <rect key="frame" x="24" y="24" width="366" height="495"/>
-                                    <mutableString key="text">Please note that in view of business and strategic considerations, Kyber Network International Limited (“Kyber Network”) no longer operates kyberswap.com.
+                                    <string key="text">Please note that in view of business and strategic considerations, Kyber Network International Limited (“Kyber Network”) no longer operates kyberswap.com.
 KYRD International Limited (“KYRD International”) now operates kyberswap.com. We assure you that no other change is in place other than that KYRD International is now the entity operating kyberswap.com instead of Kyber Network.
 If you wish, to continue using kyberswap.com without the need of providing your personal data again, Kyber Network can transfer your personal data to KYRD International upon your explicit consent.
 Please do note that KYRD International is a company in British Virgin Islands (“BVI") and as such, the country is not subject to an adequacy decision by the EU Commission on the processing of personal data nor are there the appropriate safeguards for data protection purposes that are present in EU jurisdictions.
 Kindly click:
 “Yes” if you wish that Kyber Network transfers your personal data to KYRD International; or
-“No” if you do not wish that Kyber Network transfers your personal data to KYRD International Do note that if you click “No”, your personal shall be erased in accordance with the retention periods specified in Kyber Network’s Privacy Policy.</mutableString>
+“No” if you do not wish that Kyber Network transfers your personal data to KYRD International Do note that if you click “No”, your personal shall be erased in accordance with the retention periods specified in Kyber Network’s Privacy Policy.</string>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
