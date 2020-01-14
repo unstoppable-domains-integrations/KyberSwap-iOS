@@ -41,6 +41,7 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
 
   internal var signUpViewController: KNSignUpViewController?
   internal var confirmSignUpVC: KNConfirmSignUpViewController?
+  internal var consentDataVC: KNTransferConsentViewController?
 
   lazy var loginManager: LoginManager = {
     let manager = LoginManager()
@@ -232,6 +233,24 @@ extension KNProfileHomeCoordinator {
           }
           completion(false)
           return
+        }
+        if KNAppTracker.shouldShowUserTranserConsentPopUp() {
+          // for force logout, user should be asked when log in
+          let authInfo: JSONDictionary = [
+            "auth_token": accessToken,
+            "refresh_token": refreshToken,
+            "expiration_time": expireTime,
+          ]
+          if let perm = userInfo["transfer_permission"] as? String, perm.lowercased() != "yes" && perm.lowercased() != "no" {
+            KNAppTracker.updateShouldShowUserTranserConsentPopUp(false)
+            let isForceLogout = userInfo["force_logout"] as? Bool ?? false
+            self?.openTransferConsentView(
+              isForceLogout: false,
+              authInfo: authInfo,
+              userInfo: userInfo
+            )
+            if isForceLogout { return }
+          }
         }
         let user = IEOUser(dict: userInfo)
         IEOUserStorage.shared.update(objects: [user])

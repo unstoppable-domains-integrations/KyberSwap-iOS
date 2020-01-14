@@ -144,6 +144,14 @@ class KNSocialAccountsCoordinator {
     }
   }
 
+  func transferConsentPermission(authToken: String, answer: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
+    let request = NativeSignInUpService.transferConsent(authToken: authToken, answer: answer)
+    self.sendRequest(request) { [weak self] result in
+      guard let _ = self else { return }
+      completion(result)
+    }
+  }
+
   fileprivate func sendRequest(_ request: NativeSignInUpService, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(request) { [weak self] (result) in

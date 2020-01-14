@@ -8,6 +8,7 @@ import Result
 import TwitterKit
 import Moya
 
+// swiftlint:disable file_length
 extension KNProfileHomeCoordinator: KNSignUpViewControllerDelegate {
   func signUpViewController(_ controller: KNSignUpViewController, run event: KNSignUpViewEvent) {
     self.isSignIn = false
@@ -386,6 +387,20 @@ extension KNProfileHomeCoordinator {
     guard let authInfoDict = data["auth_info"] as? JSONDictionary, let userInfo = data["user_info"] as? JSONDictionary else {
       return
     }
+    if let perm = userInfo["transfer_permission"] as? String, perm.lowercased() != "yes" && perm.lowercased() != "no" {
+      KNAppTracker.updateShouldShowUserTranserConsentPopUp(false)
+      let isForceLogout = userInfo["force_logout"] as? Bool ?? false
+      self.openTransferConsentView(
+        isForceLogout: isForceLogout,
+        authInfo: authInfoDict,
+        userInfo: userInfo
+      )
+      if isForceLogout { return }
+    }
+    self.signUserInWithData(authInfoDict: authInfoDict, userInfo: userInfo)
+  }
+
+  fileprivate func signUserInWithData(authInfoDict: JSONDictionary, userInfo: JSONDictionary) {
     let authToken = authInfoDict["auth_token"] as? String ?? ""
     let refreshToken = authInfoDict["refresh_token"] as? String ?? ""
     let expiredTime: Double = {
@@ -423,6 +438,21 @@ extension KNProfileHomeCoordinator {
     if KNAppTracker.shouldOpenLimitOrderAfterSignedIn() {
       self.navigationController.tabBarController?.selectedIndex = 2
     }
+  }
+
+  internal func openTransferConsentView(isForceLogout: Bool, authInfo: JSONDictionary, userInfo: JSONDictionary) {
+    // only open if user's undecided
+    self.consentDataVC = {
+      let controller = KNTransferConsentViewController(
+        isForceLogout: isForceLogout,
+        authInfo: authInfo,
+        userInfo: userInfo
+      )
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      return controller
+    }()
+    self.navigationController.present(self.consentDataVC!, animated: true, completion: nil)
   }
 
   fileprivate func proceedSignUp(accountType: KNSocialAccountsType) {
@@ -553,6 +583,59 @@ extension KNProfileHomeCoordinator: KNEnterTwoFactorAuthenViewControllerDelegate
     guard let accountType = self.accountType else { return }
     self.proceedSignIn(accountType: accountType, token: token) { [weak self] success in
       if !success { self?.openTwoFAConfirmView() }
+    }
+  }
+}
+
+extension KNProfileHomeCoordinator: KNTransferConsentViewControllerDelegate {
+  func transferConsentViewController(_ controller: KNTransferConsentViewController, answer: Bool?, isForceLogout: Bool, authInfo: JSONDictionary, userInfo: JSONDictionary) {
+    guard let userAns = answer else {
+      controller.dismiss(animated: true, completion: nil)
+      return
+    }
+    guard let accessToken = authInfo["auth_token"] as? String else { return }
+    controller.displayLoading()
+    self.sendUserAnswerForTransferringConsent(
+      answer: userAns ? "yes" : "no",
+      accessToken: accessToken) { [weak self] (error, newUserInfo) in
+      guard let `self` = self else { return }
+      controller.hideLoading()
+      if let err = error {
+        controller.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", comment: ""),
+          message: err
+        )
+      } else {
+        controller.dismiss(animated: true) {
+          if userAns {
+            self.showSuccessTopBannerMessage(
+              with: "",
+              message: "Thank you, your profile will be surely copied. No futher action needed from you.".toBeLocalised(),
+              time: 3.0
+            )
+            if isForceLogout {
+              // if isForceLogout -> user has not been signed in yet
+              // since user's ans is yes, allow user to login
+              self.signUserInWithData(authInfoDict: authInfo, userInfo: newUserInfo ?? userInfo)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  fileprivate func sendUserAnswerForTransferringConsent(answer: String, accessToken: String, completion: @escaping (String?, JSONDictionary?) -> Void) {
+    KNSocialAccountsCoordinator.shared.transferConsentPermission(authToken: accessToken, answer: answer) { [weak self] result in
+      guard let _ = self else { return }
+      switch result {
+      case .success(let json):
+        let isSuccess = json["success"] as? Bool ?? false
+        let message = isSuccess ? nil : json["message"] as? String ?? ""
+        let userInfo = json["user_info"] as? JSONDictionary
+        completion(message, userInfo)
+      case .failure(let error):
+        completion(error.prettyError, nil)
+      }
     }
   }
 }

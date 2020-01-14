@@ -50,6 +50,7 @@ class KNAppTracker {
   static let kFirstTimeSwapKey: String = "kFirstTimeSwapKey"
   static let kFirstTimeLimitOrderKey: String = "kFirstTimeLimitOrderKey"
   static let kFirstTimePriceAlertKey: String = "kFirstTimePriceAlertKey"
+  static let kHasShownTransferConsentKey: String = "kHasShownTransferConsentKey"
 
   static let userDefaults: UserDefaults = UserDefaults.standard
 
@@ -340,6 +341,15 @@ class KNAppTracker {
 
   static func updateShouldOpenLimitOrderAfterSignedIn(_ isOpen: Bool) {
     userDefaults.set(isOpen, forKey: kShouldOpenLimitOrderAfterSignedInKey)
+    userDefaults.synchronize()
+  }
+
+  static func shouldShowUserTranserConsentPopUp() -> Bool {
+    return userDefaults.value(forKey: kHasShownTransferConsentKey) as? Bool == true
+  }
+
+  static func updateShouldShowUserTranserConsentPopUp(_ shouldShown: Bool) {
+    userDefaults.set(shouldShown, forKey: kHasShownTransferConsentKey)
     userDefaults.synchronize()
   }
 

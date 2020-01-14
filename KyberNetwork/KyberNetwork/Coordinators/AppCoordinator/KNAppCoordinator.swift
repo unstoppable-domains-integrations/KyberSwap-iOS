@@ -138,6 +138,7 @@ extension KNAppCoordinator {
 
     // reset history filter every time open app
     KNAppTracker.removeHistoryFilterData()
+    KNAppTracker.updateShouldShowUserTranserConsentPopUp(true)
   }
 
   func appDidBecomeActive() {

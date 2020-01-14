@@ -584,6 +584,8 @@
 		C6AA668723A772AA0050C610 /* KNListNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6AA668523A772AA0050C610 /* KNListNotificationViewController.xib */; };
 		C6AA668B23A77C690050C610 /* KNNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AA668923A77C690050C610 /* KNNotificationTableViewCell.swift */; };
 		C6AA668C23A77C690050C610 /* KNNotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6AA668A23A77C690050C610 /* KNNotificationTableViewCell.xib */; };
+		C6B4CA2923CC50190049C843 /* KNTransferConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B4CA2723CC50190049C843 /* KNTransferConsentViewController.swift */; };
+		C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6B4CA2823CC50190049C843 /* KNTransferConsentViewController.xib */; };
 		C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE417F2383A0C10096AAD8 /* KNWalletConnectViewController.swift */; };
 		C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6FE41802383A0C10096AAD8 /* KNWalletConnectViewController.xib */; };
 		CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA4FE351FD4282400749AE4 /* DeviceChecker.swift */; };
@@ -1222,6 +1224,8 @@
 		C6AA668523A772AA0050C610 /* KNListNotificationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListNotificationViewController.xib; sourceTree = "<group>"; };
 		C6AA668923A77C690050C610 /* KNNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationTableViewCell.swift; sourceTree = "<group>"; };
 		C6AA668A23A77C690050C610 /* KNNotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationTableViewCell.xib; sourceTree = "<group>"; };
+		C6B4CA2723CC50190049C843 /* KNTransferConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransferConsentViewController.swift; sourceTree = "<group>"; };
+		C6B4CA2823CC50190049C843 /* KNTransferConsentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransferConsentViewController.xib; sourceTree = "<group>"; };
 		C6FE417F2383A0C10096AAD8 /* KNWalletConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWalletConnectViewController.swift; sourceTree = "<group>"; };
 		C6FE41802383A0C10096AAD8 /* KNWalletConnectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNWalletConnectViewController.xib; sourceTree = "<group>"; };
 		CCA4FE351FD4282400749AE4 /* DeviceChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceChecker.swift; sourceTree = "<group>"; };
@@ -2267,6 +2271,7 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				C6B4CA2623CC47C40049C843 /* TransferConsent */,
 				C6AA667723A761860050C610 /* Notifications */,
 				258BF6A5230689EF00988EDD /* AllowCamera */,
 				254CD0E7214925BF0079EA7A /* KYCStepView */,
@@ -4091,6 +4096,15 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
+		C6B4CA2623CC47C40049C843 /* TransferConsent */ = {
+			isa = PBXGroup;
+			children = (
+				C6B4CA2723CC50190049C843 /* KNTransferConsentViewController.swift */,
+				C6B4CA2823CC50190049C843 /* KNTransferConsentViewController.xib */,
+			);
+			path = TransferConsent;
+			sourceTree = "<group>";
+		};
 		C6FE417E2383A0AB0096AAD8 /* WalletConnect */ = {
 			isa = PBXGroup;
 			children = (
@@ -4268,6 +4282,7 @@
 				254EAB2A221D9EFD00C0EDC8 /* KyberNetwork.entitlements in Resources */,
 				259BF5C121918B0D004D70F9 /* kyc_industry_code.json in Resources */,
 				613D04891FDE15F8008DE72E /* COMODO ECC Domain Validation Secure Server CA 2.cer in Resources */,
+				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
 				2582332122549420007D5480 /* KNPromoSwapConfirmViewController.xib in Resources */,
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				256E61EE20B3C0830084CA3F /* KNBalanceTabHamburgerMenuViewController.xib in Resources */,
@@ -4964,6 +4979,7 @@
 				2923D9B51FDA4E07000CF3F8 /* PasswordGenerator.swift in Sources */,
 				25C45AE620AEB4A700CDA1FF /* KNEnterWalletNameViewController.swift in Sources */,
 				25377B1122842BB30012178F /* KNCreateLimitOrderViewController.swift in Sources */,
+				C6B4CA2923CC50190049C843 /* KNTransferConsentViewController.swift in Sources */,
 				255C40F0209306B800475871 /* KNTokenTransactionStorage.swift in Sources */,
 				25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,

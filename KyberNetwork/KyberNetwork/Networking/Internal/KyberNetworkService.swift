@@ -407,6 +407,7 @@ enum NativeSignInUpService {
   case getUserAuthToken(email: String, password: String)
   case refreshToken(refreshToken: String)
   case getUserInfo(authToken: String)
+  case transferConsent(authToken: String, answer: String)
 }
 
 extension NativeSignInUpService: MoyaCacheable {
@@ -428,6 +429,7 @@ extension NativeSignInUpService: TargetType {
       case .getUserAuthToken: return KNSecret.getAuthTokenURL
       case .refreshToken: return KNSecret.refreshTokenURL
       case .getUserInfo: return KNSecret.getUserInfoURL
+      case .transferConsent: return KNSecret.transferConsentURL
       }
     }()
     return URL(string: "\(baseString)\(endpoint)")!
@@ -520,6 +522,12 @@ extension NativeSignInUpService: TargetType {
       ]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
+    case .transferConsent(_, let answer):
+      let json: JSONDictionary = [
+        "transfer_permission": answer,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
     }
   }
   var sampleData: Data { return Data() }
@@ -533,6 +541,14 @@ extension NativeSignInUpService: TargetType {
       ]
     }
     if case .getUserInfo(let authenToken) = self {
+      return [
+        "content-type": "application/json",
+        "client": Bundle.main.bundleIdentifier ?? "",
+        "client-build": Bundle.main.buildNumber ?? "",
+        "Authorization": authenToken,
+      ]
+    }
+    if case .transferConsent(let authenToken, _) = self {
       return [
         "content-type": "application/json",
         "client": Bundle.main.bundleIdentifier ?? "",
