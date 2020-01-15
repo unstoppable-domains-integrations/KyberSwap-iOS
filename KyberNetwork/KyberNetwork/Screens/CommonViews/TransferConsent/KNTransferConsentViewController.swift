@@ -44,19 +44,20 @@ class KNTransferConsentViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navTitleLabel.text = "Transfer Consent".toBeLocalised()
+    self.navTitleLabel.text = "KyberSwap is moving to BVI".toBeLocalised()
     self.noButton.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
       radius: self.noButton.frame.height / 2.0
     )
+    self.noButton.setTitle("No".toBeLocalised(), for: .normal)
+    self.yesButton.setTitle("Yes".toBeLocalised(), for: .normal)
     self.yesButton.rounded(radius: self.yesButton.frame.height / 2.0)
     self.yesButton.applyGradient()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.backButton.isHidden = true
 
-//    self.descriptionTextLabel.text = NSLocalizedString("transfer_consent_description_labeL", comment: "")
-    self.descriptionTextLabel.attributedText = self.createAttributedStringTransferConsentText()
+    self.descriptionTextLabel.attributedText = self.createAttributedStringTransferConsentTextKr()
     self.scrollView.delegate = self
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapDescriptionLabel(_:)))
@@ -91,10 +92,10 @@ class KNTransferConsentViewController: KNBaseViewController {
       preferredStyle: .alert
     )
     alert.addAction(UIAlertAction(title: "Go back".toBeLocalised(), style: .cancel, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_consent", customAttributes: ["action": "no_go_back"])
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_consent", customAttributes: ["action": "go_back_no"])
     }))
-    alert.addAction(UIAlertAction(title: NSLocalizedString("continue", value: "Continue", comment: ""), style: .destructive, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_consent", customAttributes: ["action": "no_continue"])
+    alert.addAction(UIAlertAction(title: NSLocalizedString("confirm", value: "Confirm", comment: ""), style: .destructive, handler: { _ in
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_consent", customAttributes: ["action": "confirm_no"])
       self.delegate?.transferConsentViewController(
         self,
         answer: false,
@@ -118,11 +119,16 @@ class KNTransferConsentViewController: KNBaseViewController {
   }
 
   @objc func didTapDescriptionLabel(_ sender: UITapGestureRecognizer) {
-    if sender.didTapAttributedTextInLabel(label: self.descriptionTextLabel, inRange: NSRange(location: 921, length: 21)) {
+    let rangeEmail = ((self.descriptionTextLabel.text ?? "") as NSString).range(of: "support@kyberswap.com")
+    if sender.didTapAttributedTextInLabel(label: self.descriptionTextLabel, inRange: rangeEmail) {
       self.openMailSupport()
-    } else if sender.didTapAttributedTextInLabel(label: self.descriptionTextLabel, inRange: NSRange(location: 965, length: 30)) {
+      return
+    }
+    let rangeLink = ((self.descriptionTextLabel.text ?? "") as NSString).range(of: "https://t.me/kyberswapofficial")
+    if sender.didTapAttributedTextInLabel(label: self.descriptionTextLabel, inRange: rangeLink) {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_consent", customAttributes: ["action": "open_telegram"])
       self.openSafari(with: "https://t.me/kyberswapofficial")
+      return
     }
   }
 
@@ -143,6 +149,61 @@ class KNTransferConsentViewController: KNBaseViewController {
     attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 1018, length: 3))
     attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 18), range: NSRange(location: 1112, length: 1))
     attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 1116, length: 2))
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 3
+    attributedString.addAttribute(
+      .paragraphStyle,
+      value: paragraphStyle,
+      range: NSRange(location: 0, length: attributedString.length)
+    )
+
+    return attributedString
+  }
+
+  fileprivate func createAttributedStringTransferConsentTextVi() -> NSMutableAttributedString {
+    // swiftlint:disable line_length
+    let attributedString = NSMutableAttributedString(string: "Thông báo:\n\nVào ngày 24/01/2020, nền tảng KyberSwap.com sẽ không còn được vận hành bởi Kyber Network International Limited (sau đây gọi là “Kyber Network”) mà sẽ được vận hành bởi KYRD International Limited (sau đây gọi là “KYRD International”), một công ty con được thành lập và hoạt động tại British Virgin Islands (\"BVI\"). Ngoài việc thay đổi pháp nhân từ Kyber Network sang KYRD International, KyberSwap.com không còn thay đổi nào khác.\n\nKYRD International là một công ty tại BVI và quốc gia này không nằm trong số các quốc gia phải tuân thủ quy định về xử lý dữ liệu cá nhân của Ủy ban Châu Âu. Nếu bạn muốn tiếp tục sử dụng KyberSwap.com mà không phải cung cấp lại thông tin cá nhân, Kyber Network sẽ chuyển tất cả dữ liệu cá nhân của bạn cho KYRD International dựa trên sự chấp thuận của bạn. KYRD International tôn trọng và cam kết bảo vệ thông tin cá nhân của bạn. Nếu có bất kỳ thắc mắc, vui lòng liên hệ email support@kyberswap.com hoặc telegram https://t.me/kyberswapofficial\n\nVui lòng chọn:\n\n•  “Đồng ý” nếu bạn đồng ý để KyberSwap.com chuyển đổi dữ liệu của bạn cho KYRD International; hoặc\n\n•  “Không” nếu bạn không đồng ý để KyberSwap.com chuyển đổi dữ liệu của bạn cho KYRD International.\n\nLưu ý rằng nếu bạn chọn “Không”, thông tin cá nhân của bạn sẽ bị xóa theo các quy định về lưu trữ thông tin của Kyber Network. Bạn sẽ phải tạo một tài khoản mới trên KyberSwap.com để có thể sử dụng các tính năng Limit Order, Price alert, các thông báo cá nhân và các lợi ích khác.", attributes: [
+      .font: UIFont.Kyber.medium(with: 14),
+      .foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+    ])
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 87, length: 35))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 180, length: 26))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 294, length: 22))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 442, length: 18))
+    attributedString.addAttribute(.foregroundColor, value: UIColor(red: 239, green: 129, blue: 2), range: NSRange(location: 921, length: 21))
+    attributedString.addAttribute(.foregroundColor, value: UIColor(red: 239, green: 129, blue: 2), range: NSRange(location: 957, length: 30))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 989, length: 14))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 18), range: NSRange(location: 1005, length: 1))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 1009, length: 6))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 18), range: NSRange(location: 1106, length: 1))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 1110, length: 5))
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 3
+    attributedString.addAttribute(
+      .paragraphStyle,
+      value: paragraphStyle,
+      range: NSRange(location: 0, length: attributedString.length)
+    )
+
+    return attributedString
+  }
+
+  fileprivate func createAttributedStringTransferConsentTextKr() -> NSMutableAttributedString {
+    // swiftlint:disable line_length
+    let attributedString = NSMutableAttributedString(string: "2020 년 1 월 24 일 부터 KyberSwap.com 및 관련 인터페이스 ( \"플랫폼\")는 더 이상 Kyber Network International Limited ( \"Kyber Network\") 소속이 아니며, 영국령 버진 아일랜드 (“BVI”)에 설립된 자매 회사 KYRD International Limited ( \"KYRD International\")에 의해 관리됩니다. KyberSwap.com의 새로운 상호  KYRD International로 변경되는 것 외에 다른 변경 사항은 없습니다. KYRD International은 BVI의 회사이므로 개인 정보 처리에 관한 EU위원회의 직정성 결정 규정 대상에 포함되지 않습니다.\n\n개인 데이터를 다시 제공하지 않고 KyberSwap.com을 계속 사용하려는 사용자를 위하여,  Kyber Network는 귀하의 동의에 따라 현재 개인 데이터를 KYRD International로 전송하려 합니다. KYRD International은 귀하의 개인 정보를 존중하며 귀하의 개인 정보를 보호하기 위해 최선을 다하고 있습니다. 질문이 있으시면 support@kyberswap.com으로 이메일을 보내거나 https://t.me/kyberswapofficial로 문의하십시오.\n\n선택하기:\n\n•  KyberSwap.com이 개인 데이터를 KYRD International에 전송하도록 허용하시려면\"Yes\";\n\n•  데이터 전송을 원하지 않을 경우에는\"No\"를 선택하시면 됩니다. \n\n\"No\"를 선택하시면 Kyber Network의 개인 정보 보호 정책에 따라 현재 모든 개인 데이터가 삭제됩니다. 데이터 삭제 후, KyberSwap.com에서 리밋오더, 가격 알림, 커스텀 알림 및 기타 혜택을 사용하기 위해 새 프로필을 만들어야 합니다.", attributes: [
+      .font: UIFont.Kyber.medium(with: 14),
+      .foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+    ])
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 59, length: 35))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 153, length: 27))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 285, length: 18))
+    attributedString.addAttribute(.foregroundColor, value: UIColor(red: 239, green: 129, blue: 2), range: NSRange(location: 561, length: 21))
+    attributedString.addAttribute(.foregroundColor, value: UIColor(red: 239, green: 129, blue: 2), range: NSRange(location: 595, length: 30))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 636, length: 4))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 18), range: NSRange(location: 643, length: 1))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 702, length: 3))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 18), range: NSRange(location: 709, length: 1))
+    attributedString.addAttribute(.font, value: UIFont.Kyber.bold(with: 14), range: NSRange(location: 732, length: 2))
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineSpacing = 3
     attributedString.addAttribute(
@@ -223,4 +284,3 @@ extension UITapGestureRecognizer {
     return NSLocationInRange(indexOfCharacter, targetRange)
   }
 }
-
