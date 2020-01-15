@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,13 +45,13 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvg-EU-eXe">
                                     <rect key="frame" x="12" y="0.0" width="360" height="410"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <mutableString key="text">We are aware of the revised Advisory Guidelines on the PDPA for NRIC and other National Identification Numbers that Personal Data Protection Commission (PDPA) issued on 31 August 2018.
+                                    <string key="text">We are aware of the revised Advisory Guidelines on the PDPA for NRIC and other National Identification Numbers that Personal Data Protection Commission (PDPA) issued on 31 August 2018.
 
 We seek your understanding that we are continuing with the collection and use of NRIC Numbers / Foreign Identification Numbers / Birth Certificate Numbers / Work Permit Numbers / Passport Numbers to ensure that KyberSwap does not deal with assets or funds that are proceeds of drug dealing, criminal conduct or property relating to money laundering or terrorism financing offence.  
 
 We assure you that we will undertake proper safeguarding measures to protect your personal data (including NRIC Numbers / FIN / Birth Certificate Numbers / Work Permit Numbers / Passport Numbers) under our care.
 
-Contact us at support@kyber.network should you have any queries or concerns.</mutableString>
+Contact us at support@kyberswap.com should you have any queries or concerns.</string>
                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                     <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>

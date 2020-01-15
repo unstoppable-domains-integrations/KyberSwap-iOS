@@ -5,12 +5,6 @@ PODS:
   - AppsFlyerFramework (4.10.4)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
-  - Bolts (1.9.0):
-    - Bolts/AppLinks (= 1.9.0)
-    - Bolts/Tasks (= 1.9.0)
-  - Bolts/AppLinks (1.9.0):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.9.0)
   - Branch (0.25.11):
     - Branch/Core (= 0.25.11)
   - Branch/Core (0.25.11)
@@ -20,18 +14,19 @@ PODS:
   - EasyTipView (2.0.1)
   - Eureka (4.1.1)
   - Fabric (1.9.0)
-  - FacebookCore (0.3.3):
-    - Bolts (~> 1.9)
-    - FBSDKCoreKit (~> 4.36)
-  - FacebookLogin (0.3.3):
-    - Bolts (~> 1.9)
-    - FacebookCore (~> 0.3.3)
-    - FBSDKCoreKit (~> 4.36)
-    - FBSDKLoginKit (~> 4.36)
-  - FBSDKCoreKit (4.44.0):
-    - Bolts (~> 1.9)
-  - FBSDKLoginKit (4.44.0):
-    - FBSDKCoreKit
+  - FBSDKCoreKit (5.13.1):
+    - FBSDKCoreKit/Basics (= 5.13.1)
+    - FBSDKCoreKit/Core (= 5.13.1)
+  - FBSDKCoreKit/Basics (5.13.1)
+  - FBSDKCoreKit/Core (5.13.1):
+    - FBSDKCoreKit/Basics
+  - FBSDKCoreKit/Swift (5.13.1):
+    - FBSDKCoreKit/Core
+  - FBSDKLoginKit/Login (5.13.1):
+    - FBSDKCoreKit (~> 5.0)
+  - FBSDKLoginKit/Swift (5.13.1):
+    - FBSDKCoreKit/Swift (~> 5.13.1)
+    - FBSDKLoginKit/Login
   - Firebase/Analytics (5.20.1):
     - Firebase/Core
   - Firebase/Core (5.20.1):
@@ -182,8 +177,7 @@ DEPENDENCIES:
   - EasyTipView (~> 2.0.1)
   - Eureka (~> 4.1.1)
   - Fabric (~> 1.9.0)
-  - FacebookCore (~> 0.3.0)
-  - FacebookLogin (~> 0.3.0)
+  - FBSDKLoginKit/Swift
   - Firebase/Analytics
   - Firebase/Core
   - Firebase/RemoteConfig
@@ -218,15 +212,12 @@ SPEC REPOS:
     - APIKit
     - AppsFlyerFramework
     - BigInt
-    - Bolts
     - Branch
     - Crashlytics
     - CryptoSwift
     - EasyTipView
     - Eureka
     - Fabric
-    - FacebookCore
-    - FacebookLogin
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -287,17 +278,14 @@ SPEC CHECKSUMS:
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   AppsFlyerFramework: aeb793095c1b33170ae30bef66652c0645f409be
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Branch: 3cc6dcfd726db42ced22c418c0fb09aa5e90a847
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EasyTipView: 1515544456d6e943240012e9be5d25d1bb766603
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
-  FacebookCore: 9ecbe48cfd37c91a93add7f8cec2b4a2c50a1eec
-  FacebookLogin: bdaea5789e9b364fa8a1990ba3bbba4fd2197415
-  FBSDKCoreKit: 8bcd4503afe43f28823c2175a6142a7f50f1bf28
-  FBSDKLoginKit: 93c5a407ab1a6a17b1b38cff57e89991f714d878
+  FBSDKCoreKit: 8fb98209109fb684937f05d534305edb18c20207
+  FBSDKLoginKit: c7c6ffd9ca9ea45aee32361840af040ad8f6706a
   Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
   FirebaseABTesting: 1f50b8d50f5e3469eea54e7463a7b7fe221d1f5e
   FirebaseAnalytics: fd72a26bf8dac84cefba2f0864366f718555a5b0
@@ -342,6 +330,6 @@ SPEC CHECKSUMS:
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   WalletConnect: 20ca9cb4372f9b15cc67a416b751d0fe8ab2fe89
 
-PODFILE CHECKSUM: c257953d3d5bb62b3e1d4bb8cf98aeddd3c83850
+PODFILE CHECKSUM: e1de9df8ac3d09ec0f156e684b2497fbe5b803b5
 
 COCOAPODS: 1.5.3

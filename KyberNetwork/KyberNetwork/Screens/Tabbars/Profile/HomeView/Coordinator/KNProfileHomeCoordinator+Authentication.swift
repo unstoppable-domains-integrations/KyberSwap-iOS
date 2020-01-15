@@ -1,8 +1,8 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import FacebookCore
-import FacebookLogin
+import FBSDKCoreKit
+import FBSDKLoginKit
 import GoogleSignIn
 import Result
 import TwitterKit
@@ -115,7 +115,7 @@ extension KNProfileHomeCoordinator {
       completion(accessToken, false)
       return
     }
-    self.loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self.navigationController) { loginResult in
+    self.loginManager.logIn(permissions: [.publicProfile, .email], viewController: self.navigationController) { loginResult in
       switch loginResult {
       case .failed:
         completion(nil, true)
@@ -130,30 +130,24 @@ extension KNProfileHomeCoordinator {
   fileprivate func retrieveFacebookData(accessToken: AccessToken, completion: @escaping (Result<KNSocialAccountsType?, AnyError>) -> Void) {
     let params = ["fields": "id,email,name,first_name,last_name,picture.type(large)"]
     let request = GraphRequest(
-      graphPath: "me",
-      parameters: params,
-      accessToken: AccessToken.current,
-      httpMethod: .GET,
-      apiVersion: FacebookCore.GraphAPIVersion.defaultVersion
+      graphPath: "me", parameters: params,
+      tokenString: accessToken.tokenString,
+      version: nil,
+      httpMethod: .get
     )
-    request.start { (_, result) in
-      switch result {
-      case .success(let value):
-        guard let dict = value.dictionaryValue, let email = dict["email"] as? String, !email.isEmpty else {
-          completion(.success(nil))
-          return
-        }
+    request.start { (_, result, error) in
+      if error == nil, let value = result, let dict = value as? JSONDictionary, let email = dict["email"] as? String, !email.isEmpty {
         let name = dict["name"] as? String ?? ""
         let icon: String = {
           let picture = dict["picture"] as? JSONDictionary ?? [:]
           let data = picture["data"] as? JSONDictionary ?? [:]
           return data["url"] as? String ?? ""
         }()
-        let accountType = KNSocialAccountsType.facebook(name: name, email: email, icon: icon, accessToken: accessToken.authenticationToken)
+        let accountType = KNSocialAccountsType.facebook(name: name, email: email, icon: icon, accessToken: accessToken.tokenString)
         self.accountType = accountType
         completion(.success(accountType))
-      case .failed(let error):
-        completion(.failure(AnyError(error)))
+      } else {
+        completion(.success(nil))
       }
     }
   }

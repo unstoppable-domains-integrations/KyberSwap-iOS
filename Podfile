@@ -37,8 +37,8 @@ target 'KyberNetwork' do
   pod 'EasyTipView', '~> 2.0.1'
   pod 'OneSignal', '>= 2.11.2', '< 3.0'
 
-  pod 'FacebookCore', '~> 0.3.0'
-  pod 'FacebookLogin', '~> 0.3.0'
+  pod 'FBSDKLoginKit/Swift'
+  pod 'FBSDKLoginKit/Swift'
   pod 'GoogleSignIn', '~> 4.4.0'
   pod 'TwitterKit', '~> 3.4.2'
   pod 'Firebase/Core'

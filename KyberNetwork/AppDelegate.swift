@@ -9,8 +9,8 @@ import UserNotificationsUI
 import UserNotifications
 import OneSignal
 import TwitterKit
-import FacebookCore
-import FacebookLogin
+import FBSDKCoreKit
+import FBSDKLoginKit
 import GoogleSignIn
 import Firebase
 import AppsFlyerLib
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       settings: oneSignalInitSettings
     )
     OneSignal.inFocusDisplayType = .notification
-    SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+    ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     FirebaseApp.configure()
 
     AppsFlyerTracker.shared().appsFlyerDevKey = KNSecret.appsflyerKey
@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
     Branch.getInstance().application(app, open: url, options: options)
     TWTRTwitter.sharedInstance().application(app, open: url, options: options)
-    SDKApplicationDelegate.shared.application(app, open: url, options: options)
+    ApplicationDelegate.shared.application(app, open: url, options: options)
     AppsFlyerTracker.shared().handleOpen(url, options: options)
     return true
   }

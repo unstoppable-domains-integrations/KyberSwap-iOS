@@ -5,8 +5,8 @@ import Moya
 import Branch
 import Result
 import Crashlytics
-import FacebookLogin
-import FacebookCore
+import FBSDKLoginKit
+import FBSDKCoreKit
 import GoogleSignIn
 import TwitterKit
 
@@ -45,7 +45,7 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
 
   lazy var loginManager: LoginManager = {
     let manager = LoginManager()
-    manager.loginBehavior = .native
+//    manager.loginBehavior = .
     return manager
   }()
 

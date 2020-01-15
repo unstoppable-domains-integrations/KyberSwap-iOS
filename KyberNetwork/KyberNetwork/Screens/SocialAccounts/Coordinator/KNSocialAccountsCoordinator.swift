@@ -1,8 +1,8 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import FacebookCore
-import FacebookLogin
+import FBSDKCoreKit
+import FBSDKLoginKit
 import GoogleSignIn
 import Result
 import TwitterKit

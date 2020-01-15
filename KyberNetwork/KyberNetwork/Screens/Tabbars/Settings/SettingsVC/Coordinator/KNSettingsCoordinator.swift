@@ -228,12 +228,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     if MFMailComposeViewController.canSendMail() {
       let emailVC = MFMailComposeViewController()
       emailVC.mailComposeDelegate = self
-      emailVC.setToRecipients(["support@kyber.network"])
+      emailVC.setToRecipients(["support@kyberswap.com"])
       self.navigationController.present(emailVC, animated: true, completion: nil)
     } else {
       let message = NSLocalizedString(
         "please.send.your.request.to.support",
-        value: "Please send your request to support@kyber.network",
+        value: "Please send your request to support@kyberswap.com",
         comment: ""
       )
       self.navigationController.showWarningTopBannerMessage(with: "", message: message, time: 1.5)
