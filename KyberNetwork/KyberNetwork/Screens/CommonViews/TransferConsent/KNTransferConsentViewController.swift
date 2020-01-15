@@ -57,7 +57,15 @@ class KNTransferConsentViewController: KNBaseViewController {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.backButton.isHidden = true
 
-    self.descriptionTextLabel.attributedText = self.createAttributedStringTransferConsentTextKr()
+    self.descriptionTextLabel.attributedText = {
+      if Locale.current.kyberSupportedLang == "vi" {
+        return self.createAttributedStringTransferConsentTextVi()
+      }
+      if Locale.current.kyberSupportedLang == "kr" {
+        return self.createAttributedStringTransferConsentTextKr()
+      }
+      return self.createAttributedStringTransferConsentText()
+    }()
     self.scrollView.delegate = self
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapDescriptionLabel(_:)))
