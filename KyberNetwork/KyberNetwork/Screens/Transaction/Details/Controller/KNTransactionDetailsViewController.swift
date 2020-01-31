@@ -2,7 +2,6 @@
 
 import UIKit
 import MBProgressHUD
-import Crashlytics
 
 enum KNTransactionDetailsViewEvent {
   case back
@@ -153,7 +152,11 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
   @objc func addressLabelTapped(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_transaction_details", customAttributes: ["action": "copy_from_address"])
-    self.copy(text: self.viewModel.transaction?.from ?? "")
+    if self.viewModel.isSent {
+      self.copy(text: self.viewModel.transaction?.to ?? "")
+    } else {
+      self.copy(text: self.viewModel.transaction?.from ?? "")
+    }
   }
 
   @objc func txHashTapped(_ sender: Any) {

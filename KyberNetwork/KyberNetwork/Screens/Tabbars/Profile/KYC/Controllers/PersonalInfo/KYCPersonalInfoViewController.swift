@@ -9,7 +9,6 @@ import TrustCore
 import Photos
 import MobileCoreServices
 import AVFoundation
-import Crashlytics
 
 enum KYCPersonalInfoViewEvent {
   case next(

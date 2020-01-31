@@ -4,7 +4,6 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import Moya
-import Crashlytics
 
 protocol KNPromoCodeCoordinatorDelegate: class {
   func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?)

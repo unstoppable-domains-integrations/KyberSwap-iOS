@@ -3,7 +3,6 @@
 import UIKit
 import BigInt
 import Result
-import Crashlytics
 import Moya
 
 //swiftlint:disable file_length

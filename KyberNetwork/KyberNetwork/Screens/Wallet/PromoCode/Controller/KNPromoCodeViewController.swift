@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import Crashlytics
 
 protocol KNPromoCodeViewControllerDelegate: class {
   func promoCodeViewControllerDidClose()

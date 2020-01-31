@@ -6,7 +6,6 @@ import TrustKeystore
 import TrustCore
 import Result
 import QRCodeReaderViewController
-import Crashlytics
 
 enum KSendTokenViewEvent {
   case back

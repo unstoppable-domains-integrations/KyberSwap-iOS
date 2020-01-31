@@ -2,7 +2,6 @@
 
 import UIKit
 import BigInt
-import Crashlytics
 
 enum KWalletBalanceViewEvent {
   case openQRCode

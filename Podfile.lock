@@ -2,18 +2,11 @@ PODS:
   - Alamofire (4.8.2)
   - APIKit (3.2.1):
     - Result (~> 3.0)
-  - AppsFlyerFramework (4.10.4)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
-  - Branch (0.25.11):
-    - Branch/Core (= 0.25.11)
-  - Branch/Core (0.25.11)
-  - Crashlytics (3.12.0):
-    - Fabric (~> 1.9.0)
   - CryptoSwift (0.10.0)
   - EasyTipView (2.0.1)
   - Eureka (4.1.1)
-  - Fabric (1.9.0)
   - FBSDKCoreKit (5.13.1):
     - FBSDKCoreKit/Basics (= 5.13.1)
     - FBSDKCoreKit/Core (= 5.13.1)
@@ -169,14 +162,10 @@ PODS:
 
 DEPENDENCIES:
   - APIKit (~> 3.2.1)
-  - AppsFlyerFramework
   - BigInt (~> 3.1.0)
-  - Branch (~> 0.25.11)
-  - Crashlytics (~> 3.12.0)
   - CryptoSwift (~> 0.10.0)
   - EasyTipView (~> 2.0.1)
   - Eureka (~> 4.1.1)
-  - Fabric (~> 1.9.0)
   - FBSDKLoginKit/Swift
   - Firebase/Analytics
   - Firebase/Core
@@ -210,14 +199,10 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - APIKit
-    - AppsFlyerFramework
     - BigInt
-    - Branch
-    - Crashlytics
     - CryptoSwift
     - EasyTipView
     - Eureka
-    - Fabric
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -276,14 +261,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
-  AppsFlyerFramework: aeb793095c1b33170ae30bef66652c0645f409be
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  Branch: 3cc6dcfd726db42ced22c418c0fb09aa5e90a847
-  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EasyTipView: 1515544456d6e943240012e9be5d25d1bb766603
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
-  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   FBSDKCoreKit: 8fb98209109fb684937f05d534305edb18c20207
   FBSDKLoginKit: c7c6ffd9ca9ea45aee32361840af040ad8f6706a
   Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
@@ -330,6 +311,6 @@ SPEC CHECKSUMS:
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   WalletConnect: 20ca9cb4372f9b15cc67a416b751d0fe8ab2fe89
 
-PODFILE CHECKSUM: e1de9df8ac3d09ec0f156e684b2497fbe5b803b5
+PODFILE CHECKSUM: 7951c9b0ea00011e2b234942067d5ab87be99b22
 
 COCOAPODS: 1.5.3

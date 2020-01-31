@@ -6,7 +6,6 @@ import Result
 import BigInt
 import SwiftChart
 import EasyTipView
-import Crashlytics
 
 enum KNTokenChartType: Int {
   case day = 0

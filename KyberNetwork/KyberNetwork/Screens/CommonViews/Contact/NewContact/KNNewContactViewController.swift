@@ -4,7 +4,6 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import QRCodeReaderViewController
-import Crashlytics
 
 enum KNNewContactViewEvent {
   case dismiss

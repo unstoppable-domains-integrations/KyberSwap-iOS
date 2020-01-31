@@ -20,13 +20,10 @@ target 'KyberNetwork' do
   pod 'Moya', '~> 10.0.1'
   pod 'JavaScriptKit', '~> 1.0.0'
   pod 'CryptoSwift', '~> 0.10.0'
-  pod 'Fabric', '~> 1.9.0'
-  pod 'Crashlytics', '~> 3.12.0'
   pod 'Kingfisher', '~> 4.10.1'
   pod 'TrustCore', '~> 0.0.7'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'WalletConnect', git: 'https://github.com/trustwallet/wallet-connect-swift', branch: 'master'
-  pod 'Branch', '~> 0.25.11'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'SAMKeychain', '~> 1.5.3'
   pod 'IQKeyboardManager', '~> 6.2.1'
@@ -44,7 +41,6 @@ target 'KyberNetwork' do
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
   pod 'Firebase/RemoteConfig'
-  pod 'AppsFlyerFramework'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

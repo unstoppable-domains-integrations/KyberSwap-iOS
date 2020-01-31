@@ -2,7 +2,6 @@
 
 import UIKit
 import BigInt
-import Crashlytics
 import QRCodeReaderViewController
 import WalletConnect
 

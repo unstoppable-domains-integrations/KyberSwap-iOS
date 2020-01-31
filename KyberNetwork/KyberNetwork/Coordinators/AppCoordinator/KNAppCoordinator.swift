@@ -4,7 +4,6 @@ import UIKit
 import IQKeyboardManager
 import BigInt
 import Moya
-import Crashlytics
 import OneSignal
 import TwitterKit
 

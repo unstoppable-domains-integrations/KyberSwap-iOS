@@ -2,7 +2,6 @@
 
 import UIKit
 import BigInt
-import Crashlytics
 
 enum KNSelectedGasPriceType: Int {
   case fast = 0

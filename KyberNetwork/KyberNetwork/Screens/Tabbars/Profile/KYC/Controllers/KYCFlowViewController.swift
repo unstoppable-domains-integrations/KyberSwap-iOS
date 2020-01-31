@@ -4,7 +4,6 @@
 import UIKit
 import Moya
 import Result
-import Crashlytics
 
 enum KYCFlowViewEvent {
   case back

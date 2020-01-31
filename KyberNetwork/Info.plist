@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>KyberSwap</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -246,25 +246,6 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>branch_app_domain</key>
-	<array>
-		<string>kyberswapnew.test-app.link</string>
-		<string>kyberswapnew.app.link</string>
-	</array>
-	<key>branch_key</key>
-	<dict>
-		<key>live</key>
-		<string>key_live_geMkJXjJQNySeqx7Yn1TjflnwtlVxo1x</string>
-		<key>test</key>
-		<string>key_test_ebQbV0aJGGrKhtD60g3NeoooFAkMuk4n</string>
-	</dict>
-	<key>branch_universal_link_domains</key>
-	<array>
-		<string>kyberswapnew-alternate.test-app.link</string>
-		<string>kyberswapnew.test-app.link</string>
-		<string>kyberswapnew-alternate.app.link</string>
-		<string>kyberswapnew.app.link</string>
-	</array>
 	<key>com.apple.security.get-task-allow</key>
 	<true/>
 </dict>

@@ -3,7 +3,6 @@
 import UIKit
 import Moya
 import TrustCore
-import Crashlytics
 
 enum KNProfileHomeViewEvent {
   case logOut

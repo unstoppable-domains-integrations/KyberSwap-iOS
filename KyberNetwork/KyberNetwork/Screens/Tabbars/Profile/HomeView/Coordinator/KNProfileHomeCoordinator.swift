@@ -2,9 +2,7 @@
 
 import UIKit
 import Moya
-import Branch
 import Result
-import Crashlytics
 import FBSDKLoginKit
 import FBSDKCoreKit
 import GoogleSignIn
@@ -192,7 +190,6 @@ extension KNProfileHomeCoordinator {
 
     // remove user's data
     IEOUserStorage.shared.signedOut()
-    Branch.getInstance().logout()
     self.rootViewController.coordinatorDidSignOut()
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
 
@@ -327,7 +324,6 @@ extension KNProfileHomeCoordinator {
 
       // remove user's data
       IEOUserStorage.shared.signedOut()
-      Branch.getInstance().logout()
       if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.pause() }
 
       self?.navigationController.popToRootViewController(animated: true)

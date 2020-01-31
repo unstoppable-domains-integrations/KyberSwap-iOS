@@ -2,7 +2,6 @@
 
 import UIKit
 import SafariServices
-import Crashlytics
 import MBProgressHUD
 
 enum KNBalanceTabHamburgerMenuViewEvent {

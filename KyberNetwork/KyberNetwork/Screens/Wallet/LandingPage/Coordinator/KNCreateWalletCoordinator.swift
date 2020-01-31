@@ -3,7 +3,6 @@
 import UIKit
 import TrustKeystore
 import TrustCore
-import Crashlytics
 
 protocol KNCreateWalletCoordinatorDelegate: class {
   func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet)
