@@ -6,7 +6,6 @@ import TrustCore
 
 enum KNProfileHomeViewEvent {
   case logOut
-  case openVerification
   case addPriceAlert
   case managePriceAlerts
   case editAlert(alert: KNAlertObject)
@@ -217,20 +216,13 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIUserDidSignedIn() {
-    guard let user = self.viewModel.currentUser else { return }
     self.emailTextField.text = ""
     self.passwordTextField.text = ""
     self.signInHeaderView.removeSublayer(at: 0)
     self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
 
-    let isSingapore: Bool = {
-      if user.kycDetails?.nationality.lowercased() ?? "" == "singaporean" { return true }
-      if user.kycDetails?.country.lowercased() ?? "" == "singapore" { return true }
-      if user.kycDetails?.taxResidencyCountry.lowercased() ?? "" == "singapore" { return true }
-      return false
-    }()
     // only show if kyc details has country or nationality is singapore
-    self.pdpaUpdateButton.isHidden = !isSingapore
+    self.pdpaUpdateButton.isHidden = false
     self.priceAlertTableView.updateView(
       with: KNAlertStorage.shared.alerts,
       isFull: false
