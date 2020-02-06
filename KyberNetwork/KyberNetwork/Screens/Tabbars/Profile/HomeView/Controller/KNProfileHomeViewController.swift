@@ -74,7 +74,6 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var listPriceAlertsContainerView: UIView!
   @IBOutlet weak var priceAlertTableView: KNAlertTableView!
   @IBOutlet weak var moreAlertsButton: UIButton!
-  @IBOutlet weak var pdpaUpdateButton: UIButton!
   @IBOutlet weak var priceAlertContainerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var listPriceAlertsContainerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var priceAlertTableViewHeightConstraint: NSLayoutConstraint!
@@ -175,10 +174,6 @@ class KNProfileHomeViewController: KNBaseViewController {
       NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
       NSAttributedStringKey.underlineStyle: 1,
     ]
-    let attributedString = NSAttributedString(string: "About PDPA update".toBeLocalised(), attributes: attributes)
-    self.pdpaUpdateButton.setAttributedTitle(attributedString, for: .normal)
-
-    self.pdpaUpdateButton.isHidden = true
     self.setupPriceAlertsView()
     self.updateUIUserDidSignedIn()
     self.view.layoutSubviews()
@@ -220,9 +215,6 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.passwordTextField.text = ""
     self.signInHeaderView.removeSublayer(at: 0)
     self.signInHeaderView.applyGradient(with: UIColor.Kyber.headerColors)
-
-    // only show if kyc details has country or nationality is singapore
-    self.pdpaUpdateButton.isHidden = false
     self.priceAlertTableView.updateView(
       with: KNAlertStorage.shared.alerts,
       isFull: false
