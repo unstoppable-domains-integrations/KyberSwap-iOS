@@ -102,4 +102,19 @@ struct KConfirmSwapViewModel {
     let totalAmount = self.transactionFee + self.transaction.amount
     return self.ethBalance - totalAmount <= BigInt(0.01 * pow(10.0, 18.0))
   }
+
+    var transactionGasPriceString: String {
+        let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
+        let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+        let gasPriceText = gasPrice.shortString(
+          units: .gwei,
+          maxFractionDigits: 1
+        )
+        let gasLimitText = gasLimit.shortString(
+          units: .gwei,
+          maxFractionDigits: 4
+        )
+        let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
+        return labelText
+    }
 }
