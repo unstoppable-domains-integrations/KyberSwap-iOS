@@ -659,3 +659,4 @@
 "Go back" = "Go back";
 "Yes" = "Yes";
 "No" = "No";
+"%@ (Gas Price) * %@ (Gas Limit)" = "%@ (Gas Price) * %@ (Gas Limit)";

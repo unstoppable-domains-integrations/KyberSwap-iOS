@@ -663,3 +663,4 @@
 "Go back" = "Quay lại";
 "Yes" = "Đồng ý";
 "No" = "Không";
+"%@ (Gas Price) * %@ (Gas Limit)" = "%@ (Gas Price) * %@ (Gas Limit)";
