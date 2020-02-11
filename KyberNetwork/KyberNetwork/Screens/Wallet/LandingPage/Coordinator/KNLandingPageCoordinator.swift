@@ -94,6 +94,15 @@ class KNLandingPageCoordinator: Coordinator {
       KNPasscodeUtil.shared.deletePasscode()
     }
     if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
+      if case .real(let account) = wallet.type {
+         //In case backup with icloud/local backup there is no keychain so delete all keystore in keystore directory
+         guard let _ =  keystore.getPassword(for: account) else {
+           KNPasscodeUtil.shared.deletePasscode()
+           try? FileManager.default.removeItem(at: keystore.keysDirectory)
+           KNWalletStorage.shared.deleteAll()
+           return
+         }
+      }
       if KNPasscodeUtil.shared.currentPasscode() == nil {
         // In case user imported a wallet and kill the app during settings passcode
         self.newWallet = wallet
