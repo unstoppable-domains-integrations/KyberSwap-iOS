@@ -97,18 +97,19 @@ class KNLandingPageCoordinator: Coordinator {
       if case .real(let account) = wallet.type {
          //In case backup with icloud/local backup there is no keychain so delete all keystore in keystore directory
          guard let _ =  keystore.getPassword(for: account) else {
-           KNPasscodeUtil.shared.deletePasscode()
-           let fileManager = FileManager.default
-           do {
-               let filePaths = try fileManager.contentsOfDirectory(atPath: keystore.keysDirectory.path)
-               for filePath in filePaths {
-                   try fileManager.removeItem(atPath: keystore.keysDirectory.path + filePath)
-               }
-           } catch {
-               print("Could not clear keystore folder: \(error)")
-           }
-           KNWalletStorage.shared.deleteAll()
-           return
+            KNPasscodeUtil.shared.deletePasscode()
+            let fileManager = FileManager.default
+            do {
+                let filePaths = try fileManager.contentsOfDirectory(atPath: keystore.keysDirectory.path)
+                for filePath in filePaths {
+                    let keyPath = URL(fileURLWithPath: keystore.keysDirectory.path).appendingPathComponent(filePath).absoluteURL
+                    try fileManager.removeItem(at: keyPath)
+                }
+            } catch {
+                print("Could not clear keystore folder: \(error)")
+            }
+            KNWalletStorage.shared.deleteAll()
+            return
          }
       }
       if KNPasscodeUtil.shared.currentPasscode() == nil {
