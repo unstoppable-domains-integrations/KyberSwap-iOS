@@ -2,6 +2,8 @@
 
 import UIKit
 import SafariServices
+import BigInt
+import TrustCore
 
 protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidClose()
@@ -207,6 +209,10 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.txDetailsCoordinator.start()
     case .dismiss:
       self.stop()
+    case .cancelTransaction(let transaction):
+        sendCancelTransactionFor(transaction)
+    case .speedUpTransaction(let transaction):
+        sendSpeedUpTransactionFor(transaction)
     }
   }
 
@@ -215,4 +221,48 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.rootViewController.openSafari(with: url)
     }
   }
+
+    fileprivate func sendCancelTransactionFor(_ transaction: Transaction) {
+        guard let address = Address(string: transaction.from) else {
+            return
+        }
+        guard let currentGasPrice = Double(transaction.gasPrice)  else {
+            return
+        }
+        let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceDefault)
+        let nouce = BigInt(transaction.nonce)
+        let unconfirmTx = UnconfirmedTransaction(transferType: .ether(destination: address),
+                                                 value: BigInt(0),
+                                                 to: address,
+                                                 data: nil,
+                                                 gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
+                                                 gasPrice: gasPrice,
+                                                 nonce: nouce)
+        didConfirmTransfer(unconfirmTx)
+    }
+    
+    fileprivate func sendSpeedUpTransactionFor(_ transaction: Transaction) {
+        
+    }
+    
+    fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
+      self.session.externalProvider.tranferWithoutIncreaseTxNonce(transaction: transaction, completion: { [weak self] sendResult in
+        guard let `self` = self else { return }
+        switch sendResult {
+        case .success(let txHash):
+          let tx: Transaction = transaction.toTransaction(
+            wallet: self.session.wallet,
+            hash: txHash,
+            nounce: self.session.externalProvider.minTxCount - 1
+          )
+          self.session.addNewPendingTransaction(tx)
+        case .failure(let error):
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: error,
+            userInfo: nil
+          )
+        }
+      })
+    }
 }

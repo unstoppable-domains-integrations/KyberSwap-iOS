@@ -1,10 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-
+import SwipeCellKit
+//swiftlint:disable empty_count
 enum KNHistoryViewEvent {
   case selectTransaction(transaction: Transaction)
   case dismiss
+  case cancelTransaction(transaction: Transaction)
+  case speedUpTransaction(transaction: Transaction)
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -478,6 +481,7 @@ extension KNHistoryViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID, for: indexPath) as! KNHistoryTransactionCollectionViewCell
     cell.delegate = self
+    cell.actionDelegate = self
     if self.viewModel.isShowingPending {
       guard let tx = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
       let model = KNHistoryTransactionCollectionViewModel(
@@ -524,4 +528,34 @@ extension KNHistoryViewController: KNTransactionFilterViewControllerDelegate {
     self.viewModel.updateFilters(filter)
     self.updateUIWhenDataDidChange()
   }
+}
+
+extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard self.viewModel.isShowingPending else {
+            return nil
+        }
+        guard orientation == .right else {
+            return nil
+        }
+        let speedUp = SwipeAction(style: .default, title: nil, handler: nil)
+        speedUp.hidesWhenSelected = true
+        speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "")
+        speedUp.font = UIFont.Kyber.semiBold(with: 14)
+        speedUp.backgroundColor = UIColor.Kyber.speedUpOrange
+        let cancel = SwipeAction(style: .destructive, title: nil) { _, indexPath in
+            guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
+            self.delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
+        }
+        cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "")
+        cancel.font = UIFont.Kyber.semiBold(with: 14)
+        cancel.backgroundColor = UIColor.Kyber.cancelGray
+        return [cancel, speedUp]
+    }
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        options.maximumButtonWidth = 96.0
+        return options
+    }
 }
