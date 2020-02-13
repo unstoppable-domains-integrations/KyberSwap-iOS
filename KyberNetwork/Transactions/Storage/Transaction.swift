@@ -3,6 +3,7 @@
 import Foundation
 import RealmSwift
 import BigInt
+import TrustCore
 
 class Transaction: Object {
     @objc dynamic var id: String = ""
@@ -344,4 +345,25 @@ extension Transaction {
     guard let gasPrice = self.gasPrice.fullBigInt(units: .wei), let gasLimit = self.gasUsed.fullBigInt(units: .wei) ?? self.gas.fullBigInt(units: .wei) else { return nil }
     return gasPrice * gasLimit
   }
+}
+
+extension Transaction {
+    func makeCancelTransaction() -> UnconfirmedTransaction? {
+        guard let address = Address(string: self.from) else {
+            return nil
+        }
+        guard let currentGasPrice = Double(self.gasPrice)  else {
+            return nil
+        }
+        let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceDefault)
+        let nouce = BigInt(self.nonce)
+        let unconfirmTx = UnconfirmedTransaction(transferType: .ether(destination: address),
+                                                 value: BigInt(0),
+                                                 to: address,
+                                                 data: nil,
+                                                 gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
+                                                 gasPrice: gasPrice,
+                                                 nonce: nouce)
+        return unconfirmTx
+    }
 }

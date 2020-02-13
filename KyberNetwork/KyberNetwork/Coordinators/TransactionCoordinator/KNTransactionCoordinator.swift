@@ -423,14 +423,12 @@ extension KNTransactionCoordinator {
             default: break
             }
           }
-        } else {
-          // tx can be dropped or replaced
-          if transaction.date.addingTimeInterval(600) < Date() {
-            let minedTxs = self.transactionStorage.transferNonePendingObjects
-            if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.address.description.lowercased() }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
-              if nonce >= txNonce && tx.id.lowercased() != transaction.id.lowercased() {
-                self.removeTransactionHasBeenLost(transaction)
-              }
+        }
+        if transaction.date.addingTimeInterval(60) < Date() {
+          let minedTxs = self.transactionStorage.transferNonePendingObjects
+          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.address.description.lowercased() }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
+            if nonce >= txNonce && tx.id.lowercased() != transaction.id.lowercased() {
+              self.removeTransactionHasBeenLost(transaction)
             }
           }
         }

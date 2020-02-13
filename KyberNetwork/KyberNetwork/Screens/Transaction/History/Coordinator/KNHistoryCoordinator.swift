@@ -221,48 +221,46 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.rootViewController.openSafari(with: url)
     }
   }
+  fileprivate func sendCancelTransactionFor(_ transaction: Transaction) {
+    openTransactionCancelConfirmPopUpFor(transaction: transaction)
+  }
+  fileprivate func sendSpeedUpTransactionFor(_ transaction: Transaction) {
+  }
+  fileprivate func didConfirmTransfer(_ transaction: Transaction) {
+    guard let unconfirmTx =  transaction.makeCancelTransaction() else {
+      return
+    }
+    self.session.externalProvider.tranferWithoutIncreaseTxNonce(transaction: unconfirmTx, completion: { [weak self] sendResult in
+      guard let `self` = self else { return }
+      switch sendResult {
+      case .success(let txHash):
+        let tx: Transaction = unconfirmTx.toTransaction(
+          wallet: self.session.wallet,
+          hash: txHash,
+          nounce: self.session.externalProvider.minTxCount - 1
+        )
+        self.session.updatePendingTransactionWithHash(hashTx: transaction.id, cancelTransaction: tx)
+      case .failure(let error):
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: error,
+          userInfo: nil
+        )
+      }
+    })
+  }
+  fileprivate func openTransactionCancelConfirmPopUpFor(transaction: Transaction) {
+    let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
+    let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
+    confirmPopup.delegate = self
+    confirmPopup.modalPresentationStyle = .overFullScreen
+    confirmPopup.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(confirmPopup, animated: true, completion: nil)
+  }
+}
 
-    fileprivate func sendCancelTransactionFor(_ transaction: Transaction) {
-        guard let address = Address(string: transaction.from) else {
-            return
-        }
-        guard let currentGasPrice = Double(transaction.gasPrice)  else {
-            return
-        }
-        let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceDefault)
-        let nouce = BigInt(transaction.nonce)
-        let unconfirmTx = UnconfirmedTransaction(transferType: .ether(destination: address),
-                                                 value: BigInt(0),
-                                                 to: address,
-                                                 data: nil,
-                                                 gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
-                                                 gasPrice: gasPrice,
-                                                 nonce: nouce)
-        didConfirmTransfer(unconfirmTx)
-    }
-    
-    fileprivate func sendSpeedUpTransactionFor(_ transaction: Transaction) {
-        
-    }
-    
-    fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
-      self.session.externalProvider.tranferWithoutIncreaseTxNonce(transaction: transaction, completion: { [weak self] sendResult in
-        guard let `self` = self else { return }
-        switch sendResult {
-        case .success(let txHash):
-          let tx: Transaction = transaction.toTransaction(
-            wallet: self.session.wallet,
-            hash: txHash,
-            nounce: self.session.externalProvider.minTxCount - 1
-          )
-          self.session.addNewPendingTransaction(tx)
-        case .failure(let error):
-          KNNotificationUtil.postNotification(
-            for: kTransactionDidUpdateNotificationKey,
-            object: error,
-            userInfo: nil
-          )
-        }
-      })
-    }
+extension KNHistoryCoordinator: KNConfirmCancelTransactionPopUpDelegate {
+  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: Transaction) {
+    didConfirmTransfer(transaction)
+  }
 }

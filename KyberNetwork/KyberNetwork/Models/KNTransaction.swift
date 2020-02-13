@@ -288,6 +288,12 @@ extension TransactionsStorage {
     return transaction
   }
 
+  func deleteKyberTransaction(forPrimaryKey: String) -> Bool {
+    guard let transaction = getKyberTransaction(forPrimaryKey: forPrimaryKey) else { return false }
+    delete([transaction])
+    return true
+  }
+
   func deleteAllKyberTransactions() {
     self.delete(self.kyberTransactions)
   }

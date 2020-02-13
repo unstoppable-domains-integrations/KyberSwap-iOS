@@ -112,6 +112,27 @@ class KNExternalProvider {
     }
   }
 
+    func tranferWithoutIncreaseTxNonce(transaction: UnconfirmedTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
+        self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
+          guard let `self` = self else { return }
+          switch dataResult {
+          case .success(let data):
+            self.signTransactionData(from: transaction, nonce: Int(transaction.nonce!), data: data, completion: { signResult in
+              switch signResult {
+              case .success(let signData):
+                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
+                  completion(result)
+                })
+              case .failure(let error):
+                completion(.failure(error))
+              }
+            })
+          case .failure(let error):
+            completion(.failure(error))
+          }
+        })
+    }
+
   func exchange(exchange: KNDraftExchangeTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
