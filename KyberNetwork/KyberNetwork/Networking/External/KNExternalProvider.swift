@@ -132,6 +132,23 @@ class KNExternalProvider {
           }
         })
     }
+  func speedUpSwapTransaction(for token: TokenObject, amount: BigInt, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<String, AnyError>) -> Void) {
+    signTransactionData(for: token,
+                        amount: amount,
+                        nonce: nonce,
+                        data: data,
+                        gasPrice: gasPrice,
+                        gasLimit: gasLimit) { (signResult) in
+      switch signResult {
+      case .success(let signData):
+        KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
+          completion(result)
+        })
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 
   func exchange(exchange: KNDraftExchangeTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getTransactionCount { [weak self] txCountResult in
@@ -263,14 +280,14 @@ class KNExternalProvider {
     }
   }
 
-  func getTransactionByHash(_ hash: String, completion: @escaping (SessionTaskError?) -> Void) {
+  func getTransactionByHash(_ hash: String, completion: @escaping (PendingTransaction?, SessionTaskError?) -> Void) {
     let request = GetTransactionRequest(hash: hash)
     Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
       switch result {
-      case .success:
-        completion(nil)
+      case .success(let response):
+        completion(response, nil)
       case .failure(let error):
-        completion(error)
+        completion(nil, error)
       }
     }
   }
@@ -465,6 +482,20 @@ class KNExternalProvider {
       data: data,
       gasPrice: exchange.gasPrice ?? KNGasConfiguration.gasPriceDefault,
       gasLimit: exchange.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault,
+      chainID: KNEnvironment.default.chainID
+    )
+    self.signTransactionData(from: signTransaction, completion: completion)
+  }
+
+  private func signTransactionData(for token: TokenObject, amount: BigInt, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    let signTransaction: SignTransaction = SignTransaction(
+      value: token.isETH ? amount : BigInt(0),
+      account: self.account,
+      to: self.networkAddress,
+      nonce: nonce,
+      data: data,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
       chainID: KNEnvironment.default.chainID
     )
     self.signTransactionData(from: signTransaction, completion: completion)

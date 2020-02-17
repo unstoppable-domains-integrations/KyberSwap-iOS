@@ -395,7 +395,7 @@ extension KNTransactionCoordinator {
       if error == nil { return }
       guard let `self` = self else { return }
       if transaction.isInvalidated { return }
-      self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] sessionError in
+      self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] _, sessionError in
         guard let `self` = self else { return }
         guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id) else { return }
         if trans.state != .pending {

@@ -148,9 +148,9 @@ class KNSession {
     )
   }
 
-  func updatePendingTransactionWithHash(hashTx: String, cancelTransaction: Transaction) {
+  func updatePendingTransactionWithHash(hashTx: String, ultiTransaction: Transaction) {
     if transactionStorage.deleteKyberTransaction(forPrimaryKey: hashTx) {
-      addNewPendingTransaction(cancelTransaction)
+      addNewPendingTransaction(ultiTransaction)
     }
   }
 
