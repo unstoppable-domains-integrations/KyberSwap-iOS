@@ -17,6 +17,7 @@ class Transaction: Object {
     @objc dynamic var nonce: String = ""
     @objc dynamic var date = Date()
     @objc dynamic var internalState: Int = TransactionState.completed.rawValue
+    @objc dynamic var type: Int = TransactionType.normal.rawValue
     var localizedOperations = List<LocalizedOperationObject>()
     @objc dynamic var compoundKey: String = ""
 
@@ -32,7 +33,8 @@ class Transaction: Object {
         nonce: String,
         date: Date,
         localizedOperations: [LocalizedOperationObject],
-        state: TransactionState
+        state: TransactionState,
+        type: TransactionType
     ) {
 
         self.init()
@@ -47,6 +49,7 @@ class Transaction: Object {
         self.nonce = nonce
         self.date = date
         self.internalState = state.rawValue
+        self.type = type.rawValue
 
         let list = List<LocalizedOperationObject>()
         localizedOperations.forEach { element in
@@ -90,10 +93,11 @@ class Transaction: Object {
       nonce: self.nonce,
       date: self.date,
       localizedOperations: Array(self.localizedOperations).map({ return $0.clone() }),
-      state: self.state
+      state: self.state,
+      type: TransactionType(int: self.type)
     )
   }
-  func copyWith(newHash: String, newGasPrice: String) -> Transaction {
+  func convertToSpeedUpTransaction(newHash: String, newGasPrice: String) -> Transaction {
     return Transaction(
       id: newHash,
       blockNumber: self.blockNumber,
@@ -106,14 +110,15 @@ class Transaction: Object {
       nonce: self.nonce,
       date: self.date,
       localizedOperations: Array(self.localizedOperations).map({ return $0.clone() }),
-      state: self.state
+      state: self.state,
+      type: .speedup
     )
   }
 }
 
 extension Transaction {
   // get transaction from json for wallet connect
-  static func getTransactionFromJsonWalletConnect(json: JSONDictionary, hash: String, nonce: Int) -> Transaction {
+  static func getTransactionFromJsonWalletConnect(json: JSONDictionary, hash: String, nonce: Int, type: TransactionType = .normal) -> Transaction {
     let value = (json["value"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
     let gasLimit = (json["gasLimit"] as? String ?? "").fullBigInt(decimals: 0)?.string(decimals: 0, minFractionDigits: 0, maxFractionDigits: 0) ?? ""
     let gasPrice = (json["gasPrice"] as? String ?? "").fullBigInt(decimals: 0)?.string(decimals: 0, minFractionDigits: 0, maxFractionDigits: 0) ?? ""
@@ -141,7 +146,8 @@ extension Transaction {
       nonce: "\(nonce)",
       date: Date(),
       localizedOperations: [localised],
-      state: .pending
+      state: .pending,
+      type: type
     )
   }
 }
@@ -211,7 +217,7 @@ extension Transaction {
 }
 
 extension Transaction {
-  static func swapTransation(sendTx: Transaction, receiveTx: Transaction, curWallet: String, addressToSymbol: [String: String]) -> Transaction? {
+  static func swapTransation(sendTx: Transaction, receiveTx: Transaction, curWallet: String, addressToSymbol: [String: String], type: TransactionType = .normal) -> Transaction? {
     if sendTx.id != receiveTx.id { return nil }
     if sendTx.from.lowercased() != curWallet.lowercased() && receiveTx.from.lowercased() != curWallet.lowercased() { return nil }
     if sendTx.from.lowercased() != curWallet.lowercased() {
@@ -247,7 +253,8 @@ extension Transaction {
       nonce: sendTx.nonce,
       date: sendTx.date,
       localizedOperations: [localObject],
-      state: .completed
+      state: .completed,
+      type: type
     )
   }
 

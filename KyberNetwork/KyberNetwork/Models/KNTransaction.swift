@@ -26,6 +26,7 @@ class KNTransaction: Object {
   @objc dynamic var nonce: String = ""
   @objc dynamic var date = Date()
   @objc dynamic var internalState: Int = TransactionState.completed.rawValue
+  @objc dynamic var type: Int = TransactionType.normal.rawValue
   var localizedOperations = List<LocalizedOperationObject>()
 
   convenience init(
@@ -40,7 +41,8 @@ class KNTransaction: Object {
     nonce: String,
     date: Date,
     localizedOperations: [LocalizedOperationObject],
-    state: TransactionState
+    state: TransactionState,
+    type: TransactionType
     ) {
 
     self.init()
@@ -55,6 +57,7 @@ class KNTransaction: Object {
     self.nonce = nonce
     self.date = date
     self.internalState = state.rawValue
+    self.type = type.rawValue
 
     let list = List<LocalizedOperationObject>()
     localizedOperations.forEach { element in
@@ -125,7 +128,8 @@ extension KNTransaction {
       nonce: transaction.nonce,
       date: transaction.date,
       localizedOperations: operations,
-      state: transaction.state
+      state: transaction.state,
+      type: TransactionType(int: transaction.type)
     )
   }
 
@@ -146,7 +150,8 @@ extension KNTransaction {
       nonce: self.nonce,
       date: self.date,
       localizedOperations: operations,
-      state: self.state
+      state: self.state,
+      type: TransactionType(int: self.type)
     )
   }
 

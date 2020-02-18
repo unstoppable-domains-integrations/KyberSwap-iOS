@@ -48,7 +48,8 @@ extension PendingTransaction {
 
 extension Transaction {
     static func from(
-        transaction: PendingTransaction
+        transaction: PendingTransaction,
+        type: TransactionType = .normal
     ) -> Transaction? {
         guard
             let from = Address(string: transaction.from) else {
@@ -67,7 +68,8 @@ extension Transaction {
             nonce: transaction.nonce,
             date: Date(),
             localizedOperations: [],
-            state: .pending
+            state: .pending,
+            type: type
         )
     }
 }

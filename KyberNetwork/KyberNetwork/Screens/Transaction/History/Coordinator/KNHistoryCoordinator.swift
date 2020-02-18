@@ -262,7 +262,8 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
         let tx: Transaction = unconfirmTx.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount - 1
+          nounce: self.session.externalProvider.minTxCount - 1,
+          type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
       case .failure(let error):
@@ -356,7 +357,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
                                                                gasLimit: gasLimit) { sendResult in
                                                                 switch sendResult {
                                                                 case .success(let txHash):
-                                                                  let tx = transaction.copyWith(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
+                                                                  let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
                                                                   self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
                                                                 case .failure(let error):
                                                                   KNNotificationUtil.postNotification(

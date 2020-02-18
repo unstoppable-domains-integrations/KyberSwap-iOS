@@ -112,26 +112,26 @@ class KNExternalProvider {
     }
   }
 
-    func tranferWithoutIncreaseTxNonce(transaction: UnconfirmedTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
-        self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
-          guard let `self` = self else { return }
-          switch dataResult {
-          case .success(let data):
-            self.signTransactionData(from: transaction, nonce: Int(transaction.nonce!), data: data, completion: { signResult in
-              switch signResult {
-              case .success(let signData):
-                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
-                  completion(result)
-                })
-              case .failure(let error):
-                completion(.failure(error))
-              }
+  func tranferWithoutIncreaseTxNonce(transaction: UnconfirmedTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
+      guard let `self` = self else { return }
+      switch dataResult {
+      case .success(let data):
+        self.signTransactionData(from: transaction, nonce: Int(transaction.nonce!), data: data, completion: { signResult in
+          switch signResult {
+          case .success(let signData):
+            KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
+              completion(result)
             })
           case .failure(let error):
             completion(.failure(error))
           }
         })
-    }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    })
+  }
   func speedUpSwapTransaction(for token: TokenObject, amount: BigInt, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<String, AnyError>) -> Void) {
     signTransactionData(for: token,
                         amount: amount,

@@ -479,7 +479,7 @@ extension KNTransactionCoordinator {
 }
 
 extension UnconfirmedTransaction {
-  func toTransaction(wallet: Wallet, hash: String, nounce: Int) -> Transaction {
+  func toTransaction(wallet: Wallet, hash: String, nounce: Int, type: TransactionType = .normal) -> Transaction {
     let token: TokenObject = self.transferType.tokenObject()
 
     let localObject = LocalizedOperationObject(
@@ -504,7 +504,8 @@ extension UnconfirmedTransaction {
       nonce: "\(nounce)",
       date: Date(),
       localizedOperations: [localObject],
-      state: .pending
+      state: .pending,
+      type: type
     )
   }
 }
