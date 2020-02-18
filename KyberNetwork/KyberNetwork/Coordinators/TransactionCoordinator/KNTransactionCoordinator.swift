@@ -464,11 +464,13 @@ extension KNTransactionCoordinator {
   fileprivate func removeTransactionHasBeenLost(_ transaction: KNTransaction) {
     guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state == .pending else { return }
     let id = trans.id
+    let type = trans.type
+    let userInfo: [String: TransactionType] = [Constants.transactionIsLost: type]
     self.transactionStorage.delete([trans])
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: id,
-      userInfo: ["is_lost": true]
+      userInfo: userInfo
     )
   }
 

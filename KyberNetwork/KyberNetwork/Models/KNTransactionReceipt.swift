@@ -99,7 +99,7 @@ extension KNTransactionReceipt {
       date: transaction.date,
       localizedOperations: localObjects,
       state: self.status == "1" ? .completed : .failed,
-      type: TransactionType(int: transaction.type)
+      type: transaction.type
     )
     return newTransaction
   }

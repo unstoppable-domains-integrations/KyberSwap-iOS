@@ -30,7 +30,7 @@ extension PendingTransaction {
         let from = transaction["from"] as? String ?? ""
         let to = transaction["to"] as? String ?? ""
         let transactionInput = transaction["input"] as? String ?? ""
-        let input = transactionInput.data(using: .utf8) ?? Data()
+        let input = transactionInput.dataFromHex() ?? Data()
         return PendingTransaction(
             blockHash: blockHash,
             blockNumber: BigInt(blockNumber.drop0x, radix: 16)?.description ?? "",

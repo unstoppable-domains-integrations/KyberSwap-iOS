@@ -15,7 +15,7 @@ enum TransactionState: Int {
 }
 
 enum TransactionType: Int {
-  case normal
+  case normal = 0
   case cancel
   case speedup
 

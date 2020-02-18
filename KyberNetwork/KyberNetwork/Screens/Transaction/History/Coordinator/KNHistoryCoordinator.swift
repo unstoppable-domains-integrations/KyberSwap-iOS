@@ -266,10 +266,10 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
           type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
-      case .failure(let error):
+      case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
-          object: error,
+          object: [Constants.transactionIsCancel: TransactionType.cancel],
           userInfo: nil
         )
       }
@@ -320,13 +320,14 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
         let tx: Transaction = transaction.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: Int(original.nonce)!
+          nounce: Int(original.nonce)!,
+          type: .speedup
         )
         self.session.updatePendingTransactionWithHash(hashTx: original.id, ultiTransaction: tx)
-      case .failure(let error):
+      case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
-          object: error,
+          object: [Constants.transactionIsCancel: TransactionType.speedup],
           userInfo: nil
         )
       }
@@ -345,7 +346,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     let gasLimit: BigInt = {
       return transaction.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
     }()
-    session.externalProvider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, error) in
+    session.externalProvider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx {
         if !fetchedTx.input.isEmpty {
@@ -359,10 +360,10 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
                                                                 case .success(let txHash):
                                                                   let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
                                                                   self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
-                                                                case .failure(let error):
+                                                                case .failure:
                                                                   KNNotificationUtil.postNotification(
                                                                     for: kTransactionDidUpdateNotificationKey,
-                                                                    object: error,
+                                                                    object: [Constants.transactionIsCancel: TransactionType.speedup],
                                                                     userInfo: nil
                                                                   )
                                                                 }

@@ -23,7 +23,7 @@ struct RealmConfiguration {
           new?["type"] = TransactionType.normal.rawValue
         }
         migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-          new?["type"] = TransactionType.normal.rawValue
+          new?["internalState"] = TransactionType.normal.rawValue
         }
       }
       return config
@@ -38,7 +38,7 @@ struct RealmConfiguration {
           new?["type"] = TransactionType.normal.rawValue
         }
         migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-          new?["type"] = TransactionType.normal.rawValue
+          new?["internalState"] = TransactionType.normal.rawValue
         }
       }
       return config
@@ -53,7 +53,7 @@ struct RealmConfiguration {
         new?["type"] = TransactionType.normal.rawValue
       }
       migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-        new?["type"] = TransactionType.normal.rawValue
+        new?["internalState"] = TransactionType.normal.rawValue
       }
     }
     return config
