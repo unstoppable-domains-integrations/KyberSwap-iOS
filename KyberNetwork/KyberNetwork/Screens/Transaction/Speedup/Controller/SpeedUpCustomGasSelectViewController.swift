@@ -6,6 +6,7 @@ import BigInt
 enum SpeedUpCustomGasSelectViewEvent {
   case back
   case done(transaction: Transaction, newGasPrice: BigInt)
+  case invaild
 }
 
 protocol SpeedUpCustomGasSelectDelegate: class {
@@ -107,7 +108,11 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   }
 
   @IBAction func doneButtonTapped(_ sender: UIButton) {
-    delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: viewModel.transaction, newGasPrice: viewModel.getNewTransactionGasPriceETH()))
+    if viewModel.isNewGasPriceValid() {
+      delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: viewModel.transaction, newGasPrice: viewModel.getNewTransactionGasPriceETH()))
+    } else {
+      delegate?.speedUpCustomGasSelectViewController(self, run: .invaild)
+    }
   }
   @IBAction func backButtonTapped(_ sender: UIButton) {
     delegate?.speedUpCustomGasSelectViewController(self, run: .back)

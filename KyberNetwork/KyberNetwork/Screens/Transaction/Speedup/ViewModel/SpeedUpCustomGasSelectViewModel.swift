@@ -104,4 +104,10 @@ class SpeedUpCustomGasSelectViewModel {
   func updateSelectedType(_ type: KNSelectedGasPriceType) {
     self.selectedType = type
   }
+
+  func isNewGasPriceValid() -> Bool {
+    let newValue = getNewTransactionGasPriceETH()
+    let oldValue = EtherNumberFormatter.full.number(from: transaction.gasPrice, decimals: 0) ?? BigInt(0)
+    return newValue > ( oldValue * (BigInt(120) / BigInt (100)) )
+  }
 }

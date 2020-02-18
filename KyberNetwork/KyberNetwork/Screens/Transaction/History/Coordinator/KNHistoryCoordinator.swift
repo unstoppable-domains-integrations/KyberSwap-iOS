@@ -291,6 +291,12 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     case .done(let transaction, let newValue):
       didSpeedUpTransactionFor(transaction: transaction, newGasPrice: newValue)
       navigationController.popViewController(animated: true)
+    case .invaild:
+      self.navigationController.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Your gas price must be 10% higher than the current gas price".toBeLocalised(),
+        time: 1.5
+      )
     }
     speedUpViewController = nil
   }
