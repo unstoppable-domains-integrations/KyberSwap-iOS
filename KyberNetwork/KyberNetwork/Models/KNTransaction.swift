@@ -132,7 +132,7 @@ extension KNTransaction {
       date: transaction.date,
       localizedOperations: operations,
       state: transaction.state,
-      type: TransactionType(int: transaction.type)
+      type: transaction.type
     )
   }
 

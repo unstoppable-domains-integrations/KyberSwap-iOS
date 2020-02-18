@@ -538,16 +538,15 @@ extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
     guard orientation == .right else {
       return nil
     }
-    let speedUp = SwipeAction(style: .default, title: nil) { (_, indexPath) in
-      guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
+    guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section), transaction.type == .normal else { return nil }
+    let speedUp = SwipeAction(style: .default, title: nil) { (_, _) in
       self.delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction))
     }
     speedUp.hidesWhenSelected = true
     speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "")
     speedUp.font = UIFont.Kyber.semiBold(with: 14)
     speedUp.backgroundColor = UIColor.Kyber.speedUpOrange
-    let cancel = SwipeAction(style: .destructive, title: nil) { _, indexPath in
-      guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
+    let cancel = SwipeAction(style: .destructive, title: nil) { _, _ in
       self.delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
     }
     cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "")

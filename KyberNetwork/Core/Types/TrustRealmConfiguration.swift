@@ -20,10 +20,10 @@ struct RealmConfiguration {
       config.schemaVersion = 1
       config.migrationBlock = { migration, oldVersion in
         migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-          new?["type"] = TransactionType.normal.rawValue
+          new?["internalType"] = TransactionType.normal.rawValue
         }
         migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-          new?["internalState"] = TransactionType.normal.rawValue
+          new?["internalType"] = TransactionType.normal.rawValue
         }
       }
       return config
@@ -35,10 +35,10 @@ struct RealmConfiguration {
       config.schemaVersion = 1
       config.migrationBlock = { migration, oldVersion in
         migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-          new?["type"] = TransactionType.normal.rawValue
+          new?["internalType"] = TransactionType.normal.rawValue
         }
         migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-          new?["internalState"] = TransactionType.normal.rawValue
+          new?["internalType"] = TransactionType.normal.rawValue
         }
       }
       return config
@@ -50,10 +50,10 @@ struct RealmConfiguration {
     config.schemaVersion = 1
     config.migrationBlock = { migration, oldVersion in
       migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-        new?["type"] = TransactionType.normal.rawValue
+        new?["internalType"] = TransactionType.normal.rawValue
       }
       migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-        new?["internalState"] = TransactionType.normal.rawValue
+        new?["internalType"] = TransactionType.normal.rawValue
       }
     }
     return config

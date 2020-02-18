@@ -17,7 +17,7 @@ class Transaction: Object {
     @objc dynamic var nonce: String = ""
     @objc dynamic var date = Date()
     @objc dynamic var internalState: Int = TransactionState.completed.rawValue
-    @objc dynamic var type: Int = TransactionType.normal.rawValue
+    @objc dynamic var internalType: Int = TransactionType.normal.rawValue
     var localizedOperations = List<LocalizedOperationObject>()
     @objc dynamic var compoundKey: String = ""
 
@@ -49,7 +49,7 @@ class Transaction: Object {
         self.nonce = nonce
         self.date = date
         self.internalState = state.rawValue
-        self.type = type.rawValue
+        self.internalType = type.rawValue
 
         let list = List<LocalizedOperationObject>()
         localizedOperations.forEach { element in
@@ -80,6 +80,10 @@ class Transaction: Object {
         return TransactionState(int: self.internalState)
     }
 
+  var type: TransactionType {
+    return TransactionType(int: self.internalType)
+  }
+
   func clone() -> Transaction {
     return Transaction(
       id: self.id,
@@ -94,7 +98,7 @@ class Transaction: Object {
       date: self.date,
       localizedOperations: Array(self.localizedOperations).map({ return $0.clone() }),
       state: self.state,
-      type: TransactionType(int: self.type)
+      type: self.type
     )
   }
   func convertToSpeedUpTransaction(newHash: String, newGasPrice: String) -> Transaction {
