@@ -63,18 +63,22 @@ extension UIButton {
       return
     }
     let icon = token.icon.isEmpty ? token.symbol.lowercased() : token.icon
-    if let image = UIImage(named: icon.lowercased()) {
-      self.setImage(image, for: .normal)
-      self.layoutIfNeeded()
-    } else {
-      let placeHolderImg = UIImage(named: "default_token")
-      self.setImage(
-        with: token.iconURL,
-        placeHolder: placeHolderImg,
-        size: size,
-        state: state
-      )
-    }
+    let image = UIImage(named: icon.lowercased())
+    let placeHolderImg = image ?? UIImage(named: "default_token")
+    self.setImage(
+      with: token.iconURL,
+      placeHolder: placeHolderImg,
+      size: size,
+      state: state
+    )
+  }
+
+  func setTokenImage(for token: String, size: CGSize? = nil) {
+     let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(token.lowercased()).png"
+     let assetImage = UIImage(named: token.lowercased())
+     let defaultImage = UIImage(named: "default_token")!
+     let placeholder = assetImage ?? defaultImage
+     setImage(with: url, placeHolder: placeholder, size: size)
   }
 
   func centerVertically(padding: CGFloat = 6.0) {
