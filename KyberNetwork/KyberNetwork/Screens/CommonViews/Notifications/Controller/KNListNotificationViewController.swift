@@ -55,7 +55,7 @@ class KNListNotificationViewController: KNBaseViewController {
     self.reloadListNotifications()
     self.timer?.invalidate()
     self.timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true, block: { [weak self] _ in
-      self?.reloadListNotifications()
+      self?.reloadListNotifications(false)
     })
   }
 
