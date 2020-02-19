@@ -52,7 +52,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBOutlet weak var tokensBalanceTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
   @IBOutlet weak var balanceDisplayControlButton: UIButton!
-
+  @IBOutlet weak var hasUnreadNotification: UIView!
   lazy var refreshControl: UIRefreshControl = {
     let refresh = UIRefreshControl()
     refresh.tintColor = UIColor.Kyber.enygold
@@ -86,9 +86,21 @@ class KWalletBalanceViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.notificationDidUpdate(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -115,6 +127,8 @@ class KWalletBalanceViewController: KNBaseViewController {
   // MARK: Set up UIs
   fileprivate func setupUI() {
     self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
+    hasUnreadNotification.rounded(radius: hasUnreadNotification.frame.height / 2)
+    notificationDidUpdate(nil)
     self.setupHamburgerMenu()
     self.setupWalletBalanceHeaderView()
     self.setupDisplayDataType()
@@ -293,12 +307,29 @@ class KWalletBalanceViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
+  @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "select_notification_menu_button", customAttributes: nil)
+    self.delegate?.kWalletBalanceViewController(self, run: .selectNotifications)
+  }
+
   @objc func userDidRefreshBalanceView(_ sender: Any?) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       // reload data
       self.delegate?.kWalletBalanceViewController(self, run: .refreshData)
       self.refreshControl.endRefreshing()
     }
+  }
+
+  @objc func notificationDidUpdate(_ sender: Any?) {
+    let numUnread: Int = {
+      if IEOUserStorage.shared.user == nil { return 0 }
+      return KNNotificationCoordinator.shared.numberUnread
+    }()
+    self.update(notificationsCount: numUnread)
+  }
+
+  func update(notificationsCount: Int) {
+    hasUnreadNotification.isHidden = notificationsCount == 0
   }
 }
 
