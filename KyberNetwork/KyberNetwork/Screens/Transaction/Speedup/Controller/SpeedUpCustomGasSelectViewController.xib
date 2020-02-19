@@ -25,13 +25,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SpeedUpCustomGasSelectViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="currentFeeLabel" destination="vhm-nb-uON" id="hPl-Fx-qFQ"/>
+                <outlet property="currentFeeTitleLabel" destination="0e5-Dg-dq5" id="39c-id-gsY"/>
                 <outlet property="doneButton" destination="i3J-gB-tha" id="aKg-c6-cY4"/>
                 <outlet property="fastGasPriceButton" destination="5Kx-WB-1mn" id="tcX-C0-oLc"/>
                 <outlet property="fastGasPriceLabel" destination="KDu-pK-fWh" id="B23-CB-RVD"/>
                 <outlet property="gasFeeSelectBoxContainer" destination="80C-bx-75b" id="U3a-Xz-dTD"/>
+                <outlet property="gasPriceWarningMessageLabel" destination="mKC-gr-BxT" id="Feq-OA-Iy2"/>
                 <outlet property="headerView" destination="TZp-mD-Qzl" id="VYl-Ff-dAG"/>
+                <outlet property="mainTextTitle" destination="Vf8-5k-8bX" id="vMd-OM-azh"/>
                 <outlet property="navigationTitleLabel" destination="hMQ-d4-n3f" id="c4g-bL-jwL"/>
                 <outlet property="newFeeLabel" destination="u6L-Jf-F1j" id="vuV-jm-4X5"/>
+                <outlet property="newFeeTitleLabel" destination="1El-L4-EYD" id="cwC-IC-kmC"/>
                 <outlet property="regularGasPriceButton" destination="wS9-lg-k6M" id="GcL-Dz-jsY"/>
                 <outlet property="regularGasPriceLabel" destination="XXI-Mx-BMc" id="5WA-i0-ery"/>
                 <outlet property="slowGasPriceButton" destination="AHo-8w-kza" id="km2-MV-276"/>

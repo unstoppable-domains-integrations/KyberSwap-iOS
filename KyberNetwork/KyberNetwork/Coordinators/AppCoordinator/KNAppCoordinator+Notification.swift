@@ -279,9 +279,9 @@ extension KNAppCoordinator {
           } else if let isCancel = info["is_cancel"] as? TransactionType {
             switch isCancel {
             case .cancel:
-              popupMessage = "Your cancel transaction can be created".toBeLocalised()
+              popupMessage = "Can not cancel the transaction".toBeLocalised()
             case .speedup:
-              popupMessage = "Your speed up transaction can be created".toBeLocalised()
+              popupMessage = "Can not speed up the transaction".toBeLocalised()
             default:
               popupMessage = ""
             }

@@ -663,3 +663,18 @@
 "Go back" = "Quay lại";
 "Yes" = "Đồng ý";
 "No" = "Không";
+
+"speed up" = "Tăng tốc";
+"your.gas.must.be.10.percent.higher" = "Phí gas phải lớn hơn 10% so với phí gas hiện tại";
+"Can not speed up the transaction" = "Không thể tăng tốc giao dịch này";
+"Can not cancel the transaction" = "Không thể hủy giảo dịch này";
+"Current fee" = "Phí hiện tại";
+"New fee" = "Phí mới";
+"sumitting.does.not.guarantee" = "Thực hiện lệnh này không đảm bảo giao dịch ban đầu của bạn sẽ được hủy. Nếu việc hủy giao dịch thành công, bạn sẽ phải trả phí gas nêu trên.";
+
+"Cancellation Gas Fee" = "Hủy bỏ phí gas";
+"Attempt to Cancel?" = "Quyết định hủy bỏ?";
+"Customize Gas" = "Customize Gas";
+"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
+"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
+"Your speedup transaction might be lost" = "Your speedup transaction might be lost";

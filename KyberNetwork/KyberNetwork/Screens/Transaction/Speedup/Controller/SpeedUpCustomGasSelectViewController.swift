@@ -28,7 +28,10 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   @IBOutlet weak var newFeeLabel: UILabel!
   @IBOutlet weak var doneButton: UIButton!
   @IBOutlet weak var gasFeeSelectBoxContainer: UIView!
-
+  @IBOutlet weak var mainTextTitle: UILabel!
+  @IBOutlet weak var currentFeeTitleLabel: UILabel!
+  @IBOutlet weak var newFeeTitleLabel: UILabel!
+  @IBOutlet weak var gasPriceWarningMessageLabel: UILabel!
   fileprivate let viewModel: SpeedUpCustomGasSelectViewModel
   weak var delegate: SpeedUpCustomGasSelectDelegate?
 
@@ -48,9 +51,14 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
-    self.navigationTitleLabel.text = NSLocalizedString("cus", value: "Transaction Details", comment: "")
-    self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.gasFeeSelectBoxContainer.rounded(radius: 5.0)
+    navigationTitleLabel.text = "Customize Gas".toBeLocalised()
+    mainTextTitle.text = "Select.higher.tx.fee.to.accelerate".toBeLocalised()
+    gasPriceWarningMessageLabel.text = "your.gas.must.be.10.percent.higher".toBeLocalised()
+    currentFeeLabel.text = "Current fee".toBeLocalised()
+    newFeeLabel.text = "New fee".toBeLocalised()
+    doneButton.setTitle("done".toBeLocalised(), for: .normal)
+    headerView.applyGradient(with: UIColor.Kyber.headerColors)
+    gasFeeSelectBoxContainer.rounded(radius: 5.0)
     superFastGasPriceButton.backgroundColor = .white
     fastGasPriceButton.backgroundColor = .white
     regularGasPriceButton.backgroundColor = .white
@@ -65,8 +73,9 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     slowGasPriceLabel.addGestureRecognizer(tapSlow)
     currentFeeLabel.text = viewModel.currentTransactionFeeETHString
     let style = KNAppStyleType.current
-    let radius = style.buttonRadius(for: self.doneButton.frame.height)
-    self.doneButton.rounded(radius: radius)
+    let radius = style.buttonRadius(for: doneButton.frame.height)
+    doneButton.rounded(radius: radius)
+    doneButton.applyGradient()
   }
 
   func updateGasPriceUIs() {
@@ -108,6 +117,7 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   }
 
   @IBAction func doneButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_done_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id])
     if viewModel.isNewGasPriceValid() {
       delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: viewModel.transaction, newGasPrice: viewModel.getNewTransactionGasPriceETH()))
     } else {
@@ -115,6 +125,7 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     }
   }
   @IBAction func backButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_back_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id])
     delegate?.speedUpCustomGasSelectViewController(self, run: .back)
   }
   @objc func userTappedSelectBoxLabel(_ sender: UITapGestureRecognizer) {
@@ -123,6 +134,7 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   }
   @IBAction func selectBoxButtonTapped(_ sender: UIButton) {
     guard let type = KNSelectedGasPriceType(rawValue: sender.tag) else { return }
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_option_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id, "option": type])
     handleGasFeeChange(type)
   }
   func handleGasFeeChange(_ type: KNSelectedGasPriceType) {

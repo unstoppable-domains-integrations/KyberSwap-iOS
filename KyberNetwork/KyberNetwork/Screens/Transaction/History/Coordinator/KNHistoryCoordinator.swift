@@ -294,7 +294,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     case .invaild:
       self.navigationController.showErrorTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "Your gas price must be 10% higher than the current gas price".toBeLocalised(),
+        message: "your.gas.must.be.10.percent.higher".toBeLocalised(),
         time: 1.5
       )
     }

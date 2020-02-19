@@ -661,3 +661,18 @@
 "Go back" = "回到上一步";
 "Yes" = "Yes";
 "No" = "No";
+
+"speed up" = "加快速度";
+"your.gas.must.be.10.percent.higher" = "您的燃料价格必须比当前燃料价格高10％";
+"Can not speed up the transaction" = "无法加快交易";
+"Can not cancel the transaction" = "无法取消交易";
+"Current fee" = "当前费用";
+"New fee" = "新的费用";
+"sumitting.does.not.guarantee" = "提交取消交易的请求并不能保证您的原始交易将被取消。如果请求成功，您将被收取上述交易费用。";
+
+"Cancellation Gas Fee" = "取消燃料费用";
+"Attempt to Cancel?" = "你想要取消吗?";
+"Customize Gas" = "Customize Gas";
+"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
+"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
+"Your speedup transaction might be lost" = "Your speedup transaction might be lost";

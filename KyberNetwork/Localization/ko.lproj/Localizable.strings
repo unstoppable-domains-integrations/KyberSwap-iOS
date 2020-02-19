@@ -663,3 +663,18 @@
 "Go back" = "Go back";
 "Yes" = "Yes";
 "No" = "No";
+
+"speed up" = "속도 올리기";
+"your.gas.must.be.10.percent.higher" = "가스비는 현재 가스비보다 10%이상 높아야합니다";
+"Can not speed up the transaction" = "해당 거래의 속도를 올릴 수 없습니다.";
+"Can not cancel the transaction" = "거래를 취소할 수 없습니다. ";
+"Current fee" = "현재 수수료";
+"New fee" = "새로운 수수료";
+"sumitting.does.not.guarantee" = "거래 취소 시도가 기존 거래의 취소를 보장하지는 않습니다. 취소 시도가 성공하였을 경우 위에 적힌 금액만큼의 거래 수수료가 부과됩니다.";
+
+"Cancellation Gas Fee" = "취소 가스비";
+"Attempt to Cancel?" = "취소를 시도하시겠습니까?";
+"Customize Gas" = "Customize Gas";
+"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
+"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
+"Your speedup transaction might be lost" = "Your speedup transaction might be lost";
