@@ -308,7 +308,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
 
   @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "select_notification_menu_button", customAttributes: nil)
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_balance", customAttributes: ["action": "select_notification_menu_button"])
     self.delegate?.kWalletBalanceViewController(self, run: .selectNotifications)
   }
 
