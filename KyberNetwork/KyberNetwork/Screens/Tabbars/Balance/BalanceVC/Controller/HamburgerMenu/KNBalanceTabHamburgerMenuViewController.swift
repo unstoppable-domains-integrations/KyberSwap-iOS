@@ -96,10 +96,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
   @IBOutlet weak var walletConnectLabel: UILabel!
   @IBOutlet weak var walletConnectView: UIView!
 
-  @IBOutlet weak var notificationsTextLabel: UILabel!
-  @IBOutlet weak var unreadNotiLabel: UILabel!
-  @IBOutlet weak var notificationContainerView: UIView!
-
   @IBOutlet weak var sendTokenButton: UIButton!
   @IBOutlet weak var hamburgerMenuViewTrailingConstraint: NSLayoutConstraint!
 
@@ -119,22 +115,9 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  deinit {
-    let name = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.removeObserver(self, name: name, object: nil)
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
-
-    let name = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.notificationDidUpdate(_:)),
-      name: name,
-      object: nil
-    )
   }
 
   fileprivate func setupUI() {
@@ -172,15 +155,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       for: .normal
     )
 
-    self.notificationsTextLabel.text = NSLocalizedString("notifications", value: "Notifications", comment: "").uppercased()
-    self.unreadNotiLabel.rounded(radius: self.unreadNotiLabel.frame.height / 2.0)
-    self.unreadNotiLabel.text = "0"
-    self.unreadNotiLabel.isHidden = true
-
-    let notiTappedGesture = UITapGestureRecognizer(target: self, action: #selector(self.notificationsTapped(_:)))
-    self.notificationContainerView.addGestureRecognizer(notiTappedGesture)
-    self.notificationContainerView.isUserInteractionEnabled = true
-
     self.promoCodeTextLabel.text = NSLocalizedString("kybercode", value: "KyberCode", comment: "").uppercased()
     let promoTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.promoCodeTapped(_:)))
     self.promoCodeContainerView.addGestureRecognizer(promoTapGesture)
@@ -216,15 +190,9 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
     self.numberPendingTxLabel.isHidden = transactions.isEmpty
   }
 
-  func update(notificationsCount: Int) {
-    self.unreadNotiLabel.text = "\(notificationsCount)"
-    self.unreadNotiLabel.isHidden = notificationsCount == 0
-  }
-
   func openMenu(animated: Bool, completion: (() -> Void)? = nil) {
     self.view.isHidden = false
     self.hamburgerMenuViewTrailingConstraint.constant = 0
-    self.notificationDidUpdate(nil)
     let duration: TimeInterval = animated ? 0.3 : 0
     UIView.animate(withDuration: duration, animations: {
       self.view.alpha = 1
@@ -256,13 +224,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
       self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectPromoCode)
     }
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_hamburger_menu", customAttributes: ["action": "kybercode"])
-  }
-
-  @objc func notificationsTapped(_ sender: Any?) {
-    self.hideMenu(animated: true) {
-      self.delegate?.balanceTabHamburgerMenuViewController(self, run: .selectNotifications)
-    }
-    KNCrashlyticsUtil.logCustomEvent(withName: "screen_hamburger_menu", customAttributes: ["action": "notifications"])
   }
 
   @objc func walletConnectTapped(_ sender: Any?) {
@@ -379,14 +340,6 @@ class KNBalanceTabHamburgerMenuViewController: KNBaseViewController {
         self.openMenu(animated: true)
       }
     }
-  }
-
-  @objc func notificationDidUpdate(_ sender: Any?) {
-    let numUnread: Int = {
-      if IEOUserStorage.shared.user == nil { return 0 }
-      return KNNotificationCoordinator.shared.numberUnread
-    }()
-    self.update(notificationsCount: numUnread)
   }
 }
 
