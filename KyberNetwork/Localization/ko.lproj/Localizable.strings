@@ -663,3 +663,4 @@
 "Go back" = "Go back";
 "Yes" = "Yes";
 "No" = "No";
+"%@ (Gas Price) * %@ (Gas Limit)" = "%@ (가스비) * %@ (가스리밋)";
