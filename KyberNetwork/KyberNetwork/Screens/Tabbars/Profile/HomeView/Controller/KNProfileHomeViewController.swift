@@ -63,7 +63,9 @@ class KNProfileHomeViewController: KNBaseViewController {
   @IBOutlet weak var signInButton: UIButton!
 
   @IBOutlet weak var socialContainerView: UIView!
-
+  @IBOutlet weak var userImageView: UIImageView!
+  @IBOutlet weak var userNameLabel: UILabel!
+  @IBOutlet weak var userEmailLabel: UILabel!
   @IBOutlet weak var signInHeaderView: UIView!
   @IBOutlet weak var signedInView: UIView!
   @IBOutlet weak var logOutButton: UIButton!
@@ -211,6 +213,11 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIUserDidSignedIn() {
+    guard let user = self.viewModel.currentUser else { return }
+    let url: String = {
+      if user.avatarURL.starts(with: "http") { return user.avatarURL }
+      return "\(KNAppTracker.getKyberProfileBaseString())\(user.avatarURL)"
+    }()
     self.emailTextField.text = ""
     self.passwordTextField.text = ""
     self.signInHeaderView.removeSublayer(at: 0)
@@ -219,6 +226,15 @@ class KNProfileHomeViewController: KNBaseViewController {
       with: KNAlertStorage.shared.alerts,
       isFull: false
     )
+    self.userImageView.setImage(
+      with: url,
+      placeholder: UIImage(named: "account"),
+      size: nil
+    )
+    self.userNameLabel.text = user.name
+    self.userNameLabel.addLetterSpacing()
+    self.userEmailLabel.text = user.contactID
+    self.userEmailLabel.addLetterSpacing()
   }
 
   @IBAction func forgotButtonPressed(_ sender: Any) {
@@ -249,14 +265,6 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.passwordTextField.isSecureTextEntry = self.signInViewModel.isSecureText
     let image = !self.signInViewModel.isSecureText ? UIImage(named: "hide_secure_text") : UIImage(named: "show_secure_text")
     self.secureTextButton.setImage(image, for: .normal)
-  }
-
-  @IBAction func pdpaUpdateButtonPressed(_ sender: Any) {
-    let popup = KNPDPAUpdateInfoPopUp()
-    popup.loadViewIfNeeded()
-    popup.modalPresentationStyle = .overFullScreen
-    popup.modalTransitionStyle = .crossDissolve
-    self.present(popup, animated: true, completion: nil)
   }
 
   @IBAction func signInButtonPressed(_ sender: Any) {

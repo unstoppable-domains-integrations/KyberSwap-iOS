@@ -1,6 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-//swiftlint:disable file_length
+
 import Moya
 import CryptoSwift
 import BigInt
@@ -558,8 +558,169 @@ extension NativeSignInUpService: TargetType {
     }
     return [
       "content-type": "application/json",
+//      "client": Bundle.main.bundleIdentifier ?? "",
+      "client-build": Bundle.main.buildNumber ?? "",
+    ]
+  }
+}
+
+enum ProfileService {
+  case personalInfo(
+    accessToken: String,
+    firstName: String, middleName: String, lastName: String,
+    nativeFullName: String,
+    gender: Bool, dob: String, nationality: String,
+    residentialAddress: String, country: String, city: String, zipCode: String,
+    proofAddress: String, proofAddressImageData: Data,
+    sourceFund: String,
+    occupationCode: String?, industryCode: String?, taxCountry: String?, taxIDNo: String?
+  )
+  case identityInfo(
+    accessToken: String,
+    documentType: String, documentID: String,
+    issueDate: String?, expiryDate: String?,
+    docFrontImage: Data, docBackImage: Data?, docHoldingImage: Data
+  )
+  case submitKYC(accessToken: String)
+  case resubmitKYC(accessToken: String)
+  case promoCode(promoCode: String, nonce: UInt)
+
+  var apiPath: String {
+    switch self {
+    case .personalInfo: return KNSecret.personalInfoEndpoint
+    case .identityInfo: return KNSecret.identityInfoEndpoint
+    case .submitKYC: return KNSecret.submitKYCEndpoint
+    case .resubmitKYC: return KNSecret.resubmitKYC
+    case .promoCode: return ""
+    }
+  }
+}
+
+extension ProfileService: MoyaCacheable {
+  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+  var httpShouldHandleCookies: Bool { return false }
+}
+
+extension ProfileService: TargetType {
+  var baseURL: URL {
+    let baseString = KNAppTracker.getKyberProfileBaseString()
+    if case .promoCode(let promoCode, let nonce) = self {
+      let path = "\(KNSecret.promoCode)?code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
+      return URL(string: "\(baseString)/api\(path)")!
+    }
+    return URL(string: "\(baseString)/api")!
+  }
+
+  var path: String { return self.apiPath }
+  var method: Moya.Method {
+    if case .promoCode = self { return .get }
+    return .post
+  }
+  var task: Task {
+    switch self {
+    case .personalInfo(
+      _,
+      let firstName,
+      let middleName,
+      let lastName,
+      let nativeFullName,
+      let gender,
+      let dob,
+      let nationality,
+      let residentialAddress,
+      let country,
+      let city,
+      let zipCode,
+      let proofAddress,
+      let proofAddressImageData,
+      let sourceFund,
+      let occupationCode,
+      let industryCode,
+      let taxCountry,
+      let taxIDNo):
+      var json: JSONDictionary = [
+        "first_name": firstName,
+        "middle_name": middleName,
+        "last_name": lastName,
+        "native_full_name": nativeFullName,
+        "gender": gender,
+        "dob": dob,
+        "nationality": nationality,
+        "residential_address": residentialAddress,
+        "country": country,
+        "city": city,
+        "zip_code": zipCode,
+        "document_proof_address": proofAddress,
+        "photo_proof_address": "data:image/jpeg;base64,\(proofAddressImageData.base64EncodedString())",
+        "source_fund": sourceFund,
+      ]
+      if let code = occupationCode {
+        json["occupation_code"] = code
+      }
+      if let code = industryCode {
+        json["industry_code"] = code
+      }
+      if let taxCountry = taxCountry {
+        json["tax_residency_country"] = taxCountry
+      }
+      json["have_tax_identification"] = taxIDNo != nil
+      json["tax_identification_number"] = taxIDNo ?? ""
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .identityInfo(_, let documentType, let documentID, let issueDate, let expiryDate, let docFrontImage, let docBackImage, let docHoldingImage):
+      var json: JSONDictionary = [
+        "document_type": documentType,
+        "document_id": documentID,
+        "document_issue_date": issueDate ?? "",
+        "document_expiry_date": expiryDate ?? "",
+        "photo_identity_front_side": "data:image/jpeg;base64,\(docFrontImage.base64EncodedString())",
+        "photo_selfie": "data:image/jpeg;base64,\(docHoldingImage.base64EncodedString())",
+      ]
+      if let docBackImage = docBackImage {
+        json["photo_identity_back_side"] = "data:image/jpeg;base64,\(docBackImage.base64EncodedString())"
+      }
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .resubmitKYC, .submitKYC, .promoCode:
+      return .requestPlain
+    }
+  }
+
+  var sampleData: Data { return Data() }
+  var headers: [String: String]? {
+    var json: [String: String] = [
+      "content-type": "application/json",
       "client": Bundle.main.bundleIdentifier ?? "",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
+    switch self {
+    case .personalInfo(
+      let accessToken, _, _, _, _, _, _, _, _,
+      _, _, _, _, _, _, _, _, _, _):
+      json["Authorization"] = accessToken
+    case .identityInfo(let accessToken, _, _, _, _, _, _, _):
+      json["Authorization"] = accessToken
+    case .submitKYC(let accessToken):
+      json["Authorization"] = accessToken
+    case .resubmitKYC(let accessToken):
+      json["Authorization"] = accessToken
+    case .promoCode(let promoCode, let nonce):
+      let key: String = {
+        if KNEnvironment.default == .production || KNEnvironment.default == .mainnetTest {
+          return KNSecret.promoCodeProdSecretKey
+        }
+        return KNSecret.promoCodeDevSecretKey
+      }()
+      let string = "code=\(promoCode)&isInternalApp=True&nonce=\(nonce)"
+      let hmac = try! HMAC(key: key, variant: .sha512)
+      let hash = try! hmac.authenticate(string.bytes).toHexString()
+      return [
+        "Content-Type": "application/x-www-form-urlencoded",
+        "signed": hash,
+        "client": Bundle.main.bundleIdentifier ?? "",
+        "client-build": Bundle.main.buildNumber ?? "",
+      ]
+    }
+    return json
   }
 }
