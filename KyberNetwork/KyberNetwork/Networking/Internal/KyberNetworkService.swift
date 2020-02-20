@@ -1,6 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-//swiftlint:disable file_length
+
 import Moya
 import CryptoSwift
 import BigInt
@@ -74,7 +74,7 @@ extension KyberNetworkService: TargetType {
   var headers: [String: String]? {
     return [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
   }
@@ -145,7 +145,7 @@ extension KNTrackerService: TargetType {
   var headers: [String: String]? {
     return [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
   }
@@ -263,7 +263,7 @@ extension UserInfoService: TargetType {
   var headers: [String: String]? {
     var json: [String: String] = [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
     switch self {
@@ -372,7 +372,7 @@ extension LimitOrderService: TargetType {
   var headers: [String: String]? {
     var json: [String: String] = [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
     switch self {
@@ -535,7 +535,7 @@ extension NativeSignInUpService: TargetType {
     if case .updatePassword(_, _, _, let authenToken) = self {
       return [
         "content-type": "application/json",
-        "client": Bundle.main.bundleIdentifier ?? "",
+        "client": "com.kyberswap.ios.new",
         "client-build": Bundle.main.buildNumber ?? "",
         "Authorization": authenToken,
       ]
@@ -543,7 +543,7 @@ extension NativeSignInUpService: TargetType {
     if case .getUserInfo(let authenToken) = self {
       return [
         "content-type": "application/json",
-        "client": Bundle.main.bundleIdentifier ?? "",
+        "client": "com.kyberswap.ios.new",
         "client-build": Bundle.main.buildNumber ?? "",
         "Authorization": authenToken,
       ]
@@ -551,20 +551,20 @@ extension NativeSignInUpService: TargetType {
     if case .transferConsent(let authenToken, _) = self {
       return [
         "content-type": "application/json",
-        "client": Bundle.main.bundleIdentifier ?? "",
+        "client": "com.kyberswap.ios.new",
         "client-build": Bundle.main.buildNumber ?? "",
         "Authorization": authenToken,
       ]
     }
     return [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
   }
 }
 
-enum ProfileKYCService {
+enum ProfileService {
   case personalInfo(
     accessToken: String,
     firstName: String, middleName: String, lastName: String,
@@ -596,12 +596,12 @@ enum ProfileKYCService {
   }
 }
 
-extension ProfileKYCService: MoyaCacheable {
+extension ProfileService: MoyaCacheable {
   var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
   var httpShouldHandleCookies: Bool { return false }
 }
 
-extension ProfileKYCService: TargetType {
+extension ProfileService: TargetType {
   var baseURL: URL {
     let baseString = KNAppTracker.getKyberProfileBaseString()
     if case .promoCode(let promoCode, let nonce) = self {
@@ -690,7 +690,7 @@ extension ProfileKYCService: TargetType {
   var headers: [String: String]? {
     var json: [String: String] = [
       "content-type": "application/json",
-      "client": Bundle.main.bundleIdentifier ?? "",
+      "client": "com.kyberswap.ios.new",
       "client-build": Bundle.main.buildNumber ?? "",
     ]
     switch self {
@@ -717,7 +717,7 @@ extension ProfileKYCService: TargetType {
       return [
         "Content-Type": "application/x-www-form-urlencoded",
         "signed": hash,
-        "client": Bundle.main.bundleIdentifier ?? "",
+        "client": "com.kyberswap.ios.new",
         "client-build": Bundle.main.buildNumber ?? "",
       ]
     }

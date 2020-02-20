@@ -693,10 +693,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = Double(amount) / Double(BigInt(10).power(from.decimals))
-    if !from.isDAI && !to.isDAI {
-      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice)
-      return
-    }
+
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KNTrackerService>(plugins: [MoyaCacheablePlugin()])
       provider.request(.getGasLimit(src: src, dest: dest, amount: amt)) { [weak self] result in
