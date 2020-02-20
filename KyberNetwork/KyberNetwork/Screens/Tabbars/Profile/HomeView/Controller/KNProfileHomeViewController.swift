@@ -171,11 +171,11 @@ class KNProfileHomeViewController: KNBaseViewController {
     self.signedInView.isHidden = !self.viewModel.isUserSignedIn
     self.logOutButton.setTitle(NSLocalizedString("log.out", value: "Log Out", comment: ""), for: .normal)
     self.logOutButton.addTextSpacing()
-    let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
-      NSAttributedStringKey.underlineStyle: 1,
-    ]
+    self.userImageView.rounded(
+      color: UIColor.Kyber.border,
+      width: 0.5,
+      radius: self.userImageView.frame.height / 2.0
+    )
     self.setupPriceAlertsView()
     self.updateUIUserDidSignedIn()
     self.view.layoutSubviews()
