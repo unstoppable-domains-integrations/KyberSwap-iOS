@@ -112,7 +112,7 @@ class KNExternalProvider {
     }
   }
 
-  func tranferWithoutIncreaseTxNonce(transaction: UnconfirmedTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func speedUpTransferTransaction(transaction: UnconfirmedTransaction, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.requestDataForTokenTransfer(transaction, completion: { [weak self] dataResult in
       guard let `self` = self else { return }
       switch dataResult {

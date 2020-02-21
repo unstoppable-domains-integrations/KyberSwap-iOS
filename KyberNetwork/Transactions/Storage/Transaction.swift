@@ -382,15 +382,17 @@ extension Transaction {
     guard let currentGasPrice = Double(self.gasPrice)  else {
       return nil
     }
-    let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceDefault)
+    let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceMax)
     let nouce = BigInt(self.nonce)
-    let unconfirmTx = UnconfirmedTransaction(transferType: .ether(destination: address),
-                                             value: BigInt(0),
-                                             to: address,
-                                             data: nil,
-                                             gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
-                                             gasPrice: gasPrice,
-                                             nonce: nouce)
+    let unconfirmTx = UnconfirmedTransaction(
+      transferType: .ether(destination: address),
+      value: BigInt(0),
+      to: address,
+      data: nil,
+      gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
+      gasPrice: gasPrice,
+      nonce: nouce
+    )
     return unconfirmTx
   }
 

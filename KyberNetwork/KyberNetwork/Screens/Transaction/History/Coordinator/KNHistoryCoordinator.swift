@@ -255,7 +255,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     guard let unconfirmTx = transaction.makeCancelTransaction() else {
       return
     }
-    self.session.externalProvider.tranferWithoutIncreaseTxNonce(transaction: unconfirmTx, completion: { [weak self] sendResult in
+    self.session.externalProvider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
@@ -319,7 +319,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     }
   }
   fileprivate func sendSpeedUpForTransferTransaction(transaction: UnconfirmedTransaction, original: Transaction) {
-    self.session.externalProvider.tranferWithoutIncreaseTxNonce(transaction: transaction, completion: { [weak self] sendResult in
+    self.session.externalProvider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
@@ -356,23 +356,27 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx {
         if !fetchedTx.input.isEmpty {
-          self.session.externalProvider.speedUpSwapTransaction(for: filteredToken,
-                                                               amount: amount,
-                                                               nonce: nouce,
-                                                               data: fetchedTx.input,
-                                                               gasPrice: newPrice,
-                                                               gasLimit: gasLimit) { sendResult in
-                                                                switch sendResult {
-                                                                case .success(let txHash):
-                                                                  let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
-                                                                  self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
-                                                                case .failure:
-                                                                  KNNotificationUtil.postNotification(
-                                                                    for: kTransactionDidUpdateNotificationKey,
-                                                                    object: [Constants.transactionIsCancel: TransactionType.speedup],
-                                                                    userInfo: nil
-                                                                  )
-                                                                }
+          self.session
+            .externalProvider
+            .speedUpSwapTransaction(
+              for: filteredToken,
+              amount: amount,
+              nonce: nouce,
+              data: fetchedTx.input,
+              gasPrice: newPrice,
+              gasLimit: gasLimit
+            ) { sendResult in
+              switch sendResult {
+              case .success(let txHash):
+                let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
+                self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
+              case .failure:
+                KNNotificationUtil.postNotification(
+                  for: kTransactionDidUpdateNotificationKey,
+                  object: [Constants.transactionIsCancel: TransactionType.speedup],
+                  userInfo: nil
+                )
+              }
           }
         }
       }

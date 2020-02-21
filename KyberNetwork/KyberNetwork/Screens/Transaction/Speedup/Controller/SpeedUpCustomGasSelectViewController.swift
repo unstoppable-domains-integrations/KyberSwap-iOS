@@ -57,12 +57,14 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     currentFeeLabel.text = "Current fee".toBeLocalised()
     newFeeLabel.text = "New fee".toBeLocalised()
     doneButton.setTitle("done".toBeLocalised(), for: .normal)
+
     headerView.applyGradient(with: UIColor.Kyber.headerColors)
     gasFeeSelectBoxContainer.rounded(radius: 5.0)
     superFastGasPriceButton.backgroundColor = .white
     fastGasPriceButton.backgroundColor = .white
     regularGasPriceButton.backgroundColor = .white
     slowGasPriceButton.backgroundColor = .white
+
     let tapSuperFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
     superFastGasPriceLabel.addGestureRecognizer(tapSuperFast)
     let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
