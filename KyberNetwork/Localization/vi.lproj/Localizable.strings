@@ -672,7 +672,7 @@
 
 "Cancellation Gas Fee" = "Hủy bỏ phí gas";
 "Attempt to Cancel?" = "Quyết định hủy bỏ?";
-"Customize Gas" = "Customize Gas";
-"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
-"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
-"Your speedup transaction might be lost" = "Your speedup transaction might be lost";
+"Customize Gas" = "Tùy chọn phí gas";
+"Select.higher.tx.fee.to.accelerate" = "Chọn phí gas cao hơn để tăng tốc giao dịch";
+"Your cancel transaction might be lost" = "Giao dịch bạn hủy có thể bị thất bại";
+"Your speedup transaction might be lost" = "Giao dịch bạn tăng tốc có thể bị thất bại";

@@ -670,7 +670,7 @@
 
 "Cancellation Gas Fee" = "取消燃料费用";
 "Attempt to Cancel?" = "你想要取消吗?";
-"Customize Gas" = "Customize Gas";
-"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
-"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
-"Your speedup transaction might be lost" = "Your speedup transaction might be lost";
+"Select.higher.tx.fee.to.accelerate" = "选择较高的燃料价格以加快交易处理";
+"Customize Gas" = "自定义燃料费用";
+"Your speedup transaction might be lost" = "您的加速交易可能会丢失";
+"Your cancel transaction might be lost" = "您的取消交易可能会丢失";

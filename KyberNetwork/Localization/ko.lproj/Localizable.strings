@@ -672,7 +672,8 @@
 
 "Cancellation Gas Fee" = "취소 가스비";
 "Attempt to Cancel?" = "취소를 시도하시겠습니까?";
-"Customize Gas" = "Customize Gas";
-"Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
-"Your cancel transaction might be lost" = "Your cancel transaction might be lost";
-"Your speedup transaction might be lost" = "Your speedup transaction might be lost";
+"Select.higher.tx.fee.to.accelerate" = "트랜잭션 처리 속도를 높이려면 가스비를 더 높게 설정하세요.";
+"Customize Gas" = "가스비 맞춤 설정";
+"Your speedup transaction might be lost" = "트랜잭션 처리 속도를 높이기 위한 트랜잭션은 유실 될 가능성이 있습니다.";
+"Your cancel transaction might be lost" = "트랜잭션 취소를 위한 트랜잭션은 유실 될 가능성이 있습니다.";
+
