@@ -50,6 +50,14 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     updateGasPriceUIs()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    headerView.removeSublayer(at: 0)
+    headerView.applyGradient(with: UIColor.Kyber.headerColors)
+    doneButton.removeSublayer(at: 0)
+    doneButton.applyGradient()
+  }
+
   fileprivate func updateUI() {
     navigationTitleLabel.text = "Customize Gas".toBeLocalised()
     mainTextTitle.text = "Select.higher.tx.fee.to.accelerate".toBeLocalised()
