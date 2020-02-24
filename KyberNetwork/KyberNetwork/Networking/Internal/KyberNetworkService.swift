@@ -165,6 +165,7 @@ enum UserInfoService {
   case sendTxHash(authToken: String, txHash: String)
   case getNotification(accessToken: String?, pageIndex: Int)
   case markAsRead(accessToken: String?, ids: [Int])
+  case deleteAllTriggerdAlerts(accessToken: String)
 }
 
 extension UserInfoService: MoyaCacheable {
@@ -201,6 +202,8 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/notifications?page_index=\(pageIndex)&page_size=10")!
     case .markAsRead:
       return URL(string: "\(baseString)/api/notifications/mark_as_read")!
+    case .deleteAllTriggerdAlerts:
+      return URL(string: "\(baseString)/api/alerts/delete_triggered")!
     }
   }
 
@@ -209,7 +212,7 @@ extension UserInfoService: TargetType {
   var method: Moya.Method {
     switch self {
     case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getUserTradeCap, .getNotification: return .get
-    case .removeAnAlert: return .delete
+    case .removeAnAlert, .deleteAllTriggerdAlerts: return .delete
     case .addPushToken, .updateAlert: return .patch
     case .markAsRead: return .put
     default: return .post
@@ -241,7 +244,7 @@ extension UserInfoService: TargetType {
       print(json)
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification:
+    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts:
       return .requestPlain
     case .getUserTradeCap:
       return .requestPlain
@@ -293,6 +296,8 @@ extension UserInfoService: TargetType {
       if let token = accessToken { json["Authorization"] = token }
     case .markAsRead(let accessToken, _):
       if let token = accessToken { json["Authorization"] = token }
+    case .deleteAllTriggerdAlerts(let accessToken):
+      json["Authorization"] = accessToken
     }
     return json
   }
