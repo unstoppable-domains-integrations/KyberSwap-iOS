@@ -198,6 +198,7 @@ extension KNBalanceTabCoordinator {
   }
 
   func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    if self.historyCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) == true { return true }
     if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) == true { return true }
     return self.tokenChartCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
   }

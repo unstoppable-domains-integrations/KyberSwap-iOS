@@ -672,3 +672,5 @@
 "Select.higher.tx.fee.to.accelerate" = "Select a higher gas fee to accelerate the processing of your transaction";
 "Your cancel transaction might be lost" = "Your cancel transaction might be lost";
 "Your speedup transaction might be lost" = "Your speedup transaction might be lost";
+"Your transaction has been cancelled successfully" = "Your transaction has been cancelled successfully";
+"Your transaction has been speeded up successfully" = "Your transaction has been speeded up successfully";

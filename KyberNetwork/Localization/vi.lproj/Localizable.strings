@@ -676,3 +676,5 @@
 "Select.higher.tx.fee.to.accelerate" = "Chọn phí gas cao hơn để tăng tốc giao dịch";
 "Your cancel transaction might be lost" = "Giao dịch bạn hủy có thể bị thất bại";
 "Your speedup transaction might be lost" = "Giao dịch bạn tăng tốc có thể bị thất bại";
+"Your transaction has been cancelled successfully" = "Bạn đã hủy bỏ giao dịch thành công";
+"Your transaction has been speeded up successfully" = "Bạn đã tăng tốc giao dịch thành công";

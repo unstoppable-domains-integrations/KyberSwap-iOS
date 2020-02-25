@@ -21,6 +21,7 @@ class KNHistoryCoordinator: Coordinator {
 
   var coordinators: [Coordinator] = []
   weak var delegate: KNHistoryCoordinatorDelegate?
+  fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
 
   lazy var rootViewController: KNHistoryViewController = {
     let viewModel = KNHistoryViewModel(
@@ -203,6 +204,14 @@ class KNHistoryCoordinator: Coordinator {
     speedUpViewController?.updateGasPriceUIs()
   }
 
+  func coordinatorDidUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    if let txHash = self.transactionStatusVC?.transaction.id, txHash == txID {
+      self.transactionStatusVC?.updateView(with: tx)
+      return true
+    }
+    return false
+  }
+
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: Transaction) {
     let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
     let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
@@ -219,6 +228,15 @@ class KNHistoryCoordinator: Coordinator {
     controller.delegate = self
     navigationController.pushViewController(controller, animated: true)
     speedUpViewController = controller
+  }
+
+  fileprivate func openTransactionStatusPopUp(transaction: Transaction) {
+    let trans = KNTransaction.from(transaction: transaction)
+    self.transactionStatusVC = KNTransactionStatusPopUp(transaction: trans)
+    self.transactionStatusVC?.modalPresentationStyle = .overFullScreen
+    self.transactionStatusVC?.modalTransitionStyle = .crossDissolve
+    self.transactionStatusVC?.delegate = self
+    self.navigationController.present(self.transactionStatusVC!, animated: true, completion: nil)
   }
 }
 
@@ -266,6 +284,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
           type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
+        self.openTransactionStatusPopUp(transaction: tx)
       case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -330,6 +349,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
           type: .speedup
         )
         self.session.updatePendingTransactionWithHash(hashTx: original.id, ultiTransaction: tx)
+        self.openTransactionStatusPopUp(transaction: tx)
       case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -370,6 +390,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
               case .success(let txHash):
                 let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.displayRate(decimals: 0).removeGroupSeparator())
                 self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
+                self.openTransactionStatusPopUp(transaction: tx)
               case .failure:
                 KNNotificationUtil.postNotification(
                   for: kTransactionDidUpdateNotificationKey,
@@ -379,6 +400,20 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
               }
           }
         }
+      }
+    }
+  }
+}
+
+extension KNHistoryCoordinator: KNTransactionStatusPopUpDelegate {
+  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
+    self.transactionStatusVC = nil
+    if action == .swap {
+      KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
+    }
+    if action == .dismiss {
+      if #available(iOS 10.3, *) {
+        KNAppstoreRatingManager.requestReviewIfAppropriate()
       }
     }
   }
