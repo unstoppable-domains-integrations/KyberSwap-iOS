@@ -78,7 +78,7 @@ class KNAlertTableView: XibLoaderView {
     if !isFull { self.alerts = Array(self.alerts.prefix(2)) }
     if self.isFull {
       self.activeAlerts = self.alerts.filter({ return $0.state == .active })
-      self.triggeredAlerts = self.alerts.filter({ return $0.state == .active })
+      self.triggeredAlerts = self.alerts.filter({ return $0.state != .active })
     }
     let height: CGFloat = {
       if !isFull { return self.alertTableView.rowHeight * CGFloat(self.alerts.count) }
