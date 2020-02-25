@@ -11,6 +11,9 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -29,10 +32,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcT-ma-Q5K">
-                    <rect key="frame" x="272" y="5" width="87" height="30"/>
-                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                    <rect key="frame" x="288" y="6.5" width="76" height="27"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="12"/>
                     <state key="normal" title="DELETE ALL">
-                        <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" red="0.98039215686274506" green="0.396078431372549" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="deleteAllButtonTapped:" destination="-2" eventType="touchUpInside" id="eNB-Vk-d9u"/>
@@ -43,7 +46,7 @@
             <constraints>
                 <constraint firstItem="qcT-ma-Q5K" firstAttribute="centerY" secondItem="kqk-RH-hCo" secondAttribute="centerY" id="Pal-E4-5dS"/>
                 <constraint firstItem="kqk-RH-hCo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="VHx-pL-L9C"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qcT-ma-Q5K" secondAttribute="trailing" constant="16" id="fld-Ep-efV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qcT-ma-Q5K" secondAttribute="trailing" constant="11" id="fld-Ep-efV"/>
                 <constraint firstItem="kqk-RH-hCo" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="qYe-pb-Nf8"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

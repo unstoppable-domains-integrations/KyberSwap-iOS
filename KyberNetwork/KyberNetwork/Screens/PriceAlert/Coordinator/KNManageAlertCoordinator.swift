@@ -95,7 +95,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
   }
 
   fileprivate func showAlertRemoveAll() {
-    let message = NSLocalizedString("Do you want to delete triggerd alerts?", comment: "")
+    let message = NSLocalizedString("Do you want to delete all triggered alerts?", comment: "")
     let alertController = UIAlertController(title: NSLocalizedString("delete", value: "Delete", comment: ""), message: message, preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
@@ -151,7 +151,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
       } else {
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("Trigged Alerts deleted!", comment: ""),
+          message: NSLocalizedString("Delete all triggered alerts successfully", comment: ""),
           time: 1.0
         )
       }

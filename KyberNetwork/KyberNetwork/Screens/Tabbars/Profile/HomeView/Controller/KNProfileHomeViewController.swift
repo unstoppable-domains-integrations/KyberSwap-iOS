@@ -353,7 +353,7 @@ extension KNProfileHomeViewController: KNAlertTableViewDelegate {
     case .select(let alert):
       self.delegate?.profileHomeViewController(self, run: .editAlert(alert: alert))
     case .deleteAll:
-      print("Delete all called in profile vc")
+      break
     }
   }
 
