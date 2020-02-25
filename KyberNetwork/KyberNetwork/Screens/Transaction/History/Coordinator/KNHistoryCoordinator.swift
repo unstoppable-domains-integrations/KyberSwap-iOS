@@ -368,7 +368,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
             ) { sendResult in
               switch sendResult {
               case .success(let txHash):
-                let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.fullString(decimals: 0))
+                let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.displayRate(decimals: 0).removeGroupSeparator())
                 self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
               case .failure:
                 KNNotificationUtil.postNotification(
