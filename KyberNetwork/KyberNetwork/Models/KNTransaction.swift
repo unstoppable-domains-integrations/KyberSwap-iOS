@@ -297,7 +297,7 @@ extension TransactionsStorage {
   }
 
   func deleteKyberTransaction(forPrimaryKey: String) -> Bool {
-    guard let transaction = getKyberTransaction(forPrimaryKey: forPrimaryKey) else { return false }
+    guard let transaction = getKyberTransaction(forPrimaryKey: forPrimaryKey), transaction.isInvalidated == false else { return false }
     delete([transaction])
     return true
   }

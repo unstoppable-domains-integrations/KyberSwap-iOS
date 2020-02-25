@@ -283,8 +283,9 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
           nounce: self.session.externalProvider.minTxCount - 1,
           type: .cancel
         )
-        self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
-        self.openTransactionStatusPopUp(transaction: tx)
+        self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx, completion: {
+          self.openTransactionStatusPopUp(transaction: tx)
+        })
       case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -348,8 +349,10 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
           nounce: Int(original.nonce)!,
           type: .speedup
         )
-        self.session.updatePendingTransactionWithHash(hashTx: original.id, ultiTransaction: tx)
-        self.openTransactionStatusPopUp(transaction: tx)
+        self.session.updatePendingTransactionWithHash(hashTx: original.id, ultiTransaction: tx, completion: {
+          self.openTransactionStatusPopUp(transaction: tx)
+        })
+        
       case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
@@ -389,8 +392,9 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
               switch sendResult {
               case .success(let txHash):
                 let tx = transaction.convertToSpeedUpTransaction(newHash: txHash, newGasPrice: newPrice.displayRate(decimals: 0).removeGroupSeparator())
-                self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx)
-                self.openTransactionStatusPopUp(transaction: tx)
+                self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx, completion: {
+                  self.openTransactionStatusPopUp(transaction: tx)
+                })
               case .failure:
                 KNNotificationUtil.postNotification(
                   for: kTransactionDidUpdateNotificationKey,
