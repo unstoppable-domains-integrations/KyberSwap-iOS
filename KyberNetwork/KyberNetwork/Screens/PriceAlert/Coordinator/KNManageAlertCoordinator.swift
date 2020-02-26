@@ -135,7 +135,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     KNCrashlyticsUtil.logCustomEvent(withName: "manage_alert_coordinator", customAttributes: ["action": "delete_all_alert"])
     guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
     self.navigationController.displayLoading()
-    KNPriceAlertCoordinator.shared.removeAllAlerts(accessToken: accessToken) { [weak self] (_, error) in
+    KNPriceAlertCoordinator.shared.removeAllTriggeredAlerts(accessToken: accessToken) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       if let error = error {

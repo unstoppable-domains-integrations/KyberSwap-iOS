@@ -154,7 +154,7 @@ class KNPriceAlertCoordinator: NSObject {
     }
   }
 
-  func removeAllAlerts(accessToken: String, completion: @escaping (String, String?) -> Void) {
+  func removeAllTriggeredAlerts(accessToken: String, completion: @escaping (String, String?) -> Void) {
     DispatchQueue.global(qos: .background).async {
       self.provider.request(.deleteAllTriggerdAlerts(accessToken: accessToken)) { [weak self] result in
         guard let _ = self else { return }
