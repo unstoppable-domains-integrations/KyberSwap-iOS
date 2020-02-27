@@ -674,3 +674,6 @@
 "Your speedup transaction might be lost" = "Your speedup transaction might be lost";
 "Your transaction has been cancelled successfully" = "Your transaction has been cancelled successfully";
 "Your transaction has been speeded up successfully" = "Your transaction has been speeded up successfully";
+"delete all" = "delete all";
+"Delete all triggered alerts successfully" = "Delete all triggered alerts successfully";
+"Do you want to delete all triggered alerts?" = "Do you want to delete all triggered alerts?";
