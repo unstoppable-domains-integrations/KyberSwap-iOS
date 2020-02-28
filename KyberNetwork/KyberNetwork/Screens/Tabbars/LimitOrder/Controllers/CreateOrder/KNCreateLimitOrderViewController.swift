@@ -94,6 +94,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var scrollViewBottomPaddingConstraints: NSLayoutConstraint!
 
   @IBOutlet weak var relatedOrderCollectionView: UICollectionView!
+  @IBOutlet weak var hasUnreadNotification: UIView!
+  @IBOutlet weak var targetReverseRateLabel: UILabel!
 
   lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
     let viewModel = KNBalanceTabHamburgerMenuViewModel(
@@ -125,12 +127,23 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  deinit {
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.submitOrderButton.applyGradient()
     self.setupUI()
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.notificationDidUpdate(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -203,7 +216,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.walletNameLabel.text = self.viewModel.walletNameString
-
+    hasUnreadNotification.rounded(radius: hasUnreadNotification.frame.height / 2)
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
     self.separatorView.backgroundColor = .clear
     self.submitOrderButton.rounded(radius: self.submitOrderButton.frame.height / 2.0)
@@ -270,7 +283,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
-      self.viewModel.updateTargetRate(rateString)
+      self.updateTargetRateUI(rateString)
       self.viewModel.updateFocusTextField(2)
     }
     // Update hamburger menu
@@ -303,6 +316,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.cancelOrdersCollectionView.dataSource = self
 
     self.checkAddressEligible(nil)
+    self.notificationDidUpdate(nil)
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
@@ -368,7 +382,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
         maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
-      self.viewModel.updateTargetRate(rateString)
+      self.updateTargetRateUI(rateString)
     }
 
     self.listOrdersDidUpdate(nil)
@@ -519,7 +533,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     guard let rate = self.viewModel.rateFromNode else { return }
     let rateDisplay = rate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
     self.targetRateTextField.text = rateDisplay
-    self.viewModel.updateTargetRate(rateDisplay)
+    self.updateTargetRateUI(rateDisplay)
     self.viewModel.updateFocusTextField(2)
     self.updateViewAmountDidChange()
   }
@@ -574,6 +588,22 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.confirmCancelButton.isEnabled = self.isUnderStand
     self.confirmCancelButton.alpha = self.isUnderStand ? 1.0 : 0.5
   }
+
+  @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
+    delegate?.kCreateLimitOrderViewController(self, run: .selectNotifications)
+  }
+
+  @objc func notificationDidUpdate(_ sender: Any?) {
+    let numUnread: Int = {
+      if IEOUserStorage.shared.user == nil { return 0 }
+      return KNNotificationCoordinator.shared.numberUnread
+    }()
+    self.update(notificationsCount: numUnread)
+  }
+
+  func update(notificationsCount: Int) {
+    self.hasUnreadNotification.isHidden = notificationsCount == 0
+  }
 }
 
 // MARK: Update UIs
@@ -611,6 +641,11 @@ extension KNCreateLimitOrderViewController {
     }
     self.sourceBalanceValueLabel.text = self.viewModel.balanceText
     self.view.layoutIfNeeded()
+  }
+
+  fileprivate func updateTargetRateUI(_ text: String) {
+    viewModel.updateTargetRate(text)
+    targetReverseRateLabel.text = viewModel.displayTargetExchangeRate
   }
 
   // Update current martket rate with rate from node or cached
@@ -930,7 +965,7 @@ extension KNCreateLimitOrderViewController {
     self.targetRateTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
-    self.viewModel.updateTargetRate("")
+    self.updateTargetRateUI("")
     self.updateTokensView()
     self.hamburgerMenu.update(
       walletObjects: KNWalletStorage.shared.wallets,
@@ -945,7 +980,7 @@ extension KNCreateLimitOrderViewController {
         maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
-      self.viewModel.updateTargetRate(rateString)
+      self.updateTargetRateUI(rateString)
     }
     self.updateViewAmountDidChange()
     self.noCancelButtonPressed(nil)
@@ -1053,7 +1088,7 @@ extension KNCreateLimitOrderViewController {
         maxFractionDigits: min(8, self.viewModel.to.decimals)
       ).removeGroupSeparator()
       self.targetRateTextField.text = rateString
-      self.viewModel.updateTargetRate(rateString)
+      self.updateTargetRateUI(rateString)
       self.viewModel.updateFocusTextField(2)
     }
     self.updateViewAmountDidChange()
@@ -1079,7 +1114,7 @@ extension KNCreateLimitOrderViewController {
     // Reset exchange amount
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
-    self.viewModel.updateTargetRate("")
+    self.updateTargetRateUI("")
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
     self.targetRateTextField.text = ""
@@ -1165,7 +1200,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     if textField == self.fromAmountTextField || textField == self.toAmountTextField {
       self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
     } else if textField == self.targetRateTextField {
-      self.viewModel.updateTargetRate("")
+      self.updateTargetRateUI("")
     }
     self.updateViewAmountDidChange()
     self.updateEstimateRateFromNetwork(showWarning: true)
@@ -1204,7 +1239,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
     } else if textField == self.toAmountTextField {
       self.viewModel.updateAmount(text, isSource: false)
     } else if textField == self.targetRateTextField {
-      self.viewModel.updateTargetRate(text)
+      self.updateTargetRateUI(text)
     }
 
     self.updateViewAmountDidChange()
@@ -1248,7 +1283,7 @@ extension KNCreateLimitOrderViewController: UITextFieldDelegate {
       let targetRate = self.viewModel.estimateTargetRateBigInt
       let rateDisplay = targetRate.isZero ? "" : targetRate.displayRate(decimals: self.viewModel.to.decimals).removeGroupSeparator()
       self.targetRateTextField.text = rateDisplay
-      self.viewModel.updateTargetRate(rateDisplay)
+      self.updateTargetRateUI(rateDisplay)
     } else {
       // Focusing to and target text field
       let amountFrom = self.viewModel.estimateAmountFromBigInt
