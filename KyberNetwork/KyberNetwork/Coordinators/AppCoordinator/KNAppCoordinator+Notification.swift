@@ -310,9 +310,10 @@ extension KNAppCoordinator {
       // just sent
     } else if trans.state == .completed {
       if !(updateBalance || updateExchange || updateLO || updateSettings) {
+        let message = trans.type == .cancel ? "Your transaction has been cancelled successfully".toBeLocalised() : trans.getDetails()
         self.navigationController.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
-          message: trans.getDetails(),
+          message: message,
           time: -1
         )
       }
