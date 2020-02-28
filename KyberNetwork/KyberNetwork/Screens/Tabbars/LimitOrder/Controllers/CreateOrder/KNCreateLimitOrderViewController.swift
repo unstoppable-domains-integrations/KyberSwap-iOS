@@ -94,6 +94,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   @IBOutlet weak var scrollViewBottomPaddingConstraints: NSLayoutConstraint!
 
   @IBOutlet weak var relatedOrderCollectionView: UICollectionView!
+  @IBOutlet weak var hasUnreadNotification: UIView!
   @IBOutlet weak var targetReverseRateLabel: UILabel!
 
   lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
@@ -126,12 +127,23 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  deinit {
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.submitOrderButton.applyGradient()
     self.setupUI()
+    let name = Notification.Name(kUpdateListNotificationsKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.notificationDidUpdate(_:)),
+      name: name,
+      object: nil
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -204,7 +216,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.walletNameLabel.text = self.viewModel.walletNameString
-
+    hasUnreadNotification.rounded(radius: hasUnreadNotification.frame.height / 2)
     self.separatorView.dashLine(width: 1.0, color: UIColor.Kyber.border)
     self.separatorView.backgroundColor = .clear
     self.submitOrderButton.rounded(radius: self.submitOrderButton.frame.height / 2.0)
@@ -304,6 +316,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.cancelOrdersCollectionView.dataSource = self
 
     self.checkAddressEligible(nil)
+    self.notificationDidUpdate(nil)
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: Any) {
@@ -574,6 +587,22 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     )
     self.confirmCancelButton.isEnabled = self.isUnderStand
     self.confirmCancelButton.alpha = self.isUnderStand ? 1.0 : 0.5
+  }
+
+  @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
+    delegate?.kCreateLimitOrderViewController(self, run: .selectNotifications)
+  }
+
+  @objc func notificationDidUpdate(_ sender: Any?) {
+    let numUnread: Int = {
+      if IEOUserStorage.shared.user == nil { return 0 }
+      return KNNotificationCoordinator.shared.numberUnread
+    }()
+    self.update(notificationsCount: numUnread)
+  }
+
+  func update(notificationsCount: Int) {
+    self.hasUnreadNotification.isHidden = notificationsCount == 0
   }
 }
 
