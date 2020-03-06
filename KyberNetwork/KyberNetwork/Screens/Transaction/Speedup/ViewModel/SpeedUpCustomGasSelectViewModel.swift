@@ -21,24 +21,28 @@ class SpeedUpCustomGasSelectViewModel {
     self.slow = slow
     self.superFast = superFast
   }
+
   var fastGasString: NSAttributedString {
     return self.attributedString(
       for: self.fast,
       text: NSLocalizedString("fast", value: "Fast", comment: "").uppercased()
     )
   }
+
   var mediumGasString: NSAttributedString {
     return self.attributedString(
       for: self.medium,
       text: NSLocalizedString("regular", value: "Regular", comment: "").uppercased()
     )
   }
+
   var slowGasString: NSAttributedString {
     return self.attributedString(
       for: self.slow,
       text: NSLocalizedString("slow", value: "Slow", comment: "").uppercased()
     )
   }
+
   var superFastGasString: NSAttributedString {
     return self.attributedString(
       for: self.superFast,
@@ -80,6 +84,7 @@ class SpeedUpCustomGasSelectViewModel {
     let feeString: String = fee.displayRate(decimals: 18)
     return "\(feeString) ETH"
   }
+
   func getNewTransactionGasPriceETH() -> BigInt { //TODO: check again formular 1.2 * current
     let gasPrice: BigInt = {
       switch selectedType {
@@ -92,6 +97,7 @@ class SpeedUpCustomGasSelectViewModel {
     }()
     return gasPrice
   }
+
   func getNewTransactionFeeETH() -> BigInt {
     let gasPrice = getNewTransactionGasPriceETH()
     let fee: BigInt? = {

@@ -150,7 +150,7 @@ class KNSession {
 
   func updatePendingTransactionWithHash(hashTx: String, ultiTransaction: Transaction, completion: @escaping () -> Void = {}) {
     if transactionStorage.deleteKyberTransaction(forPrimaryKey: hashTx) {
-      addNewPendingTransaction(ultiTransaction)
+      self.addNewPendingTransaction(ultiTransaction)
       completion()
     }
   }

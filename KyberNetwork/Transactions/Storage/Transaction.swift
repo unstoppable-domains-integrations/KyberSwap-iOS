@@ -101,6 +101,7 @@ class Transaction: Object {
       type: self.type
     )
   }
+
   func convertToSpeedUpTransaction(newHash: String, newGasPrice: String) -> Transaction {
     return Transaction(
       id: newHash,

@@ -133,20 +133,20 @@ class KNExternalProvider {
     })
   }
   func speedUpSwapTransaction(for token: TokenObject, amount: BigInt, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<String, AnyError>) -> Void) {
-    signTransactionData(for: token,
-                        amount: amount,
-                        nonce: nonce,
-                        data: data,
-                        gasPrice: gasPrice,
-                        gasLimit: gasLimit) { (signResult) in
-      switch signResult {
-      case .success(let signData):
-        KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
-          completion(result)
-        })
-      case .failure(let error):
-        completion(.failure(error))
-      }
+    self.signTransactionData(for: token,
+                             amount: amount,
+                             nonce: nonce,
+                             data: data,
+                             gasPrice: gasPrice,
+                             gasLimit: gasLimit) { (signResult) in
+                              switch signResult {
+                              case .success(let signData):
+                                KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
+                                  completion(result)
+                                })
+                              case .failure(let error):
+                                completion(.failure(error))
+                              }
     }
   }
 

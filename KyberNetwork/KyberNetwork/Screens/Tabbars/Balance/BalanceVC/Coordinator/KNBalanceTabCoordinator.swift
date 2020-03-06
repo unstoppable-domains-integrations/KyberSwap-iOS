@@ -179,7 +179,7 @@ extension KNBalanceTabCoordinator {
   func appCoordinatorGasPriceCachedDidUpdate() {
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
     self.tokenChartCoordinator?.coordinatorGasPriceCachedDidUpdate()
-    historyCoordinator?.coordinatorGasPriceCachedDidUpdate()
+    self.historyCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {

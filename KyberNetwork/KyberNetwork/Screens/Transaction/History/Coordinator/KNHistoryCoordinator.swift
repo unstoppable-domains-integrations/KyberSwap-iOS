@@ -338,6 +338,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
       }
     }
   }
+
   fileprivate func sendSpeedUpForTransferTransaction(transaction: UnconfirmedTransaction, original: Transaction) {
     self.session.externalProvider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
@@ -352,7 +353,6 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
         self.session.updatePendingTransactionWithHash(hashTx: original.id, ultiTransaction: tx, completion: {
           self.openTransactionStatusPopUp(transaction: tx)
         })
-        
       case .failure:
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,

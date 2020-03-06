@@ -184,7 +184,7 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorGasPriceCachedDidUpdate() {
     self.rootViewController.coordinatorUpdateGasPriceCached()
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
-    historyCoordinator?.coordinatorGasPriceCachedDidUpdate()
+    self.historyCoordinator?.coordinatorGasPriceCachedDidUpdate()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {
