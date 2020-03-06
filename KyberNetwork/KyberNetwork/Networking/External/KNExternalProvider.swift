@@ -132,6 +132,7 @@ class KNExternalProvider {
       }
     })
   }
+
   func speedUpSwapTransaction(for token: TokenObject, amount: BigInt, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.signTransactionData(for: token,
                              amount: amount,

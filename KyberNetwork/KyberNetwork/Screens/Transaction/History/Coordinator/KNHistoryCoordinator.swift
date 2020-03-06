@@ -263,12 +263,15 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.rootViewController.openSafari(with: url)
     }
   }
+
   fileprivate func sendCancelTransactionFor(_ transaction: Transaction) {
-    openTransactionCancelConfirmPopUpFor(transaction: transaction)
+    self.openTransactionCancelConfirmPopUpFor(transaction: transaction)
   }
+
   fileprivate func sendSpeedUpTransactionFor(_ transaction: Transaction) {
-    openTransactionSpeedUpViewController(transaction: transaction)
+    self.openTransactionSpeedUpViewController(transaction: transaction)
   }
+
   fileprivate func didConfirmTransfer(_ transaction: Transaction) {
     guard let unconfirmTx = transaction.makeCancelTransaction() else {
       return
@@ -299,7 +302,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
 
 extension KNHistoryCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: Transaction) {
-    didConfirmTransfer(transaction)
+    self.didConfirmTransfer(transaction)
   }
 }
 
@@ -307,10 +310,10 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
   func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
     switch event {
     case .back:
-      navigationController.popViewController(animated: true)
+      self.navigationController.popViewController(animated: true)
     case .done(let transaction, let newValue):
-      didSpeedUpTransactionFor(transaction: transaction, newGasPrice: newValue)
-      navigationController.popViewController(animated: true)
+      self.didSpeedUpTransactionFor(transaction: transaction, newGasPrice: newValue)
+      self.navigationController.popViewController(animated: true)
     case .invaild:
       self.navigationController.showErrorTopBannerMessage(
         with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -326,15 +329,13 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     if let localizedOperation = transaction.localizedOperations.first {
       switch localizedOperation.type {
       case "transfer":
-        print("transfer case")
         if let speedUpTx = transaction.makeSpeedUpTransaction(availableTokens: tokenObjects, gasPrice: newGasPrice) {
           sendSpeedUpForTransferTransaction(transaction: speedUpTx, original: transaction)
         }
       case "exchange":
-        print("exchange case")
         sendSpeedUpSwapTransactionFor(transaction: transaction, availableTokens: tokenObjects, newPrice: newGasPrice)
       default:
-        print("Not implement")
+        break
       }
     }
   }

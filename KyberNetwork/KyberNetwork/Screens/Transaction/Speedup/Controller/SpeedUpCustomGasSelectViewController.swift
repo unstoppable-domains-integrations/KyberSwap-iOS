@@ -46,46 +46,46 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    updateUI()
-    updateGasPriceUIs()
+    self.updateUI()
+    self.updateGasPriceUIs()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    headerView.removeSublayer(at: 0)
-    headerView.applyGradient(with: UIColor.Kyber.headerColors)
-    doneButton.removeSublayer(at: 0)
-    doneButton.applyGradient()
+    self.headerView.removeSublayer(at: 0)
+    self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.doneButton.removeSublayer(at: 0)
+    self.doneButton.applyGradient()
   }
 
   fileprivate func updateUI() {
-    navigationTitleLabel.text = "Customize Gas".toBeLocalised()
-    mainTextTitle.text = "Select.higher.tx.fee.to.accelerate".toBeLocalised()
-    gasPriceWarningMessageLabel.text = "your.gas.must.be.10.percent.higher".toBeLocalised()
-    currentFeeLabel.text = "Current fee".toBeLocalised()
-    newFeeLabel.text = "New fee".toBeLocalised()
-    doneButton.setTitle("done".toBeLocalised(), for: .normal)
+    self.navigationTitleLabel.text = "Customize Gas".toBeLocalised()
+    self.mainTextTitle.text = "Select.higher.tx.fee.to.accelerate".toBeLocalised()
+    self.gasPriceWarningMessageLabel.text = "your.gas.must.be.10.percent.higher".toBeLocalised()
+    self.currentFeeLabel.text = "Current fee".toBeLocalised()
+    self.newFeeLabel.text = "New fee".toBeLocalised()
+    self.doneButton.setTitle("done".toBeLocalised(), for: .normal)
 
-    headerView.applyGradient(with: UIColor.Kyber.headerColors)
-    gasFeeSelectBoxContainer.rounded(radius: 5.0)
-    superFastGasPriceButton.backgroundColor = .white
-    fastGasPriceButton.backgroundColor = .white
-    regularGasPriceButton.backgroundColor = .white
-    slowGasPriceButton.backgroundColor = .white
+    self.headerView.applyGradient(with: UIColor.Kyber.headerColors)
+    self.gasFeeSelectBoxContainer.rounded(radius: 5.0)
+    self.superFastGasPriceButton.backgroundColor = .white
+    self.fastGasPriceButton.backgroundColor = .white
+    self.regularGasPriceButton.backgroundColor = .white
+    self.slowGasPriceButton.backgroundColor = .white
 
     let tapSuperFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    superFastGasPriceLabel.addGestureRecognizer(tapSuperFast)
+    self.superFastGasPriceLabel.addGestureRecognizer(tapSuperFast)
     let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    fastGasPriceLabel.addGestureRecognizer(tapFast)
+    self.fastGasPriceLabel.addGestureRecognizer(tapFast)
     let tapRegular = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    regularGasPriceLabel.addGestureRecognizer(tapRegular)
+    self.regularGasPriceLabel.addGestureRecognizer(tapRegular)
     let tapSlow = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    slowGasPriceLabel.addGestureRecognizer(tapSlow)
-    currentFeeLabel.text = viewModel.currentTransactionFeeETHString
+    self.slowGasPriceLabel.addGestureRecognizer(tapSlow)
+    self.currentFeeLabel.text = self.viewModel.currentTransactionFeeETHString
     let style = KNAppStyleType.current
-    let radius = style.buttonRadius(for: doneButton.frame.height)
-    doneButton.rounded(radius: radius)
-    doneButton.applyGradient()
+    let radius = style.buttonRadius(for: self.doneButton.frame.height)
+    self.doneButton.rounded(radius: radius)
+    self.doneButton.applyGradient()
   }
 
   func updateGasPriceUIs() {
@@ -123,32 +123,32 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
       width: self.viewModel.selectedType == .slow ? selectedWidth : normalWidth,
       radius: self.slowGasPriceButton.frame.height / 2.0
     )
-    newFeeLabel.text = viewModel.getNewTransactionFeeETHString()
+    self.newFeeLabel.text = self.viewModel.getNewTransactionFeeETHString()
   }
 
   @IBAction func doneButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "tap_done_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id])
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_done_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id])
     if viewModel.isNewGasPriceValid() {
-      delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: viewModel.transaction, newGasPrice: viewModel.getNewTransactionGasPriceETH()))
+      self.delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: self.viewModel.transaction, newGasPrice: self.viewModel.getNewTransactionGasPriceETH()))
     } else {
-      delegate?.speedUpCustomGasSelectViewController(self, run: .invaild)
+      self.delegate?.speedUpCustomGasSelectViewController(self, run: .invaild)
     }
   }
   @IBAction func backButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "tap_back_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id])
-    delegate?.speedUpCustomGasSelectViewController(self, run: .back)
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_back_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id])
+    self.delegate?.speedUpCustomGasSelectViewController(self, run: .back)
   }
   @objc func userTappedSelectBoxLabel(_ sender: UITapGestureRecognizer) {
     guard let type = KNSelectedGasPriceType(rawValue: sender.view!.tag) else { return }
-    handleGasFeeChange(type)
+    self.handleGasFeeChange(type)
   }
   @IBAction func selectBoxButtonTapped(_ sender: UIButton) {
     guard let type = KNSelectedGasPriceType(rawValue: sender.tag) else { return }
-    KNCrashlyticsUtil.logCustomEvent(withName: "tap_option_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": viewModel.transaction.id, "option": type])
-    handleGasFeeChange(type)
+    KNCrashlyticsUtil.logCustomEvent(withName: "tap_option_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id, "option": type])
+    self.handleGasFeeChange(type)
   }
   func handleGasFeeChange(_ type: KNSelectedGasPriceType) {
-    viewModel.updateSelectedType(type)
-    updateGasPriceUIs()
+    self.viewModel.updateSelectedType(type)
+    self.updateGasPriceUIs()
   }
 }
