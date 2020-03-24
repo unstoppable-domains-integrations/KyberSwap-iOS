@@ -4,6 +4,7 @@ import UIKit
 import BigInt
 import QRCodeReaderViewController
 import WalletConnect
+import Moya
 
 protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool)
@@ -293,6 +294,21 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
     self.tokenChartCoordinator?.start()
   }
 
+  fileprivate func openNotificationSettingScreen() {
+    self.navigationController.displayLoading()
+    KNNotificationCoordinator.shared.getListSubcriptionTokens { (message, result) in
+      self.navigationController.hideLoading()
+      if let errorMessage = message {
+        self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+      } else if let symbols = result {
+        let viewModel = KNNotificationSettingViewModel(tokens: symbols.0, selected: symbols.1, notiStatus: symbols.2)
+        let viewController = KNNotificationSettingViewController(viewModel: viewModel)
+        viewController.delegate = self
+        self.navigationController.pushViewController(viewController, animated: true)
+      }
+    }
+  }
+
   func hamburgerMenu(select walletObject: KNWalletObject) {
     self.delegate?.balanceTabCoordinatorDidSelect(walletObject: walletObject)
   }
@@ -415,6 +431,16 @@ extension KNBalanceTabCoordinator: KNListNotificationViewControllerDelegate {
     case .openManageOrder:
       if IEOUserStorage.shared.user == nil { return }
       self.delegate?.balanceTabCoordinatorOpenManageOrder()
+    case .openSetting:
+      self.openNotificationSettingScreen()
+    }
+  }
+}
+
+extension KNBalanceTabCoordinator: KNNotificationSettingViewControllerDelegate {
+  func notificationSettingViewControllerDidApply(_ controller: KNNotificationSettingViewController) {
+    self.navigationController.popViewController(animated: true) {
+      self.showSuccessTopBannerMessage(message: "Updated subscription tokens".toBeLocalised())
     }
   }
 }

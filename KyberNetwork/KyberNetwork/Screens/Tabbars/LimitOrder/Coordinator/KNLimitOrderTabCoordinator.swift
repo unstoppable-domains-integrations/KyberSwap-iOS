@@ -620,6 +620,21 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
     self.delegate?.limitOrderTabCoordinatorDidSelectAddWallet()
   }
 
+  fileprivate func openNotificationSettingScreen() {
+    self.navigationController.displayLoading()
+    KNNotificationCoordinator.shared.getListSubcriptionTokens { (message, result) in
+      self.navigationController.hideLoading()
+      if let errorMessage = message {
+        self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+      } else if let symbols = result {
+        let viewModel = KNNotificationSettingViewModel(tokens: symbols.0, selected: symbols.1, notiStatus: symbols.2)
+        let viewController = KNNotificationSettingViewController(viewModel: viewModel)
+        viewController.delegate = self
+        self.navigationController.pushViewController(viewController, animated: true)
+      }
+    }
+  }
+
   fileprivate func updateCurrentWallet(_ wallet: KNWalletObject) {
     self.delegate?.limitOrderTabCoordinatorDidSelectWallet(wallet)
   }
@@ -952,6 +967,16 @@ extension KNLimitOrderTabCoordinator: KNListNotificationViewControllerDelegate {
       self.navigationController.popToRootViewController(animated: true) {
         self.appCoordinatorOpenManageOrder()
       }
+    case .openSetting:
+      self.openNotificationSettingScreen()
+    }
+  }
+}
+
+extension KNLimitOrderTabCoordinator: KNNotificationSettingViewControllerDelegate {
+  func notificationSettingViewControllerDidApply(_ controller: KNNotificationSettingViewController) {
+    self.navigationController.popViewController(animated: true) {
+      self.showSuccessTopBannerMessage(message: "Updated subscription tokens".toBeLocalised())
     }
   }
 }

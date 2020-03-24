@@ -163,6 +163,9 @@ enum UserInfoService {
   case markAsRead(accessToken: String?, ids: [Int])
   case getPreScreeningWallet(address: String)
   case deleteAllTriggerdAlerts(accessToken: String)
+  case getListSubscriptionTokens(accessToken: String)
+  case togglePriceNotification(accessToken: String, state: Bool)
+  case updateListSubscriptionTokens(accessToken: String, symbols: [String])
   case updateUserPlayerId(accessToken: String, playerId: String)
 }
 
@@ -202,6 +205,12 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/wallet/screening?wallet=\(address)")!
     case .deleteAllTriggerdAlerts:
       return URL(string: "\(baseString)/api/alerts/delete_triggered")!
+    case .getListSubscriptionTokens:
+      return URL(string: "\(baseString)/api/users/subscription_tokens")!
+    case .togglePriceNotification:
+      return URL(string: "\(baseString)/api/users/toggle_price_noti")!
+    case .updateListSubscriptionTokens:
+      return URL(string: "\(baseString)/api/users/subscription_tokens")!
     case .updateUserPlayerId:
     return URL(string: "\(baseString)/api/users/player_id")!
     }
@@ -211,9 +220,9 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getPreScreeningWallet: return .get
+    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getPreScreeningWallet, .getListSubscriptionTokens: return .get
     case .removeAnAlert, .deleteAllTriggerdAlerts: return .delete
-    case .addPushToken, .updateAlert: return .patch
+    case .addPushToken, .updateAlert, .togglePriceNotification: return .patch
     case .markAsRead: return .put
     default: return .post
     }
@@ -244,7 +253,7 @@ extension UserInfoService: TargetType {
       print(json)
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts:
+    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts, .getListSubscriptionTokens:
       return .requestPlain
     case .getPreScreeningWallet:
       return .requestPlain
@@ -258,6 +267,14 @@ extension UserInfoService: TargetType {
       let json: JSONDictionary = [
         "ids": ids,
       ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .togglePriceNotification(_, let state):
+      let json = ["price_noti": state]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .updateListSubscriptionTokens(_, let symbols):
+      let json = ["list_token_symbol": symbols]
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .updateUserPlayerId(_, let playerId):
@@ -303,6 +320,12 @@ extension UserInfoService: TargetType {
     case .getPreScreeningWallet:
       break
     case .deleteAllTriggerdAlerts(let accessToken):
+      json["Authorization"] = accessToken
+    case .getListSubscriptionTokens(let accessToken):
+      json["Authorization"] = accessToken
+    case .togglePriceNotification(let accessToken, _):
+      json["Authorization"] = accessToken
+    case .updateListSubscriptionTokens(let accessToken, _):
       json["Authorization"] = accessToken
     case .updateUserPlayerId(let accessToken, _):
       json["Authorization"] = accessToken
