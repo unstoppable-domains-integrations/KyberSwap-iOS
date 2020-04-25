@@ -701,7 +701,8 @@ class KNTokenChartViewController: KNBaseViewController {
         radius: 4.0
       )
     }
-    self.reloadViewDataDidUpdate()
+    self.noDataLabel.text = "\(NSLocalizedString("updating.data", value: "Updating data", comment: "")) ..."
+    self.reloadViewDataDidUpdate(isReloading: true)
     self.startTimer()
   }
 
@@ -764,7 +765,7 @@ class KNTokenChartViewController: KNBaseViewController {
         self?.noDataLabel.addLetterSpacing()
     }
     self.viewModel.fetch24hVolume(for: self.viewModel.token) { [weak self] _ in
-      self?.reloadViewDataDidUpdate()
+      self?.reloadViewDataDidUpdate(isReloading: true)
     }
   }
 
@@ -796,10 +797,12 @@ class KNTokenChartViewController: KNBaseViewController {
     self.timer?.invalidate()
   }
 
-  fileprivate func reloadViewDataDidUpdate() {
+  fileprivate func reloadViewDataDidUpdate(isReloading: Bool = false) {
     self.ethRateLabel.attributedText = self.viewModel.rateAttributedString
     if self.viewModel.data.isEmpty {
-      self.noDataLabel.text = NSLocalizedString("no.data.for.this.token", value: "There is no data for this token", comment: "")
+      if !isReloading {
+        self.noDataLabel.text = NSLocalizedString("no.data.for.this.token", value: "There is no data for this token", comment: "")
+      }
       self.noDataLabel.isHidden = false
       self.noDataLabel.addLetterSpacing()
       self.chartView.isHidden = true

@@ -294,7 +294,15 @@ class LimitOrderContainerViewController: KNBaseViewController {
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
+    self.wallet = wallet
+    let addr = wallet.address.description
+    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr) ?? KNWalletObject(address: addr)
     self.walletNameLabel.text = self.walletNameString
+    self.hamburgerMenu.update(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.walletObject
+    )
+    self.hamburgerMenu.hideMenu(animated: false)
     for vc in self.pages {
       vc.coordinatorUpdateNewSession(wallet: wallet)
     }
