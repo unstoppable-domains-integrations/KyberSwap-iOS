@@ -65,7 +65,7 @@
                                 <rect key="frame" x="192.5" y="0.0" width="86.5" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZJE-aW-Yaw">
-                                        <rect key="frame" x="0.0" y="0.0" width="74.5" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="86.5" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -75,7 +75,7 @@
                                 <constraints>
                                     <constraint firstItem="ZJE-aW-Yaw" firstAttribute="leading" secondItem="1Fc-3s-Ujy" secondAttribute="leading" id="BZ8-wM-5cK"/>
                                     <constraint firstItem="ZJE-aW-Yaw" firstAttribute="top" secondItem="1Fc-3s-Ujy" secondAttribute="top" id="WO8-6C-X41"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZJE-aW-Yaw" secondAttribute="trailing" constant="12" id="Z6O-LN-6n4"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZJE-aW-Yaw" secondAttribute="trailing" id="Z6O-LN-6n4"/>
                                     <constraint firstAttribute="bottom" secondItem="ZJE-aW-Yaw" secondAttribute="bottom" id="hiY-ZN-u9F"/>
                                 </constraints>
                             </view>
@@ -98,7 +98,6 @@
                                         <rect key="frame" x="0.0" y="0.0" width="49" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
-                                        <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
                                         <state key="normal" title="1.2%">
                                             <color key="titleColor" red="0.19215686269999999" green="0.79607843140000001" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
