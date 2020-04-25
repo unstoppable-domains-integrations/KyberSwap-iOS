@@ -137,6 +137,7 @@ class KNSelectMarketViewController: KNBaseViewController {
     button.addTarget(self, action: #selector(marketTypeButtonTapped(_:)), for: .touchUpInside)
     return button
   }
+
   fileprivate func setupMarketTableView() {
     let nib = UINib(nibName: KNMarketTableViewCell.className, bundle: nil)
     self.tableView.register(
@@ -160,6 +161,7 @@ class KNSelectMarketViewController: KNBaseViewController {
 
   func coordinatorMarketCachedDidUpdate() {
     self.viewModel.updateMarketFromCoordinator()
+    self.tableView.reloadData()
   }
 
   fileprivate func presentPickerView() {
@@ -254,7 +256,7 @@ class KNSelectMarketViewController: KNBaseViewController {
     ]
     switch self.viewModel.sortType {
     case .pair(let asc):
-      let sortingCharacter = asc ? arrowDownAttributedString : arrowUpAttributedString
+      let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
       let attributeTitle = NSMutableAttributedString(string: "pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes)
       attributeTitle.append(sortingCharacter)
       self.pairButton.setAttributedTitle(attributeTitle, for: .normal)
@@ -266,7 +268,7 @@ class KNSelectMarketViewController: KNBaseViewController {
                                               for: .normal
       )
     case .price(let asc):
-      let sortingCharacter = asc ? arrowDownAttributedString : arrowUpAttributedString
+      let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
       let attributeTitle = NSMutableAttributedString(string: "price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes
       )
       attributeTitle.append(sortingCharacter)
@@ -281,7 +283,7 @@ class KNSelectMarketViewController: KNBaseViewController {
                                               for: .normal
       )
     case .volume(let asc):
-      let sortingCharacter = asc ? arrowDownAttributedString : arrowUpAttributedString
+      let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
       let attributeTitle = NSMutableAttributedString(string: "volume".toBeLocalised().uppercased(),
                                                      attributes: displayTypeNormalAttributes
       )
@@ -297,7 +299,7 @@ class KNSelectMarketViewController: KNBaseViewController {
                                               for: .normal
       )
     case .change(let asc):
-      let sortingCharacter = asc ? arrowDownAttributedString : arrowUpAttributedString
+      let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
       let attributeTitle = NSMutableAttributedString(string: "24h".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes
       )
       attributeTitle.append(sortingCharacter)

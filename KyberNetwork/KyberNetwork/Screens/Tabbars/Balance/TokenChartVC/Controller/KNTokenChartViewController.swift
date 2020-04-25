@@ -374,8 +374,9 @@ class KNTokenChartViewModel {
 
     if let chartData = self.chartDataLO {
       // chart from LO, use data from market object
-      let formatter = NumberFormatterUtil.shared.limitOrderFormatter
-      self.volume24h = "\(formatter.string(from: NSNumber(value: fabs(chartData.market.volume))) ?? "---")"
+      let formatter = NumberFormatterUtil.shared.doubleFormatter
+      let totalVolume = KNRateCoordinator.shared.getMarketVolume(pair: chartData.market.pair)
+      self.volume24h = "\(formatter.string(from: NSNumber(value: fabs(totalVolume))) ?? "---")"
       completion(.success(chartData.market.volume))
       return
     }

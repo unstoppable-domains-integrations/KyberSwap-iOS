@@ -49,7 +49,7 @@ class KNCreateLimitOrderV2ViewModel {
       self.to = KNSupportedTokenStorage.shared.wethToken ?? KNSupportedTokenStorage.shared.ethToken
       self.from = KNSupportedTokenStorage.shared.kncToken
     }
-    self.currentPair = "ETH_KNC"
+    self.currentPair = "WETH_KNC"
   }
 
   var walletNameString: String {
@@ -58,9 +58,9 @@ class KNCreateLimitOrderV2ViewModel {
   }
 
   var targetPriceFromMarket: String {
-    let formatter = NumberFormatterUtil.shared.limitOrderFormatter
-    let marketPrice = self.isBuy ? self.market?.buyPrice : self.market?.sellPrice
-    return formatter.string(from: NSNumber(value: marketPrice ?? 0)) ?? ""
+    let marketPrice = (self.isBuy ? self.market?.buyPrice : self.market?.sellPrice) ?? 0
+    if marketPrice == 0 { return "0" }
+    return BigInt(marketPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
   }
 
   func updatePair(name: String) -> Bool {

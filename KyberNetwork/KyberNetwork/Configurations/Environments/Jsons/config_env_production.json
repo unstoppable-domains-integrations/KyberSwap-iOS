@@ -38,7 +38,8 @@
       "decimals": 18,
       "usd_id":"ethereum",
       "gasLimit": "0",
-      "is_quote": true
+      "is_quote": true,
+      "quote_priority": 2
     },
     "WETH": {
       "name": "Wrapped Ether",
@@ -47,7 +48,8 @@
       "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "icon": "weth",
       "sp_limit_order": true,
-      "is_quote": true
+      "is_quote": true,
+      "quote_priority": 2
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -68,7 +70,8 @@
       "gasLimit": "450000",
       "sp_limit_order": true,
       "is_quote": true,
-      "is_gas_fixed": true
+      "is_gas_fixed": true,
+      "quote_priority": 3
     },
     "OMG": {
       "name": "OmiseGO",
@@ -297,7 +300,8 @@
       "icon": "tusd",
       "sp_limit_order": true,
       "is_quote": true,
-      "is_gas_fixed": true
+      "is_gas_fixed": true,
+      "quote_priority": 3
     },
     "LEND": {
       "name": "EthLend",
@@ -390,6 +394,16 @@
       "gasLimit": "380000",
       "icon": "pt",
       "sp_limit_order": true
+    },
+    "WBTC":{
+      "symbol": "WBTC",
+      "name": "Wrapped BTC",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+      "decimals": 8,
+      "gasLimit": "650000",
+      "sp_limit_order": true,
+      "is_quote": true,
+      "quote_priority": 1
     }
   },
   "ethScanUrl": "https://etherscan.io/",
