@@ -355,7 +355,7 @@ class KNCreateLimitOrderV2ViewModel {
   }
 
   var totalAmountDouble: Double {
-    return self.amountTo.doubleValue * self.targetPrice.doubleValue
+    return self.amountFrom.doubleValue
   }
 
   var totalAmountString: String {

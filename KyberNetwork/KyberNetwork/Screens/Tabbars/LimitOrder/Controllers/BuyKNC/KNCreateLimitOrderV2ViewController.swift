@@ -530,13 +530,12 @@ extension KNCreateLimitOrderV2ViewController: UITextFieldDelegate {
       self.updateFeeNotesUI()
     }
     textField.text = text
+    self.updateEstimateFeeFromServer()
     return false
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    if textField == self.amountField {
-      self.updateEstimateFeeFromServer()
-    }
+    self.updateEstimateFeeFromServer()
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.validateDataIfNeeded()
