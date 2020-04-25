@@ -1,10 +1,12 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 protocol KNTokenChartCoordinatorDelegate: class {
   func tokenChartCoordinator(sell token: TokenObject)
   func tokenChartCoordinator(buy token: TokenObject)
+  func tokenChartCoordinatorShouldBack()
 }
 
 class KNTokenChartCoordinator: Coordinator {
@@ -12,13 +14,14 @@ class KNTokenChartCoordinator: Coordinator {
   let navigationController: UINavigationController
   let session: KNSession
   let token: TokenObject
+  var chartLOData: KNLimitOrderChartData? //if open from LO
   var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
 
   weak var delegate: KNTokenChartCoordinatorDelegate?
 
   lazy var rootViewController: KNTokenChartViewController = {
-    let viewModel = KNTokenChartViewModel(token: self.token)
+    let viewModel = KNTokenChartViewModel(token: self.token, chartDataLO: self.chartLOData)
     let controller = KNTokenChartViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
@@ -33,31 +36,42 @@ class KNTokenChartCoordinator: Coordinator {
     navigationController: UINavigationController,
     session: KNSession,
     balances: [String: Balance],
-    token: TokenObject
+    token: TokenObject,
+    chartLOData: KNLimitOrderChartData? = nil
     ) {
     self.navigationController = navigationController
     self.session = session
     self.balances = balances
     self.token = token
+    self.chartLOData = chartLOData
   }
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
-    if let bal = balances[self.token.contract] {
-      self.rootViewController.coordinatorUpdateBalance(balance: [self.token.contract: bal])
-    }
+    self.rootViewController.coordinatorUpdateBalance(balance: self.balances)
   }
 
   func stop() {
-    self.navigationController.popToRootViewController(animated: true)
+    self.delegate?.tokenChartCoordinatorShouldBack()
   }
 
   func coordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
     balances.forEach { self.balances[$0.key] = $0.value }
-    if let bal = balances[self.token.contract] {
-      self.rootViewController.coordinatorUpdateBalance(balance: [self.token.contract: bal])
-    }
+    self.rootViewController.coordinatorUpdateBalance(balance: self.balances)
     self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
+  }
+
+  func coordinatorUpdatePendingBalances(address: String, balances: JSONDictionary) {
+    // different address
+    if address.lowercased() != self.session.wallet.address.description.lowercased() { return }
+    let bal: Double = {
+      if self.token.isETH || self.token.isWETH {
+        return (balances["ETH"] as? Double ?? 0.0) + (balances["WETH"] as? Double ?? 0.0)
+      }
+      return balances[self.token.symbol] as? Double ?? 0.0
+    }()
+    let balance = BigInt(bal * pow(10.0, Double(self.token.decimals)))
+    self.rootViewController.coordinatorUpdatePendingBalance(balance: balance)
   }
 
   func coordinatorExchangeRateDidUpdate() {
@@ -75,6 +89,13 @@ class KNTokenChartCoordinator: Coordinator {
 
   func coordinatorDidUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
     return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
+  }
+
+  func coordinatorDidUpdateMarketData() {
+    // no market data
+    guard let curMarket = self.chartLOData?.market else { return }
+    guard let newMarket = KNRateCoordinator.shared.cachedMarket.first(where: { return $0.pair == curMarket.pair }) else { return }
+    self.rootViewController.coordinatorUpdateMarketPair(market: newMarket)
   }
 }
 
@@ -109,8 +130,19 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
         )
       }
     case .openEtherscan(let token):
-      if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(token.contract)") {
-        self.navigationController.openSafari(with: url)
+      if let etherScanEndpoint = KNEnvironment.default.knCustomRPC?.etherScanEndpoint {
+        let address = self.session.wallet.address.description.lowercased()
+        let urlString: String = {
+          if token.isETH {
+            // if eth, open address as there is no address for eth
+            return "\(etherScanEndpoint)address/\(address)"
+          }
+          // open token with current address
+          return "\(etherScanEndpoint)token/\(token.contract)?a=\(address)"
+        }()
+        if let url = URL(string: urlString) {
+          self.navigationController.openSafari(with: url)
+        }
       }
     case .addNewAlert(let token):
       if KNAlertStorage.shared.isMaximumAlertsReached {

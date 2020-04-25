@@ -1,6 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
-
+//swiftlint:disable file_length
 import Moya
 import CryptoSwift
 import BigInt
@@ -167,6 +167,8 @@ enum UserInfoService {
   case togglePriceNotification(accessToken: String, state: Bool)
   case updateListSubscriptionTokens(accessToken: String, symbols: [String])
   case updateUserPlayerId(accessToken: String, playerId: String)
+  case getListFavouriteMarket(accessToken: String)
+  case updateMarketFavouriteStatus(accessToken: String, base: String, quote: String, status: Bool)
 }
 
 extension UserInfoService: MoyaCacheable {
@@ -212,7 +214,11 @@ extension UserInfoService: TargetType {
     case .updateListSubscriptionTokens:
       return URL(string: "\(baseString)/api/users/subscription_tokens")!
     case .updateUserPlayerId:
-    return URL(string: "\(baseString)/api/users/player_id")!
+      return URL(string: "\(baseString)/api/users/player_id")!
+    case .updateMarketFavouriteStatus:
+      return URL(string: "\(baseString)/api/orders/favorite_pair")!
+    case .getListFavouriteMarket:
+      return URL(string: "\(baseString)/api/orders/favorite_pairs")!
     }
   }
 
@@ -220,10 +226,10 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getPreScreeningWallet, .getListSubscriptionTokens: return .get
+    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getPreScreeningWallet, .getListSubscriptionTokens, .getListFavouriteMarket: return .get
     case .removeAnAlert, .deleteAllTriggerdAlerts: return .delete
     case .addPushToken, .updateAlert, .togglePriceNotification: return .patch
-    case .markAsRead: return .put
+    case .markAsRead, .updateMarketFavouriteStatus: return .put
     default: return .post
     }
   }
@@ -253,7 +259,7 @@ extension UserInfoService: TargetType {
       print(json)
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
-    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts, .getListSubscriptionTokens:
+    case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts, .getListSubscriptionTokens, .getListFavouriteMarket:
       return .requestPlain
     case .getPreScreeningWallet:
       return .requestPlain
@@ -278,11 +284,19 @@ extension UserInfoService: TargetType {
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .updateUserPlayerId(_, let playerId):
-    let json: JSONDictionary = [
-      "player_id": playerId,
-    ]
-    let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-    return .requestData(data)
+      let json: JSONDictionary = [
+        "player_id": playerId,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
+    case .updateMarketFavouriteStatus(_, let base, let quote, let status):
+      let json: JSONDictionary = [
+        "base": base,
+        "quote": quote,
+        "status": status,
+      ]
+      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+      return .requestData(data)
     }
   }
   var sampleData: Data { return Data() }
@@ -329,6 +343,10 @@ extension UserInfoService: TargetType {
       json["Authorization"] = accessToken
     case .updateUserPlayerId(let accessToken, _):
       json["Authorization"] = accessToken
+    case .getListFavouriteMarket(let accessToken):
+      json["Authorization"] = accessToken
+    case .updateMarketFavouriteStatus(let accessToken, _, _, _):
+      json["Authorization"] = accessToken
     }
     return json
   }
@@ -343,6 +361,7 @@ enum LimitOrderService {
   case checkEligibleAddress(accessToken: String, address: String)
   case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
   case pendingBalance(accessToken: String, address: String)
+  case getMarkets
 }
 
 extension LimitOrderService: MoyaCacheable {
@@ -370,6 +389,9 @@ extension LimitOrderService: TargetType {
       return URL(string: "\(baseString)/api/orders/related_orders?user_addr=\(address)&src=\(src)&dst=\(dest)&min_rate=\(rate)")!
     case .pendingBalance(_, let address):
       return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
+    case .getMarkets:
+      let base = KNEnvironment.default.cachedSourceAmountRateURL
+      return URL(string: base + "/pairs/market")!
     }
   }
 
@@ -377,7 +399,7 @@ extension LimitOrderService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance: return .get
+    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance, .getMarkets: return .get
     case .cancelOrder: return .put
     case .createOrder: return .post
     }
@@ -385,10 +407,10 @@ extension LimitOrderService: TargetType {
 
   var task: Task {
     switch self {
-    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance, .getFee, .getRelatedOrders:
+    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance, .getFee, .getRelatedOrders, .getMarkets:
       return .requestPlain
     case .createOrder(_, let order, let signedData):
-      let json: JSONDictionary = [
+      var json: JSONDictionary = [
         "user_address": order.sender.description.lowercased(),
         "nonce": order.nonce,
         "src_token": order.from.contract.lowercased(),
@@ -399,6 +421,9 @@ extension LimitOrderService: TargetType {
         "fee": BigInt(order.fee).hexEncoded,
         "signature": signedData.hexEncoded,
       ]
+      if let isBuy = order.isBuy {
+        json["side_trade"] = isBuy ? "buy" : "sell"
+      }
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     }
@@ -428,6 +453,8 @@ extension LimitOrderService: TargetType {
       json["Authorization"] = accessToken
     case .getFee(let accessToken, _, _, _, _, _):
       if let accessToken = accessToken { json["Authorization"] = accessToken }
+    case .getMarkets:
+      break
     }
     return json
   }

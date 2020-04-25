@@ -142,4 +142,17 @@ extension String {
 
     return data
   }
+
+  func formatMarketPairString() -> String {
+    let tokens = self.components(separatedBy: "_")
+    var left = tokens.first ?? ""
+    var right = tokens.last ?? ""
+    if left == "ETH" {
+      left = "WETH"
+    }
+    if right == "ETH" {
+      right = "WETH"
+    }
+    return "\(left)_\(right)"
+  }
 }

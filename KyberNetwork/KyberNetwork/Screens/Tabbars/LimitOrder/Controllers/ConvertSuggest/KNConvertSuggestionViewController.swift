@@ -58,17 +58,17 @@ class KNConvertSuggestionViewController: KNBaseViewController {
 
     self.descTextLabel.text = "Your order can not be submitted because your WETH is not enough, please convert ETH to WETH to continue.".toBeLocalised()
     self.yourAddressTextLabel.text = "Your address".toBeLocalised()
-    self.yourBalanceTextLabel.text = "Your available balance".toBeLocalised()
+    self.yourBalanceTextLabel.text = "Your balance".toBeLocalised()
 
     self.wethContainerView.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: self.wethContainerView.frame.height / 2.0
+      radius: 3.0
     )
     self.amountContainerView.rounded(
       color: UIColor.Kyber.border,
       width: 1.0,
-      radius: self.amountContainerView.frame.height / 2.0
+      radius: 3.0
     )
 
     self.convertButton.applyGradient()
