@@ -76,6 +76,7 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
   fileprivate func bindMarketData() {
     self.priceField.text = self.viewModel.targetPriceFromMarket
     self.viewModel.updateTargetPrice(self.viewModel.targetPriceFromMarket)
+    self.feeLabel.text = self.viewModel.displayFeeString
     self.tokenAvailableLabel.text = "\(self.viewModel.balanceText) \(self.viewModel.fromSymbol)"
     self.toSymLabel.text = self.viewModel.isBuy ? self.viewModel.toSymBol : self.viewModel.fromSymbol
     for label in self.fromSymLabels {
@@ -486,6 +487,7 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
     guard self.isViewSetup else { return }
     self.amountField.text = ""
     self.totalField.text = ""
+    self.feeLabel.text = self.viewModel.displayFeeString
   }
 
   @IBAction func marketPriceButtonTapped(_ sender: Any) {

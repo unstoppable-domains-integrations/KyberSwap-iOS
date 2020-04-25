@@ -221,7 +221,7 @@ class TokenExtraData: NSObject {
       "sp_limit_order": self.limitOrderEnabled,
       "is_quote": self.isQuote,
       "is_gas_fixed": self.isGasFixed,
-      "quote_priority": self.quotePriority
+      "quote_priority": self.quotePriority,
     ]
   }
 
