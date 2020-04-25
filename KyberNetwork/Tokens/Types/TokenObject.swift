@@ -71,6 +71,10 @@ class TokenObject: Object {
       return self.symbol == "WETH"
     }
 
+    var isWBTC: Bool {
+      return self.symbol == "WBTC"
+    }
+
     var symbolLODisplay: String {
       if self.isETH || self.isWETH { return "ETH*" }
       return self.symbol

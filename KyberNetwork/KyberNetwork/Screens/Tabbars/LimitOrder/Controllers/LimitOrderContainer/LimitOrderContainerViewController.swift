@@ -107,7 +107,7 @@ class LimitOrderContainerViewController: KNBaseViewController {
     if !self.isViewSetup {
       self.isViewSetup = true
       self.setupPageController()
-      self.currentMarket = KNRateCoordinator.shared.getMarketWith(name: "ETH_KNC")
+      self.currentMarket = KNRateCoordinator.shared.getMarketWith(name: "WETH_KNC")
       if let market = self.currentMarket {
         self.setupUI(market: market)
       }
@@ -199,15 +199,30 @@ class LimitOrderContainerViewController: KNBaseViewController {
       NSAttributedStringKey.foregroundColor: UIColor(red: 250, green: 101, blue: 102),
     ]
     let detailText = NSMutableAttributedString()
-    let formatter = NumberFormatterUtil.shared.limitOrderFormatter
-    let buySellText = NSAttributedString(string: "\(formatter.string(from: NSNumber(value: market.buyPrice)) ?? "") ~ \(formatter.string(from: NSNumber(value: market.sellPrice)) ?? "")", attributes: displayTypeNormalAttributes)
+    let buyPriceStr: String = {
+      if market.buyPrice == 0 { return "0" }
+      return BigInt(market.buyPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
+    }()
+    let sellPriceStr: String = {
+      if market.sellPrice == 0 { return "0" }
+      return BigInt(market.sellPrice * pow(10.0, 18.0)).displayRate(decimals: 18)
+    }()
+    let buySellText = NSAttributedString(string: "\(buyPriceStr) / \(sellPriceStr)", attributes: displayTypeNormalAttributes)
     let changeAttribute = market.change > 0 ? upAttributes : downAttributes
-    let changeText = NSAttributedString(string: " \(formatter.string(from: NSNumber(value: fabs(market.change))) ?? "")%", attributes: changeAttribute)
+    let changeStr = NumberFormatterUtil.shared.displayPercentage(from: fabs(market.change))
+    let changeText = NSAttributedString(string: " \(changeStr)%", attributes: changeAttribute)
     detailText.append(buySellText)
     detailText.append(changeText)
     self.marketDetailLabel.attributedText = detailText
 
-    self.marketVolLabel.text = "Vol \(formatter.string(from: NSNumber(value: fabs(market.volume))) ?? "") \(baseTokenSym)"
+    self.marketVolLabel.text = {
+      let totalVol: Double = {
+        return KNRateCoordinator.shared.getMarketVolume(pair: market.pair)
+      }()
+
+      let formatter = NumberFormatterUtil.shared.doubleFormatter
+      return "Vol \(formatter.string(from: NSNumber(value: fabs(totalVol))) ?? "") \(sourceTokenSym)"
+    }()
     self.buyToolBarButton.setTitle("\("Buy".toBeLocalised().uppercased()) \(baseTokenSym)", for: .normal)
     self.sellToolBarButton.setTitle("\("Sell".toBeLocalised().uppercased()) \(baseTokenSym)", for: .normal)
   }
@@ -250,6 +265,16 @@ class LimitOrderContainerViewController: KNBaseViewController {
   func coordinatorMarketCachedDidUpdate() {
     for vc in self.pages {
       vc.coordinatorMarketCachedDidUpdate()
+    }
+    if self.currentMarket == nil {
+      self.currentMarket = KNRateCoordinator.shared.getMarketWith(name: "WETH_KNC")
+    }
+    guard let curMarket = self.currentMarket else {
+      return
+    }
+    if let market = KNRateCoordinator.shared.getMarketWith(name: curMarket.pair) {
+      self.currentMarket = market
+      self.setupUI(market: market)
     }
   }
 
