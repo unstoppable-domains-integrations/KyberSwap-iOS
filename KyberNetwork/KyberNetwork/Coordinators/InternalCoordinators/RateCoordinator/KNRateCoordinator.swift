@@ -124,7 +124,7 @@ class KNRateCoordinator {
   }
 
   func refreshData() {
-    if Date().timeIntervalSince(self.lastRefreshTime) < 10.0 {
+    if Date().timeIntervalSince(self.lastRefreshTime) > 15.0 {
       self.lastRefreshTime = Date()
       self.fetchCacheRate(nil)
       self.fetchExchangeTokenRate(nil)
