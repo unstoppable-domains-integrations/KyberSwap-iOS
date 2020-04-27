@@ -183,9 +183,20 @@ extension KNListNotificationViewController: UITableViewDelegate {
       }
     }
 
-    if noti.label == "new_listing" || noti.label == "big_swing" {
+    if noti.label == "new_listing" {
       if let data = noti.extraData, let token = data["token"] as? String {
         self.delegate?.listNotificationViewController(self, run: .openSwap(from: "ETH", to: token))
+        return
+      }
+    }
+    if noti.label == "big_swing" {
+      if let data = noti.extraData, let token = data["token"] as? String {
+        if token != "ETH" && token != "WETH" {
+          self.delegate?.listNotificationViewController(self, run: .openSwap(from: "ETH", to: token))
+        } else {
+          // eth or weth
+          self.delegate?.listNotificationViewController(self, run: .openSwap(from: "DAI", to: token))
+        }
         return
       }
     }
