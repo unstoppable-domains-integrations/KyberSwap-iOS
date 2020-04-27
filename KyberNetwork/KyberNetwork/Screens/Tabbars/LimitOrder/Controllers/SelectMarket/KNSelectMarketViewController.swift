@@ -107,7 +107,8 @@ class KNSelectMarketViewController: KNBaseViewController {
       button.rounded(radius: 5)
       button.layer.borderColor = UIColor.Kyber.orange.cgColor
     }
-    if let button = self.marketTypeButtons.first(where: { $0.tag == 1 }) {
+    if let button = self.marketTypeButtons.first(where: { $0.tag == 1 }), let buttonTitle = button.currentTitle {
+      self.viewModel.marketType = "/" + buttonTitle
       self.setSelectButton(button)
     }
   }
