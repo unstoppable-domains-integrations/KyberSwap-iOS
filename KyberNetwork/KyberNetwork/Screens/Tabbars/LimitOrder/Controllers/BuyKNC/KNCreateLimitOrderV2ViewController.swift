@@ -25,6 +25,13 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
   @IBOutlet weak var mainManagerOrderButtonHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var mainManageOrdersButton: UIButton!
 
+  @IBOutlet weak var priceTextLabel: UILabel!
+  @IBOutlet weak var amountTextLabel: UILabel!
+  @IBOutlet weak var availableBalanceTextLabel: UILabel!
+  @IBOutlet weak var feeTextLabel: UILabel!
+  @IBOutlet weak var totalTextLabel: UILabel!
+  @IBOutlet weak var learnMoreButton: UIButton!
+
   fileprivate var updateFeeTimer: Timer?
 
   weak var delegate: LimitOrderContainerViewControllerDelegate?
@@ -83,10 +90,12 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
       label.text = self.viewModel.isBuy ? self.viewModel.fromSymbol : self.viewModel.toSymBol
     }
     if self.viewModel.isBuy {
-      self.buySellButton.setTitle("\("Buy".toBeLocalised()) \(self.viewModel.toSymBol)", for: .normal)
+      let localisedString = String(format: "Buy %@".toBeLocalised(), self.viewModel.toSymBol)
+      self.buySellButton.setTitle(localisedString, for: .normal)
       self.buySellButton.backgroundColor = UIColor.Kyber.marketGreen
     } else {
-      self.buySellButton.setTitle("\("Sell".toBeLocalised()) \(self.viewModel.fromSymbol)", for: .normal)
+      let localisedString = String(format: "Sell %@".toBeLocalised(), self.viewModel.fromSymbol)
+      self.buySellButton.setTitle(localisedString, for: .normal)
       self.buySellButton.backgroundColor = UIColor.Kyber.marketRed
     }
   }
@@ -107,6 +116,15 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
       forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
       withReuseIdentifier: KNTransactionCollectionReusableView.kOrderViewID
     )
+    self.priceTextLabel.text = "Price".toBeLocalised().uppercased()
+    self.amountTextLabel.text = "Amount".toBeLocalised().uppercased()
+    self.totalTextLabel.text = "Total".toBeLocalised().uppercased()
+    self.availableBalanceTextLabel.text = "Available Balance".toBeLocalised().uppercased()
+    self.feeTextLabel.text = NSLocalizedString("fee", value: "Fee", comment: "")
+    self.learnMoreButton.setTitle("Learn more".toBeLocalised(), for: .normal)
+    self.mainManageOrdersButton.setTitle("Manage Orders".toBeLocalised(), for: .normal)
+    self.relatedManageOrderButton.setTitle("Manage Orders".toBeLocalised(), for: .normal)
+    self.relatedOrderTextLabel.text = "Related Orders".toBeLocalised().uppercased()
     self.updateRelatedOrdersView()
   }
 

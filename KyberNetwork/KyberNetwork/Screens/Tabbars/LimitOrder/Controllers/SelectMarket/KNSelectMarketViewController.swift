@@ -23,6 +23,7 @@ class KNSelectMarketViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var headerTitle: UILabel!
   @IBOutlet weak var noDataView: UIView!
+  @IBOutlet weak var noMarketFoundTextLabel: UILabel!
   var marketTypeButtons: [UIButton] = []
   @IBOutlet weak var searchField: UITextField!
   @IBOutlet weak var marketButtonsStackView: UIStackView!
@@ -84,6 +85,7 @@ class KNSelectMarketViewController: KNBaseViewController {
     self.view.addSubview(self.fakeTextField)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.headerTitle.text = "Market".toBeLocalised()
+    self.noMarketFoundTextLabel.text = "No markets found".toBeLocalised()
     self.marketTypeButtons.append(self.favouriteButton)
     if self.viewModel.pickerViewData.count >= 1, let first = self.viewModel.pickerViewData.first {
       let button = self.buildMarketButton(first)
@@ -258,11 +260,11 @@ class KNSelectMarketViewController: KNBaseViewController {
     switch self.viewModel.sortType {
     case .pair(let asc):
       let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
-      let attributeTitle = NSMutableAttributedString(string: "pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes)
+      let attributeTitle = NSMutableAttributedString(string: "Pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes)
       attributeTitle.append(sortingCharacter)
       self.pairButton.setAttributedTitle(attributeTitle, for: .normal)
-      self.priceButton.setAttributedTitle(NSAttributedString(string: "price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes), for: .normal)
-      self.volumeButton.setAttributedTitle(NSAttributedString(string: "volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.priceButton.setAttributedTitle(NSAttributedString(string: "Price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes), for: .normal)
+      self.volumeButton.setAttributedTitle(NSAttributedString(string: "Volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                            for: .normal
       )
       self.change24hButton.setAttributedTitle(NSAttributedString(string: "24h%".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
@@ -270,14 +272,14 @@ class KNSelectMarketViewController: KNBaseViewController {
       )
     case .price(let asc):
       let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
-      let attributeTitle = NSMutableAttributedString(string: "price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes
+      let attributeTitle = NSMutableAttributedString(string: "Price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes
       )
       attributeTitle.append(sortingCharacter)
-      self.pairButton.setAttributedTitle(NSAttributedString(string: "pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.pairButton.setAttributedTitle(NSAttributedString(string: "Pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                          for: .normal
       )
       self.priceButton.setAttributedTitle(attributeTitle, for: .normal)
-      self.volumeButton.setAttributedTitle(NSAttributedString(string: "volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.volumeButton.setAttributedTitle(NSAttributedString(string: "Volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                            for: .normal
       )
       self.change24hButton.setAttributedTitle(NSAttributedString(string: "24h%".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
@@ -285,14 +287,14 @@ class KNSelectMarketViewController: KNBaseViewController {
       )
     case .volume(let asc):
       let sortingCharacter = asc ? arrowUpAttributedString : arrowDownAttributedString
-      let attributeTitle = NSMutableAttributedString(string: "volume".toBeLocalised().uppercased(),
+      let attributeTitle = NSMutableAttributedString(string: "Volume".toBeLocalised().uppercased(),
                                                      attributes: displayTypeNormalAttributes
       )
       attributeTitle.append(sortingCharacter)
-      self.pairButton.setAttributedTitle(NSAttributedString(string: "pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.pairButton.setAttributedTitle(NSAttributedString(string: "Pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                          for: .normal
       )
-      self.priceButton.setAttributedTitle(NSAttributedString(string: "price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.priceButton.setAttributedTitle(NSAttributedString(string: "Price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                           for: .normal
       )
       self.volumeButton.setAttributedTitle(attributeTitle, for: .normal)
@@ -304,13 +306,13 @@ class KNSelectMarketViewController: KNBaseViewController {
       let attributeTitle = NSMutableAttributedString(string: "24h%".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes
       )
       attributeTitle.append(sortingCharacter)
-      self.pairButton.setAttributedTitle(NSAttributedString(string: "pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.pairButton.setAttributedTitle(NSAttributedString(string: "Pair".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                          for: .normal
       )
-      self.priceButton.setAttributedTitle(NSAttributedString(string: "price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.priceButton.setAttributedTitle(NSAttributedString(string: "Price".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                           for: .normal
       )
-      self.volumeButton.setAttributedTitle(NSAttributedString(string: "volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
+      self.volumeButton.setAttributedTitle(NSAttributedString(string: "Volume".toBeLocalised().uppercased(), attributes: displayTypeNormalAttributes),
                                            for: .normal
       )
       self.change24hButton.setAttributedTitle(attributeTitle, for: .normal)
