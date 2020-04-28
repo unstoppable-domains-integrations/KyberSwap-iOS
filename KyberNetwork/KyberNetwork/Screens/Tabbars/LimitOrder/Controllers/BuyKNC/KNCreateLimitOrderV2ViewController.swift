@@ -119,6 +119,7 @@ class KNCreateLimitOrderV2ViewController: KNBaseViewController {
       return
     }
     self.bindMarketData()
+    self.comparePriceLabel.isHidden = true
   }
 
   fileprivate func updateFeeNotesUI() {
