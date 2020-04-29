@@ -2,7 +2,7 @@ platform :ios, '11.0'
 inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'KyberNetwork' do
+target 'KyberSwap' do
   use_frameworks!
 
   pod 'BigInt', '~> 3.1.0'
@@ -46,12 +46,12 @@ target 'KyberNetwork' do
   pod 'SwipeCellKit'
   pod 'Charts'
 
-  target 'KyberNetworkTests' do
+  target 'KyberSwapTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'KyberNetworkUITests' do
+  target 'KyberSwapUITests' do
     inherit! :search_paths
     # Pods for testing
   end

@@ -18,10 +18,10 @@ opt_in_rules:
   - multiline_parameters
   - vertical_parameter_alignment_on_call
 included:
-  - KyberNetwork
+  - KyberSwap
 excluded:
-  - KyberNetwork/Vendors
-  - KyberNetwork/R.generated.swift
+  - KyberSwap/Vendors
+  - KyberSwap/R.generated.swift
 function_parameter_count:
   warning: 20
   error: 25
