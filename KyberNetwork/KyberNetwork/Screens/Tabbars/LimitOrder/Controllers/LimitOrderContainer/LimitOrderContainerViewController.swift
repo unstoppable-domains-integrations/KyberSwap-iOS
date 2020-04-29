@@ -23,6 +23,7 @@ protocol LimitOrderContainerViewControllerDelegate: class {
 
 class LimitOrderContainerViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
+  @IBOutlet weak var limitOrderTextLabel: UILabel!
   @IBOutlet weak var pagerIndicator: UIView!
   @IBOutlet weak var contentContainerView: UIView!
   @IBOutlet weak var buyToolBarButton: UIButton!
@@ -92,6 +93,7 @@ class LimitOrderContainerViewController: KNBaseViewController {
     self.hamburgerMenu.hideMenu(animated: false)
     self.hasUnreadNotification.rounded(radius: hasUnreadNotification.frame.height / 2)
     self.walletNameLabel.text = self.walletNameString
+    self.limitOrderTextLabel.text = "Limit Order".toBeLocalised()
 
     let name = Notification.Name(kUpdateListNotificationsKey)
     NotificationCenter.default.addObserver(
@@ -122,10 +124,12 @@ class LimitOrderContainerViewController: KNBaseViewController {
 
   @IBAction func pagerButtonTapped(_ sender: UIButton) {
     if sender.tag == 1 {
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_limit_order_2", customAttributes: ["action": "open_buy_view_button_clicked"])
       self.pageController.setViewControllers([pages.first!], direction: .reverse, animated: true, completion: nil)
       self.animatePagerIndicator(index: 1, delay: 0.3)
       self.currentIndex = 0
     } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "screen_limit_order_2", customAttributes: ["action": "open_sell_view_button_clicked"])
       self.pageController.setViewControllers([pages.last!], direction: .forward, animated: true, completion: nil)
       self.animatePagerIndicator(index: 2, delay: 0.3)
       self.currentIndex = 1
@@ -133,11 +137,13 @@ class LimitOrderContainerViewController: KNBaseViewController {
   }
 
   @IBAction func marketButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_limit_order_2", customAttributes: ["action": "open_market_select_button_clicked"])
     self.delegate?.kCreateLimitOrderViewController(self, run: .changeMarket)
   }
 
   @IBAction func chartButtonPressed(_ sender: Any) {
     guard let market = self.currentMarket else { return }
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_limit_order_2", customAttributes: ["action": "open_chart_button_clicked"])
     self.delegate?.kCreateLimitOrderViewController(
       self,
       run: .openChartView(market: market, isBuy: self.currentIndex == 0)
@@ -223,8 +229,10 @@ class LimitOrderContainerViewController: KNBaseViewController {
       let formatter = NumberFormatterUtil.shared.doubleFormatter
       return "Vol \(formatter.string(from: NSNumber(value: fabs(totalVol))) ?? "") \(sourceTokenSym)"
     }()
-    self.buyToolBarButton.setTitle("\("Buy".toBeLocalised().uppercased()) \(baseTokenSym)", for: .normal)
-    self.sellToolBarButton.setTitle("\("Sell".toBeLocalised().uppercased()) \(baseTokenSym)", for: .normal)
+    let buyString = String(format: "Buy %@".toBeLocalised(), baseTokenSym).uppercased()
+    let sellString = String(format: "Sell %@".toBeLocalised(), baseTokenSym).uppercased()
+    self.buyToolBarButton.setTitle(buyString, for: .normal)
+    self.sellToolBarButton.setTitle(sellString, for: .normal)
   }
 
   private func setupPageController() {
@@ -343,7 +351,7 @@ class LimitOrderContainerViewController: KNBaseViewController {
 
   var walletNameString: String {
     let addr = self.walletObject.address.lowercased()
-    return "|  \(addr.prefix(10))...\(addr.suffix(8))"
+    return "|  \(addr.prefix(8))...\(addr.suffix(6))"
   }
 
   func coordinatorUpdateWalletObjects() {

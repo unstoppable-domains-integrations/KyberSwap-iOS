@@ -45,7 +45,7 @@ class KNLimitOrderDetailsPopUp: KNBaseViewController {
     self.statusButton.rounded(radius: self.statusButton.frame.height / 2.0)
 
     self.titleTextLabel.text = "Your order is filled".toBeLocalised()
-    self.feeTextLabel.text = "Fee".toBeLocalised().uppercased()
+    self.feeTextLabel.text = NSLocalizedString("fee", value: "Fee", comment: "").uppercased()
     self.fromTextLabel.text = "Total".toBeLocalised().uppercased()
     self.toTextLabel.text = "Amount".toBeLocalised().uppercased()
     self.closeButton.setTitle(
