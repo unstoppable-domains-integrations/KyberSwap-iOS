@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,6 +27,7 @@
                 <outlet property="headerTitle" destination="2Gb-wx-r9C" id="5tS-Ot-QbH"/>
                 <outlet property="marketButtonsStackView" destination="qeT-0Q-Mps" id="DhO-cm-8ZF"/>
                 <outlet property="noDataView" destination="zhc-vo-6EH" id="omH-Ko-OOY"/>
+                <outlet property="noMarketFoundTextLabel" destination="1ti-yf-1Dj" id="wSv-hX-SJ1"/>
                 <outlet property="pairButton" destination="fEO-73-hRs" id="fOy-RY-qID"/>
                 <outlet property="priceButton" destination="Wvl-nL-8P0" id="kpq-aN-kFC"/>
                 <outlet property="searchField" destination="IsT-Ts-eFb" id="tIh-qT-yCW"/>
