@@ -621,7 +621,7 @@
 "You must sign in to use Limit Order feature" = "请登录您的个人资料以使用限价订单功能";
 "Your target rate should be greater than 0" = "您的目标汇率应大于0";
 "Your target rate is too high, should be at most 10 times of current rate" = "您的目标汇率太高，应至多为当前汇率的10倍";
-"Please enter your target rate to continue" = "Please enter your target rate to continue";
+"Please enter your target rate to continue" = "请输入您的目标费率以继续";
 "Rate of" = "Rate of";
 "Your target rate is" = "Your target rate is";
 "higher than current Market rate" = "higher than current Market rate";
@@ -709,9 +709,9 @@
 "Total" = "总";
 "Your target price should be greater than 0" = "您的目标汇率应大于0";
 "Your target price is too high, should be at most 10 times of current price" = "您的目标汇率太高，应至多为当前汇率的10倍";
-"Please enter your target price to continue" = "Please enter your target rate to continue";
+"Please enter your target price to continue" = "请输入您的目标价格以继续";
 "Manage Orders" = "Manage Orders";
-"You are cancelling this order" = "You are cancelling this order";
+"You are cancelling this order" = "您正在取消这个订单";
 "Cancelling..." = "Cancelling...";
 "Your order has been cancelled" = "Your order has been cancelled";
 "Submitting order" = "Submitting order";
