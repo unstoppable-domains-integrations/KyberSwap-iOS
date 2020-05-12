@@ -365,12 +365,14 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   func openAddNewAlert(_ token: TokenObject) {
     if let topVC = self.navigationController.topViewController, topVC is KNNewAlertViewController { return }
     if KNAlertStorage.shared.isMaximumAlertsReached {
-      let alertController = UIAlertController(
-        title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
-        message: NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: ""),
-        preferredStyle: .alert
+      let alertController = KNPrettyAlertController(
+        title: "Alert limit exceeded".toBeLocalised(),
+        message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+        secondButtonTitle: nil,
+        firstButtonTitle: "OK".toBeLocalised(),
+        secondButtonAction: nil,
+        firstButtonAction: nil
       )
-      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
       self.navigationController.present(alertController, animated: true, completion: nil)
       return
     }
@@ -390,18 +392,20 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
   }
 
   fileprivate func openBuyETHAlert() {
-    let alertController = UIAlertController(
-      title: "",
+    let alertController = KNPrettyAlertController(
+      title: nil,
       message: "KyberSwap.is.only.support.buying.ETH.with.fiat.on.web".toBeLocalised(),
-      preferredStyle: .alert
+      secondButtonTitle: "yes".toBeLocalised(),
+      firstButtonTitle: "cancel".toBeLocalised(),
+      secondButtonAction: {
+        let ksURL = URL(string: "https://kyberswap.com/swap/knc-eth")!
+        if UIApplication.shared.canOpenURL(ksURL) {
+          UIApplication.shared.open(ksURL)
+        }
+      },
+      firstButtonAction: nil
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .default, handler: nil))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("yes", value: "yes", comment: ""), style: .default, handler: { _ in
-      let ksURL = URL(string: "https://kyberswap.com/swap/knc-eth")!
-      if UIApplication.shared.canOpenURL(ksURL) {
-        UIApplication.shared.open(ksURL)
-      }
-    }))
+
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 }

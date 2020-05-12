@@ -146,12 +146,14 @@ extension KNTokenChartCoordinator: KNTokenChartViewControllerDelegate {
       }
     case .addNewAlert(let token):
       if KNAlertStorage.shared.isMaximumAlertsReached {
-        let alertController = UIAlertController(
-          title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
-          message: NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: ""),
-          preferredStyle: .alert
+        let alertController = KNPrettyAlertController(
+          title: "Alert limit exceeded".toBeLocalised(),
+          message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+          secondButtonTitle: nil,
+          firstButtonTitle: "OK".toBeLocalised(),
+          secondButtonAction: nil,
+          firstButtonAction: nil
         )
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
         self.navigationController.present(alertController, animated: true, completion: nil)
         return
       }

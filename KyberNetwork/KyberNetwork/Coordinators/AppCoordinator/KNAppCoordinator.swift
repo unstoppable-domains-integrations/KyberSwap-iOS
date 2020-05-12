@@ -152,32 +152,51 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.resume()
     KNVersionControlManager.shouldShowUpdateApp { (shouldShow, isForced, title, subtitle) in
       if !shouldShow { return }
-      let alert = UIAlertController(
-        title: (title ?? "Update available!").toBeLocalised(),
-        message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: "Update".toBeLocalised(), style: .default, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(
-          withName: "new_update_available",
-          customAttributes: ["button": "update"]
-        )
-        self.navigationController.openSafari(with: "https://apps.apple.com/us/app/kyberswap-crypto-exchange/id1453691309")
-      }))
       if !isForced {
-        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in
-          KNCrashlyticsUtil.logCustomEvent(
-            withName: "new_update_available",
-            customAttributes: ["button": "cancel"]
-          )
-        }))
+        let alert = KNPrettyAlertController(
+          title: (title ?? "Update available!").toBeLocalised(),
+          message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
+          secondButtonTitle: "Update".toBeLocalised(),
+          firstButtonTitle: "cancel".toBeLocalised(),
+          secondButtonAction: {
+            KNCrashlyticsUtil.logCustomEvent(
+              withName: "new_update_available",
+              customAttributes: ["button": "update"]
+            )
+            DispatchQueue.main.async {
+              self.navigationController.openSafari(with: "https://apps.apple.com/us/app/kyberswap-crypto-exchange/id1453691309")
+            }
+          }, firstButtonAction: {
+            KNCrashlyticsUtil.logCustomEvent(
+              withName: "new_update_available",
+              customAttributes: ["button": "cancel"]
+            )
+          }
+        )
+        self.navigationController.present(alert, animated: true, completion: nil)
       } else {
         KNCrashlyticsUtil.logCustomEvent(
           withName: "force_update",
           customAttributes: ["cur_version": Bundle.main.versionNumber ?? ""]
         )
+        let alert = KNPrettyAlertController(
+          title: (title ?? "Update available!").toBeLocalised(),
+          message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
+          secondButtonTitle: nil,
+          firstButtonTitle: "Update".toBeLocalised(),
+          secondButtonAction: nil,
+          firstButtonAction: {
+            KNCrashlyticsUtil.logCustomEvent(
+              withName: "new_update_available",
+              customAttributes: ["button": "update"]
+            )
+            DispatchQueue.main.async {
+              self.navigationController.openSafari(with: "https://apps.apple.com/us/app/kyberswap-crypto-exchange/id1453691309")
+            }
+          }
+        )
+        self.navigationController.present(alert, animated: true, completion: nil)
       }
-      self.navigationController.present(alert, animated: true, completion: nil)
     }
     KNNotificationUtil.postNotification(for: "viewDidBecomeActive")
   }
@@ -265,8 +284,14 @@ extension KNAppCoordinator {
     guard let payload = result?.notification.payload else { return }
     let title = payload.title
     let body = payload.body
-    let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
+    let alertController = KNPrettyAlertController(
+      title: title,
+      message: body ?? "",
+      secondButtonTitle: nil,
+      firstButtonTitle: "OK".toBeLocalised(),
+      secondButtonAction: nil,
+      firstButtonAction: nil
+    )
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 

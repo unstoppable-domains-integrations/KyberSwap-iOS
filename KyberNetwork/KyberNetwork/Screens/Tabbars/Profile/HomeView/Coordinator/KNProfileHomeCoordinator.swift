@@ -160,15 +160,16 @@ class KNProfileHomeCoordinator: NSObject, Coordinator {
 // MARK: Callbacks, networking
 extension KNProfileHomeCoordinator {
   fileprivate func handleUserSignOut() {
-    let alertController = UIAlertController(
+    let alertController = KNPrettyAlertController(
       title: nil,
-      message: NSLocalizedString("do.you.want.to.log.out?", value: "Do you want to log out?", comment: ""),
-      preferredStyle: .alert
+      message: "do.you.want.to.log.out?".toBeLocalised(),
+      secondButtonTitle: "log.out".toBeLocalised(),
+      firstButtonTitle: "cancel".toBeLocalised(),
+      secondButtonAction: {
+        self.signUserOut()
+      },
+      firstButtonAction: nil
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("log.out", value: "Log Out", comment: ""), style: .default, handler: { _ in
-      self.signUserOut()
-    }))
     self.rootViewController.present(alertController, animated: true, completion: nil)
   }
 
@@ -370,13 +371,14 @@ extension KNProfileHomeCoordinator: KNProfileHomeViewControllerDelegate {
   }
 
   fileprivate func showAlertMaximumPriceAlertsReached() {
-    let message = NSLocalizedString("You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one", comment: "")
-    let alertController = UIAlertController(
-      title: NSLocalizedString("Alert limit exceeded", value: "Alert limit exceeded", comment: ""),
-      message: message,
-      preferredStyle: .alert
+    let alertController = KNPrettyAlertController(
+      title: "Alert limit exceeded".toBeLocalised(),
+      message: "You already have 10 (maximum) alerts in your inbox. Please delete an existing alert to add a new one".toBeLocalised(),
+      secondButtonTitle: nil,
+      firstButtonTitle: "OK".toBeLocalised(),
+      secondButtonAction: nil,
+      firstButtonAction: nil
     )
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: .cancel, handler: nil))
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 }
