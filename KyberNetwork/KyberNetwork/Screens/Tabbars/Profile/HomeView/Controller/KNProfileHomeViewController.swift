@@ -17,6 +17,7 @@ enum KNSignInViewEvent {
   case signInWithFacebook
   case signInWithGoogle
   case signInWithTwitter
+  case signInWithApple
   case forgotPassword
   case dontHaveAccountSignUp
 }
@@ -140,7 +141,7 @@ class KNProfileHomeViewController: KNBaseViewController {
 
   fileprivate func setupNotSignInView() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.socialContainerView.rounded(radius: self.socialContainerView.frame.height / 2.0)
+    self.socialContainerView.rounded()
     self.signInButton.applyGradient()
     self.notSignInNavTitle.text = NSLocalizedString("sign.in", value: "Sign In", comment: "")
     self.orTextLabel.text = "Or sign in with".toBeLocalised()
@@ -238,26 +239,35 @@ class KNProfileHomeViewController: KNBaseViewController {
   }
 
   @IBAction func forgotButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "tap_forgot_password_button"])
     self.view.endEditing(true)
     self.delegate?.profileHomeViewController(self, run: .forgotPassword)
   }
 
   @IBAction func facebookButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "tap_sign_in_facebook_button"])
     self.view.endEditing(true)
     KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithFacebook)
   }
 
   @IBAction func googleButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "tap_sign_in_google_button"])
     self.view.endEditing(true)
     KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithGoogle)
   }
 
   @IBAction func twitterButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "tap_sign_in_twitter_button"])
     self.view.endEditing(true)
     KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.profileHomeViewController(self, run: .signInWithTwitter)
+  }
+  @IBAction func signInWithAppleTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "screen_profile_kyc", customAttributes: ["action": "tap_sign_in_apple_button"])
+    self.view.endEditing(true)
+    self.delegate?.profileHomeViewController(self, run: .signInWithApple)
   }
 
   @IBAction func secureTextButtonPressed(_ sender: Any) {

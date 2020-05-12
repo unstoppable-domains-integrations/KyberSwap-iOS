@@ -68,6 +68,14 @@ class KNPromoCodeViewController: KNBaseViewController {
       )
       return
     }
+    guard promoCode.range(of: "[^a-zA-Z0-9]", options: .regularExpression) == nil else {
+      self.showWarningTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "KyberCode is invalid format".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
     let name: String = "PromoCode Wallet"
     self.delegate?.promoCodeViewController(self, promoCode: promoCode, name: name)
   }

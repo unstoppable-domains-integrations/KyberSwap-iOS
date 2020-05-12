@@ -509,6 +509,7 @@
 // Promo code error messages
 "Promo code is invalid!" = "Promo code is invalid!";
 "Promo code has expired." = "Promo code has expired.";
+"KyberCode is invalid format" = "KyberCode is invalid format";
 
 // Proof of address
 "Bank Statement" = "Bank Statement";
@@ -715,4 +716,18 @@
 "Submitting order" = "Submitting order";
 "No order found" = "No order found";
 
+//Notifications
+"Notifications" = "Notifications";
+"Setting" = "Setting";
+"Mark all read" = "Mark all read";
+"hour ago" = "hour ago";
+"hours ago" = "hours ago";
+"min ago" = "min ago";
+"mins ago" = "mins ago";
+"just now" = "just now";
+
+"Buy Limit Order" = "Buy Limit Order";
+"Sell Limit Order" = "Sell Limit Order";
+
+"Invalid nonce" = "Failed to import Kyber code, please make sure your time is correct ";
 "KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "Buying ETH with Fiat is only supported on KyberSwap's website at the moment. Do you want to open it?";

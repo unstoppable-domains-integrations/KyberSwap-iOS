@@ -515,6 +515,7 @@
 // Promo code error messages
 "Promo code is invalid!" = "促销代码无效！";
 "Promo code has expired." = "促销代码已过期。";
+"KyberCode is invalid format" = "KyberCode格式錯誤";
 
 // Proof of address
 "Bank Statement" = "银行对帐单";
@@ -694,7 +695,7 @@
 "Market price" = "市场价格";
 "Preview Order" = "预览订单";
 "Change Price" = "更改价格";
-"Buy %@" = "购买％@";
+"Buy %@" = "购买%@";
 "Sell %@" = "出售%@";
 "Price" = "价钱";
 "Volume" = "体积";
@@ -717,4 +718,18 @@
 "Submitting order" = "Submitting order";
 "No order found" = "No order found";
 
-"KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "Buying ETH with Fiat is only supported on KyberSwap's website at the moment. Do you want to open it?";
+//Notifications
+"Notifications" = "通知事项";
+"Setting" = "设置";
+"Mark all read" = "将所有内容标记为已读";
+"hour ago" = "小时前";
+"hours ago" = "小时前";
+"min ago" = "分钟之前";
+"mins ago" = "分钟前";
+"just now" = "现在";
+
+"Buy Limit Order" = "购买限价订单";
+"Sell Limit Order" = "卖出限价订单";
+
+"Invalid nonce" = "无法导入Kyber code，请确认您输入的序号在有效期限内";
+"KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "目前仅在KyberSwap的网页版上支持通过法币购买ETH。您想访问该网站吗？";

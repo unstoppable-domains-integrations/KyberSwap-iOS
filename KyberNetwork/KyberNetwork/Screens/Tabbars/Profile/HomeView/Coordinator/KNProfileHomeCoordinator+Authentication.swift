@@ -7,6 +7,7 @@ import GoogleSignIn
 import Result
 import TwitterKit
 import Moya
+import AuthenticationServices
 
 // swiftlint:disable file_length
 extension KNProfileHomeCoordinator: KNSignUpViewControllerDelegate {
@@ -31,6 +32,8 @@ extension KNProfileHomeCoordinator: KNSignUpViewControllerDelegate {
       self.isSubscribe = isSubs
       self.accountType = accountType
       self.proceedSignUp(accountType: accountType)
+    case .pressedApple:
+      self.authenticateApple()
     }
   }
 }
@@ -58,6 +61,8 @@ extension KNProfileHomeCoordinator {
       self.authenticateTwitter()
     case .dontHaveAccountSignUp:
       self.openSignUpView()
+    case .signInWithApple:
+      self.authenticateApple()
     }
   }
 
@@ -71,6 +76,25 @@ extension KNProfileHomeCoordinator {
       return controller
     }()
     self.navigationController.pushViewController(self.signUpViewController!, animated: true)
+  }
+
+  fileprivate func authenticateApple() {
+    if #available(iOS 13.0, *) {
+      KNAppTracker.saveLastTimeAuthenticate()
+      let provider = ASAuthorizationAppleIDProvider()
+      let request = provider.createRequest()
+      request.requestedScopes = [.fullName, .email]
+        let authController = ASAuthorizationController(authorizationRequests: [request])
+        authController.presentationContextProvider = self
+        authController.delegate = self
+        authController.performRequests()
+    } else {
+      self.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "Sign in with Apple feature is only available for iOS 13 and newer".toBeLocalised(),
+        time: 2.0
+      )
+    }
   }
 }
 
@@ -292,6 +316,8 @@ extension KNProfileHomeCoordinator {
       self.signInSocialWithData(type: "twitter", email: email, name: name, photo: icon, accessToken: authToken, secret: authTokenSecret, token: token, completion: completion)
     case .google(let name, let email, let icon, let accessToken):
       self.signInSocialWithData(type: "google_oauth2", email: email, name: name, photo: icon, accessToken: accessToken, token: token, completion: completion)
+    case .apple(let name, _, let userId, let idToken, let isSignUp):
+      self.signInWithApple(name: name, userId: userId, idToken: idToken, isSignUp: isSignUp, completion: completion)
     }
   }
 
@@ -337,6 +363,37 @@ extension KNProfileHomeCoordinator {
       secret: secret,
       twoFA: token
     ) { [weak self] result in
+      guard let `self` = self else { return }
+      self.navigationController.hideLoading()
+      switch result {
+      case .success(let data):
+        let success = data["success"] as? Bool ?? false
+        let message = data["message"] as? String ?? ""
+        if success {
+          self.userDidSignInWithData(data)
+          completion?(true)
+        } else {
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: message,
+            time: 2.0
+          )
+          completion?(false)
+        }
+      case .failure:
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: ""),
+          time: 1.5
+        )
+        completion?(false)
+      }
+    }
+  }
+
+  fileprivate func signInWithApple(name: String, userId: String, idToken: String, isSignUp: Bool, completion: ((Bool) -> Void)?) {
+    self.navigationController.displayLoading()
+    KNSocialAccountsCoordinator.shared.signInApple(name: name, userId: userId, idToken: idToken, isSignUp: isSignUp) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch result {
@@ -527,6 +584,8 @@ extension KNProfileHomeCoordinator: KNConfirmSignUpViewControllerDelegate {
         self.sendConfirmSignUpRequest(type: "twitter", email: email, name: name, icon: icon, accessToken: authToken, secret: authTokenSecret, subscription: isSubscribe)
       case .google(let name, let email, let icon, let accessToken):
         self.sendConfirmSignUpRequest(type: "google_oauth2", email: email, name: name, icon: icon, accessToken: accessToken, subscription: isSubscribe)
+      case .apple(let name, _, let userId, let idToken, let isSignUp):
+        self.sendConfirmSignInWithAppleRequest(name: name, userId: userId, idToken: idToken, isSignUp: isSignUp, isSub: isSubscribe)
       default: break
       }
     }
@@ -549,7 +608,7 @@ extension KNProfileHomeCoordinator: KNConfirmSignUpViewControllerDelegate {
           if success {
             self.navigationController.showWarningTopBannerMessage(
               with: NSLocalizedString("success", comment: ""),
-              message: "You've successfully sign up!".toBeLocalised(),
+              message: "You've successfully sign up".toBeLocalised(),
               time: 1.5
             )
             self.navigationController.popToRootViewController(animated: true)
@@ -568,6 +627,38 @@ extension KNProfileHomeCoordinator: KNConfirmSignUpViewControllerDelegate {
             time: 1.5
           )
         }
+    }
+  }
+
+  fileprivate func sendConfirmSignInWithAppleRequest(name: String, userId: String, idToken: String, isSignUp: Bool, isSub: Bool) {
+    KNSocialAccountsCoordinator.shared.confirmSignInWithApple(name: name, userId: userId, idToken: idToken, isSignUp: isSignUp, isSub: isSub) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let data):
+        let success = data["success"] as? Bool ?? false
+        let message = data["message"] as? String ?? ""
+        if success {
+          self.navigationController.showWarningTopBannerMessage(
+            with: NSLocalizedString("success", comment: ""),
+            message: "You've successfully sign up".toBeLocalised(),
+            time: 1.5
+          )
+          self.navigationController.popToRootViewController(animated: true)
+          self.userDidSignInWithData(data)
+        } else {
+          self.navigationController.showWarningTopBannerMessage(
+            with: NSLocalizedString("failed", comment: ""),
+            message: message,
+            time: 2.0
+          )
+        }
+      case .failure:
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", comment: ""),
+          message: NSLocalizedString("some.thing.went.wrong.please.try.again", value: "Something went wrong. Please try again", comment: ""),
+          time: 1.5
+        )
+      }
     }
   }
 }
@@ -631,6 +722,35 @@ extension KNProfileHomeCoordinator: KNTransferConsentViewControllerDelegate {
         completion(message, userInfo)
       case .failure(let error):
         completion(error.prettyError, nil)
+      }
+    }
+  }
+}
+
+@available(iOS 13.0, *)
+extension KNProfileHomeCoordinator: ASAuthorizationControllerPresentationContextProviding {
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    return self.rootViewController.view.window!
+  }
+}
+
+@available(iOS 13.0, *)
+extension KNProfileHomeCoordinator: ASAuthorizationControllerDelegate {
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    print("authorization error")
+  }
+
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+      let userID = appleIDCredential.user
+      let email = appleIDCredential.email
+      let givenName = appleIDCredential.fullName?.givenName
+      var identityToken = ""
+      if let token = appleIDCredential.identityToken {
+        identityToken = String(bytes: token, encoding: .utf8) ?? ""
+        let accountType = KNSocialAccountsType.apple(name: givenName ?? "", email: email, userId: userID, idToken: identityToken, isSignUp: true)
+        self.accountType = accountType
+        self.proceedSignIn(accountType: accountType)
       }
     }
   }

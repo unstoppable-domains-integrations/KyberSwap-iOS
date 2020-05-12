@@ -471,7 +471,7 @@
 "Do you want to delete this alert?" = "Bạn có muốn xóa thông báo này không?";
 "Add Alert" = "Thêm Thông Báo";
 "Alert deleted!" = "Thông báo đã xoá!";
-"You must sign in to use Price Alert feature" = "Vui lòng đăng nhập để sử dụng tính năng Price Alert";
+"You must sign in to use Price Alert feature" = "Vui lòng đăng nhập để sử dụng tính năng thông báo giá ";
 "Manage Alert" = "Quản Lý Thông Báo";
 "Alert Method" = "Phương Thức Thông Báo";
 "Push Notification" = "Gửi Thông Báo";
@@ -514,6 +514,7 @@
 // Promo code error messages
 "Promo code is invalid!" = "Mã khuyến mãi không hợp lệ!";
 "Promo code has expired." = "Mã khuyến mãi đã hết hạn.";
+"KyberCode is invalid format" = "Không đúng định dạng KyberCode";
 
 // Proof of address
 "Bank Statement" = "Bảng sao kê ngân hàng";
@@ -572,7 +573,7 @@
 "Please enter a display name to continue" = "Vui lòng điền tên hiển thị để tiếp tục";
 "Please accept our Terms and Conditions to continue" = "Vui lòng đồng ý với Terms & Conditions để tiếp tục";
 "Please enter a valid password to continue" = "Vui lòng điền một mật khẩu hợp lệ để tiếp tục";
-"Get Alert notifications by:" = "Nhận thông báo Price Alert bằng:";
+"Get Alert notifications by:" = "Nhận thông báo giá bằng:";
 "Alert Price" = "Giá";
 "Suggestion" = "Gợi Ý";
 "Reset Password" = "Đặt lại mật khẩu";
@@ -717,4 +718,18 @@
 "Submitting order" = "Đang đặt lệnh";
 "No order found" = "Không có dữ liệu";
 
-"KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "Buying ETH with Fiat is only supported on KyberSwap's website at the moment. Do you want to open it?";
+//Notifications
+"Notifications" = "Thông báo";
+"Setting" = "Cài đặt";
+"Mark all read" = "Đã đọc tất cả";
+"hour ago" = "giờ trước";
+"hours ago" = "giờ trước";
+"min ago" = "phút trước";
+"mins ago" = "phút trước";
+"just now" = "hiện tại";
+
+"Buy Limit Order" = "Đặt lệnh mua";
+"Sell Limit Order" = "Đặt lệnh bán";
+
+"Invalid nonce" = "Nhập KyberCode thất bại, vui lòng kiểm tra lại thời hạn code của bạn";
+"KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "Hiện tại, dịch vụ mua ETH qua thẻ chỉ được hỗ trợ trên trang web của KyberSwap. Bạn có muốn chuyển sang website không?";
