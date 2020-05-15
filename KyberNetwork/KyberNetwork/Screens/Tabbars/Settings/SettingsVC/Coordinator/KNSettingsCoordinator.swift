@@ -5,7 +5,6 @@ import MessageUI
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
-  func settingsCoordinatorUserDidSelectExit()
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidUpdateWalletObjects()
   func settingsCoordinatorUserDidSelectAddWallet()
@@ -205,10 +204,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
     activitiy.popoverPresentationController?.sourceView = self.rootViewController.shareWithFriendsButton
     self.navigationController.present(activitiy, animated: true, completion: nil)
-  }
-
-  func settingsViewControllerDidClickExit() {
-    self.delegate?.settingsCoordinatorUserDidSelectExit()
   }
 
   func settingsViewControllerWalletsButtonPressed() {

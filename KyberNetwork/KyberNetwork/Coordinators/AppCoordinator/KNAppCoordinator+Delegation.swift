@@ -17,23 +17,6 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   }
 }
 
-// MARK: Session Delegate
-extension KNAppCoordinator: KNSessionDelegate {
-  func userDidClickExitSession() {
-    let alertController = KNPrettyAlertController(
-      title: "exit".toBeLocalised(),
-      message: "do.you.want.to.exit.and.remove.all.wallets".toBeLocalised(),
-      secondButtonTitle: "OK".toBeLocalised(),
-      firstButtonTitle: "cancel".toBeLocalised(),
-      secondButtonAction: {
-        self.stopAllSessions()
-      },
-      firstButtonAction: nil
-    )
-    self.navigationController.present(alertController, animated: true, completion: nil)
-  }
-}
-
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
@@ -93,10 +76,6 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.profileCoordinator?.appCoordinatorDidUpdateWalletObjects()
-  }
-
-  func settingsCoordinatorUserDidSelectExit() {
-    self.userDidClickExitSession()
   }
 
   func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet) {
