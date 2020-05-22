@@ -58,12 +58,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     FirebaseApp.configure()
 
+    let freschatConfig: FreshchatConfig = FreshchatConfig.init(appID: KNSecret.freshChatAppID, andAppKey: KNSecret.freshChatAppKey)
+    freschatConfig.themeName = "CustomFCTheme.plist"
+    Freshchat.sharedInstance().initWith(freschatConfig)
+    if let user = IEOUserStorage.shared.user {
+      let chatUser = FreshchatUser.sharedInstance()
+      chatUser.firstName = user.name
+      Freshchat.sharedInstance().setUser(chatUser)
+      if let saved = UserDefaults.standard.object(forKey: KNAppTracker.kSavedRestoreIDForLiveChat) as? [String: String],
+        let restoreID = saved[user.userID.description] {
+        Freshchat.sharedInstance().identifyUser(withExternalID: user.userID.description, restoreID: restoreID)
+      } else {
+        Freshchat.sharedInstance().identifyUser(withExternalID: user.userID.description, restoreID: nil)
+      }
+    }
     return true
   }
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     let token = deviceToken.reduce("") { $0 + String(format: "%02x", $1) }
     KNAppTracker.updatePushNotificationToken(token)
+    Freshchat.sharedInstance().setPushRegistrationToken(deviceToken)
     if KNAppTracker.isPriceAlertEnabled { KNPriceAlertCoordinator.shared.updateOneSignalPlayerIDWithRetry() }
   }
 
@@ -99,6 +114,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     _ application: UIApplication,
     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    if Freshchat.sharedInstance().isFreshchatNotification(userInfo) {
+      Freshchat.sharedInstance().handleRemoteNotification(userInfo, andAppstate: application.applicationState)
+    }
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -121,6 +139,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    if Freshchat.sharedInstance().isFreshchatNotification(response.notification.request.content.userInfo) {
+      Freshchat.sharedInstance().handleRemoteNotification(response.notification.request.content.userInfo, andAppstate: UIApplication.shared.applicationState)
+      completionHandler()
+      return
+    }
     guard let txHash = response.notification.request.content.userInfo["transaction_hash"] as? String else {
       completionHandler()
       return
@@ -130,6 +153,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    if Freshchat.sharedInstance().isFreshchatNotification(notification.request.content.userInfo) {
+      Freshchat.sharedInstance().handleRemoteNotification(notification.request.content.userInfo, andAppstate: UIApplication.shared.applicationState)
+      completionHandler([.sound])
+      return
+    }
     completionHandler([.alert, .sound, .badge])
   }
 }

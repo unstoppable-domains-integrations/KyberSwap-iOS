@@ -22,6 +22,7 @@ enum KNSettingsTabViewEvent {
   case linkedIn
   case reportBugs
   case rateOurApp
+  case liveChat
 }
 
 protocol KNSettingsTabViewControllerDelegate: class {
@@ -46,6 +47,8 @@ class KNSettingsTabViewController: KNBaseViewController {
   @IBOutlet weak var reportBugsButton: UIButton!
   @IBOutlet weak var rateOurAppButton: UIButton!
   @IBOutlet weak var versionLabel: UILabel!
+  @IBOutlet weak var liveChatButton: UIButton!
+  @IBOutlet weak var unreadBadgeLabel: UILabel!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -104,6 +107,20 @@ class KNSettingsTabViewController: KNBaseViewController {
     version += " - \(Bundle.main.buildNumber ?? "")"
     version += " - \(KNEnvironment.default.displayName)"
     self.versionLabel.text = "\(NSLocalizedString("version", value: "Version", comment: "")) \(version)"
+
+    self.unreadBadgeLabel.rounded(color: .white, width: 1, radius: self.unreadBadgeLabel.frame.height / 2)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name(FRESHCHAT_UNREAD_MESSAGE_COUNT_CHANGED), object: nil)
+  }
+
+  deinit {
+    let name = Notification.Name(FRESHCHAT_UNREAD_MESSAGE_COUNT_CHANGED)
+    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.checkUnreadMessage()
   }
 
   override func viewDidLayoutSubviews() {
@@ -182,5 +199,26 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func rateOurAppButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .rateOurApp)
+  }
+
+  @IBAction func liveChatButtonPressed(_ sender: UIButton) {
+    self.delegate?.settingsTabViewController(self, run: .liveChat)
+  }
+
+  fileprivate func checkUnreadMessage() {
+    Freshchat.sharedInstance().unreadCount { (num: Int) -> Void in
+      if num > 0 {
+        self.unreadBadgeLabel.isHidden = false
+        self.unreadBadgeLabel.text = num.description
+        self.navigationController?.tabBarItem.badgeValue = num.description
+      } else {
+        self.unreadBadgeLabel.isHidden = true
+        self.navigationController?.tabBarItem.badgeValue = nil
+      }
+    }
+  }
+
+  @objc func methodOfReceivedNotification(notification: Notification) {
+    self.checkUnreadMessage()
   }
 }
