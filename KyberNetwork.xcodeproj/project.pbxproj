@@ -5399,7 +5399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyberswap.ios;
 				PRODUCT_NAME = "KyberSwap - Crypto Exchange";
 				PROVISIONING_PROFILE = "d08d5f84-6398-4202-b037-8e45e693b687";
-				PROVISIONING_PROFILE_SPECIFIER = "New KyberSwap iOS AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Kyberswap iOS Distribution Appstore";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
