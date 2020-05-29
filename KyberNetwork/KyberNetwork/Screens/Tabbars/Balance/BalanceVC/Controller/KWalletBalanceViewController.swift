@@ -287,7 +287,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   @IBAction func copyButtonTapped(_ sender: UIButton) {
     self.delegate?.kWalletBalanceViewController(self, run: .copyAddress)
   }
-  
+
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     self.hamburgerMenu.gestureScreenEdgePanAction(sender)
   }

@@ -206,12 +206,12 @@ class KNSignUpViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.delegate?.signUpViewController(self, run: .alreadyMemberSignIn)
   }
-  
+
   @IBAction func signInWithApple(_ sender: UIButton) {
     self.view.endEditing(true)
     self.delegate?.signUpViewController(self, run: .pressedApple)
   }
-  
+
   @IBAction func subscribeButtonPressed(_ sender: Any) {
     self.viewModel.isSubscribe = !self.viewModel.isSubscribe
     self.subscribeButton.setImage(self.viewModel.isSubscribe ? UIImage(named: "check_box_icon") : nil, for: .normal)

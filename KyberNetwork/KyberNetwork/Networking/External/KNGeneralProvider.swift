@@ -55,7 +55,7 @@ class KNGeneralProvider {
   // MARK: Balance
   func getETHBalanace(for address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
     DispatchQueue.global().async {
-      let request = EtherServiceRequest(batch: BatchFactory().create(BalanceRequest(address: address)))
+      let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(BalanceRequest(address: address)))
       Session.send(request) { result in
         DispatchQueue.main.async {
           switch result {
@@ -74,7 +74,7 @@ class KNGeneralProvider {
       guard let `self` = self else { return }
       switch encodeResult {
       case .success(let data):
-        let request = EtherServiceRequest(
+        let request = EtherServiceAlchemyRequest(
           batch: BatchFactory().create(CallRequest(to: contract.description, data: data))
         )
         DispatchQueue.global().async {
@@ -103,7 +103,7 @@ class KNGeneralProvider {
     var tokenCount = BigInt(tokens.count).hexEncoded.drop0x
     tokenCount = [Character].init(repeating: "0", count: 64 - tokenCount.count) + tokenCount
     let tokenAddresses = tokens.map({ return "000000000000000000000000\($0.description.lowercased().drop0x)" }).joined(separator: "")
-    let request = EtherServiceRequest(
+    let request = EtherServiceAlchemyRequest(
       batch: BatchFactory().create(CallRequest(to: self.wrapperAddress.description, data: "\(data)\(tokenCount)\(tokenAddresses)"))
     )
     DispatchQueue.global().async {
@@ -123,7 +123,7 @@ class KNGeneralProvider {
 
   // MARK: Transaction count
   func getTransactionCount(for address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
-    let request = EtherServiceRequest(batch: BatchFactory().create(GetTransactionCountRequest(
+    let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(GetTransactionCountRequest(
       address: address,
       state: state
     )))
@@ -152,7 +152,7 @@ class KNGeneralProvider {
       switch dataResult {
       case .success(let data):
         let callRequest = CallRequest(to: tokenAddress.description, data: data)
-        let getAllowanceRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        let getAllowanceRequest = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
         DispatchQueue.global().async {
           Session.send(getAllowanceRequest) { [weak self] getAllowanceResult in
             guard let `self` = self else { return }
@@ -180,7 +180,7 @@ class KNGeneralProvider {
       switch dataResult {
       case .success(let data):
         let callRequest = CallRequest(to: self.networkAddress.description, data: data)
-        let getRateRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        let getRateRequest = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
         DispatchQueue.global().async {
           Session.send(getRateRequest) { [weak self] getRateResult in
             guard let `self` = self else { return }
@@ -208,7 +208,7 @@ class KNGeneralProvider {
           to: KNEnvironment.default.knCustomRPC?.ensAddress ?? "",
           data: resp
         )
-        let getResolverRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        let getResolverRequest = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
         DispatchQueue.global().async {
           Session.send(getResolverRequest) { getResolverResult in
             DispatchQueue.main.async {
@@ -241,7 +241,7 @@ class KNGeneralProvider {
           to: resolverAddress.description,
           data: resp
         )
-        let getResolverRequest = EtherServiceRequest(batch: BatchFactory().create(callRequest))
+        let getResolverRequest = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
         DispatchQueue.global().async {
           Session.send(getResolverRequest) { getResolverResult in
             DispatchQueue.main.async {
@@ -356,7 +356,7 @@ class KNGeneralProvider {
           to: self.networkAddress.description,
           data: data
         )
-        let ethService = EtherServiceRequest(batch: BatchFactory().create(callReq))
+        let ethService = EtherServiceAlchemyRequest(batch: BatchFactory().create(callReq))
         DispatchQueue.global(qos: .background).async {
           Session.send(ethService) { [weak self] result in
             guard let `self` = self else { return }
