@@ -104,6 +104,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
 }
 
 extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
+  //swiftlint:disable function_body_length
   func settingsTabViewController(_ controller: KNSettingsTabViewController, run event: KNSettingsTabViewEvent) {
     switch event {
     case .manageWallet:

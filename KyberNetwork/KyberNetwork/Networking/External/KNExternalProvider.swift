@@ -254,7 +254,7 @@ class KNExternalProvider {
 
   func getReceipt(for transaction: KNTransaction, completion: @escaping (Result<KNTransaction, AnyError>) -> Void) {
     let request = KNGetTransactionReceiptRequest(hash: transaction.id)
-    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { [weak self] result in
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let receipt):
@@ -276,7 +276,7 @@ class KNExternalProvider {
 
   func getTransactionByHash(_ hash: String, completion: @escaping (PendingTransaction?, SessionTaskError?) -> Void) {
     let request = GetTransactionRequest(hash: hash)
-    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let response):
         completion(response, nil)
@@ -428,7 +428,7 @@ class KNExternalProvider {
       gasPrice: gasPrice
     )
     NSLog("------ Estimate gas used ------")
-    Session.send(EtherServiceRequest(batch: BatchFactory().create(request))) { result in
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
         let gasLimit: BigInt = {

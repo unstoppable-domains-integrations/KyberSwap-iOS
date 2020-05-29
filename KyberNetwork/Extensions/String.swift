@@ -54,7 +54,7 @@ extension String {
     var add0x: String {
         return "0x" + self
     }
-  
+
   func trunc(length: Int, trailing: String = "…") -> String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }

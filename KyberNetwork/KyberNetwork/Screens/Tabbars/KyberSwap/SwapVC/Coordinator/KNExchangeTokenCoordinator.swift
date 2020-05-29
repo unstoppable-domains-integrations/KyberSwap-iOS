@@ -411,7 +411,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .searchToken(let from, let to, let isSource):
       self.openSearchToken(from: from, to: to, isSource: isSource)
     case .estimateRate(let from, let to, let amount, let showError):
-      self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
+      self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
     case .estimateComparedRate(let from, let to):
       self.updateComparedEstimateRate(from: from, to: to)
     case .estimateGas(let from, let to, let amount, let gasPrice):
@@ -636,6 +636,38 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         case .failure(let error):
           completion?(.failure(error))
         }
+    }
+  }
+
+  func updateExpectedRateFromAPIIfNeeded(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool) {
+    let src = from.contract.lowercased()
+    let dest = to.contract.lowercased()
+    let amt = amount.description
+
+    DispatchQueue.global(qos: .background).async {
+      let provider = MoyaProvider<KNTrackerService>(plugins: [MoyaCacheablePlugin()])
+      provider.request(.getExpectedRate(src: src, dest: dest, amount: amt)) { [weak self] result in
+        guard let `self` = self else { return }
+        if case .success(let resp) = result,
+          let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+          let rate = json["expectedRate"] as? String,
+          let rateBigInt = rate.fullBigInt(decimals: 0) {
+          let estRate = rateBigInt / BigInt(10).power(18 - to.decimals)
+          DispatchQueue.main.async {
+            self.rootViewController.coordinatorDidUpdateEstimateRate(
+              from: from,
+              to: to,
+              amount: amount,
+              rate: estRate,
+              slippageRate: estRate * BigInt(97) / BigInt(100)
+            )
+          }
+        } else {
+          DispatchQueue.main.async {
+            self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
+          }
+        }
+      }
     }
   }
 

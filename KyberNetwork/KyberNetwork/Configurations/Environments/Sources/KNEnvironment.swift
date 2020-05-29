@@ -212,4 +212,12 @@ enum KNEnvironment: Int {
     default: return KNSecret.debugTrackerURL
     }
   }
+
+  var expectedRateEndpoint: String {
+    switch KNEnvironment.default {
+    case .mainnetTest, .production, .staging: return "https://api.kyber.network"
+    case .kovan: return "https://dev-kovan-api.knstats.com"
+    default: return "https://ropsten-api.kyber.network"
+    }
+  }
 }
