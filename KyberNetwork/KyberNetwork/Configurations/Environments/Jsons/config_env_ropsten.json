@@ -10,7 +10,7 @@
                "type": "prune"
              },
              {
-             "endPoint" : "https://eth-ropsten.alchemyapi.io/jsonrpc/",
+             "endPoint" : "https://eth-ropsten.alchemyapi.io/v2/",
              "type": "prune"
              }
              ],

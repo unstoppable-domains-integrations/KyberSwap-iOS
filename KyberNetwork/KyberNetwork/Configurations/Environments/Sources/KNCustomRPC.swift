@@ -30,7 +30,8 @@ struct KNCustomRPC {
       endpointKyber = https[0]["endpoint"] as? String ?? endpoint
       endpointAlchemy = {
         if https.count > 2 {
-          return (https[2]["endPoint"] as? String ?? endpoint) + KNSecret.alchemyKey
+          let key = KNEnvironment.default == .ropsten ? KNSecret.alchemyRopstenKey : KNSecret.alchemyKey
+          return (https[2]["endPoint"] as? String ?? endpoint) + key
         }
         return endpoint
       }()
