@@ -141,13 +141,13 @@ class KSwapViewModel {
         return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
       }()
       if exchangeRate.isZero { return BigInt(0) }
-      let amount = self.amountToBigInt
-      return amount * BigInt(10).power(self.from.decimals) / exchangeRate
+      let amount = self.amountToBigInt * BigInt(10).power(self.from.decimals)
+      return (amount + exchangeRate - BigInt(1)) / exchangeRate
     }()
     return expectedExchange.string(
       decimals: self.from.decimals,
-      minFractionDigits: min(self.from.decimals, 6),
-      maxFractionDigits: min(self.from.decimals, 6)
+      minFractionDigits: self.from.decimals,
+      maxFractionDigits: self.from.decimals
     ).removeGroupSeparator()
   }
 
