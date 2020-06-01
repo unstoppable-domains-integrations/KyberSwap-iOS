@@ -69,7 +69,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   weak var delegate: KSendTokenViewControllerDelegate?
   fileprivate let viewModel: KNSendTokenViewModel
-  fileprivate var estGasTimer: Timer?
 
   init(viewModel: KNSendTokenViewModel) {
     self.viewModel = viewModel
@@ -117,27 +116,10 @@ class KSendTokenViewController: KNBaseViewController {
     self.updateUIAddressQRCode()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.estGasTimer?.invalidate()
-    self.estGasTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
-      repeats: true,
-      block: { [weak self] _ in
-        self?.shouldUpdateEstimatedGasLimit(nil)
-      }
-    )
-  }
-
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.isViewDisappeared = true
     self.view.endEditing(true)
-  }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    self.estGasTimer?.invalidate()
   }
 
   fileprivate func setupUI() {
@@ -351,6 +333,8 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
+    // no need to update if address is invalid
+    if self.viewModel.address == nil { return }
     let event = KSendTokenViewEvent.estimateGas(transaction: self.viewModel.unconfirmTransaction)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
@@ -435,11 +419,11 @@ extension KSendTokenViewController {
     self.view.layoutIfNeeded()
   }
 
-  func updateUIAddressQRCode() {
+  func updateUIAddressQRCode(isAddressChanged: Bool = true) {
     self.addressTextField.text = self.viewModel.displayAddress
     self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
-    self.shouldUpdateEstimatedGasLimit(nil)
     self.updateUIEnsMessage()
+    if isAddressChanged { self.shouldUpdateEstimatedGasLimit(nil) }
     self.view.layoutIfNeeded()
   }
 
@@ -492,8 +476,19 @@ extension KSendTokenViewController {
   }
 
   func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
-    self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, amount: amount)
-    self.updateAdvancedSettingsView()
+    if self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, amount: amount) {
+      self.updateAdvancedSettingsView()
+    } else {
+      // fail to update gas limit
+      self.coordinatorFailedToUpdateEstimateGasLimit()
+    }
+  }
+
+  func coordinatorFailedToUpdateEstimateGasLimit() {
+    // update after 1 min
+    DispatchQueue.main.asyncAfter(deadline: .now() + 60.0) {
+      self.shouldUpdateEstimatedGasLimit(nil)
+    }
   }
 
   func coordinatorUpdateGasPriceCached() {
@@ -506,14 +501,16 @@ extension KSendTokenViewController {
   }
 
   func coordinatorDidSelectContact(_ contact: KNContact) {
+    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
     self.viewModel.updateAddress(contact.address)
-    self.updateUIAddressQRCode()
+    self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 
   func coordinatorSend(to address: String) {
+    let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
     self.viewModel.updateAddress(address)
-    self.updateUIAddressQRCode()
+    self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
       KNContactStorage.shared.updateLastUsed(contact: contact)
     }
@@ -556,7 +553,6 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.updateUIEnsMessage()
       self.getEnsAddressFromName(text)
     }
-    self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
     return false
   }
@@ -576,6 +572,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.getEnsAddressFromName(self.viewModel.addressString)
     } else {
       _ = self.showWarningInvalidAmountDataIfNeeded()
+      self.shouldUpdateEstimatedGasLimit(nil)
     }
   }
 
@@ -595,7 +592,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
               self.getEnsAddressFromName(self.viewModel.addressString)
             }
           }
@@ -620,9 +617,10 @@ extension KSendTokenViewController: QRCodeReaderDelegate {
         if string.starts(with: "0x") { return string }
         return result
       }()
+      let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
       self.viewModel.updateAddress(address)
       self.getEnsAddressFromName(address)
-      self.updateUIAddressQRCode()
+      self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
   }
 }
@@ -646,8 +644,9 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
+        let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
         self.viewModel.updateAddress(address)
-        self.updateUIAddressQRCode()
+        self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
       }
     case .copiedAddress:
       self.showMessageWithInterval(
@@ -662,14 +661,15 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       self.recentContactView.isHidden = (height == 0)
       self.recentContactHeightConstraint.constant = height == 0 ? 0 : height + 34.0
       self.recentContactTableViewHeightConstraint.constant = height
-      self.updateUIAddressQRCode()
+      self.updateUIAddressQRCode(isAddressChanged: false)
       self.view.layoutIfNeeded()
     }
   }
 
   fileprivate func contactTableView(select contact: KNContact) {
+    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
     self.viewModel.updateAddress(contact.address)
-    self.updateUIAddressQRCode()
+    self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 

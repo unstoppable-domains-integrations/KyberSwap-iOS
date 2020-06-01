@@ -176,6 +176,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           from: transaction.transferType.tokenObject(),
           amount: transaction.value
         )
+      } else {
+        self?.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()
       }
     }
   }
