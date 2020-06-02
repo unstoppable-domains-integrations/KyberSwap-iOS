@@ -96,7 +96,7 @@ class KNRateCoordinator {
     self.fetchCacheRate(nil)
     self.cacheRateTimer?.invalidate()
     self.cacheRateTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
         self?.fetchCacheRate(timer)
@@ -107,7 +107,7 @@ class KNRateCoordinator {
     self.exchangeTokenRatesTimer?.invalidate()
 
     self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.cacheRateLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchExchangeTokenRate(timer)

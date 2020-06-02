@@ -22,7 +22,7 @@ class KNRecentTradeCoordinator {
 //    fetchRecentTrade(nil)
 
 //    recentTradeFetchTimer = Timer.scheduledTimer(
-//      timeInterval: KNLoadingInterval.defaultLoadingInterval,
+//      timeInterval: KNLoadingInterval.seconds30,
 //      target: self,
 //      selector: #selector(self.fetchRecentTrade(_:)),
 //      userInfo: nil,

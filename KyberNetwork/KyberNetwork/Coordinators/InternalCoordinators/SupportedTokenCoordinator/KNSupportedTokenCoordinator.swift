@@ -14,7 +14,7 @@ class KNSupportedTokenCoordinator {
     self.fetchSupportedTokens()
     self.timer?.invalidate()
     self.timer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingSupportedTokenInterval,
+      withTimeInterval: KNLoadingInterval.minutes5,
       repeats: true,
       block: { [weak self] _ in
       self?.fetchSupportedTokens()

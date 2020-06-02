@@ -154,7 +154,7 @@ class KSwapViewController: KNBaseViewController {
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate(showError: true, showLoading: true)
     self.estRateTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimatedRate()
@@ -165,7 +165,7 @@ class KSwapViewController: KNBaseViewController {
     self.estGasLimitTimer?.invalidate()
     self.updateEstimatedGasLimit()
     self.estGasLimitTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimatedGasLimit()

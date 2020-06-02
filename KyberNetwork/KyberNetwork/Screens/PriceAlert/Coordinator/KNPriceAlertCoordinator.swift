@@ -16,7 +16,7 @@ class KNPriceAlertCoordinator: NSObject {
     self.loadingTimer?.invalidate()
     self.startLoadingListPriceAlerts(nil)
     self.loadingTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.priceAlertLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
         self?.startLoadingListPriceAlerts(timer)

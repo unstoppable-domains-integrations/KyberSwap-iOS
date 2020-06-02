@@ -50,7 +50,7 @@ class KNGasCoordinator {
     fetchKNMaxGasPrice(nil)
 
     knGasPriceFetchTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingInterval,
+      timeInterval: KNLoadingInterval.seconds30,
       target: self,
       selector: #selector(fetchKNGasPrice(_:)),
       userInfo: nil,
@@ -58,7 +58,7 @@ class KNGasCoordinator {
     )
 
     knMaxGasPriceFetchTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.defaultLoadingMaxGasPrice,
+      timeInterval: KNLoadingInterval.minutes10,
       target: self,
       selector: #selector(fetchKNMaxGasPrice(_:)),
       userInfo: nil,

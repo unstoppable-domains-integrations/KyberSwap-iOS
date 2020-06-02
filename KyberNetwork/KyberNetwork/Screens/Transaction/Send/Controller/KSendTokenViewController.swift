@@ -486,7 +486,7 @@ extension KSendTokenViewController {
 
   func coordinatorFailedToUpdateEstimateGasLimit() {
     // update after 1 min
-    DispatchQueue.main.asyncAfter(deadline: .now() + 60.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds60) {
       self.shouldUpdateEstimatedGasLimit(nil)
     }
   }
@@ -592,7 +592,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
               self.getEnsAddressFromName(self.viewModel.addressString)
             }
           }
