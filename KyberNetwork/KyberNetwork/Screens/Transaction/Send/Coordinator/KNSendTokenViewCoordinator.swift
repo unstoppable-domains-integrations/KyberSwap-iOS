@@ -174,7 +174,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self?.rootViewController.coordinatorUpdateEstimatedGasLimit(
           gasLimit,
           from: transaction.transferType.tokenObject(),
-          amount: transaction.value
+          address: transaction.to?.description ?? ""
         )
       } else {
         self?.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()

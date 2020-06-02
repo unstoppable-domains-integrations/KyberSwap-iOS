@@ -335,6 +335,8 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
     // no need to update if address is invalid
     if self.viewModel.address == nil { return }
+    // always failed if amount is bigger than balance
+    if self.viewModel.isAmountTooBig { return }
     let event = KSendTokenViewEvent.estimateGas(transaction: self.viewModel.unconfirmTransaction)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
@@ -475,8 +477,8 @@ extension KSendTokenViewController {
     self.view.layoutIfNeeded()
   }
 
-  func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
-    if self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, amount: amount) {
+  func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, address: String) {
+    if self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, address: address) {
       self.updateAdvancedSettingsView()
     } else {
       // fail to update gas limit
