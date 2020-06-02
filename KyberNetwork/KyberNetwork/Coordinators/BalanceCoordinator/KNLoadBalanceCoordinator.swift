@@ -118,7 +118,7 @@ class KNLoadBalanceCoordinator {
     fetchETHBalance(nil)
 
     fetchETHBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingBalance,
+      withTimeInterval: KNLoadingInterval.seconds20,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchETHBalance(timer)
@@ -130,7 +130,7 @@ class KNLoadBalanceCoordinator {
     fetchOtherTokenBalancesNew(nil)
 
     fetchOtherTokensBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingBalance,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchOtherTokenBalancesNew(timer)
@@ -142,7 +142,7 @@ class KNLoadBalanceCoordinator {
     fetchNonSupportedTokensBalancesNew(nil)
 
     fetchNonSupportedBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingCoinTickerInterval,
+      withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] timer in
         self?.fetchNonSupportedTokensBalancesNew(timer)

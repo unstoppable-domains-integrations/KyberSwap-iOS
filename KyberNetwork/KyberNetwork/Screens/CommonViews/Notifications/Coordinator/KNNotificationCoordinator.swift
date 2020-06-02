@@ -18,7 +18,7 @@ class KNNotificationCoordinator: NSObject {
     self.loadingTimer?.invalidate()
     self.startLoadingNotifications(nil)
     self.loadingTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.notificationLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] timer in
         self?.startLoadingNotifications(timer)

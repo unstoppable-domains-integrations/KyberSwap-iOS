@@ -81,7 +81,7 @@ class KNConvertSuggestionViewController: KNBaseViewController {
     super.viewDidAppear(animated)
     self.timer?.invalidate()
     self.timer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] _ in
         self?.loadDataFromNode()

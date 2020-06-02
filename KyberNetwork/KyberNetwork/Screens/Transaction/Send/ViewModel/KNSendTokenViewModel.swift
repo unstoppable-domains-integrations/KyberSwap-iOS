@@ -240,8 +240,13 @@ class KNSendTokenViewModel: NSObject {
     }
   }
 
-  func updateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) {
-    if self.from == from, self.amountBigInt == amount { self.gasLimit = gasLimit }
+  @discardableResult
+  func updateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, amount: BigInt) -> Bool {
+    if self.from == from, self.amountBigInt == amount {
+      self.gasLimit = gasLimit
+      return true
+    }
+    return false
   }
 
   func updateAddress(_ address: String) {

@@ -83,7 +83,7 @@ extension KNTransactionCoordinator {
     }
     self.forceFetchTokenTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.loadingListTransactions,
+      withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
@@ -368,7 +368,7 @@ extension KNTransactionCoordinator {
     self.pendingTxTimer = nil
     self.shouldUpdatePendingTransaction(nil)
     self.pendingTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.defaultLoadingInterval,
+      withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
         guard let `self` = self else { return }
