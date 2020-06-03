@@ -12,6 +12,7 @@ enum KSendTokenViewEvent {
   case searchToken(selectedToken: TokenObject)
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
+  case validate(transaction: UnconfirmedTransaction, ens: String?)
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
   case contactSelectMore
@@ -262,7 +263,7 @@ class KSendTokenViewController: KNBaseViewController {
     } else {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_not_in_contact"])
     }
-    let event = KSendTokenViewEvent.send(
+    let event = KSendTokenViewEvent.validate(
       transaction: self.viewModel.unconfirmTransaction,
       ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
     )
@@ -520,6 +521,14 @@ extension KSendTokenViewController {
 
   func coordinatorUpdateTrackerRate() {
     self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
+  }
+
+  func coordinatorDidValidateTransferTransaction() {
+    let event = KSendTokenViewEvent.send(
+      transaction: self.viewModel.unconfirmTransaction,
+      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+    )
+    self.delegate?.kSendTokenViewController(self, run: event)
   }
 }
 

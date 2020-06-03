@@ -75,6 +75,7 @@ class KNSendTokenViewModel: NSObject {
     self.balances = balances
     self.balance = balances[from.contract]
     self.isSendAllBalanace = false
+    self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
   }
 
   var navTitle: String {

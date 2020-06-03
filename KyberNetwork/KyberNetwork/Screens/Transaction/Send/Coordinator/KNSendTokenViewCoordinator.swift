@@ -125,9 +125,11 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.estimateGasLimit(for: transaction)
     case .searchToken(let selectedToken):
       self.openSearchToken(selectedToken: selectedToken)
-    case .send(let transaction, let ens):
+    case .validate:
+      // validate transaction before transfer,
+      // currently only validate sender's address, could be added more later
       controller.displayLoading()
-      sendGetPreScreeningWalletRequest { [weak self] (result) in
+      self.sendGetPreScreeningWalletRequest { [weak self] (result) in
         controller.hideLoading()
         guard let `self` = self else { return }
         var message: String?
@@ -145,9 +147,11 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
             time: 2.0
           )
         } else {
-          self.send(transaction: transaction, ens: ens)
+          self.rootViewController.coordinatorDidValidateTransferTransaction()
         }
       }
+    case .send(let transaction, let ens):
+      self.openConfirmTransfer(transaction: transaction, ens: ens)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
     case .contactSelectMore:
@@ -198,7 +202,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     self.searchTokensVC?.updateBalances(self.balances)
   }
 
-  fileprivate func send(transaction: UnconfirmedTransaction, ens: String?) {
+  fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?) {
     if ens != nil {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_transfer_token", customAttributes: ["action": "send_using_ens"])
     }

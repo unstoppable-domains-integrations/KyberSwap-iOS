@@ -8,7 +8,7 @@ public struct KNGasConfiguration {
   static let exchangeTokensGasLimitDefault = BigInt(990_000)
   static let exchangeETHTokenGasLimitDefault = BigInt(500_000)
   static let approveTokenGasLimitDefault = BigInt(160_000)
-  static let transferTokenGasLimitDefault = BigInt(150_000)
+  static let transferTokenGasLimitDefault = BigInt(180_000)
   static let transferETHGasLimitDefault = BigInt(120_000)
   static let buytokenSaleByETHGasLimitDefault = BigInt(550_000)
   static let buyTokenSaleByTokenGasLimitDefault = BigInt(700_000)
