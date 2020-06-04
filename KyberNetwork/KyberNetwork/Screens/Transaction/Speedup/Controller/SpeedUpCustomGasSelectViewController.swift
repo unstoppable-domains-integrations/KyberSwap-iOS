@@ -32,6 +32,12 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   @IBOutlet weak var currentFeeTitleLabel: UILabel!
   @IBOutlet weak var newFeeTitleLabel: UILabel!
   @IBOutlet weak var gasPriceWarningMessageLabel: UILabel!
+  @IBOutlet weak var superFastEstimateFeeLabel: UILabel!
+  @IBOutlet weak var fastEstimateFeeLabel: UILabel!
+  @IBOutlet weak var regularEstimateFeeLabel: UILabel!
+  @IBOutlet weak var slowEstimateFeeLabel: UILabel!
+  @IBOutlet weak var estimateFeeNoteLabel: UILabel!
+
   fileprivate let viewModel: SpeedUpCustomGasSelectViewModel
   weak var delegate: SpeedUpCustomGasSelectDelegate?
 
@@ -73,19 +79,16 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     self.regularGasPriceButton.backgroundColor = .white
     self.slowGasPriceButton.backgroundColor = .white
 
-    let tapSuperFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    self.superFastGasPriceLabel.addGestureRecognizer(tapSuperFast)
-    let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    self.fastGasPriceLabel.addGestureRecognizer(tapFast)
-    let tapRegular = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    self.regularGasPriceLabel.addGestureRecognizer(tapRegular)
-    let tapSlow = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSelectBoxLabel(_:)))
-    self.slowGasPriceLabel.addGestureRecognizer(tapSlow)
     self.currentFeeLabel.text = self.viewModel.currentTransactionFeeETHString
     let style = KNAppStyleType.current
     let radius = style.buttonRadius()
     self.doneButton.rounded(radius: radius)
     self.doneButton.applyGradient()
+    self.superFastEstimateFeeLabel.text = self.viewModel.estimateFeeSuperFastString
+    self.fastEstimateFeeLabel.text = self.viewModel.estimateFeeFastString
+    self.regularEstimateFeeLabel.text = self.viewModel.estimateRegularFeeString
+    self.slowEstimateFeeLabel.text = self.viewModel.estimateSlowFeeString
+    self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
   }
 
   func updateGasPriceUIs() {
@@ -138,15 +141,13 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "tap_back_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id])
     self.delegate?.speedUpCustomGasSelectViewController(self, run: .back)
   }
-  @objc func userTappedSelectBoxLabel(_ sender: UITapGestureRecognizer) {
-    guard let type = KNSelectedGasPriceType(rawValue: sender.view!.tag) else { return }
-    self.handleGasFeeChange(type)
-  }
+
   @IBAction func selectBoxButtonTapped(_ sender: UIButton) {
     guard let type = KNSelectedGasPriceType(rawValue: sender.tag) else { return }
     KNCrashlyticsUtil.logCustomEvent(withName: "tap_option_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id, "option": type])
     self.handleGasFeeChange(type)
   }
+
   func handleGasFeeChange(_ type: KNSelectedGasPriceType) {
     self.viewModel.updateSelectedType(type)
     self.updateGasPriceUIs()

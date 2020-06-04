@@ -40,8 +40,8 @@ class KAdvancedSettingsViewModel: NSObject {
 
   private let kGasPriceContainerHeight: CGFloat = 80.0
   private let kMinRateContainerHeight: CGFloat = 140.0
-  private let kAdvancedSettingsHasMinRateHeight: CGFloat = 310.0
-  private let kAdvancedSettingsNoMinRateHeight: CGFloat = 168.0
+  private let kAdvancedSettingsHasMinRateHeight: CGFloat = 360.0
+  private let kAdvancedSettingsNoMinRateHeight: CGFloat = 218.0
 
   fileprivate(set) var fast: BigInt = KNGasCoordinator.shared.fastKNGas
   fileprivate(set) var medium: BigInt = KNGasCoordinator.shared.standardKNGas
@@ -58,10 +58,12 @@ class KAdvancedSettingsViewModel: NSObject {
 
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var isPromoWallet: Bool = false
+  fileprivate(set) var gasLimit: BigInt
 
-  init(hasMinRate: Bool, isPromo: Bool) {
+  init(hasMinRate: Bool, isPromo: Bool, gasLimit: BigInt) {
     self.hasMinRate = hasMinRate
     self.isPromoWallet = isPromo
+    self.gasLimit = gasLimit
   }
 
   var advancedSettingsHeight: CGFloat {
@@ -96,6 +98,7 @@ class KAdvancedSettingsViewModel: NSObject {
       text: NSLocalizedString("super.fast", value: "Super Fast", comment: "").uppercased()
     )
   }
+
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
     let gasPriceAttributes: [NSAttributedStringKey: Any] = [
@@ -110,7 +113,7 @@ class KAdvancedSettingsViewModel: NSObject {
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))
-    attributedString.append(NSAttributedString(string: "\n\(text)", attributes: feeAttributes))
+    attributedString.append(NSAttributedString(string: " \(text)", attributes: feeAttributes))
     return attributedString
   }
 
@@ -139,6 +142,28 @@ class KAdvancedSettingsViewModel: NSObject {
 
   var currentRateDisplay: String {
     return self.numberFormatter.string(from: NSNumber(value: self.currentRate))?.displayRate() ?? "0"
+  }
+
+  var estimateFeeSuperFastString: String {
+    return self.formatFeeStringFor(gasPrice: self.superFast)
+  }
+
+  var estimateFeeFastString: String {
+    return self.formatFeeStringFor(gasPrice: self.fast)
+  }
+
+  var estimateRegularFeeString: String {
+    return self.formatFeeStringFor(gasPrice: self.medium)
+  }
+
+  var estimateSlowFeeString: String {
+    return self.formatFeeStringFor(gasPrice: self.slow)
+  }
+
+  fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
+    let fee = gasPrice * self.gasLimit
+    let feeString: String = fee.displayRate(decimals: 18)
+    return "~ \(feeString) ETH"
   }
 
   func updateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, superFast: BigInt) {
@@ -193,6 +218,10 @@ class KAdvancedSettingsViewModel: NSObject {
   var totalHeight: CGFloat {
     return 64.0 + self.advancedSettingsHeight
   }
+
+  func updateGasLimit(value: BigInt) {
+    self.gasLimit = value
+  }
 }
 
 class KAdvancedSettingsView: XibLoaderView {
@@ -227,6 +256,11 @@ class KAdvancedSettingsView: XibLoaderView {
   @IBOutlet weak var customRateTextField: UITextField!
   @IBOutlet weak var stillProceedIfRateGoesDownTextLabel: UILabel!
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
+  @IBOutlet weak var superFastEstimateFeeLabel: UILabel!
+  @IBOutlet weak var fastEstimateFeeLabel: UILabel!
+  @IBOutlet weak var regularEstimateFeeLabel: UILabel!
+  @IBOutlet weak var slowEstimateFeeLabel: UILabel!
+  @IBOutlet weak var estimateFeeNoteLabel: UILabel!
 
   fileprivate var isPromo: Bool = false
   fileprivate(set) var viewModel: KAdvancedSettingsViewModel!
@@ -251,6 +285,7 @@ class KAdvancedSettingsView: XibLoaderView {
       NSLocalizedString("advanced.optional", value: "Advanced (optional)", comment: ""),
       for: .normal
     )
+    self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.advancedContainerView.rounded(radius: 5.0)
@@ -260,18 +295,6 @@ class KAdvancedSettingsView: XibLoaderView {
     self.slowGasButton.backgroundColor = .white
     self.threePercentButton.backgroundColor = .white
     self.customButton.backgroundColor = .white
-
-    let tapSuperFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSuperFastFee(_:)))
-    self.superFastGasValueLabel.addGestureRecognizer(tapSuperFast)
-
-    let tapFast = UITapGestureRecognizer(target: self, action: #selector(self.userTappedFastFee(_:)))
-    self.fasGasValueLabel.addGestureRecognizer(tapFast)
-
-    let tapMedium = UITapGestureRecognizer(target: self, action: #selector(self.userTappedMediumFee(_:)))
-    self.mediumGasValueLabel.addGestureRecognizer(tapMedium)
-
-    let tapSlow = UITapGestureRecognizer(target: self, action: #selector(self.userTappedSlowFee(_:)))
-    self.slowGasValueLabel.addGestureRecognizer(tapSlow)
 
     let tapThreePercent = UITapGestureRecognizer(target: self, action: #selector(self.userTappedThreePercent(_:)))
     self.threePercentTextLabel.addGestureRecognizer(tapThreePercent)
@@ -416,6 +439,14 @@ class KAdvancedSettingsView: XibLoaderView {
     self.updateGasPriceUIs()
   }
 
+  func updateGasLimit(_ value: BigInt) {
+    self.viewModel.updateGasLimit(value: value)
+    self.superFastEstimateFeeLabel.text = self.viewModel.estimateFeeSuperFastString
+    self.fastEstimateFeeLabel.text = self.viewModel.estimateFeeFastString
+    self.regularEstimateFeeLabel.text = self.viewModel.estimateRegularFeeString
+    self.slowEstimateFeeLabel.text = self.viewModel.estimateSlowFeeString
+  }
+
   @IBAction func displayViewButtonPressed(_ sender: Any) {
     if self.viewModel == nil { return }
     let isHidden = !self.viewModel.isViewHidden
@@ -458,28 +489,28 @@ class KAdvancedSettingsView: XibLoaderView {
     self.updateGasPriceUIs()
   }
 
-  @objc func userTappedSuperFastFee(_ sender: Any) {
+  @IBAction func userTappedSuperFastFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.superFast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .superFast, value: self.viewModel.superFast))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["action": "select_gas_super_fast"])
     self.updateGasPriceUIs()
   }
 
-  @objc func userTappedFastFee(_ sender: Any) {
+  @IBAction func userTappedFastFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.fast)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .fast, value: self.viewModel.fast))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["action": "select_gas_fast"])
     self.updateGasPriceUIs()
   }
 
-  @objc func userTappedMediumFee(_ sender: Any) {
+  @IBAction func userTappedMediumFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.medium)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .medium, value: self.viewModel.medium))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["action": "select_gas_regular"])
     self.updateGasPriceUIs()
   }
 
-  @objc func userTappedSlowFee(_ sender: Any) {
+  @IBAction func userTappedSlowFee(_ sender: Any) {
     self.viewModel.updateSelectedType(.slow)
     self.delegate?.kAdvancedSettingsView(self, run: .gasPriceChanged(type: .slow, value: self.viewModel.slow))
     KNCrashlyticsUtil.logCustomEvent(withName: "swap_advanced_settings", customAttributes: ["action": "select_gas_slow"])

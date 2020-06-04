@@ -185,7 +185,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupAdvancedSettingsView() {
     // TODO: Do we need to check if it is a promo wallet here?
-    let viewModel = KAdvancedSettingsViewModel(hasMinRate: false, isPromo: false)
+    let viewModel = KAdvancedSettingsViewModel(hasMinRate: false, isPromo: false, gasLimit: self.viewModel.gasLimit)
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -196,6 +196,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.advancedSettingsView.updateViewModel(viewModel)
     self.heightConstraintAdvancedSettingsView.constant = self.advancedSettingsView.height
     self.advancedSettingsView.delegate = self
+    self.advancedSettingsView.updateGasLimit(self.viewModel.gasLimit)
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraints()
   }
@@ -238,6 +239,7 @@ class KSendTokenViewController: KNBaseViewController {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
+    self.advancedSettingsView.updateGasLimit(self.viewModel.gasLimit)
     self.view.layoutIfNeeded()
   }
 
@@ -720,10 +722,10 @@ extension KSendTokenViewController: KAdvancedSettingsViewDelegate {
           self.updateAdvancedSettingsView()
           self.view.layoutIfNeeded()
         }, completion: { _ in
-          if self.advancedSettingsView.isExpanded {
+          if self.advancedSettingsView.isExpanded && self.scrollContainerView.contentSize.height > self.scrollContainerView.bounds.size.height {
             let bottomOffset = CGPoint(
               x: 0,
-              y: self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
+              y: self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 188.0
             )
             self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
           }

@@ -240,7 +240,7 @@ class KSwapViewController: KNBaseViewController {
 
   fileprivate func setupAdvancedSettingsView() {
     let isPromo = KNWalletPromoInfoStorage.shared.getDestWallet(from: self.viewModel.walletObject.address) != nil
-    let viewModel = KAdvancedSettingsViewModel(hasMinRate: true, isPromo: isPromo)
+    let viewModel = KAdvancedSettingsViewModel(hasMinRate: true, isPromo: isPromo, gasLimit: self.viewModel.estimateGasLimit)
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -253,6 +253,7 @@ class KSwapViewController: KNBaseViewController {
     self.advancedSettingsView.updateViewModel(viewModel)
     self.heightConstraintForAdvacedSettingsView.constant = self.advancedSettingsView.height
     self.advancedSettingsView.delegate = self
+    self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraints()
   }
@@ -894,6 +895,7 @@ extension KSwapViewController {
       amount: amount,
       gasLimit: gasLimit
     )
+    self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
   }
 
   /*
@@ -906,6 +908,7 @@ extension KSwapViewController {
       amount: amount,
       gasLimit: gasLimit
     )
+    self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
   }
   /*
    Update selected token
@@ -1161,10 +1164,10 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
           self.updateAdvancedSettingsView()
           self.view.layoutIfNeeded()
         }, completion: { _ in
-          if self.advancedSettingsView.isExpanded {
+          if self.advancedSettingsView.isExpanded && self.scrollContainerView.contentSize.height > self.scrollContainerView.bounds.size.height {
             let offSetY: CGFloat = {
               if self.viewModel.isSwapSuggestionShown {
-                return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 160.0
+                return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 210.0
               }
               return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
             }()

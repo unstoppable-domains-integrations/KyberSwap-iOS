@@ -50,6 +50,32 @@ class SpeedUpCustomGasSelectViewModel {
     )
   }
 
+  var estimateFeeSuperFastString: String {
+    return self.formatFeeStringFor(gasPrice: self.superFast)
+  }
+
+  var estimateFeeFastString: String {
+    return self.formatFeeStringFor(gasPrice: self.fast)
+  }
+
+  var estimateRegularFeeString: String {
+    return self.formatFeeStringFor(gasPrice: self.medium)
+  }
+
+  var estimateSlowFeeString: String {
+    return self.formatFeeStringFor(gasPrice: self.slow)
+  }
+
+  fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
+    let fee: BigInt? = {
+      guard let gasLimit = EtherNumberFormatter.full.number(from: transaction.gasUsed, decimals: 0)
+        else { return nil }
+      return gasPrice * gasLimit
+    }()
+    let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
+    return "~ \(feeString) ETH"
+  }
+
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
     let gasPriceAttributes: [NSAttributedStringKey: Any] = [
@@ -64,7 +90,7 @@ class SpeedUpCustomGasSelectViewModel {
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))
-    attributedString.append(NSAttributedString(string: "\n\(text)", attributes: feeAttributes))
+    attributedString.append(NSAttributedString(string: " \(text)", attributes: feeAttributes))
     return attributedString
   }
 
