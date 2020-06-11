@@ -128,7 +128,7 @@
 "words.count" = "字数统计";
 "your.private.key" = "你的私钥";
 "private.key.has.to.be.64.characters" = "私钥必须是64个字符";
-"import.your.json.file" = "导入您的JSON文件";
+"import.your.keystore.file" = "导入您的Keystore文件";
 "can.not.get.data.from.your.file" = "无法从您的文件中获取数据。";
 "backup.your.wallet" = "备份你的钱包";
 "paper.only" = "仅限纸张";

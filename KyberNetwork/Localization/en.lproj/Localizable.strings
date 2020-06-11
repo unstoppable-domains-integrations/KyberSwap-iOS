@@ -128,7 +128,7 @@
 "words.count" = "Words Count";
 "your.private.key" = "Your Private Key";
 "private.key.has.to.be.64.characters" = "Private key has to be 64 characters";
-"import.your.json.file" = "Import your JSON file";
+"import.your.keystore.file" = "Import your Keystore file";
 "can.not.get.data.from.your.file" = "Can not get data from your file.";
 "backup.your.wallet" = "Backup Your Wallet";
 "paper.only" = "Paper Only";
