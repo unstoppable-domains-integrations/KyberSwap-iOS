@@ -616,7 +616,7 @@
 "Amount is too big. Limit order only support max 10 ETH equivalent order" = "금액이 너무 큽니다. 리밋 주문은 최대 10이더 상당의 금액만 지원합니다";
 "Your balance is insufficent for the order. Please check your balance and your pending order" = "주문을 위한 잔액이 부족합니다. 잔액과 대기 중인 주문을 확인해주세요";
 "Your balance is insufficient for transaction" = "거래를 위한 잔액이 부족합니다. ";
-"This address has been used by another account. Please place order with other address." = "다른 계정에서 해당 주소를 사용 중입니다. 다른 계정으로 주문해주세요.";
+"This address has been used by another account. Please place order with other address." = "다른 계정에서 해당 주소를 사용 중입니다 (%@). 다른 계정으로 주문해주세요.";
 "Hold from 2000 KNC to get discount for your orders." = "2000KNC부터는 홀드하여 주문에 대한 할인을 받으세요.";
 "Please enter an amount to continue" = "계속하려면 금액을 입력하십시오.";
 "You cannot submit order with promo code. Please use other wallets." = "프로모션 코드로 주문을 제출할 수 없습니다. 다른 지갑을 이용해주세요.";
