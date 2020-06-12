@@ -890,7 +890,7 @@ extension KNCreateLimitOrderViewController {
       if case .success(let eligileData) = result, !eligileData.0 {
         let account = eligileData.1 ?? ""
         var message = "This address has been used by another account. Please place order with other address.".toBeLocalised()
-        message = message.replacingOccurrences(of: "%@", with: account)
+        message = String(format: message, account)
         // not eligible
         self.showWarningTopBannerMessage(
           with: "",

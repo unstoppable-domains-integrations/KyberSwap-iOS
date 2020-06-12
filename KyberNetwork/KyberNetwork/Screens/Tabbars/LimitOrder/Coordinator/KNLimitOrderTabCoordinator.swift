@@ -240,8 +240,8 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       let isEligible = data.0
       let account = data.1 ?? ""
       if !isEligible {
-        errorMessage = "This address has been used by another account. Please place order with other address.".toBeLocalised()
-        errorMessage = errorMessage?.replacingOccurrences(of: "%@", with: account)
+        let message = "This address has been used by another account. Please place order with other address.".toBeLocalised()
+        errorMessage = String(format: message, account)
       }
       group.leave()
     }
