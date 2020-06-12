@@ -128,7 +128,7 @@
 "words.count" = "Số từ";
 "your.private.key" = "Khóa riêng của bạn";
 "private.key.has.to.be.64.characters" = "Khóa riêng phải có 64 ký tự";
-"import.your.json.file" = "Nhập tệp JSON của bạn";
+"import.your.keystore.file" = "Nhập tệp Keystore của bạn";
 "can.not.get.data.from.your.file" = "Không thể lấy dữ liệu từ tệp.";
 "backup.your.wallet" = "Sao Lưu Ví";
 "paper.only" = "Ghi vào giấy";
