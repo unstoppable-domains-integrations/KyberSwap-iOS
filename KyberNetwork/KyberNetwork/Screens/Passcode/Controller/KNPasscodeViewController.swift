@@ -36,6 +36,7 @@ class KNPasscodeViewController: KNBaseViewController {
 
   @IBOutlet weak var passcodeContainerView: UIView!
   @IBOutlet var passcodeViews: [UIView]!
+  @IBOutlet weak var bioAuthenButton: UIButton!
 
   @IBOutlet var digitButtons: [UIButton]!
   @IBOutlet weak var actionButton: UIButton!
@@ -84,6 +85,8 @@ class KNPasscodeViewController: KNBaseViewController {
       $0.setTitleColor(UIColor.Kyber.enygold, for: .normal)
       $0.setTitleColor(.white, for: .highlighted)
     })
+    self.bioAuthenButton.isHidden = true
+
     self.updateUI()
   }
 
@@ -98,6 +101,7 @@ class KNPasscodeViewController: KNBaseViewController {
   }
 
   func showBioAuthenticationIfNeeded() {
+    self.bioAuthenButton.isHidden = true
     if case .verifyPasscode = self.viewType { return }
     guard case .authenticate(let isUpdating) = self.viewType, !isUpdating else { return }
     if KNPasscodeUtil.shared.timeToAllowNewAttempt() > 0 {
@@ -109,6 +113,11 @@ class KNPasscodeViewController: KNBaseViewController {
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
       return
     }
+    self.bioAuthenButton.isHidden = false
+    self.bioAuthenButton.setImage(
+      UIImage(named: context.biometryType == LABiometryType.faceID ? "faceid_icon" : "touchid_icon"),
+      for: .normal
+    )
     context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("use.touchid/faceid.to.secure.your.account", value: "Use touchID/faceID to secure your account", comment: "")) { [weak self] (success, error) in
       guard let `self` = self else { return }
       DispatchQueue.main.async {
@@ -199,6 +208,10 @@ class KNPasscodeViewController: KNBaseViewController {
         self.delegate?.passcodeViewController(self, run: .cancel)
       }
     }
+  }
+
+  @IBAction func bioAuthenButtonPressed(_ sender: Any) {
+    self.showBioAuthenticationIfNeeded()
   }
 
   fileprivate func userDidEnterPasscode() {
