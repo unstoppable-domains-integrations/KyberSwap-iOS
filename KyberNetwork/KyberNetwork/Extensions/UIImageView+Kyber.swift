@@ -52,7 +52,7 @@ extension UIImageView {
   }
 
   func setTokenImage(with alert: KNAlertObject, size: CGSize? = nil, applyNoir: Bool = false) {
-     let url = "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(alert.token.lowercased()).png"
+     let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(alert.token.lowercased()).png"
      let assetImage = UIImage(named: alert.token.lowercased())
      let defaultImage = UIImage(named: "default_token")!
      let placeholder = assetImage ?? defaultImage
