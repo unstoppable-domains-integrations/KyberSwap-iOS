@@ -166,7 +166,7 @@ extension TokenObject {
   }
 
   var iconURL: String {
-    return "https://raw.githubusercontent.com/KyberNetwork/KyberNetwork.github.io/master/DesignAssets/tokens/iOS/\(self.icon).png"
+    return "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(self.icon).png"
   }
 
   func contains(_ text: String) -> Bool {
