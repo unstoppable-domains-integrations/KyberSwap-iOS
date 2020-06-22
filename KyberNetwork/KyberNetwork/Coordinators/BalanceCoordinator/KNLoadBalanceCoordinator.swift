@@ -12,9 +12,9 @@ class KNLoadBalanceCoordinator {
   fileprivate var session: KNSession!
   fileprivate var ethToken: TokenObject!
 
-  fileprivate var fetchETHBalanceTimer: Timer?
-  fileprivate var isFetchingETHBalance: Bool = false
-  var ethBalance: Balance = Balance(value: BigInt(0))
+  var ethBalance: Balance {
+    return otherTokensBalance[self.ethToken.address.description.lowercased()] ?? Balance(value: BigInt(0))
+  }
 
   fileprivate var fetchOtherTokensBalanceTimer: Timer?
   fileprivate var isFetchingOtherTokensBalance: Bool = false
@@ -29,9 +29,6 @@ class KNLoadBalanceCoordinator {
   var totalBalanceInUSD: BigInt {
     let balanceValue: BigInt = {
       var value = BigInt(0)
-      if self.ethToken != nil, let ethRate = KNRateCoordinator.shared.usdRate(for: self.ethToken) {
-        value = ethRate.rate * ethBalance.value / BigInt(EthereumUnit.ether.rawValue)
-      }
       let tokens = KNSupportedTokenStorage.shared.supportedTokens
       for token in tokens {
         if let balance = otherTokensBalance[token.contract.lowercased()], !balance.value.isZero, let rate = KNRateCoordinator.shared.usdRate(for: token) {
@@ -45,8 +42,8 @@ class KNLoadBalanceCoordinator {
 
   var totalBalanceInETH: BigInt {
     let balanceValue: BigInt = {
-      var value = self.ethBalance.value
-      if self.ethToken == nil { return value }
+      var value = BigInt(0)
+      if self.ethToken == nil { return self.ethBalance.value }
 
       let tokenObjects = KNSupportedTokenStorage.shared.supportedTokens
 
@@ -82,7 +79,6 @@ class KNLoadBalanceCoordinator {
   func restartNewSession(_ session: KNSession) {
     self.session = session
     self.ethToken = session.tokenStorage.ethToken
-    self.ethBalance = Balance(value: BigInt(0))
     self.otherTokensBalance = [:]
     self.updateBalancesFromLocalData()
     self.resume()
@@ -91,18 +87,13 @@ class KNLoadBalanceCoordinator {
   fileprivate func updateBalancesFromLocalData() {
     let tokens = self.session.tokenStorage.tokens
     tokens.forEach { token in
-      if token.isETH {
-        self.ethBalance = Balance(value: token.valueBigInt)
-      } else {
-        self.otherTokensBalance[token.contract.lowercased()] = Balance(value: token.valueBigInt)
-      }
+      self.otherTokensBalance[token.contract.lowercased()] = Balance(value: token.valueBigInt)
     }
   }
 
   @objc func shouldRefreshBalance(_ sender: Any?) {
     if Date().timeIntervalSince(self.lastRefreshTime) >= 15.0 {
       self.lastRefreshTime = Date()
-      self.fetchETHBalance(nil)
       self.fetchOtherTokenBalancesNew(nil)
     }
   }
@@ -113,18 +104,6 @@ class KNLoadBalanceCoordinator {
 
   func resume() {
     self.lastRefreshTime = Date()
-    fetchETHBalanceTimer?.invalidate()
-    isFetchingETHBalance = false
-    fetchETHBalance(nil)
-
-    fetchETHBalanceTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds20,
-      repeats: true,
-      block: { [weak self] timer in
-      self?.fetchETHBalance(timer)
-      }
-    )
-
     fetchOtherTokensBalanceTimer?.invalidate()
     isFetchingOtherTokensBalance = false
     fetchOtherTokenBalancesNew(nil)
@@ -151,10 +130,6 @@ class KNLoadBalanceCoordinator {
   }
 
   func pause() {
-    fetchETHBalanceTimer?.invalidate()
-    fetchETHBalanceTimer = nil
-    isFetchingETHBalance = true
-
     fetchOtherTokensBalanceTimer?.invalidate()
     fetchOtherTokensBalanceTimer = nil
     isFetchingOtherTokensBalance = true
@@ -166,35 +141,6 @@ class KNLoadBalanceCoordinator {
 
   func exit() {
     pause()
-  }
-
-  @objc func fetchETHBalance(_ sender: Timer?) {
-    if isFetchingETHBalance { return }
-    isFetchingETHBalance = true
-    let currentWallet = self.session.wallet
-    let address = self.ethToken.address
-    if self.session == nil {
-      self.isFetchingETHBalance = false
-      return
-    }
-    self.session.externalProvider.getETHBalance { [weak self] result in
-      guard let `self` = self else { return }
-      if self.session == nil || currentWallet != self.session.wallet {
-        self.isFetchingETHBalance = false
-        return
-      }
-      self.isFetchingETHBalance = false
-      switch result {
-      case .success(let balance):
-        if self.ethBalance.value != balance.value {
-          self.ethBalance = balance
-          self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
-          KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
-        }
-      case .failure(let error):
-        NSLog("Load ETH Balance failed with error: \(error.description)")
-      }
-    }
   }
 
   func fetchTokenAddressAfterTx(token1: String, token2: String) {
@@ -229,9 +175,9 @@ class KNLoadBalanceCoordinator {
         }
         if case .success(let balance) = result {
           if self.ethBalance.value != balance.value {
-            self.ethBalance = balance
+            self.otherTokensBalance[token.lowercased()] = balance
             self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
-            KNNotificationUtil.postNotification(for: kETHBalanceDidUpdateNotificationKey)
+            KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           }
         }
         completion()
@@ -260,7 +206,7 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
 
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).map({ $0.contract })
+    let tokenContracts = self.session.tokenStorage.tokens.filter({ return $0.isSupported }).map({ $0.contract })
 
     let tokens = tokenContracts.map({ return Address(string: $0)! })
 
@@ -292,7 +238,7 @@ class KNLoadBalanceCoordinator {
     if isFetchingOtherTokensBalance { return }
     isFetchingOtherTokensBalance = true
     //1. sort token base on their balance
-    let sortedTokens = self.session.tokenStorage.tokens.filter({ return !$0.isETH && $0.isSupported }).sorted { (left, right) -> Bool in
+    let sortedTokens = self.session.tokenStorage.tokens.filter({ return $0.isSupported }).sorted { (left, right) -> Bool in
       return left.value > right.value
     }
     let sortedAddress = sortedTokens.map({ $0.contract }).map({ return Address(string: $0)! })
@@ -336,23 +282,42 @@ class KNLoadBalanceCoordinator {
     addresses.forEach { (address) in
       group.enter()
       DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-         self.session.externalProvider.getTokenBalance(for: address, completion: { [weak self] result in
-           guard let `self` = self else { group.leave(); return }
-           if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
-           switch result {
-           case .success(let bigInt):
-             let balance = Balance(value: bigInt)
-             if self.otherTokensBalance[address.description.lowercased()] == nil || self.otherTokensBalance[address.description.lowercased()]!.value != bigInt {
-               isBalanceChanged = true
-             }
-             self.otherTokensBalance[address.description.lowercased()] = balance
-             self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
-             NSLog("---- Balance: Fetch token balance for contract \(address) successfully: \(bigInt.shortString(decimals: 0))")
-           case .failure(let error):
-             NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
-           }
-           group.leave()
-         })
+        if address.description.lowercased() == self.ethToken.address.description.lowercased() {
+          self.session.externalProvider.getETHBalance { [weak self] result in
+            guard let `self` = self else { group.leave(); return }
+            if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+            switch result {
+            case .success(let balance):
+              if self.otherTokensBalance[address.description.lowercased()] == nil || self.otherTokensBalance[address.description.lowercased()]!.value != balance.value {
+                isBalanceChanged = true
+              }
+              self.otherTokensBalance[address.description.lowercased()] = balance
+              self.session.tokenStorage.updateBalance(for: address, balance: balance.value)
+              NSLog("---- Balance: Fetch eth balance for contract \(address) successfully: \(balance.value.shortString(decimals: 0))")
+            case .failure(let error):
+              NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+            }
+            group.leave()
+          }
+        } else {
+          self.session.externalProvider.getTokenBalance(for: address, completion: { [weak self] result in
+            guard let `self` = self else { group.leave(); return }
+            if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
+            switch result {
+            case .success(let bigInt):
+              let balance = Balance(value: bigInt)
+              if self.otherTokensBalance[address.description.lowercased()] == nil || self.otherTokensBalance[address.description.lowercased()]!.value != bigInt {
+                isBalanceChanged = true
+              }
+              self.otherTokensBalance[address.description.lowercased()] = balance
+              self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
+              NSLog("---- Balance: Fetch token balance for contract \(address) successfully: \(bigInt.shortString(decimals: 0))")
+            case .failure(let error):
+              NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
+            }
+            group.leave()
+          })
+        }
       }
       delay += 0.2
     }
