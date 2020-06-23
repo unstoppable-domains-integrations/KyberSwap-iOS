@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Oqq-rA-jvM" customClass="KNTutorialPagerCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="338" height="532"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="338" height="532"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In your old KyberSwap app" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-OG-ywI">
+                        <rect key="frame" x="96" y="16" width="146.5" height="14"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                        <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AGT-ek-JqW">
+                        <rect key="frame" x="0.0" y="42" width="338" height="439"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial_1_1" translatesAutoresizingMaskIntoConstraints="NO" id="js8-4S-BCz">
+                                <rect key="frame" x="88.5" y="45" width="161" height="254"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your desired import method (Keystore, Private Key, Seeds)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztT-wF-Rr7">
+                                <rect key="frame" x="56" y="307" width="257" height="33"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <color key="textColor" red="0.078431372550000003" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_swap_all_icon" translatesAutoresizingMaskIntoConstraints="NO" id="sJz-cH-6Nk">
+                                <rect key="frame" x="16" y="307" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="Emp-qs-8jF"/>
+                                    <constraint firstAttribute="height" constant="24" id="YbJ-Ed-XpU"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="sJz-cH-6Nk" firstAttribute="leading" secondItem="AGT-ek-JqW" secondAttribute="leading" constant="16" id="7As-fN-rk2"/>
+                            <constraint firstAttribute="trailing" secondItem="ztT-wF-Rr7" secondAttribute="trailing" constant="25" id="Haf-Oy-r1r"/>
+                            <constraint firstItem="ztT-wF-Rr7" firstAttribute="top" secondItem="js8-4S-BCz" secondAttribute="bottom" constant="8" id="JN0-ZB-Eti"/>
+                            <constraint firstItem="ztT-wF-Rr7" firstAttribute="top" secondItem="sJz-cH-6Nk" secondAttribute="top" id="Yjr-ac-0dl"/>
+                            <constraint firstItem="js8-4S-BCz" firstAttribute="top" secondItem="AGT-ek-JqW" secondAttribute="top" constant="45" id="aKF-ty-Q7h"/>
+                            <constraint firstItem="ztT-wF-Rr7" firstAttribute="leading" secondItem="sJz-cH-6Nk" secondAttribute="trailing" constant="16" id="d1k-nC-2Ta"/>
+                            <constraint firstItem="js8-4S-BCz" firstAttribute="centerX" secondItem="AGT-ek-JqW" secondAttribute="centerX" id="ktU-rL-e0i"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="AGT-ek-JqW" firstAttribute="leading" secondItem="Oqq-rA-jvM" secondAttribute="leading" id="7b6-N2-mh6"/>
+                <constraint firstAttribute="trailing" secondItem="AGT-ek-JqW" secondAttribute="trailing" id="HMZ-7w-Ba5"/>
+                <constraint firstItem="AGT-ek-JqW" firstAttribute="top" secondItem="KHH-OG-ywI" secondAttribute="bottom" constant="12" id="Nva-kH-mZv"/>
+                <constraint firstItem="KHH-OG-ywI" firstAttribute="top" secondItem="Oqq-rA-jvM" secondAttribute="top" constant="16" id="jD6-ho-4Ew"/>
+                <constraint firstItem="KHH-OG-ywI" firstAttribute="centerX" secondItem="Oqq-rA-jvM" secondAttribute="centerX" id="kbf-7q-gGU"/>
+                <constraint firstAttribute="bottom" secondItem="AGT-ek-JqW" secondAttribute="bottom" constant="51" id="pjE-UW-GLB"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q1j-EU-9hR"/>
+            <size key="customSize" width="338" height="532"/>
+            <connections>
+                <outlet property="contentContainerView" destination="AGT-ek-JqW" id="oMl-Pd-g49"/>
+                <outlet property="contentImageView" destination="js8-4S-BCz" id="4NF-gJ-7jp"/>
+                <outlet property="contentLabel" destination="ztT-wF-Rr7" id="ZA5-B3-w5z"/>
+                <outlet property="headerTitleLabel" destination="KHH-OG-ywI" id="a2z-BR-jdw"/>
+            </connections>
+            <point key="canvasLocation" x="340.57971014492756" y="182.14285714285714"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="tutorial_1_1" width="161" height="254"/>
+        <image name="warning_swap_all_icon" width="16" height="13"/>
+    </resources>
+</document>

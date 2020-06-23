@@ -7,6 +7,7 @@ enum KNLandingPageViewEvent {
   case openCreateWallet
   case openImportWallet
   case openTermAndCondition
+  case openMigrationAlert
 }
 
 protocol KNLandingPageViewControllerDelegate: class {
@@ -70,6 +71,14 @@ class KNLandingPageViewController: KNBaseViewController {
     self.termAndConditionButton.setTitleColor(.white, for: .normal)
     self.termAndConditionButton.addTextSpacing()
     self.debugButton.isHidden = false
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if UserDefaults.standard.object(forKey: Constants.isShowMigrationTutorial) == nil || KNEnvironment.default == .ropsten {
+      self.delegate?.landinagePageViewController(self, run: .openMigrationAlert)
+      UserDefaults.standard.set(true, forKey: Constants.isShowMigrationTutorial)
+    }
   }
 
   override func viewDidLayoutSubviews() {

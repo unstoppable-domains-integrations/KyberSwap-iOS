@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNTutorialPagerCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="338" height="532"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="338" height="532"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In your old KyberSwap app" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxW-1J-yz1">
+                        <rect key="frame" x="96" y="16" width="146.5" height="14"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                        <color key="textColor" red="0.3529411764705882" green="0.36862745098039218" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6HQ-RK-2LN">
+                        <rect key="frame" x="0.0" y="42" width="338" height="439"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial_1_1" translatesAutoresizingMaskIntoConstraints="NO" id="aeI-AH-Z1v">
+                                <rect key="frame" x="88.5" y="45" width="161" height="254"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your desired import method (Keystore, Private Key, Seeds)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mbD-qT-IgV">
+                                <rect key="frame" x="25" y="307" width="288" height="33"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="aeI-AH-Z1v" firstAttribute="top" secondItem="6HQ-RK-2LN" secondAttribute="top" constant="45" id="463-Gj-4Ye"/>
+                            <constraint firstItem="mbD-qT-IgV" firstAttribute="leading" secondItem="6HQ-RK-2LN" secondAttribute="leading" constant="25" id="IMu-hD-lbK"/>
+                            <constraint firstAttribute="trailing" secondItem="mbD-qT-IgV" secondAttribute="trailing" constant="25" id="fq7-jL-AAO"/>
+                            <constraint firstItem="mbD-qT-IgV" firstAttribute="top" secondItem="aeI-AH-Z1v" secondAttribute="bottom" constant="8" id="iHo-vY-MFi"/>
+                            <constraint firstItem="aeI-AH-Z1v" firstAttribute="centerX" secondItem="6HQ-RK-2LN" secondAttribute="centerX" id="z8w-d9-1uM"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="6HQ-RK-2LN" firstAttribute="top" secondItem="FxW-1J-yz1" secondAttribute="bottom" constant="12" id="3iz-aT-l3l"/>
+                <constraint firstAttribute="bottom" secondItem="6HQ-RK-2LN" secondAttribute="bottom" constant="51" id="8gi-Aa-i1y"/>
+                <constraint firstItem="FxW-1J-yz1" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="16" id="DON-AU-BQM"/>
+                <constraint firstItem="6HQ-RK-2LN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="EWb-KY-wQA"/>
+                <constraint firstItem="FxW-1J-yz1" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="Eep-Ke-WKZ"/>
+                <constraint firstAttribute="trailing" secondItem="6HQ-RK-2LN" secondAttribute="trailing" id="P87-BE-Dcf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="338" height="532"/>
+            <connections>
+                <outlet property="contentContainerView" destination="6HQ-RK-2LN" id="O5E-0U-L0r"/>
+                <outlet property="contentImageView" destination="aeI-AH-Z1v" id="liJ-Rb-ERp"/>
+                <outlet property="contentLabel" destination="mbD-qT-IgV" id="QNT-5i-Yhn"/>
+                <outlet property="headerTitleLabel" destination="FxW-1J-yz1" id="EXs-Nj-1lc"/>
+            </connections>
+            <point key="canvasLocation" x="340.57971014492756" y="182.14285714285714"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="tutorial_1_1" width="161" height="254"/>
+    </resources>
+</document>

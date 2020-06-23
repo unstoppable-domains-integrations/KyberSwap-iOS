@@ -47,6 +47,7 @@ target 'KyberNetwork' do
   pod 'SwipeCellKit'
   pod 'Charts'
   pod 'FreshchatSDK'
+  pod 'FSPagerView'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
