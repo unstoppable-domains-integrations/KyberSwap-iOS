@@ -12,6 +12,7 @@ enum KNTransactionLoadState: Int {
 
 class KNAppTracker {
 
+  static let kPlatformFeeBps = 8 // 8 bps, 0.08%
   // Env
   static let kInternalTrackerEndpointKey: String = "kInternalTrackerEndpointKey"
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
