@@ -250,6 +250,8 @@ struct KNHistoryViewModel {
     KNAppTracker.saveHistoryFilterData(json: json)
   }
 
+  var isShowingQuickTutorial: Bool = false
+
   var isNeedShowQuickTutorial: Bool {
     return UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForHistoryView) == nil || KNEnvironment.default == .ropsten
   }
@@ -312,6 +314,8 @@ class KNHistoryViewController: KNBaseViewController {
       let collectionViewSize = self.transactionCollectionView.frame.size
       let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
       self.delegate?.historyViewController(self, run: event)
+      self.animateReviewCellActionForTutorial()
+      self.viewModel.isShowingQuickTutorial = true
     }
   }
 
@@ -326,9 +330,51 @@ class KNHistoryViewController: KNBaseViewController {
     self.setupNavigationBar()
     self.setupCollectionView()
   }
-  
+
   override func quickTutorialNextAction() {
     self.dismissTutorialOverlayer()
+    self.animateResetReviewCellActionForTutorial()
+    self.viewModel.isShowingQuickTutorial = false
+    self.updateUIWhenDataDidChange()
+  }
+
+  func animateReviewCellActionForTutorial() {
+    guard let firstCell = self.transactionCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) else { return }
+    let speedupLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width, y: 0, width: 77, height: 60))
+    let cancelLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width + 77, y: 0, width: 77, height: 60))
+    firstCell.clipsToBounds = false
+
+    speedupLabel.text = "speed up".toBeLocalised()
+    speedupLabel.textAlignment = .center
+    speedupLabel.font = UIFont.Kyber.bold(with: 14)
+    speedupLabel.backgroundColor = UIColor.Kyber.speedUpOrange
+    speedupLabel.textColor = .white
+    speedupLabel.tag = 101
+
+    cancelLabel.text = "cancel".toBeLocalised()
+    cancelLabel.textAlignment = .center
+    cancelLabel.font = UIFont.Kyber.bold(with: 14)
+    cancelLabel.backgroundColor = UIColor.Kyber.cancelGray
+    cancelLabel.textColor = .white
+    cancelLabel.tag = 102
+
+    firstCell.contentView.addSubview(speedupLabel)
+    firstCell.contentView.addSubview(cancelLabel)
+    UIView.animate(withDuration: 0.3) {
+      firstCell.frame = CGRect(x: firstCell.frame.origin.x - 77 * 2, y: firstCell.frame.origin.y, width: firstCell.frame.size.width, height: firstCell.frame.size.height)
+    }
+  }
+
+  func animateResetReviewCellActionForTutorial() {
+    guard let firstCell = self.transactionCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) else { return }
+    let speedupLabel = firstCell.viewWithTag(101)
+    let cancelLabel = firstCell.viewWithTag(102)
+    UIView.animate(withDuration: 0.3, animations: {
+      firstCell.frame = CGRect(x: 0, y: firstCell.frame.origin.y, width: firstCell.frame.size.width, height: firstCell.frame.size.height)
+    }, completion: { _ in
+      speedupLabel?.removeFromSuperview()
+      cancelLabel?.removeFromSuperview()
+    })
   }
 
   fileprivate func setupNavigationBar() {
@@ -357,6 +403,9 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIWhenDataDidChange() {
+    guard self.viewModel.isShowingQuickTutorial == false else {
+      return
+    }
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
 
