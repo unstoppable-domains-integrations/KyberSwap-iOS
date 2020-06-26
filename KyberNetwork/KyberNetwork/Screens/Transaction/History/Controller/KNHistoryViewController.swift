@@ -8,6 +8,7 @@ enum KNHistoryViewEvent {
   case dismiss
   case cancelTransaction(transaction: Transaction)
   case speedUpTransaction(transaction: Transaction)
+  case quickTutorial(pointsAndRadius: [(CGPoint, CGFloat)])
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -248,6 +249,14 @@ struct KNHistoryViewModel {
     if let date = filters.to { json["to"] = date.timeIntervalSince1970 }
     KNAppTracker.saveHistoryFilterData(json: json)
   }
+
+  var isNeedShowQuickTutorial: Bool {
+    return UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForHistoryView) == nil || KNEnvironment.default == .ropsten
+  }
+
+  func updateDoneTutorial() {
+    UserDefaults.standard.set(true, forKey: Constants.isDoneShowQuickTutorialForHistoryView)
+  }
 }
 
 class KNHistoryViewController: KNBaseViewController {
@@ -295,6 +304,17 @@ class KNHistoryViewController: KNBaseViewController {
     self.updateUIWhenDataDidChange()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if !self.viewModel.pendingTxData.isEmpty && self.viewModel.isNeedShowQuickTutorial {
+      self.viewModel.updateDoneTutorial()
+      let collectionViewOrigin = self.transactionCollectionView.frame.origin
+      let collectionViewSize = self.transactionCollectionView.frame.size
+      let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
+      self.delegate?.historyViewController(self, run: event)
+    }
+  }
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.headerContainerView.removeSublayer(at: 0)
@@ -305,6 +325,10 @@ class KNHistoryViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_pending_tx", customAttributes: nil)
     self.setupNavigationBar()
     self.setupCollectionView()
+  }
+  
+  override func quickTutorialNextAction() {
+    self.dismissTutorialOverlayer()
   }
 
   fileprivate func setupNavigationBar() {
