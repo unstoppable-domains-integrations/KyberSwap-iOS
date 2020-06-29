@@ -191,7 +191,6 @@ enum KNEnvironment: Int {
   var cachedSourceAmountRateURL: String {
     switch KNEnvironment.default {
     case .mainnetTest, .production, .staging: return KNSecret.trackerURL
-    case .ropsten: return KNSecret.ropstenApiURL
     default: return KNSecret.debugTrackerURL
     }
   }
@@ -217,7 +216,7 @@ enum KNEnvironment: Int {
     switch KNEnvironment.default {
     case .mainnetTest, .production, .staging: return "https://api.kyber.network"
     case .kovan: return "https://dev-kovan-api.knstats.com"
-    default: return "https://ropsten-api.kyber.network"
+    default: return "https://dev-api.knstats.com/"
     }
   }
 }
