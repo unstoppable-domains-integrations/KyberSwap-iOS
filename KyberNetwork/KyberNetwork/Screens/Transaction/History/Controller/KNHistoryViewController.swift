@@ -284,6 +284,7 @@ class KNHistoryViewController: KNBaseViewController {
 
   @IBOutlet weak var transactionCollectionView: UICollectionView!
   @IBOutlet weak var transactionCollectionViewBottomConstraint: NSLayoutConstraint!
+  fileprivate var quickTutorialTimer: Timer?
 
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
@@ -292,6 +293,11 @@ class KNHistoryViewController: KNBaseViewController {
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  deinit {
+    self.quickTutorialTimer?.invalidate()
+    self.quickTutorialTimer = nil
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -306,17 +312,29 @@ class KNHistoryViewController: KNBaseViewController {
     self.updateUIWhenDataDidChange()
   }
 
+  fileprivate func showQuickTutorial() {
+    let collectionViewOrigin = self.transactionCollectionView.frame.origin
+    let collectionViewSize = self.transactionCollectionView.frame.size
+    let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
+    self.delegate?.historyViewController(self, run: event)
+    self.animateReviewCellActionForTutorial()
+    self.viewModel.isShowingQuickTutorial = true
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     if !self.viewModel.pendingTxData.isEmpty && self.viewModel.isNeedShowQuickTutorial {
       self.viewModel.updateDoneTutorial()
-      let collectionViewOrigin = self.transactionCollectionView.frame.origin
-      let collectionViewSize = self.transactionCollectionView.frame.size
-      let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
-      self.delegate?.historyViewController(self, run: event)
-      self.animateReviewCellActionForTutorial()
-      self.viewModel.isShowingQuickTutorial = true
+      self.showQuickTutorial()
     }
+
+    self.quickTutorialTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (_) in
+      if self.checkHavePendingTxOver5Min() && self.viewModel.isShowingQuickTutorial == false {
+        self.showQuickTutorial()
+        self.quickTutorialTimer?.invalidate()
+        self.quickTutorialTimer = nil
+      }
+    })
   }
 
   override func viewDidLayoutSubviews() {
@@ -338,7 +356,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.updateUIWhenDataDidChange()
   }
 
-  func animateReviewCellActionForTutorial() {
+  fileprivate func animateReviewCellActionForTutorial() {
     guard let firstCell = self.transactionCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) else { return }
     let speedupLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width, y: 0, width: 77, height: 60))
     let cancelLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width + 77, y: 0, width: 77, height: 60))
@@ -365,7 +383,7 @@ class KNHistoryViewController: KNBaseViewController {
     }
   }
 
-  func animateResetReviewCellActionForTutorial() {
+  fileprivate func animateResetReviewCellActionForTutorial() {
     guard let firstCell = self.transactionCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) else { return }
     let speedupLabel = firstCell.viewWithTag(101)
     let cancelLabel = firstCell.viewWithTag(102)
@@ -375,6 +393,19 @@ class KNHistoryViewController: KNBaseViewController {
       speedupLabel?.removeFromSuperview()
       cancelLabel?.removeFromSuperview()
     })
+  }
+
+  fileprivate func checkHavePendingTxOver5Min() -> Bool {
+    var flag = false
+    self.viewModel.pendingTxData.keys.forEach { (key) in
+      self.viewModel.pendingTxData[key]?.forEach({ (tx) in
+        if abs(tx.date.timeIntervalSinceNow) >= 300 {
+          flag = true
+        }
+      })
+    }
+
+    return flag
   }
 
   fileprivate func setupNavigationBar() {
