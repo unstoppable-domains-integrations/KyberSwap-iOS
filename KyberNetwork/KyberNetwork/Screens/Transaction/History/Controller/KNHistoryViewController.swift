@@ -326,6 +326,7 @@ class KNHistoryViewController: KNBaseViewController {
     if !self.viewModel.pendingTxData.isEmpty && self.viewModel.isNeedShowQuickTutorial {
       self.viewModel.updateDoneTutorial()
       self.showQuickTutorial()
+      KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_startup_quick_tutorial", customAttributes: nil)
     }
 
     self.quickTutorialTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (_) in
@@ -333,6 +334,7 @@ class KNHistoryViewController: KNBaseViewController {
         self.showQuickTutorial()
         self.quickTutorialTimer?.invalidate()
         self.quickTutorialTimer = nil
+        KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_show_after_over_5_min_tx", customAttributes: nil)
       }
     })
   }
@@ -354,6 +356,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.animateResetReviewCellActionForTutorial()
     self.viewModel.isShowingQuickTutorial = false
     self.updateUIWhenDataDidChange()
+    KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_got_it_button_tapped", customAttributes: nil)
   }
 
   fileprivate func animateReviewCellActionForTutorial() {
