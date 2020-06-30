@@ -259,6 +259,12 @@ struct KNHistoryViewModel {
   func updateDoneTutorial() {
     UserDefaults.standard.set(true, forKey: Constants.isDoneShowQuickTutorialForHistoryView)
   }
+
+  var timeForLongPendingTx: Double {
+    return KNEnvironment.default == .ropsten ? 30.0 : 300
+  }
+
+  var isShowQuickTutorialForLongPendingTx: Bool = false
 }
 
 class KNHistoryViewController: KNBaseViewController {
@@ -328,15 +334,23 @@ class KNHistoryViewController: KNBaseViewController {
       self.showQuickTutorial()
       KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_startup_quick_tutorial", customAttributes: nil)
     }
+    if !self.viewModel.isShowQuickTutorialForLongPendingTx {
+      self.quickTutorialTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (_) in
+        if self.checkHavePendingTxOver5Min() && self.viewModel.isShowingQuickTutorial == false {
+          self.showQuickTutorial()
+          self.quickTutorialTimer?.invalidate()
+          self.quickTutorialTimer = nil
+          self.viewModel.isShowQuickTutorialForLongPendingTx = true
+          KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_show_after_over_5_min_tx", customAttributes: nil)
+        }
+      })
+    }
+  }
 
-    self.quickTutorialTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (_) in
-      if self.checkHavePendingTxOver5Min() && self.viewModel.isShowingQuickTutorial == false {
-        self.showQuickTutorial()
-        self.quickTutorialTimer?.invalidate()
-        self.quickTutorialTimer = nil
-        KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_show_after_over_5_min_tx", customAttributes: nil)
-      }
-    })
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.quickTutorialTimer?.invalidate()
+    self.quickTutorialTimer = nil
   }
 
   override func viewDidLayoutSubviews() {
@@ -402,7 +416,7 @@ class KNHistoryViewController: KNBaseViewController {
     var flag = false
     self.viewModel.pendingTxData.keys.forEach { (key) in
       self.viewModel.pendingTxData[key]?.forEach({ (tx) in
-        if abs(tx.date.timeIntervalSinceNow) >= 300 {
+        if abs(tx.date.timeIntervalSinceNow) >= self.viewModel.timeForLongPendingTx {
           flag = true
         }
       })
