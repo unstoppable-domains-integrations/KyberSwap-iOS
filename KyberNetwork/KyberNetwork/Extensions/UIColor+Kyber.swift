@@ -78,7 +78,7 @@ extension UIColor {
     static var marketGreen = UIColor(red: 49, green: 203, blue: 158)
     static var marketRed = UIColor(red: 250, green: 101, blue: 102)
     static var marketBlue = UIColor(red: 0, green: 162, blue: 247)
-    
+
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
 
     static var buttonColors: [UIColor] = [

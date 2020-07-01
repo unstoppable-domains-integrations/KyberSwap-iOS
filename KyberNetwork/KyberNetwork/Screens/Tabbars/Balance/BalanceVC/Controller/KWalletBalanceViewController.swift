@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 
+//swiftlint:disable file_length
 enum KWalletBalanceViewEvent {
   case openQRCode
   case selectToken(token: TokenObject)
@@ -478,7 +479,7 @@ class KWalletBalanceViewController: KNBaseViewController {
     UIView.animate(withDuration: 0.3, animations: {
       firstCell.frame = CGRect(x: 0, y: firstCell.frame.origin.y, width: firstCell.frame.size.width, height: firstCell.frame.size.height)
       secondCell.frame = CGRect(x: secondCell.frame.origin.x + 64 * 3, y: secondCell.frame.origin.y, width: secondCell.frame.size.width, height: secondCell.frame.size.height)
-    }) { (_) in
+    }) { _ in
       alertImageView?.removeFromSuperview()
       buyLabel?.removeFromSuperview()
       sellLabel?.removeFromSuperview()

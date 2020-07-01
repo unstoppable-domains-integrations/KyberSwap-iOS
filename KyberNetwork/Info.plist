@@ -45,7 +45,7 @@
 			<string>gg_staging</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.562303760817-qj8f2gb17ull9imknsngb7utld7cr143</string>
+				<string>com.googleusercontent.apps.562303760817-ff1hk9nv8k0o72o5i90goj704qpghoja</string>
 			</array>
 		</dict>
 		<dict>
@@ -75,7 +75,7 @@
 			<string>gg_dev</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.66732966024-rkqv3m2emqtvm290u9is1v5s2hu1q7rr</string>
+				<string>com.googleusercontent.apps.66732966024-rnvthaai3g8qsn159onodsu71cclnr4d</string>
 			</array>
 		</dict>
 		<dict>
@@ -115,9 +115,10 @@
 			<string>gg_prod</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1038789996561-bvdeumt3g6geuffg99fu6v7dhe746aji</string>
+				<string>com.googleusercontent.apps.1038789996561-ob4m8po94s6nh3r9qrcrpbkfclf8rant</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -135,8 +136,12 @@
 			</dict>
 		</array>
 	</dict>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
 	<key>FacebookAppID</key>
 	<string>407390806708717</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
 	<key>FacebookDisplayName</key>
 	<string>DevelopmentKyberSwap</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -259,9 +264,5 @@
 	<true/>
 	<key>com.apple.security.get-task-allow</key>
 	<true/>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<false/>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<false/>
 </dict>
 </plist>

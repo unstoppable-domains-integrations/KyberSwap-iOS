@@ -3,6 +3,7 @@
 import UIKit
 import SwipeCellKit
 
+//swiftlint:disable file_length
 enum KNHistoryViewEvent {
   case selectTransaction(transaction: Transaction)
   case dismiss

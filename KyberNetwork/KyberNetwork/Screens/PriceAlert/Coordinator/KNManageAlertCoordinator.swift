@@ -141,7 +141,7 @@ extension KNManageAlertCoordinator: KNManageAlertsViewControllerDelegate {
     KNPriceAlertCoordinator.shared.removeAllTriggeredAlerts(accessToken: accessToken) { [weak self] (_, error) in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
-      if let error = error {
+      if let _ = error {
         KNCrashlyticsUtil.logCustomEvent(
           withName: "alert_delete_triggered_alerts_failure",
           customAttributes: nil
