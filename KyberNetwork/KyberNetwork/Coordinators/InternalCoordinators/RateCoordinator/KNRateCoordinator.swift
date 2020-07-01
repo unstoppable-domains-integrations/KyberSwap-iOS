@@ -17,6 +17,7 @@ class KNRateCoordinator {
   static let shared = KNRateCoordinator()
 
   fileprivate let provider = MoyaProvider<KNTrackerService>()
+  fileprivate let userInfoProvider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
 
   fileprivate var cacheTokenETHRates: [String: KNRate] = [:] // Rate token to ETH
   fileprivate var cachedProdTokenRates: [String: KNRate] = [:] // Prod cached rate to compare when swapping
@@ -28,6 +29,7 @@ class KNRateCoordinator {
 
   fileprivate var exchangeTokenRatesTimer: Timer?
   fileprivate var isLoadingExchangeTokenRates: Bool = false
+  fileprivate var platformFeeTimer: Timer?
 
   fileprivate var lastRefreshTime: Date = Date()
 
@@ -105,12 +107,22 @@ class KNRateCoordinator {
     // Immediate fetch data from server, then run timers with interview 60 seconds
     self.fetchExchangeTokenRate(nil)
     self.exchangeTokenRatesTimer?.invalidate()
+    self.platformFeeTimer?.invalidate()
 
     self.exchangeTokenRatesTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] timer in
       self?.fetchExchangeTokenRate(timer)
+      }
+    )
+
+    self.fetchPlatformFee(nil)
+    self.platformFeeTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds60,
+      repeats: true,
+      block: { [weak self] (timer) in
+        self?.fetchPlatformFee(timer)
       }
     )
   }
@@ -120,6 +132,8 @@ class KNRateCoordinator {
     self.cacheRateTimer = nil
     self.exchangeTokenRatesTimer?.invalidate()
     self.exchangeTokenRatesTimer = nil
+    self.platformFeeTimer?.invalidate()
+    self.platformFeeTimer = nil
     self.isLoadingExchangeTokenRates = false
   }
 
@@ -221,6 +235,27 @@ class KNRateCoordinator {
     }
   }
 
+  @objc func fetchPlatformFee(_ sender: Any?) {
+    self.userInfoProvider.request(.getPlatformFee) { [weak self] (response) in
+      guard let _ = self else { return }
+      switch response {
+      case .success(let resp):
+        do {
+          let _ = try resp.filterSuccessfulStatusCodes()
+          let json = try resp.mapJSON() as? JSONDictionary ?? [:]
+          if let isSuccess = json["success"] as? Bool,
+            isSuccess == true,
+            let fee = json["fee"] as? NSNumber {
+            UserDefaults.standard.set(fee.intValue, forKey: KNAppTracker.kPlatformFeeKey)
+          }
+        } catch {
+        }
+      case .failure:
+        break
+      }
+    }
+  }
+
   func getMarketWith(name: String) -> KNMarket? {
     guard !self.cachedMarket.isEmpty else {
       return KNMarket(dict: ["pair": name])
@@ -265,7 +300,7 @@ class KNRateCoordinator {
               let json = try resp.mapJSON() as? JSONDictionary ?? [:]
               if let err = json["error"] as? Bool, !err, let value = json["data"] as? String, let amount = value.fullBigInt(decimals: from.decimals) {
                 // add platform fee
-                completion(.success(amount * BigInt(10000 + KNAppTracker.kPlatformFeeBps) / BigInt(10000)))
+                completion(.success(amount * BigInt(10000 + KNAppTracker.getPlatformFee(source: from.address, dest: to.address)) / BigInt(10000)))
               } else {
                 completion(.success(nil))
               }

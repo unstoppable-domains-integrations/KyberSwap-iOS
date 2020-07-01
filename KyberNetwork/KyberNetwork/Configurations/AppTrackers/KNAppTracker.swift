@@ -14,6 +14,7 @@ class KNAppTracker {
 
   static let kPlatformFeeBps = 8 // 8 bps, 0.08%
   // Env
+  static let kPlatformFeeKey: String = "kPlatformFeeKey"
   static let kInternalTrackerEndpointKey: String = "kInternalTrackerEndpointKey"
   static let kExternalEnvironmentKey: String = "kExternalEnvironmentKey"
 
@@ -407,4 +408,22 @@ class KNAppTracker {
   }
 
   static func isNightMode() -> Bool { return true }
+
+  static func getPlatformFee(source: Address, dest: Address) -> Int {
+    let eth = KNSupportedTokenStorage.shared.ethToken
+    if let weth = KNSupportedTokenStorage.shared.wethToken {
+      let ethAddress = eth.address
+      let wethAddress = weth.address
+      if (source == ethAddress && dest == wethAddress) ||
+        (dest == ethAddress && source == wethAddress) {
+        return 0
+      }
+    }
+
+    if let fee = userDefaults.object(forKey: kPlatformFeeKey) as? Int {
+      return fee
+    } else {
+      return kPlatformFeeBps
+    }
+  }
 }
