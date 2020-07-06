@@ -195,8 +195,4 @@ enum KNEnvironment: Int {
     default: return "https://dev-api.knstats.com/"
     }
   }
-
-  var isKatalyst: Bool {
-    return self == .ropsten || self == .staging
-  }
 }
