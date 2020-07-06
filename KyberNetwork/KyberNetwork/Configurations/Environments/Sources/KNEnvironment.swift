@@ -196,8 +196,4 @@ enum KNEnvironment: Int {
     default: return KNSecret.defaultDevApiURL
     }
   }
-
-  var isKatalyst: Bool {
-    return self == .ropsten || self == .staging
-  }
 }

@@ -19,12 +19,8 @@ struct KNGetExpectedRateEncode: Web3Request {
   var type: Web3RequestType {
     let platformBps: BigInt = BigInt(KNAppTracker.getPlatformFee(source: self.source, dest: self.dest))
     let hint = "".hexEncoded
-    let official = KNEnvironment.default.isKatalyst ? amount : amount | BigInt(2).power(255) // using official Kyber's reserve
     let run: String = {
-      if KNEnvironment.default.isKatalyst {
-        return "web3.eth.abi.encodeFunctionCall(\(KNGetExpectedRateEncode.newABI), [\"\(source.description)\", \"\(dest.description)\", \"\(official.hexEncoded)\", \"\(platformBps.hexEncoded)\", \"\(hint)\"])"
-      }
-      return "web3.eth.abi.encodeFunctionCall(\(KNGetExpectedRateEncode.oldABI), [\"\(source.description)\", \"\(dest.description)\", \"\(official.hexEncoded)\"])"
+      return "web3.eth.abi.encodeFunctionCall(\(KNGetExpectedRateEncode.newABI), [\"\(source.description)\", \"\(dest.description)\", \"\(amount.hexEncoded)\", \"\(platformBps.hexEncoded)\", \"\(hint)\"])"
     }()
     return .script(command: run)
   }

@@ -663,48 +663,14 @@ extension KNGeneralProvider {
   }
 
   fileprivate func getExpectedRateDecodeData(rateData: String, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
-    if KNEnvironment.default.isKatalyst {
-      let decodeRequest = KNGetExpectedRateWithFeeDecode(data: rateData)
-      self.web3Swift.request(request: decodeRequest, completion: { (result) in
-        switch result {
-        case .success(let expectedRateData):
-          let expectedRate: BigInt = BigInt(expectedRateData) ?? BigInt(0)
-          let slippageRate: BigInt = expectedRate * BigInt(97) / BigInt(100)
-          completion(.success((expectedRate, slippageRate)))
-        case .failure(let error):
-          completion(.failure(AnyError(error)))
-        }
-      })
-      return
-    }
-    //TODO (Mike): Currently decoding is always return invalid return type even though the response type is correct
-    let decodeRequest = KNGetExpectedRateDecode(data: rateData)
+    let decodeRequest = KNGetExpectedRateWithFeeDecode(data: rateData)
     self.web3Swift.request(request: decodeRequest, completion: { (result) in
       switch result {
-      case .success(let decodeData):
-        let expectedRate: BigInt = {
-          let string = decodeData["expectedRate"] ?? ""
-          return BigInt(string) ?? BigInt(0)
-        }()
-        let slippageRate: BigInt = {
-          if KNEnvironment.default.isKatalyst {
-            return expectedRate * BigInt(97) / BigInt(100)
-          }
-          let string = decodeData["slippageRate"] ?? ""
-          return BigInt(string) ?? BigInt(0)
-        }()
+      case .success(let expectedRateData):
+        let expectedRate: BigInt = BigInt(expectedRateData) ?? BigInt(0)
+        let slippageRate: BigInt = expectedRate * BigInt(97) / BigInt(100)
         completion(.success((expectedRate, slippageRate)))
       case .failure(let error):
-        if let err = error.error as? JSErrorDomain {
-          // Temporary fix for expected rate request
-          if case .invalidReturnType(let object) = err, let json = object as? JSONDictionary {
-            if let expectedRateStr = json["expectedRate"] as? String, let expectedRate = BigInt(expectedRateStr) {
-              let slippageRate = expectedRate * BigInt(97) / BigInt(100)
-              completion(.success((expectedRate, slippageRate)))
-              return
-            }
-          }
-        }
         completion(.failure(AnyError(error)))
       }
     })
