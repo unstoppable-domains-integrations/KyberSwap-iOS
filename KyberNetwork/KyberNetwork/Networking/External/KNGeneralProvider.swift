@@ -663,7 +663,7 @@ extension KNGeneralProvider {
   }
 
   fileprivate func getExpectedRateDecodeData(rateData: String, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
-    if KNEnvironment.default == .ropsten {
+    if KNEnvironment.default.isKatalyst {
       let decodeRequest = KNGetExpectedRateWithFeeDecode(data: rateData)
       self.web3Swift.request(request: decodeRequest, completion: { (result) in
         switch result {
@@ -687,7 +687,7 @@ extension KNGeneralProvider {
           return BigInt(string) ?? BigInt(0)
         }()
         let slippageRate: BigInt = {
-          if KNEnvironment.default == .ropsten {
+          if KNEnvironment.default.isKatalyst {
             return expectedRate * BigInt(97) / BigInt(100)
           }
           let string = decodeData["slippageRate"] ?? ""

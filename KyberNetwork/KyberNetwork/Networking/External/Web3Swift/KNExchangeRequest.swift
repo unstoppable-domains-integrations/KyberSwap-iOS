@@ -28,7 +28,7 @@ struct KNExchangeRequestEncode: Web3Request {
       return address.description
     }()
     let run: String = {
-      if KNEnvironment.default == .ropsten {
+      if KNEnvironment.default.isKatalyst {
         let hint = "".hexEncoded
         let platformFeeBps: BigInt = BigInt(KNAppTracker.getPlatformFee(source: self.exchange.from.address, dest: self.exchange.to.address))
         return "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.newABI), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(destAddress)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"\(platformWallet)\", \"\(platformFeeBps.description)\", \"\(hint)\"])"
@@ -47,7 +47,7 @@ struct KNExchangeEventDataDecode: Web3Request {
 
   var type: Web3RequestType {
     let run: String = {
-      if KNEnvironment.default == .ropsten {
+      if KNEnvironment.default.isKatalyst {
         return "we3.eth.abi.decodeParameters([{\"indexed\":true,\"internalType\":\"address\",\"name\":\"trader\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"contract IERC20\",\"name\":\"src\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"contract IERC20\",\"name\":\"dest\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"destAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"actualSrcAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"actualDestAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"platformWallet\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"platformFeeBps\",\"type\":\"uint256\"}], \"\(data)\")"
       }
       return "web3.eth.abi.decodeParameters([{\"name\": \"src\", \"type\": \"address\"}, {\"name\": \"dest\", \"type\": \"address\"}, {\"name\": \"srcAmount\", \"type\": \"uint256\"}, {\"name\": \"destAmount\", \"type\": \"uint256\"}], \"\(data)\")"
