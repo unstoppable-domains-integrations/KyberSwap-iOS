@@ -12,12 +12,14 @@ extension TransactionsStorage {
   }
 
   func add(transactions: [KNTokenTransaction]) {
+    if realm.objects(KNTokenTransaction.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(transactions, update: .modified)
     try! self.realm.commitWrite()
   }
 
   func delete(transactions: [KNTokenTransaction]) {
+    if realm.objects(KNTokenTransaction.self).isInvalidated { return }
     realm.beginWrite()
     realm.delete(transactions)
     try! realm.commitWrite()

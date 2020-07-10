@@ -28,6 +28,7 @@ class KNTrackerRateStorage {
 
   func add(rates: [KNTrackerRate]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNTrackerRate.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(rates, update: .modified)
     try!self.realm.commitWrite()
@@ -57,6 +58,7 @@ class KNTrackerRateStorage {
 
   func delete(rates: [KNTrackerRate]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNTrackerRate.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(rates)
     try! self.realm.commitWrite()

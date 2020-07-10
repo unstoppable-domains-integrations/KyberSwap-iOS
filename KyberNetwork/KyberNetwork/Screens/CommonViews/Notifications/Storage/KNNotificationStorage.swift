@@ -20,6 +20,7 @@ class KNNotificationStorage {
 
   func updateNotification(_ noti: KNNotification) {
     if self.realm == nil { return }
+    if self.realm.objects(KNNotification.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add([noti], update: .modified)
     try! self.realm.commitWrite()
@@ -28,6 +29,7 @@ class KNNotificationStorage {
 
   func updateNotificationsFromServer(_ notifications: [KNNotification]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNNotification.self).isInvalidated { return }
     self.realm.beginWrite()
     // filter removed alerts
     let notiIDs = notifications.map({ return $0.id })
@@ -40,11 +42,13 @@ class KNNotificationStorage {
 
   func getObject(primaryKey: Int) -> KNNotification? {
     if self.realm == nil { return nil }
+    if self.realm.objects(KNNotification.self).isInvalidated { return nil }
     return self.realm.object(ofType: KNNotification.self, forPrimaryKey: primaryKey)
   }
 
   func deleteAll() {
     if self.realm == nil { return }
+    if self.realm.objects(KNNotification.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(self.notifications)
     try! self.realm.commitWrite()

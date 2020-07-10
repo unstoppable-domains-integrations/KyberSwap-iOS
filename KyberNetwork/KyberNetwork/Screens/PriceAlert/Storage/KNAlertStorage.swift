@@ -26,6 +26,7 @@ class KNAlertStorage {
 
   func addNewAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
@@ -38,6 +39,7 @@ class KNAlertStorage {
 
   func updateAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(alerts, update: .modified)
     try! self.realm.commitWrite()
@@ -46,6 +48,7 @@ class KNAlertStorage {
 
   func updateAlertsFromServer(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     // filter removed alerts
     let alertIDs = alerts.map({ return $0.id })
@@ -62,12 +65,14 @@ class KNAlertStorage {
 
   func deleteAlert(with ID: Int) {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     guard let alert = self.getObject(primaryKey: ID) else { return }
     self.deleteAlert(alert)
   }
 
   func deleteAlerts(_ alerts: [KNAlertObject]) {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(alerts)
     try! self.realm.commitWrite()
@@ -76,11 +81,13 @@ class KNAlertStorage {
 
   func getObject(primaryKey: Int) -> KNAlertObject? {
     if self.realm == nil { return nil }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return nil }
     return self.realm.object(ofType: KNAlertObject.self, forPrimaryKey: primaryKey)
   }
 
   func deleteAll() {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(self.alerts)
     try! self.realm.commitWrite()
@@ -89,6 +96,7 @@ class KNAlertStorage {
 
   func deleteAllTriggerd() {
     if self.realm == nil { return }
+    if self.realm.objects(KNAlertObject.self).isInvalidated { return }
     self.realm.beginWrite()
     let alerts = self.alerts.filter({ return $0.state != .active })
     self.realm.delete(alerts)

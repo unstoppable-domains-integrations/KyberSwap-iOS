@@ -61,7 +61,7 @@ class KNSelectMarketViewModel {
     let allQuotes = KNSupportedTokenStorage.shared.supportedTokens.filter {
       $0.isQuote == true && $0.limitOrderEnabled == true
     }
-    let maxPriority = allQuotes.map { $0.quotePriority ?? 0 }.max()
+    let maxPriority = allQuotes.map { $0.quotePriority }.max()
     let grouped = allQuotes.filter { return $0.quotePriority == maxPriority }
     let unGrouped = allQuotes.filter { return $0.quotePriority != maxPriority && !$0.isETH }
 

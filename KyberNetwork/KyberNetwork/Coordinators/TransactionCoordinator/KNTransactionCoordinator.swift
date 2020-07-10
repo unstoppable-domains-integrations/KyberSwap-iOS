@@ -561,12 +561,14 @@ extension TransactionsStorage {
   }
 
   func addHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    if self.realm.objects(KNHistoryTransaction.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(transactions, update: .modified)
     try! realm.commitWrite()
   }
 
   func deleteHistoryTransactions(_ transactions: [KNHistoryTransaction]) {
+    if self.realm.objects(KNHistoryTransaction.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(transactions)
     try! self.realm.commitWrite()

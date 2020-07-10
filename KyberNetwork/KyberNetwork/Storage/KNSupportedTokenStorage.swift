@@ -52,6 +52,7 @@ class KNSupportedTokenStorage {
    Update supported token list if needed
    */
   func updateSupportedTokens(tokenObjects: [TokenObject]) {
+    if self.realm.objects(TokenObject.self).isInvalidated { return }
     let savedTokens = self.supportedTokens
     let needUpdate: Bool = {
       if savedTokens.count != tokenObjects.count { return true }
@@ -74,12 +75,14 @@ class KNSupportedTokenStorage {
   }
 
   func add(tokens: [TokenObject]) {
+    if self.realm.objects(TokenObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(tokens, update: .modified)
     try! self.realm.commitWrite()
   }
 
   func delete(tokens: [TokenObject]) {
+    if self.realm.objects(TokenObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(tokens)
     try! realm.commitWrite()

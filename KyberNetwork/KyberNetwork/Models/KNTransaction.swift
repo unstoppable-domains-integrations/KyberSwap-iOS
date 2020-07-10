@@ -300,27 +300,33 @@ extension TransactionsStorage {
   }
 
   var kyberPendingTransactions: [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     return self.kyberTransactions.filter { return $0.state == .pending }
   }
 
   var kyberMinedTransactions: [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     return self.kyberTransactions.filter { return $0.state != .pending || $0.state != .unknown }
   }
 
   var kyberCancelProcessingTransactions: [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     return self.kyberTransactions.filter { return $0.state == .cancelling }
   }
 
   var kyberSpeedUpProcessingTransactions: [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     return self.kyberTransactions.filter { return $0.state == .speedingUp }
   }
 
   func getKyberTransaction(forPrimaryKey: String) -> KNTransaction? {
+    if realm.objects(KNTransaction.self).isInvalidated { return nil }
     return realm.object(ofType: KNTransaction.self, forPrimaryKey: forPrimaryKey)
   }
 
   @discardableResult
   func addKyberTransactions(_ items: [KNTransaction]) -> [KNTransaction] {
+    if realm.objects(KNTransaction.self).isInvalidated { return [] }
     realm.beginWrite()
     realm.add(items, update: .modified)
     try! realm.commitWrite()
@@ -328,6 +334,7 @@ extension TransactionsStorage {
   }
 
   func delete(_ items: [KNTransaction]) {
+    if realm.objects(KNTransaction.self).isInvalidated { return }
     try! realm.write {
       realm.delete(items)
     }
@@ -335,6 +342,7 @@ extension TransactionsStorage {
 
   @discardableResult
   func update(state: TransactionState, for transaction: KNTransaction) -> KNTransaction {
+    if realm.objects(KNTransaction.self).isInvalidated { return transaction }
     realm.beginWrite()
     transaction.internalState = state.rawValue
     try! realm.commitWrite()
