@@ -29,6 +29,7 @@ class KNWalletStorage {
 
   func add(wallets: [KNWalletObject]) {
     if self.realm == nil { return }
+    if realm.objects(KNWalletObject.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(wallets, update: .modified)
     try! self.realm.commitWrite()
@@ -40,6 +41,7 @@ class KNWalletStorage {
 
   func delete(wallets: [KNWalletObject]) {
     if self.realm == nil { return }
+    if realm.objects(KNWalletObject.self).isInvalidated { return }
     self.realm.beginWrite()
     // remove promo info for wallet if have
     wallets.forEach({

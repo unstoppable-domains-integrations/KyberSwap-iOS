@@ -23,11 +23,13 @@ class KNContactStorage {
 
   func get(forPrimaryKey key: String) -> KNContact? {
     if self.realm == nil { return nil }
+    if realm.objects(KNContact.self).isInvalidated { return nil }
     return self.realm.object(ofType: KNContact.self, forPrimaryKey: key)
   }
 
   fileprivate func add(contacts: [KNContact]) {
     if self.realm == nil { return }
+    if realm.objects(KNContact.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(contacts, update: .modified)
     try! self.realm.commitWrite()
@@ -40,6 +42,7 @@ class KNContactStorage {
 
   func updateLastUsed(contact: KNContact) {
     if self.realm == nil { return }
+    if realm.objects(KNContact.self).isInvalidated { return }
     self.realm.beginWrite()
     contact.lastUsed = Date()
     try! self.realm.commitWrite()
@@ -48,6 +51,7 @@ class KNContactStorage {
 
   func delete(contacts: [KNContact]) {
     if self.realm == nil { return }
+    if realm.objects(KNContact.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(contacts)
     try! self.realm.commitWrite()

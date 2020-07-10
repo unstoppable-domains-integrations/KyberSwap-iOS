@@ -24,6 +24,7 @@ class IEOUserStorage {
 
   func add(objects: [IEOUser]) {
     if self.realm == nil { return }
+    if self.realm.objects(IEOUser.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.add(objects, update: .modified)
     try! self.realm.commitWrite()
@@ -36,6 +37,7 @@ class IEOUserStorage {
   @discardableResult
   func updateToken(object: IEOUser, type: String, accessToken: String, refreshToken: String, expireTime: Double) -> IEOUser {
     if self.realm == nil { return object }
+    if self.realm.objects(IEOUser.self).isInvalidated { return object }
     self.realm.beginWrite()
     object.updateToken(
       type: type,
@@ -49,11 +51,13 @@ class IEOUserStorage {
 
   func getObject(primaryKey: Int) -> IEOUser? {
     if self.realm == nil { return nil }
+    if self.realm.objects(IEOUser.self).isInvalidated { return nil }
     return self.realm.object(ofType: IEOUser.self, forPrimaryKey: primaryKey)
   }
 
   func delete(objects: [IEOUser]) {
     if self.realm == nil { return }
+    if self.realm.objects(IEOUser.self).isInvalidated { return }
     self.realm.beginWrite()
     self.realm.delete(objects)
     try! self.realm.commitWrite()
@@ -68,6 +72,7 @@ class IEOUserStorage {
   func signedIn() {
     if self.realm == nil { return }
     guard let user = self.objects.first else { return }
+    if self.realm.objects(IEOUser.self).isInvalidated { return }
     self.realm.beginWrite()
     user.isSignedIn = true
     self.realm.add(user, update: .modified)
