@@ -16,6 +16,7 @@ enum KNCreateLimitOrderViewEvent {
   case getPendingBalances(address: String)
   case changeMarket
   case close
+  case referencePrice(from: TokenObject, to: TokenObject)
 }
 
 protocol KNCreateLimitOrderViewControllerDelegate: class {
@@ -127,6 +128,7 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
       self.isViewSetup = true
       self.setupUI()
     }
+    self.updateReferencePrice()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -356,6 +358,8 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
     self.updateRelatedOrdersFromServer()
 
     self.updateEstimateRateFromNetwork(showWarning: true)
+    
+    self.updateReferencePrice()
   }
 
   @IBAction func firstPercentageButtonPressed(_ sender: Any) {
@@ -554,6 +558,11 @@ class KNCreateLimitOrderViewController: KNBaseViewController {
 
 // MARK: Update UIs
 extension KNCreateLimitOrderViewController {
+  fileprivate func updateReferencePrice() {
+    KNRateCoordinator.shared.currentSymPair = (self.viewModel.from.symbol, self.viewModel.to.symbol)
+    let event = KNCreateLimitOrderViewEvent.referencePrice(from: self.viewModel.from, to: self.viewModel.to)
+    self.delegate?.kCreateLimitOrderViewController(self, run: event)
+  }
   // Update related order view, hide or show related orders
   fileprivate func updateRelatedOrdersView() {
     if !self.cancelRelatedOrdersView.isHidden {
