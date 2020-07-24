@@ -67,6 +67,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   func start() {
     self.addMissingWalletObjects()
     KNSupportedTokenStorage.shared.addLocalSupportedTokens()
+    guard !self.showBackupWalletIfNeeded() else {
+      return
+    }
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -99,6 +102,37 @@ class KNAppCoordinator: NSObject, Coordinator {
         }
       }
       self.startNewSession(with: wallet)
+    }
+  }
+
+  fileprivate func showBackupWalletIfNeeded() -> Bool {
+    guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
+    guard let _ = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
+      return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased()
+    }) else {
+      return false
+    }
+    if self.keystore.wallets.count > 1 {
+      let alert = KNPrettyAlertController(
+        title: nil,
+        message: "Wallet.must.be.backed.up".toBeLocalised(),
+        secondButtonTitle: "backup".toBeLocalised(),
+        firstButtonTitle: "Later".toBeLocalised(),
+        secondButtonAction: {
+          self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
+          self.addCoordinator(self.landingPageCoordinator)
+          self.landingPageCoordinator.start()
+        },
+        firstButtonAction: nil)
+      self.navigationController.present(alert, animated: true, completion: {
+        self.tabbarController = nil
+      })
+      return false
+    } else {
+      self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
+      self.addCoordinator(self.landingPageCoordinator)
+      self.landingPageCoordinator.start()
+      return true
     }
   }
 }
