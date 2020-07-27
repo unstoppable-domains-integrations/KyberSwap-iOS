@@ -86,12 +86,27 @@ class LimitOrderContainerViewController: KNBaseViewController {
   }
 
   var isNeedShowTutorial: Bool {
-    return UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForLimitOrderView) == nil
+    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    do {
+      let saved = try String(contentsOf: filename)
+      return !saved.contains(Constants.isDoneShowQuickTutorialForLimitOrderView)
+    } catch {
+      return true
+    }
   }
 
   func updateDoneTutorial() {
-    UserDefaults.standard.set(true, forKey: Constants.isDoneShowQuickTutorialForLimitOrderView)
-    UserDefaults.standard.synchronize()
+    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    do {
+      let saved = try? String(contentsOf: filename)
+      var appended = " "
+      if let savedString = saved {
+        appended = savedString + " "
+      }
+      appended += Constants.isDoneShowQuickTutorialForLimitOrderView
+      try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+    } catch {
+    }
   }
 
   override func viewDidLoad() {

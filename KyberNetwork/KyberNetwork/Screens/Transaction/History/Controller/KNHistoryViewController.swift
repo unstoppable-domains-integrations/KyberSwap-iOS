@@ -254,12 +254,35 @@ struct KNHistoryViewModel {
   var isShowingQuickTutorial: Bool = false
 
   var isNeedShowQuickTutorial: Bool {
-    return UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForHistoryView) == nil
+    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    do {
+      let saved = try String(contentsOf: filename)
+      return !saved.contains(Constants.isDoneShowQuickTutorialForHistoryView)
+    } catch {
+      return true
+    }
   }
 
   func updateDoneTutorial() {
-    UserDefaults.standard.set(true, forKey: Constants.isDoneShowQuickTutorialForHistoryView)
-    UserDefaults.standard.synchronize()
+    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    do {
+      let saved = try? String(contentsOf: filename)
+      var appended = " "
+      if let savedString = saved {
+        if savedString.contains(Constants.isDoneShowQuickTutorialForHistoryView) {
+          return
+        }
+        appended = savedString + " "
+      }
+      appended += Constants.isDoneShowQuickTutorialForHistoryView
+      try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+    } catch {
+    }
+  }
+
+  func getDocumentsDirectory() -> URL {
+      let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+      return paths[0]
   }
 
   var timeForLongPendingTx: Double {
