@@ -480,7 +480,7 @@ class KWalletBalanceViewModel: NSObject {
 
   var isNeedShowTutorial: Bool {
     self.migrationUserDefaultShowTutorial()
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try String(contentsOf: filename)
       return !saved.contains(Constants.isDoneShowQuickTutorialForBalanceView)
@@ -490,7 +490,7 @@ class KWalletBalanceViewModel: NSObject {
   }
 
   func updateDoneTutorial() {
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try? String(contentsOf: filename)
       var appended = " "

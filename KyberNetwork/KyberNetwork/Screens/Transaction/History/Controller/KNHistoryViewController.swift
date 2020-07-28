@@ -255,7 +255,7 @@ struct KNHistoryViewModel {
 
   var isNeedShowQuickTutorial: Bool {
     self.migrationUserDefaultShowTutorial()
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try String(contentsOf: filename)
       return !saved.contains(Constants.isDoneShowQuickTutorialForHistoryView)
@@ -265,7 +265,7 @@ struct KNHistoryViewModel {
   }
 
   func updateDoneTutorial() {
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try? String(contentsOf: filename)
       var appended = " "
@@ -286,11 +286,6 @@ struct KNHistoryViewModel {
       self.updateDoneTutorial()
       UserDefaults.standard.removeObject(forKey: Constants.isDoneShowQuickTutorialForHistoryView)
     }
-  }
-
-  func getDocumentsDirectory() -> URL {
-      let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-      return paths[0]
   }
 
   var timeForLongPendingTx: Double {

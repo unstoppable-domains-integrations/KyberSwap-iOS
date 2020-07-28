@@ -513,7 +513,7 @@ class KSwapViewModel {
 
   var isNeedShowTutorial: Bool {
     self.migrationUserDefaultShowTutorial()
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try String(contentsOf: filename)
       return !saved.contains(Constants.isDoneShowQuickTutorialForSwapView)
@@ -523,7 +523,7 @@ class KSwapViewModel {
   }
 
   func updateDoneTutorial() {
-    let filename = self.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
+    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
     do {
       let saved = try? String(contentsOf: filename)
       var appended = " "
@@ -534,11 +534,6 @@ class KSwapViewModel {
       try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
     } catch {
     }
-  }
-
-  func getDocumentsDirectory() -> URL {
-      let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-      return paths[0]
   }
 
   func migrationUserDefaultShowTutorial() {
