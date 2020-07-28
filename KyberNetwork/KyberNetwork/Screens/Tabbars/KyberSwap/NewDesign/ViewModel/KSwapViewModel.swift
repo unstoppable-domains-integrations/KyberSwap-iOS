@@ -510,36 +510,4 @@ class KSwapViewModel {
 
   // MARK: TUTORIAL
   var currentTutorialStep: Int = 1
-
-  var isNeedShowTutorial: Bool {
-    self.migrationUserDefaultShowTutorial()
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try String(contentsOf: filename)
-      return !saved.contains(Constants.isDoneShowQuickTutorialForSwapView)
-    } catch {
-      return true
-    }
-  }
-
-  func updateDoneTutorial() {
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try? String(contentsOf: filename)
-      var appended = " "
-      if let savedString = saved {
-        appended = savedString + " "
-      }
-      appended += Constants.isDoneShowQuickTutorialForSwapView
-      try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
-    } catch {
-    }
-  }
-
-  func migrationUserDefaultShowTutorial() {
-    if UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForSwapView) != nil {
-      self.updateDoneTutorial()
-      UserDefaults.standard.removeObject(forKey: Constants.isDoneShowQuickTutorialForSwapView)
-    }
-  }
 }

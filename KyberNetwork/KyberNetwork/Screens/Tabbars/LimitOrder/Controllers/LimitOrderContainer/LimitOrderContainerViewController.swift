@@ -85,38 +85,6 @@ class LimitOrderContainerViewController: KNBaseViewController {
     NotificationCenter.default.removeObserver(self, name: name, object: nil)
   }
 
-  var isNeedShowTutorial: Bool {
-    self.migrationUserDefaultShowTutorial()
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try String(contentsOf: filename)
-      return !saved.contains(Constants.isDoneShowQuickTutorialForLimitOrderView)
-    } catch {
-      return true
-    }
-  }
-
-  func updateDoneTutorial() {
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try? String(contentsOf: filename)
-      var appended = " "
-      if let savedString = saved {
-        appended = savedString + " "
-      }
-      appended += Constants.isDoneShowQuickTutorialForLimitOrderView
-      try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
-    } catch {
-    }
-  }
-
-  func migrationUserDefaultShowTutorial() {
-    if UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForLimitOrderView) != nil {
-      self.updateDoneTutorial()
-      UserDefaults.standard.removeObject(forKey: Constants.isDoneShowQuickTutorialForLimitOrderView)
-    }
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
@@ -153,7 +121,7 @@ class LimitOrderContainerViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    if self.isNeedShowTutorial {
+    if NSObject.isNeedShowTutorial(for: Constants.isDoneShowQuickTutorialForLimitOrderView) {
       self.currentTutorialStep = 1
       self.showQuickTutorial()
     }
@@ -465,7 +433,7 @@ class LimitOrderContainerViewController: KNBaseViewController {
     if self.currentTutorialStep == 4 {
       let firstPage = self.pages.first
       firstPage?.containerScrollView.setContentOffset(CGPoint.zero, animated: true)
-      self.updateDoneTutorial()
+      NSObject.updateDoneTutorial(for: Constants.isDoneShowQuickTutorialForLimitOrderView)
       KNCrashlyticsUtil.logCustomEvent(withName: "tut_lo_got_it_button_tapped", customAttributes: nil)
       return
     }

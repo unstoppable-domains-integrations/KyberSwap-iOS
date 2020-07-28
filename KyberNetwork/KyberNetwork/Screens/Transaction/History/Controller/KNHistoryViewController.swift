@@ -253,41 +253,6 @@ struct KNHistoryViewModel {
 
   var isShowingQuickTutorial: Bool = false
 
-  var isNeedShowQuickTutorial: Bool {
-    self.migrationUserDefaultShowTutorial()
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try String(contentsOf: filename)
-      return !saved.contains(Constants.isDoneShowQuickTutorialForHistoryView)
-    } catch {
-      return true
-    }
-  }
-
-  func updateDoneTutorial() {
-    let filename = NSObject.getDocumentsDirectory().appendingPathComponent("quick_tutorial.txt")
-    do {
-      let saved = try? String(contentsOf: filename)
-      var appended = " "
-      if let savedString = saved {
-        if savedString.contains(Constants.isDoneShowQuickTutorialForHistoryView) {
-          return
-        }
-        appended = savedString + " "
-      }
-      appended += Constants.isDoneShowQuickTutorialForHistoryView
-      try appended.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
-    } catch {
-    }
-  }
-
-  func migrationUserDefaultShowTutorial() {
-    if UserDefaults.standard.object(forKey: Constants.isDoneShowQuickTutorialForHistoryView) != nil {
-      self.updateDoneTutorial()
-      UserDefaults.standard.removeObject(forKey: Constants.isDoneShowQuickTutorialForHistoryView)
-    }
-  }
-
   var timeForLongPendingTx: Double {
     return KNEnvironment.default == .ropsten ? 30.0 : 300
   }
@@ -357,8 +322,8 @@ class KNHistoryViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if !self.viewModel.pendingTxData.isEmpty && self.viewModel.isNeedShowQuickTutorial {
-      self.viewModel.updateDoneTutorial()
+    if !self.viewModel.pendingTxData.isEmpty && NSObject.isNeedShowTutorial(for: Constants.isDoneShowQuickTutorialForHistoryView) {
+      NSObject.updateDoneTutorial(for: Constants.isDoneShowQuickTutorialForHistoryView, duplicateCheck: true)
       self.showQuickTutorial()
       KNCrashlyticsUtil.logCustomEvent(withName: "tut_history_startup_quick_tutorial", customAttributes: nil)
     }
