@@ -21,7 +21,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
   internal var limitOrderCoordinator: KNLimitOrderTabCoordinatorV2?
-  internal var profileCoordinator: KNProfileHomeCoordinator?
+  internal var exploreCoordinator: KNExploreCoordinator?
 
   internal var tabbarController: KNTabBarController!
   internal var transactionStatusCoordinator: KNTransactionStatusCoordinator!
@@ -73,10 +73,14 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
-
+    self.setPredefineValues()
     if UIDevice.isIphone5 {
       self.navigationController.displaySuccess(title: "", message: "We are not fully supported iphone5 or small screen size. Some UIs might be broken.")
     }
+  }
+
+  fileprivate func setPredefineValues() {
+    UserDefaults.standard.set(false, forKey: Constants.kisShowQuickTutorialForLongPendingTx)
   }
 
   fileprivate func addMissingWalletObjects() {
@@ -151,7 +155,7 @@ extension KNAppCoordinator {
     )
     if !KNAppTracker.hasLoggedUserOutWithNativeSignIn() {
       if IEOUserStorage.shared.user != nil {
-        self.profileCoordinator?.signUserOut()
+        self.exploreCoordinator?.profileCoordinator.signUserOut()
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("session.expired", value: "Session expired", comment: ""),
           message: NSLocalizedString("your.session.has.expired.sign.in.to.continue", value: "Your session has expired, please sign in again to continue", comment: ""),

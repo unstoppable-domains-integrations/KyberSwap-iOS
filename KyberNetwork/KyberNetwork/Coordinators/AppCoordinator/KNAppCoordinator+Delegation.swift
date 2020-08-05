@@ -92,7 +92,7 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.profileCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
   func settingsCoordinatorUserDidSelectExit() {
@@ -195,5 +195,17 @@ extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
   }
   func passcodeCoordinatorDidCreatePasscode() {
     self.authenticationCoordinator.stop {}
+  }
+}
+
+extension KNAppCoordinator: KNExploreCoordinatorDelegate {
+  func exploreCoordinatorOpenManageOrder() {
+    self.tabbarController.selectedIndex = 2
+    self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
+  }
+
+  func exploreCoordinatorOpenSwap(from: String, to: String) {
+    self.tabbarController.selectedIndex = 1
+    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
 }

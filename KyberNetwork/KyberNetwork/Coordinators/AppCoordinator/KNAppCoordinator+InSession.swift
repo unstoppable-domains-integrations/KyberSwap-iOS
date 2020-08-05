@@ -49,13 +49,6 @@ extension KNAppCoordinator {
     self.addCoordinator(self.limitOrderCoordinator!)
     self.limitOrderCoordinator?.start()
 
-    // KyberGO Tab
-    self.profileCoordinator = {
-      return KNProfileHomeCoordinator(session: self.session)
-    }()
-    self.addCoordinator(self.profileCoordinator!)
-    self.profileCoordinator?.start()
-
     // Settings tab
     self.settingsCoordinator = {
       let coordinator = KNSettingsCoordinator(
@@ -64,6 +57,14 @@ extension KNAppCoordinator {
       coordinator.delegate = self
       return coordinator
     }()
+
+    self.exploreCoordinator = {
+      let coordinator = KNExploreCoordinator(session: self.session)
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.exploreCoordinator?.start()
+
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
 
@@ -71,7 +72,7 @@ extension KNAppCoordinator {
       self.balanceTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
       self.limitOrderCoordinator!.navigationController,
-      self.profileCoordinator!.navigationController,
+      self.exploreCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
@@ -96,12 +97,12 @@ extension KNAppCoordinator {
       selectedImage: UIImage(named: "tabbar_limit_order_icon_active")
     )
 
-    self.profileCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("profile", value: "Profile", comment: ""),
-      image: UIImage(named: "tabbar_profile_icon_normal"),
-      selectedImage: UIImage(named: "tabbar_profile_icon_active")
+    self.exploreCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: NSLocalizedString("Explore", value: "Explore", comment: ""),
+      image: UIImage(named: "tabbar_explore_normal_icon"),
+      selectedImage: UIImage(named: "tabbar_explore_active_icon")
     )
-    self.profileCoordinator?.navigationController.tabBarItem.tag = 3
+    self.exploreCoordinator?.navigationController.tabBarItem.tag = 3
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("settings", value: "Settings", comment: ""),
@@ -153,8 +154,8 @@ extension KNAppCoordinator {
     self.balanceTabCoordinator = nil
     self.limitOrderCoordinator?.stop()
     self.limitOrderCoordinator = nil
-    self.profileCoordinator?.stop()
-    self.profileCoordinator = nil
+    self.exploreCoordinator?.stop()
+    self.exploreCoordinator = nil
     self.settingsCoordinator?.stop()
     self.settingsCoordinator = nil
     IEOUserStorage.shared.signedOut()
@@ -181,6 +182,10 @@ extension KNAppCoordinator {
         self.session,
         resetRoot: true
       )
+      self.exploreCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: true
+      )
       self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
@@ -189,7 +194,7 @@ extension KNAppCoordinator {
         self.session,
         resetRoot: true
       )
-      self.profileCoordinator?.updateSession(self.session)
+      self.exploreCoordinator?.updateSession(self.session)
       self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
       self.addObserveNotificationFromSession()
       self.updateLocalData()
@@ -202,6 +207,9 @@ extension KNAppCoordinator {
         transactions: transactions
       )
       self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
+        transactions: transactions
+      )
+      self.exploreCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
         transactions: transactions
       )
       if isLoading { self.navigationController.hideLoading() }
