@@ -36,6 +36,9 @@ extension UIViewController {
   }
 
   func openSafari(with url: URL) {
+    guard UIApplication.shared.canOpenURL(url) else {
+      return
+    }
     let safariVC = SFSafariViewController(url: url)
     self.present(safariVC, animated: true, completion: nil)
   }
