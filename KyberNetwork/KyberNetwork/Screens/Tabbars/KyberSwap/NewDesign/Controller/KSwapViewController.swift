@@ -168,7 +168,7 @@ class KSwapViewController: KNBaseViewController {
     self.estGasLimitTimer?.invalidate()
     self.updateEstimatedGasLimit()
     self.estGasLimitTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds30,
+      withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] _ in
         self?.updateEstimatedGasLimit()
@@ -398,6 +398,7 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
+    self.updateEstimatedGasLimit()
   }
 
   @IBAction func warningRateButtonPressed(_ sender: Any) {
@@ -747,6 +748,10 @@ class KSwapViewController: KNBaseViewController {
     self.showQuickTutorial()
     KNCrashlyticsUtil.logCustomEvent(withName: "tut_swap_next_button_tapped", customAttributes: nil)
   }
+
+  func isNeedToReloadGasLimit() -> Bool {
+    return Date().timeIntervalSince1970 - self.viewModel.lastSuccessLoadGasLimitTimeStamp > KNLoadingInterval.seconds60
+  }
 }
 
 // MARK: Update UIs
@@ -949,32 +954,44 @@ extension KSwapViewController {
   /*
    Update estimate gas limit, check if the from, to, amount are all the same as current value in the model    Update UIs according to new values
    */
-  func coordinatorDidUpdateEstimateGasUsed(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
+  func coordinatorDidUpdateEstimateGasUsed(from: TokenObject, to: TokenObject, amount: BigInt) {
+    let defaultValue = self.viewModel.getDefaultGasLimit(for: from, to: to)
+    let estValue = self.viewModel.getEstValueGasLimit(for: from, to: to, amount: amount)
+    var gasValue = BigInt()
+    if from.isGasFixed || to.isGasFixed {
+      gasValue = max(defaultValue, estValue)
+    } else {
+      gasValue = min(defaultValue, estValue)
+    }
     self.viewModel.updateEstimateGasLimit(
       for: from,
       to: to,
       amount: amount,
-      gasLimit: gasLimit
+      gasLimit: gasValue
     )
+    self.viewModel.lastSuccessLoadGasLimitTimeStamp = Date().timeIntervalSince1970
     if self.isViewSetup {
       self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
     }
   }
 
-  /*
-   Update estimate gas limit from API (currently for DAI), check if the from, to, amount are all the same as current value in the model    Update UIs according to new values
-   */
-  func coordinatorDidUpdateEstimateGasFromAPI(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    self.viewModel.updateEstimateGasLimit(
+  func coordinatorDidUpdateDefaultGasLimit(from: TokenObject, to: TokenObject, gasLimit: BigInt) {
+    self.viewModel.updateDefaultGasLimit(
+      for: from,
+      to: to,
+      gasLimit: gasLimit
+    )
+  }
+
+  func coordinatorDidUpdateEstValueGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
+    self.viewModel.updateEstValueGasLimit(
       for: from,
       to: to,
       amount: amount,
       gasLimit: gasLimit
     )
-    if self.isViewSetup {
-      self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
-    }
   }
+
   /*
    Update selected token
    - token: New selected token
@@ -1018,6 +1035,7 @@ extension KSwapViewController {
     if isSource && !self.viewModel.isFocusingFromAmount {
       self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
     }
+    self.updateEstimatedGasLimit()
     self.view.layoutIfNeeded()
   }
 
@@ -1095,6 +1113,7 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.isSwapAllBalance = false
     self.updateViewAmountDidChange()
     self.updateEstimatedRate(showError: true, showLoading: true)
+    self.updateEstimatedGasLimit()
     return false
   }
 
@@ -1154,6 +1173,7 @@ extension KSwapViewController: UITextFieldDelegate {
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
     }
     self.updateEstimatedRate(showError: true)
+    self.updateEstimatedGasLimit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
     }
@@ -1168,7 +1188,6 @@ extension KSwapViewController: UITextFieldDelegate {
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
     self.updateEstimatedRate(showLoading: true)
-    self.updateEstimatedGasLimit()
     if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.toAmountTextField.textColor = UIColor.Kyber.mirage
