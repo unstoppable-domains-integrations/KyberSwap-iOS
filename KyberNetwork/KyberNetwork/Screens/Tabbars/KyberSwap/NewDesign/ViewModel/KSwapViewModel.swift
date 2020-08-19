@@ -444,9 +444,10 @@ class KSwapViewModel {
     self.isFocusingFromAmount = isSource
   }
 
-  func updateAmount(_ amount: String, isSource: Bool) {
+  func updateAmount(_ amount: String, isSource: Bool, forSwapAllETH: Bool = false) {
     if isSource {
       self.amountFrom = amount
+      guard !forSwapAllETH else { return }
       self.isSwapAllBalance = false
     } else {
       self.amountTo = amount
