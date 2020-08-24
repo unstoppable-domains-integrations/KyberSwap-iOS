@@ -10,14 +10,15 @@ import Moya
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool)
-  case estimateComparedRate(from: TokenObject, to: TokenObject) // compare to show warning
-  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt)
+  case estimateComparedRate(from: TokenObject, to: TokenObject, hint: String) // compare to show warning
+  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case validateRate(data: KNDraftExchangeTransaction)
   case swap(data: KNDraftExchangeTransaction)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case referencePrice(from: TokenObject, to: TokenObject)
+  case swapHint(from: TokenObject, to: TokenObject, amount: String?)
 }
 
 protocol KSwapViewControllerDelegate: class {
@@ -156,6 +157,7 @@ class KSwapViewController: KNBaseViewController {
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate(showError: true, showLoading: true)
     self.updateReferencePrice()
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFrom)
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
@@ -262,6 +264,8 @@ class KSwapViewController: KNBaseViewController {
     self.heightConstraintForAdvacedSettingsView.constant = self.advancedSettingsView.height
     self.advancedSettingsView.delegate = self
     self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
+    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
+    self.viewModel.isUsingReverseRouting = true
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraints()
   }
@@ -399,6 +403,9 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
     self.updateEstimatedGasLimit()
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: nil)
+    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
+    self.viewModel.isUsingReverseRouting = true
   }
 
   @IBAction func warningRateButtonPressed(_ sender: Any) {
@@ -415,7 +422,8 @@ class KSwapViewController: KNBaseViewController {
   @objc func prodCachedRateFailedToLoad(_ sender: Any?) {
     let event = KSwapViewEvent.estimateComparedRate(
       from: self.viewModel.from,
-      to: self.viewModel.to
+      to: self.viewModel.to,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
     )
     self.delegate?.kSwapViewController(self, run: event)
   }
@@ -461,7 +469,8 @@ class KSwapViewController: KNBaseViewController {
       minRate: self.viewModel.minRate,
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.estimateGasLimit,
-      expectedReceivedString: self.viewModel.amountTo
+      expectedReceivedString: self.viewModel.amountTo,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
     )
     if !hasCallValidateRate {
       self.delegate?.kSwapViewController(self, run: .validateRate(data: exchange))
@@ -573,6 +582,11 @@ class KSwapViewController: KNBaseViewController {
     self.delegate?.kSwapViewController(self, run: event)
   }
 
+  fileprivate func updateSwapHint(from: TokenObject, to: TokenObject, amount: String?) {
+    let event = KSwapViewEvent.swapHint(from: from, to: to, amount: amount)
+    self.delegate?.kSwapViewController(self, run: event)
+  }
+
   @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
     self.delegate?.kSwapViewController(self, run: .selectNotifications)
   }
@@ -582,7 +596,8 @@ class KSwapViewController: KNBaseViewController {
       from: self.viewModel.from,
       to: self.viewModel.to,
       amount: self.viewModel.amountToEstimate,
-      gasPrice: self.viewModel.gasPrice
+      gasPrice: self.viewModel.gasPrice,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
     )
     self.delegate?.kSwapViewController(self, run: event)
   }
@@ -1045,6 +1060,9 @@ extension KSwapViewController {
       self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
     }
     self.updateEstimatedGasLimit()
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFrom)
+    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
+    self.viewModel.isUsingReverseRouting = true
     self.view.layoutIfNeeded()
   }
 
@@ -1111,6 +1129,15 @@ extension KSwapViewController {
     self.hamburgerMenu.update(transactions: transactions)
     self.hasPendingTxView.isHidden = transactions.isEmpty
     self.view.layoutIfNeeded()
+  }
+
+  func coordinatorDidUpdateSwapHint(from: String, to: String, hint: String) {
+    if from == self.viewModel.from.address && to == self.viewModel.to.address {
+      self.viewModel.swapHint = (from, to, hint)
+      if self.advancedSettingsView.updateIsAbleToUseReverseRouting(value: self.viewModel.isAbleToUseReverseRouting) && self.advancedSettingsView.isExpanded {
+        self.advancedSettingsView.displayViewButtonPressed(self)
+      }
+    }
   }
 }
 
@@ -1259,7 +1286,8 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
       if self.advancedSettingsView.isExpanded && self.scrollContainerView.contentSize.height > self.scrollContainerView.bounds.size.height {
         let offSetY: CGFloat = {
           if self.viewModel.isSwapSuggestionShown {
-            return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 210.0
+            let reverseRoutingSpace: CGFloat = self.viewModel.isAbleToUseReverseRouting ? 46.0 : 0.0
+            return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 210.0 - reverseRoutingSpace
           }
           return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
         }()
@@ -1300,6 +1328,14 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
       KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_gas_fee_info_tapped", customAttributes: nil)
       self.showBottomBannerView(
         message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 3
+      )
+    case .changeIsUsingReverseRouting(let value):
+      self.viewModel.isUsingReverseRouting = value
+    case .reverseRoutingHelpPress:
+      self.showBottomBannerView(
+        message: "Reduce.gas.costs.by.routing.your.trade.to.predefined.reserves".toBeLocalised(),
         icon: UIImage(named: "help_icon_large") ?? UIImage(),
         time: 3
       )
