@@ -67,19 +67,19 @@ class KNTokenTransaction: Object {
     self.to = internalDict["to"] as? String ?? ""
     self.contractAddress = internalDict["contractAddress"] as? String ?? ""
     self.value = internalDict["value"] as? String ?? ""
-    if contractAddress.isEmpty && self.value != "0" {
+    self.input = internalDict["input"] as? String ?? ""
+    self.gas = internalDict["gas"] as? String ?? ""
+    self.gasPrice = internalDict["gasPrice"] as? String ?? ""
+    self.gasUsed = internalDict["gasUsed"] as? String ?? ""
+    self.cumulativeGasUsed = internalDict["cumulativeGasUsed"] as? String ?? ""
+    self.confirmations = internalDict["confirmations"] as? String ?? ""
+    self.compoundKey = "\(id)\(from)\(to)\(tokenSymbol)"
+    if contractAddress.isEmpty {
       // ETH Transfer
       self.contractAddress = eth.contract
       self.tokenName = eth.name
       self.tokenSymbol = eth.symbol
       self.tokenDecimal = "\(eth.decimals)"
-      self.gas = internalDict["gas"] as? String ?? ""
-      self.gasPrice = internalDict["gasPrice"] as? String ?? ""
-      self.gasUsed = internalDict["gasUsed"] as? String ?? ""
-      self.cumulativeGasUsed = internalDict["cumulativeGasUsed"] as? String ?? ""
-      self.input = internalDict["input"] as? String ?? ""
-      self.confirmations = internalDict["confirmations"] as? String ?? ""
-      self.compoundKey = "\(id)\(from)\(to)\(tokenSymbol)"
     }
   }
 
@@ -139,7 +139,8 @@ extension KNTokenTransaction {
       date: date,
       localizedOperations: [localObject],
       state: .completed,
-      type: type
+      type: type,
+      input: self.input
     )
   }
 }
