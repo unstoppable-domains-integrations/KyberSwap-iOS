@@ -795,3 +795,5 @@
 "The.actual.cost.of.the.transaction.is.generally.lower" = "Chi phí thực tế của giao dịch thông thường sẽ thấp hơn chi phí ước tính tối đa.";
 
 "Contract Interaction" = "Contract Interaction";
+
+"send.only.ERC20.tokens.to.this.address" = "Send only ERC20 tokens to this address.\n* Sending tokens other than ERC20 tokens to this address may result in loss of your funds.";

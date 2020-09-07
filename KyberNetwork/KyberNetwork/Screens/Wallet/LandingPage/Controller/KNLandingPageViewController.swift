@@ -83,7 +83,7 @@ class KNLandingPageViewController: KNBaseViewController {
     }
     self.termAndConditionButton.setAttributedTitle(attributeString, for: .normal)
 
-    self.debugButton.isHidden = false
+    self.debugButton.isHidden = true
   }
 
   override func viewDidAppear(_ animated: Bool) {

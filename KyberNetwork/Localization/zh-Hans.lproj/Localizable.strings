@@ -795,3 +795,5 @@
 "The.actual.cost.of.the.transaction.is.generally.lower" = "交易的实际费用一般低于最高估计费用。";
 
 "Contract Interaction" = "合约交互";
+
+"send.only.ERC20.tokens.to.this.address" = "Send only ERC20 tokens to this address.\n* Sending tokens other than ERC20 tokens to this address may result in loss of your funds.";

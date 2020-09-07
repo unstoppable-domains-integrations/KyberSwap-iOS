@@ -12,7 +12,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   @IBOutlet weak var copyWalletButton: UIButton!
   @IBOutlet weak var shareButton: UIButton!
-  @IBOutlet weak var bottomPaddingConstraintForButton: NSLayoutConstraint!
+  @IBOutlet weak var infoLabel: UILabel!
 
   fileprivate var viewModel: KNWalletQRCodeViewModel
 
@@ -34,7 +34,6 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.bottomPaddingConstraintForButton.constant = 32.0 + self.bottomPaddingSafeArea()
     self.setupWalletData()
     self.setupButtons()
   }
@@ -76,6 +75,22 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       for: .normal
     )
     self.copyWalletButton.applyGradient()
+    let attributedString = NSMutableAttributedString(string: "send.only.ERC20.tokens.to.this.address".toBeLocalised(), attributes: [
+      .font: UIFont.Kyber.regular(with: 14),
+      .foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+      .kern: 0.0,
+    ])
+    let rangeERC20 = attributedString.string.ranges(of: "ERC20")
+    rangeERC20.forEach { (range) in
+      let r = NSRange(range, in: attributedString.string)
+      attributedString.addAttribute(.font, value: UIFont.Kyber.medium(with: 14), range: r)
+    }
+    let rangeAddress = attributedString.string.ranges(of: "address".toBeLocalised().lowercased())
+    rangeAddress.forEach { (range) in
+      let r = NSRange(range, in: attributedString.string)
+      attributedString.addAttribute(.font, value: UIFont.Kyber.medium(with: 14), range: r)
+    }
+    self.infoLabel.attributedText = attributedString
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
