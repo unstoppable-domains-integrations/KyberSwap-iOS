@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
-        </array>
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="KyberNetwork" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="addressLabel" destination="6US-bk-Sk8" id="3IM-nn-s6r"/>
-                <outlet property="bottomPaddingConstraintForButton" destination="bZ6-Zb-aFm" id="DhS-Zs-cr7"/>
                 <outlet property="copyWalletButton" destination="soD-bJ-naO" id="5ZJ-k4-TLi"/>
                 <outlet property="headerContainerView" destination="ayx-K1-otl" id="Kxh-Ft-jfa"/>
+                <outlet property="infoLabel" destination="rTe-ow-Na9" id="4bz-aV-Kn5"/>
                 <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
                 <outlet property="shareButton" destination="JIX-CP-yTw" id="MFa-T3-VWJ"/>
                 <outlet property="titleLabel" destination="hYE-MU-J4V" id="9Ja-R7-3uA"/>
@@ -36,20 +34,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9wd-Gg-Jw3">
-                    <rect key="frame" x="40" y="164" width="295" height="295"/>
+                    <rect key="frame" x="104" y="142" width="167" height="167"/>
                     <color key="backgroundColor" white="0.0" alpha="0.25409881161971831" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="9wd-Gg-Jw3" secondAttribute="height" multiplier="1:1" id="QMN-E6-rvI"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
-                    <rect key="frame" x="24" y="479" width="327" height="17.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
+                    <rect key="frame" x="24" y="329" width="327" height="16.5"/>
                     <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.61960784313725492" green="0.63137254901960782" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
-                    <rect key="frame" x="24" y="585" width="155.5" height="42"/>
+                    <rect key="frame" x="193" y="459" width="156" height="42"/>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="BRe-wW-oV6"/>
@@ -62,28 +60,17 @@
                         <action selector="copyWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="h0W-Mv-Cm6"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
-                    <rect key="frame" x="195.5" y="585" width="155.5" height="42"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
-                    <state key="normal" title="Share">
-                        <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="JmG-TI-t25"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-K1-otl">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYE-MU-J4V">
-                            <rect key="frame" x="64" y="44" width="247" height="22"/>
+                            <rect key="frame" x="64" y="45" width="247" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Sw-3K-xlS">
-                            <rect key="frame" x="16" y="37" width="46" height="36"/>
+                            <rect key="frame" x="16" y="37.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="Aa0-ur-98s"/>
                                 <constraint firstAttribute="width" constant="46" id="LVK-dL-3aq"/>
@@ -108,31 +95,54 @@
                         <constraint firstAttribute="trailing" secondItem="hYE-MU-J4V" secondAttribute="trailing" constant="64" id="xei-Nd-E9t"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTe-ow-Na9">
+                    <rect key="frame" x="32" y="377.5" width="311" height="49.5"/>
+                    <string key="text">Send only ERC20 tokens to this address.
+* Sending tokens other than ERC20 tokens to this address may result in loss of your funds.</string>
+                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
+                    <rect key="frame" x="26" y="459" width="156" height="42"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                    <state key="normal" title="Share">
+                        <color key="titleColor" red="0.078431372549019607" green="0.098039215686274508" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="JmG-TI-t25"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9wd-Gg-Jw3" secondAttribute="trailing" constant="40" id="2NF-n6-IWo"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9wd-Gg-Jw3" secondAttribute="trailing" constant="104" id="2NF-n6-IWo"/>
                 <constraint firstItem="6US-bk-Sk8" firstAttribute="centerX" secondItem="9wd-Gg-Jw3" secondAttribute="centerX" id="4kr-OG-qRU"/>
                 <constraint firstItem="ayx-K1-otl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6eF-M5-M9U"/>
-                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="Eeo-DQ-7Nc"/>
-                <constraint firstItem="JIX-CP-yTw" firstAttribute="leading" secondItem="soD-bJ-naO" secondAttribute="trailing" constant="16" id="H16-tq-ng7"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="rTe-ow-Na9" secondAttribute="trailing" constant="32" id="CM0-ge-IX6"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="104" id="Eeo-DQ-7Nc"/>
+                <constraint firstItem="soD-bJ-naO" firstAttribute="top" secondItem="rTe-ow-Na9" secondAttribute="bottom" constant="32" id="G5u-Jo-Mf8"/>
                 <constraint firstAttribute="trailing" secondItem="ayx-K1-otl" secondAttribute="trailing" id="JfO-Oq-F8g"/>
                 <constraint firstItem="JIX-CP-yTw" firstAttribute="centerY" secondItem="soD-bJ-naO" secondAttribute="centerY" id="M0g-23-9y8"/>
                 <constraint firstItem="ayx-K1-otl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="N8r-ht-opl"/>
+                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="top" secondItem="ayx-K1-otl" secondAttribute="bottom" constant="60" id="OHW-Ak-oXs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="soD-bJ-naO" secondAttribute="trailing" constant="26" id="Otu-jW-Wcl"/>
                 <constraint firstItem="JIX-CP-yTw" firstAttribute="height" secondItem="soD-bJ-naO" secondAttribute="height" id="SRB-eM-8qB"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="soD-bJ-naO" secondAttribute="bottom" constant="40" id="bZ6-Zb-aFm"/>
-                <constraint firstItem="9wd-Gg-Jw3" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" constant="-32" id="ffx-3l-6M2"/>
                 <constraint firstItem="6US-bk-Sk8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="gG8-g7-PB4"/>
-                <constraint firstItem="soD-bJ-naO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="lUU-ga-ji4"/>
                 <constraint firstItem="6US-bk-Sk8" firstAttribute="top" secondItem="9wd-Gg-Jw3" secondAttribute="bottom" constant="20" id="pyT-Hn-dZW"/>
                 <constraint firstItem="JIX-CP-yTw" firstAttribute="width" secondItem="soD-bJ-naO" secondAttribute="width" id="sdp-ir-Zws"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JIX-CP-yTw" secondAttribute="trailing" constant="24" id="z1c-k1-lqL"/>
+                <constraint firstItem="rTe-ow-Na9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="tTP-kQ-EJl"/>
+                <constraint firstItem="JIX-CP-yTw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="26" id="tjj-3f-6lb"/>
+                <constraint firstItem="rTe-ow-Na9" firstAttribute="top" secondItem="6US-bk-Sk8" secondAttribute="bottom" constant="32" id="wOr-r4-zhX"/>
+                <constraint firstItem="soD-bJ-naO" firstAttribute="leading" secondItem="JIX-CP-yTw" secondAttribute="trailing" constant="11" id="xQ3-6h-6dM"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="MLM-j8-skU" appends="YES" id="573-7t-weZ"/>
             </connections>
+            <point key="canvasLocation" x="133.59999999999999" y="152.47376311844079"/>
         </view>
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="MLM-j8-skU">
             <rectEdge key="edges" left="YES"/>
