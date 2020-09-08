@@ -10,6 +10,8 @@ enum KNHistoryViewEvent {
   case cancelTransaction(transaction: Transaction)
   case speedUpTransaction(transaction: Transaction)
   case quickTutorial(pointsAndRadius: [(CGPoint, CGFloat)])
+  case openEtherScanWalletPage
+  case openKyberWalletPage
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -287,6 +289,7 @@ class KNHistoryViewController: KNBaseViewController {
 
   @IBOutlet weak var transactionCollectionView: UICollectionView!
   @IBOutlet weak var transactionCollectionViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var emptyStateInfoLabel: UILabel!
   fileprivate var quickTutorialTimer: Timer?
   var animatingCell: UICollectionViewCell?
 
@@ -364,6 +367,7 @@ class KNHistoryViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_pending_tx", customAttributes: nil)
     self.setupNavigationBar()
     self.setupCollectionView()
+    self.emptyStateInfoLabel.text = "Something is wrong? View your wallet on".toBeLocalised()
   }
 
   override func quickTutorialNextAction() {
@@ -521,6 +525,14 @@ class KNHistoryViewController: KNBaseViewController {
     self.viewModel.updateIsShowingPending(false)
     self.updateUIWhenDataDidChange()
     KNCrashlyticsUtil.logCustomEvent(withName: self.viewModel.isShowingPending ? "txhistory_pending_tx" : "txhistory_mined_tx", customAttributes: nil)
+  }
+
+  @IBAction func emptyStateEtherScanButtonTapped(_ sender: UIButton) {
+    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openEtherScanWalletPage)
+  }
+
+  @IBAction func emptyStateKyberButtonTapped(_ sender: UIButton) {
+    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openKyberWalletPage)
   }
 }
 

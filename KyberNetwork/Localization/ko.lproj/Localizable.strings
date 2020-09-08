@@ -798,3 +798,4 @@
 "Contract Interaction" = "컨트랙트 인터랙션";
 
 "send.only.ERC20.tokens.to.this.address" = "Send only ERC20 tokens or ETH to this address.\n*Sending tokens other than ERC20 tokens or ETH to this address may result in loss of your funds";
+"Something is wrong? View your wallet on" = "Something is wrong? View your wallet on";
