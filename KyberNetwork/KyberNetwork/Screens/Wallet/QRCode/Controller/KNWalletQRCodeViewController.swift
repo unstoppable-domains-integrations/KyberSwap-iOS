@@ -85,6 +85,11 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       let r = NSRange(range, in: attributedString.string)
       attributedString.addAttribute(.font, value: UIFont.Kyber.medium(with: 14), range: r)
     }
+    let rangeETH = attributedString.string.ranges(of: "ETH")
+    rangeETH.forEach { (range) in
+      let r = NSRange(range, in: attributedString.string)
+      attributedString.addAttribute(.font, value: UIFont.Kyber.medium(with: 14), range: r)
+    }
     let rangeAddress = attributedString.string.ranges(of: "address".toBeLocalised().lowercased())
     rangeAddress.forEach { (range) in
       let r = NSRange(range, in: attributedString.string)

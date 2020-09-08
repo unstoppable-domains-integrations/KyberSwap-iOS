@@ -796,4 +796,4 @@
 
 "Contract Interaction" = "合约交互";
 
-"send.only.ERC20.tokens.to.this.address" = "Send only ERC20 tokens to this address.\n* Sending tokens other than ERC20 tokens to this address may result in loss of your funds.";
+"send.only.ERC20.tokens.to.this.address" = "仅将ERC20代币或ETH发送到该地址。\n *如果将ERC20代币或ETH以外的代币发送到该地址可能会导致您的财产损失。";
