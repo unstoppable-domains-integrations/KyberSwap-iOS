@@ -9,7 +9,7 @@ import Moya
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool)
+  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool)
   case estimateComparedRate(from: TokenObject, to: TokenObject, hint: String) // compare to show warning
   case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
@@ -157,12 +157,13 @@ class KSwapViewController: KNBaseViewController {
     self.estRateTimer?.invalidate()
     self.updateEstimatedRate(showError: true, showLoading: true)
     self.updateReferencePrice()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFrom)
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] _ in
-        self?.updateEstimatedRate()
+        guard let `self` = self else { return }
+        self.updateEstimatedRate()
       }
     )
 
@@ -173,7 +174,9 @@ class KSwapViewController: KNBaseViewController {
       withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] _ in
-        self?.updateEstimatedGasLimit()
+        guard let `self` = self else { return }
+        self.updateEstimatedGasLimit()
+        self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
       }
     )
 
@@ -571,6 +574,7 @@ class KSwapViewController: KNBaseViewController {
       from: self.viewModel.from,
       to: self.viewModel.to,
       amount: self.viewModel.amountToEstimate,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address),
       showError: showError
     )
     self.delegate?.kSwapViewController(self, run: event)
@@ -742,7 +746,7 @@ class KSwapViewController: KNBaseViewController {
     guard self.isViewSetup else {
       return
     }
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFrom)
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
   }
 
   func update(notificationsCount: Int) {
@@ -1077,7 +1081,7 @@ extension KSwapViewController {
       self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
     }
     self.updateEstimatedGasLimit()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFrom)
+    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
     self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
     self.viewModel.isUsingReverseRouting = true
     self.view.layoutIfNeeded()
@@ -1231,6 +1235,7 @@ extension KSwapViewController: UITextFieldDelegate {
     if self.viewModel.isFocusingFromAmount {
       self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.toAmountTextField.textColor = UIColor.Kyber.mirage
+      self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
     } else {
       self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
       self.fromAmountTextField.textColor = UIColor.Kyber.mirage
@@ -1363,6 +1368,7 @@ extension KSwapViewController: KAdvancedSettingsViewDelegate {
     case .changeIsUsingReverseRouting(let value):
       self.viewModel.isUsingReverseRouting = value
       self.updateEstimatedGasLimit()
+      self.updateEstimatedRate(showError: true)
     case .reverseRoutingHelpPress:
       self.showBottomBannerView(
         message: "Reduce.gas.costs.by.routing.your.trade.to.predefined.reserves".toBeLocalised(),

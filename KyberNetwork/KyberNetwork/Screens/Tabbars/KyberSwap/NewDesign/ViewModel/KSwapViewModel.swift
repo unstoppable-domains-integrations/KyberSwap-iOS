@@ -360,6 +360,15 @@ class KSwapViewModel {
     return ethBal >= fee
   }
 
+  var amountFromStringParameter: String {
+    var param = self.amountFrom.removeGroupSeparator()
+    let decimals: Character = EtherNumberFormatter.short.decimalSeparator.first!
+    if String(decimals) != "." {
+      param = param.replacingOccurrences(of: String(decimals), with: ".")
+    }
+    return param
+  }
+
   // MARK: Update data
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet

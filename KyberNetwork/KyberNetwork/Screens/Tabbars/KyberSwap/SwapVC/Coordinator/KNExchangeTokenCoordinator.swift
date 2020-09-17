@@ -437,8 +437,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     switch event {
     case .searchToken(let from, let to, let isSource):
       self.openSearchToken(from: from, to: to, isSource: isSource)
-    case .estimateRate(let from, let to, let amount, let showError):
-      self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
+    case .estimateRate(let from, let to, let amount, let hint, let showError):
+      self.updateExpectedRateWithKyberIfNeeded(from: from, to: to, amount: amount, hint: hint, showError: showError)
     case .estimateComparedRate(let from, let to, let hint):
       self.updateComparedEstimateRate(from: from, to: to, hint: hint)
     case .estimateGas(let from, let to, let amount, let gasPrice, let hint):
@@ -677,8 +677,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   // Call contract to get estimate rate with src, dest, srcAmount
-  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", showError: Bool, completion: ((Error?) -> Void)? = nil) {
-    self.getExpectedExchangeRate(from: from, to: to, amount: amount, hint: hint) { [weak self] result in
+  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", showError: Bool, withKyber: Bool = false, completion: ((Error?) -> Void)? = nil) {
+    self.getExpectedExchangeRate(from: from, to: to, amount: amount, hint: hint, withKyber: withKyber) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let data):
@@ -691,7 +691,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         )
         completion?(nil)
       case .failure(let error):
-        if showError {
+        if showError && !withKyber {
           if case let err as APIKit.SessionTaskError = error.error, case .connectionError = err {
             self.navigationController.showErrorTopBannerMessage(
               with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -713,12 +713,15 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
             slippageRate: BigInt(0)
           )
         }
+        if withKyber {
+          self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
+        }
         completion?(error)
       }
     }
   }
 
-  fileprivate func getExpectedExchangeRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", completion: ((Result<(BigInt, BigInt), AnyError>) -> Void)? = nil) {
+  fileprivate func getExpectedExchangeRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: ((Result<(BigInt, BigInt), AnyError>) -> Void)? = nil) {
     if from == to {
       let rate = BigInt(10).power(from.decimals)
       let slippageRate = rate * BigInt(97) / BigInt(100)
@@ -729,7 +732,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       from: from,
       to: to,
       amount: amount,
-      hint: hint
+      hint: hint,
+      withKyber: withKyber
     ) { (result) in
         var estRate: BigInt = BigInt(0)
         var slippageRate: BigInt = BigInt(0)
@@ -743,6 +747,16 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         case .failure(let error):
           completion?(.failure(error))
         }
+    }
+  }
+
+  func updateExpectedRateWithKyberIfNeeded(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool) {
+    if hint.isEmpty || hint == "0x" {
+      self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
+    } else {
+      DispatchQueue.main.async {
+        self.updateEstimatedRate(from: from, to: to, amount: amount, hint: hint, showError: showError, withKyber: true)
+      }
     }
   }
 
