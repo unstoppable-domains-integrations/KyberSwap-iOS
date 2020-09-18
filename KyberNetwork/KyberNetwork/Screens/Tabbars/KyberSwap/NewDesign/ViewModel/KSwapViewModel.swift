@@ -499,8 +499,12 @@ class KSwapViewModel {
   func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) -> Bool {
     let isAmountChanged: Bool = {
       if self.amountFromBigInt == amount { return false }
+
       let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+      if !(self.amountFromBigInt.isZero && doubleValue == 0.001) { return false }
+
+      let gapValue = abs(self.amountFromBigInt - amount)
+      return gapValue <= abs(amount * BigInt(1) / BigInt(100))
     }()
     if from == self.from, to == self.to, !isAmountChanged {
       self.estRate = rate
@@ -517,8 +521,12 @@ class KSwapViewModel {
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     let isAmountChanged: Bool = {
       if self.amountFromBigInt == amount { return false }
+
       let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+      if !(self.amountFromBigInt.isZero && doubleValue == 0.001) { return false }
+
+      let gapValue = abs(self.amountFromBigInt - amount)
+      return gapValue <= abs(amount * BigInt(1) / BigInt(100))
     }()
     if from == self.from, to == self.to, !isAmountChanged {
       self.estimateGasLimit = gasLimit
@@ -541,8 +549,12 @@ class KSwapViewModel {
   func updateEstValueGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     let isAmountChanged: Bool = {
       if self.amountFromBigInt == amount { return false }
+
       let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+      if !(self.amountFromBigInt.isZero && doubleValue == 0.001) { return false }
+
+      let gapValue = abs(self.amountFromBigInt - amount)
+      return gapValue <= abs(amount * BigInt(1) / BigInt(100))
     }()
     if from == self.from, to == self.to, !isAmountChanged {
       self.estValueGasLimit = (from, to, amount, gasLimit)
