@@ -557,7 +557,13 @@
 		C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */; };
 		C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F1F622431ABCD00990706 /* KNMarket.swift */; };
 		C32F1F652431D3F700990706 /* KNCreateLimitOrderV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F1F642431D3F700990706 /* KNCreateLimitOrderV2ViewModel.swift */; };
+		C3345A872524367300F9924C /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3345A862524367300F9924C /* WidgetView.swift */; };
+		C3345A8B252438CA00F9924C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257B84AE2074D7B8003DD40E /* Assets.xcassets */; };
 		C3357DB524768C400028F4A9 /* CustomFCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3357DB424768C400028F4A9 /* CustomFCTheme.plist */; };
+		C33B7A612526DFBD004DE5C1 /* WidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B7A602526DFBD004DE5C1 /* WidgetContent.swift */; };
+		C33B7A622526DFBD004DE5C1 /* WidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B7A602526DFBD004DE5C1 /* WidgetContent.swift */; };
+		C33B7A672526E296004DE5C1 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B7A662526E296004DE5C1 /* FileManager.swift */; };
+		C33B7A682526E296004DE5C1 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B7A662526E296004DE5C1 /* FileManager.swift */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
 		C356C000243C2F85007E419B /* KNSelectMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */; };
@@ -565,6 +571,11 @@
 		C356C009243DAE9F007E419B /* KNMarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */; };
 		C356C00A243DAE9F007E419B /* KNMarketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C356C008243DAE9F007E419B /* KNMarketTableViewCell.xib */; };
 		C356C011243DC6E7007E419B /* KNSelectMarketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356C010243DC6E7007E419B /* KNSelectMarketViewModel.swift */; };
+		C3636EEF2523166800D1B811 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3636EEE2523166800D1B811 /* WidgetKit.framework */; };
+		C3636EF12523166800D1B811 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3636EF02523166800D1B811 /* SwiftUI.framework */; };
+		C3636EF42523166800D1B811 /* KyberWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3636EF32523166800D1B811 /* KyberWidget.swift */; };
+		C3636EF62523166A00D1B811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3636EF52523166A00D1B811 /* Assets.xcassets */; };
+		C3636EFA2523166A00D1B811 /* KyberWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C3636EED2523166800D1B811 /* KyberWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */; };
 		C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC085245803C90081FB32 /* Roboto-Medium.ttf */; };
 		C37CC093245803CA0081FB32 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC086245803C90081FB32 /* Roboto-Light.ttf */; };
@@ -634,6 +645,13 @@
 			remoteGlobalIDString = 2912CCF41F6A830700C6CBE3;
 			remoteInfo = etherwallet;
 		};
+		C3636EF82523166A00D1B811 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2912CCED1F6A830700C6CBE3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3636EEC2523166700D1B811;
+			remoteInfo = KyberWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -645,6 +663,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3636EFB2523166A00D1B811 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C3636EFA2523166A00D1B811 /* KyberWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1218,11 +1247,15 @@
 		C31F152723F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewController.swift; sourceTree = "<group>"; };
 		C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpeedUpCustomGasSelectViewController.xib; sourceTree = "<group>"; };
 		C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewModel.swift; sourceTree = "<group>"; };
+		C31FC8092525DFB7002D2C06 /* KyberWidgetExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KyberWidgetExtensionDebug.entitlements; sourceTree = "<group>"; };
 		C32EA229246934AA00866968 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
 		C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPrettyAlertController.xib; sourceTree = "<group>"; };
 		C32F1F622431ABCD00990706 /* KNMarket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarket.swift; sourceTree = "<group>"; };
 		C32F1F642431D3F700990706 /* KNCreateLimitOrderV2ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCreateLimitOrderV2ViewModel.swift; sourceTree = "<group>"; };
+		C3345A862524367300F9924C /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		C3357DB424768C400028F4A9 /* CustomFCTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CustomFCTheme.plist; sourceTree = "<group>"; };
+		C33B7A602526DFBD004DE5C1 /* WidgetContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetContent.swift; sourceTree = "<group>"; };
+		C33B7A662526E296004DE5C1 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
 		C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectMarketViewController.swift; sourceTree = "<group>"; };
@@ -1230,6 +1263,12 @@
 		C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarketTableViewCell.swift; sourceTree = "<group>"; };
 		C356C008243DAE9F007E419B /* KNMarketTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNMarketTableViewCell.xib; sourceTree = "<group>"; };
 		C356C010243DC6E7007E419B /* KNSelectMarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectMarketViewModel.swift; sourceTree = "<group>"; };
+		C3636EED2523166800D1B811 /* KyberWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KyberWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3636EEE2523166800D1B811 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C3636EF02523166800D1B811 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		C3636EF32523166800D1B811 /* KyberWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KyberWidget.swift; sourceTree = "<group>"; };
+		C3636EF52523166A00D1B811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C3636EF72523166A00D1B811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C364819324726B1200137596 /* KyberSwap-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KyberSwap-Bridging-Header.h"; sourceTree = "<group>"; };
 		C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerWithAccessoryCell.xib; sourceTree = "<group>"; };
 		C37CC085245803C90081FB32 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
@@ -3393,9 +3432,11 @@
 		2912CCEC1F6A830700C6CBE3 = {
 			isa = PBXGroup;
 			children = (
+				C31FC8092525DFB7002D2C06 /* KyberWidgetExtensionDebug.entitlements */,
 				2912CCF71F6A830700C6CBE3 /* KyberNetwork */,
 				2912CD0E1F6A830700C6CBE3 /* KyberNetworkTests */,
 				2912CD191F6A830700C6CBE3 /* KyberNetworkUITests */,
+				C3636EF22523166800D1B811 /* KyberWidget */,
 				2912CCF61F6A830700C6CBE3 /* Products */,
 				9A0F00B2D545197C8F7691C2 /* Pods */,
 				FAD3F374A5C639BD900944DB /* Frameworks */,
@@ -3408,6 +3449,7 @@
 				2912CCF51F6A830700C6CBE3 /* KyberSwap - Crypto Exchange.app */,
 				2912CD0B1F6A830700C6CBE3 /* KyberNetworkTests.xctest */,
 				2912CD161F6A830700C6CBE3 /* KyberNetworkUITests.xctest */,
+				C3636EED2523166800D1B811 /* KyberWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3589,6 +3631,7 @@
 				296105921FA2AA2100292494 /* SignTransaction.swift */,
 				29C80D361FB2CD230037B1E0 /* PendingTransaction.swift */,
 				299B5E2C1FCBC0660051361C /* BalanceProtocol.swift */,
+				C33B7A602526DFBD004DE5C1 /* WidgetContent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3675,6 +3718,7 @@
 				737D1674202BDCB400B42DDE /* UINavigationController.swift */,
 				73ED85A62034BFEF00593BF3 /* UITextFieldAdditions.swift */,
 				25E9E1EE208DE24F00A9090D /* BigInt.swift */,
+				C33B7A662526E296004DE5C1 /* FileManager.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4084,6 +4128,17 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		C3636EF22523166800D1B811 /* KyberWidget */ = {
+			isa = PBXGroup;
+			children = (
+				C3636EF32523166800D1B811 /* KyberWidget.swift */,
+				C3636EF52523166A00D1B811 /* Assets.xcassets */,
+				C3636EF72523166A00D1B811 /* Info.plist */,
+				C3345A862524367300F9924C /* WidgetView.swift */,
+			);
+			path = KyberWidget;
+			sourceTree = "<group>";
+		};
 		C37CC084245803C90081FB32 /* Roboto */ = {
 			isa = PBXGroup;
 			children = (
@@ -4269,6 +4324,8 @@
 				40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */,
 				3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */,
 				DF2D4C0FA288695E7C897F46 /* Pods_KyberNetworkUITests.framework */,
+				C3636EEE2523166800D1B811 /* WidgetKit.framework */,
+				C3636EF02523166800D1B811 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4289,10 +4346,12 @@
 				250CA1EB225B3FC200DF28A4 /* Embed Frameworks */,
 				D9F645674916A4782560555E /* [CP] Copy Pods Resources */,
 				250CA1F0225BA6BB00DF28A4 /* Run Script */,
+				C3636EFB2523166A00D1B811 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C3636EF92523166A00D1B811 /* PBXTargetDependency */,
 			);
 			name = KyberNetwork;
 			productName = etherwallet;
@@ -4337,6 +4396,23 @@
 			productReference = 2912CD161F6A830700C6CBE3 /* KyberNetworkUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C3636EEC2523166700D1B811 /* KyberWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3636EFE2523166A00D1B811 /* Build configuration list for PBXNativeTarget "KyberWidgetExtension" */;
+			buildPhases = (
+				C3636EE92523166700D1B811 /* Sources */,
+				C3636EEA2523166700D1B811 /* Frameworks */,
+				C3636EEB2523166700D1B811 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KyberWidgetExtension;
+			productName = KyberWidgetExtension;
+			productReference = C3636EED2523166800D1B811 /* KyberWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4346,7 +4422,7 @@
 				KnownAssetTags = (
 					Resources,
 				);
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1110;
 				TargetAttributes = {
 					2912CCF41F6A830700C6CBE3 = {
@@ -4381,6 +4457,10 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2912CCF41F6A830700C6CBE3;
 					};
+					C3636EEC2523166700D1B811 = {
+						CreatedOnToolsVersion = 12.0.1;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 2912CCF01F6A830700C6CBE3 /* Build configuration list for PBXProject "KyberNetwork" */;
@@ -4402,6 +4482,7 @@
 				2912CCF41F6A830700C6CBE3 /* KyberNetwork */,
 				2912CD0A1F6A830700C6CBE3 /* KyberNetworkTests */,
 				2912CD151F6A830700C6CBE3 /* KyberNetworkUITests */,
+				C3636EEC2523166700D1B811 /* KyberWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -4632,6 +4713,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				294DFBA61FE11CAE004CEB56 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3636EEB2523166700D1B811 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3345A8B252438CA00F9924C /* Assets.xcassets in Resources */,
+				C3636EF62523166A00D1B811 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4882,6 +4972,7 @@
 				257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */,
 				29E2E33A1F7A008C000CF94A /* UIView.swift in Sources */,
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
+				C33B7A612526DFBD004DE5C1 /* WidgetContent.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
@@ -5041,6 +5132,7 @@
 				C6AA667A23A761A80050C610 /* KNNotification.swift in Sources */,
 				C6AA668B23A77C690050C610 /* KNNotificationTableViewCell.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
+				C33B7A672526E296004DE5C1 /* FileManager.swift in Sources */,
 				25CDE82122290D9200AD0363 /* KNNotificationMethodsViewController.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */,
@@ -5274,6 +5366,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C3636EE92523166700D1B811 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C33B7A622526DFBD004DE5C1 /* WidgetContent.swift in Sources */,
+				C3345A872524367300F9924C /* WidgetView.swift in Sources */,
+				C3636EF42523166800D1B811 /* KyberWidget.swift in Sources */,
+				C33B7A682526E296004DE5C1 /* FileManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -5286,6 +5389,11 @@
 			isa = PBXTargetDependency;
 			target = 2912CCF41F6A830700C6CBE3 /* KyberNetwork */;
 			targetProxy = 2912CD171F6A830700C6CBE3 /* PBXContainerItemProxy */;
+		};
+		C3636EF92523166A00D1B811 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3636EEC2523166700D1B811 /* KyberWidgetExtension */;
+			targetProxy = C3636EF82523166A00D1B811 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5436,6 +5544,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 768B4DEF5A6E5E05CA622544 /* Pods-KyberNetwork.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = KyberNetwork/KyberNetwork.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -5466,6 +5575,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F5ADCE3967686CBB17679929 /* Pods-KyberNetwork.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeRelease.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5566,6 +5676,55 @@
 			};
 			name = Release;
 		};
+		C3636EFC2523166A00D1B811 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_ENTITLEMENTS = KyberWidgetExtensionDebug.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				INFOPLIST_FILE = KyberWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyberswap.ios.bvi.KyberWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C3636EFD2523166A00D1B811 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				INFOPLIST_FILE = KyberWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyberswap.ios.bvi.KyberWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5601,6 +5760,15 @@
 			buildConfigurations = (
 				2912CD261F6A830700C6CBE3 /* Debug */,
 				2912CD271F6A830700C6CBE3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3636EFE2523166A00D1B811 /* Build configuration list for PBXNativeTarget "KyberWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3636EFC2523166A00D1B811 /* Debug */,
+				C3636EFD2523166A00D1B811 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -474,6 +474,11 @@ class KNLoadBalanceCoordinator {
             if isDebug {
               NSLog("---- Balance: Fetch token balance for contract \(addr) successfully: \(values[id].shortString(decimals: 0))")
             }
+            //Save content for widget
+            let kncToken = KNSupportedTokenStorage.shared.kncToken
+            if addr == kncToken.address.description.lowercased() {
+              self.writeContents(usdPrice: 50, change24h: 15)
+            }
           }
           if isBalanceChanged {
             KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
@@ -487,4 +492,20 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
+
+  func writeContents(usdPrice: Double, change24h: Double) {
+      let widgetContent = WidgetContent(date: Date(), usdPrice: usdPrice, change24h: change24h)
+      let archiveURL = FileManager.sharedContainerURL()
+        .appendingPathComponent("contents.json")
+      print(">>> \(archiveURL)")
+      let encoder = JSONEncoder()
+      if let dataToSave = try? encoder.encode(widgetContent) {
+        do {
+          try dataToSave.write(to: archiveURL)
+        } catch {
+          print("Error: Can't write contents")
+          return
+        }
+      }
+    }
 }
