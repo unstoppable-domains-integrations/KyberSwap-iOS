@@ -174,6 +174,7 @@ extension KNAppCoordinator {
       totalBalanceInUSD: loadBalanceCoordinator.totalBalanceInUSD,
       totalBalanceInETH: loadBalanceCoordinator.totalBalanceInETH
     )
+    self.refreshWidgetContent()
   }
 
   @objc func prodCachedRateTokenDidUpdateNotification(_ sender: Any?) {
@@ -201,6 +202,7 @@ extension KNAppCoordinator {
       totalBalanceInETH: totalETH
     )
     self.settingsCoordinator?.appCoordinatorUSDRateUpdate()
+    self.refreshWidgetContent()
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
@@ -428,4 +430,28 @@ extension KNAppCoordinator {
     }
     Freshchat.sharedInstance().identifyUser(withExternalID: externalID, restoreID: restoreId)
   }
+
+  func refreshWidgetContent() {
+    //Save content for widget
+    let kncToken = KNSupportedTokenStorage.shared.kncToken
+    guard let rate = KNRateCoordinator.shared.usdRate(for: kncToken), let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: kncToken) else { return }
+    let rateDouble = rate.rate.displayRate(decimals: 18).doubleValue
+    self.writeContents(usdPrice: rateDouble, change24h: trackerRate.changeUSD24h)
+  }
+
+  func writeContents(usdPrice: Double, change24h: Double) {
+      let widgetContent = WidgetContent(date: Date(), usdPrice: usdPrice, change24h: change24h)
+      let archiveURL = FileManager.sharedContainerURL()
+        .appendingPathComponent("contents.json")
+      print(">>> \(archiveURL)")
+      let encoder = JSONEncoder()
+      if let dataToSave = try? encoder.encode(widgetContent) {
+        do {
+          try dataToSave.write(to: archiveURL)
+        } catch {
+          print("Error: Can't write contents")
+          return
+        }
+      }
+    }
 }

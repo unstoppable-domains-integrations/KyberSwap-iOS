@@ -114,7 +114,7 @@ struct WidgetView: View {
           Text("KNC")
             .font(.title)
             .offset(x: 0, y: -3)
-          Text("$\(entry.usdPrice, specifier: "%.2f")").font(.subheadline)
+          Text("$\(entry.usdPrice, specifier: "%.4f")").font(.subheadline)
         }
         Text("24H CHANGE")
           .font(.subheadline)
