@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Bold.ttf">
-            <string>Roboto-Bold</string>
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
         </array>
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -46,13 +46,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Your Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9Q-P1-pUP">
-                            <rect key="frame" x="109.5" y="44" width="156.5" height="22"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <rect key="frame" x="118" y="47" width="139.5" height="19"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohM-N6-z0S">
-                            <rect key="frame" x="16" y="37" width="46" height="36"/>
+                            <rect key="frame" x="16" y="38.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="UCD-gS-exJ"/>
                                 <constraint firstAttribute="width" constant="46" id="gOG-0l-XoI"/>
@@ -63,7 +63,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.99607843139999996" green="0.66274509800000003" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="ohM-N6-z0S" firstAttribute="leading" secondItem="EFQ-zS-3p3" secondAttribute="leading" constant="16" id="6SV-FI-Vsk"/>
                         <constraint firstAttribute="height" constant="82" id="GCv-Np-ZsN"/>
@@ -73,48 +73,48 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paper Only" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjI-kU-ibR">
-                    <rect key="frame" x="143.5" y="102" width="88" height="22"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
-                    <color key="textColor" red="0.1803921568627451" green="0.22352941176470587" blue="0.3411764705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="143" y="102" width="89.5" height="21"/>
+                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4M-eJ-doh">
-                    <rect key="frame" x="40" y="136" width="295" height="115"/>
+                    <rect key="frame" x="40" y="135" width="295" height="114.5"/>
                     <string key="text">We will give you a list of 12 random words. Please write them down on paper and keep safe.
 
 This paper key is the only way to restore your Kyber Wallet if you lose your phone or forget your password.</string>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write down the words from 1-4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZyO-Zr-cRC">
-                    <rect key="frame" x="40" y="276" width="193" height="16.5"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="40" y="274.5" width="194.5" height="17"/>
+                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. chimney" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfr-Pf-WLO">
-                    <rect key="frame" x="80" y="302.5" width="69" height="16.5"/>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="80" y="301.5" width="68.5" height="17"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. peacock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4K-Cp-0tn">
-                    <rect key="frame" x="80" y="324" width="69" height="16.5"/>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="80" y="323.5" width="69.5" height="17"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. fire" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gxk-M0-lif">
-                    <rect key="frame" x="80" y="345.5" width="37" height="16.5"/>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="80" y="345.5" width="35" height="17"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. tiger" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bq-7j-6SD">
-                    <rect key="frame" x="80" y="367" width="45" height="16.5"/>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="80" y="367.5" width="44" height="17"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMz-jJ-yOj">
@@ -123,7 +123,7 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="alC-CA-biv"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
                     <state key="normal" title="Next">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -132,39 +132,39 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     </connections>
                 </button>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="word #12" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="JWS-hb-jfT">
-                    <rect key="frame" x="35" y="271" width="305" height="44"/>
+                    <rect key="frame" x="35" y="269.5" width="305" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="MtF-tk-DaR"/>
                     </constraints>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="word #12" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aiG-8k-JAO">
-                    <rect key="frame" x="35" y="340" width="305" height="44"/>
+                    <rect key="frame" x="35" y="338.5" width="305" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="zU3-ca-cfr"/>
                     </constraints>
-                    <color key="textColor" red="0.18039215689999999" green="0.22352941179999999" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DC3-gH-rKU">
-                    <rect key="frame" x="35" y="372" width="305" height="1"/>
+                    <rect key="frame" x="35" y="370.5" width="305" height="1"/>
                     <color key="backgroundColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="o21-pY-Dcm"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeI-Ev-WnN">
-                    <rect key="frame" x="35" y="409" width="305" height="44"/>
+                    <rect key="frame" x="35" y="407.5" width="305" height="44"/>
                     <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="7if-Up-o9h"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
                     <state key="normal" title="Complete">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -173,14 +173,22 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8M2-i7-D42">
-                    <rect key="frame" x="35" y="303" width="305" height="1"/>
+                    <rect key="frame" x="35" y="301.5" width="305" height="1"/>
                     <color key="backgroundColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="ijZ-cj-xfg"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zum-Qi-OXS">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                    <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="0Kb-i5-oU3"/>
+                    </constraints>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.19607843137254902" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="n4M-eJ-doh" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="0eN-rX-Znr"/>
                 <constraint firstItem="ZyO-Zr-cRC" firstAttribute="leading" secondItem="n4M-eJ-doh" secondAttribute="leading" id="3z9-Dy-rgt"/>
@@ -210,17 +218,19 @@ This paper key is the only way to restore your Kyber Wallet if you lose your pho
                 <constraint firstItem="wMz-jJ-yOj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="U2q-ES-kcQ"/>
                 <constraint firstItem="8M2-i7-D42" firstAttribute="leading" secondItem="JWS-hb-jfT" secondAttribute="leading" id="UYe-cx-Veo"/>
                 <constraint firstItem="aiG-8k-JAO" firstAttribute="trailing" secondItem="JWS-hb-jfT" secondAttribute="trailing" id="aNS-1L-thF"/>
+                <constraint firstItem="zum-Qi-OXS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="aXT-B5-22m"/>
                 <constraint firstItem="aiG-8k-JAO" firstAttribute="leading" secondItem="JWS-hb-jfT" secondAttribute="leading" id="asx-MD-05y"/>
+                <constraint firstItem="zum-Qi-OXS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bqj-8R-1QY"/>
                 <constraint firstItem="qfr-Pf-WLO" firstAttribute="top" secondItem="ZyO-Zr-cRC" secondAttribute="bottom" constant="10" id="euF-Ix-8JQ"/>
                 <constraint firstItem="n4M-eJ-doh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="jZo-60-Yjo"/>
                 <constraint firstItem="qfr-Pf-WLO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="80" id="kAS-Lu-xfj"/>
                 <constraint firstItem="EFQ-zS-3p3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pPb-jK-TRX"/>
                 <constraint firstItem="E4K-Cp-0tn" firstAttribute="top" secondItem="qfr-Pf-WLO" secondAttribute="bottom" constant="5" id="xHT-O7-kgO"/>
                 <constraint firstItem="aiG-8k-JAO" firstAttribute="top" secondItem="JWS-hb-jfT" secondAttribute="bottom" constant="25" id="xlO-Pl-tXp"/>
+                <constraint firstItem="zum-Qi-OXS" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="zFb-kp-KlK"/>
                 <constraint firstItem="JWS-hb-jfT" firstAttribute="bottom" secondItem="8M2-i7-D42" secondAttribute="top" constant="12" id="zfx-uK-qvO"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="48.5" y="58.5"/>
+            <point key="canvasLocation" x="47.200000000000003" y="58.020989505247378"/>
         </view>
     </objects>
     <resources>

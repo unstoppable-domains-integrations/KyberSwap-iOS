@@ -182,10 +182,7 @@ class DismissTransitionDriver {
   }
   
   private func completeAnimation() {
-    fromView.removeFromSuperview()
-    toView.removeFromSuperview()
-    ctx.containerView.removeFromSuperview()
-    ctx.completeTransition(true)
-    toVC.dismiss(animated: false, completion: nil)
+    let success = !ctx.transitionWasCancelled
+    ctx.completeTransition(success)
   }
 }

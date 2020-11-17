@@ -74,20 +74,21 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
-    if let action = self.viewModel.secondButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: {
+      if let action = self.viewModel.secondButtonAction {
+        action()
+      }
+    })
   }
   
   @IBAction func firstButtonTapped(_ sender: UIButton) {
-    if let action = self.viewModel.firstButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: {
+      if let action = self.viewModel.firstButtonAction {
+        action()
+      }
+    })
   }
-  
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.confirmButton.removeSublayer(at: 0)

@@ -42,13 +42,11 @@ class KNBackUpWalletViewModel {
     let word: String = self.seeds[wordID - 1]
     let attributedString: NSMutableAttributedString = {
       let idAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
-        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor.white,
         NSAttributedStringKey.kern: 0.0,
       ]
       let wordAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
-        NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
+        NSAttributedStringKey.foregroundColor: UIColor.white,
         NSAttributedStringKey.kern: 0.0,
       ]
       let attributedString = NSMutableAttributedString()
@@ -180,12 +178,14 @@ class KNBackUpWalletViewModel {
     return self.state == .backup
   }
 
-  var firstWordTextFieldPlaceholder: String {
-    return "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.firstWordID)"
+  var firstWordTextFieldPlaceholder: NSAttributedString {
+    return NSAttributedString(string: "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.firstWordID)",
+                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
   }
 
-  var secondWordTextFieldPlaceholder: String {
-    return "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.secondWordID)"
+  var secondWordTextFieldPlaceholder: NSAttributedString {
+    return NSAttributedString(string: "\(NSLocalizedString("word", value: "Word", comment: "")) #\(self.secondWordID)",
+                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
   }
 
   var isCompleteButtonHidden: Bool {

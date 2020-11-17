@@ -9,7 +9,7 @@ protocol KNBackUpWalletViewControllerDelegate: class {
 
 class KNBackUpWalletViewController: KNBaseViewController {
 
-  weak var delegate: KNBackUpWalletViewControllerDelegate?
+  var delegate: KNBackUpWalletViewControllerDelegate?
   fileprivate var viewModel: KNBackUpWalletViewModel
 
   @IBOutlet weak var headerContainerView: UIView!
@@ -46,9 +46,8 @@ class KNBackUpWalletViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     let style = KNAppStyleType.current
-    self.view.backgroundColor = style.mainBackgroundColor
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
+    self.headerContainerView.rounded(radius: 20)
     self.nextButton.rounded(radius: style.buttonRadius())
     self.nextButton.setTitle(
       NSLocalizedString("next", value: "Next", comment: ""),
@@ -56,19 +55,19 @@ class KNBackUpWalletViewController: KNBaseViewController {
     )
     self.completeButton.rounded(radius: style.buttonRadius())
     self.completeButton.setTitle(
-      NSLocalizedString("complete", value: "Complete", comment: ""),
+      "continue".toBeLocalised().capitalized,
       for: .normal
     )
     self.backupWalletLabel.text = self.viewModel.headerText
     self.backupWalletLabel.addLetterSpacing()
 
-    self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
+    self.firstWordTextField.attributedPlaceholder = self.viewModel.firstWordTextFieldPlaceholder
     self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.firstWordTextField.delegate = self
     self.firstWordTextField.addPlaceholderSpacing()
     self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
-    self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
+    self.secondWordTextField.attributedPlaceholder = self.viewModel.secondWordTextFieldPlaceholder
     self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.secondWordTextField.delegate = self
     self.secondWordTextField.addPlaceholderSpacing()
@@ -81,18 +80,23 @@ class KNBackUpWalletViewController: KNBaseViewController {
     )
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
     if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
+      self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
-    self.nextButton.applyGradient()
+    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    
 
     self.updateUI()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.nextButton.applyGradient()
+//    self.headerContainerView.removeSublayer(at: 0)
+//    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    
+//    self.nextButton.removeSublayer(at: 0)
+//    self.completeButton.removeSublayer(at: 0)
+//    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+//    self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
   fileprivate func updateUI() {
@@ -118,11 +122,11 @@ class KNBackUpWalletViewController: KNBaseViewController {
           label?.isHidden = self.viewModel.isListWordsLabelsHidden
         }
 
-        self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
+        self.firstWordTextField.attributedPlaceholder = self.viewModel.firstWordTextFieldPlaceholder
         self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
         self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
-        self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
+        self.secondWordTextField.attributedPlaceholder = self.viewModel.secondWordTextFieldPlaceholder
         self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
         self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
@@ -133,7 +137,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
         self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
         self.completeButton.isEnabled = self.isCompleteButtonEnabled
         if self.isCompleteButtonEnabled {
-          self.completeButton.applyGradient()
+          self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
         }
         self.view.layoutIfNeeded()
       }, completion: nil
@@ -167,7 +171,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
       self.secondWordTextField.text = ""
       self.completeButton.isEnabled = self.isCompleteButtonEnabled
       if self.isCompleteButtonEnabled {
-        self.completeButton.applyGradient()
+        self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
       }
       self.viewModel.numberWrongs += 1
       isFirstTime = self.viewModel.numberWrongs == 1
@@ -194,7 +198,7 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
     textField.text = text
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
     if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
+      self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
     self.view.layoutIfNeeded()
     return false
@@ -204,7 +208,7 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
     textField.text = ""
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
     if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
+      self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
     self.view.layoutIfNeeded()
     return false
@@ -213,6 +217,9 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
 
 extension KNBackUpWalletViewController: KNTestBackUpStatusViewControllerDelegate {
   func testBackUpStatusViewDidComplete(sender: KNTestBackUpStatusViewController) {
+    if self.delegate != nil {
+      print("Not nil \(self.delegate)")
+    }
     self.delegate?.backupWalletViewControllerDidFinish()
   }
 
