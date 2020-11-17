@@ -79,7 +79,18 @@ class KNAddNewWalletCoordinator: Coordinator {
   }()
 
   func start() {
-    self.navigationController.present(self.alertController, animated: true, completion: nil)
+
+    let viewModel = KNBottomPopupViewModel(
+      title: "Confirm".toBeLocalised(),
+      body: "This will create a new wallet./nI can not be undone, but you could be anounce".toBeLocalised(),
+      firstButtonTitle: nil,
+      secondButtonTitle: "Confirm".toBeLocalised(),
+      firstButtonAction: nil,
+      secondButtonAction: nil
+    )
+    let popup = KNBottomPopupViewController(viewModel: viewModel)
+    self.navigationController.present(popup, animated: true, completion: {})
+//    self.navigationController.present(self.alertController, animated: true, completion: nil)
   }
 
   fileprivate func createNewWallet() {
