@@ -117,7 +117,6 @@ class KNCreateWalletCoordinator: Coordinator {
 
 extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   func backupWalletViewControllerDidFinish() {
-    print("[Debug]")
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.address.description,

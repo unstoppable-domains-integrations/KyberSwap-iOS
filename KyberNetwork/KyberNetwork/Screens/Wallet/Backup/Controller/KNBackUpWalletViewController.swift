@@ -48,12 +48,12 @@ class KNBackUpWalletViewController: KNBaseViewController {
     let style = KNAppStyleType.current
 
     self.headerContainerView.rounded(radius: 20)
-    self.nextButton.rounded(radius: style.buttonRadius())
+    self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
     self.nextButton.setTitle(
       NSLocalizedString("next", value: "Next", comment: ""),
       for: .normal
     )
-    self.completeButton.rounded(radius: style.buttonRadius())
+    self.completeButton.rounded(radius: self.completeButton.frame.size.height / 2)
     self.completeButton.setTitle(
       "continue".toBeLocalised().capitalized,
       for: .normal
@@ -83,8 +83,6 @@ class KNBackUpWalletViewController: KNBaseViewController {
       self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
     self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
-    
-
     self.updateUI()
   }
 
@@ -93,9 +91,9 @@ class KNBackUpWalletViewController: KNBaseViewController {
 //    self.headerContainerView.removeSublayer(at: 0)
 //    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     
-//    self.nextButton.removeSublayer(at: 0)
+    self.nextButton.removeSublayer(at: 0)
 //    self.completeButton.removeSublayer(at: 0)
-//    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
 //    self.completeButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
@@ -217,9 +215,6 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
 
 extension KNBackUpWalletViewController: KNTestBackUpStatusViewControllerDelegate {
   func testBackUpStatusViewDidComplete(sender: KNTestBackUpStatusViewController) {
-    if self.delegate != nil {
-      print("Not nil \(self.delegate)")
-    }
     self.delegate?.backupWalletViewControllerDidFinish()
   }
 

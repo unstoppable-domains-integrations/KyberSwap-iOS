@@ -35,7 +35,7 @@ class KNBottomPopupViewModel {
 class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
   
   @IBOutlet weak var topContraint: NSLayoutConstraint!
-  let transitonDelegate = TransitionDelegate()
+  let transitor = TransitionDelegate()
   @IBOutlet weak var popupBody: UILabel!
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var popupTitle: UILabel!
@@ -49,7 +49,7 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
     self.viewModel = viewModel
     super.init(nibName: KNBottomPopupViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
-    self.transitioningDelegate = transitonDelegate
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder: NSCoder) {

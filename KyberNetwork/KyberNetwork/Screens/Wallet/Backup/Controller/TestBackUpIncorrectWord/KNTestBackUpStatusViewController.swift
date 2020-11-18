@@ -55,13 +55,9 @@ struct KNTestBackUpStatusViewModel {
   var secondButtonTitle: String {
     return NSLocalizedString("backup.again", value: "Backup Again", comment: "")
   }
-
-  var secondButtonColor: UIColor {
-    return KNAppStyleType.current.walletFlowHeaderColor
-  }
 }
 
-class KNTestBackUpStatusViewController: KNBaseViewController {
+class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstract {
 
   @IBOutlet weak var containerView: UIView!
 
@@ -73,6 +69,8 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
 
   @IBOutlet weak var secondButtonWidthConstraint: NSLayoutConstraint!
   @IBOutlet weak var paddingConstraintForButtons: NSLayoutConstraint!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  let transitor = TransitionDelegate()
 
   fileprivate var viewModel: KNTestBackUpStatusViewModel
   weak var delegate: KNTestBackUpStatusViewControllerDelegate?
@@ -80,6 +78,8 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   init(viewModel: KNTestBackUpStatusViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNTestBackUpStatusViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -89,7 +89,6 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-    let style = KNAppStyleType.current
 
     self.containerView.rounded(radius: 10.0)
     self.containerView.isHidden = self.viewModel.isContainerViewHidden
@@ -99,27 +98,23 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.messageLabel.text = self.viewModel.message
     self.messageLabel.addLetterSpacing()
 
-    self.firstButton.rounded(
-      color: self.viewModel.firstButtonBorderColor,
-      width: 1,
-      radius: style.buttonRadius()
-    )
+    self.firstButton.rounded(color: UIColor.Kyber.SWButtonYellow, width: 1, radius: self.firstButton.frame.size.height / 2)
     self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
 
-    self.secondButton.rounded(radius: style.buttonRadius())
+    self.secondButton.rounded(radius: self.secondButton.frame.size.height / 2)
     self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
-    self.secondButton.backgroundColor = self.viewModel.secondButtonColor
+    self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
 
     if self.viewModel.numberButtons == 1 {
       self.secondButtonWidthConstraint.constant = 0
       self.paddingConstraintForButtons.constant = 0
-      self.firstButton.applyGradient()
+      self.firstButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
       self.firstButton.setTitleColor(.white, for: .normal)
     } else {
       self.paddingConstraintForButtons.constant = 16
       self.secondButtonWidthConstraint.constant = (self.containerView.frame.width - 48) / 2.0
-      self.secondButton.applyGradient()
-      self.firstButton.setTitleColor(UIColor.Kyber.mirage, for: .normal)
+      self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+      self.firstButton.setTitleColor(UIColor.Kyber.SWButtonYellow, for: .normal)
       self.secondButton.setTitleColor(.white, for: .normal)
     }
     self.view.updateConstraints()
@@ -147,10 +142,10 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     if self.viewModel.numberButtons == 1 {
       self.firstButton.removeSublayer(at: 0)
-      self.firstButton.applyGradient()
+      self.firstButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     } else {
       self.secondButton.removeSublayer(at: 0)
-      self.secondButton.applyGradient()
+      self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
   }
 
@@ -162,5 +157,18 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       self.delegate?.testBackUpStatusViewDidPressSecondButton(sender: self)
     }
+  }
+
+  //MARK: BottomPopUpAbstract
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 294
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.containerView
   }
 }
