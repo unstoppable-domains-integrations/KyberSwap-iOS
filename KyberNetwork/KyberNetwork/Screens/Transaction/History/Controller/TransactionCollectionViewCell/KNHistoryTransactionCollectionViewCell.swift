@@ -25,7 +25,7 @@ struct KNHistoryTransactionCollectionViewModel {
     self.index = index
   }
 
-  var backgroundColor: UIColor { return self.index % 2 == 0 ? UIColor.white : UIColor(red: 246, green: 247, blue: 250) }
+  var backgroundColor: UIColor { return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53) }
 
   var isSwap: Bool { return self.transaction.localizedOperations.first?.type == "exchange" }
   var isSent: Bool {
@@ -68,6 +68,16 @@ struct KNHistoryTransactionCollectionViewModel {
       return self.isSent ? NSLocalizedString("transfer", value: "Transfer", comment: "") : NSLocalizedString("receive", value: "Receive", comment: "")
     }()
     return typeString
+  }
+
+  var transactionTypeImage: UIImage {
+    let typeImage: UIImage = {
+      if self.isSelf { return UIImage(named: "history_send_icon")! }
+      if self.isContractInteraction && self.isError { return UIImage(named: "history_contract_interaction_icon")! }
+      if self.isSwap { return UIImage() }
+      return self.isSent ? UIImage(named: "history_send_icon")! : UIImage(named: "history_receive_icon")!
+    }()
+    return typeImage
   }
 
   var transactionDetailsString: String {
@@ -133,7 +143,7 @@ struct KNHistoryTransactionCollectionViewModel {
 class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
 
   static let cellID: String = "kHistoryTransactionCellID"
-  static let height: CGFloat = 60.0
+  static let height: CGFloat = 46.0
 
   weak var actionDelegate: KNHistoryTransactionCollectionViewCellDelegate?
   fileprivate var viewModel: KNHistoryTransactionCollectionViewModel!
@@ -142,6 +152,9 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
   @IBOutlet weak var transactionDetailsLabel: UILabel!
   @IBOutlet weak var transactionTypeLabel: UILabel!
   @IBOutlet weak var transactionStatus: UIButton!
+  @IBOutlet weak var historyTypeImage: UIImageView!
+  @IBOutlet weak var fromIconImage: UIImageView!
+  @IBOutlet weak var toIconImage: UIImageView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -160,6 +173,28 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
     self.transactionTypeLabel.text = model.transactionTypeString.uppercased()
     self.transactionStatus.setTitle(model.transactionStatusString, for: .normal)
     self.transactionStatus.isHidden = !model.isError
+    self.hideSwapIcon(!self.viewModel.isSwap)
+    self.historyTypeImage.isHidden = self.viewModel.isSwap
+    if self.viewModel.isSwap {
+      if let from = model.transaction.localizedOperations.first?.from,
+         let to = model.transaction.localizedOperations.first?.to,
+         let fromToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: from),
+         let toToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: to) {
+        self.fromIconImage.setTokenImage(token: fromToken, size: self.fromIconImage.frame.size)
+        self.toIconImage.setTokenImage(token: toToken, size: self.toIconImage.frame.size)
+        self.hideSwapIcon(false)
+      } else {
+        self.hideSwapIcon(true)
+      }
+    } else {
+      self.historyTypeImage.image = model.transactionTypeImage
+    }
+
     self.layoutIfNeeded()
+  }
+
+  fileprivate func hideSwapIcon(_ hidden: Bool) {
+    self.fromIconImage.isHidden = hidden
+    self.toIconImage.isHidden = hidden
   }
 }

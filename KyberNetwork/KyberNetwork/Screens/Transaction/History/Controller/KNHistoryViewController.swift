@@ -2,6 +2,7 @@
 
 import UIKit
 import SwipeCellKit
+import BetterSegmentedControl
 
 //swiftlint:disable file_length
 enum KNHistoryViewEvent {
@@ -274,8 +275,6 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var transactionsTextLabel: UILabel!
 
-  @IBOutlet weak var currentAddressLabel: UILabel!
-  @IBOutlet weak var currentAddressContainerView: UIView!
   @IBOutlet weak var emptyStateContainerView: UIView!
   @IBOutlet weak var emptyStateDescLabel: UILabel!
 
@@ -284,15 +283,15 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var ratesMightChangeDescTextLabel: UILabel!
   @IBOutlet weak var bottomPaddingConstraintForRateMightChange: NSLayoutConstraint!
 
-  @IBOutlet weak var pendingButton: UIButton!
-  @IBOutlet weak var completedButton: UIButton!
-
   @IBOutlet weak var transactionCollectionView: UICollectionView!
   @IBOutlet weak var transactionCollectionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet weak var emptyStateInfoLabel: UILabel!
   fileprivate var quickTutorialTimer: Timer?
   var animatingCell: UICollectionViewCell?
-
+  @IBOutlet weak var segmentedControl: BetterSegmentedControl!
+  @IBOutlet weak var filterButton: UIButton!
+  @IBOutlet weak var walletSelectButton: UIButton!
+  
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNHistoryViewController.className, bundle: nil)
@@ -359,8 +358,6 @@ class KNHistoryViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   fileprivate func setupUI() {
@@ -368,6 +365,16 @@ class KNHistoryViewController: KNBaseViewController {
     self.setupNavigationBar()
     self.setupCollectionView()
     self.emptyStateInfoLabel.text = "Something is wrong? View your wallet on".toBeLocalised()
+    self.segmentedControl.segments = LabelSegment.segments(withTitles: ["completed".toBeLocalised().uppercased(), "pending".toBeLocalised().uppercased()],
+                                                           normalFont: UIFont(name: "Lato-Bold", size: 8)!,
+                                                           normalTextColor: UIColor(red: 226, green: 231, blue: 244),
+                                                           selectedFont: UIFont(name: "Lato-Bold", size: 8)!,
+                                                           selectedTextColor: UIColor.white
+    )
+    self.segmentedControl.setIndex(1)
+    self.segmentedControl.addTarget(self, action: #selector(KNHistoryViewController.segmentedControlValueChanged(_:)), for: .valueChanged)
+    self.filterButton.rounded(radius: 10)
+    self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
   }
 
   override func quickTutorialNextAction() {
@@ -433,13 +440,9 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    let style = KNAppStyleType.current
     self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
-    self.view.backgroundColor = style.mainBackgroundColor
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.pendingButton.setTitle(NSLocalizedString("pending", value: "Pending", comment: ""), for: .normal)
-    self.completedButton.setTitle(NSLocalizedString("completed", value: "Completed", comment: ""), for: .normal)
-    self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
+    //TODO: set address text for address select button
+//    self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
     self.updateDisplayTxsType(self.viewModel.isShowingPending)
   }
 
@@ -464,17 +467,14 @@ class KNHistoryViewController: KNBaseViewController {
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
     self.emptyStateDescLabel.text = self.viewModel.emptyStateDescLabelString
 
-    let isShowingPending = self.viewModel.isShowingPending
-    self.pendingButton.setTitleColor(isShowingPending ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
-    self.completedButton.setTitleColor(!isShowingPending ? UIColor(red: 254, green: 163, blue: 76) : UIColor(red: 46, green: 57, blue: 87), for: .normal)
-
     self.rateMightChangeContainerView.isHidden = self.viewModel.isRateMightChangeHidden
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
-    let isAddressHidden = self.viewModel.isTransactionCollectionViewHidden
-    self.currentAddressLabel.isHidden = isAddressHidden
-    self.currentAddressContainerView.isHidden = isAddressHidden
-    self.currentAddressLabel.text = self.viewModel.currentWallet.address
+//    let isAddressHidden = self.viewModel.isTransactionCollectionViewHidden
+//    self.currentAddressLabel.isHidden = isAddressHidden
+//    self.currentAddressContainerView.isHidden = isAddressHidden
+    //TODO: set this text to wallet select button
+//    self.currentAddressLabel.text = self.viewModel.currentWallet.address
     self.transactionCollectionView.reloadData()
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraintsIfNeeded()
@@ -515,18 +515,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.navigationController?.pushViewController(filterVC, animated: true)
   }
 
-  @IBAction func pendingButtonPressed(_ sender: Any) {
-    self.viewModel.updateIsShowingPending(true)
-    self.updateUIWhenDataDidChange()
-    KNCrashlyticsUtil.logCustomEvent(withName: self.viewModel.isShowingPending ? "txhistory_pending_tx" : "txhistory_mined_tx", customAttributes: nil)
-  }
-
-  @IBAction func completedButtonPressed(_ sender: Any) {
-    self.viewModel.updateIsShowingPending(false)
-    self.updateUIWhenDataDidChange()
-    KNCrashlyticsUtil.logCustomEvent(withName: self.viewModel.isShowingPending ? "txhistory_pending_tx" : "txhistory_mined_tx", customAttributes: nil)
-  }
-
   @IBAction func emptyStateEtherScanButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openEtherScanWalletPage)
     KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_empty_state_etherscan_tapped", customAttributes: nil)
@@ -536,6 +524,15 @@ class KNHistoryViewController: KNBaseViewController {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openKyberWalletPage)
     KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_empty_state_enjin_tapped", customAttributes: nil)
   }
+
+  @objc func segmentedControlValueChanged(_ sender: BetterSegmentedControl) {
+    self.viewModel.updateIsShowingPending(sender.index == 1)
+    self.updateUIWhenDataDidChange()
+  }
+  
+  @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
+  }
+  
 }
 
 extension KNHistoryViewController {
@@ -602,7 +599,7 @@ extension KNHistoryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     return CGSize(
       width: collectionView.frame.width,
-      height: 44
+      height: 24
     )
   }
 }
@@ -682,22 +679,29 @@ extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
       self.delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction))
     }
     speedUp.hidesWhenSelected = true
-    speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "")
-    speedUp.font = UIFont.Kyber.bold(with: 14)
-    speedUp.backgroundColor = UIColor.Kyber.speedUpOrange
+    speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "").uppercased()
+    speedUp.textColor = UIColor.Kyber.SWYellow
+    speedUp.font = UIFont.Kyber.latoBold(with: 10)
+    let bgImg = UIImage(named: "history_cell_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 46))!
+    speedUp.backgroundColor = UIColor(patternImage: resized)
     let cancel = SwipeAction(style: .destructive, title: nil) { _, _ in
       KNCrashlyticsUtil.logCustomEvent(withName: "transaction_cancel", customAttributes: nil)
       self.delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
     }
-    cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "")
-    cancel.font = UIFont.Kyber.bold(with: 14)
-    cancel.backgroundColor = UIColor.Kyber.cancelGray
+
+    cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "").uppercased()
+    cancel.textColor = UIColor.Kyber.SWYellow
+    cancel.font = UIFont.Kyber.latoBold(with: 10)
+    cancel.backgroundColor = UIColor(patternImage: resized)
     return [cancel, speedUp]
   }
   func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
     var options = SwipeOptions()
     options.expansionStyle = .destructive
-    options.maximumButtonWidth = 96.0
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
     return options
   }
 }

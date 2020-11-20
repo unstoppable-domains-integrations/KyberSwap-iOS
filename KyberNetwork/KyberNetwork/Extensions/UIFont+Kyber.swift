@@ -36,5 +36,9 @@ extension UIFont {
       if !italic { return UIFont(name: "Roboto-Thin", size: size)! }
       return UIFont(name: "Roboto-ThinItalic", size: size)!
     }
+
+    static func latoBold(with size: CGFloat) -> UIFont {
+      return UIFont(name: "Lato-Bold", size: size)!
+    }
   }
 }

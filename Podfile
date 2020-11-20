@@ -48,6 +48,7 @@ target 'KyberNetwork' do
   pod 'Charts'
   pod 'FreshchatSDK'
   pod 'FSPagerView'
+  pod 'BetterSegmentedControl', '1.0'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
