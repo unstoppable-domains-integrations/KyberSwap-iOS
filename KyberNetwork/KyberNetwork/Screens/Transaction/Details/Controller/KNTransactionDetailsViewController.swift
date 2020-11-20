@@ -29,25 +29,25 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var exchangeRateLabel: UILabel!
   @IBOutlet weak var rateTextLabel: UILabel!
 
-  @IBOutlet var feeTopPaddingToSeparatorViewConstraint: NSLayoutConstraint!
-
   @IBOutlet weak var feeTextLabel: UILabel!
   @IBOutlet weak var feeValueLabel: UILabel!
-
-  @IBOutlet weak var addressTextLabel: UILabel!
-  @IBOutlet weak var addressValueLabel: UILabel!
-
-  @IBOutlet var txHashTopPaddingToGasPriceLabelConstraint: NSLayoutConstraint!
-  @IBOutlet weak var toAddressTopPaddingToGasPriceLabelContraint: NSLayoutConstraint!
+//  @IBOutlet weak var addressValueLabel: UILabel!
+  @IBOutlet weak var toAddressLabel: UILabel!
+  @IBOutlet weak var fromAddressLabel: UILabel!
 
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
-  @IBOutlet weak var viewOnTextLabel: UILabel!
   @IBOutlet weak var gasPriceTextLabel: UILabel!
   @IBOutlet weak var gasPriceValueLabel: UILabel!
   @IBOutlet weak var nonceTextLabel: UILabel!
   @IBOutlet weak var nonceValueLabel: UILabel!
   @IBOutlet weak var txStatusLabel: UILabel!
+  @IBOutlet weak var historyTypeImage: UIImageView!
+  @IBOutlet weak var fromIconImage: UIImageView!
+  @IBOutlet weak var toIconImage: UIImageView!
+  @IBOutlet weak var fromAddressContainerView: UIView!
+  @IBOutlet weak var toAddressContainerView: UIView!
+  
 
   init(viewModel: KNTransactionDetailsViewModel) {
     self.viewModel = viewModel
@@ -70,21 +70,24 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+//    self.headerContainerView.removeSublayer(at: 0)
+//    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   fileprivate func setupUI() {
     self.navigationTitleLabel.text = NSLocalizedString("transaction.details", value: "Transaction Details", comment: "")
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.addressLabelTapped(_:)))
-    self.addressValueLabel.addGestureRecognizer(addressTapGesture)
+//    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+    
+//    let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.addressLabelTapped(_:)))
+//    self.addressValueLabel.addGestureRecognizer(addressTapGesture)
 
     self.feeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
 
-    let txHashTapGes = UITapGestureRecognizer(target: self, action: #selector(self.txHashTapped(_:)))
-    self.txHashLabel.addGestureRecognizer(txHashTapGes)
-    self.viewOnTextLabel.text = NSLocalizedString("view.on", value: "View on", comment: "")
+//    let txHashTapGes = UITapGestureRecognizer(target: self, action: #selector(self.txHashTapped(_:)))
+//    self.txHashLabel.addGestureRecognizer(txHashTapGes)
+    
+    self.fromAddressContainerView.rounded(radius: 8)
+    self.toAddressContainerView.rounded(radius: 8)
   }
 
   fileprivate func updateUI() {
@@ -96,6 +99,8 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     self.txStatusLabel.backgroundColor = self.viewModel.displayTxStatusColor.0
     self.txStatusLabel.textColor = self.viewModel.displayTxStatusColor.1
     self.txStatusLabel.rounded(radius: 3)
+    self.fromAddressLabel.text = self.viewModel.transaction?.from
+    self.toAddressLabel.text = self.viewModel.transaction?.to
 
     let amountText = self.viewModel.displayedAmountString
     if self.viewModel.isSwap {
@@ -115,8 +120,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
       self.rateTextLabel.text = self.viewModel.displayRateTextString
       self.exchangeRateLabel.text = self.viewModel.displayExchangeRate
-      self.addressTextLabel.isHidden = true
-      self.addressValueLabel.isHidden = true
+//      self.addressValueLabel.isHidden = true
 
       self.rateTextLabel.isHidden = false
       self.exchangeRateLabel.isHidden = false
@@ -127,8 +131,17 @@ class KNTransactionDetailsViewController: KNBaseViewController {
       self.nonceValueLabel.isHidden = false
       self.txStatusLabel.isHidden = false
 
-      self.txHashTopPaddingToGasPriceLabelConstraint.constant = 79.0
-      self.feeTopPaddingToSeparatorViewConstraint.constant = 60
+      if let from = self.viewModel.transaction?.localizedOperations.first?.from,
+         let to = self.viewModel.transaction?.localizedOperations.first?.to,
+         let fromToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: from),
+         let toToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: to) {
+        self.fromIconImage.setTokenImage(token: fromToken, size: self.fromIconImage.frame.size)
+        self.toIconImage.setTokenImage(token: toToken, size: self.toIconImage.frame.size)
+        self.hideSwapIcon(false)
+      } else {
+        self.hideSwapIcon(true)
+      }
+
     } else if self.viewModel.isSent {
       self.amountLabel.text = amountText
       self.leftAmountTextLabel.isHidden = true
@@ -137,20 +150,16 @@ class KNTransactionDetailsViewController: KNBaseViewController {
       self.rateTextLabel.isHidden = true
       self.exchangeRateLabel.isHidden = true
 
-      self.addressTextLabel.isHidden = false
-      self.addressValueLabel.isHidden = false
+//      self.addressValueLabel.isHidden = false
 
-      self.addressTextLabel.text = self.viewModel.addressTextDisplay
-      self.addressValueLabel.attributedText = self.viewModel.addressAttributedString()
+//      self.addressValueLabel.attributedText = self.viewModel.addressAttributedString()
 
       self.nonceValueLabel.text = self.viewModel.displayNonce
       self.nonceTextLabel.isHidden = false
       self.nonceValueLabel.isHidden = false
       self.txStatusLabel.isHidden = false
-
-      self.feeTopPaddingToSeparatorViewConstraint.constant = 28
-      self.toAddressTopPaddingToGasPriceLabelContraint.constant = 89
-      self.txHashTopPaddingToGasPriceLabelConstraint.constant = 161
+      self.historyTypeImage.image = self.viewModel.transactionTypeImage
+      self.hideSwapIcon(true)
     } else {
       self.amountLabel.text = amountText
       self.leftAmountTextLabel.isHidden = true
@@ -159,31 +168,40 @@ class KNTransactionDetailsViewController: KNBaseViewController {
       self.rateTextLabel.isHidden = true
       self.exchangeRateLabel.isHidden = true
 
-      self.addressTextLabel.isHidden = false
-      self.addressValueLabel.isHidden = false
+//      self.addressValueLabel.isHidden = false
 
-      self.addressTextLabel.text = self.viewModel.addressTextDisplay
-      self.addressValueLabel.attributedText = self.viewModel.addressAttributedString()
+//      self.addressValueLabel.attributedText = self.viewModel.addressAttributedString()
 
       self.nonceTextLabel.isHidden = true
       self.nonceValueLabel.isHidden = true
       self.txStatusLabel.isHidden = true
-
-      self.feeTopPaddingToSeparatorViewConstraint.constant = 28
-      self.toAddressTopPaddingToGasPriceLabelContraint.constant = 29
-      self.txHashTopPaddingToGasPriceLabelConstraint.constant = 101
+      self.historyTypeImage.image = self.viewModel.transactionTypeImage
+      self.hideSwapIcon(true)
     }
 
-    self.txHashLabel.attributedText = self.viewModel.txHashAttributedString()
+//    self.txHashLabel.attributedText = self.viewModel.txHashAttributedString()
     self.dateLabel.text = self.viewModel.dateString()
 
     self.view.updateConstraintsIfNeeded()
     self.view.layoutIfNeeded()
   }
 
-  @objc func addressLabelTapped(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "txdetails_copy_from_address", customAttributes: nil)
-    if self.viewModel.isSent {
+  fileprivate func hideSwapIcon(_ hidden: Bool) {
+    self.fromIconImage.isHidden = hidden
+    self.toIconImage.isHidden = hidden
+    self.historyTypeImage.isHidden = !hidden
+  }
+
+//  @objc func addressLabelTapped(_ sender: Any) {
+//    KNCrashlyticsUtil.logCustomEvent(withName: "txdetails_copy_from_address", customAttributes: nil)
+//    if self.viewModel.isSent {
+//      self.copy(text: self.viewModel.transaction?.to ?? "")
+//    } else {
+//      self.copy(text: self.viewModel.transaction?.from ?? "")
+//    }
+//  }
+  @IBAction func addressesAreaTapped(_ sender: UIButton) {
+    if sender.tag == 1 {
       self.copy(text: self.viewModel.transaction?.to ?? "")
     } else {
       self.copy(text: self.viewModel.transaction?.from ?? "")
@@ -222,10 +240,5 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "txdetails_open_ether_scan", customAttributes: nil)
     self.delegate?.transactionDetailsViewController(self, run: .openEtherScan)
-  }
-
-  @IBAction func viewOnEnjinXButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "txdetails_open_kyber_enjin_scan", customAttributes: nil)
-    self.delegate?.transactionDetailsViewController(self, run: .openEnjinXScan)
   }
 }

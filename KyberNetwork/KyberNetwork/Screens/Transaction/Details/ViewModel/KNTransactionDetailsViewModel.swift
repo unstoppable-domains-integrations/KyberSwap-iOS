@@ -158,6 +158,16 @@ struct KNTransactionDetailsViewModel {
     return NSLocalizedString("from", value: "From", comment: "")
   }
 
+  var transactionTypeImage: UIImage {
+    let typeImage: UIImage = {
+      if self.isSelf { return UIImage(named: "history_send_icon")! }
+      if self.isContractInteraction && self.isError { return UIImage(named: "history_contract_interaction_icon")! }
+      if self.isSwap { return UIImage() }
+      return self.isSent ? UIImage(named: "history_send_icon")! : UIImage(named: "history_receive_icon")!
+    }()
+    return typeImage
+  }
+
   mutating func addressAttributedString() -> NSAttributedString {
     if self.isSwap { return NSMutableAttributedString() }
     if self.isSent { return self.toAttributedString() }
