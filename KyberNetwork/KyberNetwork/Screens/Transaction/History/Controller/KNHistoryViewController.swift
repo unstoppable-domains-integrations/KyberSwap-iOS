@@ -13,6 +13,7 @@ enum KNHistoryViewEvent {
   case quickTutorial(pointsAndRadius: [(CGPoint, CGFloat)])
   case openEtherScanWalletPage
   case openKyberWalletPage
+  case openWalletsListPopup
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -531,6 +532,7 @@ class KNHistoryViewController: KNBaseViewController {
   }
   
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
+    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
   }
   
 }

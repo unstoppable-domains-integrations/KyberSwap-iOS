@@ -585,6 +585,10 @@
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
+		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
+		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
+		C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */; };
 		C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910725638DE700F57756 /* Lato-Italic.ttf */; };
 		C3A6911325638DE700F57756 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910825638DE700F57756 /* Lato-LightItalic.ttf */; };
 		C3A6911425638DE700F57756 /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910925638DE700F57756 /* Lato-Thin.ttf */; };
@@ -1265,6 +1269,10 @@
 		C37CC091245803C90081FB32 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTutorialPagerCell.swift; sourceTree = "<group>"; };
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
+		C3A241992567AD610073703C /* WalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsListViewController.swift; sourceTree = "<group>"; };
+		C3A2419A2567AD610073703C /* WalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletsListViewController.xib; sourceTree = "<group>"; };
+		C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListTableViewCell.swift; sourceTree = "<group>"; };
+		C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListTableViewCell.xib; sourceTree = "<group>"; };
 		C3A6910725638DE700F57756 /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
 		C3A6910825638DE700F57756 /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		C3A6910925638DE700F57756 /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
@@ -2188,6 +2196,7 @@
 		25682B6C20EE0315009738C4 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				C3A241982567ABBE0073703C /* WalletsList */,
 				C6FE417E2383A0AB0096AAD8 /* WalletConnect */,
 				253F50E321E5B4E70068813D /* PromoCode */,
 				25A4B4AF21242DC300924351 /* Create */,
@@ -4156,6 +4165,25 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C3A241982567ABBE0073703C /* WalletsList */ = {
+			isa = PBXGroup;
+			children = (
+				C3A241A12567BC050073703C /* Cells */,
+				C3A241992567AD610073703C /* WalletsListViewController.swift */,
+				C3A2419A2567AD610073703C /* WalletsListViewController.xib */,
+			);
+			path = WalletsList;
+			sourceTree = "<group>";
+		};
+		C3A241A12567BC050073703C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */,
+				C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C3A6910625638DE700F57756 /* Lato */ = {
 			isa = PBXGroup;
 			children = (
@@ -4489,6 +4517,7 @@
 				C625CF70243F221D00511A90 /* PreviewLimitOrderV2ViewController.xib in Resources */,
 				2545C8FD2223F6F400CA99C5 /* KNAlertTableViewCell.xib in Resources */,
 				C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */,
+				C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */,
 				25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */,
 				25FF9182225CE4A600946414 /* KNConfirmSignUpViewController.xib in Resources */,
 				25929C8C20DA5CC10045CFA3 /* SFCompactDisplay-Thin.otf in Resources */,
@@ -4629,6 +4658,7 @@
 				2503440020DA37F700528810 /* KNSaveContactViewController.xib in Resources */,
 				25073D19211AF20D00833C92 /* Montserrat-LightItalic.ttf in Resources */,
 				25BA0D9F225B32C000B0EF2D /* KNSignInViewController.xib in Resources */,
+				C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */,
 				2545C9052223FF2D00CA99C5 /* KNNewAlertViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				25929C6020DA5C760045CFA3 /* SF-Pro-Display-ThinItalic.otf in Resources */,
@@ -5118,6 +5148,7 @@
 				C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */,
 				254CD0E02148F1420079EA7A /* KNProfileHomeViewController.swift in Sources */,
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
+				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				25117D432248D6B000B5C495 /* KNLeaderBoardCollectionViewCell.swift in Sources */,
@@ -5265,6 +5296,7 @@
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
 				25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */,
 				C3E401DE242B458200F31372 /* KNCreateLimitOrderV2ViewController.swift in Sources */,
+				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,

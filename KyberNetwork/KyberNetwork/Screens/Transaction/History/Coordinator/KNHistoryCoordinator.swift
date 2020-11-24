@@ -5,6 +5,7 @@ import SafariServices
 import BigInt
 import TrustCore
 import Moya
+import MBProgressHUD
 
 protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidClose()
@@ -291,6 +292,14 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .openKyberWalletPage:
       let urlString = "\(self.enjinScanURL)eth/address/\(self.session.wallet.address.description)"
       self.rootViewController.openSafari(with: urlString)
+    case .openWalletsListPopup:
+      let viewModel = WalletsListViewModel(
+        walletObjects: KNWalletStorage.shared.wallets,
+        currentWallet: self.currentWallet
+      )
+      let walletsList = WalletsListViewController(viewModel: viewModel)
+      walletsList.delegate = self
+      self.navigationController.present(walletsList, animated: true, completion: nil)
     }
   }
 
@@ -469,6 +478,29 @@ extension KNHistoryCoordinator: KNTransactionStatusPopUpDelegate {
       if #available(iOS 10.3, *) {
         KNAppstoreRatingManager.requestReviewIfAppropriate()
       }
+    }
+  }
+}
+
+extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
+  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
+    switch event {
+    case .connectWallet:
+      print("transition")
+    case .manageWallet:
+      print("transition")
+    case .copy(let wallet):
+      UIPasteboard.general.string = wallet.address
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    case .select(let wallet):
+      print("copy")
+    case .remove(let wallet):
+      print("copy")
+    case .edit(let wallet):
+      print("copy")
     }
   }
 }

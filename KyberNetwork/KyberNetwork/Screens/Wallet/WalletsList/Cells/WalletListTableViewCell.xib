@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WalletListTableViewCell" rowHeight="56" id="KGk-i7-Jjw" customClass="WalletListTableViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jda-1l-m4X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                        <connections>
+                            <action selector="tapCell:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bIp-6k-kjb"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86A-Yl-NIU">
+                        <rect key="frame" x="40" y="12" width="82" height="17"/>
+                        <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                        <color key="textColor" red="0.92549019607843142" green="0.92941176470588238" blue="0.93725490196078431" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb45thu4c…8f6hn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeH-ae-lRl">
+                        <rect key="frame" x="40" y="31" width="104.5" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="104.5" id="lCE-Zc-Uga"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                        <color key="textColor" red="0.53725490196078429" green="0.5607843137254902" blue="0.62352941176470589" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMS-v8-7wg">
+                        <rect key="frame" x="207" y="16" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="fdE-cL-KXS"/>
+                            <constraint firstAttribute="width" constant="24" id="hpz-fQ-1nz"/>
+                        </constraints>
+                        <state key="normal" image="copy_icon_blue"/>
+                        <connections>
+                            <action selector="copyButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oxs-Ev-qAw"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8X-8I-GEZ">
+                        <rect key="frame" x="258" y="16" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="04z-4O-a73"/>
+                            <constraint firstAttribute="height" constant="24" id="asH-Tt-7pk"/>
+                        </constraints>
+                        <state key="normal" image="delete_icon_blue"/>
+                        <connections>
+                            <action selector="deleteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Cp5-gZ-hDK"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAk-l8-Bix">
+                        <rect key="frame" x="156" y="16" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="B95-lh-wSb"/>
+                            <constraint firstAttribute="width" constant="24" id="fBM-34-uol"/>
+                        </constraints>
+                        <state key="normal" image="edit_icon_blue"/>
+                        <connections>
+                            <action selector="editButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tFf-J5-hQy"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="86A-Yl-NIU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="01I-A3-v5D"/>
+                    <constraint firstItem="jda-1l-m4X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0BO-rH-ubV"/>
+                    <constraint firstItem="jAk-l8-Bix" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="0Ud-cc-HT6"/>
+                    <constraint firstAttribute="bottom" secondItem="jda-1l-m4X" secondAttribute="bottom" id="5xE-27-vcU"/>
+                    <constraint firstItem="86A-Yl-NIU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="9Ke-hh-DLL"/>
+                    <constraint firstItem="NeH-ae-lRl" firstAttribute="top" secondItem="86A-Yl-NIU" secondAttribute="bottom" constant="2" id="CNa-80-8KY"/>
+                    <constraint firstItem="R8X-8I-GEZ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QEY-YX-nIp"/>
+                    <constraint firstAttribute="trailing" secondItem="R8X-8I-GEZ" secondAttribute="trailing" constant="38" id="SL0-xX-KRn"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Tns-em-yUF"/>
+                    <constraint firstAttribute="trailing" secondItem="jda-1l-m4X" secondAttribute="trailing" id="dLi-ir-rpl"/>
+                    <constraint firstItem="NeH-ae-lRl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="eLs-5F-iV1"/>
+                    <constraint firstItem="R8X-8I-GEZ" firstAttribute="leading" secondItem="EMS-v8-7wg" secondAttribute="trailing" constant="27" id="fmJ-Du-7bg"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="leading" secondItem="jAk-l8-Bix" secondAttribute="trailing" constant="27" id="iie-d5-IF8"/>
+                    <constraint firstItem="jda-1l-m4X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rKO-2z-naV"/>
+                    <constraint firstItem="jAk-l8-Bix" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="86A-Yl-NIU" secondAttribute="trailing" constant="10" id="tb3-Ph-4sD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="walletAddressLabel" destination="NeH-ae-lRl" id="8Ml-iV-bRz"/>
+                <outlet property="walletNameLabel" destination="86A-Yl-NIU" id="Mxl-Us-1Fe"/>
+            </connections>
+            <point key="canvasLocation" x="124.6376811594203" y="110.49107142857143"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="copy_icon_blue" width="14" height="14"/>
+        <image name="delete_icon_blue" width="20" height="20"/>
+        <image name="edit_icon_blue" width="18" height="18"/>
+    </resources>
+</document>
