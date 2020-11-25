@@ -141,14 +141,18 @@ extension WalletsListViewController: WalletListTableViewCellDelegate {
       let wallet = self.viewModel.wallet(at: index)
       self.delegate?.walletsListViewController(self, run: .copy(wallet: wallet))
     case .edit(let index):
-      let wallet = self.viewModel.wallet(at: index)
-      self.delegate?.walletsListViewController(self, run: .edit(wallet: wallet))
+      self.dismiss(animated: true) {
+        let wallet = self.viewModel.wallet(at: index)
+        self.delegate?.walletsListViewController(self, run: .edit(wallet: wallet))
+      }
     case .remove(let index):
       let wallet = self.viewModel.wallet(at: index)
       self.delegate?.walletsListViewController(self, run: .remove(wallet: wallet))
     case .select(let index):
-      let wallet = self.viewModel.wallet(at: index)
-      self.delegate?.walletsListViewController(self, run: .select(wallet: wallet))
+      self.dismiss(animated: true) {
+        let wallet = self.viewModel.wallet(at: index)
+        self.delegate?.walletsListViewController(self, run: .select(wallet: wallet))
+      }
     }
   }
 }

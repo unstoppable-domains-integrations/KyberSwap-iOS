@@ -614,6 +614,10 @@ extension KNLimitOrderTabCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
     //    self.historyCoordinator = nil
   }
+  
+  func historyCoordinatorDidUpdateWalletObjects() {}
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
 }
 
 // MARK: Search token

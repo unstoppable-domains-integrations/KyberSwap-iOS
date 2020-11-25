@@ -13,6 +13,9 @@ protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorDidSelectPromoCode()
   func balanceTabCoordinatorOpenManageOrder()
   func balanceTabCoordinatorOpenSwap(from: String, to: String)
+  func balanceTabCoordinatorDidUpdateWalletObjects()
+  func balanceTabCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
+  func balanceTabCoordinatorDidSelectWallet(_ wallet: Wallet)
 }
 
 class KNBalanceTabCoordinator: NSObject, Coordinator {
@@ -468,6 +471,18 @@ extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
 extension KNBalanceTabCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
 //    self.historyCoordinator = nil
+  }
+
+  func historyCoordinatorDidUpdateWalletObjects() {
+    self.delegate?.balanceTabCoordinatorDidUpdateWalletObjects()
+  }
+
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    self.delegate?.balanceTabCoordinatorDidSelectRemoveWallet(wallet)
+  }
+
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.balanceTabCoordinatorDidSelectWallet(wallet)
   }
 }
 

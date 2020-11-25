@@ -212,6 +212,10 @@ extension KNExploreCoordinator: KNNotificationSettingViewControllerDelegate {
 extension KNExploreCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
   }
+  
+  func historyCoordinatorDidUpdateWalletObjects() {}
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
 }
 
 extension KNExploreCoordinator: KNListNotificationViewControllerDelegate {

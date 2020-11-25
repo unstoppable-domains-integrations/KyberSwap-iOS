@@ -114,6 +114,14 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
 // MARK: Balance Tab Coordinator Delegate
 extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
+  func balanceTabCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    self.removeWallet(wallet)
+  }
+  
+  func balanceTabCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
+  }
+
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isReceived)
     self.tabbarController.selectedIndex = 1
@@ -141,6 +149,13 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorOpenSwap(from: String, to: String) {
     self.tabbarController.selectedIndex = 1
     self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
+  }
+  
+  func balanceTabCoordinatorDidUpdateWalletObjects() {
+    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 }
 

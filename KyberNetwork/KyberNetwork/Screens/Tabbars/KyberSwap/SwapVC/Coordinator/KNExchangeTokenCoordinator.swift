@@ -980,6 +980,10 @@ extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
 //    self.historyCoordinator = nil
   }
+  
+  func historyCoordinatorDidUpdateWalletObjects() {}
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
 }
 
 extension KNExchangeTokenCoordinator: KNTransactionStatusPopUpDelegate {
