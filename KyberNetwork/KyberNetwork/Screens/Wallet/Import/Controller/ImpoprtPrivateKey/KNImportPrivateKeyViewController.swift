@@ -17,6 +17,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var enterPrivateKeyTextField: UITextField!
   @IBOutlet weak var privateKeyNoteLabel: UILabel!
+  @IBOutlet weak var privateKeyFieldContainer: UIView!
 
   @IBOutlet weak var nextButton: UIButton!
 
@@ -28,21 +29,19 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.enterPrivateKeyTextLabel.text = NSLocalizedString("your.private.key", value: "Your Private Key", comment: "")
     self.enterPrivateKeyTextLabel.addLetterSpacing()
-    self.enterPrivateKeyTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0))
-    self.enterPrivateKeyTextField.rightViewMode = .always
     self.enterPrivateKeyTextField.delegate = self
 
     self.privateKeyNoteLabel.text = "*\(NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: ""))"
     self.privateKeyNoteLabel.addLetterSpacing()
 
     let style = KNAppStyleType.current
-    self.nextButton.rounded(radius: style.buttonRadius())
+    self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
     self.nextButton.setBackgroundColor(
       style.importWalletButtonDisabledColor,
       forState: .disabled
     )
     self.nextButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
+      NSLocalizedString("Connect", value: "Connect", comment: ""),
       for: .normal
     )
     self.nextButton.addTextSpacing()
@@ -50,6 +49,9 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.addPlaceholderSpacing()
+    
+    self.privateKeyFieldContainer.rounded(radius: 8)
+    self.walletNameTextField.rounded(radius: 8)
 
     self.resetUI()
   }
@@ -69,7 +71,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   fileprivate func updateSecureTextEntry() {
-    let secureTextImage = UIImage(named: !self.isSecureText ? "hide_secure_text" : "show_secure_text")
+    let secureTextImage = UIImage(named: !self.isSecureText ? "hide_secure_text_blue" : "show_secure_text_blue")
     self.secureTextButton.setImage(secureTextImage, for: .normal)
     self.enterPrivateKeyTextField.isSecureTextEntry = self.isSecureText
   }
@@ -86,7 +88,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       return UIColor.Kyber.strawberry
     }()
     self.privateKeyNoteLabel.textColor = noteColor
-    if enabled { self.nextButton.applyGradient() }
+    if enabled { self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors) }
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {

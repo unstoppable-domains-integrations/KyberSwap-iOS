@@ -33,7 +33,7 @@ class KNBottomPopupViewModel {
 }
 
 class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
-  
+
   @IBOutlet weak var topContraint: NSLayoutConstraint!
   let transitor = TransitionDelegate()
   @IBOutlet weak var popupBody: UILabel!
@@ -42,9 +42,9 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
   @IBOutlet weak var popupContentView: UIView!
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var contentView: UIView!
-  
+
   let viewModel: KNBottomPopupViewModel
-  
+
   init(viewModel: KNBottomPopupViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNBottomPopupViewController.className, bundle: nil)
@@ -80,7 +80,7 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
       }
     })
   }
-  
+
   @IBAction func firstButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       if let action = self.viewModel.firstButtonAction {
@@ -95,7 +95,7 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
     self.confirmButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
-  //MARK: BottomPopUpAbstract
+  // MARK: BottomPopUpAbstract
   func setTopContrainConstant(value: CGFloat) {
     self.topContraint.constant = value
   }
@@ -103,7 +103,7 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
   func getPopupHeight() -> CGFloat {
     return 294
   }
-  
+
   func getPopupContentView() -> UIView {
     return self.popupContentView
   }

@@ -20,8 +20,8 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var wordsCountLabel: UILabel!
   @IBOutlet weak var qrcodeButton: UIButton!
-  @IBOutlet weak var guideDescLabel: UILabel!
-
+  @IBOutlet weak var seedsFieldContainer: UIView!
+  
   @IBOutlet weak var nextButton: UIButton!
 
   override func viewDidLoad() {
@@ -31,13 +31,13 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
     self.recoverSeedsLabel.addLetterSpacing()
     let style = KNAppStyleType.current
-    self.nextButton.rounded(radius: style.buttonRadius())
+    self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
     self.nextButton.setBackgroundColor(
       style.importWalletButtonDisabledColor,
       forState: .disabled
     )
     self.nextButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
+      "Connect".toBeLocalised(),
       for: .normal
     )
     self.nextButton.addTextSpacing()
@@ -45,8 +45,8 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.seedsTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.addPlaceholderSpacing()
-
-    self.guideDescLabel.text = "*\(NSLocalizedString("Separate words with a space", value: "Separate words with a space", comment: ""))"
+    self.seedsFieldContainer.rounded(radius: 8)
+    self.walletNameTextField.rounded(radius: 8)
 
     self.resetUIs()
   }
@@ -73,7 +73,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       return words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
-    if enabled { self.nextButton.applyGradient() }
+    if enabled { self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors) }
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {

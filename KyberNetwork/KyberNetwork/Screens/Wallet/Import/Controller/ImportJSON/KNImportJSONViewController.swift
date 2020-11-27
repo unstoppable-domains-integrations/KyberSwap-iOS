@@ -13,7 +13,7 @@ class KNImportJSONViewController: KNBaseViewController {
 
   lazy var buttonAttributes: [NSAttributedStringKey: Any] = {
     return [
-      NSAttributedStringKey.foregroundColor: UIColor.black,
+      NSAttributedStringKey.foregroundColor: UIColor(red: 35, green: 167, blue: 181),
       NSAttributedStringKey.kern: 0.0,
     ]
   }()
@@ -22,6 +22,7 @@ class KNImportJSONViewController: KNBaseViewController {
   @IBOutlet weak var importJSONButton: UIButton!
   @IBOutlet weak var enterPasswordTextField: UITextField!
   @IBOutlet weak var secureTextButton: UIButton!
+  @IBOutlet weak var passwordFieldContainer: UIView!
 
   @IBOutlet weak var nextButton: UIButton!
   override func viewDidLoad() {
@@ -45,20 +46,23 @@ class KNImportJSONViewController: KNBaseViewController {
     self.nameWalletTextField.text = ""
     self.enterPasswordTextField.text = ""
     self.enterPasswordTextField.isSecureTextEntry = true
-    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text_blue" : "show_secure_text_blue"), for: .normal)
 
     self.updateNextButton()
   }
 
   fileprivate func setupUI() {
     self.importJSONButton.rounded(
-      color: UIColor.Kyber.border,
-      width: 1
+      color: UIColor(red: 35, green: 167, blue: 181),
+      width: 1,
+      radius: self.importJSONButton.frame.size.height / 2
     )
     self.enterPasswordTextField.delegate = self
+    self.passwordFieldContainer.rounded(radius: 8)
+    self.nameWalletTextField.rounded(radius: 8)
 
     let style = KNAppStyleType.current
-    self.nextButton.rounded(radius: style.buttonRadius())
+    self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
     self.nextButton.setBackgroundColor(
       style.importWalletButtonDisabledColor,
       forState: .disabled
@@ -72,7 +76,7 @@ class KNImportJSONViewController: KNBaseViewController {
     self.enterPasswordTextField.addPlaceholderSpacing()
     self.nameWalletTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.nameWalletTextField.addPlaceholderSpacing()
-    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text_blue" : "show_secure_text_blue"), for: .normal)
 
     self.resetUIs()
   }
@@ -88,7 +92,7 @@ class KNImportJSONViewController: KNBaseViewController {
       return !password.isEmpty && !self.jsonData.isEmpty
     }()
     self.nextButton.isEnabled = enabled
-    if enabled { self.nextButton.applyGradient() }
+    if enabled { self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors) }
   }
 
   @IBAction func importJSONButtonPressed(_ sender: Any) {
@@ -97,7 +101,7 @@ class KNImportJSONViewController: KNBaseViewController {
 
   @IBAction func secureTextButtonPressed(_ sender: Any) {
     self.enterPasswordTextField.isSecureTextEntry = !self.enterPasswordTextField.isSecureTextEntry
-    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text" : "show_secure_text"), for: .normal)
+    self.secureTextButton.setImage(UIImage(named: !self.enterPasswordTextField.isSecureTextEntry ? "hide_secure_text_blue" : "show_secure_text_blue"), for: .normal)
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
