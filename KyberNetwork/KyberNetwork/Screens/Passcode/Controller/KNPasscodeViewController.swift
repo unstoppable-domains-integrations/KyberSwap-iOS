@@ -77,14 +77,14 @@ class KNPasscodeViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.passcodeViews.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
-    self.digitButtons.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
+//    self.digitButtons.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
-    self.digitButtons.forEach({
-      $0.setBackgroundColor(.white, forState: .normal)
-      $0.setBackgroundColor(UIColor.Kyber.enygold, forState: .highlighted)
-      $0.setTitleColor(UIColor.Kyber.enygold, for: .normal)
-      $0.setTitleColor(.white, for: .highlighted)
-    })
+//    self.digitButtons.forEach({
+//      $0.setBackgroundColor(.white, forState: .normal)
+//      $0.setBackgroundColor(UIColor.Kyber.enygold, forState: .highlighted)
+//      $0.setTitleColor(UIColor.Kyber.enygold, for: .normal)
+//      $0.setTitleColor(.white, for: .highlighted)
+//    })
     self.bioAuthenButton.isHidden = true
 
     self.updateUI()
@@ -95,7 +95,7 @@ class KNPasscodeViewController: KNBaseViewController {
     self.titleLabel.addLetterSpacing()
     self.errorLabel.text = self.errorText
     self.errorLabel.addLetterSpacing()
-    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.enygold : UIColor.Kyber.passcodeInactive })
+    self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.SWActivePageControlColor : UIColor.Kyber.SWInActivePageControlColor })
     self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.view.layoutIfNeeded()
   }

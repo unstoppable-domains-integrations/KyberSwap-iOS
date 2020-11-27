@@ -14,14 +14,16 @@ class KNBottomPopupViewModel {
   let secondButtonTitle: String
   var firstButtonAction: (() -> Void)?
   var secondButtonAction: (() -> Void)?
-  
+  var dismissAction: (() -> Void)?
+
   init(
     title: String,
     body: String,
     firstButtonTitle: String?,
     secondButtonTitle: String,
     firstButtonAction: (() -> Void)?,
-    secondButtonAction: (() -> Void)?
+    secondButtonAction: (() -> Void)?,
+    dismissAction: (() -> Void)?
   ) {
     self.title = title
     self.body = body
@@ -29,6 +31,7 @@ class KNBottomPopupViewModel {
     self.secondButtonTitle = secondButtonTitle
     self.firstButtonAction = firstButtonAction
     self.secondButtonAction = secondButtonAction
+    self.dismissAction = dismissAction
   }
 }
 
@@ -84,6 +87,14 @@ class KNBottomPopupViewController: KNBaseViewController, BottomPopUpAbstract {
   @IBAction func firstButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       if let action = self.viewModel.firstButtonAction {
+        action()
+      }
+    })
+  }
+
+  @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: {
+      if let action = self.viewModel.dismissAction {
         action()
       }
     })

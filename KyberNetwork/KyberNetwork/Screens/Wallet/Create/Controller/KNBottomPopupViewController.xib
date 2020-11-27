@@ -110,13 +110,22 @@ It can not be undone, but you could be anounce</string>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.099829445422535218" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="MXC-yx-7UC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="KuG-vV-K0F"/>
                 <constraint firstItem="MXC-yx-7UC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="297" id="bkA-rn-E6N"/>
                 <constraint firstItem="MXC-yx-7UC" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qTa-Tm-CKG"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="pRv-9y-sGy" appends="YES" id="Ljv-c7-k95"/>
+            </connections>
             <point key="canvasLocation" x="140.57971014492756" y="27.455357142857142"/>
         </view>
+        <tapGestureRecognizer id="pRv-9y-sGy">
+            <connections>
+                <action selector="tapOutSidePopup:" destination="-1" id="1Pv-a7-wa4"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

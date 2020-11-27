@@ -87,6 +87,9 @@ class KNAddNewWalletCoordinator: Coordinator {
       firstButtonAction: nil,
       secondButtonAction: {
         self.createNewWallet()
+      },
+      dismissAction: {
+        self.navigationController.dismiss(animated: false, completion: nil)
       }
     )
     let popup = KNBottomPopupViewController(viewModel: viewModel)

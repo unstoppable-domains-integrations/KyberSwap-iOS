@@ -98,19 +98,19 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
     self.messageLabel.text = self.viewModel.message
     self.messageLabel.addLetterSpacing()
 
-    self.firstButton.rounded(color: UIColor.Kyber.SWButtonYellow, width: 1, radius: self.firstButton.frame.size.height / 2)
-    self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
-
-    self.secondButton.rounded(radius: self.secondButton.frame.size.height / 2)
-    self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
-    self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
-
     if self.viewModel.numberButtons == 1 {
       self.secondButtonWidthConstraint.constant = 0
       self.paddingConstraintForButtons.constant = 0
+      self.firstButton.rounded(radius: self.firstButton.frame.size.height / 2)
       self.firstButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
       self.firstButton.setTitleColor(.white, for: .normal)
     } else {
+      self.firstButton.rounded(color: UIColor.Kyber.SWButtonYellow, width: 1, radius: self.firstButton.frame.size.height / 2)
+      self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
+      self.secondButton.rounded(radius: self.secondButton.frame.size.height / 2)
+      self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
+      self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+
       self.paddingConstraintForButtons.constant = 16
       self.secondButtonWidthConstraint.constant = (self.containerView.frame.width - 48) / 2.0
       self.secondButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
@@ -159,7 +159,7 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
     }
   }
 
-  //MARK: BottomPopUpAbstract
+  // MARK: BottomPopUpAbstract
   func setTopContrainConstant(value: CGFloat) {
     self.contentViewTopContraint.constant = value
   }

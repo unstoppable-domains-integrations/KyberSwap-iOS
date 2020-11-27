@@ -76,6 +76,7 @@ extension KNAppCoordinator {
       self.settingsCoordinator!.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
+    self.tabbarController.tabBar.barTintColor = UIColor.Kyber.SWDarkBlueBackground
     self.balanceTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("balance", value: "Balance", comment: ""),
       image: UIImage(named: "tabbar_balance_icon_normal"),
