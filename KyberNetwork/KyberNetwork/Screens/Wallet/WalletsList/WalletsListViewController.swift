@@ -129,7 +129,7 @@ extension WalletsListViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath) as! WalletListTableViewCell
     let wallet = self.viewModel.wallet(at: indexPath.row)
     cell.delegate = self
-    cell.updateCell(with: wallet, id: indexPath.row)
+    cell.updateCell(with: wallet, id: indexPath.row, isCurrent: self.viewModel.isCurrentWallet(row: indexPath.row))
     return cell
   }
 }

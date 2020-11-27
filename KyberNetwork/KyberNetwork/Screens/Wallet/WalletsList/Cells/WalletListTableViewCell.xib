@@ -37,7 +37,7 @@
                         <color key="textColor" red="0.92549019607843142" green="0.92941176470588238" blue="0.93725490196078431" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb45thu4c…8f6hn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeH-ae-lRl">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb45thu4c…8f6hn" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeH-ae-lRl">
                         <rect key="frame" x="40" y="31" width="104.5" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="104.5" id="lCE-Zc-Uga"/>
@@ -79,6 +79,13 @@
                             <action selector="editButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tFf-J5-hQy"/>
                         </connections>
                     </button>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="juK-dW-ofX">
+                        <rect key="frame" x="10" y="24.5" width="12" height="7.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="12" id="GcO-DP-Lea"/>
+                            <constraint firstAttribute="height" constant="7.5" id="QKx-IR-83g"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="86A-Yl-NIU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="01I-A3-v5D"/>
@@ -93,7 +100,9 @@
                     <constraint firstAttribute="trailing" secondItem="jda-1l-m4X" secondAttribute="trailing" id="dLi-ir-rpl"/>
                     <constraint firstItem="NeH-ae-lRl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="eLs-5F-iV1"/>
                     <constraint firstItem="R8X-8I-GEZ" firstAttribute="leading" secondItem="EMS-v8-7wg" secondAttribute="trailing" constant="27" id="fmJ-Du-7bg"/>
+                    <constraint firstItem="juK-dW-ofX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ggV-Mq-3rA"/>
                     <constraint firstItem="EMS-v8-7wg" firstAttribute="leading" secondItem="jAk-l8-Bix" secondAttribute="trailing" constant="27" id="iie-d5-IF8"/>
+                    <constraint firstItem="juK-dW-ofX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="lI7-HG-fOv"/>
                     <constraint firstItem="jda-1l-m4X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rKO-2z-naV"/>
                     <constraint firstItem="jAk-l8-Bix" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="86A-Yl-NIU" secondAttribute="trailing" constant="10" id="tb3-Ph-4sD"/>
                 </constraints>
@@ -101,6 +110,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
+                <outlet property="checkIconImage" destination="juK-dW-ofX" id="MgY-kl-vqZ"/>
                 <outlet property="walletAddressLabel" destination="NeH-ae-lRl" id="8Ml-iV-bRz"/>
                 <outlet property="walletNameLabel" destination="86A-Yl-NIU" id="Mxl-Us-1Fe"/>
             </connections>
@@ -108,6 +118,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="check_icon_green" width="14" height="10"/>
         <image name="copy_icon_blue" width="14" height="14"/>
         <image name="delete_icon_blue" width="20" height="20"/>
         <image name="edit_icon_blue" width="18" height="18"/>
