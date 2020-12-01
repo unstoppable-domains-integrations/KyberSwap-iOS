@@ -39,7 +39,6 @@ class KNPasscodeViewController: KNBaseViewController {
   @IBOutlet weak var bioAuthenButton: UIButton!
 
   @IBOutlet var digitButtons: [UIButton]!
-  @IBOutlet weak var actionButton: UIButton!
 
   init(viewType: KNPasscodeViewType, delegate: KNPasscodeViewControllerDelegate?) {
     self.viewType = viewType
@@ -78,7 +77,7 @@ class KNPasscodeViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.passcodeViews.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
 //    self.digitButtons.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
-    self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
+    
 //    self.digitButtons.forEach({
 //      $0.setBackgroundColor(.white, forState: .normal)
 //      $0.setBackgroundColor(UIColor.Kyber.enygold, forState: .highlighted)
@@ -96,7 +95,6 @@ class KNPasscodeViewController: KNBaseViewController {
     self.errorLabel.text = self.errorText
     self.errorLabel.addLetterSpacing()
     self.passcodeViews.forEach({ $0.backgroundColor = $0.tag < self.currentPasscode.count ? UIColor.Kyber.SWActivePageControlColor : UIColor.Kyber.SWInActivePageControlColor })
-    self.actionButton.setTitle(self.actionButtonTitle, for: .normal)
     self.view.layoutIfNeeded()
   }
 
@@ -115,7 +113,7 @@ class KNPasscodeViewController: KNBaseViewController {
     }
     self.bioAuthenButton.isHidden = false
     self.bioAuthenButton.setImage(
-      UIImage(named: context.biometryType == LABiometryType.faceID ? "faceid_icon" : "touchid_icon"),
+      UIImage(named: context.biometryType == LABiometryType.faceID ? "faceid_blue_icon" : "touchid_blue_icon"),
       for: .normal
     )
     context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("use.touchid/faceid.to.secure.your.account", value: "Use touchID/faceID to secure your account", comment: "")) { [weak self] (success, error) in
@@ -282,16 +280,6 @@ extension KNPasscodeViewController {
     let numberAttemptsLeft = KNPasscodeUtil.shared.numberAttemptsLeft()
     let text = NSLocalizedString("you.have.attempt", value: "You have %d attempt(s) left", comment: "")
     return String.localizedStringWithFormat(text, numberAttemptsLeft)
-  }
-
-  fileprivate var actionButtonTitle: String {
-    if !self.currentPasscode.isEmpty { return NSLocalizedString("delete", value: "Delete", comment: "") }
-    if case .setPasscode(let cancellable) = self.viewType {
-      if cancellable || self.firstPasscode != nil { return NSLocalizedString("cancel", value: "Cancel", comment: "") }
-    }
-    if case .authenticate(let isUpdating) = self.viewType, isUpdating { return NSLocalizedString("cancel", value: "Cancel", comment: "") }
-    if case .verifyPasscode = self.viewType { return NSLocalizedString("cancel", value: "Cancel", comment: "") }
-    return ""
   }
 
   func errorMessageForLAErrorCode(_ errorCode: Int ) -> String? {

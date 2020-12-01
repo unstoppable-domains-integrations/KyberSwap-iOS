@@ -11,14 +11,10 @@
         <array key="Lato-Regular.ttf">
             <string>Lato-Regular</string>
         </array>
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPasscodeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
-                <outlet property="actionButton" destination="1Ye-rp-M12" id="fA1-0F-q4Q"/>
                 <outlet property="bioAuthenButton" destination="Di7-0c-jbX" id="YfV-QQ-Grd"/>
                 <outlet property="errorLabel" destination="2vV-ba-j6R" id="1dV-c6-KLn"/>
                 <outlet property="passcodeContainerView" destination="7Ek-ZI-Va7" id="qjG-ac-Wpw"/>
@@ -197,19 +193,6 @@
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="CGG-rc-hep"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-rp-M12">
-                    <rect key="frame" x="285" y="608" width="60" height="29"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="60" id="gQ1-6Y-nYz"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <state key="normal" title="Cancel">
-                        <color key="titleColor" red="0.1137254902" green="0.14901960780000001" blue="0.24313725489999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="actionButtonPressed:" destination="-1" eventType="touchUpInside" id="2gJ-af-Kkw"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="17d-uX-RC2">
                     <rect key="frame" x="20" y="62" width="335" height="22"/>
                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="18"/>
@@ -282,14 +265,21 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di7-0c-jbX">
-                    <rect key="frame" x="169.5" y="592.5" width="36" height="36"/>
+                    <rect key="frame" x="169.5" y="591" width="36" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="2dq-td-F3t"/>
                         <constraint firstAttribute="width" constant="36" id="ciK-hn-CW5"/>
                     </constraints>
-                    <state key="normal" image="faceid_icon"/>
+                    <state key="normal" image="faceid_blue_icon"/>
                     <connections>
                         <action selector="bioAuthenButtonPressed:" destination="-1" eventType="touchUpInside" id="rmw-4k-aSY"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56z-gV-8Rd">
+                    <rect key="frame" x="256.5" y="501.5" width="52" height="44"/>
+                    <state key="normal" image="keyboard_delete_icon"/>
+                    <connections>
+                        <action selector="actionButtonPressed:" destination="-1" eventType="touchUpInside" id="baW-88-b7p"/>
                     </connections>
                 </button>
             </subviews>
@@ -299,6 +289,7 @@
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="leading" secondItem="Cku-mu-38E" secondAttribute="trailing" constant="20" id="0ud-u6-Wc7"/>
                 <constraint firstItem="neI-BK-Nw0" firstAttribute="leading" secondItem="Ylg-Cb-Sks" secondAttribute="trailing" constant="20" id="2G0-x9-uA3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="17d-uX-RC2" secondAttribute="trailing" constant="20" id="2vy-vu-Jiw"/>
+                <constraint firstItem="56z-gV-8Rd" firstAttribute="centerX" secondItem="Sxt-Re-76G" secondAttribute="centerX" id="4JY-wC-0YS"/>
                 <constraint firstItem="IsP-nF-c3X" firstAttribute="leading" secondItem="kBa-D8-K83" secondAttribute="trailing" constant="20" id="4Xy-N2-0ku"/>
                 <constraint firstItem="hOq-K5-z3m" firstAttribute="centerY" secondItem="iko-Cb-5k8" secondAttribute="centerY" id="4Zp-lD-RIc"/>
                 <constraint firstItem="17d-uX-RC2" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="8pM-T6-lB1"/>
@@ -307,14 +298,11 @@
                 <constraint firstItem="iko-Cb-5k8" firstAttribute="centerX" secondItem="Ylg-Cb-Sks" secondAttribute="centerX" id="B4h-uQ-zdf"/>
                 <constraint firstItem="2vV-ba-j6R" firstAttribute="centerX" secondItem="17d-uX-RC2" secondAttribute="centerX" id="B8n-QB-eg4"/>
                 <constraint firstItem="IsP-nF-c3X" firstAttribute="top" secondItem="Ylg-Cb-Sks" secondAttribute="bottom" constant="20" id="DAP-K3-uHM"/>
-                <constraint firstItem="Di7-0c-jbX" firstAttribute="centerY" secondItem="1Ye-rp-M12" secondAttribute="centerY" constant="-12" id="EdI-YG-aoy"/>
                 <constraint firstItem="2vV-ba-j6R" firstAttribute="top" secondItem="17d-uX-RC2" secondAttribute="bottom" constant="10" id="Ltb-06-QSh"/>
                 <constraint firstItem="neI-BK-Nw0" firstAttribute="centerY" secondItem="Ylg-Cb-Sks" secondAttribute="centerY" id="Nex-bY-oeM"/>
                 <constraint firstItem="17d-uX-RC2" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="62" id="NpO-eP-1tk"/>
                 <constraint firstItem="Cku-mu-38E" firstAttribute="centerY" secondItem="Ylg-Cb-Sks" secondAttribute="centerY" id="O7O-Ad-8cs"/>
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="QEC-HN-op1"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="1Ye-rp-M12" secondAttribute="bottom" constant="30" id="SeX-KX-XST"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1Ye-rp-M12" secondAttribute="trailing" constant="30" id="bKb-qE-wBF"/>
                 <constraint firstItem="kBa-D8-K83" firstAttribute="centerY" secondItem="IsP-nF-c3X" secondAttribute="centerY" id="cl2-FL-IWd"/>
                 <constraint firstItem="C5h-n8-Fpg" firstAttribute="leading" secondItem="iko-Cb-5k8" secondAttribute="trailing" constant="20" id="d16-5b-aH5"/>
                 <constraint firstItem="Sxt-Re-76G" firstAttribute="leading" secondItem="IsP-nF-c3X" secondAttribute="trailing" constant="20" id="d8b-zf-3Y3"/>
@@ -323,7 +311,9 @@
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="top" secondItem="iko-Cb-5k8" secondAttribute="bottom" constant="20" id="hDr-ow-4I0"/>
                 <constraint firstItem="7Ek-ZI-Va7" firstAttribute="centerX" secondItem="2vV-ba-j6R" secondAttribute="centerX" id="hs7-9K-rsH"/>
                 <constraint firstItem="Sxt-Re-76G" firstAttribute="centerY" secondItem="IsP-nF-c3X" secondAttribute="centerY" id="k9v-XO-WiJ"/>
+                <constraint firstItem="Di7-0c-jbX" firstAttribute="top" secondItem="sP7-ZT-eta" secondAttribute="bottom" constant="30" id="lGS-cy-GJc"/>
                 <constraint firstItem="7Ek-ZI-Va7" firstAttribute="top" secondItem="2vV-ba-j6R" secondAttribute="bottom" id="lqW-0O-fDE"/>
+                <constraint firstItem="56z-gV-8Rd" firstAttribute="centerY" secondItem="sP7-ZT-eta" secondAttribute="centerY" id="mXZ-jC-Mb8"/>
                 <constraint firstItem="iko-Cb-5k8" firstAttribute="leading" secondItem="hOq-K5-z3m" secondAttribute="trailing" constant="20" id="obr-c1-MEi"/>
                 <constraint firstItem="17d-uX-RC2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="pNY-UN-p3O"/>
                 <constraint firstItem="sP7-ZT-eta" firstAttribute="centerX" secondItem="IsP-nF-c3X" secondAttribute="centerX" id="rz2-GB-qFq"/>
@@ -335,6 +325,7 @@
         </view>
     </objects>
     <resources>
-        <image name="faceid_icon" width="52" height="51"/>
+        <image name="faceid_blue_icon" width="26" height="26"/>
+        <image name="keyboard_delete_icon" width="52" height="44"/>
     </resources>
 </document>
