@@ -82,6 +82,7 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="SWU-7O-zO9" firstAttribute="leading" secondItem="5WQ-tn-CFc" secondAttribute="leading" id="7l5-xc-M74"/>
                         <constraint firstItem="Z0B-hj-7l8" firstAttribute="top" secondItem="SWU-7O-zO9" secondAttribute="bottom" constant="42" id="AVX-K1-wex"/>
@@ -106,7 +107,15 @@
                 <constraint firstItem="y0y-zQ-l9R" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="373" id="gfu-R8-UsH"/>
                 <constraint firstItem="y0y-zQ-l9R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hw8-8Y-gvF"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="NNE-2C-aLn" appends="YES" id="a1T-fU-7ba"/>
+            </connections>
             <point key="canvasLocation" x="40.5" y="53.5"/>
         </view>
+        <tapGestureRecognizer id="NNE-2C-aLn">
+            <connections>
+                <action selector="tapOutSidePopup:" destination="-1" id="ONT-vw-jIF"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

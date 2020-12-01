@@ -61,12 +61,8 @@ class KNImportJSONViewController: KNBaseViewController {
     self.passwordFieldContainer.rounded(radius: 8)
     self.nameWalletTextField.rounded(radius: 8)
 
-    let style = KNAppStyleType.current
     self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
-    self.nextButton.setBackgroundColor(
-      style.importWalletButtonDisabledColor,
-      forState: .disabled
-    )
+    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.nextButton.setTitle(
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
@@ -92,7 +88,12 @@ class KNImportJSONViewController: KNBaseViewController {
       return !password.isEmpty && !self.jsonData.isEmpty
     }()
     self.nextButton.isEnabled = enabled
-    if enabled { self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors) }
+    if enabled {
+      self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+      self.nextButton.alpha = 1
+    } else {
+      self.nextButton.alpha = 0.2
+    }
   }
 
   @IBAction func importJSONButtonPressed(_ sender: Any) {

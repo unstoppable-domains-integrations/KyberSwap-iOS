@@ -124,7 +124,7 @@ extension WalletsListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kWalletTableViewCellID, for: indexPath) as! WalletListTableViewCell
     let wallet = self.viewModel.wallet(at: indexPath.row)

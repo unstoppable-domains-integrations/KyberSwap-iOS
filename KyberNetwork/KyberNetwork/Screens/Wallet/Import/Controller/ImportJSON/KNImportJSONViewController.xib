@@ -27,7 +27,7 @@
                 <outlet property="enterPasswordTextField" destination="5OF-yq-LyQ" id="8PM-fi-EUJ"/>
                 <outlet property="importJSONButton" destination="Kef-NW-6Ru" id="JJq-I7-DXO"/>
                 <outlet property="nameWalletTextField" destination="iET-Mn-45p" id="nzd-Oi-pbV"/>
-                <outlet property="nextButton" destination="6bU-jo-KwQ" id="vJx-Fq-aJt"/>
+                <outlet property="nextButton" destination="6bU-jo-KwQ" id="GbB-ut-Cna"/>
                 <outlet property="passwordFieldContainer" destination="ARt-9j-4Vp" id="lZP-vf-Bjo"/>
                 <outlet property="secureTextButton" destination="1UL-D2-Ny2" id="GqO-Cc-CuF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

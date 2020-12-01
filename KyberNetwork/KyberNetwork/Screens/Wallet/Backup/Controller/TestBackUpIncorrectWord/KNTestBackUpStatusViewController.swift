@@ -159,6 +159,10 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
     }
   }
 
+  @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
+  }
+
   // MARK: BottomPopUpAbstract
   func setTopContrainConstant(value: CGFloat) {
     self.contentViewTopContraint.constant = value

@@ -516,7 +516,7 @@ extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
       }))
       controller.present(alert, animated: true, completion: nil)
     case .edit(let wallet):
-      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised()) { (text) in
+      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised(), value: wallet.name) { (text) in
         let newWallet = wallet.copy(withNewName: text)
         let contact = KNContact(
           address: newWallet.address,

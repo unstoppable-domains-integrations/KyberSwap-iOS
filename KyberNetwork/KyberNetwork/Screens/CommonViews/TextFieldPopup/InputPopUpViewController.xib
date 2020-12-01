@@ -100,12 +100,21 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="2Ka-jX-yIs" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="1K8-sV-Ciz"/>
                 <constraint firstItem="2Ka-jX-yIs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FnX-LI-bX2"/>
                 <constraint firstItem="2Ka-jX-yIs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="678" id="cCC-HW-pPv"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="8zi-QT-C3X" appends="YES" id="Vkf-9L-P5O"/>
+            </connections>
             <point key="canvasLocation" x="140.57971014492756" y="103.79464285714285"/>
         </view>
+        <tapGestureRecognizer id="8zi-QT-C3X">
+            <connections>
+                <action selector="tapOutSidePopup:" destination="-1" id="LdJ-0Z-AXh"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

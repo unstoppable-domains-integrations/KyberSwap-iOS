@@ -21,7 +21,6 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var wordsCountLabel: UILabel!
   @IBOutlet weak var qrcodeButton: UIButton!
   @IBOutlet weak var seedsFieldContainer: UIView!
-  
   @IBOutlet weak var nextButton: UIButton!
 
   override func viewDidLoad() {
@@ -30,12 +29,8 @@ class KNImportSeedsViewController: KNBaseViewController {
 
     self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
     self.recoverSeedsLabel.addLetterSpacing()
-    let style = KNAppStyleType.current
     self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
-    self.nextButton.setBackgroundColor(
-      style.importWalletButtonDisabledColor,
-      forState: .disabled
-    )
+    self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.nextButton.setTitle(
       "Connect".toBeLocalised(),
       for: .normal
@@ -73,7 +68,12 @@ class KNImportSeedsViewController: KNBaseViewController {
       return words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
-    if enabled { self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors) }
+    if enabled {
+      self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+      self.nextButton.alpha = 1
+    } else {
+      self.nextButton.alpha = 0.2
+    }
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
