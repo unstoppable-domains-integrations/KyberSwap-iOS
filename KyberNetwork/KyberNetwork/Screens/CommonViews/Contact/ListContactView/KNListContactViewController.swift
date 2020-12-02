@@ -32,8 +32,6 @@ class KNListContactViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let style = KNAppStyleType.current
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     let contacts = KNContactStorage.shared.contacts
     self.contactTableView.delegate = self
     self.contactTableView.updateView(
@@ -41,17 +39,17 @@ class KNListContactViewController: KNBaseViewController {
       isFull: true
     )
     self.contactTableView.updateScrolling(isEnabled: true)
-    self.navTitleLabel.text = NSLocalizedString("contact", value: "Contact", comment: "")
+    self.navTitleLabel.text = NSLocalizedString("contact", value: "Contact", comment: "").uppercased()
 
     self.contactTableView.isHidden = contacts.isEmpty
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactEmptyLabel.text = NSLocalizedString("your.contact.is.empty", value: "Your contact is empty", comment: "")
-    self.addContactButton.rounded(radius: style.buttonRadius())
-    self.addContactButton.applyGradient()
+    self.addContactButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.addContactButton.frame.size.height / 2)
     self.addContactButton.setTitle(
       NSLocalizedString("add.contact", value: "Add Contact", comment: ""),
       for: .normal
     )
+    self.headerContainerView.rounded(radius: 20)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -64,14 +62,6 @@ class KNListContactViewController: KNBaseViewController {
     )
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactTableView.isHidden = contacts.isEmpty
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.addContactButton.removeSublayer(at: 0)
-    self.addContactButton.applyGradient()
   }
 
   func removeObserveNotification() {
@@ -127,6 +117,8 @@ extension KNListContactViewController: KNContactTableViewDelegate {
       self.showMessageWithInterval(
         message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
       )
+    case .addContact:
+      self.addButtonPressed(tableView)
     default:
       let contacts = KNContactStorage.shared.contacts
       self.emptyStateView.isHidden = !contacts.isEmpty

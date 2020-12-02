@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustCore
+import SwipeCellKit
 
 struct KNContactTableViewCellModel {
   let contact: KNContact
@@ -38,9 +39,9 @@ struct KNContactTableViewCellModel {
   }
 }
 
-class KNContactTableViewCell: UITableViewCell {
+class KNContactTableViewCell: SwipeTableViewCell {
 
-  static let height: CGFloat = 68
+  static let height: CGFloat = 56
 
   @IBOutlet weak var addressImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!

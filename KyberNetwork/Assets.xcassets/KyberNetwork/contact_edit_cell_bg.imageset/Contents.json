@@ -1,15 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "group2.png",
+      "filename" : "group6Copy.png",
       "idiom" : "universal",
       "resizing" : {
         "cap-insets" : {
-          "left" : 85,
+          "left" : 71,
           "right" : 0
         },
         "center" : {
-          "mode" : "stretch",
+          "mode" : "tile",
           "width" : 1
         },
         "mode" : "3-part-horizontal"
@@ -17,11 +17,11 @@
       "scale" : "1x"
     },
     {
-      "filename" : "group2@2x.png",
+      "filename" : "group6Copy@2x.png",
       "idiom" : "universal",
       "resizing" : {
         "cap-insets" : {
-          "left" : 169,
+          "left" : 146,
           "right" : 0
         },
         "center" : {
@@ -33,11 +33,11 @@
       "scale" : "2x"
     },
     {
-      "filename" : "group2@3x.png",
+      "filename" : "group6Copy@3x.png",
       "idiom" : "universal",
       "resizing" : {
         "cap-insets" : {
-          "left" : 253,
+          "left" : 214,
           "right" : 0
         },
         "center" : {

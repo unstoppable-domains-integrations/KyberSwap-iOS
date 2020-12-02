@@ -682,6 +682,8 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       self.showMessageWithInterval(
         message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
       )
+    case .addContact:
+      self.newContactButtonPressed(tableView)
     }
   }
 
