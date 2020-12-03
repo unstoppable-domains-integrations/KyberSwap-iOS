@@ -40,5 +40,9 @@ extension UIFont {
     static func latoBold(with size: CGFloat) -> UIFont {
       return UIFont(name: "Lato-Bold", size: size)!
     }
+
+    static func latoRegular(with size: CGFloat) -> UIFont {
+      return UIFont(name: "Lato-Regular", size: size)!
+    }
   }
 }

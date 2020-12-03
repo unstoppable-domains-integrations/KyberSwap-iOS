@@ -87,6 +87,7 @@ extension UIColor {
     static var SWActivePageControlColor = UIColor(red: 63, green: 163, blue: 196)
     static var SWInActivePageControlColor = UIColor(red: 213, green: 217, blue: 225)
     static var SWButtonBlueColor = UIColor(red: 35, green: 167, blue: 181)
+    static var SWTextFieldPlaceHolderColor = UIColor(red: 76, green: 102, blue: 112)
 
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
 
