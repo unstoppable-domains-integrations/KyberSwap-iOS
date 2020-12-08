@@ -553,6 +553,8 @@
 		C31F152923F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F152723F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift */; };
 		C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */; };
 		C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */; };
+		C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */; };
+		C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */; };
 		C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326C688256D04B000B35E8F /* InputPopUpViewController.swift */; };
 		C326C68B256D04B000B35E8F /* InputPopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326C689256D04B000B35E8F /* InputPopUpViewController.xib */; };
 		C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32EA229246934AA00866968 /* KNPrettyAlertController.swift */; };
@@ -1239,6 +1241,8 @@
 		C31F152723F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewController.swift; sourceTree = "<group>"; };
 		C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpeedUpCustomGasSelectViewController.xib; sourceTree = "<group>"; };
 		C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewModel.swift; sourceTree = "<group>"; };
+		C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewController.swift; sourceTree = "<group>"; };
+		C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GasFeeSelectorPopupViewController.xib; sourceTree = "<group>"; };
 		C326C688256D04B000B35E8F /* InputPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopUpViewController.swift; sourceTree = "<group>"; };
 		C326C689256D04B000B35E8F /* InputPopUpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputPopUpViewController.xib; sourceTree = "<group>"; };
 		C32EA229246934AA00866968 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
@@ -1755,6 +1759,7 @@
 		2542604B21218EBC0015ECC7 /* Popups */ = {
 			isa = PBXGroup;
 			children = (
+				C326703C2579E40E0063AA1F /* GasFeeSelector */,
 				C33CCB2A23F40F8000F54B81 /* ConfirmCancelTransaction */,
 				C680C11E2382953600A621CB /* ForceUpdateNewVersion */,
 				C680C11B2382753E00A621CB /* AppStoreRating */,
@@ -4094,6 +4099,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		C326703C2579E40E0063AA1F /* GasFeeSelector */ = {
+			isa = PBXGroup;
+			children = (
+				C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */,
+				C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */,
+			);
+			path = GasFeeSelector;
+			sourceTree = "<group>";
+		};
 		C326C687256D003A00B35E8F /* TextFieldPopup */ = {
 			isa = PBXGroup;
 			children = (
@@ -4726,6 +4740,7 @@
 				C37CC099245803CA0081FB32 /* Roboto-Italic.ttf in Resources */,
 				C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */,
 				254A88BB229BDC5300AA6BBA /* KNLimitOrderTokenTableViewCell.xib in Resources */,
+				C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */,
 				25CDE82222290D9200AD0363 /* KNNotificationMethodsViewController.xib in Resources */,
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
@@ -5037,6 +5052,7 @@
 				291F52B91F6B880F00B369AB /* EtherKeystore.swift in Sources */,
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
 				296106D01F778A8D0006164B /* TransferType.swift in Sources */,
+				C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */,
 				2561454620C648A700FB00CF /* KNContactStorage.swift in Sources */,
 				29E14FDB1F7F4F3D00185568 /* Transaction.swift in Sources */,
 				C60BB88C239596D5006FE37D /* KNGetResolverRequest.swift in Sources */,

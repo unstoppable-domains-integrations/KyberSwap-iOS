@@ -3,31 +3,6 @@
 import UIKit
 import BigInt
 
-enum KNSelectedGasPriceType: Int {
-  case fast = 0
-  case medium = 1
-  case slow = 2
-  case superFast = 3
-  case custom
-}
-
-extension KNSelectedGasPriceType {
-  func displayString() -> String {
-    switch self {
-    case .fast:
-      return "fast"
-    case .medium:
-      return "regular"
-    case .slow:
-      return "slow"
-    case .superFast:
-      return "super fast"
-    case .custom:
-      return "custom"
-    }
-  }
-}
-
 enum KAdvancedSettingsViewEvent {
   case infoPressed
   case displayButtonPressed
@@ -36,12 +11,6 @@ enum KAdvancedSettingsViewEvent {
   case helpPressed
   case changeIsUsingReverseRouting(value: Bool)
   case reverseRoutingHelpPress
-}
-
-enum KAdvancedSettingsMinRateType {
-  case threePercent
-  case anyRate
-  case custom(value: Double)
 }
 
 protocol KAdvancedSettingsViewDelegate: class {
