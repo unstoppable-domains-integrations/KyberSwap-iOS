@@ -28,6 +28,7 @@ class KNSendTokenViewCoordinator: Coordinator {
 
   fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
   fileprivate(set) var confirmVC: KConfirmSendViewController?
+  fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
 
   lazy var addContactVC: KNNewContactViewController = {
@@ -88,6 +89,12 @@ extension KNSendTokenViewCoordinator {
 
   func coordinatorGasPriceCachedDidUpdate() {
     self.rootViewController.coordinatorUpdateGasPriceCached()
+    self.gasPriceSelector?.coordinatorDidUpdateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
   }
 
   func coordinatorOpenSendView(to address: String) {
@@ -149,6 +156,19 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.openNewContact(address: address, ens: ens)
     case .contactSelectMore:
       self.openListContactsView()
+    case .openGasPriceSelect(let gasLimit, let selectType):
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType)
+      viewModel.updateGasPrices(
+        fast: KNGasCoordinator.shared.fastKNGas,
+        medium: KNGasCoordinator.shared.standardKNGas,
+        slow: KNGasCoordinator.shared.lowKNGas,
+        superFast: KNGasCoordinator.shared.superFastKNGas
+      )
+
+      let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
+      self.gasPriceSelector = vc
     }
   }
 
@@ -173,6 +193,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           from: transaction.transferType.tokenObject(),
           address: transaction.to?.description ?? ""
         )
+        self?.gasPriceSelector?.coordinatorDidUpdateGasLimit(gasLimit)
       } else {
         self?.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()
       }
@@ -332,6 +353,23 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
       if #available(iOS 10.3, *) {
         KNAppstoreRatingManager.requestReviewIfAppropriate()
       }
+    }
+  }
+}
+
+extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, let value):
+      self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+    case .helpPressed:
+      self.navigationController.showBottomBannerView(
+        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 10
+      )
+    default:
+      break
     }
   }
 }

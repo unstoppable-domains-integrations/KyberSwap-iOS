@@ -174,20 +174,32 @@
                                     <color key="textColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="quy-2q-nZu">
+                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="quy-2q-nZu">
                                     <rect key="frame" x="26" y="40" width="66" height="30"/>
                                     <state key="normal">
                                         <color key="titleColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
+                                    <connections>
+                                        <action selector="gasFeeButtonTapped:" destination="-1" eventType="touchUpInside" id="s44-OG-vrp"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7KD-qO-y5j">
                                     <rect key="frame" x="206" y="40" width="46.5" height="30"/>
+                                    <connections>
+                                        <action selector="gasFeeButtonTapped:" destination="-1" eventType="touchUpInside" id="Nwf-oO-r8s"/>
+                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H8-Tw-9xq">
+                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H8-Tw-9xq">
                                     <rect key="frame" x="26" y="78" width="61.5" height="30"/>
+                                    <connections>
+                                        <action selector="gasFeeButtonTapped:" destination="-1" eventType="touchUpInside" id="j3M-YQ-KrE"/>
+                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fa5-EN-eBf">
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fa5-EN-eBf">
                                     <rect key="frame" x="206" y="78" width="43" height="30"/>
+                                    <connections>
+                                        <action selector="gasFeeButtonTapped:" destination="-1" eventType="touchUpInside" id="xOJ-13-kyW"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Z7-Pi-Qn5">
                                     <rect key="frame" x="84.5" y="3" width="24" height="24"/>

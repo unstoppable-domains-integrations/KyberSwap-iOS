@@ -53,16 +53,17 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var slow: BigInt = KNGasCoordinator.shared.lowKNGas
   fileprivate(set) var superFast: BigInt = KNGasCoordinator.shared.superFastKNGas
 
-  fileprivate(set) var selectedType: KNSelectedGasPriceType = .medium
+  fileprivate(set) var selectedType: KNSelectedGasPriceType
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
   fileprivate(set) var currentRate: Double = 0.0
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var gasLimit: BigInt
   fileprivate(set) var isSwapOption: Bool = true
 
-  init(isSwapOption: Bool, gasLimit: BigInt) {
+  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.isSwapOption = isSwapOption
     self.gasLimit = gasLimit
+    self.selectedType = selectType
   }
 
   var currentRateDisplay: String {
@@ -84,7 +85,7 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var advancedSettingsHeight: CGFloat {
-    return self.isSwapOption ? 504 : 245
+    return self.isSwapOption ? 504 : 275
   }
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
@@ -203,7 +204,6 @@ class GasFeeSelectorPopupViewModel {
 
 enum GasFeeSelectorPopupViewEvent {
   case infoPressed
-  case displayButtonPressed
   case gasPriceChanged(type: KNSelectedGasPriceType, value: BigInt)
   case minRatePercentageChanged(percent: CGFloat)
   case helpPressed
@@ -328,6 +328,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.mediumGasValueLabel.attributedText = self.viewModel.mediumGasString
     self.slowGasValueLabel.attributedText = self.viewModel.slowGasString
 
+    self.superFastEstimateFeeLabel.text = self.viewModel.estimateFeeSuperFastString
+    self.fastEstimateFeeLabel.text = self.viewModel.estimateFeeFastString
+    self.regularEstimateFeeLabel.text = self.viewModel.estimateRegularFeeString
+    self.slowEstimateFeeLabel.text = self.viewModel.estimateSlowFeeString
+
     let selectedWidth: CGFloat = 5.0
     let normalWidth: CGFloat = 1.0
 
@@ -382,6 +387,17 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
+  
+  func coordinatorDidUpdateGasLimit(_ value: BigInt) {
+    self.viewModel.updateGasLimit(value: value)
+    self.updateGasPriceUIs()
+  }
+  
+  func coordinatorDidUpdateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, superFast: BigInt) {
+    self.viewModel.updateGasPrices(fast: fast, medium: medium, slow: slow, superFast: superFast)
+    self.updateGasPriceUIs()
+  }
+  
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {

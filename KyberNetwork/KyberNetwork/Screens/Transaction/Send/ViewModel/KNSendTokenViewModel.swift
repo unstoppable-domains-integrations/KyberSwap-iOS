@@ -64,7 +64,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var amountTextColor: UIColor {
-    return isAmountValid ? UIColor.Kyber.enygold : UIColor.red
+    return isAmountValid ? UIColor.white : UIColor.red
   }
 
   var address: Address?
@@ -91,6 +91,33 @@ class KNSendTokenViewModel: NSObject {
     ]
     attributedString.append(NSAttributedString(string: "\(self.from.symbol.prefix(8))", attributes: symbolAttributes))
     return attributedString
+  }
+
+  var tokenButtonText: String {
+    return String(self.from.symbol.prefix(8))
+  }
+
+  fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
+    let fee = gasPrice * self.gasLimit
+    let feeString: String = fee.displayRate(decimals: 18)
+    var typeString = ""
+    switch self.selectedGasPriceType {
+    case .superFast:
+      typeString = "super.fast".toBeLocalised().uppercased()
+    case .fast:
+      typeString = "fast".toBeLocalised().uppercased()
+    case .medium:
+      typeString = "regular".toBeLocalised().uppercased()
+    case .slow:
+      typeString = "slow".toBeLocalised().uppercased()
+    default:
+      break
+    }
+    return "Gas fee: \(feeString) ETH (\(typeString))"
+  }
+
+  var gasFeeString: String {
+    return self.formatFeeStringFor(gasPrice: self.gasPrice)
   }
 
   var balanceText: String {
@@ -232,7 +259,6 @@ class KNSendTokenViewModel: NSObject {
 
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
-    self.selectedGasPriceType = .custom
   }
 
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
