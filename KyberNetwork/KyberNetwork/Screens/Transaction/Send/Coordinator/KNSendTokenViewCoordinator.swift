@@ -6,14 +6,27 @@ import TrustKeystore
 import Result
 import Moya
 import APIKit
+import MBProgressHUD
+
+protocol KNSendTokenViewCoordinatorDelegate: class {
+  func sendTokenViewCoordinatorDidUpdateWalletObjects()
+  func sendTokenViewCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
+  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func sendTokenViewCoordinatorSelectOpenHistoryList()
+}
 
 class KNSendTokenViewCoordinator: Coordinator {
+  weak var delegate: KNSendTokenViewCoordinatorDelegate?
 
   let navigationController: UINavigationController
   fileprivate var session: KNSession
   var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
+  fileprivate var currentWallet: KNWalletObject {
+    let address = self.session.wallet.address.description
+    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
 
   lazy var rootViewController: KSendTokenViewController = {
     let viewModel = KNSendTokenViewModel(
@@ -169,6 +182,16 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
       self.gasPriceSelector = vc
+    case .openHistory:
+      self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
+    case .openWalletsList:
+      let viewModel = WalletsListViewModel(
+        walletObjects: KNWalletStorage.shared.wallets,
+        currentWallet: self.currentWallet
+      )
+      let walletsList = WalletsListViewController(viewModel: viewModel)
+      walletsList.delegate = self
+      self.navigationController.present(walletsList, animated: true, completion: nil)
     }
   }
 
@@ -370,6 +393,53 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       )
     default:
       break
+    }
+  }
+}
+
+extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
+  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
+    switch event {
+    case .connectWallet:
+      print("transition")
+    case .manageWallet:
+      print("transition")
+    case .copy(let wallet):
+      UIPasteboard.general.string = wallet.address
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    case .select(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)
+    case .remove(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
+      alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
+        controller.dismiss(animated: true) {
+          self.delegate?.sendTokenViewCoordinatorDidSelectRemoveWallet(wal)
+        }
+      }))
+      controller.present(alert, animated: true, completion: nil)
+    case .edit(let wallet):
+      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised(), value: wallet.name) { (text) in
+        let newWallet = wallet.copy(withNewName: text)
+        let contact = KNContact(
+          address: newWallet.address,
+          name: newWallet.name
+        )
+        KNContactStorage.shared.update(contacts: [contact])
+        KNWalletStorage.shared.update(wallets: [newWallet])
+        self.delegate?.sendTokenViewCoordinatorDidUpdateWalletObjects()
+      }
+      let viewController = InputPopUpViewController(viewModel: viewModel)
+      self.navigationController.present(viewController, animated: true, completion: nil)
     }
   }
 }

@@ -377,6 +377,7 @@ extension KNBalanceTabCoordinator: KWalletBalanceViewControllerDelegate {
         balances: self.balances,
         from: token
       )
+      self.sendTokenCoordinator?.delegate = self
       self.sendTokenCoordinator?.start()
     } else {
       let message = NSLocalizedString("Please wait for other transactions to be mined before making a transfer", comment: "")
@@ -529,5 +530,21 @@ extension KNBalanceTabCoordinator: KNNotificationSettingViewControllerDelegate {
     self.navigationController.popViewController(animated: true) {
       self.showSuccessTopBannerMessage(message: "Updated subscription tokens".toBeLocalised())
     }
+  }
+}
+
+extension KNBalanceTabCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenViewCoordinatorDidUpdateWalletObjects() {
+    self.delegate?.balanceTabCoordinatorDidUpdateWalletObjects()
+  }
+  func sendTokenViewCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    self.delegate?.balanceTabCoordinatorDidSelectRemoveWallet(wallet)
+  }
+  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.balanceTabCoordinatorDidSelectWallet(wallet)
+  }
+
+  func sendTokenViewCoordinatorSelectOpenHistoryList() {
+    self.openHistoryTransactionView()
   }
 }

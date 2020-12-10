@@ -17,6 +17,8 @@ enum KSendTokenViewEvent {
   case addContact(address: String, ens: String?)
   case contactSelectMore
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
+  case openHistory
+  case openWalletsList
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -55,7 +57,8 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
   @IBOutlet weak var currentTokenButton: UIButton!
-
+  @IBOutlet weak var walletsSelectButton: UIButton!
+  
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
       leftBtnTitle: NSLocalizedString("send.all", value: "Transfer All", comment: ""),
@@ -241,13 +244,12 @@ class KSendTokenViewController: KNBaseViewController {
     self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
   }
 
-  @IBAction func newContactButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_new_contact_button", customAttributes: nil)
-    let event = KSendTokenViewEvent.addContact(
-      address: self.viewModel.address?.description ?? "",
-      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
-    )
-    self.delegate?.kSendTokenViewController(self, run: event)
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSendTokenViewController(self, run: .openHistory)
+  }
+
+  @IBAction func walletsSelectButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSendTokenViewController(self, run: .openWalletsList)
   }
 
   fileprivate func updateAmountFieldUIForTransferAllIfNeeded() {
@@ -624,7 +626,7 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
         message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
       )
     case .addContact:
-      self.newContactButtonPressed(tableView)
+     break
     }
   }
 
