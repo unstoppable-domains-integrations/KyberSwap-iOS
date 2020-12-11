@@ -58,7 +58,7 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate var isViewDisappeared: Bool = false
   @IBOutlet weak var currentTokenButton: UIButton!
   @IBOutlet weak var walletsSelectButton: UIButton!
-  
+
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
       leftBtnTitle: NSLocalizedString("send.all", value: "Transfer All", comment: ""),
@@ -135,11 +135,12 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
+    self.walletsSelectButton.setTitle(self.viewModel.currentWalletAddress, for: .normal)
   }
 
   fileprivate func setupTokenView() {
-
     self.amountTextField.text = nil
+    self.amountTextField.attributedPlaceholder = self.viewModel.placeHolderAmount
     self.amountTextField.adjustsFontSizeToFitWidth = true
     self.amountTextField.delegate = self
     self.amountTextField.inputAccessoryView = self.toolBar
@@ -167,7 +168,7 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func setupAddressTextField() {
     self.ensAddressLabel.isHidden = true
     self.recentContactLabel.text = NSLocalizedString("recent.contact", value: "Recent Contact", comment: "")
-    self.addressTextField.placeholder = self.viewModel.placeHolderEnterAddress
+    self.addressTextField.attributedPlaceholder = self.viewModel.placeHolderEnterAddress
     self.addressTextField.delegate = self
     self.addressTextField.text = self.viewModel.displayAddress
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.ensAddressDidTapped(_:)))

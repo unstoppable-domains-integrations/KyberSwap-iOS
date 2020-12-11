@@ -68,13 +68,16 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var address: Address?
+  
+  var currentWalletAddress: String
 
-  init(from: TokenObject, balances: [String: Balance]) {
+  init(from: TokenObject, balances: [String: Balance], currentAddress: String) {
     self.from = from.clone()
     self.balances = balances
     self.balance = balances[from.contract]
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
+    self.currentWalletAddress = currentAddress
   }
 
   var navTitle: String {
@@ -133,11 +136,23 @@ class KNSendTokenViewModel: NSObject {
       maxFractionDigits: min(self.from.decimals, 6)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15))"
+    return "\(string.prefix(15)) \(self.from.symbol)"
   }
 
-  var placeHolderEnterAddress: String {
-    return "Recipient Address/ENS"
+  var placeHolderEnterAddress: NSAttributedString {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    ]
+    return NSAttributedString(string: "Recipient Address/ENS", attributes: attributes)
+  }
+
+  var placeHolderAmount: NSAttributedString {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    ]
+    return NSAttributedString(string: "0", attributes: attributes)
   }
 
   var displayAddress: String? {

@@ -29,9 +29,11 @@ class KNSendTokenViewCoordinator: Coordinator {
   }
 
   lazy var rootViewController: KSendTokenViewController = {
+    let address = self.session.wallet.address.description
     let viewModel = KNSendTokenViewModel(
       from: self.from,
-      balances: self.balances
+      balances: self.balances,
+      currentAddress: address
     )
     let controller = KSendTokenViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
