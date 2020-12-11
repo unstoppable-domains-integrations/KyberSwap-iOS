@@ -253,7 +253,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         controller.loadViewIfNeeded()
         return controller
       }()
-      self.navigationController.pushViewController(self.confirmVC!, animated: true)
+      self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
     } else {
       let message = NSLocalizedString("Please wait for other transactions to be mined before making a transfer", comment: "")
       self.navigationController.showWarningTopBannerMessage(
@@ -295,9 +295,13 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
     if case .confirm(let type) = event, case .transfer(let transaction) = type {
-      self.didConfirmTransfer(transaction)
+      controller.dismiss(animated: true) {
+        self.didConfirmTransfer(transaction)
+        self.confirmVC = nil
+        self.navigationController.displayLoading()
+      }
     } else {
-      self.navigationController.popViewController(animated: true) {
+      controller.dismiss(animated: true) {
         self.confirmVC = nil
       }
     }
@@ -311,6 +315,7 @@ extension KNSendTokenViewCoordinator {
     // send transaction request
     self.session.externalProvider.transfer(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
+      self.navigationController.hideLoading()
       switch sendResult {
       case .success(let txHash):
         let tx: Transaction = transaction.toTransaction(
@@ -319,12 +324,7 @@ extension KNSendTokenViewCoordinator {
           nounce: self.session.externalProvider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(tx)
-        if self.confirmVC != nil {
-          self.navigationController.popViewController(animated: true, completion: {
-            self.confirmVC = nil
-            self.openTransactionStatusPopUp(transaction: tx)
-          })
-        }
+        self.openTransactionStatusPopUp(transaction: tx)
       case .failure(let error):
         self.confirmVC?.resetActionButtons()
         KNNotificationUtil.postNotification(

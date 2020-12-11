@@ -12,16 +12,11 @@ protocol KConfirmSendViewControllerDelegate: class {
 }
 
 class KConfirmSendViewController: KNBaseViewController {
-
-  @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
 
   @IBOutlet weak var contactImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!
   @IBOutlet weak var sendAddressLabel: UILabel!
-
-  @IBOutlet weak var firstSeparatorView: UIView!
-  @IBOutlet weak var secondSeparatorView: UIView!
 
   @IBOutlet weak var sendAmountLabel: UILabel!
   @IBOutlet weak var sendAmountUSDLabel: UILabel!
@@ -35,13 +30,20 @@ class KConfirmSendViewController: KNBaseViewController {
   @IBOutlet weak var amountToSendTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
   @IBOutlet weak var gasPriceTextLabel: UILabel!
+  @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  
   fileprivate let viewModel: KConfirmSendViewModel
   weak var delegate: KConfirmSendViewControllerDelegate?
 
   fileprivate var isConfirmed: Bool = false
+  let transitor = TransitionDelegate()
+
   init(viewModel: KConfirmSendViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KConfirmSendViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -55,59 +57,41 @@ class KConfirmSendViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     if !self.isConfirmed {
       self.confirmButton.removeSublayer(at: 0)
-      self.confirmButton.applyGradient()
+      self.confirmButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     }
   }
 
   fileprivate func setupUI() {
-    let style = KNAppStyleType.current
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.titleLabel.text = self.viewModel.titleString
 
     self.contactImageView.rounded(radius: self.contactImageView.frame.height / 2.0)
     self.contactImageView.image = self.viewModel.addressToIcon
 
     self.contactNameLabel.text = self.viewModel.contactName
-    self.contactNameLabel.addLetterSpacing()
     self.sendAddressLabel.text = self.viewModel.address
-    self.sendAddressLabel.addLetterSpacing()
 
     self.sendAmountLabel.text = self.viewModel.totalAmountString
-    self.sendAmountLabel.addLetterSpacing()
     self.sendAmountUSDLabel.text = self.viewModel.usdValueString
-    self.sendAmountUSDLabel.addLetterSpacing()
 
     self.feeETHLabel.text = self.viewModel.transactionFeeETHString
-    self.feeETHLabel.addLetterSpacing()
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
-    self.feeUSDLabel.addLetterSpacing()
     gasPriceTextLabel.text = viewModel.transactionGasPriceString
-    gasPriceTextLabel.addLetterSpacing()
 
-    self.confirmButton.rounded(radius: style.buttonRadius())
+    self.confirmButton.rounded(radius: self.confirmButton.frame.size.height / 2)
     self.confirmButton.setTitle(
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
-    self.confirmButton.applyGradient()
+    self.confirmButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.cancelButton.setTitle(
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
-
-    self.firstSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
-    self.secondSeparatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
-
+    self.cancelButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.cancelButton.frame.size.height / 2)
     self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Transfer", comment: "").uppercased()
-    self.amountToSendTextLabel.addLetterSpacing()
     self.transactionFeeTextLabel.text = NSLocalizedString("Maximum gas fee", value: "Transaction Fee", comment: "")
-    self.transactionFeeTextLabel.addLetterSpacing()
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
@@ -118,8 +102,9 @@ class KConfirmSendViewController: KNBaseViewController {
                                       "gas_fee": self.viewModel.transactionFeeETHString,
       ]
     )
+    self.confirmButton.isEnabled = false
+    self.cancelButton.isEnabled = false
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction))
-    self.updateActionButtonsSendingTransfer()
     self.delegate?.kConfirmSendViewController(self, run: event)
   }
 
@@ -134,9 +119,8 @@ class KConfirmSendViewController: KNBaseViewController {
     self.delegate?.kConfirmSendViewController(self, run: .cancel)
   }
 
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     if sender.state == .ended {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_confirm_transfer", customAttributes: ["action": "screen_edge_pan\(self.viewModel.transaction.transferType.tokenObject().symbol)"])
       self.delegate?.kConfirmSendViewController(self, run: .cancel)
     }
   }
@@ -148,19 +132,6 @@ class KConfirmSendViewController: KNBaseViewController {
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 3
     )
-  }
-
-  func updateActionButtonsSendingTransfer() {
-    self.isConfirmed = true
-    self.confirmButton.backgroundColor = UIColor.clear
-    self.confirmButton.removeSublayer(at: 0)
-    self.confirmButton.setTitle("\(NSLocalizedString("in.progress", value: "In Progress", comment: "")) ...", for: .normal)
-    self.confirmButton.setTitleColor(
-      UIColor.Kyber.enygold,
-      for: .normal
-    )
-    self.confirmButton.isEnabled = false
-    self.cancelButton.isHidden = true
   }
 
   func resetActionButtons() {
@@ -177,5 +148,19 @@ class KConfirmSendViewController: KNBaseViewController {
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
+  }
+}
+
+extension KConfirmSendViewController: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 400
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.contentView
   }
 }

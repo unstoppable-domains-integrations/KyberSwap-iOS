@@ -136,7 +136,11 @@ class KNSendTokenViewModel: NSObject {
       maxFractionDigits: min(self.from.decimals, 6)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15)) \(self.from.symbol)"
+    return "\(string.prefix(15))"
+  }
+
+  var totalBalanceText: String {
+    return "\(self.displayBalance) \(self.from.symbol)"
   }
 
   var placeHolderEnterAddress: NSAttributedString {

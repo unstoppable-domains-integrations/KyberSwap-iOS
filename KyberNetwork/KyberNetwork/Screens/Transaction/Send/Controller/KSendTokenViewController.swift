@@ -145,7 +145,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.amountTextField.delegate = self
     self.amountTextField.inputAccessoryView = self.toolBar
     self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
-    self.tokenBalanceLabel.text = self.viewModel.displayBalance
+    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.tokenBalanceLabelTapped(_:)))
     self.tokenBalanceLabel.addGestureRecognizer(tapBalanceGesture)
   }
@@ -372,7 +372,7 @@ extension KSendTokenViewController {
   }
 
   func updateUIBalanceDidChange() {
-    self.tokenBalanceLabel.text = self.viewModel.displayBalance
+    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     if !self.amountTextField.isEditing {
       self.amountTextField.textColor = self.viewModel.amountTextColor
     }
