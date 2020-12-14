@@ -376,6 +376,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.segmentedControl.addTarget(self, action: #selector(KNHistoryViewController.segmentedControlValueChanged(_:)), for: .valueChanged)
     self.filterButton.rounded(radius: 10)
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
+    self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
   }
 
   override func quickTutorialNextAction() {

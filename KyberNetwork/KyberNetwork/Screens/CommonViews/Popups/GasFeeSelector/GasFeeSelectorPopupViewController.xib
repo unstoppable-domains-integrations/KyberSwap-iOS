@@ -27,6 +27,7 @@
                 <outlet property="contentView" destination="pr0-U8-kSa" id="cZ3-oC-inc"/>
                 <outlet property="contentViewTopContraint" destination="tTm-8d-tWl" id="61J-7V-nJi"/>
                 <outlet property="customButton" destination="4iJ-TM-agK" id="uav-Go-rJu"/>
+                <outlet property="customRateContainerView" destination="zXQ-Xy-IlN" id="0nc-ww-E9W"/>
                 <outlet property="customRateTextField" destination="JSC-23-wGp" id="qK8-62-6YB"/>
                 <outlet property="customTextLabel" destination="7yM-FW-Nx3" id="peD-Mu-a8z"/>
                 <outlet property="estimateFeeNoteLabel" destination="VDd-kS-rjU" id="RTQ-5e-AwK"/>
@@ -313,16 +314,33 @@
                                     <color key="textColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="%" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JSC-23-wGp">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zXQ-Xy-IlN">
                                     <rect key="frame" x="256" y="36.5" width="64" height="36"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="%" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JSC-23-wGp">
+                                            <rect key="frame" x="10" y="0.0" width="44" height="36"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                        </textField>
+                                    </subviews>
                                     <color key="backgroundColor" red="0.035294117647058823" green="0.23921568627450979" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="dNy-Gv-hUY"/>
-                                        <constraint firstAttribute="height" constant="36" id="uat-PK-wkQ"/>
+                                        <constraint firstAttribute="width" constant="64" id="BfS-io-5Fp"/>
+                                        <constraint firstAttribute="height" constant="36" id="Ha3-3a-pBm"/>
+                                        <constraint firstItem="JSC-23-wGp" firstAttribute="leading" secondItem="zXQ-Xy-IlN" secondAttribute="leading" constant="10" id="JNC-fI-CvC"/>
+                                        <constraint firstAttribute="bottom" secondItem="JSC-23-wGp" secondAttribute="bottom" id="aMP-uX-Qql"/>
+                                        <constraint firstAttribute="trailing" secondItem="JSC-23-wGp" secondAttribute="trailing" constant="10" id="diY-CL-scj"/>
+                                        <constraint firstItem="JSC-23-wGp" firstAttribute="top" secondItem="zXQ-Xy-IlN" secondAttribute="top" id="yAh-L3-Tb5"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
-                                </textField>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="8"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your transaction will revert if the price changes unfavorably by more than this percentage." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdj-ok-rGr">
                                     <rect key="frame" x="0.0" y="88.5" width="336" height="29"/>
                                     <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="12"/>
@@ -343,21 +361,21 @@
                                 <constraint firstItem="xMS-ft-GFu" firstAttribute="leading" secondItem="9jU-6t-lDG" secondAttribute="trailing" constant="12" id="DvI-cS-Pfj"/>
                                 <constraint firstItem="9jU-6t-lDG" firstAttribute="leading" secondItem="lCT-HM-5yV" secondAttribute="leading" id="IaQ-KI-wsx"/>
                                 <constraint firstItem="k3C-dJ-o0p" firstAttribute="top" secondItem="lCT-HM-5yV" secondAttribute="top" id="M5m-pa-eaZ"/>
-                                <constraint firstItem="Fdj-ok-rGr" firstAttribute="top" secondItem="JSC-23-wGp" secondAttribute="bottom" constant="16" id="NjH-Zq-qDN"/>
                                 <constraint firstItem="xMS-ft-GFu" firstAttribute="centerY" secondItem="9jU-6t-lDG" secondAttribute="centerY" id="QPs-sf-Nmd"/>
                                 <constraint firstItem="7yM-FW-Nx3" firstAttribute="leading" secondItem="4iJ-TM-agK" secondAttribute="trailing" constant="12" id="RTp-iQ-4sR"/>
+                                <constraint firstItem="4iJ-TM-agK" firstAttribute="centerY" secondItem="9jU-6t-lDG" secondAttribute="centerY" id="Uck-aw-ApI"/>
                                 <constraint firstItem="1IB-qV-zkS" firstAttribute="top" secondItem="lCT-HM-5yV" secondAttribute="top" constant="16" id="W9m-Nn-q7c"/>
                                 <constraint firstAttribute="height" constant="140" id="aob-8z-1gL"/>
                                 <constraint firstItem="Fdj-ok-rGr" firstAttribute="leading" secondItem="lCT-HM-5yV" secondAttribute="leading" id="bSQ-uP-b5h"/>
-                                <constraint firstItem="JSC-23-wGp" firstAttribute="leading" secondItem="7yM-FW-Nx3" secondAttribute="trailing" constant="12" id="gd7-aP-OSg"/>
-                                <constraint firstItem="JSC-23-wGp" firstAttribute="centerY" secondItem="7yM-FW-Nx3" secondAttribute="centerY" id="h4V-yt-5Gz"/>
+                                <constraint firstAttribute="trailing" secondItem="zXQ-Xy-IlN" secondAttribute="trailing" constant="16" id="dLE-hd-hv9"/>
+                                <constraint firstItem="Fdj-ok-rGr" firstAttribute="top" secondItem="zXQ-Xy-IlN" secondAttribute="bottom" constant="16" id="fgH-xL-pzd"/>
                                 <constraint firstAttribute="trailing" secondItem="1IB-qV-zkS" secondAttribute="trailing" constant="16" id="ipf-tf-bCF"/>
+                                <constraint firstItem="zXQ-Xy-IlN" firstAttribute="centerY" secondItem="7yM-FW-Nx3" secondAttribute="centerY" id="jXu-sZ-kzQ"/>
                                 <constraint firstItem="k3C-dJ-o0p" firstAttribute="leading" secondItem="lCT-HM-5yV" secondAttribute="leading" id="l2p-He-aBE"/>
                                 <constraint firstAttribute="trailing" secondItem="Fdj-ok-rGr" secondAttribute="trailing" id="nGt-Ea-noV"/>
-                                <constraint firstItem="JSC-23-wGp" firstAttribute="centerY" secondItem="9jU-6t-lDG" secondAttribute="centerY" id="oqp-rv-uV4"/>
                                 <constraint firstItem="1IB-qV-zkS" firstAttribute="leading" secondItem="lCT-HM-5yV" secondAttribute="leading" id="rEp-Jg-9Js"/>
                                 <constraint firstItem="9jU-6t-lDG" firstAttribute="top" secondItem="1IB-qV-zkS" secondAttribute="bottom" constant="16" id="u0w-db-cgq"/>
-                                <constraint firstAttribute="trailing" secondItem="JSC-23-wGp" secondAttribute="trailing" constant="16" id="xWo-LN-5eQ"/>
+                                <constraint firstItem="zXQ-Xy-IlN" firstAttribute="leading" secondItem="7yM-FW-Nx3" secondAttribute="trailing" constant="12" id="wCl-U7-EAB"/>
                                 <constraint firstItem="7yM-FW-Nx3" firstAttribute="centerY" secondItem="4iJ-TM-agK" secondAttribute="centerY" id="z5a-eT-ee1"/>
                             </constraints>
                         </view>
@@ -409,6 +427,7 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="lCT-HM-5yV" firstAttribute="top" secondItem="HRe-IQ-JxG" secondAttribute="bottom" id="0HK-cU-9J1"/>
                         <constraint firstItem="5QM-Uq-ScQ" firstAttribute="top" secondItem="pr0-U8-kSa" secondAttribute="top" constant="35" id="2cf-9S-SrY"/>
@@ -424,6 +443,9 @@
                         <constraint firstItem="HRe-IQ-JxG" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="nrm-T2-1nb"/>
                         <constraint firstItem="lCT-HM-5yV" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="oyh-lL-p51"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="9TY-M9-cX4" appends="YES" id="NEF-gA-F3G"/>
+                    </connections>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -442,6 +464,11 @@
         <tapGestureRecognizer id="Vz5-Kj-JwW">
             <connections>
                 <action selector="tapOutsidePopup:" destination="-1" id="7LI-Wh-QyC"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="9TY-M9-cX4">
+            <connections>
+                <action selector="tapInsidePopup:" destination="-1" id="XrL-eg-QcE"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

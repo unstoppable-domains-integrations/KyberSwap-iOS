@@ -72,14 +72,18 @@
                                 <action selector="filterButtonPressed:" destination="-1" eventType="touchUpInside" id="7Sb-lQ-xD8"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqe-0V-dgy">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqe-0V-dgy">
                             <rect key="frame" x="267" y="71.5" width="94" height="32"/>
                             <color key="backgroundColor" red="0.090196078431372548" green="0.4392156862745098" blue="0.55294117647058827" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                             <constraints>
+                                <constraint firstAttribute="width" constant="94" id="0m7-us-iVM"/>
                                 <constraint firstAttribute="height" constant="32" id="EMG-Y8-3oP"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
-                            <state key="normal" title="0xxx..xx">
+                            <color key="tintColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="27" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="72" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="0xxx..xx" image="arrow_down_template">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
@@ -276,6 +280,7 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
+        <image name="arrow_down_template" width="12" height="9"/>
         <image name="back_blue_icon" width="17" height="14"/>
         <image name="etherscan_icon" width="23" height="23"/>
         <image name="filter_blue_icon" width="20" height="20"/>

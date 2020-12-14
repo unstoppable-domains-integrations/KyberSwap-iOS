@@ -244,7 +244,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customButton: UIButton!
   @IBOutlet weak var customTextLabel: UILabel!
   @IBOutlet weak var customRateTextField: UITextField!
-
+  @IBOutlet weak var customRateContainerView: UIView!
+  
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
 
   @IBOutlet weak var useChiTitleLabel: UILabel!
@@ -280,7 +281,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   
   func updateMinRateCustomErrorShown(_ isShown: Bool) {
     let borderColor = isShown ? UIColor.Kyber.strawberry : UIColor.clear
-    self.customRateTextField.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
+    self.customRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
   }
 
   var isMinRateValid: Bool {
@@ -387,17 +388,20 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
+  @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
+    self.customRateTextField.resignFirstResponder()
+  }
+
   func coordinatorDidUpdateGasLimit(_ value: BigInt) {
     self.viewModel.updateGasLimit(value: value)
     self.updateGasPriceUIs()
   }
-  
+
   func coordinatorDidUpdateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, superFast: BigInt) {
     self.viewModel.updateGasPrices(fast: fast, medium: medium, slow: slow, superFast: superFast)
     self.updateGasPriceUIs()
   }
-  
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {

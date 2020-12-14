@@ -93,8 +93,8 @@ class KNAddNewWalletCoordinator: Coordinator {
       }
     )
     let popup = KNBottomPopupViewController(viewModel: viewModel)
-    self.navigationController.present(popup, animated: true, completion: {})
-//    self.navigationController.present(self.alertController, animated: true, completion: nil)
+//    self.navigationController.present(popup, animated: true, completion: {})
+    self.navigationController.present(self.alertController, animated: true, completion: nil)
   }
 
   fileprivate func createNewWallet() {

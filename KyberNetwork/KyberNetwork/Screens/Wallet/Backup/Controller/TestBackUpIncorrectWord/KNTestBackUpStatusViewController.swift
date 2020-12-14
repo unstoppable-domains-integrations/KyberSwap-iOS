@@ -37,7 +37,7 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var firstButtonTitle: String {
-    return self.isFirstTime ? NSLocalizedString("try.again", value: "Try Again", comment: "") : NSLocalizedString("retry", value: "Retry", comment: "")
+    return NSLocalizedString("try.again", value: "Try Again", comment: "")
   }
 
   var firstButtonColor: UIColor {
@@ -102,6 +102,7 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
       self.secondButtonWidthConstraint.constant = 0
       self.paddingConstraintForButtons.constant = 0
       self.firstButton.rounded(radius: self.firstButton.frame.size.height / 2)
+      self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
       self.firstButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
       self.firstButton.setTitleColor(.white, for: .normal)
     } else {
