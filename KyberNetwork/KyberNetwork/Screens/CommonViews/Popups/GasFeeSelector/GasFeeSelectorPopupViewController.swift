@@ -55,23 +55,36 @@ class GasFeeSelectorPopupViewModel {
 
   fileprivate(set) var selectedType: KNSelectedGasPriceType
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
-  fileprivate(set) var currentRate: Double = 0.0
+  fileprivate(set) var currentRate: Double
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var gasLimit: BigInt
   fileprivate(set) var isSwapOption: Bool = true
 
-  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
+  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0) {
     self.isSwapOption = isSwapOption
     self.gasLimit = gasLimit
-    self.selectedType = selectType
+    self.selectedType = selectType == .custom ? .medium : selectType
+    self.currentRate = currentRatePercentage
+    self.minRateType = currentRatePercentage == 3.0 ? .threePercent : .custom(value: currentRatePercentage)
   }
 
   var currentRateDisplay: String {
-    return self.numberFormatter.string(from: NSNumber(value: self.currentRate))?.displayRate() ?? "0"
+    return String(format: "%.2f", self.currentRate)
   }
 
   func updatePairToken(_ value: String) {
     self.pairToken = value
+  }
+
+  func updateMinRateValue(_ value: Double, percent: Double) {
+    self.currentRate = value
+    if self.minRateTypeInt == 2 {
+      self.minRateType = .custom(value: percent)
+    }
+  }
+
+  func updateCurrentMinRate(_ value: Double) {
+    self.currentRate = value
   }
 
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
@@ -274,11 +287,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
-
+    self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
   }
-  
+
   func updateMinRateCustomErrorShown(_ isShown: Bool) {
     let borderColor = isShown ? UIColor.Kyber.strawberry : UIColor.clear
     self.customRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
@@ -292,7 +305,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   fileprivate func updateMinRateUIs() {
     guard self.viewModel.isSwapOption else { return }
-    
     let selectedWidth: CGFloat = 5.0
     let normalWidth: CGFloat = 1.0
 
@@ -307,7 +319,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
       radius: self.customButton.frame.height / 2.0
     )
-
     self.customRateTextField.isEnabled = self.viewModel.minRateTypeInt == 2
 
     self.stillProceedIfRateGoesDownTextLabel.text = String(
@@ -373,9 +384,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func customRateButtonTapped(_ sender: UIButton) {
-    let minRateType = sender.tag == 1 ? KAdvancedSettingsMinRateType.custom(value: 3) : KAdvancedSettingsMinRateType.threePercent
+    let minRateType = sender.tag == 1 ? KAdvancedSettingsMinRateType.custom(value: self.viewModel.currentRate) : KAdvancedSettingsMinRateType.threePercent
     self.viewModel.updateMinRateType(minRateType)
-    self.customRateTextField.text = sender.tag == 1 ? "3" : ""
+    self.customRateTextField.text = sender.tag == 1 ? self.viewModel.currentRateDisplay : ""
     self.customRateTextField.isEnabled = sender.tag == 1
     self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: 3.0))
     self.updateMinRateUIs()
@@ -401,6 +412,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   func coordinatorDidUpdateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, superFast: BigInt) {
     self.viewModel.updateGasPrices(fast: fast, medium: medium, slow: slow, superFast: superFast)
     self.updateGasPriceUIs()
+  }
+
+  func coordinatorDidUpdateMinRate(_ value: Double) {
+    self.viewModel.updateCurrentMinRate(value)
+    self.updateMinRateUIs()
   }
 }
 

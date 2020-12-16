@@ -488,7 +488,7 @@ extension KSendTokenViewController {
     )
     self.delegate?.kSendTokenViewController(self, run: event)
   }
-  
+
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
     self.viewModel.updateSelectedGasPriceType(type)
     self.viewModel.updateGasPrice(value)

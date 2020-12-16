@@ -36,6 +36,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
   fileprivate var promoConfirmSwapVC: KNPromoSwapConfirmViewController?
   fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
+  fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
   lazy var rootViewController: KSwapViewController = {
     let (from, to): (TokenObject, TokenObject) = {
@@ -110,8 +111,7 @@ extension KNExchangeTokenCoordinator {
       self.navigationController.popToRootViewController(animated: false)
     }
     self.balances = [:]
-    let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(pendingTrans)
+    
     if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
       self.historyCoordinator = nil
       self.historyCoordinator = KNHistoryCoordinator(
@@ -168,7 +168,6 @@ extension KNExchangeTokenCoordinator {
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
-    self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
     self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
   }
 
@@ -457,6 +456,21 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.updateReferencePrice(from: from, to: to)
     case .swapHint(let from, let to, let amount):
       self.updateSwapHint(from: from.address, to: to.address, amount: amount)
+    case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent)
+      viewModel.updateGasPrices(
+        fast: KNGasCoordinator.shared.fastKNGas,
+        medium: KNGasCoordinator.shared.standardKNGas,
+        slow: KNGasCoordinator.shared.lowKNGas,
+        superFast: KNGasCoordinator.shared.superFastKNGas
+      )
+      viewModel.updatePairToken(pair)
+      let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+      vc.delegate = self
+      self.gasFeeSelectorVC = vc
+      self.navigationController.present(vc, animated: true, completion: nil)
+    case .updateRate(let rate):
+      self.gasFeeSelectorVC?.coordinatorDidUpdateMinRate(rate)
     }
   }
 
@@ -1044,6 +1058,25 @@ extension KNExchangeTokenCoordinator: KNNotificationSettingViewControllerDelegat
   func notificationSettingViewControllerDidApply(_ controller: KNNotificationSettingViewController) {
     self.navigationController.popViewController(animated: true) {
       self.showSuccessTopBannerMessage(message: "Updated subscription tokens".toBeLocalised())
+    }
+  }
+}
+
+extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, let value):
+      self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+    case .helpPressed:
+      self.navigationController.showBottomBannerView(
+        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 10
+      )
+    case .minRatePercentageChanged(let percent):
+      self.rootViewController.coordinatorDidUpdateMinRatePercentage(percent)
+    default:
+      break
     }
   }
 }
