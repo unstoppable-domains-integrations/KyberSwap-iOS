@@ -23,8 +23,8 @@ let kFavouriteTokensUpdateNotificationKey = "kFavouriteTokensUpdateNotificationK
 let kExchangeTokenRateNotificationKey = "kExchangeTokenRateNotificationKey"
 let kExchangeUSDRateNotificationKey = "kExchangeUSDRateNotificationKey"
 
-let kProdCachedRateSuccessToLoadNotiKey = "kProdCachedRateSuccessToLoadNotiKey"
-let kProdCachedRateFailedToLoadNotiKey = "kProdCachedRateFailedToLoadNotiKey"
+//let kProdCachedRateSuccessToLoadNotiKey = "kProdCachedRateSuccessToLoadNotiKey"
+//let kProdCachedRateFailedToLoadNotiKey = "kProdCachedRateFailedToLoadNotiKey"
 
 let kCoinTickersDidUpdateNotificationKey = "kCoinTickerDataDidUpdateNotificationKey"
 

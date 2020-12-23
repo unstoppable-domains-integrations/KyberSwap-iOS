@@ -844,3 +844,102 @@ extension ProfileService: TargetType {
     return json
   }
 }
+
+enum KrytalService {
+  case getBestPath(src: String, dst: String, srcAmount: String)
+  case getHint(path: [JSONDictionary])
+  case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
+  case getAllRates(src: String, dst: String, srcAmount: String)
+  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: String, hint: String)
+}
+
+extension KrytalService: TargetType {
+  var baseURL: URL {
+    switch self {
+    case .getHint(let path):
+      var urlComponents = URLComponents(string: KNSecret.devKrytalURL + "/v1/swap/buildHint")!
+      var queryItems: [URLQueryItem] = []
+      path.forEach { (element) in
+        let id = element["id"] as? String ?? ""
+        let value = element["split_value"] as? NSNumber ?? NSNumber(0)
+        let idItem = URLQueryItem(name: "id", value: id)
+        let valueItem = URLQueryItem(name: "split_value", value: value.description)
+        queryItems.append(idItem)
+        queryItems.append(valueItem)
+      }
+      urlComponents.queryItems = queryItems
+      return urlComponents.url!
+    default:
+      return URL(string: KNSecret.devKrytalURL)!
+    }
+  }
+
+  var path: String {
+    switch self {
+    case .getBestPath:
+      return "/v1/swap/bestPath"
+    case .getHint:
+      return ""
+    case .getExpectedRate:
+      return "/v1/swap/expectedRate"
+    case .getAllRates:
+      return "/v1/swap/allRates"
+    case .buildSwapTx:
+      return "/v1/swap/buildTx"
+    }
+  }
+  
+  var method: Moya.Method {
+    return .get
+  }
+
+  var sampleData: Data {
+    return Data()
+  }
+
+  var task: Task {
+    switch self {
+    case .getBestPath(let src, let dst, let srcAmount):
+      let json: JSONDictionary = [
+        "src_token": src,
+        "dest_token": dst,
+        "src_qty": srcAmount
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getHint:
+      return .requestPlain
+    case .getExpectedRate(let src, let dst, let srcAmount, let hint, let isCaching):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "hint": hint,
+        "isCaching": isCaching,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getAllRates(let src, let dst, let srcAmount):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint):
+      let json: JSONDictionary = [
+        "user_address": address,
+        "src_token": src,
+        "dst_token": dst,
+        "src_qty": srcAmount,
+        "min_dst_qty": minDstAmount,
+        "gas_price": gasPrice,
+        "nonce": nonce,
+        "hint": hint,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    }
+  }
+  
+  var headers: [String : String]? {
+    return nil
+  }
+}

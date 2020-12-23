@@ -52,12 +52,12 @@ extension KNAppCoordinator {
       selector: #selector(self.exchangeRateTokenDidUpdateNotification(_:)),
       name: rateTokensName,
       object: nil)
-    let prodCachedRateName = Notification.Name(kProdCachedRateSuccessToLoadNotiKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.prodCachedRateTokenDidUpdateNotification(_:)),
-      name: prodCachedRateName,
-      object: nil)
+//    let prodCachedRateName = Notification.Name(kProdCachedRateSuccessToLoadNotiKey)
+//    NotificationCenter.default.addObserver(
+//      self,
+//      selector: #selector(self.prodCachedRateTokenDidUpdateNotification(_:)),
+//      name: prodCachedRateName,
+//      object: nil)
     let rateUSDName = Notification.Name(kExchangeUSDRateNotificationKey)
     NotificationCenter.default.addObserver(
       self,
@@ -129,11 +129,11 @@ extension KNAppCoordinator {
       name: Notification.Name(kExchangeTokenRateNotificationKey),
       object: nil
     )
-    NotificationCenter.default.removeObserver(
-      self,
-      name: Notification.Name(kProdCachedRateSuccessToLoadNotiKey),
-      object: nil
-    )
+//    NotificationCenter.default.removeObserver(
+//      self,
+//      name: Notification.Name(kProdCachedRateSuccessToLoadNotiKey),
+//      object: nil
+//    )
     NotificationCenter.default.removeObserver(
       self,
       name: Notification.Name(kExchangeUSDRateNotificationKey),
@@ -176,11 +176,11 @@ extension KNAppCoordinator {
     )
   }
 
-  @objc func prodCachedRateTokenDidUpdateNotification(_ sender: Any?) {
-    if self.session == nil { return }
-    self.exchangeCoordinator?.appCoordinatorUpdateExchangeTokenRates()
-    self.limitOrderCoordinator?.appCoordinatorUpdateExchangeTokenRates()
-  }
+//  @objc func prodCachedRateTokenDidUpdateNotification(_ sender: Any?) {
+//    if self.session == nil { return }
+//    self.exchangeCoordinator?.appCoordinatorUpdateExchangeTokenRates()
+//    self.limitOrderCoordinator?.appCoordinatorUpdateExchangeTokenRates()
+//  }
 
   @objc func exchangeRateUSDDidUpdateNotification(_ sender: Notification) {
     if self.session == nil { return }

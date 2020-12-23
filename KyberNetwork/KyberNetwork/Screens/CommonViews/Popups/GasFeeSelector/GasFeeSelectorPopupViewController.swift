@@ -258,7 +258,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customTextLabel: UILabel!
   @IBOutlet weak var customRateTextField: UITextField!
   @IBOutlet weak var customRateContainerView: UIView!
-  
+
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
 
   @IBOutlet weak var useChiTitleLabel: UILabel!
@@ -267,7 +267,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
-  
+
   weak var delegate: GasFeeSelectorPopupViewControllerDelegate?
 
   init(viewModel: GasFeeSelectorPopupViewModel) {
@@ -283,7 +283,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self

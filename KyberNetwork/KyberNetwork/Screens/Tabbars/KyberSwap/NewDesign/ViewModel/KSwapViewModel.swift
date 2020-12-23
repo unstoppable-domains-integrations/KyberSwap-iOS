@@ -29,31 +29,18 @@ class KSwapViewModel {
 
   var isSwapAllBalance: Bool = false
   var isTappedSwapAllBalance: Bool = false
-  var isUsingReverseRouting: Bool = true
 
-  var isSwapSuggestionShown: Bool {
-    if let suggestions = self.swapSuggestion, !suggestions.isEmpty { return true }
-    return false
-  }
-  var swapSuggestion: [JSONDictionary]?
-
-  var estimatedRateDouble: Double {
-    guard let rate = self.estRate else { return 0.0 }
-    return Double(rate) / pow(10.0, Double(self.to.decimals))
-  }
+//  var estimatedRateDouble: Double {
+//    guard let rate = self.estRate else { return 0.0 }
+//    return Double(rate) / pow(10.0, Double(self.to.decimals))
+//  }
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
 
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
-  fileprivate(set) var defaultGasLimit: (TokenObject, TokenObject, BigInt)
-  fileprivate(set) var estValueGasLimit: (TokenObject, TokenObject, BigInt, BigInt)
-  var lastSuccessLoadGasLimitTimeStamp: TimeInterval = 0
-  var swapHint: (String, String, String) = ("", "", "")
-  var isAbleToUseReverseRouting: Bool {
-    guard self.swapHint.0 == self.from.address, self.swapHint.1 == self.to.address else { return false }
-    return self.swapHint.2 != "" && self.swapHint.2 != "0x"
-  }
+  var swapRates: (String, String, BigInt, [JSONDictionary]) = ("", "", BigInt(0), [])
+  var currentFlatform: String = "kyber"
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -65,14 +52,9 @@ class KSwapViewModel {
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr)?.clone() ?? KNWalletObject(address: addr)
     self.from = from.clone()
     self.to = to.clone()
-    self.defaultGasLimit = (self.from, self.to, KNGasConfiguration.exchangeTokensGasLimitDefault)
-    self.estValueGasLimit = (self.from, self.to, BigInt(0), KNGasConfiguration.exchangeTokensGasLimitDefault)
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
-    self.updateProdCachedRate()
-    self.updateRelatedOrders()
+//    self.updateProdCachedRate()
   }
-
-  var headerBackgroundColor: UIColor { return KNAppStyleType.current.swapFlowHeaderColor }
   // MARK: Wallet name
   var walletNameString: String {
     let address = self.walletObject.address.lowercased()
@@ -161,27 +143,25 @@ class KSwapViewModel {
       maxFractionDigits: self.from.decimals
     ).removeGroupSeparator()
   }
+//TODO: remove due to cached rate is removed now
+//  var percentageRateDiff: Double {
+//    guard let rate = self.cachedProdRate ?? KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to), !rate.isZero else {
+//      return 0.0
+//    }
+//    if self.estimatedRateDouble == 0.0 { return 0.0 }
+//    let marketRateDouble = Double(rate) / pow(10.0, Double(self.to.decimals))
+//    let change = (self.estimatedRateDouble - marketRateDouble) / marketRateDouble * 100.0
+//    if change > -5.0 { return 0.0 }
+//    return change
+//  }
 
-  fileprivate var cachedProdRate: BigInt?
-
-  var percentageRateDiff: Double {
-    guard let rate = self.cachedProdRate ?? KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to), !rate.isZero else {
-      return 0.0
-    }
-    if self.estimatedRateDouble == 0.0 { return 0.0 }
-    let marketRateDouble = Double(rate) / pow(10.0, Double(self.to.decimals))
-    let change = (self.estimatedRateDouble - marketRateDouble) / marketRateDouble * 100.0
-    if change > -5.0 { return 0.0 }
-    return change
-  }
-
-  var differentRatePercentageDisplay: String? {
-    if self.amountFromBigInt.isZero { return nil }
-    let change = self.percentageRateDiff
-    if change >= -5.0 { return nil }
-    let display = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
-    return "\(display)%"
-  }
+//  var differentRatePercentageDisplay: String? {
+//    if self.amountFromBigInt.isZero { return nil }
+//    let change = self.percentageRateDiff
+//    if change >= -5.0 { return nil }
+//    let display = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
+//    return "\(display)%"
+//  }
 
   // MARK: To Token
   var amountToBigInt: BigInt {
@@ -252,11 +232,13 @@ class KSwapViewModel {
 
   // MARK: Rate
   var exchangeRateText: String {
-    let rate: BigInt? = {
-      if let rate = self.estRate, !rate.isZero { return rate }
-      return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
-    }()
-    return rate?.displayRate(decimals: self.to.decimals) ?? "---"
+    let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+    let rate = BigInt(rateString)
+    if let notNilRate = rate {
+      return notNilRate.isZero ? "---" : "Rate: 1\(self.from.symbol) = \(notNilRate.displayRate(decimals: self.to.decimals))\(self.to.symbol)"
+    } else {
+      return "---"
+    }
   }
 
   var minRate: BigInt? {
@@ -354,6 +336,30 @@ class KSwapViewModel {
     return param
   }
 
+  var gasFeeString: String {
+    let fee = self.gasPrice * self.estimateGasLimit
+    let feeString: String = fee.displayRate(decimals: 18)
+    var typeString = ""
+    switch self.selectedGasPriceType {
+    case .superFast:
+      typeString = "super.fast".toBeLocalised().uppercased()
+    case .fast:
+      typeString = "fast".toBeLocalised().uppercased()
+    case .medium:
+      typeString = "regular".toBeLocalised().uppercased()
+    case .slow:
+      typeString = "slow".toBeLocalised().uppercased()
+    default:
+      break
+    }
+    return "Gas fee: \(feeString) ETH (\(typeString))"
+  }
+
+  var slippageString: String {
+    let doubleStr = String(format: "%.2f", self.minRatePercent)
+    return "Slippage: \(doubleStr)%"
+  }
+
   // MARK: Update data
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
@@ -380,21 +386,11 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
-    self.updateProdCachedRate()
-    self.swapSuggestion = nil
-    self.updateRelatedOrders()
+//    self.updateProdCachedRate()
   }
 
   func updateWalletObject() {
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address)?.clone() ?? self.walletObject
-  }
-
-  func updateProdCachedRate(_ rate: BigInt? = nil) {
-    self.cachedProdRate = rate ?? KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
-  }
-
-  func updateRelatedOrders() {
-    // TODO
   }
 
   func swapTokens() {
@@ -408,8 +404,7 @@ class KSwapViewModel {
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
-    self.updateProdCachedRate()
-    self.updateRelatedOrders()
+//    self.updateProdCachedRate()
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -430,14 +425,7 @@ class KSwapViewModel {
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
-    self.updateProdCachedRate()
-    self.updateRelatedOrders()
-  }
-
-  func updateEstimatedRateFromCachedIfNeeded() {
-    guard let rate = KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to), self.estRate == nil, self.slippageRate == nil else { return }
-    self.estRate = rate
-    self.slippageRate = rate * BigInt(97) / BigInt(100)
+//    self.updateProdCachedRate()
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -504,16 +492,7 @@ class KSwapViewModel {
     }
   }
 
-  func updateDefaultGasLimit(for from: TokenObject, to: TokenObject, gasLimit: BigInt) {
-    if from == self.from, to == self.to {
-      self.defaultGasLimit = (self.from, self.to, gasLimit)
-    }
-  }
-
   func getDefaultGasLimit(for from: TokenObject, to: TokenObject) -> BigInt {
-    if from == self.defaultGasLimit.0, to == self.defaultGasLimit.1 {
-      return self.defaultGasLimit.2
-    }
     return KNGasConfiguration.calculateDefaultGasLimit(from: from, to: to)
   }
 
@@ -526,24 +505,70 @@ class KSwapViewModel {
     return !(oldAmount.isZero && doubleValue == 0.001)
   }
 
-  func updateEstValueGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    if from == self.from, to == self.to, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.amountFromBigInt) {
-      self.estValueGasLimit = (from, to, amount, gasLimit)
-    }
-  }
-
-  func getEstValueGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt) -> BigInt {
-    if from == self.estValueGasLimit.0, to == self.estValueGasLimit.1, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.estValueGasLimit.2) {
-      return self.self.estValueGasLimit.3
-    }
-    return KNGasConfiguration.calculateDefaultGasLimit(from: from, to: to)
-  }
-
-  func getHint(from: String, to: String) -> String {
-    guard from == self.swapHint.0, to == self.swapHint.1, self.isAbleToUseReverseRouting, self.isUsingReverseRouting else {
+  func getHint(from: String, to: String, amount: BigInt, platform: String) -> String {
+    let isAmountChanged: Bool = {
+      if self.amountFromBigInt == amount { return false }
+      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
+      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+    }()
+    guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
       return ""
     }
-    return self.swapHint.2
+
+    let rateDict = self.swapRates.3.first { (element) -> Bool in
+      if let platformString = element["platform"] as? String {
+        return platformString == platform
+      } else {
+        return false
+      }
+    }
+    if let rateString = rateDict?["hint"] as? String {
+      return rateString
+    } else {
+      return ""
+    }
+  }
+
+  func getSwapRate(from: String, to: String, amount: BigInt, platform: String) -> String {
+    let isAmountChanged: Bool = {
+      if self.amountFromBigInt == amount { return false }
+      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
+      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+    }()
+
+    guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
+      return "0"
+    }
+
+    let rateDict = self.swapRates.3.first { (element) -> Bool in
+      if let platformString = element["platform"] as? String {
+        return platformString == platform
+      } else {
+        return false
+      }
+    }
+    if let rateString = rateDict?["rate"] as? String {
+      return rateString
+    } else {
+      return ""
+    }
+  }
+
+  func resetSwapRates() {
+    self.swapRates = ("", "", BigInt(0), [])
+  }
+
+  func updateSwapRates(from: TokenObject, to: TokenObject, amount: BigInt, rates: [JSONDictionary]) {
+    guard from.isEqual(self.from), to.isEqual(self.to) else {
+      return
+    }
+    self.swapRates = (from.address.lowercased(), to.address.lowercased(), amount, rates)
+    if rates.count == 1 {
+      let dict = rates.first
+      if let platformString = dict?["platform"] as? String {
+        self.currentFlatform = platformString
+      }
+    }
   }
 
   // MARK: TUTORIAL

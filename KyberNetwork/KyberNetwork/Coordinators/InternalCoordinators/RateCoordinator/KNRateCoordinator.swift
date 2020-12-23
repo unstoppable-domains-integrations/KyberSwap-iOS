@@ -211,7 +211,7 @@ class KNRateCoordinator {
       KNNotificationUtil.postNotification(for: kExchangeTokenRateNotificationKey)
     }
 
-    self.updateReferencePrice(fromSym: self.currentSymPair.0, toSym: self.currentSymPair.1)
+//    self.updateReferencePrice(fromSym: self.currentSymPair.0, toSym: self.currentSymPair.1)
 
     KNLimitOrderServerCoordinator.shared.getMarket { [weak self] result in
       guard let `self` = self else { return }
@@ -248,116 +248,116 @@ class KNRateCoordinator {
     }
   }
 
-  func updateReferencePrice(fromSym: String, toSym: String) {
-    if toSym == "ETH" || fromSym == "ETH" {
-      var sym = ""
-      if toSym == "ETH" {
-        sym = fromSym
-      } else {
-        sym = toSym
-      }
-      KNInternalProvider.shared.getProductionChainLinkRate(sym: sym) { [weak self] result in
-        guard let `self` = self else { return }
-        if case .success(let rate) = result, rate.doubleValue > 0 {
-          if toSym == "ETH" {
-            var decimal = 18
-            if let fromToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
-              return token.symbol == fromSym
-            }) {
-              decimal = fromToken.decimals
-            }
-            self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: sym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-            self.cachedProdTokenRates["\(toSym)_\(fromSym)"] = KNRate(source: "ETH", dest: sym, rate: 1 / rate.doubleValue, decimals: decimal)
-          } else {
-            var decimal = 18
-            if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
-              return token.symbol == toSym
-            }) {
-              decimal = toToken.decimals
-            }
-            self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: "ETH", dest: sym, rate: 1 / rate.doubleValue, decimals: decimal)
-            self.cachedProdTokenRates["\(toSym)_\(fromSym)"] = KNRate(source: sym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-          }
+//  func updateReferencePrice(fromSym: String, toSym: String) {
+//    if toSym == "ETH" || fromSym == "ETH" {
+//      var sym = ""
+//      if toSym == "ETH" {
+//        sym = fromSym
+//      } else {
+//        sym = toSym
+//      }
+//      KNInternalProvider.shared.getProductionChainLinkRate(sym: sym) { [weak self] result in
+//        guard let `self` = self else { return }
+//        if case .success(let rate) = result, rate.doubleValue > 0 {
+//          if toSym == "ETH" {
+//            var decimal = 18
+//            if let fromToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
+//              return token.symbol == fromSym
+//            }) {
+//              decimal = fromToken.decimals
+//            }
+//            self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: sym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//            self.cachedProdTokenRates["\(toSym)_\(fromSym)"] = KNRate(source: "ETH", dest: sym, rate: 1 / rate.doubleValue, decimals: decimal)
+//          } else {
+//            var decimal = 18
+//            if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
+//              return token.symbol == toSym
+//            }) {
+//              decimal = toToken.decimals
+//            }
+//            self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: "ETH", dest: sym, rate: 1 / rate.doubleValue, decimals: decimal)
+//            self.cachedProdTokenRates["\(toSym)_\(fromSym)"] = KNRate(source: sym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//          }
+//
+//          KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
+//        } else {
+//          self.updateListCacheRate()
+//        }
+//      }
+//      return
+//    }
+//
+//    var rateFrom: KNRate?
+//    var rateTo: KNRate?
+//    let group = DispatchGroup()
+//    group.enter()
+//    KNInternalProvider.shared.getProductionChainLinkRate(sym: fromSym) { result in
+//      if case .success(let rate) = result, rate.doubleValue > 0 {
+//        var decimal = 18
+//        if let fromToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
+//          return token.symbol == fromSym
+//        }) {
+//          decimal = fromToken.decimals
+//        }
+//        rateFrom = KNRate(source: fromSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//        self.cachedProdTokenRates["\(fromSym)_ETH"] = KNRate(source: fromSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//        self.cachedProdTokenRates["ETH_\(fromSym)"] = KNRate(source: "ETH", dest: fromSym, rate: 1 / rate.doubleValue, decimals: decimal)
+//      }
+//      group.leave()
+//    }
+//    group.enter()
+//    KNInternalProvider.shared.getProductionChainLinkRate(sym: toSym) { result in
+//      if case .success(let rate) = result, rate.doubleValue > 0 {
+//        var decimal = 18
+//        if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
+//          return token.symbol == toSym
+//        }) {
+//          decimal = toToken.decimals
+//        }
+//        rateTo = KNRate(source: toSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//        self.cachedProdTokenRates["\(toSym)_ETH"] = KNRate(source: toSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
+//        self.cachedProdTokenRates["ETH_\(toSym)"] = KNRate(source: "ETH", dest: toSym, rate: 1 / rate.doubleValue, decimals: decimal)
+//      }
+//      group.leave()
+//    }
+//
+//    group.notify(queue: .main) {
+//      if let notNilRateFrom = rateFrom, let notNilRateTo = rateTo {
+//        if notNilRateTo.rate.isZero || notNilRateFrom.rate.isZero {
+//          self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: fromSym, dest: toSym, rate: 0.0, decimals: 18)
+//          KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
+//          return
+//        }
+//        var decimal = 18
+//        if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
+//          return token.symbol == toSym
+//        }) {
+//          decimal = toToken.decimals
+//        }
+//        guard notNilRateTo.rate.description.doubleValue != 0.0 else { return }
+//        let finalRateValue = notNilRateFrom.rate.description.doubleValue / notNilRateTo.rate.description.doubleValue
+//        let finalRate = KNRate(source: fromSym, dest: toSym, rate: finalRateValue, decimals: decimal)
+//        self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = finalRate
+//        KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
+//      } else {
+//        self.updateListCacheRate()
+//      }
+//    }
+//  }
 
-          KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
-        } else {
-          self.updateListCacheRate()
-        }
-      }
-      return
-    }
-
-    var rateFrom: KNRate?
-    var rateTo: KNRate?
-    let group = DispatchGroup()
-    group.enter()
-    KNInternalProvider.shared.getProductionChainLinkRate(sym: fromSym) { result in
-      if case .success(let rate) = result, rate.doubleValue > 0 {
-        var decimal = 18
-        if let fromToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
-          return token.symbol == fromSym
-        }) {
-          decimal = fromToken.decimals
-        }
-        rateFrom = KNRate(source: fromSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-        self.cachedProdTokenRates["\(fromSym)_ETH"] = KNRate(source: fromSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-        self.cachedProdTokenRates["ETH_\(fromSym)"] = KNRate(source: "ETH", dest: fromSym, rate: 1 / rate.doubleValue, decimals: decimal)
-      }
-      group.leave()
-    }
-    group.enter()
-    KNInternalProvider.shared.getProductionChainLinkRate(sym: toSym) { result in
-      if case .success(let rate) = result, rate.doubleValue > 0 {
-        var decimal = 18
-        if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
-          return token.symbol == toSym
-        }) {
-          decimal = toToken.decimals
-        }
-        rateTo = KNRate(source: toSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-        self.cachedProdTokenRates["\(toSym)_ETH"] = KNRate(source: toSym, dest: "ETH", rate: rate.doubleValue, decimals: 18)
-        self.cachedProdTokenRates["ETH_\(toSym)"] = KNRate(source: "ETH", dest: toSym, rate: 1 / rate.doubleValue, decimals: decimal)
-      }
-      group.leave()
-    }
-
-    group.notify(queue: .main) {
-      if let notNilRateFrom = rateFrom, let notNilRateTo = rateTo {
-        if notNilRateTo.rate.isZero || notNilRateFrom.rate.isZero {
-          self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = KNRate(source: fromSym, dest: toSym, rate: 0.0, decimals: 18)
-          KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
-          return
-        }
-        var decimal = 18
-        if let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { (token) -> Bool in
-          return token.symbol == toSym
-        }) {
-          decimal = toToken.decimals
-        }
-        guard notNilRateTo.rate.description.doubleValue != 0.0 else { return }
-        let finalRateValue = notNilRateFrom.rate.description.doubleValue / notNilRateTo.rate.description.doubleValue
-        let finalRate = KNRate(source: fromSym, dest: toSym, rate: finalRateValue, decimals: decimal)
-        self.cachedProdTokenRates["\(fromSym)_\(toSym)"] = finalRate
-        KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
-      } else {
-        self.updateListCacheRate()
-      }
-    }
-  }
-
-  fileprivate func updateListCacheRate() {
-    KNInternalProvider.shared.getProductionCachedRate { [weak self] result in
-      guard let `self` = self else { return }
-      if case .success(let rates) = result {
-        rates.forEach({
-          self.cachedProdTokenRates["\($0.source)_\($0.dest)"] = $0
-        })
-        KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
-      } else {
-        KNNotificationUtil.postNotification(for: kProdCachedRateFailedToLoadNotiKey)
-      }
-    }
-  }
+//  fileprivate func updateListCacheRate() {
+//    KNInternalProvider.shared.getProductionCachedRate { [weak self] result in
+//      guard let `self` = self else { return }
+//      if case .success(let rates) = result {
+//        rates.forEach({
+//          self.cachedProdTokenRates["\($0.source)_\($0.dest)"] = $0
+//        })
+//        KNNotificationUtil.postNotification(for: kProdCachedRateSuccessToLoadNotiKey)
+//      } else {
+//        KNNotificationUtil.postNotification(for: kProdCachedRateFailedToLoadNotiKey)
+//      }
+//    }
+//  }
 
   func getMarketWith(name: String) -> KNMarket? {
     guard !self.cachedMarket.isEmpty else {

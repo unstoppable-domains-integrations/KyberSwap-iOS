@@ -612,6 +612,8 @@
 		C3E401D8242B048D00F31372 /* LimitOrderContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3E401D6242B048D00F31372 /* LimitOrderContainerViewController.xib */; };
 		C3E401DE242B458200F31372 /* KNCreateLimitOrderV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E401DC242B458200F31372 /* KNCreateLimitOrderV2ViewController.swift */; };
 		C3E401DF242B458200F31372 /* KNCreateLimitOrderV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3E401DD242B458200F31372 /* KNCreateLimitOrderV2ViewController.xib */; };
+		C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FA3D952591AB3E00E17B47 /* ChooseRateViewController.swift */; };
+		C3FA3D982591AB3E00E17B47 /* ChooseRateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3FA3D962591AB3E00E17B47 /* ChooseRateViewController.xib */; };
 		C60BB88C239596D5006FE37D /* KNGetResolverRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60BB88B239596D5006FE37D /* KNGetResolverRequest.swift */; };
 		C60BB88E23959794006FE37D /* KNGetAddressFromResolverRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60BB88D23959794006FE37D /* KNGetAddressFromResolverRequest.swift */; };
 		C61BAE4F24D7CA2400BC4705 /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BAE4E24D7CA2300BC4705 /* KNSecret.swift */; };
@@ -1301,6 +1303,8 @@
 		C3E401D6242B048D00F31372 /* LimitOrderContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LimitOrderContainerViewController.xib; sourceTree = "<group>"; };
 		C3E401DC242B458200F31372 /* KNCreateLimitOrderV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCreateLimitOrderV2ViewController.swift; sourceTree = "<group>"; };
 		C3E401DD242B458200F31372 /* KNCreateLimitOrderV2ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNCreateLimitOrderV2ViewController.xib; sourceTree = "<group>"; };
+		C3FA3D952591AB3E00E17B47 /* ChooseRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseRateViewController.swift; sourceTree = "<group>"; };
+		C3FA3D962591AB3E00E17B47 /* ChooseRateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseRateViewController.xib; sourceTree = "<group>"; };
 		C60BB88B239596D5006FE37D /* KNGetResolverRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGetResolverRequest.swift; sourceTree = "<group>"; };
 		C60BB88D23959794006FE37D /* KNGetAddressFromResolverRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNGetAddressFromResolverRequest.swift; sourceTree = "<group>"; };
 		C61BAE4E24D7CA2300BC4705 /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSecret.swift; sourceTree = "<group>"; };
@@ -1744,6 +1748,8 @@
 			children = (
 				2542604321215C120015ECC7 /* KSwapViewController.swift */,
 				2542604421215C120015ECC7 /* KSwapViewController.xib */,
+				C3FA3D952591AB3E00E17B47 /* ChooseRateViewController.swift */,
+				C3FA3D962591AB3E00E17B47 /* ChooseRateViewController.xib */,
 			);
 			name = Controller;
 			path = ../NewDesign/Controller;
@@ -4546,6 +4552,7 @@
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
 				255C98902122E22A0087B3E2 /* KSendTokenViewController.xib in Resources */,
 				254BB330211BEC8200B8E75D /* KWalletBalanceViewController.xib in Resources */,
+				C3FA3D982591AB3E00E17B47 /* ChooseRateViewController.xib in Resources */,
 				C625CF70243F221D00511A90 /* PreviewLimitOrderV2ViewController.xib in Resources */,
 				2545C8FD2223F6F400CA99C5 /* KNAlertTableViewCell.xib in Resources */,
 				C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */,

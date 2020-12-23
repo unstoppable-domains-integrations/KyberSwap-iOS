@@ -33,7 +33,7 @@ class InputPopUpViewController: KNBaseViewController {
   @IBOutlet weak var contentView: UIView!
   let transitor = TransitionDelegate()
   let viewModel: InputPopUpViewModel
-  
+
   init(viewModel: InputPopUpViewModel) {
     self.viewModel = viewModel
     super.init(nibName: InputPopUpViewController.className, bundle: nil)
@@ -79,7 +79,7 @@ class InputPopUpViewController: KNBaseViewController {
       }
     }
   }
-  
+
   @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }

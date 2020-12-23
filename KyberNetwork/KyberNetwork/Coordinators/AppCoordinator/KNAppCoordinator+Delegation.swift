@@ -58,6 +58,21 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     self.tabbarController.selectedIndex = 2
     self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
   }
+
+  func exchangeTokenCoordinatorDidUpdateWalletObjects() {
+    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
+  }
+
+  func exchangeTokenCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    self.removeWallet(wallet)
+  }
+
+  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
+  }
 }
 
 // MARK: Limit Order Coordinator Delegate
