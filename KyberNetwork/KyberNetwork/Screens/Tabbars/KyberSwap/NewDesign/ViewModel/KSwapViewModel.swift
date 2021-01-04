@@ -2,6 +2,18 @@
 
 import UIKit
 import BigInt
+import TrustCore
+
+struct RawSwapTransaction {
+  let userAddress: String
+  let src: String
+  let dest: String
+  let srcQty: String
+  let minDesQty: String
+  let gasPrice: String
+  let nonce: Int
+  let hint: String
+}
 
 class KSwapViewModel {
 
@@ -41,6 +53,8 @@ class KSwapViewModel {
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   var swapRates: (String, String, BigInt, [JSONDictionary]) = ("", "", BigInt(0), [])
   var currentFlatform: String = "kyber"
+  var remainApprovedAmount: (TokenObject, BigInt)?
+  var latestNonce: Int = -1
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -124,18 +138,15 @@ class KSwapViewModel {
   }
 
   // when user wants to fix received amount
-  var expectedExchangeAmountText: String {
-    guard let rate = self.estRate, !self.amountToBigInt.isZero else {
+  var expectedExchangeAmountText: String { //TODO: Improve loading rate later
+    guard !self.amountToBigInt.isZero else {
       return ""
     }
+    let rate = self.getCurrentRate() ?? BigInt(0)
     let expectedExchange: BigInt = {
-      let exchangeRate: BigInt = {
-        if !rate.isZero { return rate }
-        return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
-      }()
-      if exchangeRate.isZero { return BigInt(0) }
-      let amount = self.amountToBigInt * BigInt(10).power(self.from.decimals)
-      return (amount + exchangeRate - BigInt(1)) / exchangeRate
+      if rate.isZero { return BigInt(0) }
+      let amount = self.amountToBigInt * BigInt(10).power(18) * BigInt(10).power(self.from.decimals)
+      return amount / rate / BigInt(10).power(self.to.decimals)
     }()
     return expectedExchange.string(
       decimals: self.from.decimals,
@@ -193,14 +204,15 @@ class KSwapViewModel {
     guard !self.amountFromBigInt.isZero else {
       return ""
     }
-    let rate: BigInt? = {
-      if let rate = self.estRate, !rate.isZero { return rate }
-      return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
-    }()
-    guard let expectedRate = rate else { return "" }
+//    let rate: BigInt? = {
+//      if let rate = self.estRate, !rate.isZero { return rate }
+//      return KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to)
+//    }()
+//    guard let expectedRate = rate else { return "" }
+    let expectedRate = self.getCurrentRate() ?? BigInt(0)
     let expectedAmount: BigInt = {
       let amount = self.amountFromBigInt
-      return expectedRate * amount / BigInt(10).power(self.from.decimals)
+      return expectedRate * amount * BigInt(10).power(self.to.decimals) / BigInt(10).power(18) / BigInt(10).power(self.from.decimals)
     }()
     return expectedAmount.string(
       decimals: self.to.decimals,
@@ -235,10 +247,15 @@ class KSwapViewModel {
     let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate {
-      return notNilRate.isZero ? "---" : "Rate: 1\(self.from.symbol) = \(notNilRate.displayRate(decimals: self.to.decimals))\(self.to.symbol)"
+      return notNilRate.isZero ? "---" : "Rate: 1\(self.from.symbol) = \(notNilRate.displayRate(decimals: 18))\(self.to.symbol)"
     } else {
       return "---"
     }
+  }
+  
+  func getCurrentRate() -> BigInt? {
+    let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+    return BigInt(rateString)
   }
 
   var minRate: BigInt? {
@@ -310,14 +327,18 @@ class KSwapViewModel {
     return true
   }
 
-  var isPairUnderMaintenance: Bool {
-    let cachedRate = KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
-    let estRate = self.estRate ?? BigInt(0)
-    return estRate.isZero && cachedRate.isZero
-  }
+//  var isPairUnderMaintenance: Bool {
+//    let cachedRate = KNRateCoordinator.shared.getCachedProdRate(from: self.from, to: self.to) ?? BigInt(0)
+//    let estRate = self.estRate ?? BigInt(0)
+//    return estRate.isZero && cachedRate.isZero
+//  }
 
   var feeBigInt: BigInt {
     return self.gasPrice * self.estimateGasLimit
+  }
+
+  var minDestQty: BigInt {
+    return self.amountToBigInt * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
   var isHavingEnoughETHForFee: Bool {
@@ -571,6 +592,67 @@ class KSwapViewModel {
     }
   }
 
-  // MARK: TUTORIAL
-  var currentTutorialStep: Int = 1
+  @discardableResult
+  func updateExpectedRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt) -> Bool {
+    let isAmountChanged: Bool = {
+      if self.amountFromBigInt == amount { return false }
+      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
+      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+    }()
+    if from == self.from, to == self.to, !isAmountChanged {
+      self.estRate = rate
+      return true
+    }
+    return false
+  }
+
+  func buildRawSwapTx() -> RawSwapTransaction {
+    return RawSwapTransaction(
+      userAddress: self.wallet.address.description,
+      src: self.from.address ,
+      dest: self.to.address,
+      srcQty: self.amountFromBigInt.description,
+      minDesQty: self.minDestQty.description,
+      gasPrice: self.gasPrice.description,
+      nonce: self.latestNonce,
+      hint: self.getHint(
+        from: self.from.address,
+        to: self.to.address,
+        amount: self.amountFromBigInt,
+        platform: self.currentFlatform
+      )
+    )
+  }
+
+  func buildSignSwapTx(dict: [String: String]) -> SignTransaction? {
+    guard let dataHexStr = dict["data"],
+          let to = dict["to"],
+          let valueHexString = dict["value"],
+          let value = BigInt(valueHexString.drop0x, radix: 16),
+          let gasPriceHexString = dict["gasPrice"],
+          let gasPrice = BigInt(gasPriceHexString.drop0x, radix: 16),
+          let gasLimitHexString = dict["gasLimit"],
+          let gasLimit = BigInt(gasLimitHexString.drop0x, radix: 16),
+          let nonceHexStr = dict["nonce"],
+          let nonce = Int(nonceHexStr.drop0x, radix: 16)
+    else
+    {
+      return nil
+    }
+    if case let .real(account) = self.wallet.type {
+      return SignTransaction(
+        value: value,
+        account: account,
+        to: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9"),
+        nonce: nonce,
+        data: Data(hex: dataHexStr.drop0x),
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        chainID: KNEnvironment.default.chainID
+      )
+    } else {
+      //TODO: handle watch wallet type
+      return nil
+    }
+  }
 }

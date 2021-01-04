@@ -10,10 +10,10 @@ import Moya
 enum KSwapViewEvent: Equatable {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
 //  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool) //TODO: remove to apply new get rate procedure
-  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
+//  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case validateRate(data: KNDraftExchangeTransaction)
-  case swap(data: KNDraftExchangeTransaction)
+  case swap(data: KNDraftExchangeTransaction, tx: SignTransaction)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
@@ -22,11 +22,18 @@ enum KSwapViewEvent: Equatable {
   case openWalletsList
   case getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt)
   case openChooseRate(from: TokenObject, to: TokenObject, rates: [JSONDictionary])
+  case checkAllowance(token: TokenObject)
+  case sendApprove(token: TokenObject, remain: BigInt)
+  case getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String)
+  case getLatestNonce
+  case buildTx(rawTx: RawSwapTransaction)
+  case signAndSendTx(tx: SignTransaction)
+  case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String)
 
   static public func == (left: KSwapViewEvent, right: KSwapViewEvent) -> Bool {
     switch (left, right) {
-    case let (.estimateGas(fromL, toL, amountL, gasPriceL, hintL), .estimateGas(fromR, toR, amountR, gasPriceR, hintR)):
-      return fromL == fromR && toL == toR && amountL == amountR && gasPriceL == gasPriceR && hintL == hintR
+    case let (.getGasLimit(fromL, toL, amountL, hintL), .getGasLimit(fromR, toR, amountR, hintR)):
+      return fromL == fromR && toL == toR && amountL == amountR && hintL == hintR
     default:
       return false //Not implement
     }
@@ -67,7 +74,12 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var gasFeeLabel: UILabel!
   @IBOutlet weak var slippageLabel: UILabel!
   @IBOutlet weak var changeRateButton: UIButton!
-  
+  @IBOutlet weak var gasFeeSelectorContainerView: RectangularDashedView!
+  @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonRightPaddingContaint: NSLayoutConstraint!
+  @IBOutlet weak var approveButton: UIButton!
+  @IBOutlet weak var approveButtonEqualWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonWidthContraint: NSLayoutConstraint!
 
   fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
@@ -98,7 +110,7 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
-
+    self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
 //    self.addObserveNotifications()
   }
 
@@ -107,6 +119,7 @@ class KSwapViewController: KNBaseViewController {
     if !self.isViewSetup {
       self.isViewSetup = true
       self.setupUI()
+      self.updateAllowance()
     }
   }
 
@@ -114,6 +127,9 @@ class KSwapViewController: KNBaseViewController {
     super.viewDidLayoutSubviews()
     self.continueButton.removeSublayer(at: 0)
     self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+
+    self.approveButton.removeSublayer(at: 0)
+    self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -125,6 +141,7 @@ class KSwapViewController: KNBaseViewController {
 //    self.updateEstimatedRate(showError: true)
 //    self.updateReferencePrice()
     self.updateAllRates()
+    self.updateAllowance()
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
@@ -170,8 +187,10 @@ class KSwapViewController: KNBaseViewController {
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.setupTokensView()
     self.setupContinueButton()
+    self.updateApproveButton()
     self.setUpGasFeeView()
     self.setUpChangeRateButton()
+    self.updateUIForSendApprove(isShowApproveButton: false)
   }
 
   fileprivate func setupTokensView() {
@@ -230,6 +249,10 @@ class KSwapViewController: KNBaseViewController {
     )
   }
   
+  fileprivate func updateApproveButton() {
+    self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.from.symbol, for: .normal)
+  }
+
   fileprivate func setUpChangeRateButton() {
     if self.viewModel.currentFlatform == "uniswap" {
       let icon = UIImage(named: "uni_icon_medium")?.resizeImage(to: CGSize(width: 16, height: 16))
@@ -308,8 +331,21 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_swap_tapped", customAttributes: nil)
-    self.validateDataBeforeContinuing(hasCallValidateRate: false)
+//    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_swap_tapped", customAttributes: nil)
+//    self.validateDataBeforeContinuing(hasCallValidateRate: false)
+    let event = KSwapViewEvent.getExpectedRate(
+      from: self.viewModel.from,
+      to: self.viewModel.to,
+      srcAmount: self.viewModel.amountFromBigInt,
+      hint: self.viewModel.getHint(
+        from: self.viewModel.from.address,
+        to: self.viewModel.to.address,
+        amount: self.viewModel.amountFromBigInt,
+        platform: self.viewModel.currentFlatform
+      )
+    )
+    self.delegate?.kSwapViewController(self, run: event)
+    self.displayLoading()
   }
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
@@ -321,6 +357,13 @@ class KSwapViewController: KNBaseViewController {
     if rates.count >= 2 {
       self.delegate?.kSwapViewController(self, run: .openChooseRate(from: self.viewModel.from, to: self.viewModel.to, rates: rates))
     }
+  }
+
+  @IBAction func approveButtonTapped(_ sender: UIButton) {
+    guard let remain = self.viewModel.remainApprovedAmount else {
+      return
+    }
+    self.delegate?.kSwapViewController(self, run: .sendApprove(token: remain.0, remain: remain.1))
   }
 
   fileprivate func validateDataBeforeContinuing(hasCallValidateRate: Bool) {
@@ -358,7 +401,7 @@ class KSwapViewController: KNBaseViewController {
     if !hasCallValidateRate {
       self.delegate?.kSwapViewController(self, run: .validateRate(data: exchange))
     } else {
-      self.delegate?.kSwapViewController(self, run: .swap(data: exchange))
+//      self.delegate?.kSwapViewController(self, run: .swap(data: exchange, ))
     }
   }
 
@@ -429,11 +472,10 @@ class KSwapViewController: KNBaseViewController {
 //  }
 
   fileprivate func updateEstimatedGasLimit() {
-    let event = KSwapViewEvent.estimateGas(
+    let event = KSwapViewEvent.getGasLimit(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountToEstimate,
-      gasPrice: self.viewModel.gasPrice,
+      srcAmount: self.viewModel.amountToEstimate,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
     //Dismiss event call if the same parameter call within 5 sec
@@ -471,14 +513,14 @@ class KSwapViewController: KNBaseViewController {
       KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "please.enter.an.amount.to.continue".toBeLocalised()])
       return true
     }
-    if self.viewModel.isPairUnderMaintenance {
-      self.showWarningTopBannerMessage(
-        with: "",
-        message: NSLocalizedString("This token pair is temporarily under maintenance", value: "This token pair is temporarily under maintenance", comment: "")
-      )
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "This token pair is temporarily under maintenance".toBeLocalised()])
-      return true
-    }
+//    if self.viewModel.isPairUnderMaintenance {
+//      self.showWarningTopBannerMessage(
+//        with: "",
+//        message: NSLocalizedString("This token pair is temporarily under maintenance", value: "This token pair is temporarily under maintenance", comment: "")
+//      )
+//      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "This token pair is temporarily under maintenance".toBeLocalised()])
+//      return true
+//    }
     if estRateBigInt?.isZero == true {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
@@ -571,17 +613,23 @@ extension KSwapViewController {
 //    self.updateEstimatedRate(showError: updatedFrom || updatedTo)
 //    self.updateReferencePrice()
     self.balanceLabel.text = self.viewModel.balanceText
+    self.updateAllowance()
 
     // update tokens button in case promo wallet
     self.toTokenButton.isEnabled = self.viewModel.isToTokenBtnEnabled
     self.fromTokenButton.isEnabled = self.viewModel.isFromTokenBtnEnabled
     self.updateExchangeRateField()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+
     self.view.layoutIfNeeded()
   }
 
   fileprivate func updateExchangeRateField() {
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+  }
+
+  fileprivate func updateAllowance() {
+    self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
   /*
   fileprivate func updateAdvancedSettingsView() {
@@ -601,6 +649,33 @@ extension KSwapViewController {
 */
   @objc func balanceLabelTapped(_ sender: Any) {
     self.keyboardSwapAllButtonPressed(sender)
+  }
+
+  fileprivate func updateUIForSendApprove(isShowApproveButton: Bool) {
+    if isShowApproveButton {
+      self.approveButtonLeftPaddingContraint.constant = 37
+      self.approveButtonRightPaddingContaint.constant = 15
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 1000)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.continueButton.isEnabled = false
+      self.continueButton.alpha = 0.2
+    } else {
+      self.approveButtonLeftPaddingContraint.constant = 0
+      self.approveButtonRightPaddingContaint.constant = 37
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 1000)
+      self.continueButton.isEnabled = true
+      self.continueButton.alpha = 1
+    }
+
+    UIView.animate(withDuration: 0.25) {
+      self.view.layoutIfNeeded()
+    } completion: { (_) in
+      self.continueButton.removeSublayer(at: 0)
+      self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+      self.continueButton.removeSublayer(at: 0)
+      self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    }
   }
 }
 
@@ -664,14 +739,31 @@ extension KSwapViewController {
    Update estimate rate, check if the from, to, amount are all the same as current value in the model
    Update UIs according to new values
    */
-  func coordinatorDidUpdateEstimateRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
-    let updated = self.viewModel.updateExchangeRate(
-      for: from,
-      to: to,
-      amount: amount,
-      rate: rate,
-      slippageRate: slippageRate
-    )
+//  func coordinatorDidUpdateEstimateRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
+//    let updated = self.viewModel.updateExchangeRate(
+//      for: from,
+//      to: to,
+//      amount: amount,
+//      rate: rate,
+//      slippageRate: slippageRate
+//    )
+//    if self.viewModel.isFocusingFromAmount {
+//      self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
+//      self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
+//    } else {
+//      self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
+//      self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
+//    }
+//    self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+//    if self.viewModel.isTappedSwapAllBalance {
+//      self.keyboardSwapAllButtonPressed(self)
+//      self.viewModel.isTappedSwapAllBalance = false
+//    }
+//    self.view.layoutIfNeeded()
+//  }
+
+  func coordinatorDidUpdateExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt) {
+    self.viewModel.updateExpectedRate(for: from, to: to, amount: amount, rate: rate)
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
@@ -685,6 +777,7 @@ extension KSwapViewController {
       self.viewModel.isTappedSwapAllBalance = false
     }
     self.view.layoutIfNeeded()
+    self.delegate?.kSwapViewController(self, run: .getLatestNonce)
   }
 
   /*
@@ -744,6 +837,9 @@ extension KSwapViewController {
 //    if isSource && !self.viewModel.isFocusingFromAmount {
 //      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
 //    }
+    self.updateApproveButton()
+    //TODO: reset only swap button on screen, can be optimize with
+    self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateEstimatedGasLimit()
 //    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
     self.view.layoutIfNeeded()
@@ -830,13 +926,100 @@ extension KSwapViewController {
   }
 
   func coordinatorFailUpdateRates() {
-    
+    //TODO: show error loading rate if needed on UI
   }
-  
+
   func coordinatorDidUpdatePlatform(_ platform: String) {
     self.viewModel.currentFlatform = platform
     self.setUpChangeRateButton()
     self.updateAllRates()
+  }
+
+  func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
+    guard let balanceValue = self.viewModel.balance else {
+      return
+    }
+    if balanceValue.value > allowance {
+      self.viewModel.remainApprovedAmount = (token, allowance)
+      self.updateUIForSendApprove(isShowApproveButton: true)
+      print("[Debug] allowance \(allowance.description)")
+    } else {
+      //TODO: need to check more to avoid lagging ui
+      self.updateUIForSendApprove(isShowApproveButton: false)
+    }
+  }
+
+  func coordinatorDidFailUpdateAllowance(token: TokenObject) {
+    //TODO: handle error
+  }
+
+  func coordinatorSuccessApprove(token: TokenObject) {
+    self.updateUIForSendApprove(isShowApproveButton: false)
+  }
+
+  func coordinatorFailApprove(token: TokenObject) {
+    //TODO: show error message
+    self.updateUIForSendApprove(isShowApproveButton: true)
+  }
+
+  func coordinatorSuccessUpdateLatestNonce(nonce: Int) {
+    self.viewModel.latestNonce = nonce
+    let raw = self.viewModel.buildRawSwapTx()
+    self.delegate?.kSwapViewController(self, run: .buildTx(rawTx: raw))
+  }
+
+  func coordinatorFailUpdateLatestNonce() {
+    self.hideLoading()
+  }
+
+  func coordinatorSuccessUpdateEncodedTx(json: [String: String]) {
+    self.hideLoading()
+    guard let signTx = self.viewModel.buildSignSwapTx(dict: json) else { return }
+    let rate = self.viewModel.estRate ?? BigInt(0)
+    let amount: BigInt = {
+      if self.viewModel.isFocusingFromAmount {
+        if self.viewModel.isSwapAllBalance {
+          let balance = self.viewModel.balance?.value ?? BigInt(0)
+          if !self.viewModel.from.isETH { return balance } // token, no need minus fee
+          let fee = self.viewModel.allETHBalanceFee
+          return max(BigInt(0), balance - fee)
+        }
+        return self.viewModel.amountFromBigInt
+      }
+      let expectedExchange: BigInt = {
+        if rate.isZero { return rate }
+        let amount = self.viewModel.amountToBigInt
+        return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
+      }()
+      return expectedExchange
+    }()
+    let exchange = KNDraftExchangeTransaction(
+      from: self.viewModel.from,
+      to: self.viewModel.to,
+      amount: amount,
+      maxDestAmount: BigInt(2).power(255),
+      expectedRate: rate,
+      minRate: self.viewModel.minRate,
+      gasPrice: self.viewModel.gasPrice,
+      gasLimit: self.viewModel.estimateGasLimit,
+      expectedReceivedString: self.viewModel.amountTo,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
+    )
+    self.delegate?.kSwapViewController(self, run: .swap(data: exchange, tx: signTx))
+  }
+
+  func coordinatorFailUpdateEncodedTx() {
+    self.hideLoading()
+  }
+
+  func coordinatorSuccessSendTransaction() {
+    print("[Debug] send success")
+    //TODO: show pending tx
+    self.hideLoading()
+  }
+
+  func coordinatorFailSendTransaction() {
+    self.hideLoading()
   }
 }
 

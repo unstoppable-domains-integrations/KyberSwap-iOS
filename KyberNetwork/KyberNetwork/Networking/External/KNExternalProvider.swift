@@ -290,7 +290,7 @@ class KNExternalProvider {
     KNGeneralProvider.shared.getAllowance(
       for: token,
       address: self.account.address,
-      networkAddress: self.networkAddress,
+      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
       completion: completion
     )
   }
@@ -321,7 +321,7 @@ class KNExternalProvider {
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: self.networkAddress,
+      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
       gasPrice: gasPrice
     ) { [weak self] result in
         guard let `self` = self else { return }
@@ -499,7 +499,7 @@ class KNExternalProvider {
     self.signTransactionData(from: signTransaction, completion: completion)
   }
 
-  private func signTransactionData(from signTransaction: SignTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  func signTransactionData(from signTransaction: SignTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signResult = self.keystore.signTransaction(signTransaction)
     switch signResult {
     case .success(let data):

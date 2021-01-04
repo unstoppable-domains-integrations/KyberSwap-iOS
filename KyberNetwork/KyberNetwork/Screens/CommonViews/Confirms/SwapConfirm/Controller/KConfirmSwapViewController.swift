@@ -2,8 +2,11 @@
 
 import UIKit
 
+
+
 protocol KConfirmSwapViewControllerDelegate: class {
-  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent)
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction)
+  func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
@@ -138,8 +141,9 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func confirmButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_confirm_swap", customAttributes: ["action": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.dismiss(animated: true, completion: nil)
-    let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
-    self.delegate?.kConfirmSwapViewController(self, run: event)
+//    let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
+//    self.delegate?.kConfirmSwapViewController(self, run: event)
+    self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -153,7 +157,8 @@ class KConfirmSwapViewController: KNBaseViewController {
                                       "tx_fee": self.viewModel.feeETHString,
       ]
     )
-    self.delegate?.kConfirmSwapViewController(self, run: .cancel)
+    self.delegate?.kConfirmSwapViewControllerDidCancel(self)
+//    self.delegate?.kConfirmSwapViewController(self, run: .cancel)
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
@@ -164,11 +169,10 @@ class KConfirmSwapViewController: KNBaseViewController {
       time: 10
     )
   }
-  
+
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
-  
 }
 
 extension KConfirmSwapViewController: BottomPopUpAbstract {

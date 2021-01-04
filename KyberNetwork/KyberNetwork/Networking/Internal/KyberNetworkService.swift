@@ -850,7 +850,10 @@ enum KrytalService {
   case getHint(path: [JSONDictionary])
   case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
   case getAllRates(src: String, dst: String, srcAmount: String)
-  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: String, hint: String)
+  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String)
+  case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
+  case getGasPrice
+  case getRefPrice(src: String, dst: String)
 }
 
 extension KrytalService: TargetType {
@@ -886,9 +889,15 @@ extension KrytalService: TargetType {
       return "/v1/swap/allRates"
     case .buildSwapTx:
       return "/v1/swap/buildTx"
+    case .getGasPrice:
+      return "/v1/swap/gasPrice"
+    case .getGasLimit:
+      return "/v1/swap/gasLimit"
+    case .getRefPrice:
+      return "/v1/market/refPrice"
     }
   }
-  
+
   var method: Moya.Method {
     return .get
   }
@@ -934,12 +943,29 @@ extension KrytalService: TargetType {
         "gas_price": gasPrice,
         "nonce": nonce,
         "hint": hint,
+        "platform_wallet": "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da",
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getGasPrice:
+      return .requestPlain
+    case .getGasLimit(let src, let dst, let srcAmount, let hint):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "hint": hint
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getRefPrice(let src, let dst):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
-  
-  var headers: [String : String]? {
+
+  var headers: [String: String]? {
     return nil
   }
 }

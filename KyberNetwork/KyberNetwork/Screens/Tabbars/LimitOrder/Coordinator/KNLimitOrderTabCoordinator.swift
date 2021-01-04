@@ -192,7 +192,7 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func updateReferencePrice(from: TokenObject, to: TokenObject) {
-    KNRateCoordinator.shared.updateReferencePrice(fromSym: from.symbol, toSym: to.symbol)
+//    KNRateCoordinator.shared.updateReferencePrice(fromSym: from.symbol, toSym: to.symbol)
   }
 
   fileprivate func checkDataBeforeConfirmOrder(_ order: KNLimitOrder) {

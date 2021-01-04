@@ -24,6 +24,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KSwapViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="approveButton" destination="Hag-Sy-it8" id="mVK-at-cf7"/>
+                <outlet property="approveButtonEqualWidthContraint" destination="RfS-tT-Ftm" id="icP-jX-WGE"/>
+                <outlet property="approveButtonLeftPaddingContraint" destination="LZp-9G-FgP" id="4eM-co-MrR"/>
+                <outlet property="approveButtonRightPaddingContaint" destination="jn6-YJ-OmP" id="QzB-dk-acP"/>
+                <outlet property="approveButtonWidthContraint" destination="QOV-jL-TBg" id="Mqp-OI-Lzx"/>
                 <outlet property="balanceLabel" destination="fk0-fr-Th3" id="gYr-4c-t3e"/>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="oxA-wg-TwX" id="ooe-8a-ZBl"/>
                 <outlet property="changeRateButton" destination="9PL-XD-kXQ" id="X6D-zG-BpU"/>
@@ -33,6 +38,7 @@
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
                 <outlet property="gasFeeLabel" destination="3H6-w2-t6j" id="NPf-4J-IeU"/>
+                <outlet property="gasFeeSelectorContainerView" destination="PIL-QW-woa" id="0mZ-q4-iGb"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
                 <outlet property="slippageLabel" destination="nrV-j9-Z3y" id="QPP-Fw-5Xf"/>
@@ -341,7 +347,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJW-Oi-0g6">
-                            <rect key="frame" x="37" y="353" width="301" height="42"/>
+                            <rect key="frame" x="195" y="353" width="143" height="42"/>
                             <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="HoO-Mo-WFQ"/>
@@ -371,6 +377,27 @@
                                 <action selector="changeRateButtonTapped:" destination="-1" eventType="touchUpInside" id="RnR-Br-TCi"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hag-Sy-it8">
+                            <rect key="frame" x="37" y="353" width="143" height="42"/>
+                            <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="42" id="37s-FI-M9m"/>
+                                <constraint firstAttribute="width" priority="250" id="QOV-jL-TBg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                            <state key="normal" title="Approve KNC">
+                                <color key="titleColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="21"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="approveButtonTapped:" destination="-1" eventType="touchUpInside" id="UM1-n2-ej7"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -388,15 +415,18 @@
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="leading" secondItem="IWS-1b-dbc" secondAttribute="leading" id="GiH-y5-70V"/>
                         <constraint firstItem="WYb-EV-F1u" firstAttribute="leading" secondItem="EfQ-Sl-42G" secondAttribute="leading" id="Hzp-IA-jnj"/>
                         <constraint firstItem="ThL-2a-mea" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="8" symbolic="YES" id="JX3-bP-9es"/>
+                        <constraint firstItem="YJW-Oi-0g6" firstAttribute="centerY" secondItem="Hag-Sy-it8" secondAttribute="centerY" id="Jvq-ue-lr2"/>
+                        <constraint firstItem="Hag-Sy-it8" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="LZp-9G-FgP"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="O7R-4m-ncb"/>
                         <constraint firstItem="J8q-3O-zAd" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="11" id="Ogu-h8-QQh"/>
                         <constraint firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" constant="37" id="Pz0-JN-ret"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="centerX" secondItem="P3a-OW-m6C" secondAttribute="centerX" id="R3t-iN-2fH"/>
+                        <constraint firstItem="YJW-Oi-0g6" firstAttribute="width" secondItem="Hag-Sy-it8" secondAttribute="width" id="RfS-tT-Ftm"/>
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="top" secondItem="P3a-OW-m6C" secondAttribute="top" constant="40" id="UeJ-4I-elg"/>
                         <constraint firstAttribute="bottom" secondItem="YJW-Oi-0g6" secondAttribute="bottom" constant="50" id="VK6-Me-ZgZ"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="top" secondItem="XaR-wf-YRm" secondAttribute="bottom" constant="26" id="dhd-15-ko2"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="e8i-07-pYd"/>
-                        <constraint firstItem="YJW-Oi-0g6" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="fN7-mu-DmN"/>
+                        <constraint firstItem="YJW-Oi-0g6" firstAttribute="leading" secondItem="Hag-Sy-it8" secondAttribute="trailing" constant="15" id="jn6-YJ-OmP"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="leading" secondItem="WYb-EV-F1u" secondAttribute="trailing" constant="8" id="sTV-Ju-yEz"/>
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="tra-DG-fOD"/>
                         <constraint firstItem="PIL-QW-woa" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="yLO-SU-BP1"/>

@@ -393,7 +393,7 @@ extension KNExchangeTokenCoordinator {
       }
     }
   }
-
+  //TODO: remove later
   fileprivate func resetAllowanceForExchangeTransactionIfNeeded(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     if remain.isZero {
       completion(.success(true))
@@ -402,6 +402,26 @@ extension KNExchangeTokenCoordinator {
     let gasPrice = exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas
     self.session.externalProvider.sendApproveERCToken(
       for: exchangeTransaction.from,
+      value: BigInt(0),
+      gasPrice: gasPrice
+    ) { result in
+      switch result {
+      case .success:
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
+  fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    if remain.isZero {
+      completion(.success(true))
+      return
+    }
+    let gasPrice = KNGasCoordinator.shared.defaultKNGas
+    self.session.externalProvider.sendApproveERCToken(
+      for: token,
       value: BigInt(0),
       gasPrice: gasPrice
     ) { result in
@@ -430,13 +450,49 @@ extension KNExchangeTokenCoordinator: KNPromoSwapConfirmViewControllerDelegate {
 
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
-  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent) {
-    if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
-      self.didConfirmSendExchangeTransaction(exchangeTransaction)
-    } else {
-      self.navigationController.popViewController(animated: true) {
-        self.confirmSwapVC = nil
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction) {
+//    if case .confirm(let type) = event, case .exchange(let exchangeTransaction) = type {
+//      self.didConfirmSendExchangeTransaction(exchangeTransaction)
+//    } else {
+//      self.navigationController.popViewController(animated: true) {
+//        self.confirmSwapVC = nil
+//      }
+//    }
+    
+    self.session.externalProvider.signTransactionData(from: signTransaction) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let signedData):
+        KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            self.sendUserTxHashIfNeeded(hash)
+            let transaction = data.toTransaction(
+              hash: hash,
+              fromAddr: self.session.wallet.address,
+              toAddr: signTransaction.to!,
+              nounce: signTransaction.nonce
+            )
+            self.session.addNewPendingTransaction(transaction)
+            controller.dismiss(animated: true) {
+              self.confirmSwapVC = nil
+              self.openTransactionStatusPopUp(transaction: transaction)
+            }
+            self.rootViewController.coordinatorSuccessSendTransaction()
+          case .failure(let error):
+            print("[Debug] error send \(error)")
+            self.rootViewController.coordinatorFailSendTransaction()
+          }
+        })
+      case .failure:
+        self.rootViewController.coordinatorFailSendTransaction()
       }
+    }
+  }
+  
+  func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController) {
+    controller.dismiss(animated: true) {
+      self.confirmSwapVC = nil
     }
   }
 }
@@ -449,16 +505,17 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.openSearchToken(from: from, to: to, isSource: isSource)
 //    case .estimateRate(let from, let to, let amount, let hint, let showError):
 //      self.updateExpectedRateWithKyberIfNeeded(from: from, to: to, amount: amount, hint: hint, showError: showError)
-    case .estimateGas(let from, let to, let amount, let gasPrice, let hint):
-      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice, hint: hint)
+    case .getGasLimit(let from, let to, let amount, let hint):
+//      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice, hint: hint)
+      self.getGasLimit(from: from, to: to, amount: amount, hint: hint)
     case .showQRCode:
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
     case .validateRate(let data):
       self.validateRateBeforeSwapping(data: data)
-    case .swap(let data):
-      self.exchangeButtonPressed(data: data)
+    case .swap(let data, let tx):
+      self.showConfirmSwapScreen(data: data, transaction: tx)
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
@@ -500,6 +557,52 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       let vc = ChooseRateViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
+    case .checkAllowance(let from):
+      self.session.externalProvider.getAllowance(token: from) { [weak self] getAllowanceResult in
+        guard let `self` = self else { return }
+        switch getAllowanceResult {
+        case .success(let res):
+          self.rootViewController.coordinatorDidUpdateAllowance(token: from, allowance: res)
+        case .failure:
+          self.rootViewController.coordinatorDidFailUpdateAllowance(token: from)
+        }
+      }
+    case .sendApprove(let token, let remain):
+      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModel(token: token, res: remain))
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
+    case .getExpectedRate(let from, let to, let srcAmount, let hint):
+      self.getExpectedRate(from: from, to: to, srcAmount: srcAmount, hint: hint)
+    case .getLatestNonce:
+      self.session.externalProvider.getTransactionCount { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let res):
+          self.rootViewController.coordinatorSuccessUpdateLatestNonce(nonce: res)
+        case .failure:
+          self.rootViewController.coordinatorFailUpdateLatestNonce()
+        }
+      }
+    case .buildTx(let raw):
+      self.getEncodedSwapTransaction(raw)
+    case .signAndSendTx(let tx):
+      self.session.externalProvider.signTransactionData(from: tx) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let data):
+          KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+            switch sendResult {
+            case .success:
+              self.rootViewController.coordinatorSuccessSendTransaction()
+            case .failure(let error):
+              print("[Debug] error send \(error)")
+              self.rootViewController.coordinatorFailSendTransaction()
+            }
+          })
+        case .failure:
+          self.rootViewController.coordinatorFailSendTransaction()
+        }
+      }
     }
   }
 
@@ -621,17 +724,29 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.promoConfirmSwapVC?.delegate = self
       self.navigationController.pushViewController(self.promoConfirmSwapVC!, animated: true)
     } else {
-      if let topVC = self.navigationController.topViewController, topVC is KConfirmSwapViewController { return }
-      self.confirmSwapVC = {
-        let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-        let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal)
-        let controller = KConfirmSwapViewController(viewModel: viewModel)
-        controller.loadViewIfNeeded()
-        controller.delegate = self
-        return controller
-      }()
-      self.navigationController.present(self.confirmSwapVC!, animated: true, completion: nil)
+//      if let topVC = self.navigationController.topViewController, topVC is KConfirmSwapViewController { return }
+//      self.confirmSwapVC = {
+//        let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
+//        let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal)
+//        let controller = KConfirmSwapViewController(viewModel: viewModel)
+//        controller.loadViewIfNeeded()
+//        controller.delegate = self
+//        return controller
+//      }()
+//      self.navigationController.present(self.confirmSwapVC!, animated: true, completion: nil)
     }
+  }
+  
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction) {
+    self.confirmSwapVC = {
+      let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction)
+      let controller = KConfirmSwapViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      return controller
+    }()
+    self.navigationController.present(self.confirmSwapVC!, animated: true, completion: nil)
   }
 
   // Update compared rate from node when prod cached failed to load
@@ -788,7 +903,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //      }
 //    }
 //  }
-  
+
   func getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
@@ -801,6 +916,55 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: srcAmount, rates: rates)
       } else {
         self.rootViewController.coordinatorFailUpdateRates()
+      }
+    }
+  }
+
+  func getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let src = from.contract.lowercased()
+    let dest = to.contract.lowercased()
+    let amt = srcAmount.description
+
+    provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let rateBigInt = BigInt(rate) {
+        self.rootViewController.coordinatorDidUpdateExpectedRate(from: from, to: to, amount: srcAmount, rate: rateBigInt)
+      } else {
+        self.rootViewController.coordinatorDidUpdateExpectedRate(from: from, to: to, amount: srcAmount, rate: BigInt(0))
+      }
+    }
+  }
+
+  func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint)) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txJson = json["tx_object"] as? [String: String] {
+        self.rootViewController.coordinatorSuccessUpdateEncodedTx(json: txJson)
+      } else {
+        self.rootViewController.coordinatorFailUpdateEncodedTx()
+      }
+    }
+  }
+  
+  func getGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, hint: String) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let src = from.contract.lowercased()
+    let dest = to.contract.lowercased()
+    let amt = amount.description
+    provider.request(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let gasLimitString = json["gasLimit"] as? String, let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
+        self.rootViewController.coordinatorDidUpdateGasLimit(
+          from: from,
+          to: to,
+          amount: amount,
+          gasLimit: gasLimit
+        )
+        self.gasFeeSelectorVC?.coordinatorDidUpdateGasLimit(gasLimit)
+      } else {
+        //TODO: add handle for fail load gas limit
       }
     }
   }
@@ -1092,5 +1256,30 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
 extension KNExchangeTokenCoordinator: ChooseRateViewControllerDelegate {
   func chooseRateViewController(_ controller: ChooseRateViewController, didSelect rate: String) {
     self.rootViewController.coordinatorDidUpdatePlatform(rate)
+  }
+}
+
+extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
+    self.navigationController.displayLoading()
+    self.resetAllowanceForTokenIfNeeded(token, remain: remain) { [weak self] resetResult in
+      guard let `self` = self else { return }
+      self.navigationController.hideLoading()
+      switch resetResult {
+      case .success:
+        self.session.externalProvider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas) { (result) in
+          switch result {
+          case .success:
+            self.rootViewController.coordinatorSuccessApprove(token: token)
+          case .failure(let error):
+            print("[Debug] \(error)")
+            //TODO: show error message
+            self.rootViewController.coordinatorFailApprove(token: token)
+          }
+        }
+      case .failure:
+        self.rootViewController.coordinatorFailApprove(token: token)
+      }
+    }
   }
 }
