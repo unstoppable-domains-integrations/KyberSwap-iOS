@@ -850,7 +850,7 @@ enum KrytalService {
   case getHint(path: [JSONDictionary])
   case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
   case getAllRates(src: String, dst: String, srcAmount: String)
-  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String)
+  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
   case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
   case getGasPrice
   case getRefPrice(src: String, dst: String)
@@ -933,7 +933,7 @@ extension KrytalService: TargetType {
         "srcAmount": srcAmount,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint):
+    case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint, let useGasToken):
       let json: JSONDictionary = [
         "userAddress": address,
         "src": src,
@@ -944,6 +944,7 @@ extension KrytalService: TargetType {
         "nonce": nonce,
         "hint": hint,
         "platformWallet": "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da",
+        "useGasToken": useGasToken,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice:

@@ -13,6 +13,7 @@ struct RawSwapTransaction {
   let gasPrice: String
   let nonce: Int
   let hint: String
+  let useGasToken: Bool
 }
 
 class KSwapViewModel {
@@ -656,7 +657,8 @@ class KSwapViewModel {
         to: self.to.address,
         amount: self.amountFromBigInt,
         platform: self.currentFlatform
-      )
+      ),
+      useGasToken: self.isUseGasToken
     )
   }
 

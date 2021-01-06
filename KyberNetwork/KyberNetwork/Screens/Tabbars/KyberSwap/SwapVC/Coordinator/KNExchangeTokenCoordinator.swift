@@ -941,7 +941,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
   func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint)) { [weak self] result in
+    provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txJson = json["txObject"] as? [String: String] {
         self.rootViewController.coordinatorSuccessUpdateEncodedTx(json: txJson)
