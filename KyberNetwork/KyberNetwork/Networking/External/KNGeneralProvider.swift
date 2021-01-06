@@ -155,13 +155,7 @@ class KNGeneralProvider {
     }
   }
 
-  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    if token.isETH {
-      // ETH no need to request for approval
-      completion(.success(BigInt(2).power(255)))
-      return
-    }
-    let tokenAddress: Address = Address(string: token.contract)!
+  func getAllowance(for address: Address, networkAddress: Address, tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
       switch dataResult {
       case .success(let data):
@@ -184,6 +178,16 @@ class KNGeneralProvider {
         completion(.failure(error))
       }
     }
+  }
+
+  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if token.isETH {
+      // ETH no need to request for approval
+      completion(.success(BigInt(2).power(255)))
+      return
+    }
+    let tokenAddress: Address = Address(string: token.contract)!
+    self.getAllowance(for: address, networkAddress: networkAddress, tokenAddress: tokenAddress, completion: completion)
   }
 
   func getExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
@@ -377,6 +381,57 @@ class KNGeneralProvider {
       )
     }
   }
+  
+  func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+    var error: Error?
+    var encodeData: Data = Data()
+    var txCount: Int = 0
+    let group = DispatchGroup()
+
+    group.enter()
+    self.getSendApproveERC20TokenEncodeData(networkAddress: networkAddress, value: value, completion: { result in
+      switch result {
+      case .success(let resp):
+        encodeData = resp
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    })
+    group.enter()
+    self.getTransactionCount(for: account.address.description) { result in
+      switch result {
+      case .success(let resp):
+        txCount = max(resp, currentNonce)
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    }
+
+    group.notify(queue: .main) {
+      if let error = error {
+        completion(.failure(AnyError(error)))
+        return
+      }
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let signData):
+          self.sendSignedTransactionData(signData, completion: { sendResult in
+            switch sendResult {
+            case .success:
+              completion(.success(txCount + 1))
+            case .failure(let error):
+              completion(.failure(error))
+            }
+          })
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
+    }
+  }
 
   public func getUserCapInWei(for address: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     self.getUserCapInWeiEncode(for: address) { [weak self] encodeResult in
@@ -524,6 +579,27 @@ extension KNGeneralProvider {
       value: BigInt(0),
       account: account,
       to: Address(string: token.contract),
+      nonce: nonce,
+      data: data,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      chainID: KNEnvironment.default.chainID
+    )
+    let signResult = keystore.signTransaction(signTransaction)
+    switch signResult {
+    case .success(let data):
+      completion(.success(data))
+    case .failure(let error):
+      completion(.failure(AnyError(error)))
+    }
+  }
+  
+  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    let gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+    let signTransaction = SignTransaction(
+      value: BigInt(0),
+      account: account,
+      to: tokenAddress,
       nonce: nonce,
       data: data,
       gasPrice: gasPrice,

@@ -41,6 +41,7 @@ class KSwapViewModel {
 
   var isSwapAllBalance: Bool = false
   var isTappedSwapAllBalance: Bool = false
+  var isUseGasToken: Bool
 
 //  var estimatedRateDouble: Double {
 //    guard let rate = self.estRate else { return 0.0 }
@@ -55,11 +56,13 @@ class KSwapViewModel {
   var currentFlatform: String = "kyber"
   var remainApprovedAmount: (TokenObject, BigInt)?
   var latestNonce: Int = -1
+  var refPrice: (TokenObject, TokenObject, String, [String])
 
   init(wallet: Wallet,
        from: TokenObject,
        to: TokenObject,
-       supportedTokens: [TokenObject]
+       supportedTokens: [TokenObject],
+       isUseGasToken: Bool
     ) {
     self.wallet = wallet
     let addr = wallet.address.description
@@ -67,6 +70,8 @@ class KSwapViewModel {
     self.from = from.clone()
     self.to = to.clone()
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
+    self.refPrice = (self.from, self.to, "", [])
+    self.isUseGasToken = isUseGasToken
 //    self.updateProdCachedRate()
   }
   // MARK: Wallet name
@@ -558,7 +563,7 @@ class KSwapViewModel {
     }()
 
     guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
-      return "0"
+      return ""
     }
 
     let rateDict = self.swapRates.3.first { (element) -> Bool in
@@ -589,6 +594,37 @@ class KSwapViewModel {
       if let platformString = dict?["platform"] as? String {
         self.currentFlatform = platformString
       }
+    }
+  }
+
+  func updateRefPrice(from: TokenObject, to: TokenObject, change: String, source: [String]) {
+    guard from.isEqual(self.from), to.isEqual(self.to) else {
+      return
+    }
+    self.refPrice = (from, to, change, source)
+  }
+
+  func getRefPrice(from: TokenObject, to: TokenObject) -> String {
+    guard from.isEqual(self.from), to.isEqual(self.to) else {
+      return ""
+    }
+    return self.refPrice.2
+  }
+
+  var refPriceDiffText: String {
+    let refPrice = self.getRefPrice(from: self.from, to: self.to)
+    let price = self.getSwapRate(from: self.from.address.description, to: self.to.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
+    guard !price.isEmpty, !refPrice.isEmpty, let priceInt = Int(price), let refPriceDouble = Double(refPrice) else {
+      return ""
+    }
+
+    let priceDouble: Double = Double(priceInt) / pow(10.0, 18.0)
+    let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
+    if change > -5.0 {
+      return ""
+    } else {
+      let displayPercent = "\(change)".prefix(6)
+      return "↓ \(displayPercent)%"
     }
   }
 
@@ -643,7 +679,7 @@ class KSwapViewModel {
       return SignTransaction(
         value: value,
         account: account,
-        to: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9"),
+        to: Address(string: to),
         nonce: nonce,
         data: Data(hex: dataHexStr.drop0x),
         gasPrice: gasPrice,

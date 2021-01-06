@@ -13,7 +13,8 @@ public struct Constants {
     public static let isDoneShowQuickTutorialForHistoryView = "history_tutorial_done"
     public static let kisShowQuickTutorialForLongPendingTx = "kisShowQuickTutorialForLongPendingTx"
     public static let klimitNumberOfTransactionInDB = 1000
-  public static let animationDuration = 0.5
+    public static let animationDuration = 0.5
+    public static let useGasTokenDataKey = "use_gas_token_data_key"
 }
 
 public struct UnitConfiguration {

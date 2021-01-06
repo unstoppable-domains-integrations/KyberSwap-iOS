@@ -295,6 +295,15 @@ class KNExternalProvider {
     )
   }
 
+  func getAllowance(tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getAllowance(
+      for: self.account.address,
+      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      tokenAddress: tokenAddress,
+      completion: completion
+    )
+  }
+
   func getAllowanceLimitOrder(token: TokenObject, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: token,
@@ -317,6 +326,27 @@ class KNExternalProvider {
   func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
       token: token,
+      value: value,
+      account: self.account,
+      keystore: self.keystore,
+      currentNonce: self.minTxCount,
+      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      gasPrice: gasPrice
+    ) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let txCount):
+          self.minTxCount = txCount
+          completion(.success(true))
+        case .failure(let error):
+          completion(.failure(error))
+        }
+    }
+  }
+
+  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    KNGeneralProvider.shared.approve(
+      tokenAddress: tokenAddress,
       value: value,
       account: self.account,
       keystore: self.keystore,

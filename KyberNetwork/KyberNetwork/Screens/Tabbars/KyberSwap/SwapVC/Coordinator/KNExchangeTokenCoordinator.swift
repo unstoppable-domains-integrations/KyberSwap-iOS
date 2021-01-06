@@ -61,7 +61,8 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
       wallet: self.session.wallet,
       from: from,
       to: to,
-      supportedTokens: tokens
+      supportedTokens: tokens,
+      isUseGasToken: self.isAccountUseGasToken()
     )
     let controller = KSwapViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
@@ -519,7 +520,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
-      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent)
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
         medium: KNGasCoordinator.shared.standardKNGas,
@@ -603,6 +604,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.rootViewController.coordinatorFailSendTransaction()
         }
       }
+    case .getRefPrice(let from, let to):
+      self.getRefPrice(from: from, to: to)
     }
   }
 
@@ -736,7 +739,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //      self.navigationController.present(self.confirmSwapVC!, animated: true, completion: nil)
     }
   }
-  
+
   fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
@@ -908,7 +911,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.description
+    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }
@@ -924,7 +927,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.description
+    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
 
     provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
@@ -940,19 +943,19 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint)) { [weak self] result in
       guard let `self` = self else { return }
-      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txJson = json["tx_object"] as? [String: String] {
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txJson = json["txObject"] as? [String: String] {
         self.rootViewController.coordinatorSuccessUpdateEncodedTx(json: txJson)
       } else {
         self.rootViewController.coordinatorFailUpdateEncodedTx()
       }
     }
   }
-  
+
   func getGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, hint: String) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = amount.description
+    let amt = amount.isZero ? "1000000000000000" : amount.description
     provider.request(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let gasLimitString = json["gasLimit"] as? String, let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
@@ -965,6 +968,20 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         self.gasFeeSelectorVC?.coordinatorDidUpdateGasLimit(gasLimit)
       } else {
         //TODO: add handle for fail load gas limit
+      }
+    }
+  }
+
+  func getRefPrice(from: TokenObject, to: TokenObject) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let src = from.contract.lowercased()
+    let dest = to.contract.lowercased()
+    provider.request(.getRefPrice(src: src, dst: dest)) { [weak self] result in
+      guard let `self` = self else { return }
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let change = json["refPrice"] as? String, let sources = json["sources"] as? [String] {
+        self.rootViewController.coordinatorSuccessUpdateRefPrice(from: from, to: to, change: change, source: sources)
+      } else {
+        //TODO: add handle for fail load ref price
       }
     }
   }
@@ -1200,9 +1217,80 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       )
     case .minRatePercentageChanged(let percent):
       self.rootViewController.coordinatorDidUpdateMinRatePercentage(percent)
+    case .useChiStatusChanged(let status):
+      if self.isApprovedGasToken() {
+        self.saveUseGasTokenState(status)
+        self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+        return
+      }
+      if status {
+        var gasTokenAddress: Address?
+        if KNEnvironment.default == .ropsten {
+          gasTokenAddress = Address(string: "0x0000000000b3F879cb30FE243b4Dfee438691c04")
+        } else {
+          gasTokenAddress = Address(string: "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c")
+        }
+        guard let tokenAddress = gasTokenAddress else {
+          return
+        }
+        self.session.externalProvider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
+          guard let `self` = self else { return }
+          switch result {
+          case .success(let res):
+            if res.isZero {
+              self.session.externalProvider.sendApproveERCTokenAddress(
+                for: tokenAddress,
+                value: BigInt(2).power(256) - BigInt(1),
+                gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
+                switch approveResult {
+                case .success:
+                  self.saveUseGasTokenState(status)
+                  self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+                case .failure:
+                  self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
+                }
+              }
+            }
+          case .failure(let error):
+            print("[Error] \(error.description)")
+            self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
+          }
+        }
+      } else {
+        self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+      }
     default:
       break
     }
+  }
+
+  fileprivate func saveUseGasTokenState(_ state: Bool) {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    }
+    data[self.session.wallet.address.description] = state
+    UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
+  }
+
+  fileprivate func isApprovedGasToken() -> Bool {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data.keys.contains(self.session.wallet.address.description)
+  }
+  
+  fileprivate func isAccountUseGasToken() -> Bool {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data[self.session.wallet.address.description] ?? false
   }
 }
 

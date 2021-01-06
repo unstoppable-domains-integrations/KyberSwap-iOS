@@ -910,9 +910,9 @@ extension KrytalService: TargetType {
     switch self {
     case .getBestPath(let src, let dst, let srcAmount):
       let json: JSONDictionary = [
-        "src_token": src,
-        "dest_token": dst,
-        "src_qty": srcAmount
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getHint:
@@ -935,15 +935,15 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint):
       let json: JSONDictionary = [
-        "user_address": address,
-        "src_token": src,
-        "dst_token": dst,
-        "src_qty": srcAmount,
-        "min_dst_qty": minDstAmount,
-        "gas_price": gasPrice,
+        "userAddress": address,
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "minDestAmount": minDstAmount,
+        "gasPrice": gasPrice,
         "nonce": nonce,
         "hint": hint,
-        "platform_wallet": "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da",
+        "platformWallet": "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da",
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice:
@@ -953,13 +953,13 @@ extension KrytalService: TargetType {
         "src": src,
         "dest": dst,
         "srcAmount": srcAmount,
-        "hint": hint
+        "hint": hint,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getRefPrice(let src, let dst):
       let json: JSONDictionary = [
         "src": src,
-        "dest": dst
+        "dest": dst,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

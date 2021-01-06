@@ -59,13 +59,15 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var gasLimit: BigInt
   fileprivate(set) var isSwapOption: Bool = true
+  fileprivate(set) var isUseGasToken: Bool
 
-  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0) {
+  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false) {
     self.isSwapOption = isSwapOption
     self.gasLimit = gasLimit
     self.selectedType = selectType == .custom ? .medium : selectType
     self.currentRate = currentRatePercentage
     self.minRateType = currentRatePercentage == 3.0 ? .threePercent : .custom(value: currentRatePercentage)
+    self.isUseGasToken = isUseGasToken
   }
 
   var currentRateDisplay: String {
@@ -220,6 +222,7 @@ enum GasFeeSelectorPopupViewEvent {
   case gasPriceChanged(type: KNSelectedGasPriceType, value: BigInt)
   case minRatePercentageChanged(percent: CGFloat)
   case helpPressed
+  case useChiStatusChanged(status: Bool)
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -288,6 +291,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
+    self.useChiSwitch.isOn = self.viewModel.isUseGasToken
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
   }
@@ -417,6 +421,16 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   func coordinatorDidUpdateMinRate(_ value: Double) {
     self.viewModel.updateCurrentMinRate(value)
     self.updateMinRateUIs()
+  }
+  
+  func coordinatorDidUpdateUseGasTokenState(_ status: Bool) {
+    if self.useChiSwitch.isOn != status {
+      self.useChiSwitch.isOn = status
+    }
+  }
+  
+  @IBAction func switchChangedValue(_ sender: UISwitch) {
+    self.delegate?.gasFeeSelectorPopupViewController(self, run: .useChiStatusChanged(status: sender.isOn))
   }
 }
 
