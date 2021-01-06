@@ -13,7 +13,7 @@ enum KSwapViewEvent: Equatable {
 //  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case validateRate(data: KNDraftExchangeTransaction)
-  case swap(data: KNDraftExchangeTransaction, tx: SignTransaction)
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
@@ -1038,7 +1038,7 @@ extension KSwapViewController {
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
-    self.delegate?.kSwapViewController(self, run: .swap(data: exchange, tx: signTx))
+    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty))
   }
 
   func coordinatorFailUpdateEncodedTx() {

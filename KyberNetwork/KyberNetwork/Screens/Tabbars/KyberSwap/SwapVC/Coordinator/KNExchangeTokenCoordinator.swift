@@ -515,8 +515,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
     case .validateRate(let data):
       self.validateRateBeforeSwapping(data: data)
-    case .swap(let data, let tx):
-      self.showConfirmSwapScreen(data: data, transaction: tx)
+    case .confirmSwap(let data, let tx, let hasRateWarning):
+      self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning)
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
@@ -740,10 +740,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
-  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction) {
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self

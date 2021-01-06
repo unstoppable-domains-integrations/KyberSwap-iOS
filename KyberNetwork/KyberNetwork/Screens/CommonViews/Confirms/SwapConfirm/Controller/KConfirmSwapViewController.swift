@@ -37,7 +37,9 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var reserveRountingContainerTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-
+  @IBOutlet weak var rateWarningLabel: UILabel!
+  @IBOutlet weak var rateTopContraint: NSLayoutConstraint!
+  
   fileprivate var viewModel: KConfirmSwapViewModel
   weak var delegate: KConfirmSwapViewControllerDelegate?
   let transitor = TransitionDelegate()
@@ -124,6 +126,8 @@ class KConfirmSwapViewController: KNBaseViewController {
     }
 
     self.reserveRoutingMessageLabel.text = "Reserve routing is used in this transaction to reduce gas costs".toBeLocalised()
+    self.rateWarningLabel.isHidden = !self.viewModel.hasRateWarning
+    self.rateTopContraint.constant = self.viewModel.hasRateWarning ? 60.0 : 14.0
 
     self.view.layoutIfNeeded()
   }
@@ -181,7 +185,7 @@ extension KConfirmSwapViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 520
+    return 574
   }
 
   func getPopupContentView() -> UIView {
