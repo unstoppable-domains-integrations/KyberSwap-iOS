@@ -36,12 +36,16 @@ class KNConfirmCancelTransactionPopUp: KNBaseViewController {
   @IBOutlet weak var yesButton: UIButton!
   @IBOutlet weak var noButton: UIButton!
   @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  let transitor = TransitionDelegate()
   fileprivate let viewModel: KNConfirmCancelTransactionViewModel
   weak var delegate: KNConfirmCancelTransactionPopUpDelegate?
 
   init(viewModel: KNConfirmCancelTransactionViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNConfirmCancelTransactionPopUp.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -54,27 +58,22 @@ class KNConfirmCancelTransactionPopUp: KNBaseViewController {
       width: 1.0
     )
     self.noButton.setTitle("No".toBeLocalised(), for: .normal)
+    self.noButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.noButton.frame.size.height / 2)
     self.yesButton.setTitle("Yes".toBeLocalised(), for: .normal)
-    self.yesButton.rounded()
-    self.yesButton.applyGradient()
-    containerView.rounded(radius: 8.0)
+    self.yesButton.rounded(radius: self.yesButton.frame.size.height / 2)
+    self.yesButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    
     questionTitleLabel.text = "Attempt to Cancel?".toBeLocalised()
     titleLabel.text = "Cancellation Gas Fee".toBeLocalised()
     contentLabel.text = "sumitting.does.not.guarantee".toBeLocalised()
     ethFeeLabel.text = viewModel.transactionFeeETHString
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
-    self.view.addGestureRecognizer(tapGesture)
     self.view.isUserInteractionEnabled = true
   }
-
-  @objc func tapOutSideToDismiss(_ tapGesture: UITapGestureRecognizer) {
-    let loc = tapGesture.location(in: self.view)
-    if loc.x < self.containerView.frame.minX
-      || loc.x > self.containerView.frame.maxX
-      || loc.y < self.containerView.frame.minY
-      || loc.y > self.containerView.frame.maxY {
-      self.dismiss(animated: true, completion: nil)
-    }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.yesButton.removeSublayer(at: 0)
+    self.yesButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
   @IBAction func yesButtonTapped(_ sender: UIButton) {
@@ -86,5 +85,19 @@ class KNConfirmCancelTransactionPopUp: KNBaseViewController {
   @IBAction func noButtonTapped(_ sender: UIButton) {
     KNCrashlyticsUtil.logCustomEvent(withName: "tap_no_button_on_cancel_tx_confirm_popup", customAttributes: ["transactionHash": viewModel.transaction.id])
     dismiss(animated: true, completion: nil)
+  }
+}
+
+extension KNConfirmCancelTransactionPopUp: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 350
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.containerView
   }
 }

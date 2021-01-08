@@ -29,7 +29,7 @@ class KNExternalProvider {
     self.web3Swift = web3
     let customRPC: KNCustomRPC = KNEnvironment.default.knCustomRPC!
     self.knCustomRPC = customRPC
-    self.networkAddress = Address(string: customRPC.networkAddress)
+    self.networkAddress = Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")! //TODO: hard code ropten remove leater
     self.minTxCount = 0
     self.limitOrderAddress = Address(string: customRPC.limitOrderAddress)
   }
@@ -290,7 +290,7 @@ class KNExternalProvider {
     KNGeneralProvider.shared.getAllowance(
       for: token,
       address: self.account.address,
-      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      networkAddress: self.networkAddress,
       completion: completion
     )
   }
@@ -298,7 +298,7 @@ class KNExternalProvider {
   func getAllowance(tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: self.account.address,
-      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      networkAddress: self.networkAddress,
       tokenAddress: tokenAddress,
       completion: completion
     )
@@ -330,7 +330,7 @@ class KNExternalProvider {
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      networkAddress: self.networkAddress,
       gasPrice: gasPrice
     ) { [weak self] result in
         guard let `self` = self else { return }
@@ -351,7 +351,7 @@ class KNExternalProvider {
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: Address(string: "0x4A0C59CcCae7B4F0732a4A1b9A7BDA49cc1d88F9")!, //TODO: hard code ropten remove leater
+      networkAddress: self.networkAddress,
       gasPrice: gasPrice
     ) { [weak self] result in
         guard let `self` = self else { return }

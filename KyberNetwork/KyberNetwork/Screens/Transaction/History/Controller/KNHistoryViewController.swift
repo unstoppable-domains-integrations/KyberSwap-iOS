@@ -477,6 +477,8 @@ class KNHistoryViewController: KNBaseViewController {
 //    self.currentAddressContainerView.isHidden = isAddressHidden
     //TODO: set this text to wallet select button
 //    self.currentAddressLabel.text = self.viewModel.currentWallet.address
+    
+    
     self.transactionCollectionView.reloadData()
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraintsIfNeeded()
@@ -699,6 +701,7 @@ extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
     cancel.backgroundColor = UIColor(patternImage: resized)
     return [cancel, speedUp]
   }
+
   func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
     var options = SwipeOptions()
     options.expansionStyle = .destructive

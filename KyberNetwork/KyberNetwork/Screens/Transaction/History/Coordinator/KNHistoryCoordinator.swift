@@ -223,8 +223,6 @@ class KNHistoryCoordinator: Coordinator {
     let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
     let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
     confirmPopup.delegate = self
-    confirmPopup.modalPresentationStyle = .overFullScreen
-    confirmPopup.modalTransitionStyle = .crossDissolve
     self.navigationController.present(confirmPopup, animated: true, completion: nil)
   }
 
@@ -240,8 +238,6 @@ class KNHistoryCoordinator: Coordinator {
   fileprivate func openTransactionStatusPopUp(transaction: Transaction) {
     let trans = KNTransaction.from(transaction: transaction)
     self.transactionStatusVC = KNTransactionStatusPopUp(transaction: trans)
-    self.transactionStatusVC?.modalPresentationStyle = .overFullScreen
-    self.transactionStatusVC?.modalTransitionStyle = .crossDissolve
     self.transactionStatusVC?.delegate = self
     self.navigationController.present(self.transactionStatusVC!, animated: true, completion: nil)
   }
@@ -374,8 +370,6 @@ extension KNHistoryCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
   func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
     switch event {
-    case .back:
-      self.navigationController.popViewController(animated: true)
     case .done(let transaction, let newValue):
       self.didSpeedUpTransactionFor(transaction: transaction, newGasPrice: newValue)
       self.navigationController.popViewController(animated: true)
@@ -474,13 +468,11 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
 extension KNHistoryCoordinator: KNTransactionStatusPopUpDelegate {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
     self.transactionStatusVC = nil
-    if action == .swap {
+    switch action {
+    case .swap:
       KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
-    }
-    if action == .dismiss {
-      if #available(iOS 10.3, *) {
-        KNAppstoreRatingManager.requestReviewIfAppropriate()
-      }
+    default:
+      break
     }
   }
 }
@@ -531,3 +523,5 @@ extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
     }
   }
 }
+
+

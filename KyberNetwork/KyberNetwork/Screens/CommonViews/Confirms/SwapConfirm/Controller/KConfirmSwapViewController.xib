@@ -216,8 +216,11 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hI-jM-AkG">
-                            <rect key="frame" x="203.5" y="515" width="134.5" height="27"/>
+                            <rect key="frame" x="203.5" y="515" width="134.5" height="32"/>
                             <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="a8y-Q5-b8N"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                             <state key="normal" title="Confirm">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -252,8 +255,11 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dDY-qI-vwz">
-                            <rect key="frame" x="37" y="515" width="134.5" height="27"/>
+                            <rect key="frame" x="37" y="515" width="134.5" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="cMi-Hu-39O"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                             <state key="normal" title="Cancel">
                                 <color key="titleColor" red="0.13725490196078433" green="0.65490196078431373" blue="0.70980392156862748" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

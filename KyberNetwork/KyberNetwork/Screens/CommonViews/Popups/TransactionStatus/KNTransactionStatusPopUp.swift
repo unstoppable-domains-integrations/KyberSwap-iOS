@@ -7,6 +7,10 @@ enum KNTransactionStatusPopUpEvent {
   case swap
   case transfer
   case tryAgain
+  case openLink(url: String)
+  case speedUp(tx: Transaction)
+  case cancel(tx: Transaction)
+  case goToSupport
 }
 
 protocol KNTransactionStatusPopUpDelegate: class {
@@ -19,35 +23,29 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var titleIconImageView: UIImageView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var subTitleLabel: UILabel!
-
-  @IBOutlet weak var detailsButton: UIButton!
-
-  @IBOutlet weak var rateValueLabel: UILabel!
-
+  @IBOutlet weak var subTitleDetailLabel: UILabel!
+  @IBOutlet weak var subTitleLabelCenterContraint: NSLayoutConstraint!
+  @IBOutlet weak var txHashLabel: UILabel!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var subTitleTopContraint: NSLayoutConstraint!
+  
   // Broadcast
   @IBOutlet weak var loadingImageView: UIImageView!
   // 32 if broadcasting, 104 if done/failed
-  @IBOutlet weak var bottomPaddingBroadcastConstraint: NSLayoutConstraint!
 
-  @IBOutlet weak var transferButton: UIButton!
-  @IBOutlet weak var transferCenterXConstraint: NSLayoutConstraint!
-  @IBOutlet weak var swapButton: UIButton!
-  @IBOutlet var actionButtonHeightConstraints: [NSLayoutConstraint]!
+  @IBOutlet weak var firstButton: UIButton!
+  @IBOutlet weak var secondButton: UIButton!
 
   weak var delegate: KNTransactionStatusPopUpDelegate?
 
-  var detailsAttributes: [NSAttributedStringKey: Any] {
-    return [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    ]
-  }
-
   fileprivate(set) var transaction: KNTransaction
+  let transitor = TransitionDelegate()
 
   init(transaction: KNTransaction) {
     self.transaction = transaction
     super.init(nibName: KNTransactionStatusPopUp.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder: NSCoder) {
@@ -84,42 +82,33 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   }
 
   fileprivate func commontSetup() {
-    self.containerView.rounded(radius: 5.0)
-    self.transferButton.setTitle(NSLocalizedString("transfer", comment: ""), for: .normal)
-    self.transferButton.rounded()
-    self.transferButton.applyGradient()
+    self.firstButton.setTitle(NSLocalizedString("transfer", comment: ""), for: .normal)
+    self.firstButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.firstButton.frame.size.height / 2)
 
-    self.swapButton.setTitle(NSLocalizedString("swap", comment: ""), for: .normal)
-    self.swapButton.rounded()
-    self.swapButton.applyGradient()
+    self.secondButton.setTitle(NSLocalizedString("swap", comment: ""), for: .normal)
+    self.secondButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.secondButton.frame.size.height / 2)
 
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.userDidTapOutsideToDismiss(_:)))
-    self.view.addGestureRecognizer(tapGesture)
     self.view.isUserInteractionEnabled = true
   }
 
   fileprivate func updateViewTransactionDidChange() {
-    let (details, rate) = self.transaction.getNewTxDetails()
-    self.detailsButton.setAttributedTitle(
-      NSAttributedString(string: details, attributes: self.detailsAttributes),
-      for: .normal
-    )
-    self.rateValueLabel.text = rate
+    let (id, rate) = self.transaction.getNewTxDetails()
+    self.txHashLabel.text = id
+
     if self.transaction.state == .pending {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
-      self.titleLabel.text = "Broadcasted!".toBeLocalised()
-      self.subTitleLabel.text = "Your transaction has been broadcasted!".toBeLocalised()
-      self.detailsButton.semanticContentAttribute = .forceRightToLeft
+      self.titleLabel.text = "Broadcasted!".toBeLocalised().uppercased()
+      self.subTitleLabel.text = "Transaction being mined".toBeLocalised()
+      self.subTitleLabelCenterContraint.constant = 16
+      self.subTitleTopContraint.constant = 29
 
       self.loadingImageView.isHidden = false
       self.loadingImageView.startRotating()
 
-      self.transferButton.isHidden = true
-      self.swapButton.isHidden = true
-      self.rateValueLabel.isHidden = rate == nil ? true : false
+      self.subTitleDetailLabel.isHidden = true
+      self.firstButton.setTitle("speed up".toBeLocalised(), for: .normal)
+      self.secondButton.setTitle("cancel".toBeLocalised(), for: .normal)
 
-      self.actionButtonHeightConstraints.forEach({ $0.constant = 0.0 })
-      self.bottomPaddingBroadcastConstraint.constant = 64.0
       self.view.layoutSubviews()
     } else if self.transaction.state == .completed {
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
@@ -134,20 +123,20 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         }
         return "Swapped successfully".toBeLocalised()
       }()
-      self.detailsButton.semanticContentAttribute = .forceRightToLeft
+      self.subTitleLabelCenterContraint.constant = 0
+      self.subTitleTopContraint.constant = 20
+
+      self.subTitleDetailLabel.isHidden = true
+      self.subTitleDetailLabel.isHidden = false
+      self.subTitleDetailLabel.text = rate?.uppercased()
+      self.subTitleDetailLabel.font = UIFont.Kyber.latoRegular(with: 16)
 
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      self.transferButton.isHidden = false
-      self.transferButton.setTitle(NSLocalizedString("transfer", comment: ""), for: .normal)
-      self.swapButton.isHidden = false
-      self.transferCenterXConstraint.constant = -66
+      self.firstButton.setTitle("transfer".toBeLocalised(), for: .normal)
+      self.secondButton.setTitle("new swap".toBeLocalised(), for: .normal)
 
-      self.rateValueLabel.isHidden = rate == nil ? true : false
-
-      self.actionButtonHeightConstraints.forEach({ $0.constant = 45.0 })
-      self.bottomPaddingBroadcastConstraint.constant = 120
       self.view.layoutSubviews()
     } else if self.transaction.state == .error || self.transaction.state == .failed {
       self.titleIconImageView.image = UIImage(named: "tx_failed_icon")
@@ -166,23 +155,16 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else {
         self.subTitleLabel.text = "Transaction error".toBeLocalised()
       }
-      self.detailsButton.semanticContentAttribute = .forceRightToLeft
+      self.subTitleLabelCenterContraint.constant = 0
+      self.subTitleTopContraint.constant = 20
+      self.subTitleDetailLabel.isHidden = true
 
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      self.swapButton.isHidden = true
-      if transaction.type == .normal {
-        self.transferButton.isHidden = false
-        self.transferButton.setTitle(NSLocalizedString("try.again", comment: ""), for: .normal)
-        self.transferCenterXConstraint.constant = 0
-        self.actionButtonHeightConstraints.forEach({ $0.constant = 45.0 })
-        self.bottomPaddingBroadcastConstraint.constant = 120
-      } else {
-        self.transferButton.isHidden = true
-        self.bottomPaddingBroadcastConstraint.constant = 20
-      }
-      self.rateValueLabel.isHidden = true
+      self.firstButton.setTitle("cancel".toBeLocalised(), for: .normal)
+      self.secondButton.setTitle("Go to support".toBeLocalised(), for: .normal) //TODO: request localized text
+
       self.view.layoutSubviews()
     }
   }
@@ -196,16 +178,6 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     self.updateViewTransactionDidChange()
   }
 
-  @objc func userDidTapOutsideToDismiss(_ sender: UITapGestureRecognizer) {
-    let loc = sender.location(in: self.view)
-    if loc.x < self.containerView.frame.minX || loc.x > self.containerView.frame.maxX
-      || loc.y < self.containerView.frame.minY || loc.y > self.containerView.frame.maxY {
-      self.dismiss(animated: true) {
-        self.delegate?.transactionStatusPopUp(self, action: .dismiss)
-      }
-    }
-  }
-
   @objc func viewDidBecomeActive(_ sender: Any?) {
     if !self.loadingImageView.isHidden {
       self.loadingImageView.startRotating()
@@ -213,23 +185,51 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   }
 
   @IBAction func openTransactionDetailsPressed(_ sender: Any) {
-    let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(transaction.id)"
-    self.openSafari(with: urlString)
+    self.dismiss(animated: true) {
+      let urlString = KNEnvironment.default.etherScanIOURLString + "tx/\(self.transaction.id)"
+      self.delegate?.transactionStatusPopUp(self, action: .openLink(url: urlString))
+    }
   }
 
-  @IBAction func transferButtonPressed(_ sender: Any) {
+  @IBAction func firstButtonPressed(_ sender: Any) {
     self.dismiss(animated: true) {
-      if self.transaction.state == .completed {
+      if self.transaction.state == .pending {
+        self.delegate?.transactionStatusPopUp(self, action: .speedUp(tx: self.transaction.toTransaction()))
+      } else if self.transaction.state == .completed {
         self.delegate?.transactionStatusPopUp(self, action: .transfer)
-      } else {
-        self.delegate?.transactionStatusPopUp(self, action: .tryAgain)
+      } else if self.transaction.state == .error || self.transaction.state == .failed {
+        self.delegate?.transactionStatusPopUp(self, action: .dismiss)
       }
     }
   }
 
-  @IBAction func swapButtonPressed(_ sender: Any) {
+  @IBAction func secondButtonPressed(_ sender: Any) {
     self.dismiss(animated: true) {
-      self.delegate?.transactionStatusPopUp(self, action: .swap)
+      if self.transaction.state == .pending {
+        self.delegate?.transactionStatusPopUp(self, action: .cancel(tx: self.transaction.toTransaction()))
+      } else if self.transaction.state == .completed {
+        self.delegate?.transactionStatusPopUp(self, action: .swap)
+      } else if self.transaction.state == .error || self.transaction.state == .failed {
+        self.delegate?.transactionStatusPopUp(self, action: .goToSupport)
+      }
     }
+  }
+
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension KNTransactionStatusPopUp: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 292
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.containerView
   }
 }
