@@ -16,7 +16,7 @@ class KNSession {
   private(set) var keystore: Keystore
   private(set) var wallet: Wallet
   let web3Swift: Web3Swift
-  let externalProvider: KNExternalProvider
+  var externalProvider: KNExternalProvider?
   private(set) var realm: Realm
   private(set) var transactionStorage: TransactionsStorage
   private(set) var tokenStorage: KNTokenStorage
@@ -33,7 +33,8 @@ class KNSession {
       self.web3Swift = Web3Swift()
     }
     // Wallet type should always be real(account)
-    var account: Account!
+    //TODO: Add support watch account
+    var account: Account?
     if case .real(let acc) = self.wallet.type {
       account = acc
     }
@@ -41,10 +42,15 @@ class KNSession {
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
-    self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
+    if let realAccount = account {
+      self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
+    } else {
+      self.externalProvider = nil
+    }
+
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
     if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
-      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+      self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
   }
 
@@ -77,11 +83,16 @@ class KNSession {
     self.wallet = wallet
     self.keystore.recentlyUsedWallet = wallet
 
-    var account: Account!
+    var account: Account?
     if case .real(let acc) = self.wallet.type {
       account = acc
     }
-    self.externalProvider.updateNewAccount(account)
+    if let realAccount = account {
+      self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
+    } else {
+      self.externalProvider = nil
+    }
+
     let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
@@ -95,7 +106,7 @@ class KNSession {
     self.transacionCoordinator?.start()
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
     if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
-      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+      self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
   }
 

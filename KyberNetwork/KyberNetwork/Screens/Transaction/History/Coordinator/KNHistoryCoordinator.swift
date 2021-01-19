@@ -6,15 +6,19 @@ import BigInt
 import TrustCore
 import Moya
 import MBProgressHUD
+import QRCodeReaderViewController
+import WalletConnect
 
 protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidClose()
   func historyCoordinatorDidUpdateWalletObjects()
   func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func historyCoordinatorDidSelectManageWallet()
+  func historyCoordinatorDidSelectAddWallet()
 }
 
-class KNHistoryCoordinator: Coordinator {
+class KNHistoryCoordinator: NSObject, Coordinator {
 
   fileprivate lazy var dateFormatter: DateFormatter = {
     return DateFormatterUtil.shared.limitOrderFormatter
@@ -334,17 +338,20 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   }
 
   fileprivate func didConfirmTransfer(_ transaction: Transaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let unconfirmTx = transaction.makeCancelTransaction() else {
       return
     }
-    self.session.externalProvider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
+    provider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
         let tx: Transaction = unconfirmTx.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount - 1,
+          nounce: provider.minTxCount - 1,
           type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx, completion: {
@@ -400,7 +407,10 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
   }
 
   fileprivate func sendSpeedUpForTransferTransaction(transaction: UnconfirmedTransaction, original: Transaction) {
-    self.session.externalProvider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
@@ -424,6 +434,9 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
   }
 
   fileprivate func sendSpeedUpSwapTransactionFor(transaction: Transaction, availableTokens: [TokenObject], newPrice: BigInt) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let nouce = Int(transaction.nonce) else { return }
     guard let localizedOperation = transaction.localizedOperations.first else { return }
     guard let filteredToken = availableTokens.first(where: { (token) -> Bool in
@@ -435,10 +448,10 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     let gasLimit: BigInt = {
       return transaction.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
     }()
-    session.externalProvider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
+    provider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx, !fetchedTx.input.isEmpty {
-        self.session.externalProvider.speedUpSwapTransaction(
+        provider.speedUpSwapTransaction(
           for: filteredToken,
           amount: amount,
           nonce: nouce,
@@ -481,9 +494,11 @@ extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
   func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
     switch event {
     case .connectWallet:
-      print("transition")
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
-      print("transition")
+      self.delegate?.historyCoordinatorDidSelectManageWallet()
     case .copy(let wallet):
       UIPasteboard.general.string = wallet.address
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
@@ -495,33 +510,32 @@ extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
         return
       }
       self.delegate?.historyCoordinatorDidSelectWallet(wal)
-    case .remove(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
-        return
-      }
-      let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
-      alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-        controller.dismiss(animated: true) {
-          self.delegate?.historyCoordinatorDidSelectRemoveWallet(wal)
-        }
-      }))
-      controller.present(alert, animated: true, completion: nil)
-    case .edit(let wallet):
-      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised(), value: wallet.name) { (text) in
-        let newWallet = wallet.copy(withNewName: text)
-        let contact = KNContact(
-          address: newWallet.address,
-          name: newWallet.name
-        )
-        KNContactStorage.shared.update(contacts: [contact])
-        KNWalletStorage.shared.update(wallets: [newWallet])
-        self.delegate?.historyCoordinatorDidUpdateWalletObjects()
-      }
-      let viewController = InputPopUpViewController(viewModel: viewModel)
-      self.navigationController.present(viewController, animated: true, completion: nil)
+    case .addWallet:
+      self.delegate?.historyCoordinatorDidSelectAddWallet()
     }
   }
 }
 
+extension KNHistoryCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
 
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let session = WCSession.from(string: result) else {
+        self.navigationController.showTopBannerView(
+          with: "Invalid session".toBeLocalised(),
+          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+      let controller = KNWalletConnectViewController(
+        wcSession: session,
+        knSession: self.session
+      )
+      self.navigationController.present(controller, animated: true, completion: nil)
+    }
+  }
+}

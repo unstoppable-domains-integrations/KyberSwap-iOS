@@ -533,11 +533,10 @@ class KNHistoryViewController: KNBaseViewController {
     self.viewModel.updateIsShowingPending(sender.index == 1)
     self.updateUIWhenDataDidChange()
   }
-  
+
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
   }
-  
 }
 
 extension KNHistoryViewController {

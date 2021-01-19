@@ -7,15 +7,19 @@ import Result
 import Moya
 import APIKit
 import MBProgressHUD
+import QRCodeReaderViewController
+import WalletConnect
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenViewCoordinatorDidUpdateWalletObjects()
   func sendTokenViewCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func sendTokenViewCoordinatorSelectOpenHistoryList()
+  func sendTokenCoordinatorDidSelectManageWallet()
+  func sendTokenCoordinatorDidSelectAddWallet()
 }
 
-class KNSendTokenViewCoordinator: Coordinator {
+class KNSendTokenViewCoordinator: NSObject, Coordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
 
   let navigationController: UINavigationController
@@ -143,6 +147,10 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .validate:
       // validate transaction before transfer,
       // currently only validate sender's address, could be added more later
+      guard self.session.externalProvider != nil else {
+        self.navigationController.showTopBannerView(message: "Watch wallet can not do this operation".toBeLocalised())
+        return
+      }
       controller.displayLoading()
       self.sendGetPreScreeningWalletRequest { [weak self] (result) in
         controller.hideLoading()
@@ -210,7 +218,10 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
-    self.session.externalProvider.getEstimateGasLimit(
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getEstimateGasLimit(
     for: transaction) { [weak self] result in
       if case .success(let gasLimit) = result {
         self?.rootViewController.coordinatorUpdateEstimatedGasLimit(
@@ -296,6 +307,9 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
     if case .confirm(let type) = event, case .transfer(let transaction) = type {
       controller.dismiss(animated: true) {
+        guard self.session.externalProvider != nil else {
+          return
+        }
         self.didConfirmTransfer(transaction)
         self.confirmVC = nil
         self.navigationController.displayLoading()
@@ -311,9 +325,12 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     self.rootViewController.coordinatorSendTokenUserDidConfirmTransaction()
     // send transaction request
-    self.session.externalProvider.transfer(transaction: transaction, completion: { [weak self] sendResult in
+    provider.transfer(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch sendResult {
@@ -321,7 +338,7 @@ extension KNSendTokenViewCoordinator {
         let tx: Transaction = transaction.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount - 1
+          nounce: provider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(tx)
         self.openTransactionStatusPopUp(transaction: tx)
@@ -380,7 +397,7 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
       break
     }
   }
-  
+
   fileprivate func openTransactionSpeedUpViewController(transaction: Transaction) {
     let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
     let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
@@ -397,7 +414,10 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
   }
 
   fileprivate func sendSpeedUpForTransferTransaction(transaction: UnconfirmedTransaction, original: Transaction) {
-    self.session.externalProvider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.speedUpTransferTransaction(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
@@ -442,9 +462,11 @@ extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
   func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
     switch event {
     case .connectWallet:
-      print("transition")
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
-      print("transition")
+      self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
     case .copy(let wallet):
       UIPasteboard.general.string = wallet.address
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
@@ -456,31 +478,8 @@ extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)
-    case .remove(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
-        return
-      }
-      let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
-      alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-        controller.dismiss(animated: true) {
-          self.delegate?.sendTokenViewCoordinatorDidSelectRemoveWallet(wal)
-        }
-      }))
-      controller.present(alert, animated: true, completion: nil)
-    case .edit(let wallet):
-      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised(), value: wallet.name) { (text) in
-        let newWallet = wallet.copy(withNewName: text)
-        let contact = KNContact(
-          address: newWallet.address,
-          name: newWallet.name
-        )
-        KNContactStorage.shared.update(contacts: [contact])
-        KNWalletStorage.shared.update(wallets: [newWallet])
-        self.delegate?.sendTokenViewCoordinatorDidUpdateWalletObjects()
-      }
-      let viewController = InputPopUpViewController(viewModel: viewModel)
-      self.navigationController.present(viewController, animated: true, completion: nil)
+    case .addWallet:
+      self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
     }
   }
 }
@@ -503,6 +502,9 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
   }
 
   fileprivate func sendSpeedUpSwapTransactionFor(transaction: Transaction, availableTokens: [TokenObject], newPrice: BigInt) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let nouce = Int(transaction.nonce) else { return }
     guard let localizedOperation = transaction.localizedOperations.first else { return }
     guard let filteredToken = availableTokens.first(where: { (token) -> Bool in
@@ -514,10 +516,10 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
     let gasLimit: BigInt = {
       return transaction.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
     }()
-    session.externalProvider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
+    provider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx, !fetchedTx.input.isEmpty {
-        self.session.externalProvider.speedUpSwapTransaction(
+        provider.speedUpSwapTransaction(
           for: filteredToken,
           amount: amount,
           nonce: nouce,
@@ -547,19 +549,22 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: Transaction) {
     self.didConfirmTransfer(transaction)
   }
-  
+
   fileprivate func didConfirmTransfer(_ transaction: Transaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let unconfirmTx = transaction.makeCancelTransaction() else {
       return
     }
-    self.session.externalProvider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
+    provider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
         let tx: Transaction = unconfirmTx.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount - 1,
+          nounce: provider.minTxCount - 1,
           type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx, completion: {
@@ -573,5 +578,29 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
         )
       }
     })
+  }
+}
+
+extension KNSendTokenViewCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let session = WCSession.from(string: result) else {
+        self.navigationController.showTopBannerView(
+          with: "Invalid session".toBeLocalised(),
+          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+      let controller = KNWalletConnectViewController(
+        wcSession: session,
+        knSession: self.session
+      )
+      self.navigationController.present(controller, animated: true, completion: nil)
+    }
   }
 }

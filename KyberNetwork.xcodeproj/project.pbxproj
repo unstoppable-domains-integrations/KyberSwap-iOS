@@ -550,9 +550,13 @@
 		C31B1DC2241A375E000A0C0A /* KNNotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B1DC0241A375D000A0C0A /* KNNotificationSettingViewController.swift */; };
 		C31B1DC3241A375E000A0C0A /* KNNotificationSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31B1DC1241A375D000A0C0A /* KNNotificationSettingViewController.xib */; };
 		C31B1DC6241B33E3000A0C0A /* KNNotificationSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B1DC5241B33E3000A0C0A /* KNNotificationSettingViewModel.swift */; };
+		C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */; };
+		C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */; };
 		C31F152923F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F152723F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift */; };
 		C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */; };
 		C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */; };
+		C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */; };
+		C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */; };
 		C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */; };
 		C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */; };
 		C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326C688256D04B000B35E8F /* InputPopUpViewController.swift */; };
@@ -567,6 +571,8 @@
 		C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C336960F2595A386000EDD5D /* ApproveTokenViewController.xib */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
+		C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */; };
+		C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */; };
 		C356C000243C2F85007E419B /* KNSelectMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */; };
 		C356C001243C2F85007E419B /* KNSelectMarketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C356BFFF243C2F85007E419B /* KNSelectMarketViewController.xib */; };
 		C356C009243DAE9F007E419B /* KNMarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */; };
@@ -1241,9 +1247,13 @@
 		C31B1DC0241A375D000A0C0A /* KNNotificationSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationSettingViewController.swift; sourceTree = "<group>"; };
 		C31B1DC1241A375D000A0C0A /* KNNotificationSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNNotificationSettingViewController.xib; sourceTree = "<group>"; };
 		C31B1DC5241B33E3000A0C0A /* KNNotificationSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNNotificationSettingViewModel.swift; sourceTree = "<group>"; };
+		C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletViewController.swift; sourceTree = "<group>"; };
+		C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWatchWalletViewController.xib; sourceTree = "<group>"; };
 		C31F152723F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewController.swift; sourceTree = "<group>"; };
 		C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpeedUpCustomGasSelectViewController.xib; sourceTree = "<group>"; };
 		C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewModel.swift; sourceTree = "<group>"; };
+		C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletMenuViewController.swift; sourceTree = "<group>"; };
+		C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateWalletMenuViewController.xib; sourceTree = "<group>"; };
 		C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewController.swift; sourceTree = "<group>"; };
 		C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GasFeeSelectorPopupViewController.xib; sourceTree = "<group>"; };
 		C326C688256D04B000B35E8F /* InputPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopUpViewController.swift; sourceTree = "<group>"; };
@@ -1258,6 +1268,8 @@
 		C336960F2595A386000EDD5D /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
+		C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListSectionTableViewCell.swift; sourceTree = "<group>"; };
+		C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListSectionTableViewCell.xib; sourceTree = "<group>"; };
 		C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectMarketViewController.swift; sourceTree = "<group>"; };
 		C356BFFF243C2F85007E419B /* KNSelectMarketViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSelectMarketViewController.xib; sourceTree = "<group>"; };
 		C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarketTableViewCell.swift; sourceTree = "<group>"; };
@@ -2577,6 +2589,8 @@
 		257C9FCB2078FB2000EE0128 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				C322EB0825B1A285009746FB /* CreateWalletMenu */,
+				C31BE89525B044960070A832 /* AddWatchWallet */,
 				250EE8DF2221A3E700121138 /* BackUpData */,
 				255A70EC214FB8F3005D7A6A /* EditWallet */,
 				25BE32952090961600D760FB /* ListWalletsVC */,
@@ -4084,6 +4098,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		C31BE89525B044960070A832 /* AddWatchWallet */ = {
+			isa = PBXGroup;
+			children = (
+				C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */,
+				C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */,
+			);
+			path = AddWatchWallet;
+			sourceTree = "<group>";
+		};
 		C31F152423F538D9006CCACE /* Speedup */ = {
 			isa = PBXGroup;
 			children = (
@@ -4108,6 +4131,15 @@
 				C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C322EB0825B1A285009746FB /* CreateWalletMenu */ = {
+			isa = PBXGroup;
+			children = (
+				C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */,
+				C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */,
+			);
+			path = CreateWalletMenu;
 			sourceTree = "<group>";
 		};
 		C326703C2579E40E0063AA1F /* GasFeeSelector */ = {
@@ -4219,6 +4251,8 @@
 			children = (
 				C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */,
 				C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */,
+				C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */,
+				C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4617,6 +4651,7 @@
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
 				C37CC094245803CA0081FB32 /* Roboto-Regular.ttf in Resources */,
 				254EBED7225F5D8300042FA2 /* KNEligibleTokensTableViewCell.xib in Resources */,
+				C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
 				259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */,
 				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
@@ -4626,6 +4661,7 @@
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
+				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
@@ -4667,6 +4703,7 @@
 				257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */,
 				2537D8DF22D2FF80000D3E91 /* KNLimitOrderDetailsPopUp.xib in Resources */,
 				C37CC093245803CA0081FB32 /* Roboto-Light.ttf in Resources */,
+				C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */,
 				25ACC264225E11EF0081D2B9 /* KNListAlertHeaderView.xib in Resources */,
 				25696F5520BD2B72002CC53F /* KNDataDetailsView.xib in Resources */,
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
@@ -5017,6 +5054,7 @@
 				25117D3E2248D68300B5C495 /* KNAlertLeaderBoardViewController.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				C39A7EED24778B03003EA57D /* (null) in Sources */,
+				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
 				255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */,
@@ -5056,6 +5094,7 @@
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				29FA00CE201CA64E002F7DC5 /* DappCommand.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
+				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				2582332522549AAE007D5480 /* KNPromoSwapConfirmViewModel.swift in Sources */,
 				254EBED1225F5BA500042FA2 /* KNEligibleTokensViewController.swift in Sources */,
@@ -5091,6 +5130,7 @@
 				29C0FCE5200EBAF6004A13CB /* TokenType.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
 				254BB32F211BEC8200B8E75D /* KWalletBalanceViewController.swift in Sources */,
+				C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */,
 				293112371FC9A24600966EEA /* UIGestureRecognizer+Closure.swift in Sources */,
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,

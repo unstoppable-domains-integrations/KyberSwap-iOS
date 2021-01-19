@@ -186,6 +186,9 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   fileprivate func sendTransaction(_ id: Int64, data: Data) {
+    guard let provider = self.knSession.externalProvider else {
+      return
+    }
     guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary, let json = jsonData else {
       return
     }
@@ -215,7 +218,7 @@ class KNWalletConnectViewController: KNBaseViewController {
     alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
       KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_approved", customAttributes: nil)
       self.displayLoading(text: "Submitting...", animated: true)
-      self.knSession.externalProvider.sendTxWalletConnect(txData: json) { [weak self] result in
+      provider.sendTxWalletConnect(txData: json) { [weak self] result in
         guard let `self` = self else { return }
         self.hideLoading()
         switch result {
@@ -225,7 +228,7 @@ class KNWalletConnectViewController: KNBaseViewController {
             self.addTransactionToPendingListIfNeeded(
               json: json,
               hash: txID,
-              nonce: self.knSession.externalProvider.minTxCount - 1
+              nonce: provider.minTxCount - 1
             )
             self.showTopBannerView(with: "Broadcasted", message: "Your transaction has been broadcasted successfully!", time: 2.0) {
               self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "tx/\(txID)")

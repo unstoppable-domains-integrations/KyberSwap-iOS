@@ -45,6 +45,12 @@ class KNAppCoordinator: NSObject, Coordinator {
     return coordinator
   }()
 
+  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
+    let coordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
+    coordinator.delegate = self
+    return coordinator
+  }()
+
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   init(

@@ -351,7 +351,6 @@ class KSwapViewController: KNBaseViewController {
       )
     )
     self.delegate?.kSwapViewController(self, run: event)
-    self.displayLoading()
   }
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
@@ -992,6 +991,7 @@ extension KSwapViewController {
 
   func coordinatorFailApprove(token: TokenObject) {
     //TODO: show error message
+    self.showErrorMessage()
     self.updateUIForSendApprove(isShowApproveButton: true)
   }
 
@@ -1002,6 +1002,7 @@ extension KSwapViewController {
   }
 
   func coordinatorFailUpdateLatestNonce() {
+    self.showErrorMessage()
     self.hideLoading()
   }
 
@@ -1042,6 +1043,7 @@ extension KSwapViewController {
   }
 
   func coordinatorFailUpdateEncodedTx() {
+    self.showErrorMessage()
     self.hideLoading()
   }
 
@@ -1052,6 +1054,7 @@ extension KSwapViewController {
   }
 
   func coordinatorFailSendTransaction() {
+    self.showErrorMessage()
     self.hideLoading()
   }
 
@@ -1059,10 +1062,18 @@ extension KSwapViewController {
     self.viewModel.updateRefPrice(from: from, to: to, change: change, source: source)
     self.updateUIRefPrice()
   }
-  
+
   func coordinatorUpdateIsUseGasToken(_ state: Bool) {
     self.viewModel.isUseGasToken = state
     self.isUseGasTokenIcon.isHidden = !self.viewModel.isUseGasToken
+  }
+  
+  fileprivate func showErrorMessage() {
+    self.showWarningTopBannerMessage(
+      with: "",
+      message: "Something went wrong, please try again later".toBeLocalised(),
+      time: 2.0
+    )
   }
 }
 

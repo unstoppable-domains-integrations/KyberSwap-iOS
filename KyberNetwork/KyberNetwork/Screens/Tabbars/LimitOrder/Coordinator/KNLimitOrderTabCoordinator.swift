@@ -463,61 +463,61 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
   }
 
   fileprivate func sendApprovedIfNeeded(order: KNLimitOrder, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    self.session.externalProvider.getAllowanceLimitOrder(token: order.from) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let remain):
-        if remain >= BigInt(10).power(28) {
-          completion(.success(true))
-        } else {
-          if let time = self.approveTx[order.from.contract] {
-            let preDate = Date(timeIntervalSince1970: time)
-            if Date().timeIntervalSince(preDate) <= 5.0 * 60.0 {
-              // less than 5 mins ago
-              completion(.success(true))
-              return
-            }
-          }
-          self.sendApprovedTransaction(order: order, remain: remain, completion: completion)
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+//    self.session.externalProvider.getAllowanceLimitOrder(token: order.from) { [weak self] result in
+//      guard let `self` = self else { return }
+//      switch result {
+//      case .success(let remain):
+//        if remain >= BigInt(10).power(28) {
+//          completion(.success(true))
+//        } else {
+//          if let time = self.approveTx[order.from.contract] {
+//            let preDate = Date(timeIntervalSince1970: time)
+//            if Date().timeIntervalSince(preDate) <= 5.0 * 60.0 {
+//              // less than 5 mins ago
+//              completion(.success(true))
+//              return
+//            }
+//          }
+//          self.sendApprovedTransaction(order: order, remain: remain, completion: completion)
+//        }
+//      case .failure(let error):
+//        completion(.failure(error))
+//      }
+//    }
   }
 
   fileprivate func sendApprovedTransaction(order: KNLimitOrder, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    self.sendResetAllowanceIfNeeded(order: order, remain: remain) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let isSuccess):
-        if isSuccess {
-          self.session.externalProvider.sendApproveERCTokenLimitOrder(
-            for: order.from,
-            value: BigInt(2).power(256) - BigInt(1),
-            gasPrice: KNGasCoordinator.shared.fastKNGas,
-            completion: completion
-          )
-        } else {
-          completion(.success(false))
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
+//    self.sendResetAllowanceIfNeeded(order: order, remain: remain) { [weak self] result in
+//      guard let `self` = self else { return }
+//      switch result {
+//      case .success(let isSuccess):
+//        if isSuccess {
+//          self.session.externalProvider.sendApproveERCTokenLimitOrder(
+//            for: order.from,
+//            value: BigInt(2).power(256) - BigInt(1),
+//            gasPrice: KNGasCoordinator.shared.fastKNGas,
+//            completion: completion
+//          )
+//        } else {
+//          completion(.success(false))
+//        }
+//      case .failure(let error):
+//        completion(.failure(error))
+//      }
+//    }
   }
 
   fileprivate func sendResetAllowanceIfNeeded(order: KNLimitOrder, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    if remain.isZero {
-      completion(.success(true))
-      return
-    }
-    self.session.externalProvider.sendApproveERCTokenLimitOrder(
-      for: order.from,
-      value: BigInt(0),
-      gasPrice: KNGasCoordinator.shared.fastKNGas,
-      completion: completion
-    )
+//    if remain.isZero {
+//      completion(.success(true))
+//      return
+//    }
+//    self.session.externalProvider.sendApproveERCTokenLimitOrder(
+//      for: order.from,
+//      value: BigInt(0),
+//      gasPrice: KNGasCoordinator.shared.fastKNGas,
+//      completion: completion
+//    )
   }
 
   fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool, pendingBalances: JSONDictionary) {
@@ -590,27 +590,35 @@ extension KNLimitOrderTabCoordinator: KNCreateLimitOrderViewControllerDelegate {
       completion?(.success((rate, slippageRate)))
       return
     }
-    self.session.externalProvider.getExpectedRate(
-      from: from,
-      to: to,
-      amount: amount) { (result) in
-        var estRate: BigInt = BigInt(0)
-        var slippageRate: BigInt = BigInt(0)
-        switch result {
-        case .success(let data):
-          estRate = data.0
-          slippageRate = data.1
-          estRate /= BigInt(10).power(18 - to.decimals)
-          slippageRate /= BigInt(10).power(18 - to.decimals)
-          completion?(.success((estRate, slippageRate)))
-        case .failure(let error):
-          completion?(.failure(error))
-        }
-    }
+//    self.session.externalProvider.getExpectedRate(
+//      from: from,
+//      to: to,
+//      amount: amount) { (result) in
+//        var estRate: BigInt = BigInt(0)
+//        var slippageRate: BigInt = BigInt(0)
+//        switch result {
+//        case .success(let data):
+//          estRate = data.0
+//          slippageRate = data.1
+//          estRate /= BigInt(10).power(18 - to.decimals)
+//          slippageRate /= BigInt(10).power(18 - to.decimals)
+//          completion?(.success((estRate, slippageRate)))
+//        case .failure(let error):
+//          completion?(.failure(error))
+//        }
+//    }
   }
 }
 
 extension KNLimitOrderTabCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddWallet() {
+    
+  }
+  
+  func historyCoordinatorDidSelectManageWallet() {
+    
+  }
+  
   func historyCoordinatorDidClose() {
     //    self.historyCoordinator = nil
   }
@@ -692,56 +700,56 @@ extension KNLimitOrderTabCoordinator: KNConvertSuggestionViewControllerDelegate 
   }
 
   fileprivate func updateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt) {
-    let exchangeTx = KNDraftExchangeTransaction(
-      from: from,
-      to: to,
-      amount: amount,
-      maxDestAmount: BigInt(2).power(255),
-      expectedRate: BigInt(0),
-      minRate: .none,
-      gasPrice: KNGasConfiguration.exchangeETHTokenGasLimitDefault,
-      gasLimit: .none,
-      expectedReceivedString: nil,
-      hint: nil
-    )
-    self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { [weak self] result in
-      if case .success(let estimate) = result {
-        self?.convertVC?.updateEstimateGasLimit(estimate)
-      }
-    }
+//    let exchangeTx = KNDraftExchangeTransaction(
+//      from: from,
+//      to: to,
+//      amount: amount,
+//      maxDestAmount: BigInt(2).power(255),
+//      expectedRate: BigInt(0),
+//      minRate: .none,
+//      gasPrice: KNGasConfiguration.exchangeETHTokenGasLimitDefault,
+//      gasLimit: .none,
+//      expectedReceivedString: nil,
+//      hint: nil
+//    )
+//    self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { [weak self] result in
+//      if case .success(let estimate) = result {
+//        self?.convertVC?.updateEstimateGasLimit(estimate)
+//      }
+//    }
   }
 
   fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
-    self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
-      guard let `self` = self else { return }
-      self.navigationController.hideLoading()
-      switch result {
-      case .success(let txHash):
-        self.sendUserTxHashIfNeeded(txHash)
-        let transaction = exchage.toTransaction(
-          hash: txHash,
-          fromAddr: self.session.wallet.address,
-          toAddr: self.session.externalProvider.networkAddress,
-          nounce: self.session.externalProvider.minTxCount - 1
-        )
-        self.session.addNewPendingTransaction(transaction)
-        if self.convertVC != nil {
-          if let order = self.curOrder {
-            self.checkDataBeforeConfirmOrder(order)
-          } else {
-            self.navigationController.popViewController(animated: true, completion: {
-              self.convertVC = nil
-            })
-          }
-        }
-      case .failure(let error):
-        KNNotificationUtil.postNotification(
-          for: kTransactionDidUpdateNotificationKey,
-          object: error,
-          userInfo: nil
-        )
-      }
-    }
+//    self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
+//      guard let `self` = self else { return }
+//      self.navigationController.hideLoading()
+//      switch result {
+//      case .success(let txHash):
+//        self.sendUserTxHashIfNeeded(txHash)
+//        let transaction = exchage.toTransaction(
+//          hash: txHash,
+//          fromAddr: self.session.wallet.address,
+//          toAddr: self.session.externalProvider.networkAddress,
+//          nounce: self.session.externalProvider.minTxCount - 1
+//        )
+//        self.session.addNewPendingTransaction(transaction)
+//        if self.convertVC != nil {
+//          if let order = self.curOrder {
+//            self.checkDataBeforeConfirmOrder(order)
+//          } else {
+//            self.navigationController.popViewController(animated: true, completion: {
+//              self.convertVC = nil
+//            })
+//          }
+//        }
+//      case .failure(let error):
+//        KNNotificationUtil.postNotification(
+//          for: kTransactionDidUpdateNotificationKey,
+//          object: error,
+//          userInfo: nil
+//        )
+//      }
+//    }
   }
 
   fileprivate func sendUserTxHashIfNeeded(_ txHash: String) {

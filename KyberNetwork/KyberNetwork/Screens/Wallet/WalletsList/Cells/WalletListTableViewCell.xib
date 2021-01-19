@@ -34,7 +34,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86A-Yl-NIU">
                         <rect key="frame" x="40" y="12" width="82" height="17"/>
                         <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
-                        <color key="textColor" red="0.92549019607843142" green="0.92941176470588238" blue="0.93725490196078431" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb45thu4c…8f6hn" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeH-ae-lRl">
@@ -43,11 +43,18 @@
                             <constraint firstAttribute="width" constant="104.5" id="lCE-Zc-Uga"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
-                        <color key="textColor" red="0.53725490196078429" green="0.5607843137254902" blue="0.62352941176470589" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="juK-dW-ofX">
+                        <rect key="frame" x="10" y="24.5" width="12" height="7.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="12" id="GcO-DP-Lea"/>
+                            <constraint firstAttribute="height" constant="7.5" id="QKx-IR-83g"/>
+                        </constraints>
+                    </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMS-v8-7wg">
-                        <rect key="frame" x="207" y="16" width="24" height="24"/>
+                        <rect key="frame" x="149.5" y="26" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="fdE-cL-KXS"/>
                             <constraint firstAttribute="width" constant="24" id="hpz-fQ-1nz"/>
@@ -57,58 +64,24 @@
                             <action selector="copyButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oxs-Ev-qAw"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8X-8I-GEZ">
-                        <rect key="frame" x="258" y="16" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="04z-4O-a73"/>
-                            <constraint firstAttribute="height" constant="24" id="asH-Tt-7pk"/>
-                        </constraints>
-                        <state key="normal" image="delete_icon_blue"/>
-                        <connections>
-                            <action selector="deleteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Cp5-gZ-hDK"/>
-                        </connections>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAk-l8-Bix">
-                        <rect key="frame" x="156" y="16" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="24" id="B95-lh-wSb"/>
-                            <constraint firstAttribute="width" constant="24" id="fBM-34-uol"/>
-                        </constraints>
-                        <state key="normal" image="edit_icon_blue"/>
-                        <connections>
-                            <action selector="editButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tFf-J5-hQy"/>
-                        </connections>
-                    </button>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="juK-dW-ofX">
-                        <rect key="frame" x="10" y="24.5" width="12" height="7.5"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="12" id="GcO-DP-Lea"/>
-                            <constraint firstAttribute="height" constant="7.5" id="QKx-IR-83g"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="86A-Yl-NIU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="01I-A3-v5D"/>
                     <constraint firstItem="jda-1l-m4X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0BO-rH-ubV"/>
-                    <constraint firstItem="jAk-l8-Bix" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="0Ud-cc-HT6"/>
                     <constraint firstAttribute="bottom" secondItem="jda-1l-m4X" secondAttribute="bottom" id="5xE-27-vcU"/>
                     <constraint firstItem="86A-Yl-NIU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="9Ke-hh-DLL"/>
                     <constraint firstItem="NeH-ae-lRl" firstAttribute="top" secondItem="86A-Yl-NIU" secondAttribute="bottom" constant="2" id="CNa-80-8KY"/>
-                    <constraint firstItem="R8X-8I-GEZ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QEY-YX-nIp"/>
-                    <constraint firstAttribute="trailing" secondItem="R8X-8I-GEZ" secondAttribute="trailing" constant="38" id="SL0-xX-KRn"/>
-                    <constraint firstItem="EMS-v8-7wg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Tns-em-yUF"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="centerY" secondItem="NeH-ae-lRl" secondAttribute="centerY" id="aOl-ho-Xi9"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="leading" secondItem="NeH-ae-lRl" secondAttribute="trailing" constant="5" id="cLq-8q-uPi"/>
                     <constraint firstAttribute="trailing" secondItem="jda-1l-m4X" secondAttribute="trailing" id="dLi-ir-rpl"/>
                     <constraint firstItem="NeH-ae-lRl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="eLs-5F-iV1"/>
-                    <constraint firstItem="R8X-8I-GEZ" firstAttribute="leading" secondItem="EMS-v8-7wg" secondAttribute="trailing" constant="27" id="fmJ-Du-7bg"/>
                     <constraint firstItem="juK-dW-ofX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ggV-Mq-3rA"/>
-                    <constraint firstItem="EMS-v8-7wg" firstAttribute="leading" secondItem="jAk-l8-Bix" secondAttribute="trailing" constant="27" id="iie-d5-IF8"/>
                     <constraint firstItem="juK-dW-ofX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="lI7-HG-fOv"/>
                     <constraint firstItem="jda-1l-m4X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rKO-2z-naV"/>
-                    <constraint firstItem="jAk-l8-Bix" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="86A-Yl-NIU" secondAttribute="trailing" constant="10" id="tb3-Ph-4sD"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" red="0.039215686274509803" green="0.29411764705882354" blue="0.38039215686274508" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.039215686270000001" green="0.29411764709999999" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="checkIconImage" destination="juK-dW-ofX" id="MgY-kl-vqZ"/>
                 <outlet property="walletAddressLabel" destination="NeH-ae-lRl" id="8Ml-iV-bRz"/>
@@ -120,7 +93,5 @@
     <resources>
         <image name="check_icon_green" width="14" height="10"/>
         <image name="copy_icon_blue" width="14" height="14"/>
-        <image name="delete_icon_blue" width="20" height="20"/>
-        <image name="edit_icon_blue" width="18" height="18"/>
     </resources>
 </document>

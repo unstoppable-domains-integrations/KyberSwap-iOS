@@ -7,11 +7,15 @@
 
 import UIKit
 
+struct WalletListTableViewCellViewModel {
+  let walletName: String
+  let walletAddress: String
+  let isCurrentWallet: Bool
+}
+
 enum WalletListTableViewCellEvent {
-  case copy(index: Int)
-  case remove(index: Int)
-  case edit(index: Int)
-  case select(index: Int)
+  case copy(address: String)
+  case select(address: String)
 }
 
 protocol WalletListTableViewCellDelegate: class {
@@ -22,36 +26,27 @@ class WalletListTableViewCell: UITableViewCell {
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var walletAddressLabel: UILabel!
   @IBOutlet weak var checkIconImage: UIImageView!
-  var index: Int = -1
-  var delegate: WalletListTableViewCellDelegate?
+
+  weak var delegate: WalletListTableViewCellDelegate?
+  var viewModel: WalletListTableViewCellViewModel?
 
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
   }
 
-  func updateCell(with wallet: KNWalletObject, id: Int, isCurrent: Bool) {
-    self.index = id
-    self.walletNameLabel.text = wallet.name
-    self.walletAddressLabel.text = wallet.address.lowercased()
-    self.checkIconImage.isHidden = !isCurrent
-    self.backgroundColor = id % 2 == 0 ? UIColor(red: 10, green: 75, blue: 97) : UIColor(red: 8, green: 66, blue: 85)
-    self.layoutIfNeeded()
-  }
-
-  @IBAction func editButtonTapped(_ sender: UIButton) {
-    self.delegate?.walletListTableViewCell(self, run: .edit(index: self.index))
+  func updateCell(with viewModel: WalletListTableViewCellViewModel) {
+    self.viewModel = viewModel
+    self.walletNameLabel.text = viewModel.walletName
+    self.walletAddressLabel.text = viewModel.walletAddress.lowercased()
+    self.checkIconImage.isHidden = !viewModel.isCurrentWallet
   }
 
   @IBAction func copyButtonTapped(_ sender: UIButton) {
-    self.delegate?.walletListTableViewCell(self, run: .copy(index: self.index))
+    self.delegate?.walletListTableViewCell(self, run: .copy(address: self.viewModel?.walletAddress ?? ""))
   }
 
-  @IBAction func deleteButtonTapped(_ sender: UIButton) {
-    self.delegate?.walletListTableViewCell(self, run: .remove(index: self.index))
-  }
-  
   @IBAction func tapCell(_ sender: UIButton) {
-    self.delegate?.walletListTableViewCell(self, run: .select(index: self.index))
+    self.delegate?.walletListTableViewCell(self, run: .select(address: self.viewModel?.walletAddress ?? ""))
   }
 }

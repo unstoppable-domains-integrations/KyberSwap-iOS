@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import TrustCore
 
 protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidClickBack()
@@ -8,7 +9,7 @@ protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject)
   func listWalletsCoordinatorDidUpdateWalletObjects()
-  func listWalletsCoordinatorDidSelectAddWallet()
+  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType)
 }
 
 class KNListWalletsCoordinator: Coordinator {
@@ -87,8 +88,8 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.navigationController.pushViewController(controller, animated: true)
-    case .addWallet:
-      self.delegate?.listWalletsCoordinatorDidSelectAddWallet()
+    case .addWallet(let type):
+      self.delegate?.listWalletsCoordinatorDidSelectAddWallet(type: type)
     }
   }
 

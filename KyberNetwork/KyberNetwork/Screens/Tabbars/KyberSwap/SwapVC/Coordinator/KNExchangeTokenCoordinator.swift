@@ -20,6 +20,7 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidUpdateWalletObjects()
   func exchangeTokenCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func exchangeTokenCoordinatorDidSelectManageWallet()
 }
 
 //swiftlint:disable file_length
@@ -41,7 +42,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var promoConfirmSwapVC: KNPromoSwapConfirmViewController?
   fileprivate var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
-  
+
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -242,7 +243,7 @@ extension KNExchangeTokenCoordinator {
     if let gasPrice = exchangeTransaction.gasPrice, let gasLimit = exchangeTransaction.gasLimit {
       fee = gasPrice * gasLimit
     }
-    self.session.externalProvider.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
+    self.session.externalProvider?.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
       switch getAllowanceResult {
       case .success(let res):
@@ -273,11 +274,14 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     var fee = BigInt(0)
     if let gasPrice = exchage.gasPrice, let gasLimit = exchage.gasLimit {
       fee = gasPrice * gasLimit
     }
-    self.session.externalProvider.exchange(exchange: exchage) { [weak self] result in
+    provider.exchange(exchange: exchage) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let txHash):
@@ -285,8 +289,8 @@ extension KNExchangeTokenCoordinator {
         let transaction = exchage.toTransaction(
           hash: txHash,
           fromAddr: self.session.wallet.address,
-          toAddr: self.session.externalProvider.networkAddress,
-          nounce: self.session.externalProvider.minTxCount - 1
+          toAddr: provider.networkAddress,
+          nounce: provider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(transaction)
         if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) == nil {
@@ -367,11 +371,14 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func sendApproveForExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     self.resetAllowanceForExchangeTransactionIfNeeded(exchangeTransaction, remain: remain) { [weak self] resetResult in
       guard let `self` = self else { return }
       switch resetResult {
       case .success:
-        self.session.externalProvider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
+        provider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
           switch result {
           case .success:
             self?.sendExchangeTransaction(exchangeTransaction)
@@ -394,12 +401,15 @@ extension KNExchangeTokenCoordinator {
   }
   //TODO: remove later
   fileprivate func resetAllowanceForExchangeTransactionIfNeeded(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     if remain.isZero {
       completion(.success(true))
       return
     }
     let gasPrice = exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas
-    self.session.externalProvider.sendApproveERCToken(
+    provider.sendApproveERCToken(
       for: exchangeTransaction.from,
       value: BigInt(0),
       gasPrice: gasPrice
@@ -414,12 +424,15 @@ extension KNExchangeTokenCoordinator {
   }
 
   fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     if remain.isZero {
       completion(.success(true))
       return
     }
     let gasPrice = KNGasCoordinator.shared.defaultKNGas
-    self.session.externalProvider.sendApproveERCToken(
+    provider.sendApproveERCToken(
       for: token,
       value: BigInt(0),
       gasPrice: gasPrice
@@ -450,7 +463,10 @@ extension KNExchangeTokenCoordinator: KNPromoSwapConfirmViewControllerDelegate {
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction) {
-    self.session.externalProvider.signTransactionData(from: signTransaction) { [weak self] result in
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.signTransactionData(from: signTransaction) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let signedData):
@@ -549,7 +565,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .checkAllowance(let from):
-      self.session.externalProvider.getAllowance(token: from) { [weak self] getAllowanceResult in
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.getAllowance(token: from) { [weak self] getAllowanceResult in
         guard let `self` = self else { return }
         switch getAllowanceResult {
         case .success(let res):
@@ -563,9 +582,17 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getExpectedRate(let from, let to, let srcAmount, let hint):
+      guard self.session.externalProvider != nil else {
+        self.navigationController.showTopBannerView(message: "Watch wallet can not do this operation".toBeLocalised())
+        self.navigationController.hideLoading()
+        return
+      }
       self.getExpectedRate(from: from, to: to, srcAmount: srcAmount, hint: hint)
     case .getLatestNonce:
-      self.session.externalProvider.getTransactionCount { [weak self] result in
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.getTransactionCount { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let res):
@@ -577,7 +604,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .buildTx(let raw):
       self.getEncodedSwapTransaction(raw)
     case .signAndSendTx(let tx):
-      self.session.externalProvider.signTransactionData(from: tx) { [weak self] result in
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.signTransactionData(from: tx) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let data):
@@ -816,13 +846,16 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //  }
 
   fileprivate func getExpectedExchangeRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: ((Result<(BigInt, BigInt), AnyError>) -> Void)? = nil) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     if from == to {
       let rate = BigInt(10).power(from.decimals)
       let slippageRate = rate * BigInt(97) / BigInt(100)
       completion?(.success((rate, slippageRate)))
       return
     }
-    self.session.externalProvider.getExpectedRate(
+    provider.getExpectedRate(
       from: from,
       to: to,
       amount: amount,
@@ -977,6 +1010,9 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func updateEstimatedGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String, completion: @escaping () -> Void = {}) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     let exchangeTx = KNDraftExchangeTransaction(
       from: from,
       to: to,
@@ -989,7 +1025,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       expectedReceivedString: nil,
       hint: hint
     )
-    self.session.externalProvider.getEstimateGasLimit(for: exchangeTx) { result in
+    provider.getEstimateGasLimit(for: exchangeTx) { result in
       if case .success(let estimate) = result {
         self.rootViewController.coordinatorDidUpdateGasLimit(
           from: from,
@@ -1123,6 +1159,14 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddWallet() {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddWallet()
+  }
+  
+  func historyCoordinatorDidSelectManageWallet() {
+    self.delegate?.exchangeTokenCoordinatorDidSelectManageWallet()
+  }
+
   func historyCoordinatorDidClose() {
 //    self.historyCoordinator = nil
   }
@@ -1227,6 +1271,9 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     case .minRatePercentageChanged(let percent):
       self.rootViewController.coordinatorDidUpdateMinRatePercentage(percent)
     case .useChiStatusChanged(let status):
+      guard let provider = self.session.externalProvider else {
+        return
+      }
       if self.isApprovedGasToken() {
         self.saveUseGasTokenState(status)
         self.rootViewController.coordinatorUpdateIsUseGasToken(status)
@@ -1242,12 +1289,12 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
         guard let tokenAddress = gasTokenAddress else {
           return
         }
-        self.session.externalProvider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
+        provider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
           guard let `self` = self else { return }
           switch result {
           case .success(let res):
             if res.isZero {
-              self.session.externalProvider.sendApproveERCTokenAddress(
+              provider.sendApproveERCTokenAddress(
                 for: tokenAddress,
                 value: BigInt(2).power(256) - BigInt(1),
                 gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
@@ -1255,10 +1302,14 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
                 case .success:
                   self.saveUseGasTokenState(status)
                   self.rootViewController.coordinatorUpdateIsUseGasToken(status)
-                case .failure:
+                case .failure(let error):
+                  print("[Debug]: \(error)")
                   self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
                 }
               }
+            } else {
+              self.saveUseGasTokenState(status)
+              self.rootViewController.coordinatorUpdateIsUseGasToken(status)
             }
           case .failure(let error):
             print("[Error] \(error.description)")
@@ -1291,7 +1342,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     }
     return data.keys.contains(self.session.wallet.address.description)
   }
-  
+
   fileprivate func isAccountUseGasToken() -> Bool {
     var data: [String: Bool] = [:]
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
@@ -1307,9 +1358,11 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
   func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
     switch event {
     case .connectWallet:
-      print("transition")
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
-      print("transition")
+      self.delegate?.exchangeTokenCoordinatorDidSelectManageWallet()
     case .copy(let wallet):
       UIPasteboard.general.string = wallet.address
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
@@ -1321,31 +1374,8 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
         return
       }
       self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wal)
-    case .remove(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
-        return
-      }
-      let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
-      alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-        controller.dismiss(animated: true) {
-          self.delegate?.exchangeTokenCoordinatorDidSelectRemoveWallet(wal)
-        }
-      }))
-      controller.present(alert, animated: true, completion: nil)
-    case .edit(let wallet):
-      let viewModel = InputPopUpViewModel(mainTitle: "Edit wallet label", description: wallet.address, doneButtonTitle: "done".toBeLocalised(), value: wallet.name) { (text) in
-        let newWallet = wallet.copy(withNewName: text)
-        let contact = KNContact(
-          address: newWallet.address,
-          name: newWallet.name
-        )
-        KNContactStorage.shared.update(contacts: [contact])
-        KNWalletStorage.shared.update(wallets: [newWallet])
-        self.delegate?.exchangeTokenCoordinatorDidUpdateWalletObjects()
-      }
-      let viewController = InputPopUpViewController(viewModel: viewModel)
-      self.navigationController.present(viewController, animated: true, completion: nil)
+    case .addWallet:
+      self.openAddWalletView()
     }
   }
 }
@@ -1359,12 +1389,15 @@ extension KNExchangeTokenCoordinator: ChooseRateViewControllerDelegate {
 extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
     self.navigationController.displayLoading()
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     self.resetAllowanceForTokenIfNeeded(token, remain: remain) { [weak self] resetResult in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        self.session.externalProvider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas) { (result) in
+        provider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas) { (result) in
           switch result {
           case .success:
             self.rootViewController.coordinatorSuccessApprove(token: token)
@@ -1397,6 +1430,9 @@ extension KNExchangeTokenCoordinator: SpeedUpCustomGasSelectDelegate {
   }
 
   fileprivate func sendSpeedUpSwapTransactionFor(transaction: Transaction, availableTokens: [TokenObject], newPrice: BigInt) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let nouce = Int(transaction.nonce) else { return }
     guard let localizedOperation = transaction.localizedOperations.first else { return }
     guard let filteredToken = availableTokens.first(where: { (token) -> Bool in
@@ -1408,10 +1444,10 @@ extension KNExchangeTokenCoordinator: SpeedUpCustomGasSelectDelegate {
     let gasLimit: BigInt = {
       return transaction.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
     }()
-    session.externalProvider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
+    provider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx, !fetchedTx.input.isEmpty {
-        self.session.externalProvider.speedUpSwapTransaction(
+        provider.speedUpSwapTransaction(
           for: filteredToken,
           amount: amount,
           nonce: nouce,
@@ -1444,17 +1480,20 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   }
 
   fileprivate func didConfirmTransfer(_ transaction: Transaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     guard let unconfirmTx = transaction.makeCancelTransaction() else {
       return
     }
-    self.session.externalProvider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
+    provider.speedUpTransferTransaction(transaction: unconfirmTx, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
       switch sendResult {
       case .success(let txHash):
         let tx: Transaction = unconfirmTx.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
-          nounce: self.session.externalProvider.minTxCount - 1,
+          nounce: provider.minTxCount - 1,
           type: .cancel
         )
         self.session.updatePendingTransactionWithHash(hashTx: transaction.id, ultiTransaction: tx, completion: {

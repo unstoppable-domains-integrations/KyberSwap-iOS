@@ -15,7 +15,7 @@ class KNTransactionCoordinator {
 
   let transactionStorage: TransactionsStorage
   let tokenStorage: KNTokenStorage
-  let externalProvider: KNExternalProvider
+  let externalProvider: KNExternalProvider?
   let wallet: Wallet
 
   lazy var addressToSymbol: [String: String] = {
@@ -35,7 +35,7 @@ class KNTransactionCoordinator {
   init(
     transactionStorage: TransactionsStorage,
     tokenStorage: KNTokenStorage,
-    externalProvider: KNExternalProvider,
+    externalProvider: KNExternalProvider?,
     wallet: Wallet
     ) {
     self.transactionStorage = transactionStorage
@@ -399,7 +399,7 @@ extension KNTransactionCoordinator {
       if error == nil { return }
       guard let `self` = self else { return }
       if transaction.isInvalidated { return }
-      self.externalProvider.getTransactionByHash(transaction.id, completion: { [weak self] _, sessionError in
+      self.externalProvider?.getTransactionByHash(transaction.id, completion: { [weak self] _, sessionError in
         guard let `self` = self else { return }
         guard let trans = self.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id) else { return }
         if trans.state != .pending {
@@ -441,7 +441,7 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func checkTransactionReceipt(_ transaction: KNTransaction, completion: @escaping (Error?) -> Void) {
-    self.externalProvider.getReceipt(for: transaction) { [weak self] result in
+    self.externalProvider?.getReceipt(for: transaction) { [weak self] result in
       switch result {
       case .success(let newTx):
         if let trans = self?.transactionStorage.getKyberTransaction(forPrimaryKey: transaction.id), trans.state != .pending {

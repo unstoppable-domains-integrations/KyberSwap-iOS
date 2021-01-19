@@ -36,6 +36,11 @@ extension KNAppCoordinator: KNSessionDelegate {
 
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  func exchangeTokenCoordinatorDidSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
     guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
     if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
@@ -47,7 +52,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 
   func exchangeTokenCoordinatorDidSelectAddWallet() {
-    self.addNewWallet()
+    self.addNewWallet(type: .full)
   }
 
   func exchangeTokenCoordinatorDidSelectPromoCode() {
@@ -88,7 +93,7 @@ extension KNAppCoordinator: KNLimitOrderTabCoordinatorV2Delegate {
   }
 
   func limitOrderTabCoordinatorDidSelectAddWallet() {
-    self.addNewWallet()
+    self.addNewWallet(type: .full)
   }
 
   func limitOrderTabCoordinatorDidSelectPromoCode() {
@@ -122,17 +127,22 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
     self.removeWallet(wallet)
   }
 
-  func settingsCoordinatorUserDidSelectAddWallet() {
-    self.addNewWallet()
+  func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType) {
+    self.addNewWallet(type: type)
   }
 }
 
 // MARK: Balance Tab Coordinator Delegate
 extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
+  func balanceTabCoordinatorDidSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
   func balanceTabCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
     self.removeWallet(wallet)
   }
-  
+
   func balanceTabCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.restartNewSession(wallet)
   }
@@ -149,7 +159,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   }
 
   func balanceTabCoordinatorDidSelectAddWallet() {
-    self.addNewWallet()
+    self.addNewWallet(type: .full)
   }
 
   func balanceTabCoordinatorDidSelectPromoCode() {
@@ -165,7 +175,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
     self.tabbarController.selectedIndex = 1
     self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
   }
-  
+
   func balanceTabCoordinatorDidUpdateWalletObjects() {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()

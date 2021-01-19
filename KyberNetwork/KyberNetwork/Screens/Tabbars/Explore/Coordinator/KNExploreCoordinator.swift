@@ -210,6 +210,14 @@ extension KNExploreCoordinator: KNNotificationSettingViewControllerDelegate {
 }
 
 extension KNExploreCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddWallet() {
+    
+  }
+  
+  func historyCoordinatorDidSelectManageWallet() {
+    
+  }
+  
   func historyCoordinatorDidClose() {
   }
   

@@ -8,7 +8,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidUpdateWalletObjects()
-  func settingsCoordinatorUserDidSelectAddWallet()
+  func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType)
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
@@ -518,8 +518,8 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
     self.delegate?.settingsCoordinatorUserDidUpdateWalletObjects()
   }
 
-  func listWalletsCoordinatorDidSelectAddWallet() {
-    self.delegate?.settingsCoordinatorUserDidSelectAddWallet()
+  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType) {
+    self.delegate?.settingsCoordinatorUserDidSelectAddWallet(type: type)
   }
 
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject) {

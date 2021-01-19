@@ -9,7 +9,7 @@ import TrustCore
 
 class KNLoadBalanceCoordinator {
 
-  fileprivate var session: KNSession!
+  fileprivate var session: KNSession! //TODO: use general provider to load balance instead of external provider
   fileprivate var ethToken: TokenObject!
 
   var ethBalance: Balance {
@@ -161,10 +161,13 @@ class KNLoadBalanceCoordinator {
   }
 
   fileprivate func loadBalanceForToken(_ token: String, completion: @escaping () -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     let currentWallet = self.session.wallet
     let address = self.ethToken.addressObj
     if token.lowercased() == self.ethToken.contract.lowercased() {
-      self.session.externalProvider.getETHBalance { [weak self] result in
+      provider.getETHBalance { [weak self] result in
         guard let `self` = self else {
           completion()
           return
@@ -183,7 +186,7 @@ class KNLoadBalanceCoordinator {
         completion()
       }
     } else if let address = Address(string: token) {
-      self.session.externalProvider.getTokenBalance(for: address) { [weak self] result in
+      provider.getTokenBalance(for: address) { [weak self] result in
         guard let `self` = self else {
           completion()
           return
@@ -273,6 +276,9 @@ class KNLoadBalanceCoordinator {
   }
 
   func fetchOtherTokenBalances(addresses: [Address]) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     KNCrashlyticsUtil.logCustomEvent(
       withName: "load_balance_load_token_balance_one_by_one",
       customAttributes: nil
@@ -285,7 +291,7 @@ class KNLoadBalanceCoordinator {
       group.enter()
       DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
         if address.description.lowercased() == self.ethToken.address.description.lowercased() {
-          self.session.externalProvider.getETHBalance { [weak self] result in
+          provider.getETHBalance { [weak self] result in
             guard let `self` = self else { group.leave(); return }
             if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
             switch result {
@@ -302,7 +308,7 @@ class KNLoadBalanceCoordinator {
             group.leave()
           }
         } else {
-          self.session.externalProvider.getTokenBalance(for: address, completion: { [weak self] result in
+          provider.getTokenBalance(for: address, completion: { [weak self] result in
             guard let `self` = self else { group.leave(); return }
             if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
             switch result {
@@ -399,6 +405,9 @@ class KNLoadBalanceCoordinator {
   }
 
   func fetchNonSupportedTokensBalances(addresses: [Address]) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     KNCrashlyticsUtil.logCustomEvent(
       withName: "load_balance_load_unsupported_token_balance_one_by_one",
       customAttributes: nil
@@ -413,7 +422,7 @@ class KNLoadBalanceCoordinator {
       group.enter()
       DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
         if self.session == nil { group.leave(); return }
-        self.session.externalProvider.getTokenBalance(for: address, completion: { [weak self] result in
+        provider.getTokenBalance(for: address, completion: { [weak self] result in
           guard let `self` = self else { group.leave(); return }
           if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
           switch result {
@@ -450,12 +459,15 @@ class KNLoadBalanceCoordinator {
   }
 
   fileprivate func fetchTokenBalances(tokens: [Address], completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
     if tokens.isEmpty {
       completion(.success(true))
       return
     }
     var isBalanceChanged = false
-    self.session.externalProvider.getMultipleERC20Balances(tokens) { [weak self] result in
+    provider.getMultipleERC20Balances(tokens) { [weak self] result in
       guard let `self` = self else {
         completion(.success(false))
         return

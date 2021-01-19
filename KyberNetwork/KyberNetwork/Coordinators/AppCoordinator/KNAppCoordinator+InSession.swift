@@ -274,13 +274,11 @@ extension KNAppCoordinator {
     }
   }
 
-  func addNewWallet() {
-    let addWalletCoordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
-    addWalletCoordinator.delegate = self
+  func addNewWallet(type: AddNewWalletType) {
     self.navigationController.present(
-      addWalletCoordinator.navigationController,
+      self.addWalletCoordinator.navigationController,
       animated: false) {
-      addWalletCoordinator.start()
+      self.addWalletCoordinator.start(type: type)
     }
   }
 

@@ -16,6 +16,7 @@ protocol KNBalanceTabCoordinatorDelegate: class {
   func balanceTabCoordinatorDidUpdateWalletObjects()
   func balanceTabCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
   func balanceTabCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func balanceTabCoordinatorDidSelectManageWallet()
 }
 
 class KNBalanceTabCoordinator: NSObject, Coordinator {
@@ -470,6 +471,14 @@ extension KNBalanceTabCoordinator: KNTokenChartCoordinatorDelegate {
 }
 
 extension KNBalanceTabCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddWallet() {
+    self.delegate?.balanceTabCoordinatorDidSelectAddWallet()
+  }
+
+  func historyCoordinatorDidSelectManageWallet() {
+    self.delegate?.balanceTabCoordinatorDidSelectManageWallet()
+  }
+
   func historyCoordinatorDidClose() {
 //    self.historyCoordinator = nil
   }
@@ -534,12 +543,22 @@ extension KNBalanceTabCoordinator: KNNotificationSettingViewControllerDelegate {
 }
 
 extension KNBalanceTabCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddWallet() {
+    self.delegate?.balanceTabCoordinatorDidSelectAddWallet()
+  }
+
+  func sendTokenCoordinatorDidSelectManageWallet() {
+    self.delegate?.balanceTabCoordinatorDidSelectManageWallet()
+  }
+  
   func sendTokenViewCoordinatorDidUpdateWalletObjects() {
     self.delegate?.balanceTabCoordinatorDidUpdateWalletObjects()
   }
+
   func sendTokenViewCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
     self.delegate?.balanceTabCoordinatorDidSelectRemoveWallet(wallet)
   }
+
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.delegate?.balanceTabCoordinatorDidSelectWallet(wallet)
   }
