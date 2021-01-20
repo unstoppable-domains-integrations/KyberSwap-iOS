@@ -240,7 +240,7 @@ class KSwapViewModel {
       maxFractionDigits: min(self.from.decimals, 6)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15))"
+    return "\(string.prefix(15)) \(self.from.symbol)"
   }
 
   var balanceTextString: String {
@@ -258,7 +258,7 @@ class KSwapViewModel {
       return "---"
     }
   }
-  
+
   func getCurrentRate() -> BigInt? {
     let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     return BigInt(rateString)
@@ -413,7 +413,6 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
-//    self.updateProdCachedRate()
   }
 
   func updateWalletObject() {
@@ -452,7 +451,6 @@ class KSwapViewModel {
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
     self.balance = self.balances[self.from.contract]
-//    self.updateProdCachedRate()
   }
 
   func updateFocusingField(_ isSource: Bool) {

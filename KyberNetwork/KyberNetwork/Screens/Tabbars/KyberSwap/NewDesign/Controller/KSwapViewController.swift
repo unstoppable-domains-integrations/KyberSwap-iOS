@@ -674,6 +674,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool) {
+    self.updateApproveButton()
     if isShowApproveButton {
       self.approveButtonLeftPaddingContraint.constant = 37
       self.approveButtonRightPaddingContaint.constant = 15
@@ -943,10 +944,8 @@ extension KSwapViewController {
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
-//    self.viewModel.updateExchangeMinRatePercent(Double(value))
-//    let rate = self.viewModel.estimatedRateDouble
-//    self.setUpGasFeeView()
-//    self.delegate?.kSwapViewController(self, run: .updateRate(rate: rate))
+    self.viewModel.updateExchangeMinRatePercent(Double(value))
+    self.setUpGasFeeView()
   }
 
   func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [JSONDictionary]) {
@@ -974,7 +973,6 @@ extension KSwapViewController {
     if balanceValue.value > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true)
-      print("[Debug] allowance \(allowance.description)")
     } else {
       //TODO: need to check more to avoid lagging ui
       self.updateUIForSendApprove(isShowApproveButton: false)

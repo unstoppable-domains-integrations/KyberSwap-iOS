@@ -267,7 +267,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var useChiTitleLabel: UILabel!
   @IBOutlet weak var useChiSwitch: UISwitch!
   @IBOutlet weak var useChiDescription: UILabel!
-
+  @IBOutlet weak var sendSwapDivideLineView: UIView!
+  
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -292,6 +293,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.customRateTextField.delegate = self
     self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
     self.useChiSwitch.isOn = self.viewModel.isUseGasToken
+    self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
   }
@@ -422,7 +424,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.viewModel.updateCurrentMinRate(value)
     self.updateMinRateUIs()
   }
-  
+
   func coordinatorDidUpdateUseGasTokenState(_ status: Bool) {
     if self.useChiSwitch.isOn != status {
       self.useChiSwitch.isOn = status

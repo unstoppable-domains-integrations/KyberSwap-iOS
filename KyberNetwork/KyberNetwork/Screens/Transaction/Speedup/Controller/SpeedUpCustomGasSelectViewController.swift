@@ -71,11 +71,6 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
     self.newFeeLabel.text = "New fee".toBeLocalised()
     self.doneButton.setTitle("done".toBeLocalised(), for: .normal)
 
-    self.superFastGasPriceButton.backgroundColor = .white
-    self.fastGasPriceButton.backgroundColor = .white
-    self.regularGasPriceButton.backgroundColor = .white
-    self.slowGasPriceButton.backgroundColor = .white
-
     self.currentFeeLabel.text = self.viewModel.currentTransactionFeeETHString
     self.doneButton.rounded(radius: self.doneButton.frame.size.height / 2)
     self.doneButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)

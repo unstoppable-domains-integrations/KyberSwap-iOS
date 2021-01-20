@@ -81,7 +81,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var navTitle: String {
-    return "\(NSLocalizedString("transfer", value: "Transfer", comment: ""))"
+    return "transfer".toBeLocalised().uppercased()
   }
 
   var tokenButtonAttributedText: NSAttributedString {

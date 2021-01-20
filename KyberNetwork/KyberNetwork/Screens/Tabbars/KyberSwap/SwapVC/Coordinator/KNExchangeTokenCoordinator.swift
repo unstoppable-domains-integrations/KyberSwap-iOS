@@ -496,7 +496,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
       }
     }
   }
-  
+
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController) {
     controller.dismiss(animated: true) {
       self.confirmSwapVC = nil
@@ -510,10 +510,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     switch event {
     case .searchToken(let from, let to, let isSource):
       self.openSearchToken(from: from, to: to, isSource: isSource)
-//    case .estimateRate(let from, let to, let amount, let hint, let showError):
-//      self.updateExpectedRateWithKyberIfNeeded(from: from, to: to, amount: amount, hint: hint, showError: showError)
     case .getGasLimit(let from, let to, let amount, let hint):
-//      self.updateEstimatedGasLimit(from: from, to: to, amount: amount, gasPrice: gasPrice, hint: hint)
       self.getGasLimit(from: from, to: to, amount: amount, hint: hint)
     case .showQRCode:
       self.showWalletQRCode()

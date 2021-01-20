@@ -37,7 +37,11 @@ class ApproveTokenViewModel {
     let valueString: String = value.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
-  
+
+  var subTitleText: String {
+    return String(format: "You need to grant permission for Krytal to interact with %@ with this Address:", self.token.symbol.uppercased())
+  }
+
   init(token: TokenObject, res: BigInt) {
     self.token = token
     self.remain = res
@@ -73,16 +77,17 @@ class ApproveTokenViewController: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     self.gasFeeLabel.text = self.viewModel.getFeeString()
     self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
     self.cancelButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: 16)
     self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.descriptionLabel.text = self.viewModel.subTitleText
   }
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.approveButton.removeSublayer(at: 0)

@@ -160,7 +160,7 @@ class KSendTokenViewController: KNBaseViewController {
       for: .normal
     )
     self.moreContactButton.setTitle(
-      NSLocalizedString("more", value: "More", comment: ""),
+      "more".toBeLocalised().uppercased(),
       for: .normal
     )
   }
