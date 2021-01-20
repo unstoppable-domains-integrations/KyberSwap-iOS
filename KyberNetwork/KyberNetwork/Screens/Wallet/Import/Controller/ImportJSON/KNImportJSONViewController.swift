@@ -64,7 +64,7 @@ class KNImportJSONViewController: KNBaseViewController {
     self.nextButton.rounded(radius: self.nextButton.frame.size.height / 2)
     self.nextButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.nextButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
+      NSLocalizedString("Connect", value: "Connect", comment: ""),
       for: .normal
     )
     self.nextButton.addTextSpacing()
