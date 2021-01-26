@@ -598,9 +598,24 @@ class KSwapViewModel {
       return
     }
     self.swapRates = (from.address.lowercased(), to.address.lowercased(), amount, rates)
+  }
+
+  func reloadBestPlatform() {
+    let rates = self.swapRates.3
     if rates.count == 1 {
       let dict = rates.first
       if let platformString = dict?["platform"] as? String {
+        self.currentFlatform = platformString
+      }
+    } else {
+      let max = rates.max { (left, right) -> Bool in
+        if let leftRate = left["rate"] as? String, let leftBigInt = BigInt(leftRate), let rightRate = right["rate"] as? String, let rightBigInt = BigInt(rightRate) {
+          return leftBigInt < rightBigInt
+        } else {
+          return false
+        }
+      }
+      if let platformString = max?["platform"] as? String {
         self.currentFlatform = platformString
       }
     }

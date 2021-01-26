@@ -875,6 +875,7 @@ extension KSwapViewController {
 
   func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [JSONDictionary]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
+    self.viewModel.reloadBestPlatform()
     self.updateExchangeRateField()
     self.setUpChangeRateButton()
     self.updateUIRefPrice()
@@ -888,7 +889,6 @@ extension KSwapViewController {
   func coordinatorDidUpdatePlatform(_ platform: String) {
     self.viewModel.currentFlatform = platform
     self.setUpChangeRateButton()
-    self.updateAllRates()
   }
 
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
