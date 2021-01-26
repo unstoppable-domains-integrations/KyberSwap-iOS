@@ -9,12 +9,14 @@ struct KConfirmSwapViewModel {
   let ethBalance: BigInt
   let signTransaction: SignTransaction
   let hasRateWarning: Bool
+  let platform: String
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool) {
+  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String) {
     self.transaction = transaction
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
     self.hasRateWarning = hasRateWarning
+    self.platform = platform
   }
 
   var titleString: String {
@@ -100,5 +102,9 @@ struct KConfirmSwapViewModel {
 
   var hint: String {
     return self.transaction.hint ?? ""
+  }
+  
+  var reverseRoutingText: String {
+    return String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized)
   }
 }

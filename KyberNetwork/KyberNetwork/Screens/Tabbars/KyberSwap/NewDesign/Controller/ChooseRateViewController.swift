@@ -17,7 +17,7 @@ class ChooseRateViewModel {
     self.from = from
     self.to = to
   }
-  
+
   var uniRateText: String {
     return rateStringFor(platform: "uniswap")
   }
@@ -25,7 +25,7 @@ class ChooseRateViewModel {
   var kyberRateText: String {
     return rateStringFor(platform: "kyber")
   }
-  
+
   fileprivate func rateStringFor(platform: String) -> String {
     let dict = self.data.first { (element) -> Bool in
       if let platformString = element["platform"] as? String {
@@ -35,7 +35,7 @@ class ChooseRateViewModel {
       }
     }
     if let rateString = dict?["rate"] as? String, let rate = BigInt(rateString) {
-      return rate.isZero ? "---" : "1\(self.from.symbol) = \(rate.displayRate(decimals: self.to.decimals))\(self.to.symbol)"
+      return rate.isZero ? "---" : "1\(self.from.symbol) = \(rate.displayRate(decimals: 18))\(self.to.symbol)"
     } else {
       return "---"
     }
@@ -54,24 +54,24 @@ class ChooseRateViewController: KNBaseViewController {
   weak var delegate: ChooseRateViewControllerDelegate?
   let viewModel: ChooseRateViewModel
   let transitor = TransitionDelegate()
-  
+
   init(viewModel: ChooseRateViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ChooseRateViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.kyberRateLabel.text = self.viewModel.kyberRateText
     self.uniRateLabel.text = self.viewModel.uniRateText
   }
-  
+
   @IBAction func chooseRateButtonTapped(_ sender: UIButton) {
     if sender.tag == 0 {
       self.delegate?.chooseRateViewController(self, didSelect: "kyber")

@@ -62,8 +62,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
       wallet: self.session.wallet,
       from: from,
       to: to,
-      supportedTokens: tokens,
-      isUseGasToken: self.isAccountUseGasToken()
+      supportedTokens: tokens
     )
     let controller = KSwapViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
@@ -516,10 +515,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
-    case .validateRate(let data):
-      self.validateRateBeforeSwapping(data: data)
-    case .confirmSwap(let data, let tx, let hasRateWarning):
-      self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning)
+    case .confirmSwap(let data, let tx, let hasRateWarning, let platform):
+      self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning, platform: platform)
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
@@ -575,7 +572,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         }
       }
     case .sendApprove(let token, let remain):
-      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModel(token: token, res: remain))
+      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getExpectedRate(let from, let to, let srcAmount, let hint):
@@ -685,44 +682,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
-  fileprivate func validateRateBeforeSwapping(data: KNDraftExchangeTransaction) {
-    self.navigationController.displayLoading(text: NSLocalizedString("checking", value: "Checking", comment: ""), animated: true)
-    var errorMessage: String?
-    let group = DispatchGroup()
-//    group.enter()
-//    self.updateEstimatedRate(from: data.from, to: data.to, amount: data.amount, hint: data.hint ?? "", showError: false) { error in
-//      if let err = error { errorMessage = err.prettyError }
-//      group.leave()
-//    }
-    if !((data.from.isETH && data.to.isWETH) || (data.from.isWETH && data.to.isETH)) {
-      // only need to check cap if not ETH <-> WETH swap
-      group.enter()
-      sendGetPreScreeningWalletRequest { (result) in
-        if case .success(let resp) = result,
-          let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          if let status = json["eligible"] as? Bool {
-            if isDebug { print("eligible status : \(status)") }
-            if status == false { errorMessage = json["message"] as? String }
-          }
-        }
-        group.leave()
-      }
-    }
-
-    group.notify(queue: .main) {
-      self.navigationController.hideLoading()
-      if let message = errorMessage {
-        self.navigationController.showErrorTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: message,
-          time: 2.0
-        )
-      } else {
-        self.rootViewController.coordinatorDidValidateRate()
-      }
-    }
-  }
-
   fileprivate func exchangeButtonPressed(data: KNDraftExchangeTransaction) {
     if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) != nil {
       if let topVC = self.navigationController.topViewController, topVC is KNPromoSwapConfirmViewController { return }
@@ -757,10 +716,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
-  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool) {
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool, platform: String) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning, platform: platform)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
@@ -1277,13 +1236,13 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
         return
       }
       if status {
-        var gasTokenAddress: Address?
+        var gasTokenAddressString = ""
         if KNEnvironment.default == .ropsten {
-          gasTokenAddress = Address(string: "0x0000000000b3F879cb30FE243b4Dfee438691c04")
+          gasTokenAddressString = "0x0000000000b3F879cb30FE243b4Dfee438691c04"
         } else {
-          gasTokenAddress = Address(string: "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c")
+          gasTokenAddressString = "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
         }
-        guard let tokenAddress = gasTokenAddress else {
+        guard let tokenAddress = Address(string: gasTokenAddressString) else {
           return
         }
         provider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
@@ -1291,26 +1250,23 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
           switch result {
           case .success(let res):
             if res.isZero {
-              provider.sendApproveERCTokenAddress(
-                for: tokenAddress,
-                value: BigInt(2).power(256) - BigInt(1),
-                gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
-                switch approveResult {
-                case .success:
-                  self.saveUseGasTokenState(status)
-                  self.rootViewController.coordinatorUpdateIsUseGasToken(status)
-                case .failure(let error):
-                  print("[Debug]: \(error)")
-                  self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
-                }
-              }
+              let viewModel = ApproveTokenViewModelForGasToken(address: gasTokenAddressString, remain: res, state: status)
+              let viewController = ApproveTokenViewController(viewModel: viewModel)
+              viewController.delegate = self
+              self.navigationController.present(viewController, animated: true, completion: nil)
             } else {
               self.saveUseGasTokenState(status)
               self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+              self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(status)
             }
           case .failure(let error):
-            print("[Error] \(error.description)")
+            self.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", value: "Error", comment: ""),
+              message: error.localizedDescription,
+              time: 1.5
+            )
             self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
+            self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(!status)
           }
         }
       } else {
@@ -1384,6 +1340,33 @@ extension KNExchangeTokenCoordinator: ChooseRateViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool) {
+    self.navigationController.displayLoading()
+    guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
+      return
+    }
+    provider.sendApproveERCTokenAddress(
+      for: gasTokenAddress,
+      value: BigInt(2).power(256) - BigInt(1),
+      gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
+      self.navigationController.hideLoading()
+      switch approveResult {
+      case .success:
+        self.saveUseGasTokenState(state)
+        self.rootViewController.coordinatorUpdateIsUseGasToken(state)
+        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(state)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+        self.rootViewController.coordinatorUpdateIsUseGasToken(!state)
+        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(!state)
+      }
+    }
+  }
+
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider else {
@@ -1399,8 +1382,11 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
           case .success:
             self.rootViewController.coordinatorSuccessApprove(token: token)
           case .failure(let error):
-            print("[Debug] \(error)")
-            //TODO: show error message
+            self.navigationController.showErrorTopBannerMessage(
+              with: NSLocalizedString("error", value: "Error", comment: ""),
+              message: error.localizedDescription,
+              time: 1.5
+            )
             self.rootViewController.coordinatorFailApprove(token: token)
           }
         }

@@ -8,28 +8,40 @@
 import UIKit
 import BigInt
 
-class ApproveTokenViewModel {
-  let token: TokenObject
+protocol ApproveTokenViewModel {
+  func getGasLimit() -> BigInt
+  func getFee() -> BigInt
+  func getFeeString() -> String
+  func getFeeUSDString() -> String
+  var subTitleText: String { get }
+  var token: TokenObject? { get }
+  var remain: BigInt { get }
+  var address: String { get }
+  var state: Bool { get }
+}
+
+class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
+  let token: TokenObject?
   let remain: BigInt
   var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
-  
+
   func getGasLimit() -> BigInt {
-    if let gasApprove = self.token.gasApproveDefault { return gasApprove }
+    if let gasApprove = self.token?.gasApproveDefault { return gasApprove }
     return KNGasConfiguration.approveTokenGasLimitDefault
   }
-  
+
   func getFee() -> BigInt {
     let gasLimit = self.getGasLimit()
     let fee = self.gasPrice * gasLimit
     return fee
   }
-  
+
   func getFeeString() -> String {
     let fee = self.getFee()
     let feeString: String = fee.displayRate(decimals: 18)
     return "\(feeString) ETH"
   }
-  
+
   func getFeeUSDString() -> String {
     guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
     let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
@@ -39,7 +51,15 @@ class ApproveTokenViewModel {
   }
 
   var subTitleText: String {
-    return String(format: "You need to grant permission for Krytal to interact with %@ with this Address:", self.token.symbol.uppercased())
+    return String(format: "You need to grant permission for Krytal to interact with %@ with this Address:", self.token?.symbol.uppercased() ?? "")
+  }
+
+  var address: String {
+    return self.token?.address ?? ""
+  }
+  
+  var state: Bool {
+    return false
   }
 
   init(token: TokenObject, res: BigInt) {
@@ -48,8 +68,51 @@ class ApproveTokenViewModel {
   }
 }
 
+class ApproveTokenViewModelForGasToken: ApproveTokenViewModel {
+  var token: TokenObject?
+  let address: String
+  let remain: BigInt
+  var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
+  let state: Bool
+
+  init(address: String, remain: BigInt, state: Bool) {
+    self.address = address
+    self.remain = remain
+    self.state = state
+  }
+
+  func getGasLimit() -> BigInt {
+    return KNGasConfiguration.approveTokenGasLimitDefault
+  }
+
+  func getFee() -> BigInt {
+    let gasLimit = self.getGasLimit()
+    let fee = self.gasPrice * gasLimit
+    return fee
+  }
+
+  func getFeeString() -> String {
+    let fee = self.getFee()
+    let feeString: String = fee.displayRate(decimals: 18)
+    return "\(feeString) ETH"
+  }
+
+  func getFeeUSDString() -> String {
+    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
+    let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
+    let value: BigInt = usdRate * self.getFee() / BigInt(EthereumUnit.ether.rawValue)
+    let valueString: String = value.displayRate(decimals: 18)
+    return "~ \(valueString) USD"
+  }
+
+  var subTitleText: String {
+    return "You need to grant permission for Krytal to interact with CHI with this Address:".toBeLocalised()
+  }
+}
+
 protocol ApproveTokenViewControllerDelegate: class {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt)
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool)
 }
 
 class ApproveTokenViewController: KNBaseViewController {
@@ -66,14 +129,14 @@ class ApproveTokenViewController: KNBaseViewController {
   let viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
-  
+
   init(viewModel: ApproveTokenViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ApproveTokenViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -93,17 +156,21 @@ class ApproveTokenViewController: KNBaseViewController {
     self.approveButton.removeSublayer(at: 0)
     self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
-  
+
   @IBAction func approveButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
-      self.delegate?.approveTokenViewControllerDidApproved(self, token: self.viewModel.token, remain: self.viewModel.remain)
+      if let token = self.viewModel.token {
+        self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain)
+      } else {
+        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state)
+      }
     })
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }

@@ -268,7 +268,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var useChiSwitch: UISwitch!
   @IBOutlet weak var useChiDescription: UILabel!
   @IBOutlet weak var sendSwapDivideLineView: UIView!
-  
+
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -430,9 +430,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.useChiSwitch.isOn = status
     }
   }
-  
+
   @IBAction func switchChangedValue(_ sender: UISwitch) {
-    self.delegate?.gasFeeSelectorPopupViewController(self, run: .useChiStatusChanged(status: sender.isOn))
+    self.dismiss(animated: true) {
+      self.delegate?.gasFeeSelectorPopupViewController(self, run: .useChiStatusChanged(status: sender.isOn))
+    }
   }
 }
 

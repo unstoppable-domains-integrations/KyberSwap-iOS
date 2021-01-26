@@ -42,7 +42,6 @@ class KSwapViewModel {
 
   var isSwapAllBalance: Bool = false
   var isTappedSwapAllBalance: Bool = false
-  var isUseGasToken: Bool
 
 //  var estimatedRateDouble: Double {
 //    guard let rate = self.estRate else { return 0.0 }
@@ -62,8 +61,7 @@ class KSwapViewModel {
   init(wallet: Wallet,
        from: TokenObject,
        to: TokenObject,
-       supportedTokens: [TokenObject],
-       isUseGasToken: Bool
+       supportedTokens: [TokenObject]
     ) {
     self.wallet = wallet
     let addr = wallet.address.description
@@ -72,8 +70,6 @@ class KSwapViewModel {
     self.to = to.clone()
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
     self.refPrice = (self.from, self.to, "", [])
-    self.isUseGasToken = isUseGasToken
-//    self.updateProdCachedRate()
   }
   // MARK: Wallet name
   var walletNameString: String {
@@ -84,6 +80,16 @@ class KSwapViewModel {
   // MARK: From Token
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.estimateGasLimit
+  }
+
+  var isUseGasToken: Bool {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data[self.wallet.address.description] ?? false
   }
 
   var allFromTokenBalanceString: String {
@@ -240,7 +246,11 @@ class KSwapViewModel {
       maxFractionDigits: min(self.from.decimals, 6)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15)) \(self.from.symbol)"
+    return "\(string.prefix(15))"
+  }
+  
+  var balanceDisplayText: String {
+    return "\(self.balanceText) \(self.from.symbol)"
   }
 
   var balanceTextString: String {

@@ -125,7 +125,7 @@ class KConfirmSwapViewController: KNBaseViewController {
       self.reserveRountingContainerTopConstraint.constant = 62.5
     }
 
-    self.reserveRoutingMessageLabel.text = "Reserve routing is used in this transaction to reduce gas costs".toBeLocalised()
+    self.reserveRoutingMessageLabel.text = self.viewModel.reverseRoutingText
     self.rateWarningLabel.isHidden = !self.viewModel.hasRateWarning
     self.rateTopContraint.constant = self.viewModel.hasRateWarning ? 60.0 : 14.0
 
