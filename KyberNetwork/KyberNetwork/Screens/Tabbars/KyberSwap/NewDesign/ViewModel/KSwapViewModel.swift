@@ -263,7 +263,7 @@ class KSwapViewModel {
     let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate {
-      return notNilRate.isZero ? "---" : "Rate: 1\(self.from.symbol) = \(notNilRate.displayRate(decimals: 18))\(self.to.symbol)"
+      return notNilRate.isZero ? "---" : "Rate: 1 \(self.from.symbol) = \(notNilRate.displayRate(decimals: 18)) \(self.to.symbol)"
     } else {
       return "---"
     }

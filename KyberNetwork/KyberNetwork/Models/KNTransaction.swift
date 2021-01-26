@@ -283,7 +283,7 @@ extension KNTransaction {
 //      let rate = amount.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(from.decimals) / amount
       //TODO: there is rate string info
 //      let rateString = "1 \(from.symbol) = \(rate.displayRate(decimals: to.decimals)) \(to.symbol)"
-      return String(format: "from %@ to %@", arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
+      return String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
     }()
     return (self.id, detail)
   }

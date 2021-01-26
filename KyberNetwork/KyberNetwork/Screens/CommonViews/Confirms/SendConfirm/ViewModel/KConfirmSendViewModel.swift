@@ -22,7 +22,8 @@ struct KConfirmSendViewModel {
   }
 
   var titleString: String {
-    return "\(NSLocalizedString("transfer", value: "Transfer", comment: "")) \(self.token.symbol)" }
+    return "Sending confirm".toBeLocalised().uppercased()
+  }
 
   var contactName: String {
     let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")

@@ -28,7 +28,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var subTitleTopContraint: NSLayoutConstraint!
-  
+
   // Broadcast
   @IBOutlet weak var loadingImageView: UIImageView!
   // 32 if broadcasting, 104 if done/failed
@@ -87,7 +87,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
     self.secondButton.setTitle(NSLocalizedString("swap", comment: ""), for: .normal)
     self.secondButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.secondButton.frame.size.height / 2)
-
+    self.txHashLabel.text = self.transaction.id
     self.view.isUserInteractionEnabled = true
   }
 
@@ -112,7 +112,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.view.layoutSubviews()
     } else if self.transaction.state == .completed {
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
-      self.titleLabel.text = "Done!".toBeLocalised()
+      self.titleLabel.text = "Done!".toBeLocalised().uppercased()
       self.subTitleLabel.text = {
         if transaction.type == .cancel {
           return "Your transaction has been cancelled successfully".toBeLocalised()
@@ -134,13 +134,13 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      self.firstButton.setTitle("transfer".toBeLocalised(), for: .normal)
-      self.secondButton.setTitle("new swap".toBeLocalised(), for: .normal)
+      self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
+      self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
 
       self.view.layoutSubviews()
     } else if self.transaction.state == .error || self.transaction.state == .failed {
       self.titleIconImageView.image = UIImage(named: "tx_failed_icon")
-      self.titleLabel.text = "Failed!".toBeLocalised()
+      self.titleLabel.text = "Failed!".toBeLocalised().uppercased()
       if self.transaction.state == .error {
         var errorTitle = ""
         switch transaction.type {

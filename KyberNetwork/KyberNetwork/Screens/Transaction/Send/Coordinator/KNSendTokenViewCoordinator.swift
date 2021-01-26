@@ -393,6 +393,8 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
       self.openTransactionSpeedUpViewController(transaction: tx)
     case .cancel(let tx):
       self.openTransactionCancelConfirmPopUpFor(transaction: tx)
+    case .openLink(let url):
+      self.navigationController.openSafari(with: url)
     default:
       break
     }
