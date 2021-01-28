@@ -27,6 +27,9 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var addressString: String = ""
   fileprivate(set) var isUsingEns: Bool = false
   var isSendAllBalanace: Bool = false
+  var isCloseGasWarningPopup: Bool {
+    return UserDefaults.standard.bool(forKey: Constants.gasWarningClosedValueKey)
+  }
 
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit
@@ -232,7 +235,6 @@ class KNSendTokenViewModel: NSObject {
 
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
-    self.selectedGasPriceType = .custom
   }
 
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
@@ -243,6 +245,10 @@ class KNSendTokenViewModel: NSObject {
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
     default: return
     }
+  }
+
+  func saveCloseGasWarningState() {
+    UserDefaults.standard.set(true, forKey: Constants.gasWarningClosedValueKey)
   }
 
   @discardableResult

@@ -52,7 +52,9 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var newContactButton: UIButton!
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
-
+  @IBOutlet weak var advanceSettingTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var gasWarningTextLabel: UILabel!
+  @IBOutlet weak var gasWarningContainerView: UIView!
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
 
@@ -130,7 +132,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.setupRecentContact()
     self.setupAddressTextField()
     self.setupSendButton()
-
+    self.updateGasWarningUI()
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
   }
 
@@ -306,6 +308,11 @@ class KSendTokenViewController: KNBaseViewController {
     self.delegate?.kSendTokenViewController(self, run: event)
   }
 
+  @IBAction func closeGasWarningPopupTapped(_ sender: UIButton) {
+    self.viewModel.saveCloseGasWarningState()
+    self.updateGasWarningUI()
+  }
+
   fileprivate func updateAmountFieldUIForTransferAllIfNeeded() {
     guard self.viewModel.isSendAllBalanace, self.viewModel.from.isETH else { return }
     self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
@@ -449,6 +456,32 @@ extension KSendTokenViewController {
     self.ensAddressLabel.text = self.viewModel.displayEnsMessage
     self.ensAddressLabel.textColor = self.viewModel.displayEnsMessageColor
   }
+
+  fileprivate func updateGasWarningUI() {
+    var currentGasPrice = KNGasCoordinator.shared.standardKNGas
+    switch self.viewModel.selectedGasPriceType {
+    case .superFast:
+      currentGasPrice = KNGasCoordinator.shared.superFastKNGas
+    case .fast:
+      currentGasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium:
+      currentGasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow:
+      currentGasPrice = KNGasCoordinator.shared.lowKNGas
+    }
+    var limit = UserDefaults.standard.double(forKey: Constants.gasWarningValueKey)
+    if limit <= 0 { limit = 200 }
+    let limitBigInit = EtherNumberFormatter.full.number(from: limit.description, units: UnitConfiguration.gasPriceUnit)!
+    let isShowWarning = (currentGasPrice > limitBigInit) && !self.viewModel.isCloseGasWarningPopup
+    self.advanceSettingTopContraint.constant = isShowWarning ? 88 : 32
+    self.gasWarningContainerView.isHidden = !isShowWarning
+    if isShowWarning {
+      let estFee = currentGasPrice * self.viewModel.gasLimit
+      let feeString: String = estFee.displayRate(decimals: 18)
+      let warningText = String(format: "High network congestion. Please double check gas fee (~%@ ETH) before confirmation.".toBeLocalised(), feeString)
+      self.gasWarningTextLabel.text = warningText
+    }
+  }
 }
 
 // MARK: Update from coordinator
@@ -516,6 +549,11 @@ extension KSendTokenViewController {
   func coordinatorUpdateGasPriceCached() {
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
     self.updateAdvancedSettingsView()
+    self.updateGasWarningUI()
+  }
+
+  func coordinatorUpdateGasWarningLimit() {
+    self.updateGasWarningUI()
   }
 
   func coordinatorUpdateIsPromoWallet(_ isPromo: Bool) {
@@ -757,6 +795,7 @@ extension KSendTokenViewController: KAdvancedSettingsViewDelegate {
       self.viewModel.updateSelectedGasPriceType(type)
       self.viewModel.updateGasPrice(value)
       self.updateAmountFieldUIForTransferAllIfNeeded()
+      self.updateGasWarningUI()
       KNCrashlyticsUtil.logCustomEvent(withName: "transfer_advanced", customAttributes: ["gas_option": type.displayString(), "gas_value": value.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)])
     case .helpPressed:
       KNCrashlyticsUtil.logCustomEvent(withName: "transfer_gas_fee_info_tapped", customAttributes: nil)
