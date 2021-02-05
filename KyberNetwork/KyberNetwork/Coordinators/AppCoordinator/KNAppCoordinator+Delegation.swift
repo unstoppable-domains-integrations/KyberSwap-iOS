@@ -68,7 +68,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    
   }
 
   func exchangeTokenCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
@@ -112,7 +112,7 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    
   }
 
   func settingsCoordinatorUserDidSelectExit() {
@@ -180,7 +180,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
     self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.exploreCoordinator?.appCoordinatorDidUpdateWalletObjects()
+    
   }
 }
 

@@ -81,6 +81,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           return name ?? "Imported"
         }()
         self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
+        
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
       }

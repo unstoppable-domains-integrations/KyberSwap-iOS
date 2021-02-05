@@ -58,7 +58,8 @@ extension KyberNetworkService: TargetType {
       case .getGasPrice:
         return "\(KNEnvironment.default.cachedURL)/gasPrice"
       case .supportedToken:
-        return KNEnvironment.default.supportedTokenEndpoint
+        return "https://dev-krystal-api.knstats.com/v1/token/tokenList"
+//        return KNEnvironment.default.supportedTokenEndpoint
       case .getReferencePrice(sym: let sym):
         return "\(KNEnvironment.default.cachedURL)/refprice?base=\(sym)&quote=ETH"
       }
@@ -854,6 +855,9 @@ enum KrytalService {
   case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
   case getGasPrice
   case getRefPrice(src: String, dst: String)
+  case getTokenList
+  case getLendingOverview
+  case buildSwapAndDepositTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
 }
 
 extension KrytalService: TargetType {
@@ -895,6 +899,12 @@ extension KrytalService: TargetType {
       return "/v1/swap/gasLimit"
     case .getRefPrice:
       return "/v1/market/refPrice"
+    case .getTokenList:
+      return "/v1/token/tokenList"
+    case .getLendingOverview:
+      return "/v1/lending/overview"
+    case .buildSwapAndDepositTx:
+      return "/v1/swap/buildSwapAndDepositTx"
     }
   }
 
@@ -961,6 +971,23 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "src": src,
         "dest": dst,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getTokenList, .getLendingOverview:
+      return .requestPlain
+    case .buildSwapAndDepositTx(let lendingPlatform, let userAddress, let src, let dest, let srcAmount, let minDestAmount, let gasPrice, let nonce, let hint, let useGasToken):
+      let json: JSONDictionary = [
+        "lendingPlatform": lendingPlatform,
+        "userAddress": userAddress,
+        "src": src,
+        "dest": dest,
+        "srcAmount": srcAmount,
+        "minDestAmount": minDestAmount,
+        "gasPrice": gasPrice,
+        "nonce": nonce,
+        "hint": hint,
+        "platformWallet": "0x9a68f7330A3Fe9869FfAEe4c3cF3E6BBef1189Da",
+        "useGasToken": useGasToken,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

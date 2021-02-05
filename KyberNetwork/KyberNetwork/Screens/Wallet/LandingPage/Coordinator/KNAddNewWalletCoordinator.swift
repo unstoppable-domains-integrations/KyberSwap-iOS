@@ -62,22 +62,7 @@ class KNAddNewWalletCoordinator: Coordinator {
   }
 
   func start(type: AddNewWalletType) {
-//    let viewModel = KNBottomPopupViewModel(
-//      title: "Confirm".toBeLocalised(),
-//      body: "create.new.wallet.desc".toBeLocalised(),
-//      firstButtonTitle: nil,
-//      secondButtonTitle: "Confirm".toBeLocalised(),
-//      firstButtonAction: nil,
-//      secondButtonAction: {
-//        self.createNewWallet()
-//      },
-//      dismissAction: {
-//        self.navigationController.dismiss(animated: false, completion: nil)
-//      }
-//    )
-//    let popup = KNBottomPopupViewController(viewModel: viewModel)
-//    self.navigationController.present(popup, animated: true, completion: {})
-//    self.navigationController.present(self.alertController, animated: true, completion: nil)
+    self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
       let popup = CreateWalletMenuViewController(isFull: type == .full)

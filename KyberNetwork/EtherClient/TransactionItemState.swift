@@ -20,6 +20,7 @@ enum TransactionType: Int {
   case normal = 0
   case cancel
   case speedup
+  case earn
 
   init(int: Int) {
     self = TransactionType(rawValue: int) ?? .normal

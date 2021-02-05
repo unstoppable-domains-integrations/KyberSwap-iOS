@@ -117,12 +117,12 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
 
   @IBAction func doneButtonTapped(_ sender: UIButton) {
     KNCrashlyticsUtil.logCustomEvent(withName: "tap_done_button_in_custom_gas_price_select_screen", customAttributes: ["transactionHash": self.viewModel.transaction.id])
-    self.dismiss(animated: true) {
-      if self.viewModel.isNewGasPriceValid() {
+    if self.viewModel.isNewGasPriceValid() {
+      self.dismiss(animated: true) {
         self.delegate?.speedUpCustomGasSelectViewController(self, run: .done(transaction: self.viewModel.transaction, newGasPrice: self.viewModel.getNewTransactionGasPriceETH()))
-      } else {
-        self.delegate?.speedUpCustomGasSelectViewController(self, run: .invaild)
       }
+    } else {
+      self.delegate?.speedUpCustomGasSelectViewController(self, run: .invaild)
     }
   }
 

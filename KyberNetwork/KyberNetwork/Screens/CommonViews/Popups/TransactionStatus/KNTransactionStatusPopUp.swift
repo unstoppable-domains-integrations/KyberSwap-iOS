@@ -11,6 +11,7 @@ enum KNTransactionStatusPopUpEvent {
   case speedUp(tx: Transaction)
   case cancel(tx: Transaction)
   case goToSupport
+  case backToInvest
 }
 
 protocol KNTransactionStatusPopUpDelegate: class {
@@ -40,6 +41,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
   fileprivate(set) var transaction: KNTransaction
   let transitor = TransitionDelegate()
+  
+  var earnAmountString: String?
+  var netAPYEarnString: String?
+  var earnPlatform: LendingPlatformData?
 
   init(transaction: KNTransaction) {
     self.transaction = transaction
@@ -120,22 +125,33 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           return "Your transaction has been speeded up successfully".toBeLocalised()
         } else if self.transaction.isTransfer {
           return "Transferred successfully".toBeLocalised()
+        } else if self.transaction.type == .earn {
+          return "Successfully saved".toBeLocalised()
         }
         return "Swapped successfully".toBeLocalised()
       }()
       self.subTitleLabelCenterContraint.constant = 0
       self.subTitleTopContraint.constant = 20
+      var subTitleText = rate
+      if self.transaction.type == .earn {
+        subTitleText = "\(self.earnAmountString ?? "") \("with".toBeLocalised()) \(self.netAPYEarnString ?? "") APY"
+      }
 
       self.subTitleDetailLabel.isHidden = true
       self.subTitleDetailLabel.isHidden = false
-      self.subTitleDetailLabel.text = rate?.uppercased()
+      self.subTitleDetailLabel.text = subTitleText?.uppercased()
       self.subTitleDetailLabel.font = UIFont.Kyber.latoRegular(with: 16)
 
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
-      self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+      if self.transaction.type == .earn {
+        self.firstButton.setTitle("New save".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("Back to invest".toBeLocalised().capitalized, for: .normal)
+      } else {
+        self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+      }
 
       self.view.layoutSubviews()
     } else if self.transaction.state == .error || self.transaction.state == .failed {
@@ -196,6 +212,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       if self.transaction.state == .pending {
         self.delegate?.transactionStatusPopUp(self, action: .speedUp(tx: self.transaction.toTransaction()))
       } else if self.transaction.state == .completed {
+        guard self.transaction.type != .earn else { return }
         self.delegate?.transactionStatusPopUp(self, action: .transfer)
       } else if self.transaction.state == .error || self.transaction.state == .failed {
         self.delegate?.transactionStatusPopUp(self, action: .dismiss)
@@ -208,7 +225,11 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       if self.transaction.state == .pending {
         self.delegate?.transactionStatusPopUp(self, action: .cancel(tx: self.transaction.toTransaction()))
       } else if self.transaction.state == .completed {
-        self.delegate?.transactionStatusPopUp(self, action: .swap)
+        if self.transaction.type == .earn {
+          self.delegate?.transactionStatusPopUp(self, action: .backToInvest)
+        } else {
+          self.delegate?.transactionStatusPopUp(self, action: .swap)
+        }
       } else if self.transaction.state == .error || self.transaction.state == .failed {
         self.delegate?.transactionStatusPopUp(self, action: .goToSupport)
       }

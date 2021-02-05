@@ -15,3 +15,23 @@ public struct SignTransaction {
     let gasLimit: BigInt
     let chainID: Int
 }
+
+extension SignTransaction {
+  func toTransaction(hash: String, fromAddr: String, type: TransactionType = .earn) -> Transaction {
+    return Transaction(
+      id: hash,
+      blockNumber: 0,
+      from: fromAddr,
+      to: self.to?.description ?? "",
+      value: self.value.description,
+      gas: self.gasLimit.description,
+      gasPrice: self.gasPrice.description,
+      gasUsed: self.gasLimit.description,
+      nonce: "\(self.nonce)",
+      date: Date(),
+      localizedOperations: [],
+      state: .pending,
+      type: type
+    )
+  }
+}

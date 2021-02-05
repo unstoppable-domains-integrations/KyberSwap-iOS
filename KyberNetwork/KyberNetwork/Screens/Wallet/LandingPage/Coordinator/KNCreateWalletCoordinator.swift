@@ -46,22 +46,6 @@ class KNCreateWalletCoordinator: Coordinator {
       createWalletVC.modalTransitionStyle = .crossDissolve
       createWalletVC.modalPresentationStyle = .overCurrentContext
       self.navigationController.present(createWalletVC, animated: true, completion: nil)
-
-//      self.navigationController.displayLoading(text: "\(NSLocalizedString("creating", value: "Creating", comment: ""))...", animated: true)
-//      DispatchQueue.global(qos: .userInitiated).async {
-//        let account = self.keystore.create12wordsAccount(with: "")
-//        DispatchQueue.main.async {
-//          self.navigationController.hideLoading()
-//          self.navigationController.showSuccessTopBannerMessage(
-//            with: NSLocalizedString("wallet.created", value: "Wallet Created", comment: ""),
-//            message: NSLocalizedString("you.have.successfully.created.a.new.wallet", value: "You have successfully created a new wallet!", comment: ""),
-//            time: 1
-//          )
-//          let wallet = Wallet(type: WalletType.real(account))
-//          self.name = "New Wallet"
-//          self.openBackUpWallet(wallet, name: "New Wallet")
-//        }
-//      }
     }
   }
 

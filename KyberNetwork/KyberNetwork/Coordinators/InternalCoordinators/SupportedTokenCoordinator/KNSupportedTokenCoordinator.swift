@@ -38,7 +38,7 @@ class KNSupportedTokenCoordinator {
             do {
               _ = try response.filterSuccessfulStatusCodes()
               let respJSON: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let jsonArr: [JSONDictionary] = respJSON["data"] as? [JSONDictionary] ?? []
+              let jsonArr: [JSONDictionary] = respJSON["tokens"] as? [JSONDictionary] ?? []
               let tokenObjects = jsonArr.map({ return TokenObject(apiDict: $0) })
               if tokenObjects.isEmpty { return }
               KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokenObjects)

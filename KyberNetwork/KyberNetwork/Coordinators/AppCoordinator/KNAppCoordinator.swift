@@ -21,7 +21,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
   internal var limitOrderCoordinator: KNLimitOrderTabCoordinatorV2?
-  internal var exploreCoordinator: KNExploreCoordinator?
+  internal var earnCoordinator: EarnCoordinator?
 
   internal var tabbarController: KNTabBarController!
   internal var transactionStatusCoordinator: KNTransactionStatusCoordinator!
@@ -161,7 +161,6 @@ extension KNAppCoordinator {
     )
     if !KNAppTracker.hasLoggedUserOutWithNativeSignIn() {
       if IEOUserStorage.shared.user != nil {
-        self.exploreCoordinator?.profileCoordinator.signUserOut()
         self.navigationController.showWarningTopBannerMessage(
           with: NSLocalizedString("session.expired", value: "Session expired", comment: ""),
           message: NSLocalizedString("your.session.has.expired.sign.in.to.continue", value: "Your session has expired, please sign in again to continue", comment: ""),

@@ -83,7 +83,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var rateWarningLabel: UILabel!
   @IBOutlet weak var rateWarningContainerView: UIView!
   @IBOutlet weak var isUseGasTokenIcon: UIImageView!
-  
+
   fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
