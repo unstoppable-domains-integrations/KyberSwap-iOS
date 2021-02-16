@@ -7,12 +7,20 @@
 
 import Foundation
 
-struct TokenData {
+struct TokenData: Equatable {
   let address: String
   let name: String
   let symbol: String
   let decimals: Int
   let lendingPlatforms: [LendingPlatformData]
+  
+  static func == (lhs: TokenData, rhs: TokenData) -> Bool {
+    return lhs.address.lowercased() == rhs.address.lowercased()
+  }
+  
+  var isETH: Bool {
+    return self.symbol == "ETH"
+  }
 }
 
 struct LendingPlatformData {

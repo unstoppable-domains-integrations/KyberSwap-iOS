@@ -141,8 +141,6 @@ class KSwapViewController: KNBaseViewController {
     self.isErrorMessageEnabled = true
     // start update est rate
     self.estRateTimer?.invalidate()
-//    self.updateEstimatedRate(showError: true)
-//    self.updateReferencePrice()
     self.updateAllRates()
     self.updateAllowance()
     self.estRateTimer = Timer.scheduledTimer(
@@ -150,7 +148,6 @@ class KSwapViewController: KNBaseViewController {
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-//        self.updateEstimatedRate()
         self.updateAllRates()
       }
     )
@@ -649,15 +646,13 @@ extension KSwapViewController {
       self.continueButton.isEnabled = true
       self.continueButton.alpha = 1
     }
-
-    UIView.animate(withDuration: 0.25) {
-      self.view.layoutIfNeeded()
-    } completion: { (_) in
-      self.continueButton.removeSublayer(at: 0)
-      self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
-      self.continueButton.removeSublayer(at: 0)
-      self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
-    }
+    
+    self.continueButton.removeSublayer(at: 0)
+    self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.continueButton.removeSublayer(at: 0)
+    self.continueButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    
+    self.view.layoutIfNeeded()
   }
   
   fileprivate func updateUIRefPrice() {
@@ -798,14 +793,13 @@ extension KSwapViewController {
         time: 1.5
       )
     }
-//    if isSource && !self.viewModel.isFocusingFromAmount {
-//      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
-//    }
+
     self.updateApproveButton()
     //TODO: reset only swap button on screen, can be optimize with
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateEstimatedGasLimit()
-//    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
+    self.updateAllowance()
+    self.updateAllRates()
     self.view.layoutIfNeeded()
   }
 

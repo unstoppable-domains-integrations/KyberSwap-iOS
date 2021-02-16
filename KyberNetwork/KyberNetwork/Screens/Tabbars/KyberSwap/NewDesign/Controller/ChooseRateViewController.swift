@@ -10,9 +10,15 @@ import BigInt
 
 class ChooseRateViewModel {
   var data: [JSONDictionary]
-  fileprivate(set) var from: TokenObject
-  fileprivate(set) var to: TokenObject
+  fileprivate(set) var from: TokenData
+  fileprivate(set) var to: TokenData
   init(from: TokenObject, to: TokenObject, data: [JSONDictionary]) {
+    self.data = data
+    self.from = from.toTokenData()
+    self.to = to.toTokenData()
+  }
+  
+  init(from: TokenData, to: TokenData, data: [JSONDictionary]) {
     self.data = data
     self.from = from
     self.to = to

@@ -235,4 +235,8 @@ extension TokenObject {
     let date = Date(timeIntervalSince1970: self.listingTime)
     return Date().timeIntervalSince(date) >= 0
   }
+  
+  func toTokenData() -> TokenData {
+    return TokenData(address: self.address, name: self.name, symbol: self.symbol, decimals: self.decimals, lendingPlatforms: [])
+  }
 }

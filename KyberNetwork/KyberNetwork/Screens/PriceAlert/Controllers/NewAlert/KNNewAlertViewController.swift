@@ -230,7 +230,6 @@ class KNNewAlertViewController: KNBaseViewController {
   @IBAction func selectTokenButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "scr_alert_token_tapped", customAttributes: nil)
     let viewModel = KNSearchTokenViewModel(
-      headerColor: UIColor.Kyber.shamrock,
       supportedTokens: KNSupportedTokenStorage.shared.supportedTokens
     )
     let searchTokenVC = KNSearchTokenViewController(viewModel: viewModel)

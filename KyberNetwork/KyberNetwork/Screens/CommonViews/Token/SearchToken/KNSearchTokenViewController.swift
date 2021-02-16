@@ -14,7 +14,6 @@ protocol KNSearchTokenViewControllerDelegate: class {
 
 class KNSearchTokenViewModel {
 
-  let headerColor: UIColor
   var supportedTokens: [TokenObject] = []
   var balances: [String: Balance] = [:]
   var searchedText: String = "" {
@@ -24,8 +23,7 @@ class KNSearchTokenViewModel {
   }
   var displayedTokens: [TokenObject] = []
 
-  init(headerColor: UIColor, supportedTokens: [TokenObject]) {
-    self.headerColor = headerColor
+  init(supportedTokens: [TokenObject]) {
     self.supportedTokens = supportedTokens.sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
@@ -76,12 +74,13 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate let kSearchTokenTableViewCellID: String = "CellID"
 
-  @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var noMatchingTokensLabel: UILabel!
-  @IBOutlet weak var tableViewBottomPaddingConstraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var contentView: UIView!
+  let transitor = TransitionDelegate()
 
   fileprivate var viewModel: KNSearchTokenViewModel
   weak var delegate: KNSearchTokenViewControllerDelegate?
@@ -89,23 +88,12 @@ class KNSearchTokenViewController: KNBaseViewController {
   init(viewModel: KNSearchTokenViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNSearchTokenViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name.UIKeyboardDidShow,
-      object: nil
-    )
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSNotification.Name.UIKeyboardDidHide,
-      object: nil
-    )
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -135,44 +123,18 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   fileprivate func setupUI() {
-    self.navTitleLabel.text = NSLocalizedString("search", value: "Search", comment: "")
-    self.navTitleLabel.addLetterSpacing()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.searchTextField.delegate = self
-    self.searchTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.searchTextField.frame.height))
-    self.searchTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: self.searchTextField.frame.height))
-    self.searchTextField.rounded(
-      color: UIColor(red: 231, green: 231, blue: 231),
-      width: 1,
-      radius: 5.0
-    )
 
     let nib = UINib(nibName: KNSearchTokenTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kSearchTokenTableViewCellID)
-    self.tokensTableView.rowHeight = 46
-    self.tokensTableView.delegate = self
+    self.tokensTableView.rowHeight = 40
     self.tokensTableView.dataSource = self
-    self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
 
     self.noMatchingTokensLabel.text = NSLocalizedString("no.matching.tokens", value: "No matching tokens", comment: "")
     self.noMatchingTokensLabel.addLetterSpacing()
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.keyboardDidShow(_:)),
-      name: NSNotification.Name.UIKeyboardDidShow,
-      object: nil
-    )
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.keyboardDidHide(_:)),
-      name: NSNotification.Name.UIKeyboardDidHide,
-      object: nil
-    )
   }
 
   fileprivate func searchTextDidChange(_ newText: String) {
@@ -195,27 +157,13 @@ class KNSearchTokenViewController: KNBaseViewController {
     self.viewModel.updateBalances(balances)
     self.updateUIDisplayedDataDidChange()
   }
-
-  @IBAction func backButtonPressed(_ sender: Any) {
-    self.delegate?.searchTokenViewController(self, run: .cancel)
+  
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
   }
-
-  @objc func keyboardDidShow(_ sender: Notification) {
-    if let keyboardSize = (sender.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-      UIView.animate(
-      withDuration: 0.25) {
-        self.tableViewBottomPaddingConstraint.constant = keyboardSize.height
-        self.view.updateConstraints()
-      }
-    }
-  }
-
-  @objc func keyboardDidHide(_ sender: Notification) {
-    UIView.animate(
-    withDuration: 0.25) {
-      self.tableViewBottomPaddingConstraint.constant = self.bottomPaddingSafeArea()
-      self.view.updateConstraints()
-    }
+  
+  @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
+    print("tap")
   }
 }
 
@@ -225,16 +173,6 @@ extension KNSearchTokenViewController: UITextFieldDelegate {
     textField.text = text
     self.searchTextDidChange(text)
     return false
-  }
-}
-
-extension KNSearchTokenViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
-    if indexPath.row < self.viewModel.displayedTokens.count {
-      let token = self.viewModel.displayedTokens[indexPath.row]
-      self.delegate?.searchTokenViewController(self, run: .select(token: token))
-    }
   }
 }
 
@@ -256,6 +194,27 @@ extension KNSearchTokenViewController: UITableViewDataSource {
     let token = self.viewModel.displayedTokens[indexPath.row]
     let balance = self.viewModel.balances[token.contract]
     cell.updateCell(with: token, balance: balance)
+    cell.delegate = self
     return cell
+  }
+}
+
+extension KNSearchTokenViewController: KNSearchTokenTableViewCellDelegate {
+  func searchTokenTableCell(_ cell: KNSearchTokenTableViewCell, didSelect token: TokenObject) {
+    self.delegate?.searchTokenViewController(self, run: .select(token: token))
+  }
+}
+
+extension KNSearchTokenViewController: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 400
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.contentView
   }
 }

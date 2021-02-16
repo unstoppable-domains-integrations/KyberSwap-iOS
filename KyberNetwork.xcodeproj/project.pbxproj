@@ -589,6 +589,10 @@
 		C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */; };
 		C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AF0BD25CA5639006FB880 /* EarnConfirmViewController.swift */; };
 		C37AF0C025CA5639006FB880 /* EarnConfirmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AF0BE25CA5639006FB880 /* EarnConfirmViewController.xib */; };
+		C37AF0C725CCFB29006FB880 /* EarnSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AF0C525CCFB28006FB880 /* EarnSwapViewController.swift */; };
+		C37AF0C825CCFB29006FB880 /* EarnSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AF0C625CCFB28006FB880 /* EarnSwapViewController.xib */; };
+		C37AF0CD25CCFB47006FB880 /* EarnSwapConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AF0CB25CCFB47006FB880 /* EarnSwapConfirmViewController.swift */; };
+		C37AF0CE25CCFB47006FB880 /* EarnSwapConfirmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AF0CC25CCFB47006FB880 /* EarnSwapConfirmViewController.xib */; };
 		C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC085245803C90081FB32 /* Roboto-Medium.ttf */; };
 		C37CC093245803CA0081FB32 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC086245803C90081FB32 /* Roboto-Light.ttf */; };
 		C37CC094245803CA0081FB32 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC087245803C90081FB32 /* Roboto-Regular.ttf */; };
@@ -1299,6 +1303,10 @@
 		C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerWithAccessoryCell.xib; sourceTree = "<group>"; };
 		C37AF0BD25CA5639006FB880 /* EarnConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnConfirmViewController.swift; sourceTree = "<group>"; };
 		C37AF0BE25CA5639006FB880 /* EarnConfirmViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnConfirmViewController.xib; sourceTree = "<group>"; };
+		C37AF0C525CCFB28006FB880 /* EarnSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnSwapViewController.swift; sourceTree = "<group>"; };
+		C37AF0C625CCFB28006FB880 /* EarnSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnSwapViewController.xib; sourceTree = "<group>"; };
+		C37AF0CB25CCFB47006FB880 /* EarnSwapConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnSwapConfirmViewController.swift; sourceTree = "<group>"; };
+		C37AF0CC25CCFB47006FB880 /* EarnSwapConfirmViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnSwapConfirmViewController.xib; sourceTree = "<group>"; };
 		C37CC085245803C90081FB32 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		C37CC086245803C90081FB32 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		C37CC087245803C90081FB32 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -4231,6 +4239,10 @@
 				C3EDDCC125C1829300A99CC8 /* EarnViewController.xib */,
 				C37AF0BD25CA5639006FB880 /* EarnConfirmViewController.swift */,
 				C37AF0BE25CA5639006FB880 /* EarnConfirmViewController.xib */,
+				C37AF0C525CCFB28006FB880 /* EarnSwapViewController.swift */,
+				C37AF0C625CCFB28006FB880 /* EarnSwapViewController.xib */,
+				C37AF0CB25CCFB47006FB880 /* EarnSwapConfirmViewController.swift */,
+				C37AF0CC25CCFB47006FB880 /* EarnSwapConfirmViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4760,6 +4772,7 @@
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
 				C3A6911325638DE700F57756 /* Lato-LightItalic.ttf in Resources */,
 				25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */,
+				C37AF0CE25CCFB47006FB880 /* EarnSwapConfirmViewController.xib in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
 				C68AA277237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
@@ -4834,6 +4847,7 @@
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
 				25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */,
 				25601AD822E8683D00E7CB99 /* KNLimitOrderExtraTokenReceivedPopupViewController.xib in Resources */,
+				C37AF0C825CCFB29006FB880 /* EarnSwapViewController.xib in Resources */,
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
@@ -5326,6 +5340,7 @@
 				C356C011243DC6E7007E419B /* KNSelectMarketViewModel.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
 				254A88B5229BDBEC00AA6BBA /* KNLimitOrderSearchTokenViewController.swift in Sources */,
+				C37AF0CD25CCFB47006FB880 /* EarnSwapConfirmViewController.swift in Sources */,
 				61C359E02002AA5A0097B04D /* TransactionSigning.swift in Sources */,
 				2963B6BF1F9AB9A2003063C1 /* ContractERC20Transfer.swift in Sources */,
 				25EE4A6F20C54BEC00E2282F /* KNAppCoordinator+Notification.swift in Sources */,
@@ -5416,6 +5431,7 @@
 				25BA0D9E225B32C000B0EF2D /* KNSignInViewController.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
+				C37AF0C725CCFB29006FB880 /* EarnSwapViewController.swift in Sources */,
 				254EBED6225F5D8300042FA2 /* KNEligibleTokensTableViewCell.swift in Sources */,
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				25682ABE229FC3C7004AB452 /* KNApproveTokenViewController.swift in Sources */,

@@ -156,6 +156,11 @@ class KNGeneralProvider {
   }
 
   func getAllowance(for address: Address, networkAddress: Address, tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if tokenAddress == Address(string: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
+      // ETH no need to request for approval
+      completion(.success(BigInt(2).power(255)))
+      return
+    }
     self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
       switch dataResult {
       case .success(let data):

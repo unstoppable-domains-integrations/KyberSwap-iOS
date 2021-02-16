@@ -240,7 +240,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     let tokens = self.session.tokenStorage.tokens
     self.searchTokensVC = {
       let viewModel = KNSearchTokenViewModel(
-        headerColor: KNAppStyleType.current.walletFlowHeaderColor,
         supportedTokens: tokens
       )
       let controller = KNSearchTokenViewController(viewModel: viewModel)

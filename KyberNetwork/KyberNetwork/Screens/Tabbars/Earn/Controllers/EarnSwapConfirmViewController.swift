@@ -1,24 +1,31 @@
 //
-//  EarnConfirmViewController.swift
+//  EarnSwapConfirmViewController.swift
 //  KyberNetwork
 //
-//  Created by Ta Minh Quan on 2/3/21.
+//  Created by Ta Minh Quan on 2/5/21.
 //
 
 import UIKit
 import BigInt
 
-struct EarnConfirmViewModel {
+struct EarnSwapConfirmViewModel {
   let platform: LendingPlatformData
-  let token: TokenData
-  let amount: BigInt
+  let fromToken: TokenData
+  let fromAmount: BigInt
+  let toToken: TokenData
+  let toAmount: BigInt
   let gasPrice: BigInt
   let gasLimit: BigInt
   let transaction: SignTransaction
   
-  var amountString: String {
-    let amountString = self.amount.displayRate(decimals: self.token.decimals)
-    return "\(amountString.prefix(15)) \(self.token.symbol)"
+  var toAmountString: String {
+    let amountString = self.toAmount.displayRate(decimals: self.toToken.decimals)
+    return "\(amountString.prefix(15)) \(self.toToken.symbol)"
+  }
+  
+  var fromAmountString: String {
+    let amountString = self.fromAmount.displayRate(decimals: self.toToken.decimals)
+    return "\(amountString.prefix(15)) \(self.fromToken.symbol)"
   }
   
   var depositAPYString: String {
@@ -69,14 +76,12 @@ struct EarnConfirmViewModel {
   }
 }
 
-protocol EarnConfirmViewControllerDelegate: class {
-  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData)
-}
-
-class EarnConfirmViewController: KNBaseViewController {
+class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var amountLabel: UILabel!
+  
+  @IBOutlet weak var fromAmountLabel: UILabel!
+  @IBOutlet weak var toAmountLabel: UILabel!
   @IBOutlet weak var platformNameLabel: UILabel!
   @IBOutlet weak var tokenIconImageView: UIImageView!
   @IBOutlet weak var platformIconImageView: UIImageView!
@@ -94,26 +99,28 @@ class EarnConfirmViewController: KNBaseViewController {
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var distributeAPYValueLabel: UILabel!
   
+  let transitor = TransitionDelegate()
+  let viewModel: EarnSwapConfirmViewModel
   weak var delegate: EarnConfirmViewControllerDelegate?
   
-  let transitor = TransitionDelegate()
-  let viewModel: EarnConfirmViewModel
-
-  init(viewModel: EarnConfirmViewModel) {
+  init(viewModel: EarnSwapConfirmViewModel) {
     self.viewModel = viewModel
-    super.init(nibName: EarnConfirmViewController.className, bundle: nil)
+    super.init(nibName: EarnSwapConfirmViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.setupUI()
+    
+  }
+  
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
   }
   
   override func viewDidLayoutSubviews() {
@@ -134,7 +141,9 @@ class EarnConfirmViewController: KNBaseViewController {
       for: .normal
     )
     self.cancelButton.rounded(color: UIColor(red: 35, green: 167, blue: 181), width: 1, radius: self.cancelButton.frame.size.height / 2)
-    self.amountLabel.text = self.viewModel.amountString
+    self.toAmountLabel.text = self.viewModel.toAmountString
+    self.fromAmountLabel.text = self.viewModel.fromAmountString
+    
     self.platformNameLabel.text = self.viewModel.platform.name
     if self.viewModel.platform.isCompound {
       self.framingIconContainerView.isHidden = false
@@ -162,29 +171,24 @@ class EarnConfirmViewController: KNBaseViewController {
     
   }
   
-  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    self.dismiss(animated: true, completion: nil)
-  }
-  
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: nil)
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform)
+      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.toAmountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform)
     }
-    
   }
 }
 
-extension EarnConfirmViewController: BottomPopUpAbstract {
+extension EarnSwapConfirmViewController: BottomPopUpAbstract {
   func setTopContrainConstant(value: CGFloat) {
     self.contentViewTopContraint.constant = value
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.viewModel.platform.isCompound ? 600 : 500
+    return 600
   }
 
   func getPopupContentView() -> UIView {

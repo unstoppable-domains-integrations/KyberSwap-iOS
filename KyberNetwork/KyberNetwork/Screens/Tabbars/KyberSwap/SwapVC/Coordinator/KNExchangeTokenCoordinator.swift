@@ -670,7 +670,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.tokens = KNSupportedTokenStorage.shared.supportedTokens
     self.searchTokensViewController = {
       let viewModel = KNSearchTokenViewModel(
-        headerColor: KNAppStyleType.current.swapHeaderBackgroundColor,
         supportedTokens: self.tokens
       )
       let controller = KNSearchTokenViewController(viewModel: viewModel)
@@ -678,7 +677,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       controller.delegate = self
       return controller
     }()
-    self.navigationController.pushViewController(self.searchTokensViewController!, animated: true)
+    self.navigationController.present(self.searchTokensViewController!, animated: true, completion: nil)
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
@@ -1079,7 +1078,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 // MARK: Search token
 extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    self.navigationController.popToRootViewController(animated: true) {
+    controller.dismiss(animated: true) {
       self.searchTokensViewController = nil
       if case .select(let token) = event {
         self.rootViewController.coordinatorUpdateSelectedToken(

@@ -32,6 +32,7 @@
                 <outlet property="maxFromAmountButton" destination="R7A-WG-QtX" id="dac-d4-jeu"/>
                 <outlet property="platformTableView" destination="RUK-rd-xZx" id="Wmr-Jv-MPJ"/>
                 <outlet property="platformTableViewHeightContraint" destination="De4-y4-rPb" id="1Rw-Mr-6an"/>
+                <outlet property="selectDepositTitleLabel" destination="Nme-TJ-MrD" id="tDy-Pa-y5R"/>
                 <outlet property="selectedGasFeeLabel" destination="qXN-bq-S67" id="Bda-ls-FXD"/>
                 <outlet property="sendButtonTopContraint" destination="aGq-8o-Xl4" id="sfr-S4-pSF"/>
                 <outlet property="tokenSelectButton" destination="15L-HV-lZv" id="CjJ-ed-7Rw"/>
@@ -179,6 +180,9 @@
                                             <state key="normal" title="ETH">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </state>
+                                            <connections>
+                                                <action selector="fromTokenButtonTapped:" destination="-1" eventType="touchUpInside" id="RPs-3w-gK6"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" red="0.0039215686269999999" green="0.14901960780000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -211,9 +215,13 @@
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you don’t have DAI, please Swap Now" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xRv-eU-hbE">
                                     <rect key="frame" x="20" y="119" width="205" height="14"/>
+                                    <gestureRecognizers/>
                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="dyp-RW-d76" appends="YES" id="GkB-4S-Nql"/>
+                                    </connections>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -441,6 +449,11 @@
             </constraints>
             <point key="canvasLocation" x="140" y="105.24737631184409"/>
         </view>
+        <tapGestureRecognizer id="dyp-RW-d76">
+            <connections>
+                <action selector="earnSwapMessageLabelTapped:" destination="-1" id="ZHg-vQ-XqK"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="arrow_down_blue" width="20" height="20"/>

@@ -10,11 +10,11 @@ import BigInt
 import TrustCore
 
 class EarnViewModel {
-  fileprivate let tokenData: TokenData
-  fileprivate let platformDataSource: [EarnSelectTableViewCellViewModel]
+  fileprivate var tokenData: TokenData
+  fileprivate var platformDataSource: [EarnSelectTableViewCellViewModel]
   fileprivate(set) var balances: [String: Balance] = [:]
   var isEarnAllBalanace: Bool = false
-//  fileprivate(set) var from: TokenObject
+
   fileprivate(set) var balance: Balance?
   fileprivate(set) var amount: String = ""
   
@@ -34,6 +34,18 @@ class EarnViewModel {
     }
     self.platformDataSource = dataSource
     self.wallet = wallet
+  }
+  
+  func updateToken(_ token: TokenData) {
+    self.tokenData = token
+    let dataSource = self.tokenData.lendingPlatforms.map { EarnSelectTableViewCellViewModel(platform: $0) }
+    let optimizeValue = dataSource.max { (left, right) -> Bool in
+      return left.stableBorrowRate < right.stableBorrowRate
+    }
+    if let notNilValue = optimizeValue {
+      notNilValue.isSelected = true
+    }
+    self.platformDataSource = dataSource
   }
   
   func updateBalance(_ balances: [String: Balance]) {
@@ -203,17 +215,41 @@ class EarnViewModel {
       return self.tokenData.lendingPlatforms.first!
     }
   }
+  
+  var hintSwapNowText: NSAttributedString {
+    let normalAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+    ]
+    let orangeAttributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWYellow,
+    ]
+    let text  = String(format: "If you don’t have %@, please ".toBeLocalised(), self.tokenData.symbol.uppercased())
+    let attributedText = NSMutableAttributedString()
+    attributedText.append(NSAttributedString(string: text, attributes: normalAttributes))
+    attributedText.append(NSAttributedString(string: "Swap Now", attributes: orangeAttributes)
+    )
+    return attributedText
+  }
 }
 
 enum EarnViewEvent {
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
-  case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String)
-  case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String)
-  case confirmTx(token: TokenData, platform: LendingPlatformData,amount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction)
+  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double)
+  case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
+  case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
+  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool)
+  case openEarnSwap(token: TokenData, wallet: Wallet)
+  case getAllRates(from: TokenData, to: TokenData, srcAmount: BigInt)
+  case openChooseRate(from: TokenData, to: TokenData, rates: [JSONDictionary])
+  case getRefPrice(from: TokenData, to: TokenData)
+  case checkAllowance(token: TokenData)
+  case sendApprove(token: TokenData, remain: BigInt)
+  case searchToken(isSwap: Bool)
 }
 
 protocol EarnViewControllerDelegate: class {
-  func earnViewController(_ controller: EarnViewController, run event: EarnViewEvent)
+  func earnViewController(_ controller: KNBaseViewController, run event: EarnViewEvent)
 }
 
 class EarnViewController: KNBaseViewController {
@@ -228,6 +264,7 @@ class EarnViewController: KNBaseViewController {
   @IBOutlet weak var compInfoMessageContainerView: UIView!
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var earnButton: UIButton!
+  @IBOutlet weak var selectDepositTitleLabel: UILabel!
   
   let viewModel: EarnViewModel
   fileprivate var isViewSetup: Bool = false
@@ -252,12 +289,12 @@ class EarnViewController: KNBaseViewController {
       forCellReuseIdentifier: EarnSelectTableViewCell.kCellID
     )
     self.platformTableView.rowHeight = EarnSelectTableViewCell.kCellHeight
-    self.platformTableViewHeightContraint.constant = CGFloat(self.viewModel.platformDataSource.count) * EarnSelectTableViewCell.kCellHeight
-    self.updateInforMessageUI()
+    
     self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
     self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.updateUITokenDidChange(self.viewModel.tokenData)
   }
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.earnButton.removeSublayer(at: 0)
@@ -304,7 +341,7 @@ class EarnViewController: KNBaseViewController {
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.earnViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType))
+    self.delegate?.earnViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, isSwap: false, minRatePercent: 0))
   }
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
@@ -318,6 +355,15 @@ class EarnViewController: KNBaseViewController {
     }
     self.buildTx()
   }
+  
+  @IBAction func earnSwapMessageLabelTapped(_ sender: UITapGestureRecognizer) {
+    self.delegate?.earnViewController(self, run: .openEarnSwap(token: self.viewModel.tokenData, wallet: self.viewModel.wallet))
+  }
+  
+  @IBAction func fromTokenButtonTapped(_ sender: UIButton) {
+    self.delegate?.earnViewController(self, run: .searchToken(isSwap: false))
+  }
+  
 
   func keyboardSendAllButtonPressed(_ sender: Any) {
     self.viewModel.isEarnAllBalanace = true
@@ -348,7 +394,8 @@ class EarnViewController: KNBaseViewController {
       dest: self.viewModel.tokenData.address,
       srcAmount: self.viewModel.amountBigInt.description,
       minDestAmount: self.viewModel.minDestQty.description,
-      gasPrice: self.viewModel.gasPrice.description
+      gasPrice: self.viewModel.gasPrice.description,
+      isSwap: false
     )
     self.delegate?.earnViewController(self, run: event)
   }
@@ -360,9 +407,20 @@ class EarnViewController: KNBaseViewController {
       dest: self.viewModel.tokenData.address,
       srcAmount: self.viewModel.amountBigInt.description,
       minDestAmount: self.viewModel.minDestQty.description,
-      gasPrice: self.viewModel.gasPrice.description
+      gasPrice: self.viewModel.gasPrice.description,
+      isSwap: false
     )
     self.delegate?.earnViewController(self, run: event)
+  }
+  
+  fileprivate func updateUITokenDidChange(_ token: TokenData) {
+    self.tokenSelectButton.setTitle(token.symbol.uppercased(), for: .normal)
+    self.platformTableViewHeightContraint.constant = CGFloat(self.viewModel.platformDataSource.count) * EarnSelectTableViewCell.kCellHeight
+    self.updateInforMessageUI()
+    self.platformTableView.reloadData()
+    
+    self.hintToNavigateToSwapViewLabel.attributedText = self.viewModel.hintSwapNowText
+    self.selectDepositTitleLabel.text = String(format: "Select the platform to deposit %@", token.symbol.uppercased())
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
@@ -410,12 +468,21 @@ class EarnViewController: KNBaseViewController {
       return
     }
     
-    let event = EarnViewEvent.confirmTx(token: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, amount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx)
+    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, isSwap: false)
     self.delegate?.earnViewController(self, run: event)
   }
   
   func coordinatorFailUpdateTxObject(error: Error) {
     self.navigationController?.showErrorTopBannerMessage(with: error.localizedDescription)
+  }
+  
+  func coordinatorUpdateSelectedToken(_ token: TokenData) {
+    self.viewModel.updateToken(token)
+    self.updateUITokenDidChange(token)
+    self.fromAmountTextField.text = ""
+    self.viewModel.updateAmount("")
+    self.updateUIBalanceDidChange()
+    self.updateGasLimit()
   }
 }
 

@@ -3,12 +3,18 @@
 import UIKit
 import BigInt
 
+protocol KNSearchTokenTableViewCellDelegate: class {
+  func searchTokenTableCell(_ cell: KNSearchTokenTableViewCell, didSelect token: TokenObject)
+}
+
 class KNSearchTokenTableViewCell: UITableViewCell {
 
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
   @IBOutlet weak var tokenSymbolLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
+  weak var delegate: KNSearchTokenTableViewCellDelegate?
+  var token: TokenObject?
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -17,6 +23,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
   }
 
   func updateCell(with token: TokenObject, balance: Balance?) {
+    self.token = token
     iconImageView.setTokenImage(token: token, size: iconImageView.frame.size)
     self.tokenSymbolLabel.text = "\(token.symbol.prefix(8))"
     self.tokenSymbolLabel.addLetterSpacing()
@@ -35,4 +42,11 @@ class KNSearchTokenTableViewCell: UITableViewCell {
     self.balanceLabel.addLetterSpacing()
     self.layoutIfNeeded()
   }
+  
+  @IBAction func tapCell(_ sender: UIButton) {
+    if let notNilToken = self.token {
+      self.delegate?.searchTokenTableCell(self, didSelect: notNilToken)
+    }
+  }
+  
 }
