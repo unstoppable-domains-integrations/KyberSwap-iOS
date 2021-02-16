@@ -49,6 +49,7 @@
                 <outlet property="toAmountTextField" destination="Pvg-1U-eef" id="RGg-66-Cuk"/>
                 <outlet property="toTokenButton" destination="UoU-6H-fCf" id="bWm-50-iRO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletsSelectButton" destination="gfT-cj-XUk" id="NyA-yz-psp"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -85,6 +86,9 @@
                                     <integer key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="walletsButtonTapped:" destination="-1" eventType="touchUpInside" id="z5f-o2-qhF"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBM-pr-8Xt">
                             <rect key="frame" x="225" y="60.5" width="32" height="32"/>
@@ -100,6 +104,9 @@
                                     <integer key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="Teh-oF-jdt"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Rr-p5-yNi">
                             <rect key="frame" x="23" y="58.5" width="46" height="36"/>

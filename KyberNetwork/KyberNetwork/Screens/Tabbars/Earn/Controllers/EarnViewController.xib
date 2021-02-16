@@ -37,6 +37,7 @@
                 <outlet property="sendButtonTopContraint" destination="aGq-8o-Xl4" id="sfr-S4-pSF"/>
                 <outlet property="tokenSelectButton" destination="15L-HV-lZv" id="CjJ-ed-7Rw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletsSelectButton" destination="BHm-zh-OUh" id="vOH-zm-0oM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -73,6 +74,9 @@
                                     <integer key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="walletsButtonTapped:" destination="-1" eventType="touchUpInside" id="oOW-xU-24p"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au7-Ch-oql">
                             <rect key="frame" x="225" y="60.5" width="32" height="32"/>
@@ -88,6 +92,9 @@
                                     <integer key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="8NJ-If-17J"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF5-8x-RN9">
                             <rect key="frame" x="23" y="58.5" width="46" height="36"/>

@@ -265,11 +265,13 @@ class EarnViewController: KNBaseViewController {
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var earnButton: UIButton!
   @IBOutlet weak var selectDepositTitleLabel: UILabel!
+  @IBOutlet weak var walletsSelectButton: UIButton!
   
   let viewModel: EarnViewModel
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
   weak var delegate: EarnViewControllerDelegate?
+  weak var navigationDelegate: NavigationBarDelegate?
   
   init(viewModel: EarnViewModel) {
     self.viewModel = viewModel
@@ -293,6 +295,7 @@ class EarnViewController: KNBaseViewController {
     self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
     self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.updateUITokenDidChange(self.viewModel.tokenData)
+    self.updateUIWalletSelectButton()
   }
 
   override func viewDidLayoutSubviews() {
@@ -324,6 +327,10 @@ class EarnViewController: KNBaseViewController {
       return
     }
     self.fromBalanceLable.text = self.viewModel.totalBalanceText
+  }
+  
+  fileprivate func updateUIWalletSelectButton() {
+    self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
   }
 
   fileprivate func updateGasFeeUI() {
@@ -385,6 +392,14 @@ class EarnViewController: KNBaseViewController {
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
+  }
+  
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectHistory(self)
+  }
+  
+  @IBAction func walletsButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
 
   func updateGasLimit() {

@@ -13,14 +13,17 @@ protocol EarnMenuViewControllerDelegate: class {
 
 class EarnMenuViewModel {
   var dataSource: [EarnMenuTableViewCellViewModel] = []
+  var wallet: Wallet?
 }
 
 class EarnMenuViewController: KNBaseViewController {
   @IBOutlet weak var menuTableView: UITableView!
-
+  @IBOutlet weak var walletsSelectButton: UIButton!
+  
   let viewModel: EarnMenuViewModel
   weak var delegate: EarnMenuViewControllerDelegate?
   fileprivate var isViewSetup: Bool = false
+  weak var navigationDelegate: NavigationBarDelegate?
 
   init(viewModel: EarnMenuViewModel) {
     self.viewModel = viewModel
@@ -40,13 +43,28 @@ class EarnMenuViewController: KNBaseViewController {
       forCellReuseIdentifier: EarnMenuTableViewCell.kCellID
     )
     self.menuTableView.rowHeight = EarnMenuTableViewCell.kCellHeight
+    if let notNil = self.viewModel.wallet {
+      self.updateUIWalletSelectButton(notNil)
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.isViewSetup = true
   }
+  
+  fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
+    self.walletsSelectButton.setTitle(wallet.address.description, for: .normal)
+  }
 
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectHistory(self)
+  }
+  
+  @IBAction func walletsButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectWallets(self)
+  }
+  
   func coordinatorDidUpdateLendingToken(_ tokens: [TokenData]) {
     self.viewModel.dataSource = tokens.map { EarnMenuTableViewCellViewModel(token: $0) }
     if self.isViewSetup {
@@ -55,7 +73,11 @@ class EarnMenuViewController: KNBaseViewController {
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
-    //TODO: currently nothing need to perform
+    self.viewModel.wallet = wallet
+    if self.isViewSetup {
+      self.updateUIWalletSelectButton(wallet)
+    }
+    
   }
 }
 

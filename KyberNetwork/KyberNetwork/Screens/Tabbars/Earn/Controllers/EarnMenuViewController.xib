@@ -23,6 +23,7 @@
             <connections>
                 <outlet property="menuTableView" destination="PZ6-PZ-AYR" id="ddw-Cj-WaT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletsSelectButton" destination="QS9-Af-9Vz" id="8QT-rt-RTy"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -59,6 +60,9 @@
                                     <integer key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="walletsButtonTapped:" destination="-1" eventType="touchUpInside" id="Wyk-f0-U2m"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjs-AV-lyC">
                             <rect key="frame" x="225" y="60.5" width="32" height="32"/>
@@ -74,6 +78,9 @@
                                     <integer key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="xeh-Xp-cYU"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.039215686270000001" green="0.29411764709999999" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>

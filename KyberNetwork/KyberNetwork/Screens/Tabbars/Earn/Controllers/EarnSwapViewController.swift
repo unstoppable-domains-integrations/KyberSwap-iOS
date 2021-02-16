@@ -415,6 +415,8 @@ class EarnSwapViewController: KNBaseViewController {
   @IBOutlet weak var changeRateButton: UIButton!
   @IBOutlet weak var rateWarningContainerView: UIView!
   
+  @IBOutlet weak var walletsSelectButton: UIButton!
+  
   @IBOutlet weak var isUseGasTokenIcon: UIImageView!
   @IBOutlet weak var slippageLabel: UILabel!
   @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
@@ -431,6 +433,7 @@ class EarnSwapViewController: KNBaseViewController {
   weak var delegate: EarnViewControllerDelegate?
   fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
+  weak var navigationDelegate: NavigationBarDelegate?
   
   init(viewModel: EarnSwapViewModel) {
     self.viewModel = viewModel
@@ -459,6 +462,7 @@ class EarnSwapViewController: KNBaseViewController {
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.toTokenButton.setTitle(self.viewModel.toTokenData.symbol.uppercased(), for: .normal)
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
+    self.updateUIWalletSelectButton()
   }
   
   override func viewDidLayoutSubviews() {
@@ -581,6 +585,10 @@ class EarnSwapViewController: KNBaseViewController {
     self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.fromTokenData.symbol, for: .normal)
   }
   
+  fileprivate func updateUIWalletSelectButton() {
+    self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+  }
+  
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool) {
     self.updateApproveButton()
     if isShowApproveButton {
@@ -666,6 +674,14 @@ class EarnSwapViewController: KNBaseViewController {
   
   @objc func balanceLabelTapped(_ sender: Any) {
     self.keyboardSwapAllButtonPressed(sender)
+  }
+  
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectHistory(self)
+  }
+  
+  @IBAction func walletsButtonTapped(_ sender: UIButton) {
+    self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
   
   func keyboardSwapAllButtonPressed(_ sender: Any) {

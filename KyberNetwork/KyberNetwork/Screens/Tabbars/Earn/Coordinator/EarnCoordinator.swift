@@ -10,8 +10,22 @@ import Moya
 import BigInt
 import Result
 import TrustCore
+import QRCodeReaderViewController
+import WalletConnect
+import MBProgressHUD
 
-class EarnCoordinator: Coordinator {
+protocol NavigationBarDelegate: class {
+  func viewControllerDidSelectHistory(_ controller: KNBaseViewController)
+  func viewControllerDidSelectWallets(_ controller: KNBaseViewController)
+}
+
+protocol EarnCoordinatorDelegate: class {
+  func earnCoordinatorDidSelectAddWallet()
+  func earnCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func earnCoordinatorDidSelectManageWallet()
+}
+
+class EarnCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var lendingTokens: [TokenData] = []
@@ -24,6 +38,7 @@ class EarnCoordinator: Coordinator {
     let viewModel = EarnMenuViewModel()
     let viewController = EarnMenuViewController(viewModel: viewModel)
     viewController.delegate = self
+    viewController.navigationDelegate = self
     return viewController
   }()
   
@@ -31,17 +46,25 @@ class EarnCoordinator: Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate weak var earnSwapViewController: EarnSwapViewController?
   
+  fileprivate var currentWallet: KNWalletObject {
+    let address = self.session.wallet.address.description
+    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
+  
+  weak var delegate: EarnCoordinatorDelegate?
+  
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
     self.session = session
     self.navigationController.setNavigationBarHidden(true, animated: false)
-    self.navigationController.viewControllers = [self.rootViewController]
+    
   }
   
   func start() {
     //TODO: pesist token data in to disk then load into memory
+    self.navigationController.viewControllers = [self.rootViewController]
+    self.rootViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
     self.getLendingOverview()
-//    self.rootViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
   }
 
   func stop() {
@@ -108,9 +131,7 @@ class EarnCoordinator: Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
-    if resetRoot {
-      self.navigationController.popToRootViewController(animated: false)
-    }
+    self.navigationController.popToRootViewController(animated: false)
     self.balances = [:]
   }
   
@@ -128,6 +149,7 @@ extension EarnCoordinator: EarnMenuViewControllerDelegate {
     let viewModel = EarnViewModel(data: token, wallet: self.session.wallet)
     let controller = EarnViewController(viewModel: viewModel)
     controller.delegate = self
+    controller.navigationDelegate = self
     self.earnViewController = controller
     self.earnViewController?.coordinatorUpdateTokenBalance(self.balances)
     self.navigationController.pushViewController(controller, animated: true)
@@ -225,6 +247,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       let viewModel = EarnSwapViewModel(to: token, from: fromToken, wallet: wallet)
       let controller = EarnSwapViewController(viewModel: viewModel)
       controller.delegate = self
+      controller.navigationDelegate = self
       self.navigationController.pushViewController(controller, animated: true)
       controller.coordinatorUpdateTokenBalance(self.balances)
       self.earnSwapViewController = controller
@@ -752,4 +775,96 @@ extension EarnCoordinator: KNSearchTokenViewControllerDelegate {
       }
     }
   }
+}
+
+extension EarnCoordinator: NavigationBarDelegate {
+  func viewControllerDidSelectHistory(_ controller: KNBaseViewController) {
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator?.start()
+  }
+  
+  func viewControllerDidSelectWallets(_ controller: KNBaseViewController) {
+    let viewModel = WalletsListViewModel(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.currentWallet
+    )
+    let walletsList = WalletsListViewController(viewModel: viewModel)
+    walletsList.delegate = self
+    self.navigationController.present(walletsList, animated: true, completion: nil)
+  }
+  
+  
+}
+
+extension EarnCoordinator: WalletsListViewControllerDelegate {
+  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
+    switch event {
+    case .connectWallet:
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
+    case .manageWallet:
+      self.delegate?.earnCoordinatorDidSelectManageWallet()
+    case .copy(let wallet):
+      UIPasteboard.general.string = wallet.address
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    case .select(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.delegate?.earnCoordinatorDidSelectWallet(wal)
+    case .addWallet:
+      self.delegate?.earnCoordinatorDidSelectAddWallet()
+    }
+  }
+}
+
+extension EarnCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let session = WCSession.from(string: result) else {
+        self.navigationController.showTopBannerView(
+          with: "Invalid session".toBeLocalised(),
+          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+      let controller = KNWalletConnectViewController(
+        wcSession: session,
+        knSession: self.session
+      )
+      self.navigationController.present(controller, animated: true, completion: nil)
+    }
+  }
+}
+
+extension EarnCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddWallet() {
+    self.delegate?.earnCoordinatorDidSelectAddWallet()
+  }
+  
+  func historyCoordinatorDidSelectManageWallet() {
+    self.delegate?.earnCoordinatorDidSelectManageWallet()
+  }
+
+  func historyCoordinatorDidClose() {
+  }
+
+  func historyCoordinatorDidUpdateWalletObjects() {}
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
 }

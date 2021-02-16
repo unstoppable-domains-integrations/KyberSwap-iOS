@@ -80,6 +80,23 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 }
 
+extension KNAppCoordinator: EarnCoordinatorDelegate {
+  func earnCoordinatorDidSelectAddWallet() {
+    self.addNewWallet(type: .full)
+  }
+  
+  func earnCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
+  }
+  
+  func earnCoordinatorDidSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
+  
+}
+
 // MARK: Limit Order Coordinator Delegate
 extension KNAppCoordinator: KNLimitOrderTabCoordinatorV2Delegate {
   func limitOrderTabCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {

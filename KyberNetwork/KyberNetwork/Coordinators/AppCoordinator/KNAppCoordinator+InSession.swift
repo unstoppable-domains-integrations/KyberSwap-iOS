@@ -67,6 +67,7 @@ extension KNAppCoordinator {
     
     self.earnCoordinator = {
       let coordinator = EarnCoordinator(session: self.session)
+      coordinator.delegate = self
       return coordinator
     }()
     self.earnCoordinator?.start()
@@ -197,6 +198,11 @@ extension KNAppCoordinator {
         resetRoot: true
       )
       
+      self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: true
+      )
+      
       self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
       self.addObserveNotificationFromSession()
       self.updateLocalData()
@@ -258,6 +264,11 @@ extension KNAppCoordinator {
           resetRoot: isRemovingCurrentWallet
         )
         self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+        
+        self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
           self.session,
           resetRoot: isRemovingCurrentWallet
         )
