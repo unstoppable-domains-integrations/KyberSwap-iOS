@@ -64,6 +64,13 @@ class EarnSwapViewModel {
     }
   }
   
+  func updateFromToken(_ token: TokenData) {
+    self.fromTokenData = token
+    if let bal = balances[self.fromTokenData.address.lowercased()] {
+      self.balance = bal
+    }
+  }
+  
   func resetBalances() {
     self.balances = [:]
   }
@@ -838,9 +845,9 @@ class EarnSwapViewController: KNBaseViewController {
       time: 2.0
     )
   }
-  
+
   func coordinatorUpdateSelectedToken(_ token: TokenData) {
-    self.viewModel.fromTokenData = token
+    self.viewModel.updateFromToken(token)
     self.updateUITokenDidChange(token)
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""

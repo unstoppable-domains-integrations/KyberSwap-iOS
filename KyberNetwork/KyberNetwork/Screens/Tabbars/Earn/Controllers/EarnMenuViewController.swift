@@ -60,7 +60,7 @@ class EarnMenuViewController: KNBaseViewController {
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
   }
-  
+
   @IBAction func walletsButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }

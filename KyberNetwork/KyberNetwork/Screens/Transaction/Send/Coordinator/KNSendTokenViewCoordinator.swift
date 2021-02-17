@@ -247,7 +247,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       controller.delegate = self
       return controller
     }()
-    self.navigationController.pushViewController(self.searchTokensVC!, animated: true)
+    self.navigationController.present(self.searchTokensVC!, animated: true, completion: nil)
     self.searchTokensVC?.updateBalances(self.balances)
   }
 
@@ -291,7 +291,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
 // MARK: Search Token Delegate
 extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
   func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    self.navigationController.popViewController(animated: true) {
+    controller.dismiss(animated: true) {
       self.searchTokensVC = nil
       if case .select(let token) = event {
         let balance = self.balances[token.contract]

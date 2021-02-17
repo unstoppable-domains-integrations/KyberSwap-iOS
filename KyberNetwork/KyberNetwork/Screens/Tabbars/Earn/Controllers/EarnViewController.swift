@@ -46,6 +46,9 @@ class EarnViewModel {
       notNilValue.isSelected = true
     }
     self.platformDataSource = dataSource
+    if let bal = balances[self.tokenData.address.lowercased()] {
+      self.balance = bal
+    }
   }
   
   func updateBalance(_ balances: [String: Balance]) {
