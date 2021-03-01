@@ -28,7 +28,7 @@ target 'KyberNetwork' do
   pod 'SAMKeychain', '~> 1.5.3'
   pod 'IQKeyboardManager', '~> 6.5'
   pod 'SwiftMessages', '~> 5.0.1'
-  pod 'SwiftChart', '~> 1.0.1'
+  pod 'SwiftChart'
   pod 'JdenticonSwift', '~> 0.0.1'
   pod 'MSCircularSlider', '~> 1.2.2'
   pod 'EasyTipView', '~> 2.0.1'

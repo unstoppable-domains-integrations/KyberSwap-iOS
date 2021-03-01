@@ -42,7 +42,15 @@ class KNSupportedTokenCoordinator {
               let tokenObjects = jsonArr.map({ return TokenObject(apiDict: $0) })
               if tokenObjects.isEmpty { return }
               KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokenObjects)
-              KNAppTracker.updateSuccessfullyLoadSupportedTokens()
+              //TODO: remove all realm token contraint later
+              let tokenStruct = jsonArr.map { (item) -> Token in
+                return Token(dictionary: item)
+              }
+              
+              KNSupportedTokenStorage.shared.updateSupportedTokens(tokenStruct)
+              //TODO: delete all app tracker implementation
+//              KNAppTracker.updateSuccessfullyLoadSupportedTokens()
+              KNNotificationUtil.postNotification(for: kSupportedTokenListDidUpdateNotificationKey)
               if isDebug { print("---- Supported Tokens: Load successfully") }
             } catch let error {
               if isDebug { print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----") }

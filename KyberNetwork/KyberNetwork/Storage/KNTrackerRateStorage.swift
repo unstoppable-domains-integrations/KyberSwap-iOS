@@ -9,10 +9,16 @@ class KNTrackerRateStorage {
 
   static var shared = KNTrackerRateStorage()
   private(set) var realm: Realm!
+  private var allPrices: [TokenPrice]
 
   init() {
     let config = RealmConfiguration.globalConfiguration()
     self.realm = try! Realm(configuration: config)
+    if KNEnvironment.default == .ropsten {
+      self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
+    } else {
+      self.allPrices = []
+    }
   }
 
   var rates: [KNTrackerRate] {
@@ -69,6 +75,35 @@ class KNTrackerRateStorage {
     if realm.objects(KNTrackerRate.self).isInvalidated { return }
     try! realm.write {
       realm.delete(realm.objects(KNTrackerRate.self))
+    }
+  }
+
+  //MARK: new implementation
+  static func loadPricesFromLocalData() -> [TokenPrice] {
+    if let json = KNJSONLoaderUtil.jsonDataFromFile(with: "tokens_price") as? [String: JSONDictionary] {
+      var result: [TokenPrice] = []
+      json.keys.forEach { (key) in
+        var dict = json[key]
+        dict?["address"] = key
+        if let notNil = dict {
+          let price = TokenPrice(dictionary: notNil)
+          result.append(price)
+        }
+      }
+      return result
+      
+    } else {
+      return []
+    }
+  }
+  
+  func getAllPrices() -> [TokenPrice] {
+    return self.allPrices
+  }
+  
+  func getPriceWithAddress(_ address: String) -> TokenPrice? {
+    return self.allPrices.first { (item) -> Bool in
+      return item.address == address
     }
   }
 }

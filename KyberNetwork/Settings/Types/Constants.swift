@@ -15,6 +15,14 @@ public struct Constants {
     public static let klimitNumberOfTransactionInDB = 1000
     public static let animationDuration = 0.5
     public static let useGasTokenDataKey = "use_gas_token_data_key"
+  
+  public static let tokenStoreFileName = "token.data"
+  public static let balanceStoreFileName = "-balance.data"
+  public static let customBalanceStoreFileName = "-custom-balance.data"
+  public static let favedTokenStoreFileName = "faved-token.data"
+  public static let lendingBalanceStoreFileName = "-lending-balance.data"
+  public static let lendingDistributionBalanceStoreFileName = "-lending-distribution-balance.data"
+  public static let customTokenStoreFileName = "custom-token.data"
 }
 
 public struct UnitConfiguration {

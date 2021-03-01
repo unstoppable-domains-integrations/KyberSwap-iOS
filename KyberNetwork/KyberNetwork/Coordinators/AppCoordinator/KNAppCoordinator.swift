@@ -18,7 +18,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
-  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
+//  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
+  internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
   internal var limitOrderCoordinator: KNLimitOrderTabCoordinatorV2?
   internal var earnCoordinator: EarnCoordinator?
@@ -252,7 +253,7 @@ extension KNAppCoordinator {
     if KNAppTracker.shouldShowAuthenticate() {
       self.authenticationCoordinator.start()
     }
-    self.balanceTabCoordinator?.appCoordinatorWillEnterForeground()
+//    self.balanceTabCoordinator?.appCoordinatorWillEnterForeground()
     self.exchangeCoordinator?.appCoordinatorWillEnterForeground()
     self.limitOrderCoordinator?.appCoordinatorWillEnterForeground()
   }
@@ -261,13 +262,13 @@ extension KNAppCoordinator {
     self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
     self.loadBalanceCoordinator?.pause()
-    self.balanceTabCoordinator?.appCoordinatorDidEnterBackground()
+//    self.balanceTabCoordinator?.appCoordinatorDidEnterBackground()
     self.exchangeCoordinator?.appCoordinatorDidEnterBackground()
     self.limitOrderCoordinator?.appCoordinatorDidEnterBackground()
   }
 
   func appWillTerminate() {
-    self.balanceTabCoordinator?.appCoordinatorWillTerminate()
+//    self.balanceTabCoordinator?.appCoordinatorWillTerminate()
     self.exchangeCoordinator?.appCoordinatorWillTerminate()
     self.limitOrderCoordinator?.appCoordinatorWillTerminate()
   }
@@ -365,7 +366,7 @@ extension KNAppCoordinator {
     self.tabbarController.selectedIndex = 0
     let currency = notification.payload.additionalData["currency"] as? String ?? KNAppTracker.getCurrencyType().rawValue
     let currencyType = KWalletCurrencyType(rawValue: currency) ?? KNAppTracker.getCurrencyType()
-    self.balanceTabCoordinator?.appCoordinatorBalanceSorted(with: currencyType)
+//    self.balanceTabCoordinator?.appCoordinatorBalanceSorted(with: currencyType)
   }
 
   fileprivate func handlePriceAlertPushNotification(_ notification: OSNotification) {
@@ -374,10 +375,10 @@ extension KNAppCoordinator {
     let token = notification.payload.additionalData["token"] as? String ?? ""
     if view == "token_chart" {
       self.tabbarController.selectedIndex = 0
-      self.balanceTabCoordinator?.appCoordinatorOpenTokenChart(for: token)
+//      self.balanceTabCoordinator?.appCoordinatorOpenTokenChart(for: token)
     } else if view == "balance" {
       self.tabbarController.selectedIndex = 0
-      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session, resetRoot: true)
+//      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(self.session, resetRoot: true)
     } else if view == "kyberswap" {
       self.handleOpenKyberSwapPushNotification(notification, isPriceAlert: true)
     }

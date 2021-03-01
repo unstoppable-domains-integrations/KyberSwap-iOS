@@ -81,6 +81,7 @@ extension UIColor {
 
     static var SWYellow = UIColor(red: 255, green: 190, blue: 0)
     static var SWGreen = UIColor(red: 35, green: 166, blue: 181)
+    static var SWRed = UIColor(red: 249, green: 86, blue: 109)
     static var SWButtonYellow = UIColor(red: 253, green: 190, blue: 1)
     static var SWPlaceHolder = UIColor(red: 164, green: 171, blue: 187)
     static var SWDarkBlueBackground = UIColor(red: 0, green: 50, blue: 67)

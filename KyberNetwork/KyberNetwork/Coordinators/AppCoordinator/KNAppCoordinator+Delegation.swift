@@ -65,7 +65,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 
   func exchangeTokenCoordinatorDidUpdateWalletObjects() {
-    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
+//    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
     
@@ -90,6 +90,21 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
   }
   
   func earnCoordinatorDidSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+}
+
+extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  func overviewCoordinatorDidSelectAddWallet() {
+    self.addNewWallet(type: .full)
+  }
+  
+  func overviewCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
+  }
+  
+  func overviewCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
@@ -126,7 +141,7 @@ extension KNAppCoordinator: KNLimitOrderTabCoordinatorV2Delegate {
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   func settingsCoordinatorUserDidUpdateWalletObjects() {
-    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
+//    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
     
@@ -194,7 +209,7 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   }
 
   func balanceTabCoordinatorDidUpdateWalletObjects() {
-    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
+//    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
     self.limitOrderCoordinator?.appCoordinatorDidUpdateWalletObjects()
     

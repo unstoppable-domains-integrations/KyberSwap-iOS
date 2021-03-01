@@ -229,7 +229,7 @@ DEPENDENCIES:
   - SeedStackViewController
   - Starscream (~> 3.1)
   - StatefulViewController (~> 3.0)
-  - SwiftChart (~> 1.0.1)
+  - SwiftChart
   - SwiftLint (~> 0.29.4)
   - SwiftMessages (~> 5.0.1)
   - SwipeCellKit
@@ -380,6 +380,6 @@ SPEC CHECKSUMS:
   TwitterKit5: 64095dfefcf39be2355711ef27112d55e340d90e
   WalletConnect: c5be4e3ed9efbefb8480ab27e1766d4549a92709
 
-PODFILE CHECKSUM: 26cdb1f4427de00207a2ed6cf5eed1de4789057f
+PODFILE CHECKSUM: 21b5ea680561508112ee2598039eeaa212e6ffec
 
 COCOAPODS: 1.10.0.rc.1

@@ -68,7 +68,7 @@ enum KNEnvironment: Int {
     switch self {
     case .mainnetTest: return "config_env_mainnet_test"
     case .production: return "config_env_production"
-    case .staging: return "config_env_staging2"
+    case .staging: return "config_env_production"
     case .ropsten: return "config_env_ropsten"
     case .kovan: return "config_env_kovan"
     case .rinkeby: return "config_env_rinkeby"
@@ -115,7 +115,7 @@ enum KNEnvironment: Int {
     default: return KNSecret.devApiURL
     }
   }
-  
+
   var krytalAPIEndPoint: String {
     return KNSecret.devKrytalURL
   }

@@ -556,10 +556,7 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate {
     if let topVC = self.navigationController.topViewController, topVC is KSendTokenViewController { return }
     if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
       let from: TokenObject = {
-        guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {
-          return self.session.tokenStorage.ethToken
-        }
-        return token
+        return self.session.tokenStorage.ethToken
       }()
       let coordinator = KNSendTokenViewCoordinator(
         navigationController: self.navigationController,

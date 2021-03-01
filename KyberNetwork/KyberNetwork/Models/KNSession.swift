@@ -64,6 +64,7 @@ class KNSession {
       wallet: self.wallet
     )
     self.transacionCoordinator?.start()
+    BalanceStorage.shared.updateCurrentWallet(self.wallet)
   }
 
   func stopSession() {
@@ -108,6 +109,8 @@ class KNSession {
     if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
       self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
+
+    BalanceStorage.shared.updateCurrentWallet(self.wallet)
   }
 
   // Remove a wallet, it should not be a current wallet

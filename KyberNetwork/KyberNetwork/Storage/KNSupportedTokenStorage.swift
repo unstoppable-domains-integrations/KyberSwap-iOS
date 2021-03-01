@@ -6,11 +6,28 @@ import TrustCore
 import BigInt
 
 class KNSupportedTokenStorage {
+  
+  private var supportedToken: [Token]
+  private var favedTokens: [FavedToken]
+  private var customTokens: [Token]
+  
+  var allTokens: [Token] {
+    return self.supportedToken + self.customTokens
+  }
+  
   static let shared = KNSupportedTokenStorage()
   lazy var realm: Realm = {
     let config = RealmConfiguration.globalConfiguration()
     return try! Realm(configuration: config)
   }()
+  
+  
+  
+  init() {
+    self.supportedToken = Storage.retrieve(Constants.tokenStoreFileName, as: [Token].self) ?? []
+    self.favedTokens = Storage.retrieve(Constants.favedTokenStoreFileName, as: [FavedToken].self) ?? []
+    self.customTokens = Storage.retrieve(Constants.customTokenStoreFileName, as: [Token].self) ?? []
+  }
 
   func addLocalSupportedTokens() {
     let supportedTokenObjects = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
@@ -47,6 +64,8 @@ class KNSupportedTokenStorage {
   func get(forPrimaryKey key: String) -> TokenObject? {
     return self.realm.object(ofType: TokenObject.self, forPrimaryKey: key)
   }
+  
+  
 
   /**
    Update supported token list if needed
@@ -93,5 +112,67 @@ class KNSupportedTokenStorage {
     self.realm.beginWrite()
     self.realm.delete(realm.objects(TokenObject.self))
     try! self.realm.commitWrite()
+  }
+
+  //MARK:-new data type implemetation
+  func reloadData() {
+    self.supportedToken = Storage.retrieve(Constants.tokenStoreFileName, as: [Token].self) ?? []
+    self.customTokens = Storage.retrieve(Constants.customTokenStoreFileName, as: [Token].self) ?? []
+  }
+  
+  func getSupportedTokens() -> [Token] {
+    return self.supportedToken
+  }
+
+  func updateSupportedTokens(_ tokens: [Token]) {
+    Storage.store(tokens, as: Constants.tokenStoreFileName)
+    self.supportedToken = tokens
+  }
+
+  func getTokenWith(address: String) -> Token? {
+    return self.allTokens.first { (token) -> Bool in
+      return token.address == address
+    }
+  }
+
+  func getFavedTokenWithAddress(_ address: String) -> FavedToken? {
+    let faved = self.favedTokens.first { (token) -> Bool in
+      return token.address == address
+    }
+    return faved
+  }
+
+  func getFavedStatusWithAddress(_ address: String) -> Bool {
+    let faved = self.getFavedTokenWithAddress(address)
+    return faved?.status ?? false
+  }
+
+  func setFavedStatusWithAddress(_ address: String, status: Bool) {
+    if let faved = self.getFavedTokenWithAddress(address) {
+      faved.status = status
+    } else {
+      let newStatus = FavedToken(address: address, status: status)
+      self.favedTokens.append(newStatus)
+    }
+    Storage.store(self.favedTokens, as: Constants.favedTokenStoreFileName)
+  }
+  
+  func saveCustomToken(_ token: Token) {
+    var tokens = self.getCustomToken()
+    tokens.append(token)
+    Storage.store(tokens, as: Constants.customTokenStoreFileName)
+  }
+
+  func isTokenSaved(_ token: Token) -> Bool {
+    let tokens = self.allTokens
+    let saved = tokens.first { (item) -> Bool in
+      return item.address.lowercased() == token.address.lowercased()
+    }
+    
+    return saved != nil
+  }
+
+  func getCustomToken() -> [Token] {
+    Storage.retrieve(Constants.customTokenStoreFileName, as: [Token].self) ?? []
   }
 }

@@ -858,6 +858,8 @@ enum KrytalService {
   case getTokenList
   case getLendingOverview
   case buildSwapAndDepositTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
+  case getLendingBalance(address: String)
+  case getLendingDistributionBalance(lendingPlatform: String, address: String)
 }
 
 extension KrytalService: TargetType {
@@ -905,6 +907,10 @@ extension KrytalService: TargetType {
       return "/v1/lending/overview"
     case .buildSwapAndDepositTx:
       return "/v1/swap/buildSwapAndDepositTx"
+    case .getLendingBalance:
+      return "/v1/lending/balance"
+    case .getLendingDistributionBalance:
+      return "/v1/lending/distributionBalance"
     }
   }
 
@@ -990,10 +996,76 @@ extension KrytalService: TargetType {
         "useGasToken": useGasToken,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLendingBalance(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address):
+      let json: JSONDictionary = [
+        "address": address,
+        "lendingPlatform": lendingPlatform
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 
   var headers: [String: String]? {
+    return nil
+  }
+}
+
+
+enum CoinGeckoService {
+  case getChartData(address: String, from: Int, to: Int)
+  case getTokenDetailInfo(address: String)
+}
+
+extension CoinGeckoService: TargetType {
+  var baseURL: URL {
+    return URL(string: "https://api.coingecko.com/api")!
+  }
+
+  var path: String {
+    switch self {
+    case .getChartData(let address, _ , _):
+      return address.lowercased() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" ? "/v3/coins/ethereum/market_chart/range" : "/v3/coins/ethereum/contract/\(address)/market_chart/range"
+    case .getTokenDetailInfo(address: let address):
+      return address.lowercased() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" ? "/v3/coins/ethereum" : "/v3/coins/ethereum/contract/\(address)"
+    }
+  }
+  
+  var method: Moya.Method {
+    return .get
+  }
+  
+  var sampleData: Data {
+    return Data()
+  }
+  
+  var task: Task {
+    switch self {
+    case .getChartData( _, let from , let to):
+      let json: JSONDictionary = [
+        "vs_currency": "usd",
+        "from": from,
+        "to": to,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getTokenDetailInfo:
+      let json: JSONDictionary = [
+        "localization": false,
+        "tickers": false,
+        "market_data": true,
+        "community_data": false,
+        "developer_data": false,
+        "sparkline": false,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    }
+  }
+  
+  var headers: [String : String]? {
     return nil
   }
 }

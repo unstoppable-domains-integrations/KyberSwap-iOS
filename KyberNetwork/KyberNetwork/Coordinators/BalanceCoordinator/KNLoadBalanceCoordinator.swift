@@ -6,6 +6,7 @@ import APIKit
 import Result
 import TrustKeystore
 import TrustCore
+import Moya
 
 class KNLoadBalanceCoordinator {
 
@@ -124,9 +125,19 @@ class KNLoadBalanceCoordinator {
       withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] timer in
-        self?.fetchNonSupportedTokensBalancesNew(timer)
+        self?.fetchNonSupportedTokensBalancesNew(timer) //TODO: remove this
+        
+        self?.loadAllTokenBalance()
+        self?.loadLendingBalances()
+        self?.loadLendingDistributionBalance()
+        self?.loadBalanceForCustomToken()
       }
     )
+    //TODO: call load balance interval
+    self.loadAllTokenBalance()
+    self.loadLendingBalances()
+    self.loadLendingDistributionBalance()
+    self.loadBalanceForCustomToken()
   }
 
   func pause() {
@@ -496,6 +507,104 @@ class KNLoadBalanceCoordinator {
         }
       case .failure(let error):
         completion(.failure(error))
+      }
+    }
+  }
+  
+  //MARK:-new balance load implementation
+  
+  func loadAllTokenBalance() {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    let tokens = KNSupportedTokenStorage.shared.getSupportedTokens()
+    var erc20Address: [Address] = []
+    tokens.forEach { (token) in
+      if let address = Address(string: token.address) {
+        erc20Address.append(address)
+      }
+    }
+    guard !erc20Address.isEmpty else {
+      return
+    }
+    provider.getMultipleERC20Balances(erc20Address) { result in
+      switch result {
+      case .success(let values):
+        if values.count == erc20Address.count {
+          var balances: [TokenBalance] = []
+          for id in 0..<values.count {
+            let balance = TokenBalance(address: erc20Address[id].description.lowercased(), balance: values[id].description)
+            balances.append(balance)
+          }
+          BalanceStorage.shared.setBalances(balances)
+          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+        } else {
+          print("[LoadBalanceCoordinator] load error not equal count")
+        }
+      case .failure(let error):
+        print("[LoadBalanceCoordinator] load error \(error.description)")
+      }
+    }
+  }
+  
+  func loadBalanceForCustomToken() {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    let tokens = KNSupportedTokenStorage.shared.getCustomToken()
+    let addresses = tokens.map { (token) -> String in
+      return token.address
+    }
+    BalanceStorage.shared.cleanCustomTokenBalance()
+    let group = DispatchGroup()
+    addresses.forEach { (addressString) in
+      guard let address = Address(string: addressString) else { return }
+      group.enter()
+      provider.getTokenBalance(for: address) { result in
+        if case .success(let bigInt) = result {
+          let balance = TokenBalance(address: addressString, balance: bigInt.description)
+          BalanceStorage.shared.setCustomTokenBalance(balance)
+        }
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      BalanceStorage.shared.saveCustomTokenBalance()
+      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+    }
+  }
+
+  func loadLendingBalances() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getLendingBalance(address: self.session.wallet.address.description)) { (result) in
+      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
+        var balances: [LendingPlatformBalance] = []
+        result.forEach { (element) in
+          var lendingBalances: [LendingBalance] = []
+          if let lendingBalancesDicts = element["balances"] as? [JSONDictionary] {
+            lendingBalancesDicts.forEach { (item) in
+              lendingBalances.append(LendingBalance(dictionary: item))
+            }
+          }
+          let platformBalance = LendingPlatformBalance(name: element["name"] as? String ?? "", balances: lendingBalances)
+          balances.append(platformBalance)
+        }
+        BalanceStorage.shared.setLendingBalances(balances)
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      } else {
+        self.loadLendingBalances()
+      }
+    }
+  }
+
+  func loadLendingDistributionBalance() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getLendingDistributionBalance(lendingPlatform: "Compound", address: self.session.wallet.address.description)) { (result) in
+      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
+        let balance = LendingDistributionBalance(dictionary: result)
+        BalanceStorage.shared.setLendingDistributionBalance(balance)
+      } else {
+        self.loadLendingDistributionBalance()
       }
     }
   }

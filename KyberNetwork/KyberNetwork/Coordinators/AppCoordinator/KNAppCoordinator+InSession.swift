@@ -18,15 +18,20 @@ extension KNAppCoordinator {
     self.tabbarController = KNTabBarController()
     self.tabbarController.tabBar.barTintColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
     // Balance Tab
-    self.balanceTabCoordinator = {
-      let coordinator = KNBalanceTabCoordinator(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.balanceTabCoordinator!)
-    self.balanceTabCoordinator?.start()
+//    self.balanceTabCoordinator = {
+//      let coordinator = KNBalanceTabCoordinator(
+//        session: self.session
+//      )
+//      coordinator.delegate = self
+//      return coordinator
+//    }()
+//    self.addCoordinator(self.balanceTabCoordinator!)
+//    self.balanceTabCoordinator?.start()
+    let overviewCoordinator = OverviewCoordinator(session: self.session)
+    self.addCoordinator(overviewCoordinator)
+    overviewCoordinator.delegate = self
+    overviewCoordinator.start()
+    self.overviewTabCoordinator = overviewCoordinator
 
     // KyberSwap Tab
     self.exchangeCoordinator = {
@@ -76,7 +81,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.start()
 
     self.tabbarController.viewControllers = [
-      self.balanceTabCoordinator!.navigationController,
+      self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
       self.limitOrderCoordinator!.navigationController,
       self.earnCoordinator!.navigationController,
@@ -84,12 +89,12 @@ extension KNAppCoordinator {
     ]
     self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     self.tabbarController.tabBar.barTintColor = UIColor.Kyber.SWDarkBlueBackground
-    self.balanceTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("balance", value: "Balance", comment: ""),
+    self.overviewTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: NSLocalizedString("Overview", value: "Overview", comment: ""),
       image: UIImage(named: "tabbar_balance_icon_normal"),
       selectedImage: UIImage(named: "tabbar_balance_icon_active")
     )
-    self.balanceTabCoordinator?.navigationController.tabBarItem.tag = 0
+    self.overviewTabCoordinator?.navigationController.tabBarItem.tag = 0
 
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: NSLocalizedString("kyberswap", value: "KyberSwap", comment: ""),
@@ -132,7 +137,7 @@ extension KNAppCoordinator {
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
     self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+//    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
   func stopAllSessions() {
@@ -158,8 +163,8 @@ extension KNAppCoordinator {
     // Stop all coordinators in tabs and re-assign to nil
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
-    self.balanceTabCoordinator?.stop()
-    self.balanceTabCoordinator = nil
+//    self.balanceTabCoordinator?.stop()
+//    self.balanceTabCoordinator = nil
     self.limitOrderCoordinator?.stop()
     self.limitOrderCoordinator = nil
     self.settingsCoordinator?.stop()
@@ -177,28 +182,35 @@ extension KNAppCoordinator {
       self.loadBalanceCoordinator?.exit()
       self.session.switchSession(wallet)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
+      
+      BalanceStorage.shared.updateCurrentWallet(wallet)
 
-      let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: wallet.address.description) != nil
-      if isPromo {
-        // default select swap for PT wallet
-        self.tabbarController.selectedIndex = 1
-      }
+//      let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: wallet.address.description) != nil
+//      if isPromo {
+//        // default select swap for PT wallet
+//        self.tabbarController.selectedIndex = 1
+//      }
 
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
       
-      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
-        self.session,
-        resetRoot: true
-      )
+//      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+//        self.session,
+//        resetRoot: true
+//      )
       self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
       
       self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
+        self.session,
+        resetRoot: true
+      )
+      
+      self.overviewTabCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
@@ -211,9 +223,9 @@ extension KNAppCoordinator {
       self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
         transactions: transactions
       )
-      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
-      )
+//      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
+//        transactions: transactions
+//      )
       self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
         transactions: transactions
       )
@@ -255,10 +267,10 @@ extension KNAppCoordinator {
           self.session,
           resetRoot: isRemovingCurrentWallet
         )
-        self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
-          self.session,
-          resetRoot: isRemovingCurrentWallet
-        )
+//        self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+//          self.session,
+//          resetRoot: isRemovingCurrentWallet
+//        )
         self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
           self.session,
           resetRoot: isRemovingCurrentWallet

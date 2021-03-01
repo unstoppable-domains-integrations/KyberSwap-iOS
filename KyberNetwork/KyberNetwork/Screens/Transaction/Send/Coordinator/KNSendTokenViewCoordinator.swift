@@ -137,7 +137,8 @@ extension KNSendTokenViewCoordinator {
 extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent) {
     switch event {
-    case .back: self.stop()
+    case .back:
+      self.stop()
     case .setGasPrice:
       break
     case .estimateGas(let transaction):
