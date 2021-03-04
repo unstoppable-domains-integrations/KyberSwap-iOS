@@ -256,11 +256,11 @@ extension KNAppCoordinator {
     guard let trans = transaction else {
       if let info = sender.userInfo as? JSONDictionary {
         let txHash = sender.object as? String ?? ""
-//        let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
+        let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
         let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
         let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
         let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
-        if !( updateExchange || updateLO || updateSettings ) {
+        if !( updateExchange || updateLO || updateSettings || updateOverview ) {
           var popupMessage = "Your transaction might be lost, dropped or replaced. Please check Etherscan for more information".toBeLocalised()
           if let isLost = info["is_lost"] as? TransactionType {
             switch isLost {
@@ -298,7 +298,7 @@ extension KNAppCoordinator {
 //      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
       return
     }
-//    let updateBalance = self.balanceTabCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
+    let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
     let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
     let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
     let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
@@ -307,7 +307,7 @@ extension KNAppCoordinator {
     if trans.state == .pending {
       // just sent
     } else if trans.state == .completed {
-      if !(  updateExchange || updateLO || updateSettings || updateEarn ) {
+      if !(  updateExchange || updateLO || updateSettings || updateEarn || updateOverview) {
         let message = trans.type == .cancel ? "Your transaction has been cancelled successfully".toBeLocalised() : trans.getDetails()
         self.navigationController.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),

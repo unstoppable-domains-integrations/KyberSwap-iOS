@@ -519,7 +519,7 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
   }
 }
 
-extension EarnCoordinator: KNTransactionStatusPopUpDelegate {
+extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup screen should has coordinator
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
     switch action {
     case .transfer:

@@ -21,6 +21,7 @@ enum TransactionType: Int {
   case cancel
   case speedup
   case earn
+  case withdraw
 
   init(int: Int) {
     self = TransactionType(rawValue: int) ?? .normal

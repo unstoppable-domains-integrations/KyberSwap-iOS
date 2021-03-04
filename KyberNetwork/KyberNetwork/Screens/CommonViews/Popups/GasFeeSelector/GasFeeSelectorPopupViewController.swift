@@ -60,14 +60,16 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var gasLimit: BigInt
   fileprivate(set) var isSwapOption: Bool = true
   fileprivate(set) var isUseGasToken: Bool
+  fileprivate(set) var isContainSippageSectionOption: Bool
 
-  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false) {
+  init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false, isContainSlippageSection: Bool = true) {
     self.isSwapOption = isSwapOption
     self.gasLimit = gasLimit
     self.selectedType = selectType == .custom ? .medium : selectType
     self.currentRate = currentRatePercentage
     self.minRateType = currentRatePercentage == 3.0 ? .threePercent : .custom(value: currentRatePercentage)
     self.isUseGasToken = isUseGasToken
+    self.isContainSippageSectionOption = isContainSlippageSection
   }
 
   var currentRateDisplay: String {
@@ -268,7 +270,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var useChiSwitch: UISwitch!
   @IBOutlet weak var useChiDescription: UILabel!
   @IBOutlet weak var sendSwapDivideLineView: UIView!
-
+  @IBOutlet weak var slippageRateSectionHeighContraint: NSLayoutConstraint!
+  @IBOutlet weak var slippageSectionContainerView: UIView!
+  
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -296,6 +300,13 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
+    if self.viewModel.isContainSippageSectionOption {
+      self.slippageRateSectionHeighContraint.constant = 140
+      self.slippageSectionContainerView.isHidden = false
+    } else {
+      self.slippageRateSectionHeighContraint.constant = 0
+      self.slippageSectionContainerView.isHidden = true
+    }
   }
 
   func updateMinRateCustomErrorShown(_ isShown: Bool) {

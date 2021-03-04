@@ -26,8 +26,8 @@ class OverviewCoordinator: NSObject, Coordinator {
   var qrCodeCoordinator: KNWalletQRCodeCoordinator?
   var addTokenCoordinator: AddTokenCoordinator?
   var historyCoordinator: KNHistoryCoordinator?
-  
-  
+  var withdrawCoordinator: WithdrawCoordinator?
+
   lazy var rootViewController: OverviewContainerViewController = {
     let viewModel = OverviewContainerViewModel(session: self.session, marketViewModel: self.marketViewController.viewModel, assetsViewModel: self.assetsViewController.viewModel, depositViewModel: self.depositViewController.viewModel)
     let controller = OverviewContainerViewController(viewModel: viewModel, marketViewController: self.marketViewController, assetsViewController: self.assetsViewController, depositViewController: self.depositViewController)
@@ -52,6 +52,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   lazy var depositViewController: OverviewDepositViewController = {
     let controller = OverviewDepositViewController()
+    controller.delegate = self
     return controller
   }()
   
@@ -59,7 +60,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
-  
+
   weak var delegate: OverviewCoordinatorDelegate?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
@@ -91,6 +92,10 @@ class OverviewCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.rootViewController.coordinatorDidUpdateNewSession(session)
   }
+  
+  func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
+    return self.withdrawCoordinator?.appCoordinatorUpdateTransaction(tx, txID: txID) ?? false
+  }
 }
 
 extension OverviewCoordinator: OverviewMarketViewControllerDelegate {
@@ -118,7 +123,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           }
         }
       }
-    case .getTokenDetailInfo(address: let address):
+    case .getTokenDetailInfo(address: let address): //TODO: change hardcode address
       let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getTokenDetailInfo(address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")) { (result) in
         switch result {
@@ -288,7 +293,7 @@ extension OverviewCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidSelectAddWallet() {
     self.delegate?.overviewCoordinatorDidSelectAddWallet()
   }
-  
+
   func historyCoordinatorDidSelectManageWallet() {
     self.delegate?.overviewCoordinatorDidSelectManageWallet()
   }
@@ -299,4 +304,15 @@ extension OverviewCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidUpdateWalletObjects() {}
   func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
+}
+
+extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
+  func overviewDepositViewController(_ controller: OverviewDepositViewController, run event: OverviewDepositViewEvent) {
+    switch event {
+    case .withdrawBalance(platform: let platform, balance: let balance):
+      let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session, platfrom: platform, balance: balance)
+      coordinator.start()
+      self.withdrawCoordinator = coordinator
+    }
+  }
 }

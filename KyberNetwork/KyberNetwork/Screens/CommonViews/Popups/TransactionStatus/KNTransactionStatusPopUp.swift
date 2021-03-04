@@ -45,6 +45,9 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   var earnAmountString: String?
   var netAPYEarnString: String?
   var earnPlatform: LendingPlatformData?
+  
+  var withdrawAmount: String?
+  var withdrawTokenSym: String?
 
   init(transaction: KNTransaction) {
     self.transaction = transaction
@@ -127,6 +130,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           return "Transferred successfully".toBeLocalised()
         } else if self.transaction.type == .earn {
           return "Successfully saved".toBeLocalised()
+        } else if self.transaction.type == .withdraw {
+          return "Successfully withdraw".toBeLocalised()
         }
         return "Swapped successfully".toBeLocalised()
       }()
@@ -135,8 +140,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       var subTitleText = rate
       if self.transaction.type == .earn {
         subTitleText = "\(self.earnAmountString ?? "") \("with".toBeLocalised()) \(self.netAPYEarnString ?? "") APY"
+      } else if self.transaction.type == .withdraw {
+        subTitleText = "\(self.withdrawAmount ?? "") \(self.withdrawTokenSym ?? "")"
       }
-
+      //TODO: improve status popup with data get for event obj
       self.subTitleDetailLabel.isHidden = true
       self.subTitleDetailLabel.isHidden = false
       self.subTitleDetailLabel.text = subTitleText?.uppercased()
@@ -148,6 +155,9 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       if self.transaction.type == .earn {
         self.firstButton.setTitle("New save".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Back to invest".toBeLocalised().capitalized, for: .normal)
+      } else if self.transaction.type == .withdraw {
+        self.firstButton.isHidden = true
+        self.secondButton.isHidden = true
       } else {
         self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)

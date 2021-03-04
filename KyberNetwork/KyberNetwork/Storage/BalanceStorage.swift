@@ -83,4 +83,8 @@ class BalanceStorage {
     self.distributionBalance = balance
     Storage.store(balance, as: unwrapped.address.description + Constants.lendingDistributionBalanceStoreFileName)
   }
+  
+  func balanceETH() -> String {
+    return self.balanceForAddress("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")?.balance ?? ""
+  }
 }

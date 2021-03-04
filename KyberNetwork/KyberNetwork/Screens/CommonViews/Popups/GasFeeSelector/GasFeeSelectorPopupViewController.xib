@@ -39,6 +39,8 @@
                 <outlet property="mediumGasValueLabel" destination="954-Oy-OlJ" id="D3c-sC-fT0"/>
                 <outlet property="regularEstimateFeeLabel" destination="4g0-zy-tVO" id="RPf-Sj-bBm"/>
                 <outlet property="sendSwapDivideLineView" destination="k3C-dJ-o0p" id="75p-U5-sbV"/>
+                <outlet property="slippageRateSectionHeighContraint" destination="aob-8z-1gL" id="Mmr-d4-Did"/>
+                <outlet property="slippageSectionContainerView" destination="lCT-HM-5yV" id="Ibd-Fw-x10"/>
                 <outlet property="slowEstimateFeeLabel" destination="j9q-VB-n3j" id="W6B-kV-Boi"/>
                 <outlet property="slowGasButton" destination="ZCO-f2-6bk" id="EHw-CN-hTh"/>
                 <outlet property="slowGasValueLabel" destination="VaF-0f-Ots" id="GiL-nn-C0D"/>

@@ -573,6 +573,9 @@
 		C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */; };
 		C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */; };
 		C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */; };
+		C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */; };
+		C3263B0725EDE837005FBB60 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3263B0525EDE837005FBB60 /* WithdrawViewController.swift */; };
+		C3263B0825EDE837005FBB60 /* WithdrawViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3263B0625EDE837005FBB60 /* WithdrawViewController.xib */; };
 		C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */; };
 		C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */; };
 		C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326C688256D04B000B35E8F /* InputPopUpViewController.swift */; };
@@ -1311,6 +1314,9 @@
 		C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewDepositTableViewCell.xib; sourceTree = "<group>"; };
 		C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletMenuViewController.swift; sourceTree = "<group>"; };
 		C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateWalletMenuViewController.xib; sourceTree = "<group>"; };
+		C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawCoordinator.swift; sourceTree = "<group>"; };
+		C3263B0525EDE837005FBB60 /* WithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
+		C3263B0625EDE837005FBB60 /* WithdrawViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WithdrawViewController.xib; sourceTree = "<group>"; };
 		C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewController.swift; sourceTree = "<group>"; };
 		C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GasFeeSelectorPopupViewController.xib; sourceTree = "<group>"; };
 		C326C688256D04B000B35E8F /* InputPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopUpViewController.swift; sourceTree = "<group>"; };
@@ -4237,6 +4243,7 @@
 			children = (
 				C31F749125DCD213008B21F7 /* OverviewCoordinator.swift */,
 				C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */,
+				C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -4256,6 +4263,8 @@
 				C3377ACE25E650B00035A18D /* ChartViewController.xib */,
 				C33C33B525ECC70700F347E5 /* AddTokenViewController.swift */,
 				C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */,
+				C3263B0525EDE837005FBB60 /* WithdrawViewController.swift */,
+				C3263B0625EDE837005FBB60 /* WithdrawViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4862,6 +4871,7 @@
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
 				25929C9320DA5CC10045CFA3 /* SFCompactText-Medium.otf in Resources */,
+				C3263B0825EDE837005FBB60 /* WithdrawViewController.xib in Resources */,
 				25073D1E211AF20D00833C92 /* Montserrat-SemiBold.ttf in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
@@ -5279,6 +5289,7 @@
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
+				C3263B0725EDE837005FBB60 /* WithdrawViewController.swift in Sources */,
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				C3E401D7242B048D00F31372 /* LimitOrderContainerViewController.swift in Sources */,
@@ -5417,6 +5428,7 @@
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
 				25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */,
+				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
 				258BF6A723068A4800988EDD /* KNOpenSettingsAllowCamera.swift in Sources */,
 				298542E81FBAD0B200CB5081 /* OperationType.swift in Sources */,
 				2531388E205A565E00B5BD51 /* UIDevice+Kyber.swift in Sources */,

@@ -860,6 +860,8 @@ enum KrytalService {
   case buildSwapAndDepositTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
   case getLendingBalance(address: String)
   case getLendingDistributionBalance(lendingPlatform: String, address: String)
+  case getWithdrawableAmount(platform: String, userAddress: String, token: String)
+  case buildWithdrawTx(platform: String, userAddress: String, token: String, amount: String, gasPrice: String, nonce: Int, useGasToken: Bool)
 }
 
 extension KrytalService: TargetType {
@@ -911,6 +913,10 @@ extension KrytalService: TargetType {
       return "/v1/lending/balance"
     case .getLendingDistributionBalance:
       return "/v1/lending/distributionBalance"
+    case .getWithdrawableAmount:
+      return "/v1/lending/withdrawableAmount"
+    case .buildWithdrawTx:
+      return "/v1/lending/buildWithdrawTx"
     }
   }
 
@@ -1005,6 +1011,24 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "address": address,
         "lendingPlatform": lendingPlatform
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, token: let token):
+      let json: JSONDictionary = [
+        "lendingPlatform": platform,
+        "userAddress": userAddress,
+        "token": token
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildWithdrawTx(platform: let platform, userAddress: let userAddress, token: let token, amount: let amount, gasPrice: let gasPrice, nonce: let nonce, useGasToken: let useGasToken):
+      let json: JSONDictionary = [
+        "lendingPlatform": platform,
+        "token": token,
+        "amount": amount,
+        "gasPrice": gasPrice,
+        "nonce": nonce,
+        "useGasToken": useGasToken,
+        "userAddress": userAddress
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

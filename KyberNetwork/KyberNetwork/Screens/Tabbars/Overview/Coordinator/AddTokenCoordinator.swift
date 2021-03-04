@@ -12,11 +12,11 @@ class AddTokenCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   
-  var rootViewController: AddTokenViewController {
+  lazy var rootViewController: AddTokenViewController = {
     let controller = AddTokenViewController()
     controller.delegate = self
     return controller
-  }
+  }()
   
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController

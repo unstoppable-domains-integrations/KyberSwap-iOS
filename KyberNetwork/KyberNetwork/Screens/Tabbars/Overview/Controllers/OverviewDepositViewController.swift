@@ -80,6 +80,14 @@ class OverviewDepositViewModel {
   }
 }
 
+enum OverviewDepositViewEvent {
+  case withdrawBalance(platform: String, balance: LendingBalance)
+}
+
+protocol OverviewDepositViewControllerDelegate: class {
+  func overviewDepositViewController(_ controller: OverviewDepositViewController, run event: OverviewDepositViewEvent)
+}
+
 class OverviewDepositViewController: KNBaseViewController, OverviewViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet var currencySelectButtons: [UIButton]!
@@ -88,7 +96,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   @IBOutlet weak var ethButton: UIButton!
 
   weak var container: OverviewViewController?
-  
+  weak var delegate: OverviewDepositViewControllerDelegate?
   let viewModel = OverviewDepositViewModel()
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -200,5 +208,12 @@ extension OverviewDepositViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 40
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositLendingBalanceCellViewModel {
+      self.delegate?.overviewDepositViewController(self, run: .withdrawBalance(platform: self.viewModel.sectionKeys[indexPath.section], balance: viewModel.balance))
+    }
+    
   }
 }
