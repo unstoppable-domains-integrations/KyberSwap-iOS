@@ -35,7 +35,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-Gi-nXw">
-                            <rect key="frame" x="37" y="66" width="47" height="21"/>
+                            <rect key="frame" x="51" y="66" width="47" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -82,15 +82,31 @@
                                 <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="xeh-Xp-cYU"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SB-dF-3eM">
+                            <rect key="frame" x="23" y="58.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="WrL-GP-ZjN"/>
+                                <constraint firstAttribute="width" constant="46" id="k5Z-eq-GKG"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_blue_icon">
+                                <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="XDo-Q6-yMi"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.039215686270000001" green="0.29411764709999999" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstItem="KOL-Gi-nXw" firstAttribute="leading" secondItem="ztD-1o-LWC" secondAttribute="leading" constant="37" id="1Ta-t7-JLl"/>
+                        <constraint firstItem="KOL-Gi-nXw" firstAttribute="leading" secondItem="ztD-1o-LWC" secondAttribute="leading" constant="51" id="1Ta-t7-JLl"/>
                         <constraint firstAttribute="height" constant="113" id="65t-4O-0zI"/>
                         <constraint firstItem="hjs-AV-lyC" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="DKj-Qe-RHh"/>
                         <constraint firstItem="QS9-Af-9Vz" firstAttribute="leading" secondItem="hjs-AV-lyC" secondAttribute="trailing" constant="10" id="Eia-Mk-3CR"/>
                         <constraint firstItem="QS9-Af-9Vz" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="QsB-uH-xd7"/>
                         <constraint firstAttribute="bottom" secondItem="KOL-Gi-nXw" secondAttribute="bottom" constant="26" id="W7A-1k-gyT"/>
+                        <constraint firstItem="0SB-dF-3eM" firstAttribute="leading" secondItem="ztD-1o-LWC" secondAttribute="leading" constant="23" id="cHB-X5-gmI"/>
+                        <constraint firstItem="KOL-Gi-nXw" firstAttribute="centerY" secondItem="0SB-dF-3eM" secondAttribute="centerY" id="dvf-fE-Yz1"/>
                         <constraint firstAttribute="trailing" secondItem="QS9-Af-9Vz" secondAttribute="trailing" constant="14" id="eLT-tn-P4S"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -160,6 +176,7 @@
     </objects>
     <resources>
         <image name="arrow_down_template" width="12" height="9"/>
+        <image name="back_blue_icon" width="17" height="14"/>
         <image name="history_icon" width="22" height="20"/>
     </resources>
 </document>

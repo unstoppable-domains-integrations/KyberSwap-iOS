@@ -22,6 +22,8 @@ class EarnViewModel {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var wallet: Wallet
+  var remainApprovedAmount: (TokenData, BigInt)?
+  fileprivate(set) var minRatePercent: Double = 3.0
 
   init(data: TokenData, wallet: Wallet) {
     self.tokenData = data
@@ -163,7 +165,7 @@ class EarnViewModel {
   }
 
   var minDestQty: BigInt {
-    return self.amountBigInt * BigInt(10000.0 - 3 * 100.0) / BigInt(10000.0)
+    return self.amountBigInt * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
   }
   @discardableResult
   func updateGasLimit(_ value: BigInt, platform: String, tokenAddress: String) -> Bool {
@@ -235,6 +237,21 @@ class EarnViewModel {
     )
     return attributedText
   }
+  
+  var slippageString: String {
+    let doubleStr = String(format: "%.2f", self.minRatePercent)
+    return "Slippage: \(doubleStr)%"
+  }
+  
+  var isUseGasToken: Bool {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data[self.wallet.address.description] ?? false
+  }
 }
 
 enum EarnViewEvent {
@@ -252,10 +269,25 @@ enum EarnViewEvent {
 }
 
 protocol EarnViewControllerDelegate: class {
-  func earnViewController(_ controller: KNBaseViewController, run event: EarnViewEvent)
+  func earnViewController(_ controller: AbstractEarnViewControler, run event: EarnViewEvent)
 }
 
-class EarnViewController: KNBaseViewController {
+protocol AbstractEarnViewControler: class {
+  func coordinatorDidUpdateSuccessTxObject(txObject: [String: String])
+  func coordinatorFailUpdateTxObject(error: Error)
+  func coordinatorDidUpdateGasLimit(_ value: BigInt, platform: String, tokenAdress: String)
+  func coordinatorFailUpdateGasLimit()
+  func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt)
+  func coordinatorDidFailUpdateAllowance(token: TokenData)
+  func coordinatorSuccessApprove(token: TokenObject)
+  func coordinatorFailApprove(token: TokenObject)
+  func coordinatorUpdateIsUseGasToken(_ state: Bool)
+  func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat)
+  func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt)
+}
+
+class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
+  
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var fromAmountTextField: UITextField!
   @IBOutlet weak var maxFromAmountButton: UIButton!
@@ -269,6 +301,13 @@ class EarnViewController: KNBaseViewController {
   @IBOutlet weak var earnButton: UIButton!
   @IBOutlet weak var selectDepositTitleLabel: UILabel!
   @IBOutlet weak var walletsSelectButton: UIButton!
+  @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonRightPaddingContaint: NSLayoutConstraint!
+  @IBOutlet weak var approveButton: UIButton!
+  @IBOutlet weak var approveButtonEqualWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var isUseGasTokenIcon: UIImageView!
+  @IBOutlet weak var slippageLabel: UILabel!
   
   let viewModel: EarnViewModel
   fileprivate var isViewSetup: Bool = false
@@ -297,14 +336,19 @@ class EarnViewController: KNBaseViewController {
     
     self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
     self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIWalletSelectButton()
+    self.updateUIForSendApprove(isShowApproveButton: false)
+    self.updateGasFeeUI()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.earnButton.removeSublayer(at: 0)
     self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.approveButton.removeSublayer(at: 0)
+    self.approveButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -316,7 +360,7 @@ class EarnViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.updateUIBalanceDidChange()
-    
+    self.updateAllowance()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -331,13 +375,49 @@ class EarnViewController: KNBaseViewController {
     }
     self.fromBalanceLable.text = self.viewModel.totalBalanceText
   }
-  
+
   fileprivate func updateUIWalletSelectButton() {
     self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
   }
 
   fileprivate func updateGasFeeUI() {
     self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
+    self.slippageLabel.text = self.viewModel.slippageString
+    self.isUseGasTokenIcon.isHidden = !self.viewModel.isUseGasToken
+  }
+  
+  fileprivate func updateApproveButton() {
+    self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.tokenData.symbol, for: .normal)
+  }
+  
+  fileprivate func updateUIForSendApprove(isShowApproveButton: Bool) {
+    self.updateApproveButton()
+    if isShowApproveButton {
+      self.approveButtonLeftPaddingContraint.constant = 37
+      self.approveButtonRightPaddingContaint.constant = 15
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 1000)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.earnButton.isEnabled = false
+      self.earnButton.alpha = 0.2
+    } else {
+      self.approveButtonLeftPaddingContraint.constant = 0
+      self.approveButtonRightPaddingContaint.constant = 37
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 1000)
+      self.earnButton.isEnabled = true
+      self.earnButton.alpha = 1
+    }
+    
+    self.earnButton.removeSublayer(at: 0)
+    self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    self.earnButton.removeSublayer(at: 0)
+    self.earnButton.applyHorizontalGradient(with: UIColor.Kyber.SWButtonColors)
+    
+    self.view.layoutIfNeeded()
+  }
+  
+  fileprivate func updateAllowance() {
+    self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.tokenData))
   }
   
   fileprivate func updateInforMessageUI() {
@@ -351,7 +431,7 @@ class EarnViewController: KNBaseViewController {
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.earnViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, isSwap: false, minRatePercent: 0))
+    self.delegate?.earnViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, isSwap: false, minRatePercent: self.viewModel.minRatePercent))
   }
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
@@ -404,7 +484,14 @@ class EarnViewController: KNBaseViewController {
   @IBAction func walletsButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
-
+  
+  @IBAction func approveButtonTapped(_ sender: UIButton) {
+    guard let remain = self.viewModel.remainApprovedAmount else {
+      return
+    }
+    self.delegate?.earnViewController(self, run: .sendApprove(token: remain.0, remain: remain.1))
+  }
+  
   func updateGasLimit() {
     let event = EarnViewEvent.getGasLimit(
       lendingPlatform: self.viewModel.selectedPlatform,
@@ -501,6 +588,48 @@ class EarnViewController: KNBaseViewController {
     self.viewModel.updateAmount("")
     self.updateUIBalanceDidChange()
     self.updateGasLimit()
+    self.updateAllowance()
+  }
+  
+  func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
+    guard let balanceValue = self.viewModel.balance else {
+      return
+    }
+    if balanceValue.value > allowance {
+      self.viewModel.remainApprovedAmount = (token, allowance)
+      self.updateUIForSendApprove(isShowApproveButton: true)
+    } else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+    }
+  }
+  
+  func coordinatorDidFailUpdateAllowance(token: TokenData) {
+    
+  }
+  
+  fileprivate func showErrorMessage() {
+    self.showWarningTopBannerMessage(
+      with: "",
+      message: "Something went wrong, please try again later".toBeLocalised(),
+      time: 2.0
+    )
+  }
+
+  func coordinatorSuccessApprove(token: TokenObject) {
+    self.updateUIForSendApprove(isShowApproveButton: false)
+  }
+
+  func coordinatorFailApprove(token: TokenObject) {
+    self.showErrorMessage()
+    self.updateUIForSendApprove(isShowApproveButton: true)
+  }
+  
+  func coordinatorUpdateIsUseGasToken(_ state: Bool) {
+    self.updateGasFeeUI()
+  }
+  func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
+    self.viewModel.minRatePercent = Double(value)
+    self.updateGasFeeUI()
   }
 }
 

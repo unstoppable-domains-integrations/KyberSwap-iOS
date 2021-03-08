@@ -214,6 +214,5 @@ extension OverviewDepositViewController: UITableViewDelegate {
     if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositLendingBalanceCellViewModel {
       self.delegate?.overviewDepositViewController(self, run: .withdrawBalance(platform: self.viewModel.sectionKeys[indexPath.section], balance: viewModel.balance))
     }
-    
   }
 }

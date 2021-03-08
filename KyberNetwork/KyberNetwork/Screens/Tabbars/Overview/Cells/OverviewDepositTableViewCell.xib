@@ -39,8 +39,8 @@
                             <constraint firstAttribute="width" constant="17" id="gGC-Yy-fbR"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2,200 Dai 24.35% APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJT-Lc-ITt">
-                        <rect key="frame" x="43" y="15.5" width="143.5" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="2,2000000000000 Dai 24.35% APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJT-Lc-ITt">
+                        <rect key="frame" x="43" y="15.5" width="209" height="17"/>
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -58,6 +58,7 @@
                     <constraint firstAttribute="bottom" secondItem="WWd-If-kvV" secondAttribute="bottom" constant="3" id="D7C-on-P2r"/>
                     <constraint firstAttribute="trailing" secondItem="0FU-6W-I6H" secondAttribute="trailing" constant="16" id="SBR-gI-axF"/>
                     <constraint firstItem="T3D-Z5-H1Y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="Scj-xL-ZKx"/>
+                    <constraint firstItem="0FU-6W-I6H" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJT-Lc-ITt" secondAttribute="trailing" constant="5" id="dCp-Oo-LQj"/>
                     <constraint firstItem="WWd-If-kvV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="frW-H4-0yE"/>
                     <constraint firstItem="WWd-If-kvV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="gdK-Og-IX8"/>
                     <constraint firstItem="WWd-If-kvV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="iDQ-TV-y42"/>

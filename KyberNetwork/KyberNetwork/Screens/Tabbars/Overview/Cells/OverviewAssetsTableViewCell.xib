@@ -47,8 +47,8 @@
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7,809.4580" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQh-or-p9r">
-                        <rect key="frame" x="37" y="32" width="61" height="14.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7,809.458045554554545555" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JQh-or-p9r">
+                        <rect key="frame" x="37" y="32" width="100" height="14.5"/>
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -73,6 +73,7 @@
                     <constraint firstItem="BPM-gI-vDh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="jpe-uD-daE"/>
                     <constraint firstItem="JQh-or-p9r" firstAttribute="leading" secondItem="Ffs-6u-60h" secondAttribute="leading" id="kie-pC-49c"/>
                     <constraint firstItem="mu6-eT-psB" firstAttribute="top" secondItem="ZRy-fy-M51" secondAttribute="bottom" constant="2" id="tml-fz-m23"/>
+                    <constraint firstItem="ZRy-fy-M51" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JQh-or-p9r" secondAttribute="trailing" constant="5" id="ux8-hk-J9C"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

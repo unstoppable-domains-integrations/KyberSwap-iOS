@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnOverviewViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="4Pv-jk-W5c" id="bJB-ej-wmK"/>
+                <outlet property="exploreButton" destination="JYK-Ol-cwQ" id="u99-Mf-u7P"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletListButton" destination="2vM-tm-Nr8" id="sxl-UV-KED"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESA-T6-5qz">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjs-6P-8Nn">
+                            <rect key="frame" x="37" y="66" width="37" height="21"/>
+                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vM-tm-Nr8">
+                            <rect key="frame" x="267" y="60.5" width="94" height="32"/>
+                            <color key="backgroundColor" red="0.090196078430000007" green="0.43921568630000002" blue="0.55294117649999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="94" id="JKw-JZ-Zlh"/>
+                                <constraint firstAttribute="height" constant="32" id="zaQ-Mf-ked"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
+                            <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="27" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="72" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="0xb2…f2cgldjlkgjflg" image="arrow_down_template">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="walletListButtonTapped:" destination="-1" eventType="touchUpInside" id="tHm-t8-FUJ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8UZ-Ei-oCv">
+                            <rect key="frame" x="225" y="60.5" width="32" height="32"/>
+                            <color key="backgroundColor" red="0.0" green="0.1960784314" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="CGC-1N-FAO"/>
+                                <constraint firstAttribute="height" constant="32" id="DUG-Fb-fT7"/>
+                            </constraints>
+                            <state key="normal" image="history_icon"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="rBw-TI-zyU"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.039215686270000001" green="0.29411764709999999" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="kjs-6P-8Nn" firstAttribute="leading" secondItem="ESA-T6-5qz" secondAttribute="leading" constant="37" id="514-DJ-akE"/>
+                        <constraint firstAttribute="height" constant="113" id="DjA-NJ-ouz"/>
+                        <constraint firstItem="8UZ-Ei-oCv" firstAttribute="centerY" secondItem="kjs-6P-8Nn" secondAttribute="centerY" id="Irf-St-XdO"/>
+                        <constraint firstAttribute="bottom" secondItem="kjs-6P-8Nn" secondAttribute="bottom" constant="26" id="TeS-0w-xyf"/>
+                        <constraint firstItem="2vM-tm-Nr8" firstAttribute="leading" secondItem="8UZ-Ei-oCv" secondAttribute="trailing" constant="10" id="ZoT-o6-WGv"/>
+                        <constraint firstItem="2vM-tm-Nr8" firstAttribute="centerY" secondItem="kjs-6P-8Nn" secondAttribute="centerY" id="cwn-06-Dzm"/>
+                        <constraint firstAttribute="trailing" secondItem="2vM-tm-Nr8" secondAttribute="trailing" constant="14" id="rE6-Qs-cHM"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JYK-Ol-cwQ">
+                    <rect key="frame" x="37" y="605" width="301" height="42"/>
+                    <color key="backgroundColor" red="0.92941176469999998" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="q2y-MW-sRJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
+                    <state key="normal" title="Explore">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="exploreButtonTapped:" destination="-1" eventType="touchUpInside" id="PQ8-BS-oPA"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Pv-jk-W5c">
+                    <rect key="frame" x="0.0" y="143" width="375" height="442"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.1960784314" blue="0.26274509800000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="JYK-Ol-cwQ" secondAttribute="bottom" constant="20" id="3gI-A3-FBu"/>
+                <constraint firstItem="ESA-T6-5qz" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6cU-zS-QFX"/>
+                <constraint firstItem="ESA-T6-5qz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8ih-HK-u23"/>
+                <constraint firstItem="4Pv-jk-W5c" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Jg8-V2-NAD"/>
+                <constraint firstItem="4Pv-jk-W5c" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="OD8-8i-tK6"/>
+                <constraint firstItem="JYK-Ol-cwQ" firstAttribute="top" secondItem="4Pv-jk-W5c" secondAttribute="bottom" constant="20" id="YLV-AZ-rsp"/>
+                <constraint firstItem="JYK-Ol-cwQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="Zul-65-G5I"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JYK-Ol-cwQ" secondAttribute="trailing" constant="37" id="bP4-hL-qyZ"/>
+                <constraint firstItem="ESA-T6-5qz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dDP-6M-dOM"/>
+                <constraint firstItem="4Pv-jk-W5c" firstAttribute="top" secondItem="ESA-T6-5qz" secondAttribute="bottom" constant="30" id="r9c-jV-GRB"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="103.89805097451276"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow_down_template" width="12" height="9"/>
+        <image name="history_icon" width="22" height="20"/>
+    </resources>
+</document>

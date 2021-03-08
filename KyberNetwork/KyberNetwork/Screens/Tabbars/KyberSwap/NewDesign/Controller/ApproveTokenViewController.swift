@@ -18,6 +18,7 @@ protocol ApproveTokenViewModel {
   var remain: BigInt { get }
   var address: String { get }
   var state: Bool { get }
+  var symbol: String { get }
 }
 
 class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
@@ -61,6 +62,10 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   var state: Bool {
     return false
   }
+  
+  var symbol: String {
+    return self.token?.symbol ?? ""
+  }
 
   init(token: TokenObject, res: BigInt) {
     self.token = token
@@ -68,17 +73,19 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   }
 }
 
-class ApproveTokenViewModelForGasToken: ApproveTokenViewModel {
+class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
   var token: TokenObject?
   let address: String
   let remain: BigInt
   var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
   let state: Bool
+  let symbol: String
 
-  init(address: String, remain: BigInt, state: Bool) {
+  init(address: String, remain: BigInt, state: Bool, symbol: String) {
     self.address = address
     self.remain = remain
     self.state = state
+    self.symbol = symbol
   }
 
   func getGasLimit() -> BigInt {
@@ -106,7 +113,7 @@ class ApproveTokenViewModelForGasToken: ApproveTokenViewModel {
   }
 
   var subTitleText: String {
-    return "You need to grant permission for Krytal to interact with CHI with this Address:".toBeLocalised()
+    return "You need to grant permission for Krytal to interact with \(symbol.uppercased()) with this Address:".toBeLocalised()
   }
 }
 

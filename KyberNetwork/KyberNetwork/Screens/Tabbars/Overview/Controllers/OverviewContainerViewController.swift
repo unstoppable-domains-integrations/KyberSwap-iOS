@@ -32,7 +32,7 @@ class OverviewContainerViewModel {
     self.depositViewModel = depositViewModel
     self.session = session
   }
-  
+
   var displayTotalValue: String {
     let totalValueBigInt = self.assetsViewModel.totalValueBigInt + self.depositViewModel.totalValueBigInt
     let totalString = totalValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
@@ -49,8 +49,18 @@ protocol OverviewContainerViewControllerDelegate: class {
   func overviewContainerViewController(_ controller: OverviewContainerViewController, run event: OverviewContainerViewEvent)
 }
 
+enum OverviewTokenListViewEvent {
+  case select(token: Token)
+  case buy(token: Token)
+  case sell(token: Token)
+  case transfer(token: Token)
+}
+
+protocol OverviewTokenListViewDelegate: class {
+  func overviewTokenListView(_ controller: OverviewViewController, run event: OverviewTokenListViewEvent)
+}
+
 class OverviewContainerViewController: KNBaseViewController, OverviewViewController {
-  
   
   let viewModel: OverviewContainerViewModel
   private let marketViewController: OverviewMarketViewController
@@ -66,8 +76,10 @@ class OverviewContainerViewController: KNBaseViewController, OverviewViewControl
   weak var delegate: OverviewContainerViewControllerDelegate?
   weak var navigationDelegate: NavigationBarDelegate?
   @IBOutlet weak var walletListButton: UIButton!
-  
-  
+  @IBOutlet weak var transferButton: UIButton!
+  @IBOutlet weak var receiveButton: UIButton!
+  @IBOutlet weak var addTokenButton: UIButton!
+
   
   init(viewModel: OverviewContainerViewModel, marketViewController: OverviewMarketViewController, assetsViewController: OverviewAssetsViewController, depositViewController: OverviewDepositViewController) {
     self.viewModel = viewModel
@@ -84,9 +96,10 @@ class OverviewContainerViewController: KNBaseViewController, OverviewViewControl
 
   override func viewDidLoad() {
     super.viewDidLoad()
-  
+
     self.updateUITotalValue()
     self.updateUIWalletList()
+    self.setupUI()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +110,12 @@ class OverviewContainerViewController: KNBaseViewController, OverviewViewControl
     }
   }
   
+  fileprivate func setupUI() {
+    self.transferButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.transferButton.frame.height / 2)
+    self.receiveButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.receiveButton.frame.height / 2)
+    self.addTokenButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.addTokenButton.frame.height / 2)
+  }
+  
   fileprivate func updateUITotalValue() {
     self.totalValueLabel.text = self.viewModel.displayTotalValue
   }
@@ -104,7 +123,7 @@ class OverviewContainerViewController: KNBaseViewController, OverviewViewControl
   fileprivate func updateUIWalletList() {
     self.walletListButton.setTitle(self.viewModel.session.wallet.address.description, for: .normal)
   }
-  
+
   private func setupPageController() {
     self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     self.pageController.view.backgroundColor = .clear
@@ -150,7 +169,6 @@ class OverviewContainerViewController: KNBaseViewController, OverviewViewControl
   @IBAction func walletListButtonTapped(_ sender: Any) {
     self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
-  
   
   fileprivate func getViewControllerWithIndex(_ index: Int) -> UIViewController {
     switch index {

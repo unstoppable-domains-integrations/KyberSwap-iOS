@@ -8,6 +8,7 @@
 import UIKit
 import SwiftChart
 import BigInt
+import EasyTipView
 
 class ChartViewModel {
   var dataSource: [(x: Double, y: Double)] = []
@@ -205,9 +206,10 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var investButton: UIButton!
   @IBOutlet weak var descriptionTextView: GrowingTextView!
   
+  
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
-  
+
   init(viewModel: ChartViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ChartViewController.className, bundle: nil)
@@ -225,6 +227,7 @@ class ChartViewController: KNBaseViewController {
     self.chartView.axesColor = .clear
     self.chartView.gridColor = .clear
     self.chartView.backgroundColor = .clear
+    self.chartView.delegate = self
     self.updateUIPeriodSelectButtons()
     self.titleView.text = self.viewModel.headerTitle
     self.transferButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.transferButton.frame.size.height / 2)
@@ -348,4 +351,21 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
   }
+}
+
+extension ChartViewController: ChartDelegate {
+  func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
+    print("[Chart] \(x) \(left)")
+    
+  }
+  
+  func didFinishTouchingChart(_ chart: Chart) {
+    
+  }
+  
+  func didEndTouchingChart(_ chart: Chart) {
+    
+  }
+  
+  
 }

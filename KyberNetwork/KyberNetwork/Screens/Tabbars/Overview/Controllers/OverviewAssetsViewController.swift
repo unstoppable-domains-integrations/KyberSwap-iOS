@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import SwipeCellKit
 
 enum AssetsOverviewSortingType {
   case balance(dec: Bool)
@@ -47,7 +48,7 @@ class OverviewAssetsViewModel {
     data.sort { (left, right) -> Bool in
       switch self.soringType {
       case .balance(let dec):
-        return dec ? left.balanceBigInt < right.balanceBigInt : left.balanceBigInt > right.balanceBigInt
+        return dec ? left.comparableBalanceBigInt < right.comparableBalanceBigInt : left.comparableBalanceBigInt > right.comparableBalanceBigInt
       case .price(let dec):
         return dec ? left.priceDouble < right.priceDouble : left.priceDouble > right.priceDouble
       case .value(let dec):
@@ -80,14 +81,14 @@ class OverviewAssetsViewController: KNBaseViewController, OverviewViewController
   @IBOutlet weak var usdButton: UIButton!
   @IBOutlet weak var ethButton: UIButton!
   
-  
   weak var container: OverviewViewController?
+  weak var delegate: OverviewTokenListViewDelegate?
 
   let viewModel = OverviewAssetsViewModel()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     let nib = UINib(nibName: OverviewAssetsTableViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -203,9 +204,62 @@ extension OverviewAssetsViewController: UITableViewDataSource {
       withIdentifier: OverviewAssetsTableViewCell.kCellID,
       for: indexPath
     ) as! OverviewAssetsTableViewCell
-    
+
     cell.updateCell(viewModel: self.viewModel.dataSource[indexPath.row])
-    
+    cell.delegate = self
     return cell
+  }
+}
+
+extension OverviewAssetsViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let token = self.viewModel.dataSource[indexPath.row].token
+    self.delegate?.overviewTokenListView(self, run: .select(token: token))
+  }
+}
+
+extension OverviewAssetsViewController: SwipeTableViewCellDelegate {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard orientation == .right else {
+      return nil
+    }
+    let token = self.viewModel.dataSource[indexPath.row].token
+    let buy = SwipeAction(style: .default, title: nil) { (_, _) in
+      self.delegate?.overviewTokenListView(self, run: .buy(token: token))
+    }
+    buy.hidesWhenSelected = true
+    buy.title = "buy".toBeLocalised().uppercased()
+    buy.textColor = UIColor.Kyber.SWYellow
+    buy.font = UIFont.Kyber.latoBold(with: 10)
+    let bgImg = UIImage(named: "history_cell_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 60))!
+    buy.backgroundColor = UIColor(patternImage: resized)
+
+    let sell = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.overviewTokenListView(self, run: .sell(token: token))
+    }
+    sell.title = "sell".toBeLocalised().uppercased()
+    sell.textColor = UIColor.Kyber.SWYellow
+    sell.font = UIFont.Kyber.latoBold(with: 10)
+    sell.backgroundColor = UIColor(patternImage: resized)
+
+    let transfer = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.overviewTokenListView(self, run: .transfer(token: token))
+    }
+    transfer.title = "transfer".toBeLocalised().uppercased()
+    transfer.textColor = UIColor.Kyber.SWYellow
+    transfer.font = UIFont.Kyber.latoBold(with: 10)
+    transfer.backgroundColor = UIColor(patternImage: resized)
+
+    return [buy, sell, transfer]
+  }
+
+  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    var options = SwipeOptions()
+    options.expansionStyle = .selection
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
+    return options
   }
 }

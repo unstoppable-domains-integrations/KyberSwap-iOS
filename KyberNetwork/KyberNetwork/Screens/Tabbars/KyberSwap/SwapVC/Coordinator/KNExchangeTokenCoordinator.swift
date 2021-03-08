@@ -1249,7 +1249,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
           switch result {
           case .success(let res):
             if res.isZero {
-              let viewModel = ApproveTokenViewModelForGasToken(address: gasTokenAddressString, remain: res, state: status)
+              let viewModel = ApproveTokenViewModelForTokenAddress(address: gasTokenAddressString, remain: res, state: status, symbol: "CHI")
               let viewController = ApproveTokenViewController(viewModel: viewModel)
               viewController.delegate = self
               self.navigationController.present(viewController, animated: true, completion: nil)

@@ -65,6 +65,10 @@ class EarnMenuViewController: KNBaseViewController {
     self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
   
+  @IBAction func backButtonTapped(_ sender: UIButton) {
+    self.navigationController?.popViewController(animated: true)
+  }
+  
   func coordinatorDidUpdateLendingToken(_ tokens: [TokenData]) {
     self.viewModel.dataSource = tokens.map { EarnMenuTableViewCellViewModel(token: $0) }
     if self.isViewSetup {

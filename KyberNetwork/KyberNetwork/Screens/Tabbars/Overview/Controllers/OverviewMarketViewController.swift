@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 enum MarketOverviewSortingType {
   case token(dec: Bool)
@@ -35,7 +36,7 @@ class OverviewMarketViewModel {
     }
     self.reloadDataSource()
   }
-  
+
   func reloadDataSource() {
     var data = self.allData
     data.forEach { (viewModel) in
@@ -65,9 +66,9 @@ class OverviewMarketViewModel {
   }
 }
 
-protocol OverviewMarketViewControllerDelegate: class {
-  func overviewMarketViewController(_ controller: OverviewMarketViewController, didSelect token: Token)
-}
+//protocol OverviewMarketViewControllerDelegate: class {
+//  func overviewMarketViewController(_ controller: OverviewMarketViewController, didSelect token: Token)
+//}
 
 class OverviewMarketViewController: KNBaseViewController, OverviewViewController {
   @IBOutlet weak var tableView: UITableView!
@@ -79,7 +80,7 @@ class OverviewMarketViewController: KNBaseViewController, OverviewViewController
   @IBOutlet weak var ethButton: UIButton!
   
   weak var container: OverviewViewController?
-  weak var delegate: OverviewMarketViewControllerDelegate?
+  weak var delegate: OverviewTokenListViewDelegate?
   
   let viewModel: OverviewMarketViewModel = OverviewMarketViewModel()
 
@@ -204,7 +205,7 @@ extension OverviewMarketViewController: UITableViewDataSource {
     
     let viewModel = self.viewModel.dataSource[indexPath.row]
     cell.updateCell(viewModel: viewModel)
-    
+    cell.delegate = self
     return cell
   }
 }
@@ -212,7 +213,52 @@ extension OverviewMarketViewController: UITableViewDataSource {
 extension OverviewMarketViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let viewModel = self.viewModel.dataSource[indexPath.row]
-    self.delegate?.overviewMarketViewController(self, didSelect: viewModel.token)
+    self.delegate?.overviewTokenListView(self, run: .select(token: viewModel.token))
   }
 }
 
+extension OverviewMarketViewController: SwipeTableViewCellDelegate {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard orientation == .right else {
+      return nil
+    }
+    let token = self.viewModel.dataSource[indexPath.row].token
+    let buy = SwipeAction(style: .default, title: nil) { (_, _) in
+      self.delegate?.overviewTokenListView(self, run: .buy(token: token))
+    }
+    buy.hidesWhenSelected = true
+    buy.title = "buy".toBeLocalised().uppercased()
+    buy.textColor = UIColor.Kyber.SWYellow
+    buy.font = UIFont.Kyber.latoBold(with: 10)
+    let bgImg = UIImage(named: "history_cell_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 44))!
+    buy.backgroundColor = UIColor(patternImage: resized)
+
+    let sell = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.overviewTokenListView(self, run: .sell(token: token))
+    }
+    sell.title = "sell".toBeLocalised().uppercased()
+    sell.textColor = UIColor.Kyber.SWYellow
+    sell.font = UIFont.Kyber.latoBold(with: 10)
+    sell.backgroundColor = UIColor(patternImage: resized)
+
+    let transfer = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.overviewTokenListView(self, run: .transfer(token: token))
+    }
+    transfer.title = "transfer".toBeLocalised().uppercased()
+    transfer.textColor = UIColor.Kyber.SWYellow
+    transfer.font = UIFont.Kyber.latoBold(with: 10)
+    transfer.backgroundColor = UIColor(patternImage: resized)
+
+    return [buy, sell, transfer]
+  }
+
+  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    var options = SwipeOptions()
+    options.expansionStyle = .selection
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
+    return options
+  }
+}

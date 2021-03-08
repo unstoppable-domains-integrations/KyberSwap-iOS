@@ -21,13 +21,20 @@ class WithdrawCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate weak var gasPriceSelectVC: GasFeeSelectorPopupViewController?
   
-  lazy var rootViewController: WithdrawViewController = {
+  lazy var rootViewController: WithdrawConfirmPopupViewController = {
+    let viewModel = WithdrawConfirmPopupViewModel(balance: self.balance)
+    let controller = WithdrawConfirmPopupViewController(viewModel: viewModel)
+    controller.delegate = self
+    return controller
+  }()
+
+  lazy var withdrawViewController: WithdrawViewController = {
     let viewModel = WithdrawViewModel(platform: self.platform, session: self.session, balance: self.balance)
     let controller = WithdrawViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
   }()
-  
+
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession, platfrom: String, balance: LendingBalance) {
     self.navigationController = navigationController
     self.session = session
@@ -37,11 +44,9 @@ class WithdrawCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.present(self.rootViewController, animated: true, completion: {
-      self.rootViewController.coordinatorUpdateIsUseGasToken(self.isAccountUseGasToken())
-    })
+    self.navigationController.present(self.rootViewController, animated: true, completion: nil)
   }
-  
+
   func stop() {
     
   }
@@ -55,9 +60,9 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       provider.request(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let amount = json["amount"] as? String {
-          self.rootViewController.coordinatorDidUpdateWithdrawableAmount(amount)
+          self.withdrawViewController.coordinatorDidUpdateWithdrawableAmount(amount)
         } else {
-          self.rootViewController.coodinatorFailUpdateWithdrawableAmount()
+          self.withdrawViewController.coodinatorFailUpdateWithdrawableAmount()
         }
       }
     case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
@@ -135,9 +140,9 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: 0, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txObj = json["txObject"] as? [String: String], let gasLimitString = txObj["gasLimit"], let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
-          self.rootViewController.coordinatorDidUpdateGasLimit(gasLimit)
+          self.withdrawViewController.coordinatorDidUpdateGasLimit(gasLimit)
         } else {
-          self.rootViewController.coordinatorFailUpdateGasLimit()
+          self.withdrawViewController.coordinatorFailUpdateGasLimit()
         }
       }
     case .checkAllowance(tokenAddress: let tokenAddress):
@@ -148,15 +153,15 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         guard let `self` = self else { return }
         switch getAllowanceResult {
         case .success(let res):
-          self.rootViewController.coordinatorDidUpdateAllowance(token: tokenAddress, allowance: res)
+          self.withdrawViewController.coordinatorDidUpdateAllowance(token: tokenAddress, allowance: res)
         case .failure:
-          self.rootViewController.coordinatorDidFailUpdateAllowance(token: tokenAddress)
+          self.withdrawViewController.coordinatorDidFailUpdateAllowance(token: tokenAddress)
         }
       }
-    case .sendApprove(tokenAddress: let tokenAddress, remain: let remain):
-      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForGasToken(address: tokenAddress, remain: remain, state: false))
+    case .sendApprove(tokenAddress: let tokenAddress, remain: let remain, symbol: let symbol):
+      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol))
       vc.delegate = self
-      self.rootViewController.present(vc, animated: true, completion: nil)
+      self.withdrawViewController.present(vc, animated: true, completion: nil)
     case .openGasPriceSelect(gasLimit: let gasLimit, selectType: let selectType):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: 3, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: false)
       viewModel.updateGasPrices(
@@ -168,7 +173,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
 
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
-      self.rootViewController.present(vc, animated: true, completion: nil)
+      self.withdrawViewController.present(vc, animated: true, completion: nil)
       self.gasPriceSelectVC = vc
     }
   }
@@ -375,14 +380,14 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch approveResult {
       case .success:
-        self.rootViewController.coordinatorSuccessApprove(token: address)
+        self.withdrawViewController.coordinatorSuccessApprove(token: address)
       case .failure(let error):
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: error.localizedDescription,
           time: 1.5
         )
-        self.rootViewController.coordinatorFailApprove(token: address)
+        self.withdrawViewController.coordinatorFailApprove(token: address)
       }
     }
   }
@@ -396,7 +401,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
-      self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+      self.withdrawViewController.coordinatorDidUpdateGasPriceType(type, value: value)
     case .helpPressed:
       self.navigationController.showBottomBannerView(
         message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
@@ -411,7 +416,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
       if self.isApprovedGasToken() {
         self.saveUseGasTokenState(status)
-        self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+        self.withdrawViewController.coordinatorUpdateIsUseGasToken(status)
         return
       }
       if status {
@@ -429,13 +434,13 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
           switch result {
           case .success(let res):
             if res.isZero {
-              let viewModel = ApproveTokenViewModelForGasToken(address: gasTokenAddressString, remain: res, state: status)
+              let viewModel = ApproveTokenViewModelForTokenAddress(address: gasTokenAddressString, remain: res, state: status, symbol: "CHI")
               let viewController = ApproveTokenViewController(viewModel: viewModel)
               viewController.delegate = self
               self.navigationController.present(viewController, animated: true, completion: nil)
             } else {
               self.saveUseGasTokenState(status)
-              self.rootViewController.coordinatorUpdateIsUseGasToken(status)
+              self.withdrawViewController.coordinatorUpdateIsUseGasToken(status)
             }
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
@@ -443,11 +448,11 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               message: error.localizedDescription,
               time: 1.5
             )
-            self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
+            self.withdrawViewController.coordinatorUpdateIsUseGasToken(!status)
           }
         }
       } else {
-        self.rootViewController.coordinatorUpdateIsUseGasToken(!status)
+        self.withdrawViewController.coordinatorUpdateIsUseGasToken(!status)
       }
     default:
       break
@@ -482,4 +487,22 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     }
     return data[self.session.wallet.address.description] ?? false
   }
+}
+
+extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
+  func withdrawConfirmPopupViewControllerDidSelectFirstButton(_ controller: WithdrawConfirmPopupViewController) {
+    controller.dismiss(animated: true) {
+      self.navigationController.present(self.withdrawViewController, animated: true, completion: {
+        self.withdrawViewController.coordinatorUpdateIsUseGasToken(self.isAccountUseGasToken())
+      })
+    }
+  }
+  
+  func withdrawConfirmPopupViewControllerDidSelectSecondButton(_ controller: WithdrawConfirmPopupViewController) {
+    controller.dismiss(animated: true) {
+      
+    }
+  }
+  
+  
 }

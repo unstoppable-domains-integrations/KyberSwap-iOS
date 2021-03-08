@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class OverviewMarketCellViewModel {
   let token: Token
@@ -54,7 +55,7 @@ class OverviewMarketCellViewModel {
   }
 }
 
-class OverviewMarketTableViewCell: UITableViewCell {
+class OverviewMarketTableViewCell: SwipeTableViewCell {
   static let kCellID: String = "OverviewMarketTableViewCell"
   static let kCellHeight: CGFloat = 44
   

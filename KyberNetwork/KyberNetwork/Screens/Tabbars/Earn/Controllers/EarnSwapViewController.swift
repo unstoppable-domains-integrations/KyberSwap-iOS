@@ -31,7 +31,6 @@ class EarnSwapViewModel {
   var remainApprovedAmount: (TokenData, BigInt)?
   var latestNonce: Int = -1
   var refPrice: (TokenData, TokenData, String, [String])
-  fileprivate(set) var slippageRate: BigInt?
   fileprivate(set) var minRatePercent: Double = 3.0
 
   init(to: TokenData, from: TokenData, wallet: Wallet) {
@@ -181,7 +180,7 @@ class EarnSwapViewModel {
   }
 
   var minDestQty: BigInt {
-    return self.amountToBigInt * BigInt(10000.0 - 3 * 100.0) / BigInt(10000.0)
+    return self.amountToBigInt * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
   @discardableResult
   func updateGasLimit(_ value: BigInt, platform: String, tokenAddress: String) -> Bool {
@@ -405,7 +404,7 @@ class EarnSwapViewModel {
   }
 }
 
-class EarnSwapViewController: KNBaseViewController {
+class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var toAmountTextField: UITextField!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!
@@ -591,11 +590,11 @@ class EarnSwapViewController: KNBaseViewController {
   fileprivate func updateApproveButton() {
     self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.fromTokenData.symbol, for: .normal)
   }
-  
+
   fileprivate func updateUIWalletSelectButton() {
     self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
   }
-  
+
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool) {
     self.updateApproveButton()
     if isShowApproveButton {
@@ -741,7 +740,7 @@ class EarnSwapViewController: KNBaseViewController {
       self.navigationController?.showErrorTopBannerMessage(with: "Can not build transaction".toBeLocalised())
       return
     }
-    
+
     let event = EarnViewEvent.confirmTx(
       fromToken: self.viewModel.fromTokenData,
       toToken: self.viewModel.toTokenData,

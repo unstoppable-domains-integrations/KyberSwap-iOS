@@ -42,7 +42,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     ]
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: "\(balanceString) \(self.balance.symbol) ", attributes: amountAttributes))
-    attributedText.append(NSAttributedString(string: "\(rateString) APY", attributes: apyAttributes))
+    attributedText.append(NSAttributedString(string: "\(rateString)% APY", attributes: apyAttributes))
     return attributedText
   }
   
@@ -54,7 +54,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
   var balanceBigInt: BigInt {
     return BigInt(self.balance.supplyBalance) ?? BigInt(0)
   }
-  
+
   var valueBigInt: BigInt {
     guard let tokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(self.balance.address) else { return BigInt(0) }
     let price = self.currencyType == .usd ? tokenPrice.usd : tokenPrice.eth

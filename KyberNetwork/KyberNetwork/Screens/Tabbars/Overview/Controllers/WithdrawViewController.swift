@@ -131,7 +131,7 @@ enum WithdrawViewEvent {
   case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
   case updateGasLimit(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
   case checkAllowance(tokenAddress: String)
-  case sendApprove(tokenAddress: String, remain: BigInt)
+  case sendApprove(tokenAddress: String, remain: BigInt, symbol: String)
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
 }
 
@@ -226,7 +226,7 @@ class WithdrawViewController: KNBaseViewController {
   }
   
   fileprivate func sendApprove() {
-    self.delegate?.withdrawViewController(self, run: .sendApprove(tokenAddress: self.viewModel.balance.interestBearingTokenAddress.lowercased(), remain: BigInt(0)))
+    self.delegate?.withdrawViewController(self, run: .sendApprove(tokenAddress: self.viewModel.balance.interestBearingTokenAddress.lowercased(), remain: BigInt(0), symbol: self.viewModel.balance.interestBearingTokenSymbol))
   }
   
   fileprivate func updateUIforWithdrawButton() {
@@ -343,7 +343,7 @@ extension WithdrawViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 420
+    return 450
   }
 
   func getPopupContentView() -> UIView {
@@ -391,7 +391,7 @@ extension WithdrawViewController: UITextFieldDelegate {
       )
       return true
     }
-    
+
     guard !self.viewModel.isAmountTooSmall else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),

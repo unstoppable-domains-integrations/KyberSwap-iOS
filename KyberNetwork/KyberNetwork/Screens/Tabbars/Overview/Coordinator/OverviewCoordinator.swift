@@ -15,6 +15,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func overviewCoordinatorDidSelectManageWallet()
+  func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool)
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -47,6 +48,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   lazy var assetsViewController: OverviewAssetsViewController = {
     let controller = OverviewAssetsViewController()
+    controller.delegate = self
     return controller
   }()
   
@@ -98,7 +100,20 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 }
 
-extension OverviewCoordinator: OverviewMarketViewControllerDelegate {
+extension OverviewCoordinator: OverviewTokenListViewDelegate {
+  func overviewTokenListView(_ controller: OverviewViewController, run event: OverviewTokenListViewEvent) {
+    switch event {
+    case .select(token: let token):
+      self.openChartView(token: token)
+    case .buy(token: let token):
+      self.openSwapView(token: token, isBuy: true)
+    case .sell(token: let token):
+      self.openSwapView(token: token, isBuy: false)
+    case .transfer(token: let token):
+      self.openSendTokenView(token)
+    }
+  }
+  
   func overviewMarketViewController(_ controller: OverviewMarketViewController, didSelect token: Token) {
     self.openChartView(token: token)
   }
@@ -184,6 +199,10 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         time: 2.0
       )
     }
+  }
+  
+  fileprivate func openSwapView(token: Token, isBuy: Bool) {
+    self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
 }
 

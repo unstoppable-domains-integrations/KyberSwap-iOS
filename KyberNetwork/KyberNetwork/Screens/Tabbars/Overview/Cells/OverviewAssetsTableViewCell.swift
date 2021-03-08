@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import SwipeCellKit
 
 class OverviewAssetsCellViewModel {
   let token: Token
@@ -23,15 +24,19 @@ class OverviewAssetsCellViewModel {
   var displaySymbol: String {
     return self.token.symbol.uppercased()
   }
-  
+
   var balanceBigInt: BigInt {
     return BigInt(self.balance.balance) ?? BigInt(0)
+  }
+  
+  var comparableBalanceBigInt: BigInt {
+    return self.balanceBigInt * BigInt(10).power(18) / BigInt(10).power(self.token.decimals)
   }
   
   var displayTokenBalance: String {
     return self.balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6))
   }
-  
+
   var priceDouble: Double {
     return self.currencyType == .usd ? self.price.usd : self.price.eth
   }
@@ -68,7 +73,7 @@ class OverviewAssetsCellViewModel {
   }
 }
 
-class OverviewAssetsTableViewCell: UITableViewCell {
+class OverviewAssetsTableViewCell: SwipeTableViewCell {
   static let kCellID: String = "OverviewAssetsTableViewCell"
   static let kCellHeight: CGFloat = 60
   

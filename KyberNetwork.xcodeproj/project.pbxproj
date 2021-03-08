@@ -634,6 +634,8 @@
 		C37CC09C245803CA0081FB32 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC08F245803C90081FB32 /* Roboto-Bold.ttf */; };
 		C37CC09D245803CA0081FB32 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC090245803C90081FB32 /* Roboto-Thin.ttf */; };
 		C37CC09E245803CA0081FB32 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC091245803C90081FB32 /* Roboto-Black.ttf */; };
+		C38E5D7425F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7225F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift */; };
+		C38E5D7525F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38E5D7325F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -641,6 +643,8 @@
 		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
 		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
 		C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */; };
+		C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6591E25F1EC3300A89241 /* EarnOverviewViewController.swift */; };
+		C3A6592125F1EC3300A89241 /* EarnOverviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A6591F25F1EC3300A89241 /* EarnOverviewViewController.xib */; };
 		C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910725638DE700F57756 /* Lato-Italic.ttf */; };
 		C3A6911325638DE700F57756 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910825638DE700F57756 /* Lato-LightItalic.ttf */; };
 		C3A6911425638DE700F57756 /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910925638DE700F57756 /* Lato-Thin.ttf */; };
@@ -1376,12 +1380,16 @@
 		C37CC08F245803C90081FB32 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		C37CC090245803C90081FB32 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		C37CC091245803C90081FB32 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
+		C38E5D7225F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawConfirmPopupViewController.swift; sourceTree = "<group>"; };
+		C38E5D7325F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WithdrawConfirmPopupViewController.xib; sourceTree = "<group>"; };
 		C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTutorialPagerCell.swift; sourceTree = "<group>"; };
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
 		C3A241992567AD610073703C /* WalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsListViewController.swift; sourceTree = "<group>"; };
 		C3A2419A2567AD610073703C /* WalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletsListViewController.xib; sourceTree = "<group>"; };
 		C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListTableViewCell.swift; sourceTree = "<group>"; };
 		C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListTableViewCell.xib; sourceTree = "<group>"; };
+		C3A6591E25F1EC3300A89241 /* EarnOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverviewViewController.swift; sourceTree = "<group>"; };
+		C3A6591F25F1EC3300A89241 /* EarnOverviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnOverviewViewController.xib; sourceTree = "<group>"; };
 		C3A6910725638DE700F57756 /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
 		C3A6910825638DE700F57756 /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		C3A6910925638DE700F57756 /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
@@ -4265,6 +4273,8 @@
 				C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */,
 				C3263B0525EDE837005FBB60 /* WithdrawViewController.swift */,
 				C3263B0625EDE837005FBB60 /* WithdrawViewController.xib */,
+				C38E5D7225F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift */,
+				C38E5D7325F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4358,6 +4368,8 @@
 				C37AF0C625CCFB28006FB880 /* EarnSwapViewController.xib */,
 				C37AF0CB25CCFB47006FB880 /* EarnSwapConfirmViewController.swift */,
 				C37AF0CC25CCFB47006FB880 /* EarnSwapConfirmViewController.xib */,
+				C3A6591E25F1EC3300A89241 /* EarnOverviewViewController.swift */,
+				C3A6591F25F1EC3300A89241 /* EarnOverviewViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4859,6 +4871,7 @@
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
 				259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */,
 				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
+				C38E5D7525F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib in Resources */,
 				25A4B4B421242DE000924351 /* KNCreateWalletViewController.xib in Resources */,
 				25929C5E20DA5C760045CFA3 /* SF-Pro-Text-RegularItalic.otf in Resources */,
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
@@ -4958,6 +4971,7 @@
 				254A88B6229BDBEC00AA6BBA /* KNLimitOrderSearchTokenViewController.xib in Resources */,
 				C3BC3F8124AC985900B1ADFE /* GoogleService-Info.plist in Resources */,
 				25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */,
+				C3A6592125F1EC3300A89241 /* EarnOverviewViewController.xib in Resources */,
 				C37CC09C245803CA0081FB32 /* Roboto-Bold.ttf in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,
 				C37CC096245803CA0081FB32 /* Roboto-ThinItalic.ttf in Resources */,
@@ -5527,6 +5541,7 @@
 				254A70192296ADC700890B8F /* KNConvertSuggestionViewController.swift in Sources */,
 				C31F74B525DD3284008B21F7 /* OverviewAssetsTableViewCell.swift in Sources */,
 				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
+				C38E5D7425F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift in Sources */,
 				2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
@@ -5605,6 +5620,7 @@
 				251E22662271CBF40038679C /* KNTransactionFilterViewController.swift in Sources */,
 				25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */,
 				25EE47EE21267B97002657DF /* KNAppStyle.swift in Sources */,
+				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				259D646322630DE000A9CA52 /* KNForgotPasswordViewController.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,

@@ -21,9 +21,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewContainerViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="addTokenButton" destination="9Dq-xG-7Y4" id="LVk-o5-Ioq"/>
                 <outlet property="pageSelectButtonsContainerView" destination="QNL-Uh-WZa" id="aU1-fY-NRi"/>
                 <outlet property="pagerContainerView" destination="Rib-O2-44T" id="ipy-g5-EjY"/>
+                <outlet property="receiveButton" destination="fHc-od-Wc3" id="z9Q-0C-UAx"/>
                 <outlet property="totalValueLabel" destination="DbN-gQ-AW3" id="ub7-2R-A27"/>
+                <outlet property="transferButton" destination="Vdy-Ol-4AD" id="Fen-Wb-ffY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletListButton" destination="8Rv-Zz-r61" id="Xt2-I8-M0h"/>
                 <outletCollection property="pageSelectButtons" destination="kB5-y4-tvA" collectionClass="NSMutableArray" id="fRP-6i-G8m"/>

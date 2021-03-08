@@ -30,16 +30,31 @@ class EarnCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   var lendingTokens: [TokenData] = []
   var balances: [String: Balance] = [:]
+  var withdrawCoordinator: WithdrawCoordinator?
   
   private(set) var session: KNSession
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   
-  lazy var rootViewController: EarnMenuViewController = {
+  lazy var rootViewController: EarnOverviewViewController = {
+    let controller = EarnOverviewViewController(self.depositViewController)
+    controller.delegate = self
+    controller.navigationDelegate = self
+    controller.wallet = self.session.wallet
+    return controller
+  }()
+  
+  lazy var menuViewController: EarnMenuViewController = {
     let viewModel = EarnMenuViewModel()
     let viewController = EarnMenuViewController(viewModel: viewModel)
     viewController.delegate = self
     viewController.navigationDelegate = self
     return viewController
+  }()
+  
+  lazy var depositViewController: OverviewDepositViewController = {
+    let controller = OverviewDepositViewController()
+    controller.delegate = self
+    return controller
   }()
   
   fileprivate weak var earnViewController: EarnViewController?
@@ -63,7 +78,7 @@ class EarnCoordinator: NSObject, Coordinator {
   func start() {
     //TODO: pesist token data in to disk then load into memory
     self.navigationController.viewControllers = [self.rootViewController]
-    self.rootViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
+    self.menuViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
     self.getLendingOverview()
   }
 
@@ -113,7 +128,7 @@ class EarnCoordinator: NSObject, Coordinator {
               lendingTokensData.append(tokenData)
             }
             self.lendingTokens = lendingTokensData
-            self.rootViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+            self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
           } else {
             self.getLendingOverview()
           }
@@ -131,6 +146,7 @@ class EarnCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.menuViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     self.navigationController.popToRootViewController(animated: false)
     self.balances = [:]
   }
@@ -157,10 +173,10 @@ extension EarnCoordinator: EarnMenuViewControllerDelegate {
 }
 
 extension EarnCoordinator: EarnViewControllerDelegate {
-  func earnViewController(_ controller: KNBaseViewController, run event: EarnViewEvent) {
+  func earnViewController(_ controller: AbstractEarnViewControler, run event: EarnViewEvent) {
     switch event {
     case .openGasPriceSelect(let gasLimit, let selectType, let isSwap, let percent):
-      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: isSwap, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
         medium: KNGasCoordinator.shared.standardKNGas,
@@ -186,17 +202,9 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                         useGasToken: false
       )) { (result) in
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txObj = json["txObject"] as? [String: String], let gasLimitString = txObj["gasLimit"], let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
-          if isSwap {
-            self.earnSwapViewController?.coordinatorDidUpdateGasLimit(gasLimit, platform: platform, tokenAdress: src)
-          } else {
-            self.earnViewController?.coordinatorDidUpdateGasLimit(gasLimit, platform: platform, tokenAdress: src)
-          }
+          controller.coordinatorDidUpdateGasLimit(gasLimit, platform: platform, tokenAdress: src)
         } else {
-          if isSwap {
-            self.earnSwapViewController?.coordinatorFailUpdateGasLimit()
-          } else {
-            self.earnViewController?.coordinatorFailUpdateGasLimit()
-          }
+          controller.coordinatorFailUpdateGasLimit()
         }
       }
     case .buildTx(let platform, let src, let dest, let amount, let minDestAmount, let gasPrice, let isSwap):
@@ -216,17 +224,9 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           self.navigationController.hideLoading()
           switch result {
           case .success(let txObj):
-            if isSwap {
-              self.earnSwapViewController?.coordinatorDidUpdateSuccessTxObject(txObject: txObj)
-            } else {
-              self.earnViewController?.coordinatorDidUpdateSuccessTxObject(txObject: txObj)
-            }
+            controller.coordinatorDidUpdateSuccessTxObject(txObject: txObj)
           case .failure(let error):
-            if isSwap {
-              self.earnSwapViewController?.coordinatorFailUpdateTxObject(error: error)
-            } else {
-              self.earnViewController?.coordinatorFailUpdateTxObject(error: error)
-            }
+            controller.coordinatorFailUpdateTxObject(error: error)
           }
         }
       }
@@ -253,7 +253,6 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       self.earnSwapViewController = controller
     case .getAllRates(from: let from, to: let to, srcAmount: let srcAmount):
       self.getAllRates(from: from, to: to, srcAmount: srcAmount)
-    
     case .openChooseRate(from: let from, to: let to, rates: let rates):
       let viewModel = ChooseRateViewModel(from: from, to: to, data: rates)
       let vc = ChooseRateViewController(viewModel: viewModel)
@@ -265,13 +264,12 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       guard let provider = self.session.externalProvider, let address = Address(string: token.address) else {
         return
       }
-      provider.getAllowance(tokenAddress: address) { [weak self] getAllowanceResult in
-        guard let `self` = self else { return }
+      provider.getAllowance(tokenAddress: address) { getAllowanceResult in
         switch getAllowanceResult {
         case .success(let res):
-          self.earnSwapViewController?.coordinatorDidUpdateAllowance(token: token, allowance: res)
+          controller.coordinatorDidUpdateAllowance(token: token, allowance: res)
         case .failure:
-          self.earnSwapViewController?.coordinatorDidFailUpdateAllowance(token: token)
+          controller.coordinatorDidFailUpdateAllowance(token: token)
         }
       }
     case .sendApprove(token: let token, remain: let remain):
@@ -336,7 +334,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                       gasPrice: gasPrice,
                       nonce: nonce,
                       hint: "",
-                      useGasToken: false
+                      useGasToken: self.isApprovedGasToken()
     )) { (result) in
       switch result {
       case .success(let resp):
@@ -396,11 +394,10 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
-      if controller.viewModel.isSwapOption {
-        self.earnSwapViewController?.coordinatorDidUpdateGasPriceType(type, value: value)
-      } else {
-        self.earnSwapViewController?.coordinatorDidUpdateGasPriceType(type, value: value)
+      guard let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler else {
+        return
       }
+      viewController.coordinatorDidUpdateGasPriceType(type, value: value)
     case .helpPressed:
       self.navigationController.showBottomBannerView(
         message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
@@ -408,14 +405,20 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         time: 10
       )
     case .minRatePercentageChanged(let percent):
-      self.earnSwapViewController?.coordinatorDidUpdateMinRatePercentage(percent)
+      guard let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler else {
+        return
+      }
+      viewController.coordinatorDidUpdateMinRatePercentage(percent)
     case .useChiStatusChanged(let status):
       guard let provider = self.session.externalProvider else {
         return
       }
+      guard let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler else {
+        return
+      }
       if self.isApprovedGasToken() {
         self.saveUseGasTokenState(status)
-        self.earnSwapViewController?.coordinatorUpdateIsUseGasToken(status)
+        viewController.coordinatorUpdateIsUseGasToken(status)
         return
       }
       if status {
@@ -433,13 +436,13 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
           switch result {
           case .success(let res):
             if res.isZero {
-              let viewModel = ApproveTokenViewModelForGasToken(address: gasTokenAddressString, remain: res, state: status)
+              let viewModel = ApproveTokenViewModelForTokenAddress(address: gasTokenAddressString, remain: res, state: status, symbol: "CHI")
               let viewController = ApproveTokenViewController(viewModel: viewModel)
               viewController.delegate = self
               self.navigationController.present(viewController, animated: true, completion: nil)
             } else {
               self.saveUseGasTokenState(status)
-              self.self.earnSwapViewController?.coordinatorUpdateIsUseGasToken(status)
+              viewController.coordinatorUpdateIsUseGasToken(status)
             }
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
@@ -447,11 +450,11 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               message: error.localizedDescription,
               time: 1.5
             )
-            self.self.earnSwapViewController?.coordinatorUpdateIsUseGasToken(!status)
+            viewController.coordinatorUpdateIsUseGasToken(!status)
           }
         }
       } else {
-        self.earnSwapViewController?.coordinatorUpdateIsUseGasToken(status)
+        viewController.coordinatorUpdateIsUseGasToken(status)
       }
     default:
       break
@@ -716,18 +719,25 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
         provider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas) { (result) in
           switch result {
           case .success:
-            self.earnSwapViewController?.coordinatorSuccessApprove(token: token)
+            if let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler {
+              viewController.coordinatorSuccessApprove(token: token)
+            }
           case .failure(let error):
             self.navigationController.showErrorTopBannerMessage(
               with: NSLocalizedString("error", value: "Error", comment: ""),
               message: error.localizedDescription,
               time: 1.5
             )
-            self.earnSwapViewController?.coordinatorFailApprove(token: token)
+            if let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler {
+              viewController.coordinatorFailApprove(token: token)
+            }
+           
           }
         }
       case .failure:
-        self.earnSwapViewController?.coordinatorFailApprove(token: token)
+        if let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler {
+          viewController.coordinatorFailApprove(token: token)
+        }
       }
     }
   }
@@ -864,4 +874,21 @@ extension EarnCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidUpdateWalletObjects() {}
   func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {}
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {}
+}
+
+extension EarnCoordinator: EarnOverviewViewControllerDelegate {
+  func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController) {
+    self.navigationController.pushViewController(self.menuViewController, animated: true)
+  }
+}
+
+extension EarnCoordinator: OverviewDepositViewControllerDelegate {
+  func overviewDepositViewController(_ controller: OverviewDepositViewController, run event: OverviewDepositViewEvent) {
+    switch event {
+    case .withdrawBalance(platform: let platform, balance: let balance):
+      let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session, platfrom: platform, balance: balance)
+      coordinator.start()
+      self.withdrawCoordinator = coordinator
+    }
+  }
 }

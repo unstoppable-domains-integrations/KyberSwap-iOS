@@ -96,6 +96,15 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
+    //TODO: temp use token realm object for swap atm, support custom token
+     let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? KNSupportedTokenStorage.shared.ethToken
+    self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isBuy)
+    self.tabbarController.selectedIndex = 1
+    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
+    
+  }
+  
   func overviewCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }
