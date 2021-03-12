@@ -36,10 +36,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
 
   lazy var rootViewController: KNHistoryViewController = {
     let viewModel = KNHistoryViewModel(
-      completedTxData: [:],
-      completedTxHeaders: [],
-      pendingTxData: [:],
-      pendingTxHeaders: [],
       currentWallet: self.currentWallet
     )
     let controller = KNHistoryViewController(viewModel: viewModel)
@@ -74,7 +70,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
       self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
-      self.session.transacionCoordinator?.forceFetchTokenTransactions()
+      self.session.transacionCoordinator?.loadEtherscanTransactions()
     }
   }
 
@@ -99,63 +95,10 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {
-    var transactions: [Transaction] = Array(self.session.transactionStorage.transferNonePendingObjects.prefix(Constants.klimitNumberOfTransactionInDB)).map({ return $0.clone() })
-    let addressToSymbol: [String: String] = {
-      var maps: [String: String] = [:]
-      KNSupportedTokenStorage.shared.supportedTokens.forEach({
-        maps[$0.contract.lowercased()] = $0.symbol
-      })
-      return maps
-    }()
-    let address = self.currentWallet.address
     if showLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
-      transactions.sort(by: { return $0.id < $1.id })
-      var processedTxs: [Transaction] = []
-      var id = 0
-      while id < transactions.count {
-        if id == transactions.count - 1 {
-          processedTxs.append(transactions[id])
-          break
-        }
-        if transactions[id].id == transactions[id + 1].id {
-          // count number of txs with same id
-          var cnt = 2
-          var tempId = id + 2
-          while tempId < transactions.count && transactions[tempId].id == transactions[id].id {
-            tempId += 1
-            cnt += 1
-          }
-          if cnt > 2 {
-            // more than 2 txs shared same hash
-            tempId = id
-            while id < transactions.count && transactions[id].id == transactions[tempId].id {
-              let tx = transactions[id]
-              let contract = tx.localizedOperations.first?.contract?.lowercased() ?? ""
-              tx.localizedOperations.first?.symbol = addressToSymbol[contract] ?? tx.localizedOperations.first?.symbol
-              processedTxs.append(tx)
-              id += 1
-            }
-            continue
-          }
-          // merge 2 transactions
-          if let swap = Transaction.swapTransation(sendTx: transactions[id], receiveTx: transactions[id + 1], curWallet: address, addressToSymbol: addressToSymbol) {
-            processedTxs.append(swap)
-            id += 2
-            continue
-          }
-        }
-        let tx = transactions[id]
-        let contract = tx.localizedOperations.first?.contract?.lowercased() ?? ""
-        tx.localizedOperations.first?.symbol = addressToSymbol[contract] ?? tx.localizedOperations.first?.symbol
-        processedTxs.append(tx)
-        id += 1
-      }
-
-      transactions = processedTxs.sorted(by: { return $0.date > $1.date })
-
       let dates: [String] = {
-        let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+        let dates = EtherscanTransactionStorage.shared.getHistoryTransactionModel().map { return self.dateFormatter.string(from: $0.date) }
         var uniqueDates = [String]()
         dates.forEach({
           if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -163,9 +106,9 @@ class KNHistoryCoordinator: NSObject, Coordinator {
         return uniqueDates
       }()
 
-      let sectionData: [String: [Transaction]] = {
-        var data: [String: [Transaction]] = [:]
-        transactions.forEach { tx in
+      let sectionData: [String: [HistoryTransaction]] = {
+        var data: [String: [HistoryTransaction]] = [:]
+        EtherscanTransactionStorage.shared.getHistoryTransactionModel().forEach { tx in
           var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
           trans.append(tx)
           data[self.dateFormatter.string(from: tx.date)] = trans
@@ -174,11 +117,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       }()
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
         if showLoading { self.navigationController.hideLoading() }
-        self.rootViewController.coordinatorUpdateCompletedTransactions(
-          data: sectionData,
-          dates: dates,
-          currentWallet: self.currentWallet
-        )
+        self.rootViewController.coordinatorDidUpdateCompletedTransaction(sections: dates, data: sectionData)
       })
     }
   }
@@ -288,7 +227,8 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .speedUpTransaction(let transaction):
         sendSpeedUpTransactionFor(transaction)
     case .quickTutorial(let pointsAndRadius):
-      self.openQuickTutorial(controller, pointsAndRadius: pointsAndRadius)
+      break
+//      self.openQuickTutorial(controller, pointsAndRadius: pointsAndRadius)
     case .openEtherScanWalletPage:
       let urlString = "\(self.etherScanURL)address/\(self.session.wallet.address.description)"
       self.rootViewController.openSafari(with: urlString)

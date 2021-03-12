@@ -158,6 +158,10 @@ class EarnCoordinator: NSObject, Coordinator {
     }
     return false
   }
+  
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+  }
 }
 
 extension EarnCoordinator: EarnMenuViewControllerDelegate {

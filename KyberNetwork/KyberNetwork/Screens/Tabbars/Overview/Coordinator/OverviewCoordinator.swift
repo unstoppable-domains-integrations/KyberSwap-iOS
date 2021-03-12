@@ -95,6 +95,11 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateNewSession(session)
   }
   
+  func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
+//    self.rootViewController.coordinatorUpdatePendingTransactions(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
+  }
+  
   func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
     return self.withdrawCoordinator?.appCoordinatorUpdateTransaction(tx, txID: txID) ?? false
   }

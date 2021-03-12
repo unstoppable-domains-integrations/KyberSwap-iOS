@@ -75,7 +75,7 @@ class BalanceStorage {
     self.allLendingBalance = balances
     Storage.store(balances, as: unwrapped.address.description + Constants.lendingBalanceStoreFileName)
   }
-  
+
   func setLendingDistributionBalance(_ balance: LendingDistributionBalance) {
     guard let unwrapped = self.wallet else {
       return
@@ -83,7 +83,7 @@ class BalanceStorage {
     self.distributionBalance = balance
     Storage.store(balance, as: unwrapped.address.description + Constants.lendingDistributionBalanceStoreFileName)
   }
-  
+
   func balanceETH() -> String {
     return self.balanceForAddress("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")?.balance ?? ""
   }

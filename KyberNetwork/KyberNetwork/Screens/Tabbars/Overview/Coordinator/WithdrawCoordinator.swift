@@ -420,13 +420,8 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         return
       }
       if status {
-        var gasTokenAddressString = ""
-        if KNEnvironment.default == .ropsten {
-          gasTokenAddressString = "0x0000000000b3F879cb30FE243b4Dfee438691c04"
-        } else {
-          gasTokenAddressString = "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
-        }
-        guard let tokenAddress = Address(string: gasTokenAddressString) else {
+        
+        guard let tokenAddress = Address(string: Constants.gasTokenAddress) else {
           return
         }
         provider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
@@ -434,7 +429,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
           switch result {
           case .success(let res):
             if res.isZero {
-              let viewModel = ApproveTokenViewModelForTokenAddress(address: gasTokenAddressString, remain: res, state: status, symbol: "CHI")
+              let viewModel = ApproveTokenViewModelForTokenAddress(address: Constants.gasTokenAddress, remain: res, state: status, symbol: "CHI")
               let viewController = ApproveTokenViewController(viewModel: viewModel)
               viewController.delegate = self
               self.navigationController.present(viewController, animated: true, completion: nil)

@@ -2,12 +2,334 @@
 
 import UIKit
 import SwipeCellKit
+import BigInt
 
 protocol KNHistoryTransactionCollectionViewCellDelegate: class {
   func historyTransactionCollectionViewCell(_ cell: KNHistoryTransactionCollectionViewCell, openDetails transaction: Transaction)
 }
 
-struct KNHistoryTransactionCollectionViewModel {
+protocol AbstractHistoryTransactionViewModel: class {
+  var index: Int { get }
+  var fromIconSymbol: String { get }
+  var toIconSymbol: String { get }
+  var backgroundColor: UIColor { get }
+  var displayedAmountString: String { get }
+  var transactionDetailsString: String { get }
+  var transactionTypeString: String { get }
+  var isError: Bool { get }
+  var transactionTypeImage: UIImage { get }
+  var displayTime: String { get }
+}
+
+class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
+  let index: Int
+  
+  var fromIconSymbol: String {
+    guard self.data.type == .swap || self.data.type == .earn || self.data.type == .withdraw else {
+      return ""
+    }
+    
+    if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+      return transaction.from.lowercased() == self.data.wallet
+    } {
+      return outTx.tokenSymbol
+    }
+     
+    return "ETH"
+  }
+  
+  var toIconSymbol: String {
+    guard self.data.type == .swap || self.data.type == .earn || self.data.type == .withdraw else {
+      return ""
+    }
+    
+    if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
+      return transaction.to.lowercased() == self.data.wallet
+    }) {
+      return "ETH"
+    }
+    
+    if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
+      return transaction.to.lowercased() == self.data.wallet
+    }) {
+      return inTx.tokenSymbol
+    }
+    return ""
+  }
+  
+  var backgroundColor: UIColor {
+    return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53)
+  }
+  
+  func generateSwapAmountString() -> String {
+    var result = ""
+    if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+      return transaction.from.lowercased() == self.data.wallet
+    } {
+      let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(outTx.tokenDecimal) ?? 6)
+      result += "\(valueString) \(outTx.tokenSymbol) -> "
+      
+    } else if let sendEthTx = self.data.transacton.first {
+      let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+      result += "\(valueString) ETH -> "
+    }
+    
+    if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
+      return transaction.to.lowercased() == self.data.wallet
+    }) {
+      let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(inTx.tokenDecimal) ?? 6)
+      result += "\(valueString) \(inTx.tokenSymbol)"
+    }
+    
+    if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
+      return transaction.to.lowercased() == self.data.wallet
+    }) {
+      let valueBigInt = BigInt(receiveEthTx.value) ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+      result += "\(valueString) ETH"
+    }
+
+    return result
+  }
+  
+  var displayedAmountString: String {
+    switch self.data.type {
+    case .swap:
+      if self.isError {
+        return "--/--"
+      }
+      return self.generateSwapAmountString()
+    case .withdraw:
+      if self.isError {
+        return "--/--"
+      }
+      return self.generateSwapAmountString()
+    case .transferETH:
+      if let sendEthTx = self.data.transacton.first {
+        let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+        return "- \(valueString) ETH"
+      }
+      return ""
+    case .receiveETH:
+      if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      }) {
+        let valueBigInt = BigInt(receiveEthTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+        return "+ \(valueString) ETH"
+      }
+      return ""
+    case .transferToken:
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(outTx.tokenDecimal) ?? 6)
+        return "- \(valueString) \(outTx.tokenSymbol)"
+      }
+      return ""
+    case .receiveToken:
+      if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
+        return transaction.to.lowercased() == self.data.wallet
+      }) {
+        let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(inTx.tokenDecimal) ?? 6)
+        return "+ \(valueString) \(inTx.tokenSymbol)"
+      }
+      return ""
+    case .allowance:
+      if let tx = self.data.transacton.first  {
+        let address = tx.to
+        if address == Constants.gasTokenAddress {
+          return "CHI"
+        } else if let token = KNSupportedTokenStorage.shared.getTokenWith(address: address) {
+          return token.name
+        }
+      }
+      return "Token"
+    case .earn:
+      if self.isError {
+        return "--/--"
+      }
+      return self.generateSwapAmountString()
+    case .contractInteraction:
+      return "--/--"
+    case .selfTransfer:
+      if let sendEthTx = self.data.transacton.first {
+        let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+        return "- \(valueString) ETH"
+      }
+      return ""
+    }
+  }
+  
+  var transactionDetailsString: String {
+    switch self.data.type {
+    case .swap:
+      var fromValue = BigInt.zero
+      var toValue = BigInt.zero
+      var fromSymbol = ""
+      var toSymbol = ""
+      var fromDecimal = 0
+      var toDecimal = 0
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
+        fromValue = valueBigInt
+        fromSymbol = outTx.tokenSymbol
+        fromDecimal = Int(outTx.tokenDecimal) ?? 0
+        
+      } else if let sendEthTx = self.data.transacton.first {
+        let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
+        fromValue = valueBigInt
+        fromSymbol = "ETH"
+        fromDecimal = 18
+      }
+      
+      if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
+        return transaction.to.lowercased() == self.data.wallet
+      }) {
+        let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
+        toValue = valueBigInt
+        toSymbol = inTx.tokenSymbol
+        toDecimal = Int(inTx.tokenDecimal) ?? 0
+      }
+      
+      if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
+        return transaction.to.lowercased() == self.data.wallet
+      }) {
+        let valueBigInt = BigInt(receiveEthTx.value) ?? BigInt(0)
+        toValue = valueBigInt
+        toSymbol = "ETH"
+        toDecimal = 18
+      }
+      guard !toSymbol.isEmpty, !fromSymbol.isEmpty else {
+        return ""
+      }
+      let amountFrom = fromValue * BigInt(10).power(18) / BigInt(10).power(fromDecimal)
+      let amountTo = toValue * BigInt(10).power(18) / BigInt(10).power(toDecimal)
+      let rate = amountTo * BigInt(10).power(18) / amountFrom
+      let rateString = rate.displayRate(decimals: 18)
+      return "1 \(fromSymbol) = \(rateString) \(toSymbol)"
+    case .withdraw:
+      return ""
+    case .transferETH:
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        return "To: \(outTx.to)"
+      }
+      return ""
+    case .receiveETH:
+      if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      }) {
+        return "From: \(receiveEthTx.from)"
+      }
+      return ""
+    case .transferToken:
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        return "To: \(outTx.to)"
+      }
+      return ""
+    case .receiveToken:
+      if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
+        return transaction.to.lowercased() == self.data.wallet
+      }) {
+        return "From: \(inTx.from)"
+      }
+      return ""
+    case .allowance:
+      return self.data.transacton.first?.to ?? ""
+    case .earn:
+      return ""
+    case .contractInteraction:
+      return self.data.transacton.first?.to ?? ""
+    case .selfTransfer:
+      return ""
+    }
+  }
+  
+  var transactionTypeString: String {
+    switch self.data.type {
+    case .swap:
+      return "SWAP"
+    case .withdraw:
+      return "WITHDRAW"
+    case .transferETH:
+      return "TRANSFER"
+    case .receiveETH:
+      return "RECEIVE"
+    case .transferToken:
+      return "TRANSFER"
+    case .receiveToken:
+      return "RECEIVE"
+    case .allowance:
+      return "ALLOWANCE"
+    case .earn:
+      return "TRADE"
+    case .contractInteraction:
+      return "CONTRACT INTERACT"
+    case .selfTransfer:
+      return "SELF"
+    }
+  }
+  
+  var isError: Bool {
+    return self.data.transacton.first?.isError != "0"
+  }
+  
+  var transactionTypeImage: UIImage {
+    switch self.data.type {
+    case .swap:
+      return UIImage()
+    case .withdraw:
+      return UIImage(named: "history_approve_icon")!
+    case .transferETH:
+      return UIImage(named: "history_send_icon")!
+    case .receiveETH:
+      return UIImage(named: "history_receive_icon")!
+    case .transferToken:
+      return UIImage(named: "history_send_icon")!
+    case .receiveToken:
+      return UIImage(named: "history_receive_icon")!
+    case .allowance:
+      return UIImage(named: "history_approve_icon")!
+    case .earn:
+      return UIImage(named: "history_approve_icon")!
+    case .contractInteraction:
+      return UIImage(named: "history_contract_interaction_icon")!
+    case .selfTransfer:
+      return UIImage(named: "history_send_icon")!
+    }
+  }
+
+  var displayTime: String {
+    return self.dateStringFromTimeStamp(self.data.timestamp)
+  }
+
+  func dateStringFromTimeStamp(_ ts: String) -> String {
+    let date = Date(timeIntervalSince1970: Double(ts) ?? 0)
+    return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: date)
+  }
+  
+  let data: HistoryTransaction
+  
+  init(data: HistoryTransaction, index: Int) {
+    self.data = data
+    self.index = index
+  }
+}
+
+class PendingHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   let index: Int
   let transaction: Transaction
   let ownerAddress: String
@@ -134,9 +456,22 @@ struct KNHistoryTransactionCollectionViewModel {
     return self.transaction.displayedExchangeRate
   }
 
-  var displayedAmountColorHex: String {
-    if self.isSwap { return "F89F50" }
-    return self.isSent ? "f87171" : "31cb9e"
+  var fromIconSymbol: String {
+    guard let from = self.transaction.localizedOperations.first?.from, let fromToken = KNSupportedTokenStorage.shared.getTokenWith(address: from) else {
+      return ""
+    }
+    return fromToken.symbol
+  }
+
+  var toIconSymbol: String {
+    guard let to = self.transaction.localizedOperations.first?.to, let toToken = KNSupportedTokenStorage.shared.getTokenWith(address: to) else {
+      return ""
+    }
+    return toToken.symbol
+  }
+  
+  var displayTime: String {
+    return ""
   }
 }
 
@@ -146,7 +481,7 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
   static let height: CGFloat = 46.0
 
   weak var actionDelegate: KNHistoryTransactionCollectionViewCellDelegate?
-  fileprivate var viewModel: KNHistoryTransactionCollectionViewModel!
+  fileprivate var viewModel: AbstractHistoryTransactionViewModel!
 
   @IBOutlet weak var transactionAmountLabel: UILabel!
   @IBOutlet weak var transactionDetailsLabel: UILabel!
@@ -155,7 +490,8 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
   @IBOutlet weak var historyTypeImage: UIImageView!
   @IBOutlet weak var fromIconImage: UIImageView!
   @IBOutlet weak var toIconImage: UIImageView!
-
+  @IBOutlet weak var dateTimeLabel: UILabel!
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     // reset data
@@ -165,31 +501,24 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
     self.transactionStatus.rounded(radius: 10.0)
   }
 
-  func updateCell(with model: KNHistoryTransactionCollectionViewModel) {
+  func updateCell(with model: AbstractHistoryTransactionViewModel) {
     self.viewModel = model
+    let hasFromToIcon = !self.viewModel.fromIconSymbol.isEmpty && !self.viewModel.toIconSymbol.isEmpty
     self.backgroundColor = model.backgroundColor
     self.transactionAmountLabel.text = model.displayedAmountString
     self.transactionDetailsLabel.text = model.transactionDetailsString
     self.transactionTypeLabel.text = model.transactionTypeString.uppercased()
-    self.transactionStatus.setTitle(model.transactionStatusString, for: .normal)
+    self.transactionStatus.setTitle(model.isError ? "failed" : "", for: .normal)
     self.transactionStatus.isHidden = !model.isError
-    self.hideSwapIcon(!self.viewModel.isSwap)
-    self.historyTypeImage.isHidden = self.viewModel.isSwap
-    if self.viewModel.isSwap {
-      if let from = model.transaction.localizedOperations.first?.from,
-         let to = model.transaction.localizedOperations.first?.to,
-         let fromToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: from),
-         let toToken = KNSupportedTokenStorage.shared.get(forPrimaryKey: to) {
-        self.fromIconImage.setTokenImage(token: fromToken, size: self.fromIconImage.frame.size)
-        self.toIconImage.setTokenImage(token: toToken, size: self.toIconImage.frame.size)
-        self.hideSwapIcon(false)
-      } else {
-        self.hideSwapIcon(true)
-      }
+    self.hideSwapIcon(!hasFromToIcon)
+    self.historyTypeImage.isHidden = hasFromToIcon
+    if hasFromToIcon {
+      self.fromIconImage.setSymbolImage(symbol: self.viewModel.fromIconSymbol, size: self.toIconImage.frame.size)
+      self.toIconImage.setSymbolImage(symbol: self.viewModel.toIconSymbol, size: self.toIconImage.frame.size)
     } else {
       self.historyTypeImage.image = model.transactionTypeImage
     }
-
+    self.dateTimeLabel.text = model.displayTime
     self.layoutIfNeeded()
   }
 

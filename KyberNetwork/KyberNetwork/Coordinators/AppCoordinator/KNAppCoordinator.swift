@@ -23,6 +23,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var settingsCoordinator: KNSettingsCoordinator?
   internal var limitOrderCoordinator: KNLimitOrderTabCoordinatorV2?
   internal var earnCoordinator: EarnCoordinator?
+  internal var investCoordinator: InvestCoordinator?
 
   internal var tabbarController: KNTabBarController!
   internal var transactionStatusCoordinator: KNTransactionStatusCoordinator!
@@ -172,11 +173,11 @@ extension KNAppCoordinator {
     }
 
     UITabBarItem.appearance().setTitleTextAttributes(
-      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarNormal, NSAttributedStringKey.font: UIFont.Kyber.medium(with: 10)],
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarNormal, NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 10)],
       for: .normal
     )
     UITabBarItem.appearance().setTitleTextAttributes(
-      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarActive],
+      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWYellow],
       for: .selected
     )
 

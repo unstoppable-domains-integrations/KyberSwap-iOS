@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -110,6 +110,7 @@
                 <constraint firstItem="Vh4-pY-66L" firstAttribute="top" secondItem="1Mo-mW-pBI" secondAttribute="top" constant="5" id="yss-Dt-qe2"/>
             </constraints>
             <connections>
+                <outlet property="dateTimeLabel" destination="smC-Xt-XHs" id="NxG-h0-Vkk"/>
                 <outlet property="fromIconImage" destination="1Mo-mW-pBI" id="PGB-5a-14k"/>
                 <outlet property="historyTypeImage" destination="3Zu-cl-MKE" id="dBl-Ql-qO0"/>
                 <outlet property="toIconImage" destination="Vh4-pY-66L" id="gdj-Jq-wek"/>

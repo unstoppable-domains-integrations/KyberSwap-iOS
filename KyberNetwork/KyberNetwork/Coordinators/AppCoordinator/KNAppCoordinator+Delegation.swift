@@ -101,7 +101,6 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
      let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? KNSupportedTokenStorage.shared.ethToken
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isBuy)
     self.tabbarController.selectedIndex = 1
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     
   }
   
@@ -191,7 +190,6 @@ extension KNAppCoordinator: KNBalanceTabCoordinatorDelegate {
   func balanceTabCoordinatorShouldOpenExchange(for tokenObject: TokenObject, isReceived: Bool) {
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isReceived)
     self.tabbarController.selectedIndex = 1
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
   }
 
   func balanceTabCoordinatorDidSelect(walletObject: KNWalletObject) {

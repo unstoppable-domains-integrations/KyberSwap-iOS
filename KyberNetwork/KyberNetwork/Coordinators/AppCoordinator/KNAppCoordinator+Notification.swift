@@ -385,6 +385,8 @@ extension KNAppCoordinator {
 //    self.balanceTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.loadBalanceCoordinator?.forceUpdateBalanceTransactionsCompleted()
     self.overviewTabCoordinator?.appCoordinatorDidUpdateTokenList()
+    self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    //TODO: add all coordinator update completed tx
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {

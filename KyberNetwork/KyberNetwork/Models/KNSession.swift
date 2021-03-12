@@ -65,6 +65,7 @@ class KNSession {
     )
     self.transacionCoordinator?.start()
     BalanceStorage.shared.updateCurrentWallet(self.wallet)
+    EtherscanTransactionStorage.shared.updateCurrentWallet(self.wallet)
   }
 
   func stopSession() {
