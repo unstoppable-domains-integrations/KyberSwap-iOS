@@ -177,8 +177,8 @@ extension KNExchangeTokenCoordinator {
     self.searchTokensViewController?.updateListSupportedTokens(supportedTokens)
   }
 
-  func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
+  func appCoordinatorPendingTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {
@@ -291,6 +291,9 @@ extension KNExchangeTokenCoordinator {
           toAddr: provider.networkAddress,
           nounce: provider.minTxCount - 1
         )
+        //Init internal tx
+        
+        
         self.session.addNewPendingTransaction(transaction)
         if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) == nil {
           if self.confirmSwapVC != nil {
@@ -461,7 +464,7 @@ extension KNExchangeTokenCoordinator: KNPromoSwapConfirmViewControllerDelegate {
 
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
-  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction) {
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -472,6 +475,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
         KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
+            //TODO: remove olf realm object logic
             self.sendUserTxHashIfNeeded(hash)
             let transaction = data.toTransaction(
               hash: hash,
@@ -479,6 +483,12 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
               toAddr: signTransaction.to!,
               nounce: signTransaction.nonce
             )
+            
+            internalHistoryTransaction.hash = hash
+            internalHistoryTransaction.nonce = signTransaction.nonce
+            internalHistoryTransaction.time = Date()
+            
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
             self.session.addNewPendingTransaction(transaction)
             controller.dismiss(animated: true) {
               self.confirmSwapVC = nil
@@ -515,8 +525,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.showWalletQRCode()
     case .setGasPrice(let gasPrice, let gasLimit):
       self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
-    case .confirmSwap(let data, let tx, let hasRateWarning, let platform):
-      self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning, platform: platform)
+    case .confirmSwap(let data, let tx, let hasRateWarning, let platform, let rawTransaction):
+      self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning, platform: platform, rawTransaction: rawTransaction)
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
@@ -715,10 +725,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
-  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool, platform: String) {
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning, platform: platform)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning, platform: platform, rawTransaction: rawTransaction)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
@@ -921,8 +931,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
-      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txJson = json["txObject"] as? [String: String] {
-        self.rootViewController.coordinatorSuccessUpdateEncodedTx(json: txJson)
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+          self.rootViewController.coordinatorSuccessUpdateEncodedTx(object: data.txObject)
+        } catch let error {
+          self.rootViewController.coordinatorFailUpdateEncodedTx()
+        }
       } else {
         self.rootViewController.coordinatorFailUpdateEncodedTx()
       }

@@ -56,7 +56,7 @@ class KNExploreCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
     self.rootViewController.update(transactions: transactions)
   }
 

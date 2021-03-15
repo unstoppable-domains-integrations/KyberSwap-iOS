@@ -176,17 +176,12 @@ class EarnViewModel {
     return false
   }
   
-  func buildSignSwapTx(dict: [String: String]) -> SignTransaction? {
-    guard let dataHexStr = dict["data"],
-          let to = dict["to"],
-          let valueHexString = dict["value"],
-          let value = BigInt(valueHexString.drop0x, radix: 16),
-          let gasPriceHexString = dict["gasPrice"],
-          let gasPrice = BigInt(gasPriceHexString.drop0x, radix: 16),
-          let gasLimitHexString = dict["gasLimit"],
-          let gasLimit = BigInt(gasLimitHexString.drop0x, radix: 16),
-          let nonceHexStr = dict["nonce"],
-          let nonce = Int(nonceHexStr.drop0x, radix: 16)
+  func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
+    guard
+      let value = BigInt(object.value.drop0x, radix: 16),
+      let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
+      let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
+      let nonce = Int(object.nonce.drop0x, radix: 16)
     else
     {
       return nil
@@ -195,9 +190,9 @@ class EarnViewModel {
       return SignTransaction(
         value: value,
         account: account,
-        to: Address(string: to),
+        to: Address(string: object.to),
         nonce: nonce,
-        data: Data(hex: dataHexStr.drop0x),
+        data: Data(hex: object.data.drop0x),
         gasPrice: gasPrice,
         gasLimit: gasLimit,
         chainID: KNEnvironment.default.chainID
@@ -258,7 +253,7 @@ enum EarnViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double)
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
-  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool)
+  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool, rawTransaction: TxObject)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, srcAmount: BigInt)
   case openChooseRate(from: TokenData, to: TokenData, rates: [JSONDictionary])
@@ -273,7 +268,7 @@ protocol EarnViewControllerDelegate: class {
 }
 
 protocol AbstractEarnViewControler: class {
-  func coordinatorDidUpdateSuccessTxObject(txObject: [String: String])
+  func coordinatorDidUpdateSuccessTxObject(txObject: TxObject)
   func coordinatorFailUpdateTxObject(error: Error)
   func coordinatorDidUpdateGasLimit(_ value: BigInt, platform: String, tokenAdress: String)
   func coordinatorFailUpdateGasLimit()
@@ -567,13 +562,13 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateGasLimit()
   }
   
-  func coordinatorDidUpdateSuccessTxObject(txObject: [String: String]) {
-    guard let tx = self.viewModel.buildSignSwapTx(dict: txObject) else {
+  func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
+    guard let tx = self.viewModel.buildSignSwapTx(txObject) else {
       self.navigationController?.showErrorTopBannerMessage(with: "Can not build transaction".toBeLocalised())
       return
     }
     
-    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, isSwap: false)
+    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, isSwap: false,rawTransaction: txObject)
     self.delegate?.earnViewController(self, run: event)
   }
   

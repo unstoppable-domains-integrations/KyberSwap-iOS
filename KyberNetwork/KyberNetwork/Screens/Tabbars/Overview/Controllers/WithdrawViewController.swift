@@ -31,6 +31,10 @@ class WithdrawViewModel {
     return self.amount.amountBigInt(decimals: self.balance.decimals) ?? BigInt(0)
   }
   
+  var displayAmount: String {
+    return self.amountBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: self.balance.decimals)
+  }
+  
   var withdrawableAmountString: String {
     return self.withdrawableAmountBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: self.balance.decimals)
   }
@@ -128,7 +132,7 @@ class WithdrawViewModel {
 
 enum WithdrawViewEvent {
   case getWithdrawableAmount(platform: String, userAddress: String, tokenAddress: String)
-  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
+  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool, historyTransaction: InternalHistoryTransaction)
   case updateGasLimit(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
   case checkAllowance(tokenAddress: String)
   case sendApprove(tokenAddress: String, remain: BigInt, symbol: String)
@@ -218,7 +222,10 @@ class WithdrawViewController: KNBaseViewController {
   }
   
   fileprivate func buildTx() {
-    self.delegate?.withdrawViewController(self, run: .buildWithdrawTx(platform: self.viewModel.platform, token: self.viewModel.balance.address, amount: self.viewModel.amountBigInt.description, gasPrice: self.viewModel.gasPrice.description, useGasToken: true))
+    let description = "\(self.viewModel.displayAmount) \(self.viewModel.balance.interestBearingTokenSymbol) -> \(self.viewModel.displayAmount) \(self.viewModel.balance.symbol)"
+    let historyTransaction = InternalHistoryTransaction(type: .withdraw, state: .pending, fromSymbol: self.viewModel.balance.symbol, toSymbol: self.viewModel.balance.interestBearingTokenSymbol, transactionDescription: description, transactionDetailDescription: "")
+    
+    self.delegate?.withdrawViewController(self, run: .buildWithdrawTx(platform: self.viewModel.platform, token: self.viewModel.balance.address, amount: self.viewModel.amountBigInt.description, gasPrice: self.viewModel.gasPrice.description, useGasToken: true, historyTransaction: historyTransaction))
   }
   
   fileprivate func loadAllowance() {

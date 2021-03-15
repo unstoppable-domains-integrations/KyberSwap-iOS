@@ -17,6 +17,7 @@ struct EarnSwapConfirmViewModel {
   let gasPrice: BigInt
   let gasLimit: BigInt
   let transaction: SignTransaction
+  let rawTransaction: TxObject
   
   var toAmountString: String {
     let amountString = self.toAmount.displayRate(decimals: self.toToken.decimals)
@@ -26,6 +27,15 @@ struct EarnSwapConfirmViewModel {
   var fromAmountString: String {
     let amountString = self.fromAmount.displayRate(decimals: self.toToken.decimals)
     return "\(amountString.prefix(15)) \(self.fromToken.symbol)"
+  }
+  
+  var earnTokenSymbol: String {
+    return self.platform.isCompound ? "c\(self.toToken.symbol)" : "a\(self.toToken.symbol)"
+  }
+  
+  var earnAmountString: String {
+    let amountString = self.toAmount.displayRate(decimals: self.toToken.decimals)
+    return "\(amountString.prefix(15)) \(self.earnTokenSymbol)"
   }
   
   var depositAPYString: String {
@@ -177,7 +187,9 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.toAmountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform)
+      let transactionHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.toToken.symbol, toSymbol: self.viewModel.earnTokenSymbol, transactionDescription: "\(self.viewModel.toAmountString) -> \(self.viewModel.earnAmountString)", transactionDetailDescription: "")
+      
+      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.toAmountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: transactionHistory)
     }
   }
 }

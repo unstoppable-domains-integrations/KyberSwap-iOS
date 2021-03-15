@@ -273,6 +273,18 @@ class KNExternalProvider {
       }
     }
   }
+  
+  func getReceipt(hash: String, completion: @escaping (Result<KNTransactionReceipt, AnyError>) -> Void) {
+    let request = KNGetTransactionReceiptRequest(hash: hash)
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
+      switch result {
+      case .success(let receipt):
+        completion(.success(receipt))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 
   func getTransactionByHash(_ hash: String, completion: @escaping (PendingTransaction?, SessionTaskError?) -> Void) {
     let request = GetTransactionRequest(hash: hash)
@@ -336,6 +348,9 @@ class KNExternalProvider {
         guard let `self` = self else { return }
         switch result {
         case .success(let txCount):
+//          let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: token.symbol, toSymbol: nil, transactionDescription: token.symbol, transactionDetailDescription: "")
+//          historyTransaction.time = Date()
+//          historyTransaction.hash = ""
           self.minTxCount = txCount
           completion(.success(true))
         case .failure(let error):
@@ -357,6 +372,7 @@ class KNExternalProvider {
         guard let `self` = self else { return }
         switch result {
         case .success(let txCount):
+          
           self.minTxCount = txCount
           completion(.success(true))
         case .failure(let error):
@@ -498,6 +514,7 @@ class KNExternalProvider {
       gasLimit: transaction.gasLimit ?? defaultGasLimit,
       chainID: KNEnvironment.default.chainID
     )
+    
     self.signTransactionData(from: signTransaction, completion: completion)
   }
 

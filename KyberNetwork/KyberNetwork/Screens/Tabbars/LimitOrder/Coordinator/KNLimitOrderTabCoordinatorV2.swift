@@ -174,7 +174,7 @@ extension KNLimitOrderTabCoordinatorV2 {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.rootViewController.coordinatorDidUpdatePendingTransactions(transactions)
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {

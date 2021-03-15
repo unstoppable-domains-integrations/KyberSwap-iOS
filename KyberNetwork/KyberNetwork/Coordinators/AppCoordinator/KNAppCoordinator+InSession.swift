@@ -123,8 +123,8 @@ extension KNAppCoordinator {
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
 
     let transactions = self.session.transactionStorage.kyberPendingTransactions
-    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
+    
 //    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
   }
 
@@ -210,10 +210,8 @@ extension KNAppCoordinator {
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       let transactions = self.session.transactionStorage.kyberPendingTransactions
       self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
       )
       self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
       )
       self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
         transactions: transactions

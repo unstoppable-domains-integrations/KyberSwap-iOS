@@ -10,13 +10,15 @@ struct KConfirmSwapViewModel {
   let signTransaction: SignTransaction
   let hasRateWarning: Bool
   let platform: String
+  let rawTransaction: TxObject
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String) {
+  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject) {
     self.transaction = transaction
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
     self.hasRateWarning = hasRateWarning
     self.platform = platform
+    self.rawTransaction = rawTransaction
   }
 
   var titleString: String {

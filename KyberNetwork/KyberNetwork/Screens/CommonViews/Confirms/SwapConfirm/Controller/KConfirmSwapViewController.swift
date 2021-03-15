@@ -5,7 +5,7 @@ import UIKit
 
 
 protocol KConfirmSwapViewControllerDelegate: class {
-  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction)
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
 }
 
@@ -145,9 +145,10 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBAction func confirmButtonPressed(_ sender: Any) {
     KNCrashlyticsUtil.logCustomEvent(withName: "screen_confirm_swap", customAttributes: ["action": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
     self.dismiss(animated: true, completion: nil)
-//    let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
-//    self.delegate?.kConfirmSwapViewController(self, run: event)
-    self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction)
+    
+    let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.rightAmountString) -> \(self.viewModel.leftAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate)
+    
+    self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction, internalHistoryTransaction: internalHistory)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

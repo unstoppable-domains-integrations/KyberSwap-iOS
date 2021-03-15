@@ -68,7 +68,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
-      self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+      self.appCoordinatorPendingTransactionDidUpdate()
       self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
       self.session.transacionCoordinator?.loadEtherscanTransactions()
     }
@@ -87,7 +87,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     self.appCoordinatorTokensTransactionsDidUpdate()
     self.rootViewController.coordinatorUpdateTokens(self.session.tokenStorage.tokens)
     let pendingTrans = self.session.transactionStorage.kyberPendingTransactions
-    self.appCoordinatorPendingTransactionDidUpdate(pendingTrans)
+    self.appCoordinatorPendingTransactionDidUpdate()
   }
 
   func appCoordinatorDidUpdateWalletObjects() {
@@ -122,9 +122,9 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     }
   }
 
-  func appCoordinatorPendingTransactionDidUpdate(_ transactions: [KNTransaction]) {
+  func appCoordinatorPendingTransactionDidUpdate() {
     let dates: [String] = {
-      let dates = transactions.map { return self.dateFormatter.string(from: $0.date) }
+      let dates = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().map { return self.dateFormatter.string(from: $0.time) }
       var uniqueDates = [String]()
       dates.forEach({
         if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -132,22 +132,22 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       return uniqueDates
     }()
 
-    let sectionData: [String: [Transaction]] = {
-      var data: [String: [Transaction]] = [:]
-      transactions.forEach { tx in
-        var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
-        trans.append(tx.toTransaction())
-        data[self.dateFormatter.string(from: tx.date)] = trans
+    let sectionData: [String: [InternalHistoryTransaction]] = {
+      var data: [String: [InternalHistoryTransaction]] = [:]
+      EtherscanTransactionStorage.shared.getInternalHistoryTransaction().forEach { tx in
+        var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
+        trans.append(tx)
+        data[self.dateFormatter.string(from: tx.time)] = trans
       }
       return data
     }()
 
     self.rootViewController.coordinatorUpdatePendingTransaction(
-      data: sectionData,
-      dates: dates,
-      currentWallet: self.currentWallet
-    )
-    self.txDetailsCoordinator.updatePendingTransactions(transactions, currentWallet: self.currentWallet)
+          data: sectionData,
+          dates: dates,
+          currentWallet: self.currentWallet
+        )
+    //    self.txDetailsCoordinator.updatePendingTransactions(transactions, currentWallet: self.currentWallet)
   }
 
   func coordinatorGasPriceCachedDidUpdate() {

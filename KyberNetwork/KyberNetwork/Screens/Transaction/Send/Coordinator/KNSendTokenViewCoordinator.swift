@@ -305,12 +305,12 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 // MARK: Confirm Transaction Delegate
 extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
-    if case .confirm(let type) = event, case .transfer(let transaction) = type {
+    if case .confirm(let type, let historyTransaction) = event, case .transfer(let transaction) = type {
       controller.dismiss(animated: true) {
         guard self.session.externalProvider != nil else {
           return
         }
-        self.didConfirmTransfer(transaction)
+        self.didConfirmTransfer(transaction, historyTransaction: historyTransaction)
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
@@ -324,7 +324,7 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
-  fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction) {
+  fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -335,12 +335,20 @@ extension KNSendTokenViewCoordinator {
       self.navigationController.hideLoading()
       switch sendResult {
       case .success(let txHash):
+        //TODO: replace realm object implement
         let tx: Transaction = transaction.toTransaction(
           wallet: self.session.wallet,
           hash: txHash,
           nounce: provider.minTxCount - 1
         )
         self.session.addNewPendingTransaction(tx)
+        
+        historyTransaction.hash = txHash
+        historyTransaction.time = Date()
+        historyTransaction.nonce = Int(tx.nonce) ?? 0
+        
+        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+        
         self.openTransactionStatusPopUp(transaction: tx)
       case .failure(let error):
         self.confirmVC?.resetActionButtons()
@@ -521,6 +529,7 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
     provider.getTransactionByHash(transaction.id) { [weak self] (pendingTx, _) in
       guard let `self` = self else { return }
       if let fetchedTx = pendingTx, !fetchedTx.input.isEmpty {
+        
         provider.speedUpSwapTransaction(
           for: filteredToken,
           amount: amount,

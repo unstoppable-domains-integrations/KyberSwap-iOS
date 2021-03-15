@@ -3,7 +3,7 @@
 import UIKit
 
 enum KConfirmViewEvent {
-  case confirm(type: KNTransactionType)
+  case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)
   case cancel
 }
 
@@ -104,7 +104,19 @@ class KConfirmSendViewController: KNBaseViewController {
     )
     self.confirmButton.isEnabled = false
     self.cancelButton.isEnabled = false
-    let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction))
+    var symbol = ""
+    var type: HistoryModelType = .transferToken
+    switch self.viewModel.transaction.transferType {
+    case .ether:
+      type = .transferETH
+      symbol = "ETH"
+    case .token(let token):
+      type = .transferToken
+      symbol = token.symbol
+    }
+    let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "")
+    
+    let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction), historyTransaction: historyTransaction)
     self.delegate?.kConfirmSendViewController(self, run: event)
   }
 

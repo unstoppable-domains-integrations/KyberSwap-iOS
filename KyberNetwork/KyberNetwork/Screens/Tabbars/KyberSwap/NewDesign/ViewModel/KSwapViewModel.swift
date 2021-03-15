@@ -685,17 +685,12 @@ class KSwapViewModel {
     )
   }
 
-  func buildSignSwapTx(dict: [String: String]) -> SignTransaction? {
-    guard let dataHexStr = dict["data"],
-          let to = dict["to"],
-          let valueHexString = dict["value"],
-          let value = BigInt(valueHexString.drop0x, radix: 16),
-          let gasPriceHexString = dict["gasPrice"],
-          let gasPrice = BigInt(gasPriceHexString.drop0x, radix: 16),
-          let gasLimitHexString = dict["gasLimit"],
-          let gasLimit = BigInt(gasLimitHexString.drop0x, radix: 16),
-          let nonceHexStr = dict["nonce"],
-          let nonce = Int(nonceHexStr.drop0x, radix: 16)
+  func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
+    guard
+      let value = BigInt(object.value.drop0x, radix: 16),
+      let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
+      let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
+      let nonce = Int(object.nonce.drop0x, radix: 16)
     else
     {
       return nil
@@ -704,9 +699,9 @@ class KSwapViewModel {
       return SignTransaction(
         value: value,
         account: account,
-        to: Address(string: to),
+        to: Address(string: object.to),
         nonce: nonce,
-        data: Data(hex: dataHexStr.drop0x),
+        data: Data(hex: object.data.drop0x),
         gasPrice: gasPrice,
         gasLimit: gasLimit,
         chainID: KNEnvironment.default.chainID

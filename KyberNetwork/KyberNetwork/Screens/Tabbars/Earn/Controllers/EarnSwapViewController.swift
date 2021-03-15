@@ -191,17 +191,12 @@ class EarnSwapViewModel {
     return false
   }
 
-  func buildSignSwapTx(dict: [String: String]) -> SignTransaction? {
-    guard let dataHexStr = dict["data"],
-          let to = dict["to"],
-          let valueHexString = dict["value"],
-          let value = BigInt(valueHexString.drop0x, radix: 16),
-          let gasPriceHexString = dict["gasPrice"],
-          let gasPrice = BigInt(gasPriceHexString.drop0x, radix: 16),
-          let gasLimitHexString = dict["gasLimit"],
-          let gasLimit = BigInt(gasLimitHexString.drop0x, radix: 16),
-          let nonceHexStr = dict["nonce"],
-          let nonce = Int(nonceHexStr.drop0x, radix: 16)
+  func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
+    guard
+      let value = BigInt(object.value.drop0x, radix: 16),
+      let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
+      let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
+      let nonce = Int(object.nonce.drop0x, radix: 16)
     else
     {
       return nil
@@ -210,9 +205,9 @@ class EarnSwapViewModel {
       return SignTransaction(
         value: value,
         account: account,
-        to: Address(string: to),
+        to: Address(string: object.to),
         nonce: nonce,
-        data: Data(hex: dataHexStr.drop0x),
+        data: Data(hex: object.data.drop0x),
         gasPrice: gasPrice,
         gasLimit: gasLimit,
         chainID: KNEnvironment.default.chainID
@@ -735,8 +730,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateGasLimit()
   }
   
-  func coordinatorDidUpdateSuccessTxObject(txObject: [String: String]) {
-    guard let tx = self.viewModel.buildSignSwapTx(dict: txObject) else {
+  func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
+    guard let tx = self.viewModel.buildSignSwapTx(txObject) else {
       self.navigationController?.showErrorTopBannerMessage(with: "Can not build transaction".toBeLocalised())
       return
     }
@@ -750,7 +745,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.gasLimit,
       transaction: tx,
-      isSwap: true
+      isSwap: true,
+      rawTransaction: txObject
     )
     self.delegate?.earnViewController(self, run: event)
   }

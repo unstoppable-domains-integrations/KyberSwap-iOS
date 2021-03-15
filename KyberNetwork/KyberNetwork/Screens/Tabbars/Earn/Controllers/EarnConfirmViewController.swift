@@ -15,10 +15,20 @@ struct EarnConfirmViewModel {
   let gasPrice: BigInt
   let gasLimit: BigInt
   let transaction: SignTransaction
+  let rawTransaction: TxObject
   
   var amountString: String {
     let amountString = self.amount.displayRate(decimals: self.token.decimals)
     return "\(amountString.prefix(15)) \(self.token.symbol)"
+  }
+  
+  var toTokenSym: String {
+    return self.platform.isCompound ? "c\(self.token.symbol)" : "a\(self.token.symbol)"
+  }
+  
+  var toAmountString: String {
+    let amountString = self.amount.displayRate(decimals: self.token.decimals)
+    return "\(amountString.prefix(15)) \(self.toTokenSym)"
   }
   
   var depositAPYString: String {
@@ -70,7 +80,7 @@ struct EarnConfirmViewModel {
 }
 
 protocol EarnConfirmViewControllerDelegate: class {
-  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData)
+  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction)
 }
 
 class EarnConfirmViewController: KNBaseViewController {
@@ -172,7 +182,9 @@ class EarnConfirmViewController: KNBaseViewController {
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform)
+      let historyTransaction = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.toTokenSym, transactionDescription: "\(self.viewModel.amountString) -> \(self.viewModel.toAmountString)", transactionDetailDescription: "")
+      
+      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
     }
     
   }

@@ -33,10 +33,10 @@ struct KNHistoryViewModel {
   fileprivate(set) var displayingCompletedTxData: [String: [CompletedHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingCompletedTxHeaders: [String] = []
 
-  fileprivate(set) var pendingTxData: [String: [Transaction]] = [:]
+  fileprivate(set) var pendingTxData: [String: [InternalHistoryTransaction]] = [:]
   fileprivate(set) var pendingTxHeaders: [String] = []
 
-  fileprivate(set) var displayingPendingTxData: [String: [Transaction]] = [:]
+  fileprivate(set) var displayingPendingTxData: [String: [PendingInternalHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingPendingTxHeaders: [String] = []
 
   fileprivate(set) var currentWallet: KNWalletObject
@@ -94,7 +94,7 @@ struct KNHistoryViewModel {
     self.updateDisplayingData()
   }
 
-  mutating func update(pendingTxData: [String: [Transaction]], pendingTxHeaders: [String]) {
+  mutating func update(pendingTxData: [String: [InternalHistoryTransaction]], pendingTxHeaders: [String]) {
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
     self.updateDisplayingData(isCompleted: false)
@@ -168,7 +168,7 @@ struct KNHistoryViewModel {
     return nil
   }
 
-  func pendingTransaction(for row: Int, at section: Int) -> Transaction? {
+  func pendingTransaction(for row: Int, at section: Int) -> PendingInternalHistoryTransactonViewModel? {
     let header = self.header(for: section)
     if let trans = self.displayingPendingTxData[header], trans.count >= row {
       return trans[row]
@@ -179,7 +179,7 @@ struct KNHistoryViewModel {
   mutating func updateDisplayingData(isPending: Bool = true, isCompleted: Bool = true) {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
-    //TODO: limit number of display tx with filter flow
+
     if isPending {
       self.displayingPendingTxHeaders = {
         let data = self.pendingTxHeaders.filter({
@@ -189,12 +189,19 @@ struct KNHistoryViewModel {
         return data
       }()
       self.displayingPendingTxData = [:]
-      self.displayingPendingTxHeaders.forEach({
-        var txs = self.pendingTxData[$0] ?? []
-        txs = txs.filter({ return self.isTransactionIncluded($0) })
-        if !txs.isEmpty { self.displayingPendingTxData[$0] = txs }
-      })
-      self.displayingPendingTxHeaders = self.displayingPendingTxHeaders.filter({ return self.displayingPendingTxData[$0] != nil })
+//      self.displayingPendingTxHeaders.forEach({
+//        var txs = self.pendingTxData[$0] ?? []
+//        txs = txs.filter({ return self.isTransactionIncluded($0) })
+//        if !txs.isEmpty { self.displayingPendingTxData[$0] = txs }
+//      })
+//      self.displayingPendingTxHeaders = self.displayingPendingTxHeaders.filter({ return self.displayingPendingTxData[$0] != nil })
+      //TODO: fileter data
+      self.displayingPendingTxHeaders.forEach { (header) in
+        let items = self.pendingTxData[header]?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
+          return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
+        })
+        self.displayingPendingTxData[header] = items
+      }
     }
 
     if isCompleted {
@@ -207,7 +214,7 @@ struct KNHistoryViewModel {
       }()
       self.displayingCompletedTxData = [:]
       self.displayingCompletedTxHeaders.forEach { (header) in
-        let items = self.self.completedTxData[header]?.filter({ return self.isCompletedTransactionIncluded($0) }).enumerated().map { (item) -> CompletedHistoryTransactonViewModel in
+        let items = self.completedTxData[header]?.filter({ return self.isCompletedTransactionIncluded($0) }).enumerated().map { (item) -> CompletedHistoryTransactonViewModel in
           return CompletedHistoryTransactonViewModel(data: item.1, index: item.0)
         } ?? []
         self.displayingCompletedTxData[header] = items
@@ -458,7 +465,7 @@ class KNHistoryViewController: KNBaseViewController {
     var flag = false
     self.viewModel.pendingTxData.keys.forEach { (key) in
       self.viewModel.pendingTxData[key]?.forEach({ (tx) in
-        if abs(tx.date.timeIntervalSinceNow) >= self.viewModel.timeForLongPendingTx {
+        if abs(tx.time.timeIntervalSinceNow) >= self.viewModel.timeForLongPendingTx {
           flag = true
         }
       })
@@ -567,7 +574,7 @@ class KNHistoryViewController: KNBaseViewController {
 
 extension KNHistoryViewController {
   func coordinatorUpdatePendingTransaction(
-    data: [String: [Transaction]],
+    data: [String: [InternalHistoryTransaction]],
     dates: [String],
     currentWallet: KNWalletObject
     ) {
@@ -596,7 +603,7 @@ extension KNHistoryViewController: UICollectionViewDelegate {
     KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_selected_tx", customAttributes: nil)
     if self.viewModel.isShowingPending {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
-      self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
+//      self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
     } else {
       guard let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return }
 //      self.delegate?.historyViewController(self, run: .selectTransaction(transaction: transaction))
@@ -643,13 +650,13 @@ extension KNHistoryViewController: UICollectionViewDataSource {
     cell.delegate = self
     cell.actionDelegate = self
     if self.viewModel.isShowingPending {
-      guard let tx = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
-      let model = PendingHistoryTransactonViewModel(
-        transaction: tx,
-        ownerAddress: self.viewModel.currentWallet.address,
-        ownerWalletName: self.viewModel.currentWallet.name,
-        index: indexPath.row
-      )
+      guard let model = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
+//      let model = PendingHistoryTransactonViewModel(
+//        transaction: tx,
+//        ownerAddress: self.viewModel.currentWallet.address,
+//        ownerWalletName: self.viewModel.currentWallet.name,
+//        index: indexPath.row
+//      )
       cell.updateCell(with: model)
     } else {
       guard let model = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
@@ -692,28 +699,31 @@ extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
     guard orientation == .right else {
       return nil
     }
-    guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section), transaction.type == .normal else { return nil }
-    let speedUp = SwipeAction(style: .default, title: nil) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_speedup", customAttributes: nil)
-      self.delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction))
-    }
-    speedUp.hidesWhenSelected = true
-    speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "").uppercased()
-    speedUp.textColor = UIColor.Kyber.SWYellow
-    speedUp.font = UIFont.Kyber.latoBold(with: 10)
-    let bgImg = UIImage(named: "history_cell_edit_bg")!
-    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 46))!
-    speedUp.backgroundColor = UIColor(patternImage: resized)
-    let cancel = SwipeAction(style: .destructive, title: nil) { _, _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_cancel", customAttributes: nil)
-      self.delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
-    }
-
-    cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "").uppercased()
-    cancel.textColor = UIColor.Kyber.SWYellow
-    cancel.font = UIFont.Kyber.latoBold(with: 10)
-    cancel.backgroundColor = UIColor(patternImage: resized)
-    return [cancel, speedUp]
+    //TODO: implement speed up cancel for new tran
+//    guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section), transaction.type == .normal else { return nil }
+//    let speedUp = SwipeAction(style: .default, title: nil) { (_, _) in
+//      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_speedup", customAttributes: nil)
+//      self.delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction))
+//    }
+//    speedUp.hidesWhenSelected = true
+//    speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "").uppercased()
+//    speedUp.textColor = UIColor.Kyber.SWYellow
+//    speedUp.font = UIFont.Kyber.latoBold(with: 10)
+//    let bgImg = UIImage(named: "history_cell_edit_bg")!
+//    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 46))!
+//    speedUp.backgroundColor = UIColor(patternImage: resized)
+//    let cancel = SwipeAction(style: .destructive, title: nil) { _, _ in
+//      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_cancel", customAttributes: nil)
+//      self.delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
+//    }
+//
+//    cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "").uppercased()
+//    cancel.textColor = UIColor.Kyber.SWYellow
+//    cancel.font = UIFont.Kyber.latoBold(with: 10)
+//    cancel.backgroundColor = UIColor(patternImage: resized)
+//    return [cancel, speedUp]
+    
+    return nil
   }
 
   func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {

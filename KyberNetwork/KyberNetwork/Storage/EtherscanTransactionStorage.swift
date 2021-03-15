@@ -14,6 +14,7 @@ class EtherscanTransactionStorage {
   private var internalTransaction: [EtherscanInternalTransaction] = []
   private var transactions: [EtherscanTransaction] = []
   private var historyTransactionModel: [HistoryTransaction] = []
+  private var internalHistoryTransactions: [InternalHistoryTransaction] = []
 
   func updateCurrentWallet(_ wallet: Wallet) {
     self.wallet = wallet
@@ -186,5 +187,30 @@ class EtherscanTransactionStorage {
 
   func getHistoryTransactionModel() -> [HistoryTransaction] {
     return self.historyTransactionModel
+  }
+  
+  func getInternalHistoryTransaction() -> [InternalHistoryTransaction] {
+    return self.internalHistoryTransactions
+  }
+  
+  func appendInternalHistoryTransaction(_ tx: InternalHistoryTransaction) {
+    self.internalHistoryTransactions.append(tx)
+  }
+  
+  func getInternalHistoryTransactionWithHash(_ hash: String) -> InternalHistoryTransaction? {
+    return self.internalHistoryTransactions.first { (item) -> Bool in
+      return item.hash.lowercased() == hash
+    }
+  }
+  
+  @discardableResult
+  func removeInternalHistoryTransactionWithHash(_ hash: String) -> Bool {
+    guard let index = self.internalHistoryTransactions.firstIndex(where: { (item) -> Bool in
+      return item.hash.lowercased() == hash.lowercased()
+    }) else {
+      return false
+    }
+    self.internalHistoryTransactions.remove(at: index)
+    return true
   }
 }

@@ -339,9 +339,7 @@ extension KNTransactionCoordinator {
       repeats: true,
       block: { [weak self] timer in
         guard let `self` = self else { return }
-        if self.isLoadingEnabled {
-          self.shouldUpdatePendingTransaction(timer)
-        }
+        self.shouldCheckInternalHistory()
       }
     )
   }
@@ -373,6 +371,8 @@ extension KNTransactionCoordinator {
           // Prevent the notification is called multiple time due to timer runs
           return
         }
+        //recep fail = success
+        // by hash success = pending
         if trans.isInvalidated { return }
         if let error = sessionError {
           // Failure
@@ -427,6 +427,56 @@ extension KNTransactionCoordinator {
         completion(error)
       }
     }
+  }
+  
+  //MARK: NEW IMPLEMENTATION
+  fileprivate func shouldCheckInternalHistory() {
+    guard let transaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().last, self.isLoadingEnabled else {
+      return
+    }
+    self.checkInternalHistory(transaction)
+  }
+
+  fileprivate func checkInternalHistory(_ transaction: InternalHistoryTransaction) {
+    self.externalProvider?.getReceipt(hash: transaction.hash, completion: { [weak self] (result) in
+      guard let `self` = self else { return }
+      switch result {
+      case .success:
+        transaction.state = .done
+        EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+        KNNotificationUtil.postNotification(
+          for: kTransactionDidUpdateNotificationKey,
+          object: transaction,
+          userInfo: nil
+        )
+      case .failure:
+        self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
+          if case .responseError(let err) = error, let respError = err as? JSONRPCError {
+            switch respError {
+            case .responseError:
+              transaction.state = .error
+              EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: transaction,
+                userInfo: nil
+              )
+            case .resultObjectParseError:
+              if transaction.time.addingTimeInterval(600) < Date() {
+                transaction.state = .drop
+                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+                KNNotificationUtil.postNotification(
+                  for: kTransactionDidUpdateNotificationKey,
+                  object: transaction,
+                  userInfo: nil
+                )
+              }
+            default: break
+            }
+          }
+        })
+      }
+    })
   }
 
   fileprivate func removeTransactionHasBeenLost(_ transaction: KNTransaction) {

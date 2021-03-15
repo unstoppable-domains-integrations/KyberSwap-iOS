@@ -6,8 +6,186 @@
 //
 
 import Foundation
+import BigInt
+import TrustCore
+import TrustKeystore
 
-enum HistoryModelType {
+struct TransactionResponse: Codable {
+    let timestamp: Int?
+    let error: String?
+    let txObject: TxObject
+}
+
+struct TxObject: Codable {
+    let from, to, data, value: String
+    let gasPrice, nonce, gasLimit: String
+}
+
+struct SignTransactionObject: Codable {
+  let value: String
+  let to: String?
+  let nonce: Int
+  let data: Data
+  let gasPrice: String
+  let gasLimit: String
+  let chainID: Int
+}
+
+extension SignTransactionObject {
+  func toSignTransaction(account: Account) -> SignTransaction {
+    return SignTransaction(value: BigInt(self.value) ?? BigInt(0), account: account, to: Address(string: self.to ?? ""), nonce: self.nonce, data: self.data, gasPrice: BigInt(gasPrice) ?? BigInt(0), gasLimit: BigInt(gasLimit) ?? BigInt(0), chainID: self.chainID)
+  }
+}
+
+extension TxObject {
+  func convertToSignTransaction(wallet: Wallet) -> SignTransaction? {
+    guard
+      let value = BigInt(self.value.drop0x, radix: 16),
+      let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
+      let gasLimit = BigInt(self.gasLimit.drop0x, radix: 16),
+      let nonce = Int(self.nonce.drop0x, radix: 16)
+    else
+    {
+      return nil
+    }
+    if case let .real(account) = wallet.type {
+      return SignTransaction(
+        value: value,
+        account: account,
+        to: Address(string: self.to),
+        nonce: nonce,
+        data: Data(hex: self.data.drop0x),
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        chainID: KNEnvironment.default.chainID
+      )
+    } else {
+      //TODO: handle watch wallet type
+      return nil
+    }
+  }
+}
+
+enum InternalTransactionState: Codable {
+  enum Key: CodingKey {
+    case rawValue
+  }
+  
+  enum CodingError: Error {
+    case unknownValue
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Key.self)
+    let rawValue = try container.decode(Int.self, forKey: .rawValue)
+    switch rawValue {
+    case 0:
+      self = .pending
+    case 1:
+      self = .speedup
+    case 2:
+      self = .cancel
+    case 3:
+      self = .done
+    case 4:
+      self = .drop
+    case 5:
+      self = .error
+    default:
+      throw CodingError.unknownValue
+    }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Key.self)
+    switch self {
+    case .pending:
+      try container.encode(0, forKey: .rawValue)
+    case .speedup:
+      try container.encode(1, forKey: .rawValue)
+    case .cancel:
+      try container.encode(2, forKey: .rawValue)
+    case .done:
+      try container.encode(3, forKey: .rawValue)
+    case .drop:
+      try container.encode(4, forKey: .rawValue)
+    case .error:
+      try container.encode(5, forKey: .rawValue)
+    }
+  }
+  
+  case pending
+  case speedup
+  case cancel
+  case done
+  case drop
+  case error
+}
+
+enum HistoryModelType: Codable {
+  enum Key: CodingKey {
+    case rawValue
+  }
+  
+  enum CodingError: Error {
+    case unknownValue
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Key.self)
+    let rawValue = try container.decode(Int.self, forKey: .rawValue)
+    switch rawValue {
+    case 0:
+      self = .swap
+    case 1:
+      self = .withdraw
+    case 2:
+      self = .transferETH
+    case 3:
+      self = .receiveETH
+    case 4:
+      self = .transferToken
+    case 5:
+      self = .receiveToken
+    case 6:
+      self = .allowance
+    case 7:
+      self = .earn
+    case 8:
+      self = .contractInteraction
+    case 9:
+      self = .selfTransfer
+    default:
+      throw CodingError.unknownValue
+    }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Key.self)
+    switch self {
+    case .swap:
+      try container.encode(0, forKey: .rawValue)
+    case .withdraw:
+      try container.encode(1, forKey: .rawValue)
+    case .transferETH:
+      try container.encode(2, forKey: .rawValue)
+    case .receiveETH:
+      try container.encode(3, forKey: .rawValue)
+    case .transferToken:
+      try container.encode(4, forKey: .rawValue)
+    case .receiveToken:
+      try container.encode(5, forKey: .rawValue)
+    case .allowance:
+      try container.encode(6, forKey: .rawValue)
+    case .earn:
+      try container.encode(7, forKey: .rawValue)
+    case .contractInteraction:
+      try container.encode(8, forKey: .rawValue)
+    case .selfTransfer:
+      try container.encode(9, forKey: .rawValue)
+    }
+  }
+  
   case swap
   case withdraw
   case transferETH
@@ -18,12 +196,12 @@ enum HistoryModelType {
   case earn
   case contractInteraction
   case selfTransfer
-  
+
   static func typeFromInput(_ input: String) -> HistoryModelType {
     guard !input.isEmpty, input != "0x"  else {
       return .transferETH
     }
-    
+
     let prefix = input.prefix(10)
     switch prefix {
     case "0x095ea7b3":
@@ -39,6 +217,28 @@ enum HistoryModelType {
     default:
       return .contractInteraction
     }
+  }
+}
+
+class InternalHistoryTransaction: Codable {
+  var hash: String = ""
+  let type: HistoryModelType
+  var time: Date = Date()
+  var nonce: Int = -1
+  var state: InternalTransactionState
+  let fromSymbol: String?
+  let toSymbol: String?
+  let transactionDescription: String
+  let transactionDetailDescription: String
+//  var transactionObject: TxObject
+  
+  init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String) {
+    self.type = type
+    self.state = state
+    self.fromSymbol = fromSymbol
+    self.toSymbol = toSymbol
+    self.transactionDescription = transactionDescription
+    self.transactionDetailDescription = transactionDetailDescription
   }
 }
 

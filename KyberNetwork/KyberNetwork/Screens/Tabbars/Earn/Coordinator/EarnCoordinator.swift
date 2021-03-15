@@ -150,7 +150,7 @@ class EarnCoordinator: NSObject, Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     self.balances = [:]
   }
-  
+
   func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
     if let txHash = self.transactionStatusVC?.transaction.id, txHash == txID {
       self.transactionStatusVC?.updateView(with: tx)
@@ -158,9 +158,13 @@ class EarnCoordinator: NSObject, Coordinator {
     }
     return false
   }
-  
+
   func appCoordinatorTokensTransactionsDidUpdate() {
     self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+  }
+  
+  func appCoordinatorPendingTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
 }
 
@@ -234,14 +238,14 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           }
         }
       }
-    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let isSwap):
+    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let isSwap, let rawTransaction):
       if isSwap {
-        let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: transaction)
+        let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: transaction, rawTransaction: rawTransaction)
         let controller = EarnSwapConfirmViewController(viewModel: viewModel)
         controller.delegate = self
         self.navigationController.present(controller, animated: true, completion: nil)
       } else {
-        let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: transaction)
+        let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: transaction, rawTransaction: rawTransaction)
         let controller = EarnConfirmViewController(viewModel: viewModel)
         controller.delegate = self
         self.navigationController.present(controller, animated: true, completion: nil)
@@ -326,7 +330,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     }
   }
   
-  func buildTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, completion: @escaping (Result<[String: String], AnyError>) -> Void) {
+  func buildTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buildSwapAndDepositTx(
                       lendingPlatform: lendingPlatform,
@@ -342,10 +346,12 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     )) { (result) in
       switch result {
       case .success(let resp):
-        if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txObj = json["txObject"] as? [String: String] {
-          completion(.success(txObj))
-        } else {
-          completion(.failure(AnyError(NSError(domain: "Can not decode data", code: 404, userInfo: nil))))
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+          completion(.success(data.txObject))
+        } catch let error {
+          completion(.failure(AnyError(NSError(domain: error.localizedDescription, code: 404, userInfo: nil))))
         }
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -486,7 +492,7 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 }
 
 extension EarnCoordinator: EarnConfirmViewControllerDelegate {
-  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData) {
+  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showTopBannerView(message: "Watch wallet can not do this operation".toBeLocalised())
       return
@@ -501,9 +507,16 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
           switch sendResult {
           case .success(let hash):
             print(hash)
+            //TODO: remove old realm logic
             let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description)
             self.session.addNewPendingTransaction(tx)
             self.openTransactionStatusPopUp(transaction: tx)
+            
+            historyTransaction.hash = hash
+            historyTransaction.time = Date()
+            historyTransaction.nonce = transaction.nonce
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+            
             self.transactionStatusVC?.earnAmountString = amount
             self.transactionStatusVC?.netAPYEarnString = netAPY
             self.transactionStatusVC?.earnPlatform = platform

@@ -17,6 +17,12 @@ public struct SignTransaction {
 }
 
 extension SignTransaction {
+  func toSignTransactionObject() -> SignTransactionObject {
+    return SignTransactionObject(value: self.value.description, to: self.to?.description, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID)
+  }
+}
+
+extension SignTransaction {
   func toTransaction(hash: String, fromAddr: String, type: TransactionType = .earn) -> Transaction {
     return Transaction(
       id: hash,

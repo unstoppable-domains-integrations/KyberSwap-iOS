@@ -329,6 +329,95 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   }
 }
 
+class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
+  var index: Int
+  
+  let internalTransaction: InternalHistoryTransaction
+  
+  var fromIconSymbol: String {
+    return self.internalTransaction.fromSymbol ?? ""
+  }
+  
+  var toIconSymbol: String {
+    return self.internalTransaction.toSymbol ?? ""
+  }
+  
+  var backgroundColor: UIColor {
+    return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53)
+  }
+  
+  var displayedAmountString: String {
+    return self.internalTransaction.transactionDescription
+  }
+  
+  var transactionDetailsString: String {
+    return self.internalTransaction.transactionDetailDescription
+  }
+  
+  var transactionTypeString: String {
+    switch self.internalTransaction.type {
+    case .swap:
+      return "SWAP"
+    case .withdraw:
+      return "WITHDRAW"
+    case .transferETH:
+      return "TRANSFER"
+    case .receiveETH:
+      return "RECEIVE"
+    case .transferToken:
+      return "TRANSFER"
+    case .receiveToken:
+      return "RECEIVE"
+    case .allowance:
+      return "ALLOWANCE"
+    case .earn:
+      return "TRADE"
+    case .contractInteraction:
+      return "CONTRACT INTERACT"
+    case .selfTransfer:
+      return "SELF"
+    }
+  }
+  
+  var isError: Bool {
+    return false
+  }
+  
+  var transactionTypeImage: UIImage {
+    switch self.internalTransaction.type {
+    case .swap:
+      return UIImage()
+    case .withdraw:
+      return UIImage(named: "history_approve_icon")!
+    case .transferETH:
+      return UIImage(named: "history_send_icon")!
+    case .receiveETH:
+      return UIImage(named: "history_receive_icon")!
+    case .transferToken:
+      return UIImage(named: "history_send_icon")!
+    case .receiveToken:
+      return UIImage(named: "history_receive_icon")!
+    case .allowance:
+      return UIImage(named: "history_approve_icon")!
+    case .earn:
+      return UIImage(named: "history_approve_icon")!
+    case .contractInteraction:
+      return UIImage(named: "history_contract_interaction_icon")!
+    case .selfTransfer:
+      return UIImage(named: "history_send_icon")!
+    }
+  }
+  
+  var displayTime: String {
+    return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: self.internalTransaction.time)
+  }
+  
+  init(index: Int, transaction: InternalHistoryTransaction) {
+    self.index = index
+    self.internalTransaction = transaction
+  }
+}
+
 class PendingHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   let index: Int
   let transaction: Transaction

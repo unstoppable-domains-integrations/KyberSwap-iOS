@@ -161,7 +161,7 @@ extension KNBalanceTabCoordinator {
 
   func appCoordinatorPendingTransactionsDidUpdate(transactions: [KNTransaction]) {
     self.newRootViewController.coordinatorUpdatePendingTransactions(transactions)
-    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate(transactions)
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
 
   func appCoordinatorGasPriceCachedDidUpdate() {

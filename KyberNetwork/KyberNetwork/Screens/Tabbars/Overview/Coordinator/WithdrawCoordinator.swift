@@ -65,7 +65,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
           self.withdrawViewController.coodinatorFailUpdateWithdrawableAmount()
         }
       }
-    case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
+    case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken, historyTransaction: let historyTransaction):
       guard let blockchainProvider = self.session.externalProvider else {
         self.navigationController.showTopBannerView(message: "Watch wallet can not do this operation".toBeLocalised())
         return
@@ -75,60 +75,46 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         guard let `self` = self else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
         provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
-          if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let dict = json["txObject"] as? [String: String] {
-            guard let dataHexStr = dict["data"],
-                  let to = dict["to"],
-                  let valueHexString = dict["value"],
-                  let value = BigInt(valueHexString.drop0x, radix: 16),
-                  let gasPriceHexString = dict["gasPrice"],
-                  let gasPrice = BigInt(gasPriceHexString.drop0x, radix: 16),
-                  let gasLimitHexString = dict["gasLimit"],
-                  let gasLimit = BigInt(gasLimitHexString.drop0x, radix: 16),
-                  let nonceHexStr = dict["nonce"],
-                  let nonce = Int(nonceHexStr.drop0x, radix: 16)
-            else
-            {
-              controller.hideLoading()
-              self.navigationController.showErrorTopBannerMessage(message: "Error decode response")
-              return
-            }
-            if case let .real(account) = self.session.wallet.type {
-              let transaction = SignTransaction(
-                value: value,
-                account: account,
-                to: Address(string: to),
-                nonce: nonce,
-                data: Data(hex: dataHexStr.drop0x),
-                gasPrice: gasPrice,
-                gasLimit: gasLimit,
-                chainID: KNEnvironment.default.chainID
-              )
-              blockchainProvider.signTransactionData(from: transaction) { [weak self] result in
-                guard let `self` = self else { return }
-                switch result {
-                case .success(let signedData):
-                  KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
-                    controller.hideLoading()
-                    switch sendResult {
-                    case .success(let hash):
-                      print(hash)
-                      let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
-                      self.session.addNewPendingTransaction(tx)
-                      controller.dismiss(animated: true) {
-                        self.openTransactionStatusPopUp(transaction: tx, token: token, amount: amount)
+          if case .success(let resp) = result {
+            let decoder = JSONDecoder()
+            do {
+              let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+              if let transaction = data.txObject.convertToSignTransaction(wallet: self.session.wallet) {
+                blockchainProvider.signTransactionData(from: transaction) { [weak self] result in
+                  guard let `self` = self else { return }
+                  switch result {
+                  case .success(let signedData):
+                    KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
+                      controller.hideLoading()
+                      switch sendResult {
+                      case .success(let hash):
+                        //TODO: remove old logic realm
+                        print(hash)
+                        let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
+                        self.session.addNewPendingTransaction(tx)
+                        
+                        historyTransaction.hash = hash
+                        historyTransaction.time = Date()
+                        historyTransaction.nonce = transaction.nonce
+                        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                        
+                        controller.dismiss(animated: true) {
+                          self.openTransactionStatusPopUp(transaction: tx, token: token, amount: amount)
+                        }
+                      case .failure(let error):
+                        self.navigationController.showTopBannerView(message: error.localizedDescription)
                       }
-                    case .failure(let error):
-                      self.navigationController.showTopBannerView(message: error.localizedDescription)
-                    }
-                  })
-                case .failure:
-                  controller.hideLoading()
+                    })
+                  case .failure:
+                    controller.hideLoading()
+                  }
                 }
+              } else {
+                controller.hideLoading()
+                self.navigationController.showErrorTopBannerMessage(message: "Watch wallet is not supported")
               }
-            } else {
-              controller.hideLoading()
-              self.navigationController.showErrorTopBannerMessage(message: "Watch wallet is not supported")
-              return
+            } catch let error {
+              self.navigationController.showTopBannerView(message: error.localizedDescription)
             }
           } else {
             controller.hideLoading()
@@ -498,6 +484,4 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
       
     }
   }
-  
-  
 }
